@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.code.presenter.CodelistFamilyListPresen
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistListPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistPresenter;
+import org.siemac.metamac.srm.web.client.code.presenter.VariableElementPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyListPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableListPresenter;
@@ -23,6 +24,7 @@ import org.siemac.metamac.srm.web.client.code.view.CodelistFamilyListViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistFamilyViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistListViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistViewImpl;
+import org.siemac.metamac.srm.web.client.code.view.VariableElementViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.VariableFamilyListViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.VariableFamilyViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.VariableListViewImpl;
@@ -144,5 +146,6 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(VariableListPresenter.class, VariableListPresenter.VariableListView.class, VariableListViewImpl.class, VariableListPresenter.VariableListProxy.class);
         bindPresenter(VariableFamilyPresenter.class, VariableFamilyPresenter.VariableFamilyView.class, VariableFamilyViewImpl.class, VariableFamilyPresenter.VariableFamilyProxy.class);
         bindPresenter(VariablePresenter.class, VariablePresenter.VariableView.class, VariableViewImpl.class, VariablePresenter.VariableProxy.class);
+        bindPresenter(VariableElementPresenter.class, VariableElementPresenter.VariableElementView.class, VariableElementViewImpl.class, VariableElementPresenter.VariableElementProxy.class);
     }
 }

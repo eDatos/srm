@@ -114,7 +114,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         // ListGrid
 
-        variableElementListGrid = new PaginatedCheckListGrid(VariablePresenter.VARIABLE_LIST_MAX_RESULTS, new PaginatedAction() {
+        variableElementListGrid = new PaginatedCheckListGrid(VariablePresenter.ELEMENT_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {

@@ -279,6 +279,17 @@ public class PlaceRequestUtils {
         return placeRequests;
     }
 
+    // Variable elements
+
+    public static String getVariableElementParamFromUrl(PlaceManager placeManager) {
+        return getParamFromUrl(placeManager, NameTokens.variableElementPage, PlaceRequestParams.variableElementParamId);
+    }
+
+    public static PlaceRequest buildRelativeVariableElementPlaceRequest(String variableCode) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.variableElementPage).with(PlaceRequestParams.variableElementParamId, variableCode);
+        return placeRequest;
+    }
+
     // ---------------------------------------------------------------------------
     // PRIVATE METHODS
     // ---------------------------------------------------------------------------

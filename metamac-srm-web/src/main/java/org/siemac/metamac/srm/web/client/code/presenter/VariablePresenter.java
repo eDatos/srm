@@ -58,8 +58,8 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class VariablePresenter extends Presenter<VariablePresenter.VariableView, VariablePresenter.VariableProxy> implements VariableUiHandlers {
 
-    public final static int               VARIABLE_LIST_FIRST_RESULT = 0;
-    public final static int               VARIABLE_LIST_MAX_RESULTS  = 15;
+    public final static int               ELEMENT_LIST_FIRST_RESULT = 0;
+    public final static int               ELEMENT_LIST_MAX_RESULTS  = 15;
 
     private final DispatchAsync           dispatcher;
     private final PlaceManager            placeManager;
@@ -132,6 +132,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
         // TODO Variable URN
         String urn = "urn:" + identifier;
         retrieveVariableByUrn(urn);
+        retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, urn);
     }
 
     @Override
@@ -149,6 +150,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
         });
     }
+
     @Override
     public void retrieveVariableFamilies(int firstResult, int maxResults, String criteria) {
         dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
@@ -225,7 +227,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
             @Override
             public void onWaitSuccess(SaveVariableElementResult result) {
-                retrieveVariableElementsByVariable(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, variableDto.getUrn());
+                retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
                 ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementSaved()), MessageTypeEnum.SUCCESS);
             }
         });
@@ -241,15 +243,16 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
             @Override
             public void onWaitSuccess(DeleteVariableElementsResult result) {
-                retrieveVariableElementsByVariable(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, variableDto.getUrn());
+                retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
                 ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementDeleted()), MessageTypeEnum.SUCCESS);
             }
         });
     }
 
     @Override
-    public void goToVariableElement(String urn) {
-        // TODO Auto-generated method stub
-
+    public void goToVariableElement(String code) {
+        if (!StringUtils.isBlank(code)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeVariableElementPlaceRequest(code));
+        }
     }
 }
