@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
+import org.siemac.metamac.srm.web.client.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableRecord;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -45,6 +46,15 @@ public class CommonUtils {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : records) {
             VariableRecord variableRecord = (VariableRecord) record;
+            urns.add(variableRecord.getUrn());
+        }
+        return urns;
+    }
+
+    public static List<String> getUrnsFromSelectedVariableElements(ListGridRecord[] records) {
+        List<String> urns = new ArrayList<String>();
+        for (ListGridRecord record : records) {
+            VariableElementRecord variableRecord = (VariableElementRecord) record;
             urns.add(variableRecord.getUrn());
         }
         return urns;

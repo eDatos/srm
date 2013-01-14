@@ -26,7 +26,7 @@ import com.smartgwt.client.widgets.form.validator.CustomValidator;
 public class NewVariableWindow extends CustomWindow {
 
     private static final int       FORM_ITEM_CUSTOM_WIDTH = 300;
-    private static final String    FIELD_SAVE             = "save-fam";
+    private static final String    FIELD_SAVE             = "save-var";
 
     private CustomDynamicForm      form;
 

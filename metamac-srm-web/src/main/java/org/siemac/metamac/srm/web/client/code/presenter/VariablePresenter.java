@@ -3,8 +3,11 @@ package org.siemac.metamac.srm.web.client.code.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -15,13 +18,19 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
+import org.siemac.metamac.srm.web.shared.code.SaveVariableElementAction;
+import org.siemac.metamac.srm.web.shared.code.SaveVariableElementResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -49,10 +58,15 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class VariablePresenter extends Presenter<VariablePresenter.VariableView, VariablePresenter.VariableProxy> implements VariableUiHandlers {
 
+    public final static int               VARIABLE_LIST_FIRST_RESULT = 0;
+    public final static int               VARIABLE_LIST_MAX_RESULTS  = 15;
+
     private final DispatchAsync           dispatcher;
     private final PlaceManager            placeManager;
 
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
+
+    private VariableDto                   variableDto;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -70,6 +84,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
         void setVariable(VariableDto variableFamilyDto);
         void setVariableFamilies(GetVariableFamiliesResult result);
         void setVariables(GetVariablesResult result);
+
+        void setVariableElements(GetVariableElementsResult result);
     }
 
     @ContentSlot
@@ -128,11 +144,11 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
             @Override
             public void onWaitSuccess(GetVariableResult result) {
+                VariablePresenter.this.variableDto = result.getVariableDto();
                 getView().setVariable(result.getVariableDto());
             }
         });
     }
-
     @Override
     public void retrieveVariableFamilies(int firstResult, int maxResults, String criteria) {
         dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
@@ -158,6 +174,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
             @Override
             public void onWaitSuccess(SaveVariableResult result) {
+                VariablePresenter.this.variableDto = result.getSavedVariableDto();
                 ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(getMessages().variableSaved()), MessageTypeEnum.SUCCESS);
                 getView().setVariable(result.getSavedVariableDto());
 
@@ -181,5 +198,58 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
                 getView().setVariables(result);
             }
         });
+    }
+
+    @Override
+    public void retrieveVariableElementsByVariable(int firstResult, int maxResults, String criteria, String variableUrn) {
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria, variableUrn), new WaitingAsyncCallback<GetVariableElementsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableElementsResult result) {
+                getView().setVariableElements(result);
+            }
+        });
+    }
+
+    @Override
+    public void createVariableElement(VariableElementDto variableElementDto) {
+        dispatcher.execute(new SaveVariableElementAction(variableElementDto), new WaitingAsyncCallback<SaveVariableElementResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveVariableElementResult result) {
+                retrieveVariableElementsByVariable(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, variableDto.getUrn());
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementSaved()), MessageTypeEnum.SUCCESS);
+            }
+        });
+    }
+
+    @Override
+    public void deleteVariableElements(List<String> urns) {
+        dispatcher.execute(new DeleteVariableElementsAction(urns), new WaitingAsyncCallback<DeleteVariableElementsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteVariableElementsResult result) {
+                retrieveVariableElementsByVariable(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, variableDto.getUrn());
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementDeleted()), MessageTypeEnum.SUCCESS);
+            }
+        });
+    }
+
+    @Override
+    public void goToVariableElement(String urn) {
+        // TODO Auto-generated method stub
+
     }
 }

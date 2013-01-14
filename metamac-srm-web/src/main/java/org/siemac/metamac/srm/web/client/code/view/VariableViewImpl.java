@@ -1,24 +1,33 @@
 package org.siemac.metamac.srm.web.client.code.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.VariableDS;
+import org.siemac.metamac.srm.web.client.code.model.ds.VariableElementDS;
+import org.siemac.metamac.srm.web.client.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.client.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableUiHandlers;
+import org.siemac.metamac.srm.web.client.code.widgets.NewVariableElementWindow;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
+import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -32,13 +41,23 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
+import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> implements VariablePresenter.VariableView {
 
@@ -58,6 +77,12 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private SearchMultipleRelatedResourceWindow searchFamiliesWindow;
     private SearchMultipleRelatedResourceWindow searchReplaceToVariablesWindow;
 
+    private PaginatedCheckListGrid              variableElementListGrid;
+    private ToolStripButton                     createVariableElementButton;
+    private ToolStripButton                     deleteVariableElementButton;
+    private NewVariableElementWindow            newVariableElementWindow;
+    private DeleteConfirmationWindow            deleteConfirmationWindow;
+
     private VariableDto                         variableDto;
 
     @Inject
@@ -76,7 +101,78 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         createViewForm();
         createEditionForm();
 
+        // VARIABLE ELEMENTS
+
+        // ToolStrip
+
+        ToolStrip toolStrip = new ToolStrip();
+        toolStrip.setWidth100();
+        createVariableElementButton = createCreateVariableElementButton();
+        deleteVariableElementButton = createDeleteVariableElementButton();
+        toolStrip.addButton(createVariableElementButton);
+        toolStrip.addButton(deleteVariableElementButton);
+
+        // ListGrid
+
+        variableElementListGrid = new PaginatedCheckListGrid(VariablePresenter.VARIABLE_LIST_MAX_RESULTS, new PaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults) {
+                getUiHandlers().retrieveVariableElementsByVariable(firstResult, maxResults, null, variableDto.getUrn());
+            }
+        });
+        variableElementListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
+        variableElementListGrid.getListGrid().setDataSource(new VariableElementDS());
+        variableElementListGrid.getListGrid().setUseAllDataSourceFields(false);
+        variableElementListGrid.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
+
+            @Override
+            public void onSelectionChanged(SelectionEvent event) {
+                if (variableElementListGrid.getListGrid().getSelectedRecords().length > 0) {
+                    // Show delete button
+                    showListGridDeleteButton();
+                } else {
+                    deleteVariableElementButton.hide();
+                }
+            }
+        });
+        variableElementListGrid.getListGrid().addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
+                    String code = ((VariableElementRecord) event.getRecord()).getAttribute(VariableElementDS.CODE);
+                    getUiHandlers().goToVariableElement(code);
+                }
+            }
+        });
+        ListGridField fieldCode = new ListGridField(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
+        fieldCode.setAlign(Alignment.LEFT);
+        ListGridField fieldName = new ListGridField(VariableElementDS.NAME, getConstants().nameableArtefactName());
+        ListGridField urn = new ListGridField(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
+        variableElementListGrid.getListGrid().setFields(fieldCode, fieldName, urn);
+
+        // Remove window
+
+        deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().variableElementDeleteConfirmationTitle(), getConstants().variableElementDeleteConfirmation());
+        deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteVariableElements(
+                        org.siemac.metamac.srm.web.client.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid().getSelectedRecords()));
+                deleteConfirmationWindow.hide();
+            }
+        });
+
+        VLayout codelistsLayout = new VLayout();
+        codelistsLayout.setMargin(15);
+        codelistsLayout.addMember(new TitleLabel(getConstants().variableVariableElements()));
+        codelistsLayout.addMember(toolStrip);
+        codelistsLayout.addMember(variableElementListGrid);
+
         panel.addMember(mainFormLayout);
+        panel.addMember(codelistsLayout);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -260,6 +356,21 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         }
     }
 
+    @Override
+    public void setVariableElements(GetVariableElementsResult result) {
+        setVariableElements(result.getVariableElements());
+        variableElementListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
+    }
+
+    private void setVariableElements(List<VariableElementDto> variableElementDtos) {
+        VariableElementRecord[] records = new VariableElementRecord[variableElementDtos.size()];
+        int index = 0;
+        for (VariableElementDto element : variableElementDtos) {
+            records[index++] = org.siemac.metamac.srm.web.client.code.utils.RecordUtils.getVariableElementRecord(element);
+        }
+        variableElementListGrid.getListGrid().setData(records);
+    }
+
     private RelatedResourceListItem createFamiliesItem() {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
@@ -362,5 +473,46 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
             }
         });
         return replaceToItem;
+    }
+
+    private void showListGridDeleteButton() {
+        deleteVariableElementButton.show();
+    }
+
+    private ToolStripButton createCreateVariableElementButton() {
+        ToolStripButton createButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+        createButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                newVariableElementWindow = new NewVariableElementWindow(getConstants().variableElementCreate());
+                newVariableElementWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        if (newVariableElementWindow.validateForm()) {
+                            VariableElementDto variableElementToCreate = newVariableElementWindow.getNewVariableElementDto();
+                            variableElementToCreate.setVariable(RelatedResourceUtils.createRelatedResourceDto(variableDto.getUrn()));
+                            getUiHandlers().createVariableElement(variableElementToCreate);
+                            newVariableElementWindow.destroy();
+                        }
+                    }
+                });
+            }
+        });
+        return createButton;
+    }
+
+    private ToolStripButton createDeleteVariableElementButton() {
+        ToolStripButton deleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+        deleteButton.setVisibility(Visibility.HIDDEN);
+        deleteButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                deleteConfirmationWindow.show();
+            }
+        });
+        return deleteButton;
     }
 }
