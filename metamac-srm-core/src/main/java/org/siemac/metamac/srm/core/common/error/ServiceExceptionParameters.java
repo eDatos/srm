@@ -37,6 +37,10 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     // CODELIST FAMILY
     public static final String CODELIST_FAMILY                   = "codelist_family";
 
+    // CODE
+    public static final String CODE_SHORT_NAME                   = CODE + ".short_name";
+    public static final String CODE_VARIABLE_ELEMENT             = CODE + ".variable_element";
+
     // VARIABLE FAMILY
     public static final String VARIABLE_FAMILY                   = "variable_family";
 

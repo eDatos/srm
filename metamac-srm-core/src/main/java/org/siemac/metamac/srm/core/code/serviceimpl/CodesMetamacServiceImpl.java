@@ -473,6 +473,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Validation
         CodesMetamacInvocationValidator.checkCreateVariable(variable, null);
+        checkVariableToCreateOrUpdate(ctx, variable);
         setVariableUrnUnique(variable);
 
         // Create
@@ -490,6 +491,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public Variable updateVariable(ServiceContext ctx, Variable variable) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateVariable(variable, null);
+        checkVariableToCreateOrUpdate(ctx, variable);
 
         // If code has been changed, update URN
         if (variable.getNameableArtefact().getIsCodeUpdated()) {
@@ -801,6 +803,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     private void checkCodelistCanBeModified(CodelistVersionMetamac codelistVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
+    }
+
+    /**
+     * Common validations to create or update a variable
+     */
+    private void checkVariableToCreateOrUpdate(ServiceContext ctx, Variable variable) throws MetamacException {
+        // Check variable doesnt replace self
+        if (SrmServiceUtils.isVariableInList(variable.getNameableArtefact().getUrn(), variable.getReplaceToVariables())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variable.getNameableArtefact().getUrn()).build();
+        }
     }
 
     /**

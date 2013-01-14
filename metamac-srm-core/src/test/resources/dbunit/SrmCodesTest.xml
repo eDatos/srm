@@ -367,7 +367,8 @@
             />
 
             <TB_M_CODES
-              VARIABLE_ELEMENT_FK="22"
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="111"
              />
             
@@ -521,7 +522,8 @@
             />
             
             <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
+              VARIABLE_ELEMENT_FK="22"
+              SHORT_NAME_FK="[null]"
               TB_CODES="121"
              />
             
@@ -574,6 +576,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="77"
               TB_CODES="122"
              />
                      
@@ -626,6 +629,7 @@
 
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1221"
              />
         
@@ -678,6 +682,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="12211"
              />
         
@@ -730,6 +735,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="123"
              />
             
@@ -782,6 +788,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="124"
              />
                      
@@ -834,6 +841,7 @@
 
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1241"
              />
         
@@ -886,6 +894,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="12411"
              />
         
@@ -1042,6 +1051,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="211"
              />            
         
@@ -1094,6 +1104,7 @@
         
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="212"
              />        
                      
@@ -1254,6 +1265,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="311"
              />
             
@@ -1306,6 +1318,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="312"
              />            
         
@@ -1358,6 +1371,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="3121"
              />            
         
@@ -1410,6 +1424,7 @@
                     
                     <TB_M_CODES
                       VARIABLE_ELEMENT_FK="[null]"
+                      SHORT_NAME_FK="[null]"
                       TB_CODES="31211"
                      />                    
                 
@@ -1462,6 +1477,7 @@
         
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="3122"
              />
                      
@@ -1614,6 +1630,7 @@
 
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="411"
              />
             
@@ -1765,6 +1782,7 @@
 
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="511"
              />
             
@@ -1916,6 +1934,7 @@
 
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="611"
              />
             
@@ -2159,6 +2178,7 @@
 
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="721"
              />
             
@@ -2312,6 +2332,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="811"
              />            
         
@@ -2655,6 +2676,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1021"
              />            
         
@@ -2796,6 +2818,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1031"
              />            
         
@@ -2949,6 +2972,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1111"
              />            
         
@@ -3103,6 +3127,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1211"
              />            
         
@@ -3256,6 +3281,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1311"
              />            
         
@@ -3308,6 +3334,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1312"
              />            
         
@@ -3360,6 +3387,7 @@
  
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
               TB_CODES="1313"
              />            
         
@@ -5400,6 +5428,27 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="76"
+    />     
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="77"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="771"
+        LABEL="nombre corto code2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="77"
+    />    
+
+    <TB_LOCALISED_STRINGS
+        ID="772"
+        LABEL="short name code2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="77"
     />                       
 
 </dataset>

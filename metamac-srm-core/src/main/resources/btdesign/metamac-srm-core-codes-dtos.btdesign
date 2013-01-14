@@ -14,7 +14,6 @@ Application DtosMetamacCodeDomain {
 		
 		"Dto for CodelistMetamac"
 		DataTransferObject CodelistMetamacDto extends @CodelistDto {
-			
 			"Short name"
 			- @InternationalStringDto shortName nullable;
 			"Is recommended"
@@ -35,9 +34,10 @@ Application DtosMetamacCodeDomain {
 
 		"Dto for CodeMetamac"
 		DataTransferObject CodeMetamacDto extends @CodeDto {
-			
-			"Short name"
+			"Short name. Only filled if code has not related variable element"
 			- @InternationalStringDto shortName nullable;
+			"Variable element"
+			- @RelatedResourceDto variableElement nullable;
 		}
 		
 		"Dto for CodelistFamily"		

@@ -47,6 +47,7 @@ public class CodesMetamacDtoMocks {
 
     public static CodeMetamacDto mockCodeDto() {
         CodeMetamacDto codeMetamacDto = new CodeMetamacDto();
+        codeMetamacDto.setShortName(MetamacMocks.mockInternationalStringDto());
         CodesDtoMocks.mockCodeDto(codeMetamacDto);
         return codeMetamacDto;
     }

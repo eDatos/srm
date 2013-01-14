@@ -180,6 +180,8 @@ Application CodesMetamac {
 			databaseTable="TB_M_CODES"
 			hint="idSequence=M_CODES"
 			
+			"Short name. Only filled if code has not related variable element"
+			- @InternationalString shortName nullable cascade="all" databaseColumn="SHORT_NAME_FK";
 			"Variable element"
 			- @VariableElement variableElement nullable cascade="none" databaseColumn="VARIABLE_ELEMENT_FK"  <-> codes;
 			

@@ -104,6 +104,11 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
     public static void assertEqualsCode(CodeMetamac expected, CodeMetamac actual) {
         // Metamac
+        assertEqualsNullability(expected.getVariableElement(), actual.getVariableElement());
+        if (expected.getVariableElement() != null) {
+            assertEquals(expected.getVariableElement().getNameableArtefact().getUrn(), actual.getVariableElement().getNameableArtefact().getUrn());
+        }
+        assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
 
         // SDMX
         CodesAsserts.assertEqualsCode(expected, actual);
@@ -111,6 +116,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
     public static void assertEqualsCodeDto(CodeMetamacDto expected, CodeMetamacDto actual) {
         // Metamac
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariableElement(), actual.getVariableElement());
+        assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
 
         // SDMX
         CodesAsserts.assertEqualsCodeDto(expected, actual);
@@ -126,8 +133,11 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
     private static void assertEqualsCode(CodeMetamac entity, CodeMetamacDto dto, MapperEnum mapperEnum) {
         // Metamac
-        // TODO shortname assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
-        // TODO elemento variable
+        assertEqualsNullability(entity.getVariableElement(), dto.getVariableElement());
+        if (entity.getVariableElement() != null) {
+            assertEquals(entity.getVariableElement().getNameableArtefact().getUrn(), dto.getVariableElement().getUrn());
+        }
+        assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
 
         // SDMX
         CodesAsserts.assertEqualsCode(entity, dto, mapperEnum);

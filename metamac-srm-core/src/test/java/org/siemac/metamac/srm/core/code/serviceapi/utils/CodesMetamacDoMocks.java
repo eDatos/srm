@@ -42,6 +42,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
     public static CodeMetamac mockCode() {
         CodeMetamac codeMetamac = new CodeMetamac();
+        codeMetamac.setShortName(BaseDoMocks.mockInternationalString());
         mockCode(codeMetamac);
         return codeMetamac;
     }

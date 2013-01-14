@@ -110,6 +110,14 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
 
+        // Modifiable attributes
+        if (source.getVariableElement() != null) {
+            target.setVariableElement(retrieveVariableElement(source.getVariableElement().getUrn()));
+        } else {
+            target.setVariableElement(null);
+        }
+        target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.CODE_SHORT_NAME));
+
         dto2DoMapperSdmxSrm.codeDtoToDo(source, target);
 
         return target;

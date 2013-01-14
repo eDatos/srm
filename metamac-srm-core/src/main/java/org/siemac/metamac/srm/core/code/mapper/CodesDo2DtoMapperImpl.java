@@ -68,6 +68,8 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         CodeMetamacDto target = new CodeMetamacDto();
+        target.setVariableElement(variableElementDoToRelatedResourceDto(source.getVariableElement()));
+        target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         do2DtoMapperSdmxSrm.codeDoToDto(source, target);
 
         return target;

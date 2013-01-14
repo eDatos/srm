@@ -18,7 +18,10 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType MAINTAINER_MUST_BE_DEFAULT       = create("exception.srm.organisations.maintainer.not_default");
 
     // Codelists
-    public static final CommonServiceExceptionType VARIABLE_ONLY_IN_ONE_FAMILY         = create("exception.srm.codelists.variable.variable_only_one_family");
+    public static final CommonServiceExceptionType VARIABLE_ONLY_IN_ONE_FAMILY      = create("exception.srm.codelists.variable.variable_only_one_family");
     public static final CommonServiceExceptionType VARIABLE_WITH_RELATIONS          = create("exception.srm.codelists.variable.with_relations");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_RELATIONS  = create("exception.srm.codelists.variable_element.with_relations");
+
+    // Variables
+    public static final CommonServiceExceptionType VARIABLE_CAN_NOT_REPLACE_ITSELF  = create("exception.srm.codelists.variable.cannot_replace_itself");
 }

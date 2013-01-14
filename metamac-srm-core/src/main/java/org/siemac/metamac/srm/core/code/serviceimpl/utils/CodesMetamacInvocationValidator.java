@@ -50,6 +50,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
     }
 
     private static void checkCodelist(CodelistVersionMetamac codelistVersion, List<MetamacExceptionItem> exceptions) {
+        ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, exceptions);
         if (codelistVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
         }
@@ -87,6 +88,12 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
     }
 
     private static void checkCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, List<MetamacExceptionItem> exceptions) {
+        if (code.getVariableElement() != null) {
+            ValidationUtils.checkMetadataEmpty(code.getShortName(), ServiceExceptionParameters.CODE_SHORT_NAME, exceptions);
+        } else {
+            ValidationUtils.checkMetadataOptionalIsValid(code.getShortName(), ServiceExceptionParameters.CODE_SHORT_NAME, exceptions);
+        }
+
         // common metadata in sdmx are checked in Sdmx module
     }
 

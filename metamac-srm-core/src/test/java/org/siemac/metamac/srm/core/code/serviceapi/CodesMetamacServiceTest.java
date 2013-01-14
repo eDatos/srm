@@ -1522,6 +1522,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testCreateCodeWithVariableElement() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodeMetamac code = CodesMetamacDoMocks.mockCode();
+        code.setParent(null);
+        code.setShortName(null);
+        code.setVariableElement(codesService.retrieveVariableElementByUrn(ctx, VARIABLE_2_VARIABLE_ELEMENT_1));
+
+        String codelistUrn = CODELIST_1_V2;
+
+        // Create
+        CodeMetamac codeCreated = codesService.createCode(ctx, codelistUrn, code);
+        String urn = codeCreated.getNameableArtefact().getUrn();
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        CodeMetamac codeRetrieved = codesService.retrieveCodeByUrn(ctx, urn);
+        assertEqualsCode(code, codeRetrieved);
+    }
+
+    @Test
     public void testCreateCodeSubcode() throws Exception {
         CodeMetamac code = CodesMetamacDoMocks.mockCode();
         CodeMetamac codeParent = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
@@ -1546,6 +1566,25 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(CODELIST_1_V2_CODE_2, codelistVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
         assertEquals(CODELIST_1_V2_CODE_3, codelistVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
         assertEquals(CODELIST_1_V2_CODE_4, codelistVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateCodeIncorrectMetadata() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodeMetamac code = CodesMetamacDoMocks.mockCode();
+        code.setShortName(BaseDoMocks.mockInternationalString()); // must be null when variable element is not null
+        code.setVariableElement(codesService.retrieveVariableElementByUrn(ctx, VARIABLE_2_VARIABLE_ELEMENT_1));
+        String codelistUrn = CODELIST_1_V2;
+
+        // Create
+        try {
+            codesService.createCode(ctx, codelistUrn, code);
+            fail("incorrect metadata");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
@@ -1591,6 +1630,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         assertEquals(urn, code.getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(null, code.getShortName());
+    }
+
+    @Test
+    public void testRetrieveCodeByUrnWithoutVariableElement() throws Exception {
+        // Retrieve
+        String urn = CODELIST_1_V2_CODE_2;
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+
+        // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        assertEquals(urn, code.getNameableArtefact().getUrn());
+        assertNull(code.getVariableElement());
+        assertEqualsInternationalString(code.getShortName(), "es", "nombre corto code2", "en", "short name code2");
     }
 
     @Test
@@ -3072,7 +3125,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_2;
-        String codeUrn = CODELIST_1_V1_CODE_1;
+        String codeUrn = CODELIST_1_V2_CODE_1;
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(ctx, variableElementUrn);
         assertEquals(1, variableElement.getCodes().size());
         assertEquals(codeUrn, variableElement.getCodes().get(0).getNameableArtefact().getUrn());

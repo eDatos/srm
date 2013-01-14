@@ -49,6 +49,8 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
     @Test
     public void testCodeMetamacDoToDto() throws MetamacException {
         CodeMetamacDto dto = CodesMetamacDtoMocks.mockCodeDto();
+        dto.setVariableElement(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_02_VARIABLE_ELEMENT_01", VARIABLE_2_VARIABLE_ELEMENT_1));
+
         CodeMetamac entity = codesDto2DoMapper.codeDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsCode(dto, entity);
     }
