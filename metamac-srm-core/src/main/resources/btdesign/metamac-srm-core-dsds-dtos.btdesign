@@ -1,6 +1,7 @@
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-common.btdesign"
 
 Application DtosMetamacDsdDomain {
 	basePackage=unused
@@ -16,6 +17,29 @@ Application DtosMetamacDsdDomain {
 
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
+			
+			"Visualisation metadata Auto Open"
+			Boolean autoOpen nullable;
+			
+			"Visualisation metadata Show Decimals"
+			Integer showDecimals nullable;
+			
+			"Visualisation metadata Heading, dimensions list ordered"
+			- List<@RelatedResourceDto> headingDimensions nullable;
+			
+			"Visualisation metadata Stub, dimensions list ordered"
+			- List<@RelatedResourceDto> stubDimensions nullable;
+			
+			"Visualisation metadata Stub, dimensions list ordered"
+			- List<@MeasureDimensionPrecisionDto> showDecimalsPrecision nullable;
+			
 		}
+		
+		DataTransferObject MeasureDimensionPrecisionDto extends @RelatedResourceDto {
+			"Show Decimal Precision, must a value between 0 and 6"
+			Integer showDecimalPrecision;
+		}
+		
 	}
+	
 }
