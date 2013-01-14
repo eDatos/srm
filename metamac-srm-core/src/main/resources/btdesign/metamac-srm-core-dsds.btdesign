@@ -4,6 +4,7 @@ import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
+import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
 
 Application DsdsMetamac {
 	basePackage=unused
@@ -70,13 +71,61 @@ Application DsdsMetamac {
 
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
-
+			
+			"Visualisation metadata Auto Open"
+			Boolean autoOpen nullable;
+			
+			"Visualisation metadata Show Decimals"
+			Integer showDecimals nullable;
+			
+			"Visualisation metadata Heading, dimensions list ordered"
+			- Bag<@DimensionOrder> headingDimensions cascade="all-delete-orphan" fetch="lazy" inverse orderby="dimOrder asc" <-> dsdVersionHeading;
+			
+			"Visualisation metadata Stub, dimensions list ordered"
+			- Bag<@DimensionOrder> stubDimensions cascade="all-delete-orphan" fetch="lazy" inverse orderby="dimOrder asc" <-> dsdVersionStub;
+			
+			"Visualisation metadata Stub, dimensions list ordered"
+			- Set<@MeasureDimensionPrecision> showDecimalsPrecision cascade="all-delete-orphan" inverse <-> dsdVersion;
+			
 			Repository DataStructureDefinitionVersionMetamacRepository {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@DataStructureDefinitionVersionMetamac findByUrn(String urn);
 				@DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(String urn, ArrayProcStatusEnum procStatusArray) throws MetamacException;
 			}			
+		}
+		
+		Entity DimensionOrder {
+			databaseTable="TB_M_DIMENSION_ORDERS"
+			hint="idSequence=M_DIMENSION_ORDERS"
+			!auditable
+			
+			// Order
+			Integer dimOrder not nullable;
+			
+			"DSD dimension"
+			-@DimensionComponent dimension cascade="none" databaseColumn="DIM_COMPONENT_FK";
+			
+			"Not null when dimension is in heading"
+			- @DataStructureDefinitionVersionMetamac dsdVersionHeading nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_HEADING_FK" <-> headingDimensions;
+			
+			"Not null when dimension is in stub"
+			- @DataStructureDefinitionVersionMetamac dsdVersionStub nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_STUB_FK" <-> stubDimensions;
+		}
+		
+		Entity MeasureDimensionPrecision {
+			databaseTable="TB_M_MEASURE_DIM_PRECISIONS"
+			hint="idSequence=M_MEASURE_DIM_PRECISIONS"
+			!auditable
+
+			"Code of Codelist representation associate to Measure Dimension"
+			-@CodeMetamac code cascade="none" databaseColumn="M_CODE_FK";
+			
+			"Show Decimal Precision, must a value between 0 and 6"
+			Integer showDecimalPrecision;
+			
+			"DSD version"
+			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> showDecimalsPrecision;
 		}
 
 	}
