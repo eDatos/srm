@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.client.code.presenter.CodelistPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyListPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableListPresenter;
+import org.siemac.metamac.srm.web.client.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
@@ -87,4 +88,5 @@ public interface MetamacSrmWebGinjector extends Ginjector {
     AsyncProvider<VariableFamilyListPresenter> getVariableFamilyListPresenter();
     AsyncProvider<VariableListPresenter> getVariableListPresenter();
     AsyncProvider<VariableFamilyPresenter> getVariableFamilyPresenter();
+    AsyncProvider<VariablePresenter> getVariablePresenter();
 }

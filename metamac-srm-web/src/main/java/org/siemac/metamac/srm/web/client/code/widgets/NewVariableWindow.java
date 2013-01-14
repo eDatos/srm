@@ -74,7 +74,7 @@ public class NewVariableWindow extends CustomWindow {
         variableDto.setCode(form.getValueAsString(VariableDS.CODE));
         variableDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(VariableDS.NAME)));
         variableDto.setShortName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(VariableDS.SHORT_NAME)));
-        variableDto.getFamilies().addAll(((SearchRelatedResourcePaginatedDragAndDropItem) form.getItem(VariableDS.FAMILY)).getSelectedRelatedResources());
+        variableDto.getFamilies().addAll(((SearchRelatedResourcePaginatedDragAndDropItem) form.getItem(VariableDS.FAMILIES)).getSelectedRelatedResources());
         return variableDto;
     }
 
@@ -90,7 +90,7 @@ public class NewVariableWindow extends CustomWindow {
     private SearchRelatedResourcePaginatedDragAndDropItem familyItem;
 
     private SearchRelatedResourcePaginatedDragAndDropItem createFamilyItem() {
-        familyItem = new SearchRelatedResourcePaginatedDragAndDropItem(VariableDS.FAMILY, getConstants().variableFamily(), VariableListPresenter.FAMILY_LIST_MAX_RESULTS, FORM_ITEM_CUSTOM_WIDTH,
+        familyItem = new SearchRelatedResourcePaginatedDragAndDropItem(VariableDS.FAMILIES, getConstants().variableFamily(), VariableListPresenter.FAMILY_LIST_MAX_RESULTS, FORM_ITEM_CUSTOM_WIDTH,
                 new PaginatedAction() {
 
                     @Override
@@ -98,7 +98,7 @@ public class NewVariableWindow extends CustomWindow {
                         uiHandlers.retrieveVariableFamilies(firstResult, maxResults, familyItem.getRelatedResourceCriteria());
                     }
                 });
-        familyItem.setTitleStyle("staticFormItemTitle");
+
         familyItem.setSearchAction(new SearchPaginatedAction() {
 
             @Override
@@ -115,6 +115,7 @@ public class NewVariableWindow extends CustomWindow {
             }
         };
         familyItem.setValidators(customValidator);
+        familyItem.setTitleStyle("staticFormItemTitle");
         return familyItem;
     }
 }

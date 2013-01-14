@@ -47,7 +47,7 @@
 	font-weight: bold;
 }
 
-.staticFormItemTitle {
+.staticFormItemTitle, .staticFormItemTitleError {
 	font-weight: 700;
 	color: #003168;
 	font-family: Arial, Verdana, sans-serif;

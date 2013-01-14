@@ -9,7 +9,7 @@ public class VariableDS extends DataSource {
     public static final String NAME       = "var-name";
     public static final String SHORT_NAME = "var-short-name";
     public static final String URN        = "var-urn";
-    public static final String FAMILY     = "var-family";
+    public static final String FAMILIES     = "var-family";
 
     public static final String DTO        = "var-dto";
 

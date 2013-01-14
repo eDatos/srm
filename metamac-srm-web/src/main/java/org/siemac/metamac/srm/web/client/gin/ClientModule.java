@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.client.code.presenter.CodelistPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyListPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableListPresenter;
+import org.siemac.metamac.srm.web.client.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.client.code.view.CodeViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistFamilyListViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.CodelistFamilyViewImpl;
@@ -25,6 +26,7 @@ import org.siemac.metamac.srm.web.client.code.view.CodelistViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.VariableFamilyListViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.VariableFamilyViewImpl;
 import org.siemac.metamac.srm.web.client.code.view.VariableListViewImpl;
+import org.siemac.metamac.srm.web.client.code.view.VariableViewImpl;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripViewImpl;
 import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
@@ -141,5 +143,6 @@ public class ClientModule extends AbstractPresenterModule {
                 VariableFamilyListPresenter.VariableFamilyListProxy.class);
         bindPresenter(VariableListPresenter.class, VariableListPresenter.VariableListView.class, VariableListViewImpl.class, VariableListPresenter.VariableListProxy.class);
         bindPresenter(VariableFamilyPresenter.class, VariableFamilyPresenter.VariableFamilyView.class, VariableFamilyViewImpl.class, VariableFamilyPresenter.VariableFamilyProxy.class);
+        bindPresenter(VariablePresenter.class, VariablePresenter.VariableView.class, VariableViewImpl.class, VariablePresenter.VariableProxy.class);
     }
 }

@@ -191,6 +191,10 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
             public void onWaitSuccess(SaveVariableFamilyResult result) {
                 ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().variableFamilySaved()), MessageTypeEnum.SUCCESS);
                 getView().setVariableFamily(result.getSavedVariableFamilyDto());
+
+                // Update URL
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeVariableFamilyPlaceRequest(result.getSavedVariableFamilyDto().getCode());
+                placeManager.updateHistory(placeRequest, true);
             }
         });
     }

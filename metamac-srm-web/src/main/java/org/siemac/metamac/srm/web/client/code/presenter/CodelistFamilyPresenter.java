@@ -191,6 +191,10 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
             public void onWaitSuccess(SaveCodelistFamilyResult result) {
                 ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().codelistFamilySaved()), MessageTypeEnum.SUCCESS);
                 getView().setCodelistFamily(result.getSavedCodelistFamilyDto());
+
+                // Update URL
+                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistFamilyPlaceRequest(result.getSavedCodelistFamilyDto().getCode());
+                placeManager.updateHistory(placeRequest, true);
             }
         });
     }

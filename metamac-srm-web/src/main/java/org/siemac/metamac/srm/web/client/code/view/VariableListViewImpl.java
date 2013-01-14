@@ -140,8 +140,8 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String urn = ((VariableRecord) event.getRecord()).getAttribute(VariableDS.URN);
-                    getUiHandlers().goToVariable(urn);
+                    String code = ((VariableRecord) event.getRecord()).getAttribute(VariableDS.CODE);
+                    getUiHandlers().goToVariable(code);
                 }
             }
         });
