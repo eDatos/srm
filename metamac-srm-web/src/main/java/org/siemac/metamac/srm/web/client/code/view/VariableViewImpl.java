@@ -134,7 +134,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().variableIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(VariableDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(VariableDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem shortName = new ViewMultiLanguageTextItem(VariableDS.SHORT_NAME, getConstants().variableShortName());
@@ -142,7 +142,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         identifiersForm.setFields(code, name, shortName, urn);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().variableContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         RelatedResourceListItem families = new RelatedResourceListItem(VariableDS.FAMILIES, getConstants().variableFamilies(), false);
         contentDescriptorsForm.setFields(families);
 
@@ -152,7 +152,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private void createEditionForm() {
         // Identifiers
-        identifiersEditionForm = new GroupDynamicForm(getConstants().variableIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(VariableDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(VariableDS.NAME, getConstants().nameableArtefactName());
@@ -163,7 +163,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         identifiersEditionForm.setFields(code, name, shortName, urn);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().variableContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         RelatedResourceListItem families = createFamiliesItem();
         contentDescriptorsEditionForm.setFields(families);
 

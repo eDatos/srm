@@ -219,7 +219,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().variableFamilyIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(VariableFamilyDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(VariableFamilyDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem urn = new ViewTextItem(VariableFamilyDS.URN, getConstants().identifiableArtefactUrn());
@@ -230,7 +230,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
     private void createEditionForm() {
         // Identifiers
-        identifiersEditionForm = new GroupDynamicForm(getConstants().variableFamilyIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(VariableFamilyDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(VariableFamilyDS.NAME, getConstants().nameableArtefactName());

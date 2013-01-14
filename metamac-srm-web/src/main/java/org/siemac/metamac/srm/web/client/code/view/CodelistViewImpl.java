@@ -332,7 +332,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().codelistIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(CodelistDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CodelistDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem shortName = new ViewMultiLanguageTextItem(CodelistDS.SHORT_NAME, getConstants().codelistShortName());
@@ -343,7 +343,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersForm.setFields(code, name, shortName, uri, urn, urnProvider, version);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().codelistContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
@@ -353,13 +353,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family);
 
         // Production descriptors
-        productionDescriptorsForm = new GroupDynamicForm(getConstants().codelistProductionDescriptors());
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
-        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().codelistDiffusionDescriptors());
+        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToCodelists = new RelatedResourceListItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists(), false);
         ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
         ViewTextItem accessType = new ViewTextItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
@@ -404,7 +404,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     private void createEditionForm() {
         // Identifiers
-        identifiersEditionForm = new GroupDynamicForm(getConstants().codelistIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CodelistDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
@@ -433,7 +433,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersEditionForm.setFields(code, staticCode, name, shortName, uri, urn, urnProvider, version);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().codelistContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         BooleanSelectItem partial = new BooleanSelectItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
@@ -445,13 +445,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, familyView);
 
         // Production descriptors
-        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().codelistProductionDescriptors());
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsEditionForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().codelistDiffusionDescriptors());
+        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToCodelists = createReplaceToCodelistsItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists());
         ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
         CustomSelectItem accessType = new CustomSelectItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());

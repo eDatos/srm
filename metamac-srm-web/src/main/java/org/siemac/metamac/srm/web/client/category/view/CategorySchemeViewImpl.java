@@ -250,7 +250,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().categorySchemeIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(CategorySchemeDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CategorySchemeDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(CategorySchemeDS.URI, getConstants().identifiableArtefactUri());
@@ -260,7 +260,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         identifiersForm.setFields(code, name, uri, urn, urnProvider, version);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().categorySchemeContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CategorySchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(CategorySchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CategorySchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
@@ -268,13 +268,13 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal);
 
         // Production descriptors
-        productionDescriptorsForm = new GroupDynamicForm(getConstants().categorySchemeProductionDescriptors());
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
-        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().categorySchemeDiffusionDescriptors());
+        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem replacedBy = new ViewTextItem(CategorySchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(CategorySchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CategorySchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
@@ -315,7 +315,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
     private void createEditionForm() {
         // Identifiers
-        identifiersEditionForm = new GroupDynamicForm(getConstants().categorySchemeIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CategorySchemeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
@@ -343,7 +343,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider, version);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().categorySchemeContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
 
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CategorySchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         BooleanSelectItem partial = new BooleanSelectItem(CategorySchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
@@ -352,13 +352,13 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
 
         // Production descriptors
-        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().categorySchemeProductionDescriptors());
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsEditionForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().categorySchemeDiffusionDescriptors());
+        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem replacedBy = new ViewTextItem(CategorySchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(CategorySchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CategorySchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());

@@ -313,7 +313,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().identifiableArtefactUri());
@@ -323,7 +323,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersForm.setFields(code, name, uri, urn, urnProvider, version);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(ConceptSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
@@ -331,7 +331,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal);
 
         // Class descriptors
-        classDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
+        classDescriptorsForm = new GroupDynamicForm(getConstants().formClassDescriptors());
         ViewTextItem type = new ViewTextItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
         ViewTextItem typeView = new ViewTextItem(ConceptSchemeDS.TYPE_VIEW, getConstants().conceptSchemeType());
         typeView.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
@@ -346,13 +346,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         classDescriptorsForm.setFields(type, typeView, operation);
 
         // Production descriptors
-        productionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
-        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
+        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem replacedBy = new ViewTextItem(ConceptSchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(ConceptSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
@@ -394,7 +394,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     private void createEditionForm() {
         // Identifiers
-        identifiersEditionForm = new GroupDynamicForm(getConstants().conceptSchemeIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
@@ -422,7 +422,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider, version);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(ConceptSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         BooleanSelectItem partial = new BooleanSelectItem(ConceptSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
@@ -430,7 +430,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
 
         // Class descriptors
-        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeClassDescriptors());
+        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
         final RequiredSelectItem type = new RequiredSelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
         type.setValueMap(CommonUtils.getConceptSchemeTypeHashMap());
         type.addChangedHandler(new ChangedHandler() {
@@ -485,13 +485,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         classDescriptorsEditionForm.setFields(type, typeView, operation);
 
         // Production descriptors
-        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeProductionDescriptors());
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(ConceptSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsEditionForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptSchemeDiffusionDescriptors());
+        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem replacedBy = new ViewTextItem(ConceptSchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(ConceptSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(ConceptSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());

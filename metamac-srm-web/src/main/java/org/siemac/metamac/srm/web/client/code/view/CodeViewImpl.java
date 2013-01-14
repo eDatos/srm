@@ -144,7 +144,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().codeIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(CodeDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CodeDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem shortName = new ViewMultiLanguageTextItem(CodeDS.SHORT_NAME, getConstants().codeShortName());
@@ -154,7 +154,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         identifiersForm.setFields(code, name, shortName, uri, urn, urnProvider);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().codeContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsForm.setFields(description);
 
@@ -174,7 +174,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
     private void createEditionForm() {
         // Identifiers Form
-        identifiersEditionForm = new GroupDynamicForm(getConstants().codeIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CodeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodeDS.NAME, getConstants().nameableArtefactName());
@@ -186,7 +186,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         identifiersEditionForm.setFields(code, name, shortName, uri, urn, urnProvider);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().codeContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(description);
 

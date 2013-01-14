@@ -125,7 +125,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().categoryIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(CategoryDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CategoryDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUri());
@@ -134,7 +134,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         identifiersForm.setFields(code, name, uri, urn, urnProvider);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().categoryContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsForm.setFields(description);
 
@@ -154,7 +154,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
     private void createEditionForm() {
         // Identifiers Form
-        identifiersEditionForm = new GroupDynamicForm(getConstants().categoryIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CategoryDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(CategoryDS.NAME, getConstants().nameableArtefactName());
@@ -165,7 +165,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         identifiersEditionForm.setFields(code, name, uri, urn, urnProvider);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().categoryContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(description);
 

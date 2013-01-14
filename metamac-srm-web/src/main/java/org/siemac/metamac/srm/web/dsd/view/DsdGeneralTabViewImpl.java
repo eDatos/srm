@@ -216,7 +216,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
      */
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdIdentifiers());
+        identifiersForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().formIdentifiers());
         ViewTextItem staticIdLogic = new ViewTextItem(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().dsdIdentifier());
         ViewTextItem staticUriItem = new ViewTextItem(DataStructureDefinitionDS.URI, MetamacSrmWeb.getConstants().identifiableArtefactUri());
         ViewTextItem staticUrnItem = new ViewTextItem(DataStructureDefinitionDS.URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());
@@ -277,7 +277,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
      */
     private void createEditionForm() {
         // Identifiers Form
-        identifiersEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().formIdentifiers());
 
         RequiredTextItem code = new RequiredTextItem(DataStructureDefinitionDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());

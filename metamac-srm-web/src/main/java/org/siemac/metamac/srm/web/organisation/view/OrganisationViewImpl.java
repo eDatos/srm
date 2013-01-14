@@ -283,7 +283,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().organisationIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(OrganisationDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(OrganisationDS.URI, getConstants().identifiableArtefactUri());
@@ -292,7 +292,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         identifiersForm.setFields(code, name, uri, urn, urnProvider);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().organisationContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem type = new ViewTextItem(OrganisationDS.TYPE, getConstants().organisationType());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(OrganisationDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsForm.setFields(type, description);
@@ -313,7 +313,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     private void createEditionForm() {
         // Identifiers Form
-        identifiersEditionForm = new GroupDynamicForm(getConstants().organisationIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
 
         ViewTextItem codeView = new ViewTextItem(OrganisationDS.CODE_VIEW, getConstants().identifiableArtefactCode());
         codeView.setShowIfCondition(new FormItemIfFunction() {
@@ -342,7 +342,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         identifiersEditionForm.setFields(codeView, code, name, uri, urn, urnProvider);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem type = new ViewTextItem(OrganisationDS.TYPE, getConstants().organisationType());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(OrganisationDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(type, description);

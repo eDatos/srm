@@ -199,7 +199,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().conceptIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem pluralName = new ViewMultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());
@@ -210,7 +210,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         identifiersForm.setFields(code, name, pluralName, acronym, uri, urn, urnProvider);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().conceptContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewMultiLanguageTextItem descriptionSource = new ViewMultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         ViewMultiLanguageTextItem context = new ViewMultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
@@ -232,7 +232,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         facetForm = new StaticFacetForm();
 
         // Class descriptors
-        classDescriptorsForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
+        classDescriptorsForm = new GroupDynamicForm(getConstants().formClassDescriptors());
         ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
         ViewTextItem type = new ViewTextItem(ConceptDS.TYPE, getConstants().conceptType());
@@ -241,7 +241,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         classDescriptorsForm.setFields(sdmxRelatedArtefact, type, roles);
 
         // Production descriptors
-        productionDescriptorsForm = new GroupDynamicForm(getConstants().conceptProductionDescriptors());
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewMultiLanguageTextItem derivation = new ViewMultiLanguageTextItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
         productionDescriptorsForm.setFields(derivation);
 
@@ -277,7 +277,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     private void createEditionForm() {
         // Identifiers Form
-        identifiersEditionForm = new GroupDynamicForm(getConstants().conceptIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptDS.NAME, getConstants().nameableArtefactName());
@@ -290,7 +290,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         identifiersEditionForm.setFields(code, name, pluralName, acronym, uri, urn, urnProvider);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         MultiLanguageTextItem descriptionSource = new MultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         MultiLanguageTextItem context = new MultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
@@ -327,7 +327,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         facetEditionForm = new ConceptFacetForm();
 
         // Class descriptors
-        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptClassDescriptors());
+        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
@@ -337,7 +337,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         classDescriptorsEditionForm.setFields(sdmxRelatedArtefact, type, roles);
 
         // Production descriptors
-        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().conceptProductionDescriptors());
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         MultiLanguageTextItem derivation = new MultiLanguageTextItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
         productionDescriptorsEditionForm.setFields(derivation);
 

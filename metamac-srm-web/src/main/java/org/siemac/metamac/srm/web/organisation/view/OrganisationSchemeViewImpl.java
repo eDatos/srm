@@ -368,7 +368,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
     private void createViewForm() {
         // Identifiers Form
-        identifiersForm = new GroupDynamicForm(getConstants().organisationSchemeIdentifiers());
+        identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(OrganisationSchemeDS.URI, getConstants().identifiableArtefactUri());
@@ -378,7 +378,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         identifiersForm.setFields(code, name, uri, urn, urnProvider, version);
 
         // Content descriptors
-        contentDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeContentDescriptors());
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem type = new ViewTextItem(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(OrganisationSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(OrganisationSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
@@ -387,13 +387,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         contentDescriptorsForm.setFields(type, description, partial, isExternalReference, isFinal);
 
         // Production descriptors
-        productionDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeProductionDescriptors());
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
-        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().organisationSchemeDiffusionDescriptors());
+        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem replacedBy = new ViewTextItem(OrganisationSchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(OrganisationSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(OrganisationSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
@@ -434,7 +434,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
     private void createEditionForm() {
         // Identifiers
-        identifiersEditionForm = new GroupDynamicForm(getConstants().organisationSchemeIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
@@ -462,7 +462,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider, version);
 
         // Content descriptors
-        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeContentDescriptors());
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
 
         RequiredSelectItem type = new RequiredSelectItem(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
         type.setValueMap(CommonUtils.getOrganisationSchemeTypeHashMap());
@@ -494,13 +494,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         contentDescriptorsEditionForm.setFields(type, staticType, description, partial, isExternalReference, isFinal);
 
         // Production descriptors
-        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeProductionDescriptors());
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsEditionForm.setFields(agency, procStatus);
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().organisationSchemeDiffusionDescriptors());
+        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem replacedBy = new ViewTextItem(OrganisationSchemeDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(OrganisationSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(OrganisationSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
