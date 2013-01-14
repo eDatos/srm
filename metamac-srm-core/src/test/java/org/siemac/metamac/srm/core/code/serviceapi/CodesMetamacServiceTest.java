@@ -2533,8 +2533,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = VARIABLE_3;
         Variable variable = codesService.retrieveVariableByUrn(ctx, urn);
         assertEquals(2, variable.getReplaceToVariables().size());
-        assertEquals(VARIABLE_1, variable.getReplaceToVariables().get(0).getNameableArtefact().getUrn());
-        assertEquals(VARIABLE_2, variable.getReplaceToVariables().get(1).getNameableArtefact().getUrn());
+        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_1, variable.getReplaceToVariables()));
+        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_2, variable.getReplaceToVariables()));
 
         // Replace to
         variable.removeAllReplaceToVariables();
@@ -2798,6 +2798,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         Variable variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
         assertTrue(SrmServiceUtils.isVariableInList(variableUrn, family.getVariables()));
         assertTrue(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_2, variable.getFamilies()));
 
         codesService.removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);
 
@@ -2805,6 +2806,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
         assertFalse(SrmServiceUtils.isVariableInList(variableUrn, family.getVariables()));
         assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
+        assertTrue(SrmServiceUtils.isFamilyInList(VARIABLE_FAMILY_2, variable.getFamilies()));
 
         // Removing the variable from the family again has no consequences
         codesService.removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);

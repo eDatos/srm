@@ -121,6 +121,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
     }
 
+    @Override
     public CodelistVersionMetamac retrieveCodelistByUrn(ServiceContext ctx, String urn) throws MetamacException {
         return (CodelistVersionMetamac) codesService.retrieveCodelistByUrn(ctx, urn);
     }
@@ -433,7 +434,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check variables of family to delete has more families, because family of variable is required (in exception, say only one variable)
         for (Variable variable : variableFamilyToDelete.getVariables()) {
             if (variable.getFamilies().size() == 1) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ONLY_IN_ONE_FAMILY).withMessageParameters(variable.getNameableArtefact().getUrn(), urn).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ONLY_IN_ONE_FAMILY).withMessageParameters(variable.getNameableArtefact().getUrn(), urn)
+                        .build();
             }
         }
 
@@ -579,14 +581,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         VariableFamily family = retrieveVariableFamilyByUrn(familyUrn);
         Variable variable = retrieveVariableByUrn(variableUrn);
 
-        // Check variable has more families
-        if (variable.getFamilies().size() == 1) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ONLY_IN_ONE_FAMILY).withMessageParameters(variableUrn, familyUrn).build();
-        }
-
         // Do not remove the variable if it has not been associated with the family previously
         if (!SrmServiceUtils.isVariableInList(variable.getNameableArtefact().getUrn(), family.getVariables())) {
             return;
+        }
+
+        // Check variable has more families
+        if (variable.getFamilies().size() == 1) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ONLY_IN_ONE_FAMILY).withMessageParameters(variableUrn, familyUrn).build();
         }
 
         // Remove variable from family
