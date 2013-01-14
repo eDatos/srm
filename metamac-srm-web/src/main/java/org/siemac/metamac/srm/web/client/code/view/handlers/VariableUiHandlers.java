@@ -8,5 +8,6 @@ public interface VariableUiHandlers extends UiHandlers {
 
     void retrieveVariableByUrn(String identifier);
     void retrieveVariableFamilies(int firstResult, int maxResults, final String criteria);
+    void retrieveVariables(int firstResult, int maxResults, final String criteria);
     void saveVariable(VariableDto variableDto);
 }

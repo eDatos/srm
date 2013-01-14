@@ -19,6 +19,8 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -67,6 +69,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
         void setVariable(VariableDto variableFamilyDto);
         void setVariableFamilies(GetVariableFamiliesResult result);
+        void setVariables(GetVariablesResult result);
     }
 
     @ContentSlot
@@ -161,6 +164,21 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
                 // Update URL
                 PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeVariablePlaceRequest(result.getSavedVariableDto().getCode());
                 placeManager.updateHistory(placeRequest, true);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariables(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariablesResult result) {
+                getView().setVariables(result);
             }
         });
     }
