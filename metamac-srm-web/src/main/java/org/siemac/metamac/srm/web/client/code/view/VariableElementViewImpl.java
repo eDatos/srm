@@ -46,11 +46,11 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
     // View forms
     private GroupDynamicForm            identifiersForm;
-    private GroupDynamicForm            diffusionDescriptorsForm;
+    private GroupDynamicForm            contentDescriptorsForm;
 
     // Edition forms
     private GroupDynamicForm            identifiersEditionForm;
-    private GroupDynamicForm            diffusionDescriptorsEditionForm;
+    private GroupDynamicForm            contentDescriptorsEditionForm;
 
     private SearchRelatedResourceWindow searchVariableWindow;
 
@@ -84,8 +84,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 identifiersForm.setTranslationsShowed(translationsShowed);
                 identifiersEditionForm.setTranslationsShowed(translationsShowed);
 
-                diffusionDescriptorsForm.setTranslationsShowed(translationsShowed);
-                diffusionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
+                contentDescriptorsForm.setTranslationsShowed(translationsShowed);
+                contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
             }
         });
 
@@ -94,7 +94,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
+                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false)) {
                     saveVariableElement();
                 }
             }
@@ -150,13 +150,13 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ViewTextItem urn = new ViewTextItem(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
         identifiersForm.setFields(code, name, shortName, urn);
 
-        // Diffusion descriptors
-        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
+        // Content descriptors
+        contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE_VIEW, getConstants().variable());
-        diffusionDescriptorsForm.setFields(variable);
+        contentDescriptorsForm.setFields(variable);
 
         mainFormLayout.addViewCanvas(identifiersForm);
-        mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
+        mainFormLayout.addViewCanvas(contentDescriptorsForm);
     }
 
     private void createEditionForm() {
@@ -171,15 +171,15 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ViewTextItem urn = new ViewTextItem(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
         identifiersEditionForm.setFields(code, name, shortName, urn);
 
-        // Diffusion descriptors
-        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
+        // Content descriptors
+        contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE, getConstants().variable());
         variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem variableView = createVariableItem();
-        diffusionDescriptorsEditionForm.setFields(variable, variableView);
+        contentDescriptorsEditionForm.setFields(variable, variableView);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
-        mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
     }
 
     public void setEditionMode() {
@@ -193,8 +193,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersForm.setValue(VariableElementDS.NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getName()));
         identifiersForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
-        // Diffusion descriptors
-        diffusionDescriptorsForm.setValue(VariableElementDS.VARIABLE_VIEW, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
+        // Content descriptors
+        contentDescriptorsForm.setValue(VariableElementDS.VARIABLE_VIEW, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
     }
 
     public void setVariableElementEditionMode(VariableElementDto variableElementDto) {
@@ -204,9 +204,9 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersEditionForm.setValue(VariableElementDS.NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getName()));
         identifiersEditionForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
-        // Diffusion descriptors
-        diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE_VIEW, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
-        diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, variableElementDto.getVariable() != null ? variableElementDto.getVariable().getUrn() : StringUtils.EMPTY);
+        // Content descriptors
+        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE_VIEW, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
+        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, variableElementDto.getVariable() != null ? variableElementDto.getVariable().getUrn() : StringUtils.EMPTY);
     }
 
     public void saveVariableElement() {
@@ -215,10 +215,10 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         variableElementDto.setName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.NAME));
         variableElementDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.SHORT_NAME));
 
-        // Diffusion descriptors
+        // Content descriptors
         // It is necessary to update the place request hierarchy if the variable has been changed! If not, the URL would be incorrect.
         String oldVariableUrn = variableElementDto.getVariable().getUrn();
-        String newVariableUrn = diffusionDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE);
+        String newVariableUrn = contentDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE);
         boolean updatePlaceRequestHierarchy = !StringUtils.equals(oldVariableUrn, newVariableUrn);
         variableElementDto.setVariable(RelatedResourceUtils.createRelatedResourceDto(newVariableUrn));
 
@@ -261,8 +261,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                         RelatedResourceDto selectedVariable = searchVariableWindow.getSelectedRelatedResource();
                         searchVariableWindow.markForDestroy();
                         // Set selected family in form
-                        diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
-                        diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE_VIEW,
+                        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
+                        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE_VIEW,
                                 selectedVariable != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariable) : null);
                     }
                 });
@@ -273,7 +273,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
             @Override
             protected boolean condition(Object value) {
-                return !StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE));
+                return !StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE));
             }
         };
         variableItem.setValidators(customValidator);
