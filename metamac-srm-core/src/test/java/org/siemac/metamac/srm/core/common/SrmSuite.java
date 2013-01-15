@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacServiceTest;
 
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesServiceTest;
+import com.arte.statistic.sdmx.srm.core.structure.mapper.DataStructureDefinitionDto2DoMapperTest;
 
 /**
  * Spring based transactional test with DbUnit support.
@@ -31,6 +32,7 @@ import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesServiceTes
 @Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeOrganisationsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class, SrmCoreServiceFacadeDsdTest.class,
         ConceptsMetamacServiceTest.class, BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class, ConceptsDo2DtoMapperTest.class,
         ConceptsDto2DoMapperTest.class, SrmCoreServiceFacadeOrganisationsSecurityTest.class, OrganisationsMetamacServiceTest.class, DsdsMetamacServiceTest.class, CategoriesServiceTest.class,
-        CategoriesDto2DoMapperTest.class, CategoriesDo2DtoMapperTest.class, CodesMetamacServiceTest.class, CodesDo2DtoMapperTest.class, CodesDto2DoMapperTest.class})
+        CategoriesDto2DoMapperTest.class, CategoriesDo2DtoMapperTest.class, CodesMetamacServiceTest.class, CodesDo2DtoMapperTest.class, CodesDto2DoMapperTest.class,
+        DataStructureDefinitionDto2DoMapperTest.class})
 public class SrmSuite {
 }
