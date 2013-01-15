@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -32,6 +33,7 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
@@ -254,7 +256,9 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToVariables = new RelatedResourceListItem(VariableDS.REPLACE_TO_VARIABLES, getConstants().variableReplaceToVariables(), false);
         ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY_VARIABLE, getConstants().variableReplacedByVariable());
-        diffusionDescriptorsForm.setFields(replaceToVariables, replacedByVariable);
+        ViewTextItem validFrom = new ViewTextItem(VariableDS.VALID_FROM, getConstants().variableValidFrom());
+        ViewTextItem validTo = new ViewTextItem(VariableDS.VALID_TO, getConstants().variableValidTo());
+        diffusionDescriptorsForm.setFields(replaceToVariables, replacedByVariable, validFrom, validTo);
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
@@ -282,7 +286,9 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToVariables = createReplaceToVariablesItem();
         ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY_VARIABLE, getConstants().variableReplacedByVariable());
-        diffusionDescriptorsEditionForm.setFields(replaceToVariables, replacedByVariable);
+        CustomDateItem validFrom = new CustomDateItem(VariableDS.VALID_FROM, getConstants().variableValidFrom());
+        CustomDateItem validTo = new CustomDateItem(VariableDS.VALID_TO, getConstants().variableValidTo());
+        diffusionDescriptorsEditionForm.setFields(replaceToVariables, replacedByVariable, validFrom, validTo);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
@@ -306,6 +312,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // Diffusion descriptors
         ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
         diffusionDescriptorsForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
+        diffusionDescriptorsForm.setValue(VariableDS.VALID_FROM, DateUtils.getFormattedDate(variableDto.getValidFrom()));
+        diffusionDescriptorsForm.setValue(VariableDS.VALID_TO, DateUtils.getFormattedDate(variableDto.getValidTo()));
     }
 
     public void setVariableEditionMode(VariableDto variableDto) {
@@ -321,6 +329,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // Diffusion descriptors
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
         diffusionDescriptorsEditionForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
+        diffusionDescriptorsEditionForm.setValue(VariableDS.VALID_FROM, variableDto.getValidFrom());
+        diffusionDescriptorsEditionForm.setValue(VariableDS.VALID_TO, variableDto.getValidTo());
     }
 
     public VariableDto getVariableDto() {
@@ -336,6 +346,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // Diffusion descriptors
         variableDto.getReplaceToVariables().clear();
         variableDto.getReplaceToVariables().addAll(((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).getSelectedRelatedResources());
+        variableDto.setValidFrom(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableDS.VALID_FROM)).getValueAsDate());
+        variableDto.setValidTo(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableDS.VALID_TO)).getValueAsDate());
 
         return variableDto;
     }

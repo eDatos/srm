@@ -15,6 +15,8 @@ public class VariableDS extends DataSource {
     // Diffusion descriptors
     public static final String REPLACE_TO_VARIABLES = "var-replace-to";
     public static final String REPLACED_BY_VARIABLE = "var-replaced-by";
+    public static final String VALID_FROM           = "var-valid-from";
+    public static final String VALID_TO             = "var-valid-to";
 
     public static final String DTO                  = "var-dto";
 
