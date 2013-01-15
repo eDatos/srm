@@ -139,6 +139,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
             }
             @Override
             public void onWaitSuccess(SaveVariableElementResult result) {
+                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getMessageList(getMessages().variableElementSaved()), MessageTypeEnum.SUCCESS);
                 VariableElementDto variableElementDto = result.getSavedVariableElementDto();
                 getView().setVariableElement(variableElementDto);
 

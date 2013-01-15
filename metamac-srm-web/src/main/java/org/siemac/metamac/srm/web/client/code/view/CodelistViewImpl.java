@@ -26,6 +26,7 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -93,6 +94,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private CodelistVersionsSectionStack        versionsSectionStack;
 
     private SearchRelatedResourceWindow         searchFamilyWindow;
+    private SearchRelatedResourceWindow         searchVariableWindow;
     private SearchMultipleRelatedResourceWindow searchReplaceToCodelistsWindow;
 
     private CodelistMetamacDto                  codelistDto;
@@ -341,6 +343,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
+    public void setVariables(GetVariablesResult result) {
+        if (searchVariableWindow != null) {
+            searchVariableWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableDtos(result.getVariables()));
+            searchVariableWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
+        }
+    }
+
+    @Override
     public void setCodelistsToReplace(List<RelatedResourceDto> codelists, int firstResult, int totalResults) {
         if (searchReplaceToCodelistsWindow != null) {
             searchReplaceToCodelistsWindow.setSourceRelatedResources(codelists);
@@ -368,7 +378,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem isRecommended = new ViewTextItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
         ViewTextItem family = new ViewTextItem(CodelistDS.FAMILY_VIEW, getConstants().codelistFamily());
-        contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family);
+        ViewTextItem variable = new ViewTextItem(CodelistDS.VARIABLE_VIEW, getConstants().variable());
+        contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, variable);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -460,7 +471,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem family = new ViewTextItem(CodelistDS.FAMILY, getConstants().codelistFamily());
         family.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem familyView = createFamilyItem(CodelistDS.FAMILY_VIEW, getConstants().codelistFamily());
-        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, familyView);
+        ViewTextItem variable = new ViewTextItem(CodelistDS.VARIABLE, getConstants().variable());
+        variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem variableView = createVariableItem(CodelistDS.VARIABLE_VIEW, getConstants().variable());
+        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, familyView, variable, variableView);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -541,6 +555,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsForm.setValue(CodelistDS.FAMILY_VIEW, codelistDto.getFamily() != null
                 ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getFamily())
                 : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CodelistDS.VARIABLE_VIEW,
+                codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
 
         // Production descriptors
         productionDescriptorsForm.setValue(CodelistDS.MAINTAINER, codelistDto.getMaintainer() != null ? codelistDto.getMaintainer().getCode() : StringUtils.EMPTY);
@@ -598,6 +614,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY_VIEW,
                 codelistDto.getFamily() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getFamily()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY, codelistDto.getFamily() != null ? codelistDto.getFamily().getUrn() : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE_VIEW,
+                codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE, codelistDto.getVariable() != null ? codelistDto.getVariable().getUrn() : StringUtils.EMPTY);
 
         // Production descriptors
         productionDescriptorsEditionForm.setValue(CodelistDS.MAINTAINER, codelistDto.getMaintainer() != null ? codelistDto.getMaintainer().getCode() : StringUtils.EMPTY);
@@ -648,6 +667,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 .getValueAsString(CodelistDS.IS_RECOMMENDED))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(CodelistDS.IS_RECOMMENDED)) : false);
         codelistDto.setFamily(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(CodelistDS.FAMILY)) ? RelatedResourceUtils.createRelatedResourceDto(contentDescriptorsEditionForm
                 .getValueAsString(CodelistDS.FAMILY)) : null);
+        codelistDto.setVariable(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(CodelistDS.VARIABLE)) ? RelatedResourceUtils.createRelatedResourceDto(contentDescriptorsEditionForm
+                .getValueAsString(CodelistDS.VARIABLE)) : null);
 
         // Diffusion descriptors
         codelistDto.getReplaceToCodelists().clear();
@@ -754,5 +775,50 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             }
         });
         return replaceToItem;
+    }
+
+    private SearchViewTextItem createVariableItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        SearchViewTextItem variableItem = new SearchViewTextItem(name, title);
+        variableItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+
+                searchVariableWindow = new SearchRelatedResourceWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, searchVariableWindow.getRelatedResourceCriteria());
+                    }
+                });
+
+                // Load variables (to populate the selection window)
+                getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, null);
+
+                searchVariableWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchVariableWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria);
+                    }
+                });
+                searchVariableWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        RelatedResourceDto selectedVariable = searchVariableWindow.getSelectedRelatedResource();
+                        searchVariableWindow.markForDestroy();
+                        // Set selected variable in form
+                        contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
+                        contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE_VIEW,
+                                selectedVariable != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariable) : null);
+                    }
+                });
+            }
+        });
+        return variableItem;
     }
 }

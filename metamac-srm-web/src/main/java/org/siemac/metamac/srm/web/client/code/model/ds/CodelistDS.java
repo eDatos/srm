@@ -11,5 +11,6 @@ public class CodelistDS extends ItemSchemeDS {
     public static final String FAMILY_VIEW          = "cl-family-view";
     public static final String REPLACED_BY_CODELIST = "cl-replaced-by";
     public static final String REPLACE_TO_CODELISTS = "cl-replaced-to";
-
+    public static final String VARIABLE             = "cl-variable";
+    public static final String VARIABLE_VIEW        = "cl-variable-view";
 }

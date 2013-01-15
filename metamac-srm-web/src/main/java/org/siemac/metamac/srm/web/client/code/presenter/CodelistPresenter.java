@@ -36,6 +36,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
@@ -100,6 +102,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setCodes(List<ItemHierarchyDto> codeDtos);
 
         void setFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
+        void setVariables(GetVariablesResult result);
         void setCodelistsToReplace(List<RelatedResourceDto> codelists, int firstResult, int totalResults);
     }
 
@@ -416,6 +419,21 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(GetCodelistsResult result) {
                 List<RelatedResourceDto> codelists = RelatedResourceUtils.getRelatedResourceDtosFromCodelistDtos(result.getCodelists());
                 getView().setCodelistsToReplace(codelists, result.getFirstResultOut(), result.getTotalResults());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariables(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariablesResult result) {
+                getView().setVariables(result);
             }
         });
     }

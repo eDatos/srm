@@ -15,6 +15,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
 
     void retrieveFamilies(int firstResult, int maxResults, String criteria);
     void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria);
+    void retrieveVariables(int firstResult, int maxResults, String criteria);
 
     // Life cycle
 
