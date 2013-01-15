@@ -83,5 +83,13 @@ Application DtosMetamacCodeDomain {
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}
+		
+		"Dto for CodelistOrderVisualisation"		
+		DataTransferObject CodelistOrderVisualisationDto {
+			"Code"
+			String identifier nullable;
+			"Name"
+			- @InternationalStringDto name nullable;
+		}
 	}
 }
