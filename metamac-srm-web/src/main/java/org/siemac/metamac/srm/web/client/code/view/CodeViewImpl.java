@@ -15,25 +15,36 @@ import org.siemac.metamac.srm.web.client.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements CodePresenter.CodeView {
@@ -54,6 +65,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     private GroupDynamicForm            contentDescriptorsEditionForm;
     private GroupDynamicForm            commentsEditionForm;
     private AnnotationsPanel            annotationsEditionPanel;
+
+    private SearchRelatedResourceWindow searchVariableElementWindow;
 
     private CodeMetamacDto              codeDto;
 
@@ -156,7 +169,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        contentDescriptorsForm.setFields(description);
+        ViewTextItem variableElement = new ViewTextItem(CodeDS.VARIABLE_ELEMENT_VIEW, getConstants().variableElement());
+        contentDescriptorsForm.setFields(description, variableElement);
 
         // Comments
         commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
@@ -188,7 +202,10 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        contentDescriptorsEditionForm.setFields(description);
+        ViewTextItem variableElement = new ViewTextItem(CodeDS.VARIABLE_ELEMENT, getConstants().variableElement());
+        variableElement.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem variableElementView = createVariableElementItem(CodeDS.VARIABLE_ELEMENT_VIEW, getConstants().variableElement());
+        contentDescriptorsEditionForm.setFields(description, variableElement, variableElementView);
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
@@ -211,6 +228,14 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         // Security
         mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
+    }
+
+    @Override
+    public void setVariableElements(GetVariableElementsResult result) {
+        if (searchVariableElementWindow != null) {
+            searchVariableElementWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableElementDtos(result.getVariableElements()));
+            searchVariableElementWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
+        }
     }
 
     @Override
@@ -241,6 +266,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         // Content descriptors
         contentDescriptorsForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));
+        contentDescriptorsForm.setValue(CodeDS.VARIABLE_ELEMENT_VIEW,
+                codeDto.getVariableElement() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codeDto.getVariableElement()) : StringUtils.EMPTY);
         contentDescriptorsForm.markForRedraw();
 
         // Comments
@@ -261,6 +288,9 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(CodeDS.VARIABLE_ELEMENT_VIEW,
+                codeDto.getVariableElement() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codeDto.getVariableElement()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CodeDS.VARIABLE_ELEMENT, codeDto.getVariableElement() != null ? codeDto.getVariableElement().getUrn() : StringUtils.EMPTY);
 
         // Comments
         commentsEditionForm.setValue(CodeDS.COMMENTS, RecordUtils.getInternationalStringRecord(codeDto.getComment()));
@@ -277,6 +307,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         // Content descriptors
         codeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CodeDS.DESCRIPTION));
+        codeDto.setVariableElement(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(CodeDS.VARIABLE_ELEMENT)) ? RelatedResourceUtils
+                .createRelatedResourceDto(contentDescriptorsEditionForm.getValueAsString(CodeDS.VARIABLE_ELEMENT)) : null);
 
         // Comments
         codeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CodeDS.COMMENTS));
@@ -290,5 +322,50 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
     private boolean validateEditionForms() {
         return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false);
+    }
+
+    private SearchViewTextItem createVariableElementItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        SearchViewTextItem variableElementItem = new SearchViewTextItem(name, title);
+        variableElementItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+
+                searchVariableElementWindow = new SearchRelatedResourceWindow(getConstants().variableElementSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveVariableElements(firstResult, maxResults, searchVariableElementWindow.getRelatedResourceCriteria());
+                    }
+                });
+
+                // Load variables (to populate the selection window)
+                getUiHandlers().retrieveVariableElements(FIRST_RESULST, MAX_RESULTS, null);
+
+                searchVariableElementWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchVariableElementWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveVariableElements(firstResult, maxResults, criteria);
+                    }
+                });
+                searchVariableElementWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        RelatedResourceDto selectedVariableElement = searchVariableElementWindow.getSelectedRelatedResource();
+                        searchVariableElementWindow.markForDestroy();
+                        // Set selected variable element in form
+                        contentDescriptorsEditionForm.setValue(CodeDS.VARIABLE_ELEMENT, selectedVariableElement != null ? selectedVariableElement.getUrn() : null);
+                        contentDescriptorsEditionForm.setValue(CodeDS.VARIABLE_ELEMENT_VIEW,
+                                selectedVariableElement != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariableElement) : null);
+                    }
+                });
+            }
+        });
+        return variableElementItem;
     }
 }

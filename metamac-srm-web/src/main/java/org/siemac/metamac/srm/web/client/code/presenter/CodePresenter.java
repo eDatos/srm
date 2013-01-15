@@ -26,6 +26,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -79,6 +81,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
         void setCode(CodeMetamacDto codeDto);
         void setCodes(CodelistMetamacDto codelistMetamacDto, List<ItemHierarchyDto> codes);
+        void setVariableElements(GetVariableElementsResult result);
     }
 
     @ContentSlot
@@ -201,6 +204,21 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
                 } else {
                     goToCodelist(itemDto.getItemSchemeVersionUrn());
                 }
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariableElements(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariableElementsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableElementsResult result) {
+                getView().setVariableElements(result);
             }
         });
     }

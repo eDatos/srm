@@ -7,6 +7,7 @@ import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 
@@ -119,6 +120,24 @@ public class RelatedResourceUtils {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
         for (VariableFamilyDto family : variableFamilyDtos) {
             relatedResourceDtos.add(getRelatedResourceDtoFromVariableFamilyDto(family));
+        }
+        return relatedResourceDtos;
+    }
+
+    // Variable elements
+
+    public static RelatedResourceDto getRelatedResourceDtoFromVariableElementDto(VariableElementDto variableElement) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(variableElement.getCode());
+        relatedResourceDto.setTitle(variableElement.getName());
+        relatedResourceDto.setUrn(variableElement.getUrn());
+        return relatedResourceDto;
+    }
+
+    public static List<RelatedResourceDto> getRelatedResourceDtosFromVariableElementDtos(List<VariableElementDto> variableElementDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
+        for (VariableElementDto element : variableElementDtos) {
+            relatedResourceDtos.add(getRelatedResourceDtoFromVariableElementDto(element));
         }
         return relatedResourceDtos;
     }
