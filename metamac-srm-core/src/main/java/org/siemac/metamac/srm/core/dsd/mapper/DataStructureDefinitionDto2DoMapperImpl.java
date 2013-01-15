@@ -1,17 +1,28 @@
 package org.siemac.metamac.srm.core.dsd.mapper;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
@@ -44,13 +55,13 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
     @Override
     public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionMetamacDto source) throws MetamacException {
-        return dataStructureDefinitionDtoToDataStructureDefinitionPrivate((DataStructureDefinitionDto) source);
+        return dataStructureDefinitionDtoToDataStructureDefinitionPrivate(source);
     }
 
     @Override
     public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionExtendDto source) throws MetamacException {
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dataStructureDefinitionDtoToDataStructureDefinitionPrivate((DataStructureDefinitionDto) source);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dataStructureDefinitionDtoToDataStructureDefinitionPrivate(source);
 
         // Add Grouping
         for (ComponentListDto componentListDto : source.getGrouping()) {
@@ -83,8 +94,99 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         }
 
         // Modifiable attributes
+        if (source instanceof DataStructureDefinitionMetamacDto) {
+            DataStructureDefinitionMetamacDto sourceMetamacDto = (DataStructureDefinitionMetamacDto) source;
+            // Metamac attributes
+            target.setAutoOpen(sourceMetamacDto.getAutoOpen());
+            target.setShowDecimals(sourceMetamacDto.getShowDecimals());
+            headingProcess(sourceMetamacDto.getHeadingDimensions(), target);
+            stubProcess(sourceMetamacDto.getStubDimensions(), target);
+            showDecimalsPrecisionsProcess(sourceMetamacDto.getShowDecimalsPrecisions(), target);
+        }
+
         dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(source, target);
 
         return target;
+    }
+
+    private DataStructureDefinitionVersionMetamac headingProcess(List<RelatedResourceDto> sourceList, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac)
+            throws MetamacException {
+
+        // HashMap of actuals dimensions order
+        Map<String, DimensionOrder> dimensionOrderMap = new HashMap<String, DimensionOrder>();
+        for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
+            dimensionOrderMap.put(dimensionOrder.getDimension().getUrn(), dimensionOrder);
+        }
+
+        dataStructureDefinitionVersionMetamac.getHeadingDimensions().clear();
+
+        for (int i = 0; i < sourceList.size(); i++) {
+            dataStructureDefinitionVersionMetamac
+                    .addHeadingDimension(relatedResourceDtoToDimensionOrder(sourceList, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_HEADING, dimensionOrderMap, i));
+        }
+
+        return dataStructureDefinitionVersionMetamac;
+    }
+
+    private DataStructureDefinitionVersionMetamac stubProcess(List<RelatedResourceDto> sourceList, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+
+        // HashMap of actuals dimensions order
+        Map<String, DimensionOrder> dimensionOrderMap = new HashMap<String, DimensionOrder>();
+        for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getStubDimensions()) {
+            dimensionOrderMap.put(dimensionOrder.getDimension().getUrn(), dimensionOrder);
+        }
+
+        dataStructureDefinitionVersionMetamac.getStubDimensions().clear();
+
+        for (int i = 0; i < sourceList.size(); i++) {
+            dataStructureDefinitionVersionMetamac.addStubDimension(relatedResourceDtoToDimensionOrder(sourceList, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_STUB, dimensionOrderMap, i));
+        }
+
+        return dataStructureDefinitionVersionMetamac;
+    }
+
+    private DimensionOrder relatedResourceDtoToDimensionOrder(List<RelatedResourceDto> sourceList, String metadataName, Map<String, DimensionOrder> dimensionOrderMap, int indexOrder)
+            throws MetamacException {
+        DimensionOrder dimensionOrder;
+        if (dimensionOrderMap.containsKey(sourceList.get(indexOrder).getUrn())) {
+            dimensionOrder = dimensionOrderMap.get(sourceList.get(indexOrder).getUrn());
+            if (indexOrder + 1 != dimensionOrder.getDimOrder()) {
+                dimensionOrder.setDimOrder(indexOrder + 1);
+            }
+        } else {
+            DimensionComponent dimension = (DimensionComponent) dto2DoMapperSdmxSrm.relatedResourceDtoToEntity(sourceList.get(indexOrder), metadataName);
+            dimensionOrder = new DimensionOrder();
+            dimensionOrder.setDimension(dimension);
+            dimensionOrder.setDimOrder(indexOrder + 1);
+        }
+        return dimensionOrder;
+    }
+
+    private DataStructureDefinitionVersionMetamac showDecimalsPrecisionsProcess(List<MeasureDimensionPrecisionDto> sourceList,
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+
+        // HashMap of actuals measure dimensions precision
+        Map<String, MeasureDimensionPrecision> measureDimPrecisionMap = new HashMap<String, MeasureDimensionPrecision>();
+        for (MeasureDimensionPrecision measureDimensionPrecision : dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions()) {
+            measureDimPrecisionMap.put(measureDimensionPrecision.getCode().getNameableArtefact().getUrn(), measureDimensionPrecision);
+        }
+
+        dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().clear();
+
+        for (int i = 0; i < sourceList.size(); i++) {
+            MeasureDimensionPrecision measureDimensionPrecision;
+            if (measureDimPrecisionMap.containsKey(sourceList.get(i).getUrn())) {
+                measureDimensionPrecision = measureDimPrecisionMap.get(sourceList.get(i).getUrn());
+                measureDimensionPrecision.setShowDecimalPrecision(sourceList.get(i).getShowDecimalPrecision());
+            } else {
+                CodeMetamac code = (CodeMetamac) dto2DoMapperSdmxSrm.relatedResourceDtoToEntity(sourceList.get(i), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_SHOW_DEC_PREC);
+                measureDimensionPrecision = new MeasureDimensionPrecision();
+                measureDimensionPrecision.setCode(code);
+                measureDimensionPrecision.setShowDecimalPrecision(sourceList.get(i).getShowDecimalPrecision());
+            }
+            dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(measureDimensionPrecision);
+        }
+
+        return dataStructureDefinitionVersionMetamac;
     }
 }
