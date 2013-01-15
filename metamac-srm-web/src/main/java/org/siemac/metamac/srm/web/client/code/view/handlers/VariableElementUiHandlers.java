@@ -7,4 +7,5 @@ import com.gwtplatform.mvp.client.UiHandlers;
 public interface VariableElementUiHandlers extends UiHandlers {
 
     void saveVariableElement(VariableElementDto variableElementDto);
+    void retrieveVariables(int firstResult, int maxResults, final String criteria);
 }

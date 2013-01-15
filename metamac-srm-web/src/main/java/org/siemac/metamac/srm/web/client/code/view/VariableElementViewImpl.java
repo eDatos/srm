@@ -8,22 +8,35 @@ import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableElementPresenter;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableElementUiHandlers;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementUiHandlers> implements VariableElementPresenter.VariableElementView {
@@ -38,6 +51,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     // Edition forms
     private GroupDynamicForm            identifiersEditionForm;
     private GroupDynamicForm            diffusionDescriptorsEditionForm;
+
+    private SearchRelatedResourceWindow searchVariableWindow;
 
     private VariableElementDto          variableElementDto;
 
@@ -118,6 +133,14 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         setVariableElementEditionMode(variableElementDto);
     }
 
+    @Override
+    public void setVariables(GetVariablesResult result) {
+        if (searchVariableWindow != null) {
+            searchVariableWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableDtos(result.getVariables()));
+            searchVariableWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
+        }
+    }
+
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
@@ -129,7 +152,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
-        // TODO
+        ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE_VIEW, getConstants().variable());
+        diffusionDescriptorsForm.setFields(variable);
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
@@ -143,13 +167,16 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         MultiLanguageTextItem name = new MultiLanguageTextItem(VariableElementDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
-        name.setRequired(true);
+        shortName.setRequired(true);
         ViewTextItem urn = new ViewTextItem(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
         identifiersEditionForm.setFields(code, name, shortName, urn);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
-        // TODO
+        ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE, getConstants().variable());
+        variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem variableView = createVariableItem();
+        diffusionDescriptorsEditionForm.setFields(variable, variableView);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
@@ -167,7 +194,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
         // Diffusion descriptors
-        // TODO
+        diffusionDescriptorsForm.setValue(VariableElementDS.VARIABLE_VIEW, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
     }
 
     public void setVariableElementEditionMode(VariableElementDto variableElementDto) {
@@ -178,7 +205,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersEditionForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
         // Diffusion descriptors
-        // TODO
+        diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE_VIEW, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
+        diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, variableElementDto.getVariable() != null ? variableElementDto.getVariable().getUrn() : StringUtils.EMPTY);
     }
 
     public VariableElementDto getVariableElementDto() {
@@ -188,8 +216,64 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         variableElementDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.SHORT_NAME));
 
         // Diffusion descriptors
-        // TODO
+        variableElementDto.setVariable(RelatedResourceUtils.createRelatedResourceDto(diffusionDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE)));
 
         return variableElementDto;
     }
+
+    private SearchViewTextItem createVariableItem() {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+
+        SearchViewTextItem variableItem = new SearchViewTextItem(VariableElementDS.VARIABLE_VIEW, getConstants().variable());
+        variableItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                searchVariableWindow = new SearchRelatedResourceWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, searchVariableWindow.getRelatedResourceCriteria());
+                    }
+                });
+
+                // Load variables (to populate the selection window)
+                getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, null);
+
+                searchVariableWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchVariableWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria);
+                    }
+                });
+
+                searchVariableWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        RelatedResourceDto selectedVariable = searchVariableWindow.getSelectedRelatedResource();
+                        searchVariableWindow.markForDestroy();
+                        // Set selected family in form
+                        diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
+                        diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE_VIEW,
+                                selectedVariable != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariable) : null);
+                    }
+                });
+            }
+        });
+        // Set required with a customValidator
+        CustomValidator customValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                return !StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE));
+            }
+        };
+        variableItem.setValidators(customValidator);
+        variableItem.setTitleStyle("staticFormItemTitle");
+        return variableItem;
+    };
 }
