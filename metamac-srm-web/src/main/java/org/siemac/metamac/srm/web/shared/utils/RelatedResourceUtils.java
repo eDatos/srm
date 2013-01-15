@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
@@ -153,7 +154,11 @@ public class RelatedResourceUtils {
     }
 
     public static RelatedResourceDto createRelatedResourceDto(String urn) {
-        return createRelatedResourceDto(null, urn);
+        if (!StringUtils.isBlank(urn)) {
+            return createRelatedResourceDto(null, urn);
+        } else {
+            return null;
+        }
     }
 
     public static List<String> getUrnsFromRelatedResourceDtos(List<RelatedResourceDto> relatedResourceDtos) {

@@ -13,4 +13,6 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
     void retrieveConceptTypes();
 
     void retrieveCodeLists(String conceptUrn);
+
+    void retrieveVariables(int firstResult, int maxResults, String criteria);
 }
