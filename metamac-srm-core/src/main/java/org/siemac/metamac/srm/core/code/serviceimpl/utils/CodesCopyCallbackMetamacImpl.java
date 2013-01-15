@@ -31,6 +31,8 @@ public class CodesCopyCallbackMetamacImpl implements CodesCopyCallback {
         target.setAccessType(source.getAccessType());
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        target.setVariable(source.getVariable());
+        target.setFamily(source.getFamily());
         // note: replaceBy and replaceTo metadata do not must be copied, because they are related to concrete versions of codelist
     }
 
