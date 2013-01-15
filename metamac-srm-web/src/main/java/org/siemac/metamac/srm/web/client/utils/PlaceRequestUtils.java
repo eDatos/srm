@@ -272,9 +272,9 @@ public class PlaceRequestUtils {
         return placeRequestHierarchy;
     }
 
-    public static List<PlaceRequest> buildAbsoluteVariablePlaceRequest(String urn) {
+    public static List<PlaceRequest> buildAbsoluteVariablePlaceRequest(String code) {
         List<PlaceRequest> placeRequests = buildAbsoluteVariableListPlaceRequest();
-        PlaceRequest variablePlace = PlaceRequestUtils.buildRelativeVariablePlaceRequest(urn);
+        PlaceRequest variablePlace = PlaceRequestUtils.buildRelativeVariablePlaceRequest(code);
         placeRequests.add(variablePlace);
         return placeRequests;
     }
@@ -285,9 +285,15 @@ public class PlaceRequestUtils {
         return getParamFromUrl(placeManager, NameTokens.variableElementPage, PlaceRequestParams.variableElementParamId);
     }
 
-    public static PlaceRequest buildRelativeVariableElementPlaceRequest(String variableCode) {
-        PlaceRequest placeRequest = new PlaceRequest(NameTokens.variableElementPage).with(PlaceRequestParams.variableElementParamId, variableCode);
+    public static PlaceRequest buildRelativeVariableElementPlaceRequest(String variableElementCode) {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.variableElementPage).with(PlaceRequestParams.variableElementParamId, variableElementCode);
         return placeRequest;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteVariableElementPlaceRequest(String variableCode, String variableElementCode) {
+        List<PlaceRequest> placeRequestHierarchy = buildAbsoluteVariablePlaceRequest(variableCode);
+        placeRequestHierarchy.add(buildRelativeVariableElementPlaceRequest(variableElementCode));
+        return placeRequestHierarchy;
     }
 
     // ---------------------------------------------------------------------------

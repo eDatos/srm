@@ -6,6 +6,6 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface VariableElementUiHandlers extends UiHandlers {
 
-    void saveVariableElement(VariableElementDto variableElementDto);
+    void saveVariableElement(VariableElementDto variableElementDto, boolean updatePlaceRequestHierarchy);
     void retrieveVariables(int firstResult, int maxResults, final String criteria);
 }

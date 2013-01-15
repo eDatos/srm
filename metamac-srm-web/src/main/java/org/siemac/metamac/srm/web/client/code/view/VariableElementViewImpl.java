@@ -95,7 +95,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
             @Override
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
-                    getUiHandlers().saveVariableElement(getVariableElementDto());
+                    saveVariableElement();
                 }
             }
         });
@@ -209,16 +209,20 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, variableElementDto.getVariable() != null ? variableElementDto.getVariable().getUrn() : StringUtils.EMPTY);
     }
 
-    public VariableElementDto getVariableElementDto() {
+    public void saveVariableElement() {
         // Identifiers
         variableElementDto.setCode(identifiersEditionForm.getValueAsString(VariableElementDS.CODE));
         variableElementDto.setName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.NAME));
         variableElementDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.SHORT_NAME));
 
         // Diffusion descriptors
-        variableElementDto.setVariable(RelatedResourceUtils.createRelatedResourceDto(diffusionDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE)));
+        // It is necessary to update the place request hierarchy if the variable has been changed! If not, the URL would be incorrect.
+        String oldVariableUrn = variableElementDto.getVariable().getUrn();
+        String newVariableUrn = diffusionDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE);
+        boolean updatePlaceRequestHierarchy = !StringUtils.equals(oldVariableUrn, newVariableUrn);
+        variableElementDto.setVariable(RelatedResourceUtils.createRelatedResourceDto(newVariableUrn));
 
-        return variableElementDto;
+        getUiHandlers().saveVariableElement(variableElementDto, updatePlaceRequestHierarchy);
     }
 
     private SearchViewTextItem createVariableItem() {

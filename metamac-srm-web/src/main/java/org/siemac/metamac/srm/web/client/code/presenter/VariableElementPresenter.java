@@ -130,7 +130,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
     }
 
     @Override
-    public void saveVariableElement(VariableElementDto variableElementDto) {
+    public void saveVariableElement(VariableElementDto variableElementDto, final boolean updatePlaceRequestHierarchy) {
         dispatcher.execute(new SaveVariableElementAction(variableElementDto), new WaitingAsyncCallback<SaveVariableElementResult>() {
 
             @Override
@@ -139,7 +139,16 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
             }
             @Override
             public void onWaitSuccess(SaveVariableElementResult result) {
-                getView().setVariableElement(result.getSavedVariableElementDto());
+                VariableElementDto variableElementDto = result.getSavedVariableElementDto();
+                getView().setVariableElement(variableElementDto);
+
+                if (updatePlaceRequestHierarchy) {
+                    placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariableElementPlaceRequest(variableElementDto.getVariable().getCode(), variableElementDto.getCode()));
+                } else {
+                    // Update URL
+                    PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeVariablePlaceRequest(result.getSavedVariableElementDto().getCode());
+                    placeManager.updateHistory(placeRequest, true);
+                }
             }
         });
     }
