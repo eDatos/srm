@@ -6,6 +6,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -19,6 +20,7 @@ import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.client.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
+import org.siemac.metamac.srm.web.client.code.widgets.VersionCodelistWindow;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
@@ -245,7 +247,23 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         if (versionWindow.validateForm()) {
-                            getUiHandlers().versioning(codelistDto.getUrn(), versionWindow.getSelectedVersion());
+                            final VersionTypeEnum versionType = versionWindow.getSelectedVersion();
+
+                            VersionCodelistWindow versionCodelistWindow = new VersionCodelistWindow();
+                            versionCodelistWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+                                @Override
+                                public void onClick(ClickEvent event) {
+                                    getUiHandlers().versioning(codelistDto.getUrn(), versionType, true);
+                                }
+                            });
+                            versionCodelistWindow.getNoButton().addClickHandler(new ClickHandler() {
+
+                                @Override
+                                public void onClick(ClickEvent event) {
+                                    getUiHandlers().versioning(codelistDto.getUrn(), versionType, false);
+                                }
+                            });
                             versionWindow.destroy();
                         }
                     }

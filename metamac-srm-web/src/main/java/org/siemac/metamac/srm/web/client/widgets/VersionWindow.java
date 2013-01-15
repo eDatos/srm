@@ -27,7 +27,7 @@ public class VersionWindow extends CustomWindow {
         versionItem.setRequired(true);
         versionItem.setValueMap(CommonUtils.getVersionTypeHashMap());
 
-        CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());
+        CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().acept());
 
         form = new CustomDynamicForm();
         form.setFields(versionItem, saveItem);

@@ -367,8 +367,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void versioning(String urn, VersionTypeEnum versionType) {
-        dispatcher.execute(new VersionCodelistAction(urn, versionType), new WaitingAsyncCallback<VersionCodelistResult>() {
+    public void versioning(String urn, VersionTypeEnum versionType, boolean versionCodes) {
+        dispatcher.execute(new VersionCodelistAction(urn, versionType, versionCodes), new WaitingAsyncCallback<VersionCodelistResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

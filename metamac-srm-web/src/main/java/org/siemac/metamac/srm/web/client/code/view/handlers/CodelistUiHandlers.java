@@ -23,5 +23,5 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void rejectValidation(String urn, ProcStatusEnum currentProcStatus);
     void publishInternally(String urn, ProcStatusEnum currentProcStatus);
     void publishExternally(String urn, ProcStatusEnum currentProcStatus);
-    void versioning(String urn, VersionTypeEnum versionType);
+    void versioning(String urn, VersionTypeEnum versionType, boolean versionCodes);
 }

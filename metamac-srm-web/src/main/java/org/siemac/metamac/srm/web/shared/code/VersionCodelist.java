@@ -16,7 +16,9 @@ public class VersionCodelist {
     @In(2)
     VersionTypeEnum    versionType;
 
+    @In(3)
+    Boolean            versionCodes;
+
     @Out(1)
     CodelistMetamacDto codelistMetamacDto;
-
 }
