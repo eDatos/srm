@@ -3,11 +3,11 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.MaintainerUtils;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
@@ -77,8 +77,8 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         OrganisationSchemeMetamacDto organisationSchemeDto = new OrganisationSchemeMetamacDto();
 
         // TODO agency
-        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", MaintainerUtils.getCurrentMaintainer(), TypeExternalArtefactsEnum.AGENCY);
-        organisationSchemeDto.setMaintainer(agency);
+        RelatedResourceDto maintainer = RelatedResourceUtils.createMaintainerAsRelatedResourceDto("SDMX_AGENCY", MaintainerUtils.getCurrentMaintainer());
+        organisationSchemeDto.setMaintainer(maintainer);
 
         organisationSchemeDto.setType(OrganisationSchemeTypeEnum.valueOf(form.getValueAsString(OrganisationSchemeDS.TYPE)));
         organisationSchemeDto.setCode(form.getItem(OrganisationSchemeDS.CODE).isVisible() ? form.getValueAsString(OrganisationSchemeDS.CODE) : null);

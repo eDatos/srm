@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -566,8 +567,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         conceptDto.setDerivation((InternationalStringDto) productionDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
 
         // Relation between concepts
-        conceptDto.setConceptExtends(StringUtils.isBlank(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)) ? null : RelatedResourceUtils
-                .createRelatedResourceDto(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)));
+        conceptDto.setConceptExtends(StringUtils.isBlank(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)) ? null : RelatedResourceUtils.createRelatedResourceDto(
+                TypeExternalArtefactsEnum.CONCEPT, relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)));
         // Related concepts get in getRelatedConcepts method
 
         // Legal acts

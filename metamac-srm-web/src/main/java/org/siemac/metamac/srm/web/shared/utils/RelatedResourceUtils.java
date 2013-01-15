@@ -15,6 +15,15 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 public class RelatedResourceUtils {
 
     //
+    // ORGANISATIONS
+    //
+
+    public static RelatedResourceDto createMaintainerAsRelatedResourceDto(String code, String urn) {
+        RelatedResourceDto maintainer = new RelatedResourceDto(code, urn, TypeExternalArtefactsEnum.AGENCY);
+        return maintainer;
+    }
+
+    //
     // CONCEPTS
     //
 
@@ -118,10 +127,14 @@ public class RelatedResourceUtils {
     // GENERIC RELATED RESOURCES
     //
 
-    public static RelatedResourceDto createRelatedResourceDto(String urn) {
+    public static RelatedResourceDto createRelatedResourceDto(TypeExternalArtefactsEnum type, String urn) {
         RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
         relatedResourceDto.setUrn(urn);
         return relatedResourceDto;
+    }
+
+    public static RelatedResourceDto createRelatedResourceDto(String urn) {
+        return createRelatedResourceDto(null, urn);
     }
 
     public static List<String> getUrnsFromRelatedResourceDtos(List<RelatedResourceDto> relatedResourceDtos) {

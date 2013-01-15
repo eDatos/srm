@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.utils.MaintainerUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -131,8 +131,8 @@ public class NewConceptSchemeWindow extends CustomWindow {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
 
         // TODO agency
-        RelatedResourceDto agency = new RelatedResourceDto("SDMX_AGENCY", MaintainerUtils.getCurrentMaintainer(), TypeExternalArtefactsEnum.AGENCY);
-        conceptSchemeDto.setMaintainer(agency);
+        RelatedResourceDto maintainer = RelatedResourceUtils.createMaintainerAsRelatedResourceDto("SDMX_AGENCY", MaintainerUtils.getCurrentMaintainer());
+        conceptSchemeDto.setMaintainer(maintainer);
 
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));
         conceptSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptSchemeDS.NAME)));

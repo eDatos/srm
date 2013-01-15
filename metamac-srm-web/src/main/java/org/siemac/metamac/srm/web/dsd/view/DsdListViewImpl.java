@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -19,6 +18,7 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -296,8 +296,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         InternationalStringDto internationalName = InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString());
         dsd.setName(internationalName);
         // TODO Organization (MaintainerIdLogic)
-        RelatedResourceDto agency = new RelatedResourceDto("agency_CODE", MaintainerUtils.getCurrentMaintainer(), TypeExternalArtefactsEnum.AGENCY);
-        dsd.setMaintainer(agency);
+        RelatedResourceDto maintainer = RelatedResourceUtils.createMaintainerAsRelatedResourceDto("agency_CODE", MaintainerUtils.getCurrentMaintainer());
+        dsd.setMaintainer(maintainer);
         dsd.setFinalLogic(false);
         dsd.setIsExternalReference(false);
         return dsd;
