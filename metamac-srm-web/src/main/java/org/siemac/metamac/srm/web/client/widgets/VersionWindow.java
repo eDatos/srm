@@ -13,8 +13,8 @@ import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class VersionWindow extends CustomWindow {
 
-    private static final String FIELD_VERSION = "version-ind";
-    private static final String FIELD_SAVE    = "save-ind";
+    private static final String FIELD_VERSION = "version-scheme";
+    private static final String FIELD_ACCEPT  = "accept-item";
 
     private CustomDynamicForm   form;
 
@@ -27,10 +27,10 @@ public class VersionWindow extends CustomWindow {
         versionItem.setRequired(true);
         versionItem.setValueMap(CommonUtils.getVersionTypeHashMap());
 
-        CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().acept());
+        CustomButtonItem acceptButtonItem = new CustomButtonItem(FIELD_ACCEPT, MetamacWebCommon.getConstants().accept());
 
         form = new CustomDynamicForm();
-        form.setFields(versionItem, saveItem);
+        form.setFields(versionItem, acceptButtonItem);
 
         addItem(form);
         show();
@@ -46,7 +46,6 @@ public class VersionWindow extends CustomWindow {
     }
 
     public HasClickHandlers getSave() {
-        return form.getItem(FIELD_SAVE);
+        return form.getItem(FIELD_ACCEPT);
     }
-
 }
