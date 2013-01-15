@@ -14,9 +14,6 @@ Application DtosMetamacDsdDomain {
 
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
-
-			"Version to optimistic locking"
-			Long versionOptimisticLocking;
 			
 			"Visualisation metadata Auto Open"
 			Boolean autoOpen nullable;
@@ -31,7 +28,7 @@ Application DtosMetamacDsdDomain {
 			- List<@RelatedResourceDto> stubDimensions nullable;
 			
 			"Visualisation metadata Stub, dimensions list ordered"
-			- List<@MeasureDimensionPrecisionDto> showDecimalsPrecision nullable;
+			- List<@MeasureDimensionPrecisionDto> showDecimalsPrecisions nullable;
 			
 		}
 		

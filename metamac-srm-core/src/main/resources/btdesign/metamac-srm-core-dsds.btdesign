@@ -85,7 +85,7 @@ Application DsdsMetamac {
 			- Bag<@DimensionOrder> stubDimensions cascade="all-delete-orphan" fetch="lazy" inverse orderby="dimOrder asc" <-> dsdVersionStub;
 			
 			"Visualisation metadata Stub, dimensions list ordered"
-			- Bag<@MeasureDimensionPrecision> showDecimalsPrecision cascade="all-delete-orphan" inverse orderby="id asc" <-> dsdVersion;
+			- Bag<@MeasureDimensionPrecision> showDecimalsPrecisions cascade="all-delete-orphan" inverse orderby="id asc" <-> dsdVersion;
 			
 			Repository DataStructureDefinitionVersionMetamacRepository {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
@@ -125,7 +125,7 @@ Application DsdsMetamac {
 			Integer showDecimalPrecision;
 			
 			"DSD version"
-			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> showDecimalsPrecision;
+			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> showDecimalsPrecisions;
 		}
 
 	}
