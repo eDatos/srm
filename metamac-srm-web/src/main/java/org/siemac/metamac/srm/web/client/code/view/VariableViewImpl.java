@@ -253,7 +253,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToVariables = new RelatedResourceListItem(VariableDS.REPLACE_TO_VARIABLES, getConstants().variableReplaceToVariables(), false);
-        ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY, getConstants().variableReplacedByVariable());
+        ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY_VARIABLE, getConstants().variableReplacedByVariable());
         diffusionDescriptorsForm.setFields(replaceToVariables, replacedByVariable);
 
         mainFormLayout.addViewCanvas(identifiersForm);
@@ -281,7 +281,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToVariables = createReplaceToVariablesItem();
-        ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY, getConstants().variableReplacedByVariable());
+        ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY_VARIABLE, getConstants().variableReplacedByVariable());
         diffusionDescriptorsEditionForm.setFields(replaceToVariables, replacedByVariable);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
@@ -305,7 +305,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         // Diffusion descriptors
         ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
-        diffusionDescriptorsForm.setValue(VariableDS.REPLACED_BY, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
+        diffusionDescriptorsForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
     }
 
     public void setVariableEditionMode(VariableDto variableDto) {
@@ -320,7 +320,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         // Diffusion descriptors
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
-        diffusionDescriptorsEditionForm.setValue(VariableDS.REPLACED_BY, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
+        diffusionDescriptorsEditionForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
     }
 
     public VariableDto getVariableDto() {
