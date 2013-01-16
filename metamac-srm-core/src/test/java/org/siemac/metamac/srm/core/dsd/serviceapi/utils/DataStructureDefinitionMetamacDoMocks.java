@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.core.dsd.serviceapi.utils;
 
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
@@ -17,18 +16,6 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = new DataStructureDefinitionVersionMetamac();
 
         mockDataStructureDefinition(dataStructureDefinitionVersionMetamac, maintainer);
-
-        // Metamac
-        dataStructureDefinitionVersionMetamac.setAutoOpen(true);
-        dataStructureDefinitionVersionMetamac.setShowDecimals(2);
-
-        dataStructureDefinitionVersionMetamac.addHeadingDimension(mockDimensionOrder(1, mockDimension()));
-        dataStructureDefinitionVersionMetamac.addHeadingDimension(mockDimensionOrder(2, mockTimeDimension()));
-
-        dataStructureDefinitionVersionMetamac.addStubDimension(mockDimensionOrder(1, mockMeasureDimension()));
-
-        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(mockMeasureDimensionPrecision(5, CodesMetamacDoMocks.mockCode()));
-        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(mockMeasureDimensionPrecision(4, CodesMetamacDoMocks.mockCode()));
 
         return dataStructureDefinitionVersionMetamac;
     }

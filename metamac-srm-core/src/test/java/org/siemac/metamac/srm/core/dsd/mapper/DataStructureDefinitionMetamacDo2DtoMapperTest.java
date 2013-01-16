@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.dsd.mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
@@ -35,6 +36,18 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
     public void testDataStructureDefinitionMetamacDoToDto() throws MetamacException {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
+
+        // Metamac
+        dataStructureDefinitionVersionMetamac.setAutoOpen(true);
+        dataStructureDefinitionVersionMetamac.setShowDecimals(2);
+
+        dataStructureDefinitionVersionMetamac.addHeadingDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(1, DataStructureDefinitionMetamacDoMocks.mockDimension()));
+        dataStructureDefinitionVersionMetamac.addHeadingDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(2, DataStructureDefinitionMetamacDoMocks.mockTimeDimension()));
+
+        dataStructureDefinitionVersionMetamac.addStubDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(1, DataStructureDefinitionMetamacDoMocks.mockMeasureDimension()));
+
+        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(5, CodesMetamacDoMocks.mockCode()));
+        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(4, CodesMetamacDoMocks.mockCode()));
 
         DataStructureDefinitionMetamacDto dto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dto, dataStructureDefinitionVersionMetamac);
