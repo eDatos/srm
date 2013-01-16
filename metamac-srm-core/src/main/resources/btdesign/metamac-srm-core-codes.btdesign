@@ -27,6 +27,7 @@ Application CodesMetamac {
 			> @VariableFamilyRepository
 			> @VariableRepository
 			> @VariableElementRepository
+			> @CodelistOrderVisualisationRepository
 
 			// CODELISTS
 
@@ -75,6 +76,19 @@ Application CodesMetamac {
     		deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by codelist, in tree structure"
     		List<@CodeMetamac> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
+    		
+    		// VISUALISATIONS
+    		
+    		"Creates visualisation"
+    		@CodelistOrderVisualisation createCodelistOrderVisualisation(String codelistUrn, @CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException;
+			"Updates visualisation"
+			@CodelistOrderVisualisation updateCodelistOrderVisualisation(@CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException;
+    		"Retrieves visualisation by identifier"
+    		@CodelistOrderVisualisation retrieveCodelistOrderVisualisationByIdentifier(String codelistUrn, String identifier) throws MetamacException;
+    		"Retrieve visualisations by codelist"
+    		List<@CodelistOrderVisualisation> retrieveCodelistOrderVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
+			"Deletes visualisation"
+    		deleteCodelistOrderVisualisation(String codelistUrn, String identifier) throws MetamacException;
 
 			// CODESLIST FAMILIES
 			
@@ -165,6 +179,8 @@ Application CodesMetamac {
 			- @CodelistVersionMetamac replacedByCodelist nullable cascade="none" databaseColumn="REPLACED_BY_CODELIST_FK"  <-> replaceToCodelists;
 			"Codelists that are replaced by this one"
 			- Bag<@CodelistVersionMetamac> replaceToCodelists cascade="none" fetch="lazy" <-> replacedByCodelist;
+			"Order visualisations of codelist"
+			- Bag<@CodelistOrderVisualisation> orderVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> codelistVersion;
 			
 			Repository CodelistVersionMetamacRepository {
 				save;
@@ -184,13 +200,51 @@ Application CodesMetamac {
 			- @InternationalString shortName nullable cascade="all" databaseColumn="SHORT_NAME_FK";
 			"Variable element"
 			- @VariableElement variableElement nullable cascade="none" databaseColumn="VARIABLE_ELEMENT_FK"  <-> codes;
+			"Order visualisations of code"
+			- Bag<@CodeOrderVisualisation> orderVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> code;
 			
 			Repository CodeMetamacRepository {
+				save;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CodeMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 			}
 		}
+		
+		Entity CodelistOrderVisualisation {
+			databaseTable="TB_M_CODELIST_ORDER_VISUAL"
+			hint="idSequence=M_CODELIST_ORDER_VISUAL"
+			
+			"Identifier"
+			String identifier not nullable;
+			"Name"
+			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			"Last update to optimistic locking"
+			DateTimeTZ updateDate nullable;
+			"Codes"
+			- Bag<@CodeOrderVisualisation> codes cascade="all-delete-orphan" fetch="lazy" inverse orderby="id asc" <-> codelistVisualisation;
+			"Relation to codelist"			
+			- @CodelistVersionMetamac codelistVersion not nullable cascade="none" fetch="lazy" databaseColumn="CODELIST_FK" <-> orderVisualisations;
+			
+			Repository CodelistOrderVisualisationRepository {
+				save;
+				delete;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				@CodelistOrderVisualisation findByIdentifier(String codelistUrn, String identifier);
+			}			
+		}	
+		
+		Entity CodeOrderVisualisation {
+			databaseTable="TB_M_CODE_ORDER_VISUAL"
+			hint="idSequence=M_CODE_ORDER_VISUAL"
+			
+			"Code"			
+			- @CodeMetamac code not nullable cascade="none" databaseColumn="CODE_FK" <-> orderVisualisations;
+			"Index in visualisation"
+			Long codeIndex not nullable;
+			"Codelist visualisation"			
+			- @CodelistOrderVisualisation codelistVisualisation not nullable cascade="none" databaseColumn="CODELIST_VISUALISATION_FK" <-> codes;
+		}					
 
 		Entity CodelistFamily {
 			databaseTable="TB_M_CODELIST_FAMILIES"

@@ -7,8 +7,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsInternationalStringDto;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodeDto;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistMetamacDto;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistOrderVisualisationDto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -831,8 +834,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(28, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(28, codesPagedResult.getResults().size());
+            assertEquals(29, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(29, codesPagedResult.getResults().size());
             assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
             assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -842,6 +845,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2_2, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_1_V2_CODE_4_1, codesPagedResult.getResults().get(i++).getUrn());
@@ -1005,7 +1009,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
                 // Validate
-                assertEquals(8, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(9, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
                 assertEquals(3, codesPagedResult.getResults().size());
                 assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
                 assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
@@ -1028,15 +1032,15 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
                 // Validate
-                assertEquals(8, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(9, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
                 assertEquals(3, codesPagedResult.getResults().size());
                 assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
                 assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
                 int i = 0;
                 assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getResults().get(i++).getUrn());
+                assertEquals(CODELIST_1_V2_CODE_2_2, codesPagedResult.getResults().get(i++).getUrn());
                 assertEquals(CODELIST_1_V2_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
-                assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getResults().get(i++).getUrn());
                 assertEquals(codesPagedResult.getResults().size(), i);
             }
             // Third page
@@ -1051,12 +1055,13 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
                 // Validate
-                assertEquals(8, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
-                assertEquals(2, codesPagedResult.getResults().size());
+                assertEquals(9, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+                assertEquals(3, codesPagedResult.getResults().size());
                 assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
                 assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
                 int i = 0;
+                assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getResults().get(i++).getUrn());
                 assertEquals(CODELIST_1_V2_CODE_4_1, codesPagedResult.getResults().get(i++).getUrn());
                 assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getResults().get(i++).getUrn());
                 assertEquals(codesPagedResult.getResults().size(), i);
@@ -1103,7 +1108,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             ItemHierarchyDto code = codes.get(1);
             assertTrue(code.getItem() instanceof CodeMetamacDto);
             assertEquals(CODELIST_1_V2_CODE_2, code.getItem().getUrn());
-            assertEquals(1, code.getChildren().size());
+            assertEquals(2, code.getChildren().size());
             {
                 // Code 02 01
                 ItemHierarchyDto codeChild = code.getChildren().get(0);
@@ -1116,6 +1121,13 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                     assertEquals(CODELIST_1_V2_CODE_2_1_1, codeChildChild.getItem().getUrn());
                     assertEquals(0, codeChildChild.getChildren().size());
                 }
+            }
+            {
+                // Code 02 02
+                ItemHierarchyDto codeChild = code.getChildren().get(1);
+                assertTrue(codeChild.getItem() instanceof CodeMetamacDto);
+                assertEquals(CODELIST_1_V2_CODE_2_2, codeChild.getItem().getUrn());
+                assertEquals(0, codeChild.getChildren().size());
             }
         }
         {
@@ -2046,6 +2058,90 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         variableElement = srmCoreServiceFacade.retrieveVariableElementByUrn(ctx, variableElementUrn);
         assertEquals(variableUrn, variableElement.getVariable().getUrn());
+    }
+
+    // ------------------------------------------------------------------------------------
+    // CODELIST VISUALISATIONS
+    // ------------------------------------------------------------------------------------
+
+    @Test
+    public void testRetrieveCodelistOrderVisualisationByIdentifier() throws Exception {
+        // Retrieve
+        String codelistUrn = CODELIST_1_V2;
+        String orderVisualisationIdentifier = CODELIST_1_V2_ORDER_VISUALISATION_01;
+        CodelistOrderVisualisationDto codelistOrderVisualisation = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn,
+                orderVisualisationIdentifier);
+
+        // Validate
+        assertNotNull(codelistOrderVisualisation);
+        assertEquals(CODELIST_1_V2_ORDER_VISUALISATION_01, codelistOrderVisualisation.getIdentifier());
+        assertEqualsInternationalStringDto(codelistOrderVisualisation.getName(), "es", "visualización - órdenes 1-2-1", "en", "order - visualisation 1-2-1");
+    }
+
+    @Test
+    public void testCreateCodelistOrderVisualisation() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodelistOrderVisualisationDto codelistOrderVisualisation = CodesMetamacDtoMocks.mockCodelistOrderVisualisationDto();
+        String codelistUrn = CODELIST_1_V2;
+
+        // Create
+        CodelistOrderVisualisationDto codelistOrderVisualisationCreated = srmCoreServiceFacade.createCodelistOrderVisualisation(ctx, codelistUrn, codelistOrderVisualisation);
+        assertEqualsCodelistOrderVisualisationDto(codelistOrderVisualisation, codelistOrderVisualisationCreated);
+    }
+
+    @Test
+    public void testUpdateCodelistOrderVisualisation() throws Exception {
+        CodelistOrderVisualisationDto codelistOrderVisualisation = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), CODELIST_1_V2,
+                CODELIST_1_V2_ORDER_VISUALISATION_01);
+        codelistOrderVisualisation.setName(MetamacMocks.mockInternationalStringDto());
+
+        // Update
+        CodelistOrderVisualisationDto codelistOrderVisualisationUpdated = srmCoreServiceFacade.updateCodelistOrderVisualisation(getServiceContextAdministrador(), CODELIST_1_V2,
+                codelistOrderVisualisation);
+
+        // Validate
+        assertEqualsCodelistOrderVisualisationDto(codelistOrderVisualisation, codelistOrderVisualisationUpdated);
+    }
+
+    @Test
+    public void testDeleteCodelistOrderVisualisation() throws Exception {
+
+        String codelistUrn = CODELIST_1_V2;
+        String visualisationIdentifier = CODELIST_1_V2_ORDER_VISUALISATION_01;
+
+        srmCoreServiceFacade.deleteCodelistOrderVisualisation(getServiceContextAdministrador(), codelistUrn, visualisationIdentifier);
+
+        // Retrieve deleted visualisation
+        try {
+            srmCoreServiceFacade.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, visualisationIdentifier);
+            fail("visualisation deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.CODELIST_ORDER_VISUALISATION_NOT_FOUND, 2, new String[]{visualisationIdentifier, codelistUrn}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testRetrieveCodelistOrderVisualisationsByCodelist() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
+
+        List<CodelistOrderVisualisationDto> visualisations = srmCoreServiceFacade.retrieveCodelistOrderVisualisationsByCodelist(getServiceContextAdministrador(), codelistUrn);
+
+        assertEquals(2, visualisations.size());
+        assertContainsCodelistOrderVisualisation(CODELIST_1_V2_ORDER_VISUALISATION_01, visualisations);
+        assertContainsCodelistOrderVisualisation(CODELIST_1_V2_ORDER_VISUALISATION_02, visualisations);
+
+    }
+
+    private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationIdentifierExpected, List<CodelistOrderVisualisationDto> actuals) {
+        for (CodelistOrderVisualisationDto actual : actuals) {
+            if (actual.getIdentifier().equals(codelistOrderVisualisationIdentifierExpected)) {
+                return;
+            }
+        }
+        fail("visualisation not found");
     }
 
     @Override

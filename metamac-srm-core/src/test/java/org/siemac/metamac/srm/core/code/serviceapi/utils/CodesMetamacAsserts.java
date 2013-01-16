@@ -8,6 +8,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -15,6 +16,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -437,4 +439,29 @@ public class CodesMetamacAsserts extends CodesAsserts {
         }
         assertEquals(entity.getNameableArtefact().getUrn(), dto.getUrn());
     }
+
+    // ------------------------------------------------------------------------------------
+    // VISUALISATIONS
+    // ------------------------------------------------------------------------------------
+
+    public static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisation expected, CodelistOrderVisualisation actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEqualsInternationalString(expected.getName(), actual.getName());
+        assertEquals(expected.getIdentifier(), actual.getIdentifier());
+        // TODO is default
+    }
+
+    public static void assertEqualsCodelistOrderVisualisationDto(CodelistOrderVisualisationDto expected, CodelistOrderVisualisationDto actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEqualsInternationalStringDto(expected.getName(), actual.getName());
+        assertEquals(expected.getIdentifier(), actual.getIdentifier());
+        // TODO is default
+    }
+
 }

@@ -179,6 +179,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CODELIST_1_V2_CODE_2                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE02";
     protected static final String CODELIST_1_V2_CODE_2_1                      = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0201";
     protected static final String CODELIST_1_V2_CODE_2_1_1                    = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE020101";
+    protected static final String CODELIST_1_V2_CODE_2_2                      = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0202";
     protected static final String CODELIST_1_V2_CODE_3                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE03";
     protected static final String CODELIST_1_V2_CODE_4                        = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE04";
     protected static final String CODELIST_1_V2_CODE_4_1                      = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE0401";
@@ -225,6 +226,10 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_1               = "urn:VARIABLE_02_VARIABLE_ELEMENT_01";
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_2               = "urn:VARIABLE_02_VARIABLE_ELEMENT_02";
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_1               = "urn:VARIABLE_05_VARIABLE_ELEMENT_01";
+
+    // Codelist visualisations
+    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_01        = "VISUALISATION01";
+    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_02        = "VISUALISATION02";
 
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
@@ -341,6 +346,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CAT_SCHEMES_VERSIONS");
         tables.add("TB_M_CODELIST_FAMILIES");
         tables.add("TB_M_VARIABLES");
+        tables.add("TB_M_CODELIST_ORDER_VISUAL");
+        tables.add("TB_M_CODE_ORDER_VISUAL");
         tables.add("TB_M_CODELISTS_VERSIONS");
         tables.add("TB_M_VARIABLE_ELEMENTS");
         tables.add("TB_M_CODES");

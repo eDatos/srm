@@ -11,6 +11,11 @@ public class CodesSecurityUtils extends SecurityUtils {
     // NOTE: Only to related entities. Security about codelists and codes is in ItemSecurityUtils
     //
 
+    public static void canRetrieveOrFindCodelistOrderVisualisation(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canRetrieveOrFindCodelistOrderVisualisation(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
     public static void canRetrieveOrFindCodelistFamily(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canRetrieveOrFindCodelistFamily(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);

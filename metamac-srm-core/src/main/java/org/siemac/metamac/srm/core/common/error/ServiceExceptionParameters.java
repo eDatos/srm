@@ -34,6 +34,12 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CODELIST_SHORT_NAME                     = CODELIST + ".short_name";
     public static final String CODELIST_ACCESS_TYPE                    = CODELIST + ".access_type";
 
+    // CODELIST VISUALISATION
+    public static final String CODELIST_ORDER_VISUALISATION            = "codelist_order_visualisation";
+    public static final String CODELIST_ORDER_VISUALISATION_NAME       = CODELIST_ORDER_VISUALISATION + ".name";
+    public static final String CODELIST_ORDER_VISUALISATION_IDENTIFIER = CODELIST_ORDER_VISUALISATION + ".identifier";
+    public static final String CODELIST_ORDER_VISUALISATION_CODES      = CODELIST_ORDER_VISUALISATION + ".codes";
+
     // CODELIST FAMILY
     public static final String CODELIST_FAMILY                         = "codelist_family";
 
@@ -57,11 +63,11 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String VARIABLE_ELEMENT_VALID_TO               = VARIABLE_ELEMENT + ".valid_to";
     public static final String VARIABLE_ELEMENT_VARIABLE               = VARIABLE_ELEMENT + ".variable";
 
-    // DSD VISUALIZATION
+    // DSD VISUALISATION
     public static final String DATA_STRUCTURE_DEFINITION_HEADING       = DATA_STRUCTURE_DEFINITION + ".heading";
     public static final String DATA_STRUCTURE_DEFINITION_STUB          = DATA_STRUCTURE_DEFINITION + ".stub";
     public static final String DATA_STRUCTURE_DEFINITION_SHOW_DEC_PREC = DATA_STRUCTURE_DEFINITION + ".show_decimals_precision";
-
+    
     // LIFECYCLE
     public static final String PROC_STATUS_DRAFT                       = ProcStatusEnum.DRAFT.name();
     public static final String PROC_STATUS_PRODUCTION_VALIDATION       = ProcStatusEnum.PRODUCTION_VALIDATION.name();

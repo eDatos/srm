@@ -25,6 +25,7 @@ import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -32,6 +33,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -826,6 +828,77 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform
         List<ItemHierarchyDto> itemsHierarchyDto = codesDo2DtoMapper.codeMetamacDoListToItemHierarchyDtoList(codes);
         return itemsHierarchyDto;
+    }
+
+    // ------------------------------------------------------------------------
+    // VISUALISATIONS
+    // ------------------------------------------------------------------------
+
+    @Override
+    public CodelistOrderVisualisationDto retrieveCodelistOrderVisualisationByIdentifier(ServiceContext ctx, String codelistUrn, String identifier) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindCodelistOrderVisualisation(ctx);
+
+        // Retrieve
+        CodelistOrderVisualisation codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByIdentifier(ctx, codelistUrn, identifier);
+
+        // Transform
+        CodelistOrderVisualisationDto codelistOrderVisualisationDto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(codelistOrderVisualisation);
+        return codelistOrderVisualisationDto;
+    }
+
+    @Override
+    public CodelistOrderVisualisationDto createCodelistOrderVisualisation(ServiceContext ctx, String codelistUrn, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
+        // Security TODO security visualisations
+        // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
+
+        // Transform
+        CodelistOrderVisualisation codelistOrderVisualisation = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(codelistUrn, codelistOrderVisualisationDto);
+
+        // Create
+        CodelistOrderVisualisation codelistOrderVisualisationCreated = getCodesMetamacService().createCodelistOrderVisualisation(ctx, codelistUrn, codelistOrderVisualisation);
+
+        // Transform to DTO
+        codelistOrderVisualisationDto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(codelistOrderVisualisationCreated);
+        return codelistOrderVisualisationDto;
+    }
+
+    @Override
+    public CodelistOrderVisualisationDto updateCodelistOrderVisualisation(ServiceContext ctx, String codelistUrn, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
+        // Security TODO security visualisations
+        // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
+
+        // Transform
+        CodelistOrderVisualisation codelistOrderVisualisationToUpdate = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(codelistUrn, codelistOrderVisualisationDto);
+
+        // Update
+        CodelistOrderVisualisation codelistOrderVisualisationUpdated = getCodesMetamacService().updateCodelistOrderVisualisation(ctx, codelistOrderVisualisationToUpdate);
+
+        // Transform to DTO
+        codelistOrderVisualisationDto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(codelistOrderVisualisationUpdated);
+        return codelistOrderVisualisationDto;
+    }
+
+    @Override
+    public void deleteCodelistOrderVisualisation(ServiceContext ctx, String codelistUrn, String identifier) throws MetamacException {
+        // Security TODO security visualisations
+        // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
+
+        // Delete
+        getCodesMetamacService().deleteCodelistOrderVisualisation(ctx, codelistUrn, identifier);
+    }
+
+    @Override
+    public List<CodelistOrderVisualisationDto> retrieveCodelistOrderVisualisationsByCodelist(ServiceContext ctx, String codelistUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindCodelistOrderVisualisation(ctx);
+
+        // Retrieve
+        List<CodelistOrderVisualisation> codelistOrderVisualisations = getCodesMetamacService().retrieveCodelistOrderVisualisationsByCodelist(ctx, codelistUrn);
+
+        // Transform
+        List<CodelistOrderVisualisationDto> codelistOrderVisualisationsDto = codesDo2DtoMapper.codelistOrderVisualisationsDoToDto(codelistOrderVisualisations);
+        return codelistOrderVisualisationsDto;
     }
 
     // ------------------------------------------------------------------------

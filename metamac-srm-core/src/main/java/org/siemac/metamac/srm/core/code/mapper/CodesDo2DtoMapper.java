@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -11,6 +12,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -42,4 +44,8 @@ public interface CodesDo2DtoMapper {
     // Variable element
     public VariableElementDto variableElementDoToDto(VariableElement source);
     public RelatedResourceDto variableElementDoToRelatedResourceDto(VariableElement source);
+
+    // Visualisations
+    public CodelistOrderVisualisationDto codelistOrderVisualisationDoToDto(CodelistOrderVisualisation source);
+    public List<CodelistOrderVisualisationDto> codelistOrderVisualisationsDoToDto(List<CodelistOrderVisualisation> sources);
 }

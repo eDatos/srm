@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -15,6 +16,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -213,6 +215,32 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
         target.setType(null);
         return target;
+    }
+
+    @Override
+    public CodelistOrderVisualisationDto codelistOrderVisualisationDoToDto(CodelistOrderVisualisation source) {
+        if (source == null) {
+            return null;
+        }
+        CodelistOrderVisualisationDto target = new CodelistOrderVisualisationDto();
+        target.setIdentifier(source.getIdentifier());
+        target.setName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getName()));
+        target.setVersionOptimisticLocking(source.getVersion());
+
+        return target;
+    }
+
+    @Override
+    public List<CodelistOrderVisualisationDto> codelistOrderVisualisationsDoToDto(List<CodelistOrderVisualisation> sources) {
+        if (sources == null) {
+            return null;
+        }
+        List<CodelistOrderVisualisationDto> targets = new ArrayList<CodelistOrderVisualisationDto>();
+        for (CodelistOrderVisualisation source : sources) {
+            CodelistOrderVisualisationDto target = codelistOrderVisualisationDoToDto(source);
+            targets.add(target);
+        }
+        return targets;
     }
 
     private ItemHierarchyDto codeMetamacDoToItemHierarchyDto(CodeMetamac codeMetamac) {

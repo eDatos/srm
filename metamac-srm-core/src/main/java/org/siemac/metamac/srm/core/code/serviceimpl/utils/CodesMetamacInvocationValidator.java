@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -95,6 +96,71 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
 
         // common metadata in sdmx are checked in Sdmx module
+    }
+
+    // ---------------------------------------------------------------------------
+    // CODELIST VISUALISATIONS
+    // ---------------------------------------------------------------------------
+
+    public static void checkCreateCodelistOrderVisualisation(String codelistUrn, CodelistOrderVisualisation codelistOrderVisualisation, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(codelistOrderVisualisation, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION, exceptions);
+        if (codelistOrderVisualisation != null) {
+            checkCodelistOrderVisualisation(codelistOrderVisualisation, exceptions);
+            ValidationUtils.checkMetadataEmpty(codelistOrderVisualisation.getCodes(), ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_CODES, exceptions);
+        }
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveCodelistOrderVisualisationByIdentifier(String codelistUrn, String identifier) throws MetamacException {
+        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
+
+        // Parameters required
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_IDENTIFIER, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkUpdateCodelistOrderVisualisation(CodelistOrderVisualisation codelistOrderVisualisation, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        checkCodelistOrderVisualisation(codelistOrderVisualisation, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkDeleteCodelistOrderVisualisation(String codelistUrn, String identifier, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(identifier, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_IDENTIFIER, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveCodelistOrderVisualisationsByCodelist(String codelistUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    private static void checkCodelistOrderVisualisation(CodelistOrderVisualisation codelistOrderVisualisation, List<MetamacExceptionItem> exceptions) {
+        ValidationUtils.checkParameterRequired(codelistOrderVisualisation, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION, exceptions);
+        if (codelistOrderVisualisation == null) {
+            return;
+        }
+        ValidationUtils.checkMetadataOptionalIsValid(codelistOrderVisualisation.getName(), ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_NAME, exceptions);
+        ValidationUtils.checkMetadataRequired(codelistOrderVisualisation.getIdentifier(), ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_IDENTIFIER, exceptions);
     }
 
     // ---------------------------------------------------------------------------

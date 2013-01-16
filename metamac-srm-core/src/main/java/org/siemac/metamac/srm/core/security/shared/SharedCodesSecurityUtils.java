@@ -10,6 +10,10 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     // NOTE: Only to related entities. Security about codelists and codes is in ItemSecurityUtils
     //
 
+    public static boolean canRetrieveOrFindCodelistOrderVisualisation(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
     public static boolean canRetrieveOrFindCodelistFamily(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
     }

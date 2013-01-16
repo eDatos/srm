@@ -93,6 +93,8 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
         CodesMetamacAsserts.assertEqualsVariableElement(dto, entity);
     }
 
+    // TODO test mapper visualisations
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmCodesTest.xml";

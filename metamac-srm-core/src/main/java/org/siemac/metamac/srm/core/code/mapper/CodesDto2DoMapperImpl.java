@@ -10,6 +10,8 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyRepository;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisationRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -21,6 +23,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableRepository;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -54,6 +57,9 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     @Autowired
     private VariableElementRepository                                      variableElementRepository;
+
+    @Autowired
+    private CodelistOrderVisualisationRepository                           codelistOrderVisualisationRepository;
 
     @Override
     public CodelistVersionMetamac codelistDtoToDo(CodelistMetamacDto source) throws MetamacException {
@@ -249,6 +255,26 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
         target.setUpdateDate(new DateTime());
 
+        return target;
+    }
+
+    @Override
+    public CodelistOrderVisualisation codelistOrderVisualisationDtoToDo(String codelistUrn, CodelistOrderVisualisationDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity.
+        CodelistOrderVisualisation target = codelistOrderVisualisationRepository.findByIdentifier(codelistUrn, source.getIdentifier());
+        if (target == null) {
+            target = new CodelistOrderVisualisation();
+        } else {
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
+        }
+        target.setIdentifier(source.getIdentifier());
+        target.setName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getName(), target.getName(), ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_NAME));
+        // TODO is default
+        target.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
         return target;
     }
 

@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.code.mapper;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -10,6 +11,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -22,4 +24,6 @@ public interface CodesDto2DoMapper {
     public VariableFamily variableFamilyDtoToDo(VariableFamilyDto source) throws MetamacException;
     public Variable variableDtoToDo(VariableDto source) throws MetamacException;
     public VariableElement variableElementDtoToDo(VariableElementDto source) throws MetamacException;
+    public CodelistOrderVisualisation codelistOrderVisualisationDtoToDo(String codelistUrn, CodelistOrderVisualisationDto source) throws MetamacException;
+
 }

@@ -7,6 +7,7 @@ import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -123,6 +124,17 @@ public class CodesMetamacDtoMocks {
         relatedResourceDto.setUrnProvider(urn);
         relatedResourceDto.setType(null);
         return relatedResourceDto;
+    }
+
+    // -----------------------------------------------------------------------------------
+    // VISUALISATIONS
+    // -----------------------------------------------------------------------------------
+    public static CodelistOrderVisualisationDto mockCodelistOrderVisualisationDto() {
+        CodelistOrderVisualisationDto codelistOrderVisualisationDto = new CodelistOrderVisualisationDto();
+        codelistOrderVisualisationDto.setIdentifier("code-" + MetamacMocks.mockString(10));
+        codelistOrderVisualisationDto.setName(MetamacMocks.mockInternationalStringDto());
+        // TODO is default
+        return codelistOrderVisualisationDto;
     }
 
 }

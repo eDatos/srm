@@ -158,6 +158,8 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
         CodesMetamacAsserts.assertEqualsVariableElement(entity, dto);
     }
 
+    // TODO test mapper visualisations
+
     private CodelistVersionMetamac mockCodelistWithAllMetadata() {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         CodelistVersionMetamac entity = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
