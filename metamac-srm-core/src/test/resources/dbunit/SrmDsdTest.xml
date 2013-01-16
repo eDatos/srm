@@ -141,6 +141,9 @@
         LAST_UPDATED_BY="user2"
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
+        
+        CONCEPT_IDENTITY_FK="[null]"
+        REPRESENTATION_FK="[null]"
     />
     
         <!-- ORGANISATIONS -->
