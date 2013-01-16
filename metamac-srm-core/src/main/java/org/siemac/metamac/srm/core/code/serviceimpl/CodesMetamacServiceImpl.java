@@ -247,7 +247,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Add to all visualisations of codelist, at the end of level
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
-            List<CodeOrderVisualisation> codeOrderVisualisations = filterCodeOrderVisualisationsOfCodeInSameLevel(codelistOrderVisualisation, code);
+            List<CodeOrderVisualisation> codeOrderVisualisations = SrmServiceUtils.filterCodeOrderVisualisationsOfCodeInSameLevel(codelistOrderVisualisation, code);
             // Get index at the end of level
             int greatestIndex = -1;
             for (CodeOrderVisualisation codeOrderVisualisation : codeOrderVisualisations) {
@@ -968,42 +968,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         variableElement.getNameableArtefact().setUrn(urn);
         variableElement.getNameableArtefact().setUrnProvider(urn);
-    }
-
-    /**
-     * Filter list of orders to get only the orders related to codes in same level of code
-     */
-    private List<CodeOrderVisualisation> filterCodeOrderVisualisationsOfCodeInSameLevel(CodelistOrderVisualisation codelistOrderVisualisation, CodeMetamac code) throws MetamacException {
-
-        // Items in same level
-        List<Item> codesInSameLevel = null;
-        if (code.getParent() != null) {
-            codesInSameLevel = code.getParent().getChildren();
-        } else {
-            codesInSameLevel = code.getItemSchemeVersionFirstLevel().getItemsFirstLevel();
-        }
-
-        // Filter visualisations
-        List<CodeOrderVisualisation> codeOrderVisualisationsInSameLevel = new ArrayList<CodeOrderVisualisation>();
-        for (Item codeInSameLevel : codesInSameLevel) {
-            CodeOrderVisualisation codeOrderVisualisation = getCodeOrderVisualisation(codeInSameLevel, codelistOrderVisualisation.getCodes());
-            if (codeOrderVisualisation != null) {
-                codeOrderVisualisationsInSameLevel.add(codeOrderVisualisation);
-            }
-        }
-        return codeOrderVisualisationsInSameLevel;
-    }
-
-    /**
-     * Get from list the order visualisation of code related to code
-     */
-    private CodeOrderVisualisation getCodeOrderVisualisation(Item code, List<CodeOrderVisualisation> codeOrderVisualisations) throws MetamacException {
-        for (CodeOrderVisualisation codeOrderVisualisation : codeOrderVisualisations) {
-            if (codeOrderVisualisation.getCode().getId().equals(code.getId())) {
-                return codeOrderVisualisation;
-            }
-        }
-        return null;
     }
 
     /**

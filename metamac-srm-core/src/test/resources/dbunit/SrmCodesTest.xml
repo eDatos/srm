@@ -1004,6 +1004,16 @@
                 <!-- VISUALISATION02 -->    
                 
                 <!-- VISUALISATION01 -->
+                    <!-- -> CODE01 -->
+                    <!-- -> CODE02 -->
+                    <!--    -> CODE0201 -->
+                    <!--       -> CODE020101 -->
+                    <!--    -> CODE0202 -->
+                    <!-- -> CODE03 -->
+                    <!-- -> CODE04 -->
+                    <!--    -> CODE0401 -->
+                    <!--        -> CODE040101 -->
+                
                 <TB_M_CODELIST_ORDER_VISUAL 
                     ID="121"
                     IDENTIFIER="VISUALISATION01"
@@ -1175,6 +1185,16 @@
             
 
                 <!-- VISUALISATION02 -->
+                    <!-- -> CODE03 -->
+                    <!-- -> CODE01 -->
+                    <!-- -> CODE02 -->
+                    <!--    -> CODE0202 -->
+                    <!--    -> CODE0201 -->
+                    <!--       -> CODE020101 -->
+                    <!-- -> CODE04 -->
+                    <!--    -> CODE0401 -->
+                    <!--        -> CODE040101 -->
+                
                 <TB_M_CODELIST_ORDER_VISUAL 
                     ID="122"
                     IDENTIFIER="VISUALISATION02"

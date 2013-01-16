@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -38,8 +39,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -99,7 +98,7 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
         CodeMetamac entity3AA = mockCodeWithAllMetadata();
         entity3A.addChildren(entity3AA);
 
-        List<ItemHierarchyDto> dtos = codesDo2DtoMapper.codeMetamacDoListToItemHierarchyDtoList(entities);
+        List<CodeHierarchyDto> dtos = codesDo2DtoMapper.codeMetamacDoListToCodeHierarchyDtoList(entities, null);
 
         // Validate
         assertEquals(3, dtos.size());

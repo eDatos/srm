@@ -30,6 +30,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -818,15 +819,21 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<ItemHierarchyDto> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn) throws MetamacException {
+    public List<CodeHierarchyDto> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String orderVisualisationIdentifier) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Retrieve
         List<CodeMetamac> codes = getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn);
+        CodelistOrderVisualisation codelistOrderVisualisation = null;
+        if (orderVisualisationIdentifier != null) {
+            codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByIdentifier(ctx, codelistUrn, orderVisualisationIdentifier);
+        } else {
+            // TODO orden por defecto
+        }
 
         // Transform
-        List<ItemHierarchyDto> itemsHierarchyDto = codesDo2DtoMapper.codeMetamacDoListToItemHierarchyDtoList(codes);
+        List<CodeHierarchyDto> itemsHierarchyDto = codesDo2DtoMapper.codeMetamacDoListToCodeHierarchyDtoList(codes, codelistOrderVisualisation);
         return itemsHierarchyDto;
     }
 

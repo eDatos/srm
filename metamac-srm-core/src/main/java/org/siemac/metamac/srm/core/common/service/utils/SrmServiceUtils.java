@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeOrderVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
@@ -91,4 +95,50 @@ public class SrmServiceUtils {
         }
         return false;
     }
+
+    /**
+     * Filter list of orders to get only the codes requested
+     */
+    @SuppressWarnings("rawtypes")
+    public static List<CodeOrderVisualisation> filterCodeOrderVisualisationsByCodes(CodelistOrderVisualisation codelistOrderVisualisation, List codes) {
+        List<CodeOrderVisualisation> codeOrderVisualisationsFiltered = new ArrayList<CodeOrderVisualisation>();
+        for (int i = 0; i < codes.size(); i++) {
+            Item code = (Item) codes.get(i);
+            CodeOrderVisualisation codeOrderVisualisation = filterCodeOrderVisualisationsByCode(codelistOrderVisualisation.getCodes(), code.getNameableArtefact().getUrn());
+            if (codeOrderVisualisation != null) {
+                codeOrderVisualisationsFiltered.add(codeOrderVisualisation);
+            }
+        }
+        return codeOrderVisualisationsFiltered;
+    }
+
+    /**
+     * Filter list of orders to get only the orders related to codes in same level of code
+     */
+    public static List<CodeOrderVisualisation> filterCodeOrderVisualisationsOfCodeInSameLevel(CodelistOrderVisualisation codelistOrderVisualisation, CodeMetamac code) {
+
+        // Items in same level
+        List<Item> codesInSameLevel = null;
+        if (code.getParent() != null) {
+            codesInSameLevel = code.getParent().getChildren();
+        } else {
+            codesInSameLevel = code.getItemSchemeVersionFirstLevel().getItemsFirstLevel();
+        }
+
+        // Filter visualisations
+        return filterCodeOrderVisualisationsByCodes(codelistOrderVisualisation, codesInSameLevel);
+    }
+
+    /**
+     * Get from list the order visualisation of code related to code
+     */
+    public static CodeOrderVisualisation filterCodeOrderVisualisationsByCode(List<CodeOrderVisualisation> codeOrderVisualisations, String codeUrn) {
+        for (CodeOrderVisualisation codeOrderVisualisation : codeOrderVisualisations) {
+            if (codeOrderVisualisation.getCode().getNameableArtefact().getUrn().equals(codeUrn)) {
+                return codeOrderVisualisation;
+            }
+        }
+        return null;
+    }
+
 }

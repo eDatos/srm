@@ -1,18 +1,22 @@
 package org.siemac.metamac.srm.core.code.mapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -20,11 +24,10 @@ import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 @org.springframework.stereotype.Component("codesDo2DtoMapper")
@@ -86,13 +89,29 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         return targets;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public List<ItemHierarchyDto> codeMetamacDoListToItemHierarchyDtoList(List<CodeMetamac> sources) {
-        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>();
-        for (CodeMetamac source : sources) {
-            ItemHierarchyDto target = codeMetamacDoToItemHierarchyDto(source);
+    public List<CodeHierarchyDto> codeMetamacDoListToCodeHierarchyDtoList(List sources, CodelistOrderVisualisation codelistOrderVisualisation) {
+        List<CodeHierarchyDto> targets = new ArrayList<CodeHierarchyDto>();
+        for (int i = 0; i < sources.size(); i++) {
+            CodeMetamac source = (CodeMetamac) sources.get(i);
+            CodeHierarchyDto target = codeMetamacDoToCodeHierarchyDto(source, codelistOrderVisualisation);
+            target.getChildren().addAll(codeMetamacDoListToCodeHierarchyDtoList(source.getChildren(), codelistOrderVisualisation));
             targets.add(target);
         }
+
+        if (codelistOrderVisualisation == null) {
+            return targets;
+        }
+
+        // Order
+        Collections.sort(targets, new Comparator<CodeHierarchyDto>() {
+
+            @Override
+            public int compare(CodeHierarchyDto o1, CodeHierarchyDto o2) {
+                return o1.getCodeIndex().compareTo(o2.getCodeIndex());
+            }
+        });
         return targets;
     }
 
@@ -244,22 +263,6 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         return targets;
     }
 
-    private ItemHierarchyDto codeMetamacDoToItemHierarchyDto(CodeMetamac codeMetamac) {
-        ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
-
-        // Code
-        CodeMetamacDto codeMetamacDto = codeMetamacDoToDto(codeMetamac);
-        itemHierarchyDto.setItem(codeMetamacDto);
-
-        // Children
-        for (Item item : codeMetamac.getChildren()) {
-            ItemHierarchyDto itemHierarchyChildrenDto = codeMetamacDoToItemHierarchyDto((CodeMetamac) item);
-            itemHierarchyDto.addChildren(itemHierarchyChildrenDto);
-        }
-
-        return itemHierarchyDto;
-    }
-
     private RelatedResourceDto codelistDoToRelatedResourceDto(CodelistVersionMetamac source) {
         if (source == null) {
             return null;
@@ -288,5 +291,15 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
         target.setType(null);
         return target;
+    }
+
+    private CodeHierarchyDto codeMetamacDoToCodeHierarchyDto(CodeMetamac codeMetamac, CodelistOrderVisualisation codelistOrderVisualisation) {
+        CodeHierarchyDto codeHierarchyDto = new CodeHierarchyDto();
+        codeHierarchyDto.setItem(codeMetamacDoToDto(codeMetamac));
+        if (codelistOrderVisualisation != null) {
+            CodeOrderVisualisation codeOrderVisualisation = SrmServiceUtils.filterCodeOrderVisualisationsByCode(codelistOrderVisualisation.getCodes(), codeHierarchyDto.getItem().getUrn());
+            codeHierarchyDto.setCodeIndex(codeOrderVisualisation.getCodeIndex());
+        }
+        return codeHierarchyDto;
     }
 }

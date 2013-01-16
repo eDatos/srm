@@ -463,8 +463,8 @@ Application SrmFacadeCore {
             MetamacCriteriaResult<@CodeMetamacDto> findCodesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes code"
             deleteCode(String urn) throws MetamacException;
-    		"Retrieves codes by code scheme, in tree structure"
-    		List<@ItemHierarchyDto> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
+    		"Retrieves codes by code scheme, in tree structure and in visualisation requested"
+    		List<@CodeHierarchyDto> retrieveCodesByCodelistUrn(String codelistUrn, String orderVisualisationIdentifier) throws MetamacException;
     		
     		"Creates visualisation"
     		@CodelistOrderVisualisationDto createCodelistOrderVisualisation(String codelistUrn, @CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException;
