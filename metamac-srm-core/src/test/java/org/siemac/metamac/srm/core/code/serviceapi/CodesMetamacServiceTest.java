@@ -3407,7 +3407,85 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(2, visualisations.size());
         assertContainsCodelistOrderVisualisation(CODELIST_1_V2_ORDER_VISUALISATION_01, visualisations);
         assertContainsCodelistOrderVisualisation(CODELIST_1_V2_ORDER_VISUALISATION_02, visualisations);
+    }
 
+    @Override
+    @Test
+    public void testUpdateCodeInOrderVisualisation() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
+        String codeUrn = CODELIST_1_V2_CODE_1;
+        String visualisationIdentifier = CODELIST_1_V2_ORDER_VISUALISATION_01;
+
+        codesService.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationIdentifier, Long.valueOf(2));
+
+        // Validate visualisation
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, visualisationIdentifier);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(2), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(0), visualisation.getCodes());// changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(1), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+
+        // Validate other visualisation does not change
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_02);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+    }
+
+    @Test
+    public void testUpdateCodeSubcodeInOrderVisualisation() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
+        String codeUrn = CODELIST_1_V2_CODE_2_1;
+        String visualisationIdentifier = CODELIST_1_V2_ORDER_VISUALISATION_01;
+
+        codesService.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationIdentifier, Long.valueOf(1));
+
+        // Validate visualisation
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, visualisationIdentifier);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+
+        // Validate other visualisation does not change
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_02);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
     }
 
     private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationIdentifierExpected, List<CodelistOrderVisualisation> actuals) {

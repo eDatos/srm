@@ -28,6 +28,7 @@ Application CodesMetamac {
 			> @VariableRepository
 			> @VariableElementRepository
 			> @CodelistOrderVisualisationRepository
+			> @CodeOrderVisualisationRepository
 
 			// CODELISTS
 
@@ -68,6 +69,8 @@ Application CodesMetamac {
 			@CodeMetamac createCode(String codelistUrn, @CodeMetamac code) throws MetamacException;
 			"Updates code"
 			@CodeMetamac updateCode(@CodeMetamac code) throws MetamacException;
+			"Updates position of code to visualisation requested"
+			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationIdentifier, Long newCodeIndex) throws MetamacException;
     		"Retrieves code by urn"
     		@CodeMetamac retrieveCodeByUrn(String urn) throws MetamacException;
     		"Finds codes by criteria"
@@ -244,6 +247,10 @@ Application CodesMetamac {
 			Long codeIndex not nullable;
 			"Codelist visualisation"			
 			- @CodelistOrderVisualisation codelistVisualisation not nullable cascade="none" databaseColumn="CODELIST_VISUALISATION_FK" <-> codes;
+			
+			Repository CodeOrderVisualisationRepository {
+				save;
+			}	
 		}					
 
 		Entity CodelistFamily {

@@ -2205,7 +2205,23 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertEquals(2, visualisations.size());
         assertContainsCodelistOrderVisualisation(CODELIST_1_V2_ORDER_VISUALISATION_01, visualisations);
         assertContainsCodelistOrderVisualisation(CODELIST_1_V2_ORDER_VISUALISATION_02, visualisations);
+    }
 
+    @Test
+    public void testUpdateCodeInOrderVisualisation() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
+        String codeUrn = CODELIST_1_V2_CODE_1;
+        String visualisationIdentifier = CODELIST_1_V2_ORDER_VISUALISATION_01;
+
+        srmCoreServiceFacade.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationIdentifier, Long.valueOf(2));
+
+        // Validate visualisation
+        List<CodeHierarchyDto> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, visualisationIdentifier);
+        assertEquals(4, codes.size());
+        assertEquals(CODELIST_1_V2_CODE_2, codes.get(0).getItem().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_3, codes.get(1).getItem().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_1, codes.get(2).getItem().getUrn());
+        assertEquals(CODELIST_1_V2_CODE_4, codes.get(3).getItem().getUrn());
     }
 
     private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationIdentifierExpected, List<CodelistOrderVisualisationDto> actuals) {

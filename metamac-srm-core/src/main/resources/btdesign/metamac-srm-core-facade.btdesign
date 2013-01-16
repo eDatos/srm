@@ -457,6 +457,8 @@ Application SrmFacadeCore {
 	   		@CodeMetamacDto createCode(@CodeMetamacDto codeMetamacDto) throws MetamacException;
 	   		"Updates code"
             @CodeMetamacDto updateCode(@CodeMetamacDto codeDto) throws MetamacException;
+			"Updates position of code to visualisation requested"
+			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationIdentifier, Long newCodeIndex) throws MetamacException;
 	   		"Retrieves a code by URN"
             @CodeMetamacDto retrieveCodeByUrn(String urn) throws MetamacException;
             "Finds codes by criteria"
@@ -517,7 +519,6 @@ Application SrmFacadeCore {
     		addVariablesToVariableFamily(List<String> variableUrn, String familyUrn) throws MetamacException;
     		"Removes a variable from a family"
     		removeVariableFromVariableFamily(String variableUrn, String familyUrn) throws MetamacException;
-    		
     		
     		"Creates variable element"
 			@VariableElementDto createVariableElement(@VariableElementDto variableElement) throws MetamacException;
