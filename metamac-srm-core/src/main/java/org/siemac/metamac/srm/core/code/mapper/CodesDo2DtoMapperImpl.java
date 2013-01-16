@@ -223,6 +223,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         CodelistOrderVisualisationDto target = new CodelistOrderVisualisationDto();
+        target.setId(source.getId());
         target.setIdentifier(source.getIdentifier());
         target.setName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getName()));
         target.setVersionOptimisticLocking(source.getVersion());
