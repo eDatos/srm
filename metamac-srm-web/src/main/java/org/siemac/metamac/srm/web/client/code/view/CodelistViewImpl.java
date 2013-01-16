@@ -107,15 +107,6 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         panel.setOverflow(Overflow.SCROLL);
 
         //
-        // CODELIST
-        //
-
-        mainFormLayout = new CodelistMainFormLayout(); // TODO Security
-        bindMainFormLayoutEvents();
-        createViewForm();
-        createEditionForm();
-
-        //
         // CODELIST VERSIONS
         //
 
@@ -130,6 +121,15 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         });
 
         //
+        // CODELIST
+        //
+
+        mainFormLayout = new CodelistMainFormLayout(); // TODO Security
+        bindMainFormLayoutEvents();
+        createViewForm();
+        createEditionForm();
+
+        //
         // CODES
         //
 
@@ -140,8 +140,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codesListGridLayout.addMember(new TitleLabel(getConstants().codes()));
         codesListGridLayout.addMember(codesTreeGrid);
 
-        panel.addMember(mainFormLayout);
         panel.addMember(versionsSectionStack);
+        panel.addMember(mainFormLayout);
         panel.addMember(codesListGridLayout);
     }
 

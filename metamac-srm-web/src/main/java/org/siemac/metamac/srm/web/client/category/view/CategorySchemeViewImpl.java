@@ -88,15 +88,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         panel.setOverflow(Overflow.SCROLL);
 
         //
-        // CATEGORY SCHEME
-        //
-
-        mainFormLayout = new CategorySchemeMainFormLayout();
-        bindMainFormLayoutEvents();
-        createViewForm();
-        createEditionForm();
-
-        //
         // CATEGORY SCHEME VERSIONS
         //
 
@@ -110,6 +101,15 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             }
         });
 
+        //
+        // CATEGORY SCHEME
+        //
+
+        mainFormLayout = new CategorySchemeMainFormLayout();
+        bindMainFormLayoutEvents();
+        createViewForm();
+        createEditionForm();
+
         // CATEGORIES
 
         categoriesTreeGrid = new CategoriesTreeGrid();
@@ -119,8 +119,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         categoriesListGridLayout.addMember(new TitleLabel(getConstants().categories()));
         categoriesListGridLayout.addMember(categoriesTreeGrid);
 
-        panel.addMember(mainFormLayout);
         panel.addMember(versionsSectionStack);
+        panel.addMember(mainFormLayout);
         panel.addMember(categoriesListGridLayout);
     }
 

@@ -28,7 +28,7 @@ public class VersionsSectionStack extends SectionStack {
         setStyleName("versionSectionStackStyle");
 
         SectionStackSection section = new SectionStackSection(title);
-        section.setExpanded(false);
+        section.setExpanded(true);
 
         Canvas rollUnderCanvasProperties = new Canvas();
         rollUnderCanvasProperties.setAnimateFadeTime(600);

@@ -78,13 +78,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         super();
         panel = new VLayout();
 
-        // DSD
-
-        mainFormLayout = new DsdMainFormLayout();
-        bindMainFormLayoutEvents();
-        createViewForm();
-        createEditionForm();
-
         // Versions
 
         versionsSectionStack = new DsdVersionsSectionStack(getConstants().dsdVersions());
@@ -97,8 +90,15 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             }
         });
 
-        panel.addMember(mainFormLayout);
+        // DSD
+
+        mainFormLayout = new DsdMainFormLayout();
+        bindMainFormLayoutEvents();
+        createViewForm();
+        createEditionForm();
+
         panel.addMember(versionsSectionStack);
+        panel.addMember(mainFormLayout);
     }
 
     private void bindMainFormLayoutEvents() {

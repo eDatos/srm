@@ -114,15 +114,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         panel.setOverflow(Overflow.SCROLL);
 
         //
-        // ORGANISATION SCHEME
-        //
-
-        mainFormLayout = new OrganisationSchemeMainFormLayout();
-        bindMainFormLayoutEvents();
-        createViewForm();
-        createEditionForm();
-
-        //
         // ORGANISATION SCHEME VERSIONS
         //
 
@@ -136,6 +127,15 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 getUiHandlers().goToOrganisationScheme(urn, type);
             }
         });
+
+        //
+        // ORGANISATION SCHEME
+        //
+
+        mainFormLayout = new OrganisationSchemeMainFormLayout();
+        bindMainFormLayoutEvents();
+        createViewForm();
+        createEditionForm();
 
         //
         // ORGANISATIONS
@@ -234,8 +234,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         organisationsLayout.addMember(organisationListGrid);
         organisationsLayout.addMember(organisationsTreeGrid);
 
-        panel.addMember(mainFormLayout);
         panel.addMember(versionsSectionStack);
+        panel.addMember(mainFormLayout);
         panel.addMember(organisationsLayout);
     }
 

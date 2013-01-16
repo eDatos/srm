@@ -109,15 +109,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         panel.setOverflow(Overflow.SCROLL);
 
         //
-        // CONCEPT SCHEME
-        //
-
-        mainFormLayout = new ConceptSchemeMainFormLayout(ConceptsClientSecurityUtils.canUpdateConceptScheme());
-        bindMainFormLayoutEvents();
-        createViewForm();
-        createEditionForm();
-
-        //
         // CONCEPT SCHEME VERSIONS
         //
 
@@ -132,6 +123,15 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         });
 
         //
+        // CONCEPT SCHEME
+        //
+
+        mainFormLayout = new ConceptSchemeMainFormLayout(ConceptsClientSecurityUtils.canUpdateConceptScheme());
+        bindMainFormLayoutEvents();
+        createViewForm();
+        createEditionForm();
+
+        //
         // CONCEPTS
         //
 
@@ -142,8 +142,8 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGridLayout.addMember(new TitleLabel(getConstants().concepts()));
         conceptsListGridLayout.addMember(conceptsTreeGrid);
 
-        panel.addMember(mainFormLayout);
         panel.addMember(versionsSectionStack);
+        panel.addMember(mainFormLayout);
         panel.addMember(conceptsListGridLayout);
     }
 
