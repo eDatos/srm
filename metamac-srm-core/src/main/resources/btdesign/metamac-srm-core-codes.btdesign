@@ -221,7 +221,7 @@ Application CodesMetamac {
 			"Identifier"
 			String identifier not nullable;
 			"Name"
-			- @InternationalString name nullable cascade="all" databaseColumn="NAME_FK";
+			- @InternationalString name nullable cascade="all" fetch="lazy" databaseColumn="NAME_FK";
 			"Last update to optimistic locking"
 			DateTimeTZ updateDate nullable;
 			"Codes"
@@ -250,6 +250,9 @@ Application CodesMetamac {
 			
 			Repository CodeOrderVisualisationRepository {
 				save;
+				findByQuery(String query, Map<String, Object> parameters);
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				List<@CodeOrderVisualisation> findByCodeUrn(String codeUrn);
 			}	
 		}					
 

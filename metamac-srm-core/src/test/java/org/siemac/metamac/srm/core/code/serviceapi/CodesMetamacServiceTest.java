@@ -3488,6 +3488,80 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    public void testDeleteCodeCheckUpdateOrderVisualisation() throws Exception {
+        String urn = CODELIST_1_V2_CODE_3;
+        String codelistUrn = CODELIST_1_V2;
+
+        // Delete code
+        codesService.deleteCode(getServiceContextAdministrador(), urn);
+
+        // Validation
+        // Validate visualisation 01
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_01);
+            assertEquals(8, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(2), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+
+        // Validate visualisation 02
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_02);
+            assertEquals(8, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(2), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+    }
+
+    @Test
+    public void testDeleteCodeWithParentAndChildrenCheckUpdateOrderVisualisation() throws Exception {
+
+        String urn = CODELIST_1_V2_CODE_2_1;
+        String codelistUrn = CODELIST_1_V2;
+
+        // Delete code
+        codesService.deleteCode(getServiceContextAdministrador(), urn);
+
+        // Validate visualisation 01
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_01);
+            assertEquals(7, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // changed
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+
+        // Validate visualisation 02
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_02);
+            assertEquals(7, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before deleted code
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+    }
+
     private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationIdentifierExpected, List<CodelistOrderVisualisation> actuals) {
         for (CodelistOrderVisualisation actual : actuals) {
             if (actual.getIdentifier().equals(codelistOrderVisualisationIdentifierExpected)) {
