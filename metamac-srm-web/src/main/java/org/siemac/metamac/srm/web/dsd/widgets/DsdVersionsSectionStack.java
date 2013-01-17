@@ -5,7 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.web.client.widgets.VersionsSectionStack;
+import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 
@@ -13,7 +13,7 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
-public class DsdVersionsSectionStack extends VersionsSectionStack {
+public class DsdVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
     public DsdVersionsSectionStack(String title) {
         super(title);
@@ -46,5 +46,4 @@ public class DsdVersionsSectionStack extends VersionsSectionStack {
             listGrid.selectRecord(record);
         }
     }
-
 }

@@ -3,14 +3,14 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.widgets.VersionsSectionStack;
+import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.utils.RecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 
-public class OrganisationSchemeVersionsSectionStack extends VersionsSectionStack {
+public class OrganisationSchemeVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
     public OrganisationSchemeVersionsSectionStack(String title) {
         super(title);
@@ -31,5 +31,4 @@ public class OrganisationSchemeVersionsSectionStack extends VersionsSectionStack
             listGrid.selectRecord(record);
         }
     }
-
 }

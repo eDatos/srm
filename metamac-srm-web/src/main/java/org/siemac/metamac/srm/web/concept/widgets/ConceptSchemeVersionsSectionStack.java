@@ -3,14 +3,14 @@ package org.siemac.metamac.srm.web.concept.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.widgets.VersionsSectionStack;
+import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 
-public class ConceptSchemeVersionsSectionStack extends VersionsSectionStack {
+public class ConceptSchemeVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
     public ConceptSchemeVersionsSectionStack(String title) {
         super(title);
