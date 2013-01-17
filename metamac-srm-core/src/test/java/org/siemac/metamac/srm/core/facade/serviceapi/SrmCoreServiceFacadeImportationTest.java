@@ -180,6 +180,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_DSD_ECB_EXR_NG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -192,6 +193,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -204,6 +206,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_DSD_ECB_EXR_RG_FULL() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
@@ -216,6 +219,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_DSD_INE_DPOP() throws Exception {
         File file = null;
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;

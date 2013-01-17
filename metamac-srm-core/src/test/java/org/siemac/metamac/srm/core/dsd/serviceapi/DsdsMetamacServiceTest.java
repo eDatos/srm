@@ -8,10 +8,13 @@ import static org.junit.Assert.fail;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionMetamacDoMocks;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionsMetamacAsserts;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -43,6 +46,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
+
+    private static String                 DSD_06_URN     = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)";
 
     private final ServiceContext          serviceContext = new ServiceContext("system", "123456", "junit");
 
@@ -211,17 +216,54 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Test
     @Override
     public void testDeleteDataStructureDefinition() throws Exception {
-        // TODO Test dsd
-
+        // dsdsMetamacService.deleteDataStructureDefinition(getServiceContextAdministrador(), DSD_06_URN);
     }
 
     @Test
     @Override
     public void testVersioningDataStructureDefinition() throws Exception {
-        // TODO Test dsd
+        String urn = DSD_06_URN;
+        String versionExpected = "02.000";
+
+        DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
+        DataStructureDefinitionVersionMetamac dsdNewVersion = dsdsMetamacService.versioningDataStructureDefinition(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DRAFT, dsdNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, dsdNewVersion.getMaintainableArtefact().getVersionLogic());
+        }
+
+        {
+            // Metamac Metadata
+            assertEquals(dsdToCopy.getAutoOpen(), dsdNewVersion.getAutoOpen());
+            assertEquals(dsdToCopy.getShowDecimals(), dsdNewVersion.getShowDecimals());
+            assertEquals(dsdToCopy.getHeadingDimensions().size(), dsdNewVersion.getHeadingDimensions().size());
+            // heading
+            for (int i = 0; i < dsdToCopy.getHeadingDimensions().size(); i++) {
+                DimensionOrder dimOrderToCopy = dsdToCopy.getHeadingDimensions().get(i);
+                DimensionOrder dimOrderToNewVersion = dsdNewVersion.getHeadingDimensions().get(i);
+                assertEquals(dimOrderToCopy.getDimension().getCode(), dimOrderToNewVersion.getDimension().getCode());
+                assertEquals(dimOrderToCopy.getDimOrder(), dimOrderToNewVersion.getDimOrder());
+            }
+            // Stub
+            for (int i = 0; i < dsdToCopy.getStubDimensions().size(); i++) {
+                DimensionOrder dimOrderToCopy = dsdToCopy.getStubDimensions().get(i);
+                DimensionOrder dimOrderToNewVersion = dsdNewVersion.getStubDimensions().get(i);
+                assertEquals(dimOrderToCopy.getDimension().getCode(), dimOrderToNewVersion.getDimension().getCode());
+                assertEquals(dimOrderToCopy.getDimOrder(), dimOrderToNewVersion.getDimOrder());
+            }
+            // ShowDecimalsPrecisions
+            for (int i = 0; i < dsdToCopy.getShowDecimalsPrecisions().size(); i++) {
+                MeasureDimensionPrecision measureDimensionPrecisionToCopy = dsdToCopy.getShowDecimalsPrecisions().get(i);
+                MeasureDimensionPrecision measureDimensionPrecisionToNewVersion = dsdNewVersion.getShowDecimalsPrecisions().get(i);
+                assertEquals(measureDimensionPrecisionToCopy.getCode().getNameableArtefact().getUrn(), measureDimensionPrecisionToNewVersion.getCode().getNameableArtefact().getUrn());
+                assertEquals(measureDimensionPrecisionToCopy.getShowDecimalPrecision(), measureDimensionPrecisionToNewVersion.getShowDecimalPrecision());
+            }
+
+        }
 
     }
-
     @Test
     public void testVersioningDataStructureDefinitionErrorAlreadyExistsDraft() throws Exception {
         // TODO Test dsd

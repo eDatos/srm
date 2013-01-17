@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.core.dsd.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -20,6 +22,7 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoCopyUtils.StructureCopyCallback;
 
@@ -165,7 +170,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Validation
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = retrieveDataStructureDefinitionByUrn(ctx, urn);
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
-
+        dataStructureDefinitionVersion.removeAllHeadingDimensions();
+        dataStructureDefinitionVersion.removeAllStubDimensions();
+        dataStructureDefinitionVersion.removeAllShowDecimalsPrecisions();
+        // dataStructureDefinitionVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        // dataStructureDefinitionService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
         // Delete
         dataStructureDefinitionService.deleteDataStructureDefinition(ctx, urn);
     }
@@ -176,10 +185,44 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null, null);
         checkDataStructureDefinitionVersioning(ctx, urnToCopy);
 
-        // Versioning
-        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
-    }
+        // ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
+        // ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
 
+        // Versioning
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
+                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
+
+        // Versioning heading and stub (metadata of Metamac). Note: other relations are copied in copy callback
+        // Map of new dimension
+        Map<String, Component> dimensionOrderMap = new HashMap<String, Component>();
+        for (ComponentList componentList : dataStructureDefinitionVersionMetamacNewVersion.getGrouping()) {
+            if (componentList instanceof DimensionDescriptor) {
+                for (Component component : componentList.getComponents()) {
+                    dimensionOrderMap.put(component.getCode(), component);
+                }
+                break;
+            }
+        }
+        // Heading
+        for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getHeadingDimensions()) {
+            DimensionComponent targetDimension = (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
+            DimensionOrder targetDimensionOrder = new DimensionOrder();
+            targetDimensionOrder.setDimension(targetDimension);
+            targetDimensionOrder.setDimOrder(dimensionOrder.getDimOrder());
+            dataStructureDefinitionVersionMetamacNewVersion.addHeadingDimension(targetDimensionOrder);
+        }
+        // Stub
+        for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getStubDimensions()) {
+            DimensionComponent targetDimension = (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
+            DimensionOrder targetDimensionOrder = new DimensionOrder();
+            targetDimensionOrder.setDimension(targetDimension);
+            targetDimensionOrder.setDimOrder(dimensionOrder.getDimOrder());
+            dataStructureDefinitionVersionMetamacNewVersion.addStubDimension(targetDimensionOrder);
+        }
+
+        return dataStructureDefinitionVersionMetamacNewVersion;
+    }
     @Override
     public DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.sendToProductionValidation(ctx, urn);

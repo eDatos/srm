@@ -142,6 +142,8 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
         
+        RELATE_TO="[null]"
+        
         CONCEPT_IDENTITY_FK="[null]"
         REPRESENTATION_FK="[null]"
     />
@@ -1233,7 +1235,7 @@
     
     <!-- ************************************************************************************** -->
     <!-- DATASTRUCTUREDEFINITION 6                                                              -->
-    <!--       - Version 1: no final                                                            -->
+    <!--       - Version 1: final                                                            -->
     <!-- *************************************************************************************  -->        
         
     <TB_STRUCTURES
@@ -1302,7 +1304,7 @@
         COMMENT_FK="[null]"
         
         VERSION_LOGIC="01.000"
-        FINAL_LOGIC="0"
+        FINAL_LOGIC="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
@@ -1451,7 +1453,7 @@
         ID="615"
         ANNOTABLE_ARTEFACT_TYPE="TimeDimension"
         
-        CODE="timeDimension-01"
+        CODE="TIME_PERIOD"
         URI_PROVIDER="[null]"
         URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01"
         URN="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01"
@@ -1563,6 +1565,8 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
         
+        RELATE_TO="61"
+        
         CONCEPT_IDENTITY_FK="6"
         REPRESENTATION_FK="[NULL]"
     />
@@ -1609,7 +1613,7 @@
         ID="619"
         ANNOTABLE_ARTEFACT_TYPE="PrimaryMeasure"
         
-        CODE="primaryMeasure-01"
+        CODE="OBS_VALUE"
         URI_PROVIDER="[null]"
         URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=SDMX01:DATASTRUCTUREDEFINITION06(01.000).primaryMeasure-01"
         URN="urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=SDMX01:DATASTRUCTUREDEFINITION06(01.000).primaryMeasure-01"
