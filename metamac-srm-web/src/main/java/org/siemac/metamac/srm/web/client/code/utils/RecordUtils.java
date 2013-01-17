@@ -5,11 +5,13 @@ import static org.siemac.metamac.web.common.client.utils.InternationalStringUtil
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.client.code.model.record.CodeRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistFamilyRecord;
+import org.siemac.metamac.srm.web.client.code.model.record.CodelistOrderRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableFamilyRecord;
@@ -60,6 +62,13 @@ public class RecordUtils {
     public static VariableElementRecord getVariableElementRecord(VariableElementDto variableElementDto) {
         VariableElementRecord record = new VariableElementRecord(variableElementDto.getId(), variableElementDto.getCode(), getLocalisedString(variableElementDto.getName()),
                 variableElementDto.getUrn(), variableElementDto);
+        return record;
+    }
+
+    // CODELIST ORDERS
+
+    public static CodelistOrderRecord getCodelistOrderRecord(CodelistOrderVisualisationDto variableElementDto) {
+        CodelistOrderRecord record = new CodelistOrderRecord(variableElementDto.getIdentifier(), getLocalisedString(variableElementDto.getName()), variableElementDto);
         return record;
     }
 }

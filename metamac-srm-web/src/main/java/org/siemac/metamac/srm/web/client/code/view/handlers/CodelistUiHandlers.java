@@ -1,7 +1,10 @@
 package org.siemac.metamac.srm.web.client.code.view.handlers;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
 public interface CodelistUiHandlers extends BaseCodeUiHandlers {
@@ -11,11 +14,16 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void saveCodelist(CodelistMetamacDto codelist);
     void cancelValidity(String urn);
     void goToCodelist(String urn);
-    void retrieveCodesByCodelist(String codelistUrn);
 
     void retrieveFamilies(int firstResult, int maxResults, String criteria);
     void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria);
     void retrieveVariables(int firstResult, int maxResults, String criteria);
+
+    // Codes
+    void retrieveCodesByCodelist(String orderIdentifier);
+    void retrieveCodelistOrders(String codelistUrn);
+    void saveCodelistOrder(CodelistOrderVisualisationDto codelistOrderVisualisationDto);
+    void deleteCodelistOrders(List<String> orderIdentifiers);
 
     // Life cycle
 

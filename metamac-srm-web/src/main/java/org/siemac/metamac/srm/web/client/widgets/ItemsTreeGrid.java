@@ -53,6 +53,7 @@ public abstract class ItemsTreeGrid extends TreeGrid {
     private HandlerRegistration   filterEditionHandler;
 
     public ItemsTreeGrid() {
+        setHeight(175);
         setAutoFitMaxRecords(10);
         setAutoFitData(Autofit.VERTICAL);
 

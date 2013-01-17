@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
@@ -144,7 +145,8 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void retrieveCodesByCodelist(String codelistUrn) {
-        dispatcher.execute(new GetCodesByCodelistAction(codelistUrn), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+        // TODO Specify the order!
+        dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, null), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -152,7 +154,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             }
             @Override
             public void onWaitSuccess(GetCodesByCodelistResult result) {
-                final List<ItemHierarchyDto> itemHierarchyDtos = result.getItemHierarchyDtos();
+                final List<ItemHierarchyDto> itemHierarchyDtos = CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos());
                 dispatcher.execute(new GetCodelistAction(CodePresenter.this.codelistUrn), new WaitingAsyncCallback<GetCodelistResult>() {
 
                     @Override

@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.code.model.ds.CodelistDS;
@@ -22,6 +23,7 @@ import org.siemac.metamac.srm.web.client.code.widgets.CodelistVersionsSectionSta
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.client.code.widgets.VersionCodelistWindow;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CodelistOrdersSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
@@ -64,6 +66,7 @@ import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
@@ -89,13 +92,16 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private GroupDynamicForm                    commentsEditionForm;
     private AnnotationsPanel                    annotationsEditionPanel;
 
-    private CodesTreeGrid                       codesTreeGrid;
-
-    private CodelistVersionsSectionStack        versionsSectionStack;
-
     private SearchRelatedResourceWindow         searchFamilyWindow;
     private SearchRelatedResourceWindow         searchVariableWindow;
     private SearchMultipleRelatedResourceWindow searchReplaceToCodelistsWindow;
+
+    // Versions
+    private CodelistVersionsSectionStack        versionsSectionStack;
+
+    // Codes
+    private CodelistOrdersSectionStack          codelistOrdersSectionStack;
+    private CodesTreeGrid                       codesTreeGrid;
 
     private CodelistMetamacDto                  codelistDto;
 
@@ -133,16 +139,23 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // CODES
         //
 
+        codelistOrdersSectionStack = new CodelistOrdersSectionStack();
+
         codesTreeGrid = new CodesTreeGrid();
 
-        VLayout codesListGridLayout = new VLayout();
-        codesListGridLayout.setMargin(15);
-        codesListGridLayout.addMember(new TitleLabel(getConstants().codes()));
-        codesListGridLayout.addMember(codesTreeGrid);
+        HLayout codesHLayout = new HLayout();
+        codesHLayout.setMembersMargin(10);
+        codesHLayout.addMember(codelistOrdersSectionStack);
+        codesHLayout.addMember(codesTreeGrid);
+
+        VLayout codesLayout = new VLayout();
+        codesLayout.setMargin(15);
+        codesLayout.addMember(new TitleLabel(getConstants().codes()));
+        codesLayout.addMember(codesHLayout);
 
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
-        panel.addMember(codesListGridLayout);
+        panel.addMember(codesLayout);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -303,6 +316,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         this.codesTreeGrid.setUiHandlers(uiHandlers);
+        this.codelistOrdersSectionStack.setUiHandlers(uiHandlers);
     }
 
     @Override
@@ -332,6 +346,17 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     public void setCodelistVersions(List<CodelistMetamacDto> codelistDtos) {
         versionsSectionStack.setCodelists(codelistDtos);
         versionsSectionStack.selectCodelist(codelistDto);
+    }
+
+    @Override
+    public void setCodelistOrders(List<CodelistOrderVisualisationDto> orders) {
+        codelistOrdersSectionStack.setCodelistOrders(orders);
+    }
+
+    @Override
+    public void selectCodelistOrder(String codelistOrderIdentifier) {
+        // TODO decide what to do with the default order
+        codelistOrdersSectionStack.selectCodelistOrder(codelistOrderIdentifier);
     }
 
     @Override

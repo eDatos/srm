@@ -5,12 +5,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.code.model.record.CodelistOrderRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableRecord;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CommonUtils {
@@ -58,5 +61,22 @@ public class CommonUtils {
             urns.add(variableRecord.getUrn());
         }
         return urns;
+    }
+
+    public static List<String> getUrnsFromSelectedCodelistOrders(ListGridRecord[] records) {
+        List<String> urns = new ArrayList<String>();
+        for (ListGridRecord record : records) {
+            CodelistOrderRecord codelistRecord = (CodelistOrderRecord) record;
+            urns.add(codelistRecord.getCode());
+        }
+        return urns;
+    }
+
+    public static List<ItemHierarchyDto> getItemHierarchyDtosFromCodeHierarchyDtos(List<CodeHierarchyDto> codeHierarchyDtos) {
+        List<ItemHierarchyDto> itemHierarchyDtos = new ArrayList<ItemHierarchyDto>();
+        for (CodeHierarchyDto codeHierarchyDto : codeHierarchyDtos) {
+            itemHierarchyDtos.add(codeHierarchyDto);
+        }
+        return itemHierarchyDtos;
     }
 }
