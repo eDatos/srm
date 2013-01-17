@@ -24,6 +24,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void retrieveCodelistOrders(String codelistUrn);
     void saveCodelistOrder(CodelistOrderVisualisationDto codelistOrderVisualisationDto);
     void deleteCodelistOrders(List<String> orderIdentifiers);
+    void updateCodeInOrder(String codeUrn, String codelistOrderIdentifier, Long newCodeIndex);
 
     // Life cycle
 

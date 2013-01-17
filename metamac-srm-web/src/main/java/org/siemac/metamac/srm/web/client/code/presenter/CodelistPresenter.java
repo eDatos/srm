@@ -50,6 +50,8 @@ import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusResult;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
@@ -107,7 +109,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
         void setCodelist(CodelistMetamacDto codelistMetamacDto);
         void setCodelistVersions(List<CodelistMetamacDto> codelistMetamacDtos);
-        void setCodes(List<ItemHierarchyDto> codeDtos);
+        void setCodes(List<ItemHierarchyDto> codeDtos, CodelistOrderVisualisationDto codelistOrder);
         void setCodelistOrders(List<CodelistOrderVisualisationDto> orders);
         void selectCodelistOrder(String codelistOrderIdentifier);
 
@@ -291,7 +293,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(GetCodesByCodelistResult result) {
-                getView().setCodes(CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos()));
+                getView().setCodes(CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos()), result.getCodelistOrderVisualisationDto());
                 getView().selectCodelistOrder(orderIdentifier);
             }
         });
@@ -494,6 +496,21 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(DeleteCodelistOrdersResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistOrderDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveCodelistOrders(codelistMetamacDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void updateCodeInOrder(String codeUrn, final String codelistOrderIdentifier, Long newCodeIndex) {
+        dispatcher.execute(new UpdateCodeInOrderAction(codeUrn, codelistOrderIdentifier, newCodeIndex), new WaitingAsyncCallback<UpdateCodeInOrderResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingOrder()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateCodeInOrderResult result) {
+                retrieveCodesByCodelist(codelistOrderIdentifier);
             }
         });
     }

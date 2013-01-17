@@ -55,8 +55,10 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -101,6 +103,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     // Codes
     private CodelistOrdersSectionStack          codelistOrdersSectionStack;
+    private VLayout                             codesTreeGridLayout;
+    private Label                               codesTreeGridTitle;
     private CodesTreeGrid                       codesTreeGrid;
 
     private CodelistMetamacDto                  codelistDto;
@@ -143,10 +147,19 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         codesTreeGrid = new CodesTreeGrid();
 
+        codesTreeGridLayout = new VLayout();
+        codesTreeGridTitle = new Label();
+        codesTreeGridTitle.setAlign(Alignment.LEFT);
+        codesTreeGridTitle.setOverflow(Overflow.HIDDEN);
+        codesTreeGridTitle.setHeight(25);
+        codesTreeGridTitle.setStyleName("subsectionTitle");
+        codesTreeGridLayout.addMember(codesTreeGridTitle);
+        codesTreeGridLayout.addMember(codesTreeGrid);
+
         HLayout codesHLayout = new HLayout();
         codesHLayout.setMembersMargin(10);
         codesHLayout.addMember(codelistOrdersSectionStack);
-        codesHLayout.addMember(codesTreeGrid);
+        codesHLayout.addMember(codesTreeGridLayout);
 
         VLayout codesLayout = new VLayout();
         codesLayout.setMargin(15);
@@ -338,8 +351,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
-    public void setCodes(List<ItemHierarchyDto> itemHierarchyDtos) {
+    public void setCodes(List<ItemHierarchyDto> itemHierarchyDtos, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+        codesTreeGridTitle.setContents(CommonUtils.getCodelistOrderVisualisationName(codelistOrderVisualisationDto));
         codesTreeGrid.setItems(codelistDto, itemHierarchyDtos);
+        codesTreeGridLayout.markForRedraw();
     }
 
     @Override

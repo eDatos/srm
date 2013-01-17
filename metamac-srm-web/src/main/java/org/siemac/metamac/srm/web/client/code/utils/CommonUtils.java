@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistOrderRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableRecord;
+import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -78,5 +80,9 @@ public class CommonUtils {
             itemHierarchyDtos.add(codeHierarchyDto);
         }
         return itemHierarchyDtos;
+    }
+
+    public static String getCodelistOrderVisualisationName(CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+        return codelistOrderVisualisationDto != null ? CommonWebUtils.getElementName(codelistOrderVisualisationDto.getIdentifier(), codelistOrderVisualisationDto.getName()) : StringUtils.EMPTY;
     }
 }
