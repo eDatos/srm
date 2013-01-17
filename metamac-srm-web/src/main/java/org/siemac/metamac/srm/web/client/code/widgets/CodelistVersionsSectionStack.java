@@ -5,12 +5,12 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.client.code.utils.RecordUtils;
-import org.siemac.metamac.srm.web.client.widgets.VersionsSectionStack;
+import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 
-public class CodelistVersionsSectionStack extends VersionsSectionStack {
+public class CodelistVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
     public CodelistVersionsSectionStack(String title) {
         super(title);
