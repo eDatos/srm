@@ -69,6 +69,8 @@ Application CodesMetamac {
 			@CodeMetamac createCode(String codelistUrn, @CodeMetamac code) throws MetamacException;
 			"Updates code"
 			@CodeMetamac updateCode(@CodeMetamac code) throws MetamacException;
+			"Updates parent of code. parentUrn is null when code is moved to first level. Code is moved at the end of new level"
+			updateCodeParent(String codeUrn, String newParentUrn) throws MetamacException;
 			"Updates position of code to visualisation requested"
 			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationIdentifier, Long newCodeIndex) throws MetamacException;
     		"Retrieves code by urn"

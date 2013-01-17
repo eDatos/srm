@@ -40,6 +40,7 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.base.utils.BaseServiceTestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -70,6 +71,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
@@ -3557,6 +3559,181 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
             assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before deleted code
             assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+    }
+
+    @Override
+    public void testUpdateCodeParent() throws Exception {
+        // in other tests 'testUpdateCodeParent*'
+    }
+
+    @Test
+    public void testUpdateCodeParentSourceWithParentTargetWithoutParent() throws Exception {
+
+        String codelistUrn = CODELIST_1_V2;
+        String codeUrn = CODELIST_1_V2_CODE_2_1;
+        String newParentUrn = null; // first level
+
+        Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertNotNull(code.getParent());
+        assertNull(code.getItemSchemeVersionFirstLevel());
+
+        codesService.updateCodeParent(getServiceContextAdministrador(), codeUrn, newParentUrn);
+
+        // Validate new parent
+        code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertNull(code.getParent());
+        assertEquals(code.getItemSchemeVersion().getMaintainableArtefact().getUrn(), code.getItemSchemeVersionFirstLevel().getMaintainableArtefact().getUrn());
+
+        // Validate hierarchy
+        CodelistVersion codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(5, codelistVersion.getItemsFirstLevel().size());
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_1);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_2);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_3);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_4);
+        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_2_1);
+
+        // Validate visualisation 01
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_01);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // changed (up)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(4), visualisation.getCodes()); // changed (change level, put at the end)
+        }
+
+        // Validate visualisation 02
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_02);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(4), visualisation.getCodes()); // changed (change level, put at the end)
+        }
+    }
+
+    @Test
+    public void testUpdateCodeParentSourceWithParentTargetWithParent() throws Exception {
+
+        String codelistUrn = CODELIST_1_V2;
+        String codeUrn = CODELIST_1_V2_CODE_2_1;
+        String newParentUrn = CODELIST_1_V2_CODE_4;
+
+        Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertNotNull(code.getParent());
+        assertNull(code.getItemSchemeVersionFirstLevel());
+
+        codesService.updateCodeParent(getServiceContextAdministrador(), codeUrn, newParentUrn);
+
+        // Validate new parent
+        code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(newParentUrn, code.getParent().getNameableArtefact().getUrn());
+        assertNull(code.getItemSchemeVersionFirstLevel());
+
+        // Validate hierarchy
+        CodelistVersion codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(4, codelistVersion.getItemsFirstLevel().size());
+        // new parent
+        Item newParent = BaseServiceTestUtils.getItemFromList(codelistVersion.getItems(), newParentUrn);
+        assertEquals(2, newParent.getChildren().size());
+        assertListItemsContainsItem(newParent.getChildren(), codeUrn);
+
+        // Validate visualisation 01
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_01);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // changed (up)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes()); // changed (change level, put at the end)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+
+        // Validate visualisation 02
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_02);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes()); // changed (change level, put at the end)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+    }
+
+    @Test
+    public void testUpdateCodeParentSourceWithoutParentTargetWithoutParent() throws Exception {
+
+        String codelistUrn = CODELIST_1_V2;
+        String codeUrn = CODELIST_1_V2_CODE_1;
+        String newParentUrn = CODELIST_1_V2_CODE_2;
+
+        Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertNull(code.getParent());
+        assertNotNull(code.getItemSchemeVersionFirstLevel());
+
+        codesService.updateCodeParent(getServiceContextAdministrador(), codeUrn, newParentUrn);
+
+        // Validate new parent
+        code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(newParentUrn, code.getParent().getNameableArtefact().getUrn());
+        assertNull(code.getItemSchemeVersionFirstLevel());
+
+        // Validate hierarchy
+        CodelistVersion codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        Item newParent = BaseServiceTestUtils.getItemFromList(codelistVersion.getItems(), newParentUrn);
+        assertEquals(3, newParent.getChildren().size());
+        assertListItemsContainsItem(newParent.getChildren(), codeUrn);
+
+        // Validate visualisation 01
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_01);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(0), visualisation.getCodes()); // changed (up)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), visualisation.getCodes()); // in same position, due to it is before moved code
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(2), visualisation.getCodes()); // changed (change level, put at the end)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(1), visualisation.getCodes()); // changed (up)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(2), visualisation.getCodes()); // changed (up)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+        }
+
+        // Validate visualisation 02
+        {
+            CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByIdentifier(getServiceContextAdministrador(), codelistUrn, CODELIST_1_V2_ORDER_VISUALISATION_02);
+            assertEquals(9, visualisation.getCodes().size());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes()); // changed (up)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes()); // in same position, due to it is before moved code
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(2), visualisation.getCodes()); // changed (change level, put at the end)
+            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(2), visualisation.getCodes()); // changed (up)
             assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
             assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
         }

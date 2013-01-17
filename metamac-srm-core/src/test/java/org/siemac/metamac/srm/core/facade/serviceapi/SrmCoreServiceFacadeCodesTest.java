@@ -797,6 +797,38 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     @Test
+    public void testUpdateCodeParentSourceWithParentTargetWithoutParent() throws Exception {
+
+        String codeUrn = CODELIST_1_V2_CODE_2_1;
+        String newParentUrn = null; // first level
+
+        CodeMetamacDto code = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(CODELIST_1_V2_CODE_2, code.getItemParentUrn());
+
+        srmCoreServiceFacade.updateCodeParent(getServiceContextAdministrador(), codeUrn, newParentUrn);
+
+        // Validate new parent
+        code = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertNull(code.getItemParentUrn());
+    }
+
+    @Test
+    public void testUpdateCodeParentSourceWithParentTargetWithParent() throws Exception {
+
+        String codeUrn = CODELIST_1_V2_CODE_2_1;
+        String newParentUrn = CODELIST_1_V2_CODE_4;
+
+        CodeMetamacDto code = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(CODELIST_1_V2_CODE_2, code.getItemParentUrn());
+
+        srmCoreServiceFacade.updateCodeParent(getServiceContextAdministrador(), codeUrn, newParentUrn);
+
+        // Validate new parent
+        code = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(newParentUrn, code.getItemParentUrn());
+    }
+
+    @Test
     public void testRetrieveCodeByUrn() throws Exception {
         CodeMetamacDto codeMetamacDto = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
 

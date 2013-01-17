@@ -778,6 +778,16 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public void updateCodeParent(ServiceContext ctx, String codeUrn, String newParentUrn) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
+        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Update order
+        getCodesMetamacService().updateCodeParent(ctx, codeUrn, newParentUrn);
+    }
+
+    @Override
     public void updateCodeInOrderVisualisation(ServiceContext ctx, String codeUrn, String codelistOrderVisualisationIdentifier, Long newCodeIndex) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);

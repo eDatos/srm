@@ -88,6 +88,29 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkUpdateCodeParent(String codeUrn, String newParentUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
+        // newParentUrn is optional. When it is null, move to first level
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationIdentifier, Long newCodeIndex, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(codelistOrderVisualisationIdentifier, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_IDENTIFIER, exceptions);
+        ValidationUtils.checkParameterRequired(newCodeIndex, ServiceExceptionParameters.CODE_ORDER_VISUALISATION_INDEX, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     private static void checkCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, List<MetamacExceptionItem> exceptions) {
         if (code.getVariableElement() != null) {
             ValidationUtils.checkMetadataEmpty(code.getShortName(), ServiceExceptionParameters.CODE_SHORT_NAME, exceptions);
