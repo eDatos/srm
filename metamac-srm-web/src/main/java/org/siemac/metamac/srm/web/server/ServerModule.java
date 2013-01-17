@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.CancelCodelistValidityAct
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistOrdersActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariableElementsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariableFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariablesActionHandler;
@@ -31,6 +32,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistFamilyActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistOrdersActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodesByCodelistActionHandler;
@@ -45,6 +47,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.RemoveVariablesFromVariab
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistFamilyActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistOrderActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveVariableActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveVariableElementActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveVariableFamilyActionHandler;
@@ -120,6 +123,7 @@ import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesAction;
@@ -127,6 +131,7 @@ import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
@@ -141,6 +146,7 @@ import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyA
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyAction;
+import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyAction;
@@ -323,6 +329,9 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteVariableElementsAction.class, DeleteVariableElementsActionHandler.class);
         bindHandler(GetVariableElementsAction.class, GetVariableElementsActionHandler.class);
         bindHandler(AddVariableElementsToVariableAction.class, AddVariableElementsToVariableActionHandler.class);
+        bindHandler(GetCodelistOrdersAction.class, GetCodelistOrdersActionHandler.class);
+        bindHandler(DeleteCodelistOrdersAction.class, DeleteCodelistOrdersActionHandler.class);
+        bindHandler(SaveCodelistOrderAction.class, SaveCodelistOrderActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
