@@ -5,12 +5,12 @@ import java.util.List;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.client.category.utils.RecordUtils;
-import org.siemac.metamac.srm.web.client.widgets.VersionsSectionStack;
+import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 
-public class CategorySchemeVersionsSectionStack extends VersionsSectionStack {
+public class CategorySchemeVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
     public CategorySchemeVersionsSectionStack(String title) {
         super(title);
@@ -31,5 +31,4 @@ public class CategorySchemeVersionsSectionStack extends VersionsSectionStack {
             listGrid.selectRecord(record);
         }
     }
-
 }
