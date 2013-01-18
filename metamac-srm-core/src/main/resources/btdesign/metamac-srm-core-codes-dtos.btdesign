@@ -29,7 +29,7 @@ Application DtosMetamacCodeDomain {
 			"Variable"
 			- @RelatedResourceDto variable nullable;
 			"Default order visualisation"
-			String defaultOrderVisualisationIdentifier nullable;
+			- @RelatedResourceDto defaultOrderVisualisation nullable;
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}
