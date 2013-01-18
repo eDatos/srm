@@ -25,8 +25,8 @@ public class DeleteCodelistOrdersActionHandler extends SecurityActionHandler<Del
     @Override
     public DeleteCodelistOrdersResult executeSecurityAction(DeleteCodelistOrdersAction action) throws ActionException {
         try {
-            for (String orderIdentifier : action.getOrderIdentifiers()) {
-                srmCoreServiceFacade.deleteCodelistOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(), orderIdentifier);
+            for (String orderUrn : action.getOrderUrns()) {
+                srmCoreServiceFacade.deleteCodelistOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), orderUrn);
             }
             return new DeleteCodelistOrdersResult();
         } catch (MetamacException e) {

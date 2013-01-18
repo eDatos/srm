@@ -9,8 +9,5 @@ import com.gwtplatform.dispatch.annotation.In;
 public class DeleteCodelistOrders {
 
     @In(1)
-    String       codelistUrn;
-
-    @In(2)
-    List<String> orderIdentifiers;
+    List<String> orderUrns;
 }
