@@ -370,8 +370,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
-    public void selectCodelistOrder(String codelistOrderIdentifier) {
-        codelistOrdersSectionStack.selectCodelistOrder(codelistOrderIdentifier);
+    public void selectCodelistOrder(String codelistOrderUrn) {
+        codelistOrdersSectionStack.selectCodelistOrder(codelistOrderUrn);
     }
 
     @Override

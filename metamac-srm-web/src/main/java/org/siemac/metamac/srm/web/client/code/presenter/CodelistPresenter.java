@@ -93,7 +93,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     private final PlaceManager            placeManager;
 
     private CodelistMetamacDto            codelistMetamacDto;
-    private String                        codelistOrderVisualisationIdentifier;
+    private String                        codelistOrderVisualisationUrn;
 
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
@@ -114,7 +114,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setCodelistVersions(List<CodelistMetamacDto> codelistMetamacDtos);
         void setCodes(List<ItemHierarchyDto> codeDtos, CodelistOrderVisualisationDto codelistOrder);
         void setCodelistOrders(List<CodelistOrderVisualisationDto> orders);
-        void selectCodelistOrder(String codelistOrderIdentifier);
+        void selectCodelistOrder(String codelistOrderUrn);
 
         void setFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
         void setVariables(GetVariablesResult result);
@@ -216,7 +216,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(SaveCodeResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveCodelistByUrn(codelistMetamacDto.getUrn(), codelistOrderVisualisationIdentifier);
+                retrieveCodelistByUrn(codelistMetamacDto.getUrn(), codelistOrderVisualisationUrn);
             }
         });
     }
@@ -231,7 +231,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(DeleteCodeResult result) {
-                retrieveCodesByCodelist(codelistOrderVisualisationIdentifier);
+                retrieveCodesByCodelist(codelistOrderVisualisationUrn);
             }
         });
     }
@@ -285,14 +285,14 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(CancelCodelistValidityResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveCodelistByUrn(urn, codelistOrderVisualisationIdentifier);
+                retrieveCodelistByUrn(urn, codelistOrderVisualisationUrn);
             }
         });
     }
 
     @Override
-    public void retrieveCodesByCodelist(final String orderIdentifier) {
-        dispatcher.execute(new GetCodesByCodelistAction(codelistMetamacDto.getUrn(), orderIdentifier), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+    public void retrieveCodesByCodelist(final String orderUrn) {
+        dispatcher.execute(new GetCodesByCodelistAction(codelistMetamacDto.getUrn(), orderUrn), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -300,9 +300,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(GetCodesByCodelistResult result) {
-                codelistOrderVisualisationIdentifier = result.getCodelistOrderVisualisationDto() != null ? result.getCodelistOrderVisualisationDto().getIdentifier() : null;
+                codelistOrderVisualisationUrn = result.getCodelistOrderVisualisationDto() != null ? result.getCodelistOrderVisualisationDto().getUrn() : null;
                 getView().setCodes(CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos()), result.getCodelistOrderVisualisationDto());
-                getView().selectCodelistOrder(orderIdentifier);
+                getView().selectCodelistOrder(orderUrn);
             }
         });
     }
@@ -404,7 +404,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(VersionCodelistResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistVersioned()), MessageTypeEnum.SUCCESS);
                 codelistMetamacDto = result.getCodelistMetamacDto();
-                retrieveCodelistByUrn(codelistMetamacDto.getUrn(), codelistOrderVisualisationIdentifier);
+                retrieveCodelistByUrn(codelistMetamacDto.getUrn(), codelistOrderVisualisationUrn);
 
                 // Update URL
                 PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
@@ -493,8 +493,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void deleteCodelistOrders(List<String> orderIdentifiers) {
-        dispatcher.execute(new DeleteCodelistOrdersAction(codelistMetamacDto.getUrn(), orderIdentifiers), new WaitingAsyncCallback<DeleteCodelistOrdersResult>() {
+    public void deleteCodelistOrders(List<String> orderUrns) {
+        dispatcher.execute(new DeleteCodelistOrdersAction(orderUrns), new WaitingAsyncCallback<DeleteCodelistOrdersResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -509,8 +509,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void updateCodeInOrder(String codeUrn, final String codelistOrderIdentifier, Long newCodeIndex) {
-        dispatcher.execute(new UpdateCodeInOrderAction(codeUrn, codelistOrderIdentifier, newCodeIndex), new WaitingAsyncCallback<UpdateCodeInOrderResult>() {
+    public void updateCodeInOrder(String codeUrn, final String codelistOrderUrn, Long newCodeIndex) {
+        dispatcher.execute(new UpdateCodeInOrderAction(codeUrn, codelistOrderUrn, newCodeIndex), new WaitingAsyncCallback<UpdateCodeInOrderResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -518,13 +518,13 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(UpdateCodeInOrderResult result) {
-                retrieveCodesByCodelist(codelistOrderIdentifier);
+                retrieveCodesByCodelist(codelistOrderUrn);
             }
         });
     }
 
     @Override
-    public void updateCodeParent(String codeUrn, String newParentUrn, final String codelistOrderIdentifier) {
+    public void updateCodeParent(String codeUrn, String newParentUrn, final String codelistOrderUrn) {
         dispatcher.execute(new UpdateCodeParentAction(codeUrn, newParentUrn), new WaitingAsyncCallback<UpdateCodeParentResult>() {
 
             @Override
@@ -533,7 +533,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(UpdateCodeParentResult result) {
-                retrieveCodesByCodelist(codelistOrderIdentifier);
+                retrieveCodesByCodelist(codelistOrderUrn);
             }
         });
     }
