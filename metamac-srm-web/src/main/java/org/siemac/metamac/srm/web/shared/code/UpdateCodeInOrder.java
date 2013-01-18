@@ -10,7 +10,7 @@ public class UpdateCodeInOrder {
     String codeUrn;
 
     @In(2)
-    String codelistOrderIdentifier;
+    String codelistOrderUrn;
 
     @In(3)
     Long   newCodeIndex;

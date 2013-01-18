@@ -25,7 +25,7 @@ public class UpdateCodeInOrderActionHandler extends SecurityActionHandler<Update
     @Override
     public UpdateCodeInOrderResult executeSecurityAction(UpdateCodeInOrderAction action) throws ActionException {
         try {
-            srmCoreServiceFacade.updateCodeInOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), action.getCodeUrn(), action.getCodelistOrderIdentifier(), action.getNewCodeIndex());
+            srmCoreServiceFacade.updateCodeInOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), action.getCodeUrn(), action.getCodelistOrderUrn(), action.getNewCodeIndex());
             return new UpdateCodeInOrderResult();
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
