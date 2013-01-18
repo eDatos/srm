@@ -35,9 +35,7 @@ public class GetCodesByCodelistActionHandler extends SecurityActionHandler<GetCo
 
             // Order
             CodelistOrderVisualisationDto codelistOrderVisualisationDto = null;
-            if (action.getCodelistOrderIdentifier() == null) {
-                // TODO Default codelist order
-            } else {
+            if (action.getCodelistOrderIdentifier() != null) {
                 codelistOrderVisualisationDto = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByIdentifier(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(),
                         action.getCodelistOrderIdentifier());
             }

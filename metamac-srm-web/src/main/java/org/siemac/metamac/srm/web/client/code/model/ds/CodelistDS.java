@@ -13,4 +13,5 @@ public class CodelistDS extends ItemSchemeDS {
     public static final String REPLACE_TO_CODELISTS = "cl-replaced-to";
     public static final String VARIABLE             = "cl-variable";
     public static final String VARIABLE_VIEW        = "cl-variable-view";
+    public static final String DEFAULT_ORDER        = "cl-def-order";
 }

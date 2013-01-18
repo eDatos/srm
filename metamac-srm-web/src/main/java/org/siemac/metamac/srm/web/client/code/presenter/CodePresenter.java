@@ -31,6 +31,10 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderResult;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -221,6 +225,36 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
                 getView().setVariableElements(result);
+            }
+        });
+    }
+
+    @Override
+    public void updateCodeInOrder(String codeUrn, final String codelistOrderIdentifier, Long newCodeIndex) {
+        dispatcher.execute(new UpdateCodeInOrderAction(codeUrn, codelistOrderIdentifier, newCodeIndex), new WaitingAsyncCallback<UpdateCodeInOrderResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingPosition()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateCodeInOrderResult result) {
+                // TODO retrieveCodesByCodelist(codelistOrderIdentifier);
+            }
+        });
+    }
+
+    @Override
+    public void updateCodeParent(String codeUrn, String newParentUrn, final String codelistOrderIdentifier) {
+        dispatcher.execute(new UpdateCodeParentAction(codeUrn, newParentUrn), new WaitingAsyncCallback<UpdateCodeParentResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingPosition()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateCodeParentResult result) {
+                // TODO retrieveCodesByCodelist(codelistOrderIdentifier);
             }
         });
     }

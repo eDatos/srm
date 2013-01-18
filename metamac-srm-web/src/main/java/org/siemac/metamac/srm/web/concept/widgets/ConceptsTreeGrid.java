@@ -170,12 +170,13 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    protected TreeNode createItemTreeNode(ItemHierarchyDto itemHierarchyDto) {
+    protected TreeNode createItemTreeNode(ItemHierarchyDto itemHierarchyDto, String itemParentUrn) {
         TreeNode node = new TreeNode(itemHierarchyDto.getItem().getId().toString());
         node.setAttribute(ConceptDS.CODE, itemHierarchyDto.getItem().getCode());
         node.setAttribute(ConceptDS.NAME, InternationalStringUtils.getLocalisedString(itemHierarchyDto.getItem().getName()));
         node.setAttribute(ConceptDS.URN, itemHierarchyDto.getItem().getUrn());
         node.setAttribute(ConceptDS.DTO, itemHierarchyDto.getItem());
+        node.setAttribute(ConceptDS.ITEM_PARENT_URN, itemParentUrn);
         node.setAttribute(
                 ConceptDS.TYPE,
                 ((ConceptMetamacDto) itemHierarchyDto.getItem()).getType() != null ? CommonWebUtils.getElementName(((ConceptMetamacDto) itemHierarchyDto.getItem()).getType().getIdentifier(),
@@ -185,7 +186,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
         // Node children
         TreeNode[] children = new TreeNode[itemHierarchyDto.getChildren().size()];
         for (int i = 0; i < itemHierarchyDto.getChildren().size(); i++) {
-            children[i] = createItemTreeNode(itemHierarchyDto.getChildren().get(i));
+            children[i] = createItemTreeNode(itemHierarchyDto.getChildren().get(i), itemHierarchyDto.getItem().getUrn());
         }
         node.setChildren(children);
 
@@ -209,5 +210,4 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
                         CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
         showContextMenu();
     }
-
 }

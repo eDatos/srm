@@ -52,6 +52,8 @@ import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderResult;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusResult;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
@@ -91,6 +93,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     private final PlaceManager            placeManager;
 
     private CodelistMetamacDto            codelistMetamacDto;
+    private String                        codelistOrderVisualisationIdentifier;
 
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
@@ -163,11 +166,11 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         // Retrieve codelist by URN
         String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CODELIST_PREFIX, identifier);
         if (!StringUtils.isBlank(urn)) {
-            retrieveCodelistByUrn(urn);
+            retrieveCodelistByUrn(urn, null); // Load the codes ordered by the default order
         }
     }
 
-    private void retrieveCodelistByUrn(String urn) {
+    private void retrieveCodelistByUrn(String urn, final String codelistOrderVisualisation) {
         dispatcher.execute(new GetCodelistAction(urn), new WaitingAsyncCallback<GetCodelistResult>() {
 
             @Override
@@ -178,13 +181,18 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(GetCodelistResult result) {
                 codelistMetamacDto = result.getCodelistMetamacDto();
                 getView().setCodelist(codelistMetamacDto);
-                retrieveCodesByCodelist(null); // TODO Specify order!
+
+                // If the specified order is null, load the default order (if is exists)
+                String order = codelistOrderVisualisation == null
+                        ? (codelistMetamacDto.getDefaultOrderVisualisation() != null ? codelistMetamacDto.getDefaultOrderVisualisation().getCode() : null)
+                        : codelistOrderVisualisation;
+
+                retrieveCodesByCodelist(order);
                 retrieveCodelistVersions(result.getCodelistMetamacDto().getUrn());
                 retrieveCodelistOrders(result.getCodelistMetamacDto().getUrn());
             }
         });
     }
-
     @Override
     public void goToCodelist(String urn) {
         if (!StringUtils.isBlank(urn)) {
@@ -208,7 +216,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(SaveCodeResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveCodelistByUrn(codelistMetamacDto.getUrn());
+                retrieveCodelistByUrn(codelistMetamacDto.getUrn(), codelistOrderVisualisationIdentifier);
             }
         });
     }
@@ -223,8 +231,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(DeleteCodeResult result) {
-                // TODO Specify order!
-                retrieveCodesByCodelist(null);
+                retrieveCodesByCodelist(codelistOrderVisualisationIdentifier);
             }
         });
     }
@@ -278,7 +285,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(CancelCodelistValidityResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveCodelistByUrn(urn);
+                retrieveCodelistByUrn(urn, codelistOrderVisualisationIdentifier);
             }
         });
     }
@@ -293,6 +300,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(GetCodesByCodelistResult result) {
+                codelistOrderVisualisationIdentifier = result.getCodelistOrderVisualisationDto() != null ? result.getCodelistOrderVisualisationDto().getIdentifier() : null;
                 getView().setCodes(CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos()), result.getCodelistOrderVisualisationDto());
                 getView().selectCodelistOrder(orderIdentifier);
             }
@@ -396,7 +404,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(VersionCodelistResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistVersioned()), MessageTypeEnum.SUCCESS);
                 codelistMetamacDto = result.getCodelistMetamacDto();
-                retrieveCodelistByUrn(codelistMetamacDto.getUrn());
+                retrieveCodelistByUrn(codelistMetamacDto.getUrn(), codelistOrderVisualisationIdentifier);
 
                 // Update URL
                 PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
@@ -506,10 +514,25 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingOrder()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingPosition()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(UpdateCodeInOrderResult result) {
+                retrieveCodesByCodelist(codelistOrderIdentifier);
+            }
+        });
+    }
+
+    @Override
+    public void updateCodeParent(String codeUrn, String newParentUrn, final String codelistOrderIdentifier) {
+        dispatcher.execute(new UpdateCodeParentAction(codeUrn, newParentUrn), new WaitingAsyncCallback<UpdateCodeParentResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingPosition()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateCodeParentResult result) {
                 retrieveCodesByCodelist(codelistOrderIdentifier);
             }
         });

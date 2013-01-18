@@ -20,7 +20,6 @@ public class SelectMenuButtonEvent extends GwtEvent<SelectMenuButtonEvent.Select
         return TYPE;
     }
 
-    // TODO HasEventBus should be used instead of HasHandlers ¿?
     public static void fire(HasHandlers source, ToolStripButtonEnum resourceType) {
         if (TYPE != null) {
             source.fireEvent(new SelectMenuButtonEvent(resourceType));

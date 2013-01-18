@@ -55,10 +55,8 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -102,9 +100,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private CodelistVersionsSectionStack        versionsSectionStack;
 
     // Codes
+    private VLayout                             codesLayout;
+    private TitleLabel                          codesLayoutTitle;
     private CodelistOrdersSectionStack          codelistOrdersSectionStack;
-    private VLayout                             codesTreeGridLayout;
-    private Label                               codesTreeGridTitle;
     private CodesTreeGrid                       codesTreeGrid;
 
     private CodelistMetamacDto                  codelistDto;
@@ -147,23 +145,24 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         codesTreeGrid = new CodesTreeGrid();
 
-        codesTreeGridLayout = new VLayout();
-        codesTreeGridTitle = new Label();
-        codesTreeGridTitle.setAlign(Alignment.LEFT);
-        codesTreeGridTitle.setOverflow(Overflow.HIDDEN);
-        codesTreeGridTitle.setHeight(25);
-        codesTreeGridTitle.setStyleName("subsectionTitle");
-        codesTreeGridLayout.addMember(codesTreeGridTitle);
-        codesTreeGridLayout.addMember(codesTreeGrid);
+        // codesTreeGridLayout = new VLayout();
+        // codesTreeGridTitle = new Label();
+        // codesTreeGridTitle.setAlign(Alignment.LEFT);
+        // codesTreeGridTitle.setOverflow(Overflow.HIDDEN);
+        // codesTreeGridTitle.setHeight(25);
+        // codesTreeGridTitle.setStyleName("subsectionTitle");
+        // codesTreeGridLayout.addMember(codesTreeGridTitle);
+        // codesTreeGridLayout.addMember(codesTreeGrid);
 
         HLayout codesHLayout = new HLayout();
         codesHLayout.setMembersMargin(10);
         codesHLayout.addMember(codelistOrdersSectionStack);
-        codesHLayout.addMember(codesTreeGridLayout);
+        codesHLayout.addMember(codesTreeGrid);
 
-        VLayout codesLayout = new VLayout();
+        codesLayout = new VLayout();
         codesLayout.setMargin(15);
-        codesLayout.addMember(new TitleLabel(getConstants().codes()));
+        codesLayoutTitle = new TitleLabel(getConstants().codes());
+        codesLayout.addMember(codesLayoutTitle);
         codesLayout.addMember(codesHLayout);
 
         panel.addMember(versionsSectionStack);
@@ -352,9 +351,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     @Override
     public void setCodes(List<ItemHierarchyDto> itemHierarchyDtos, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
-        codesTreeGridTitle.setContents(CommonUtils.getCodelistOrderVisualisationName(codelistOrderVisualisationDto));
-        codesTreeGrid.setItems(codelistDto, itemHierarchyDtos);
-        codesTreeGridLayout.markForRedraw();
+        updateCodesTitle(codelistOrderVisualisationDto != null ? getMessages().codesWithOrder(CommonUtils.getCodelistOrderVisualisationName(codelistOrderVisualisationDto)) : getConstants().codes());
+        codesTreeGrid.setItems(codelistDto, itemHierarchyDtos, codelistOrderVisualisationDto);
     }
 
     @Override
@@ -366,11 +364,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     @Override
     public void setCodelistOrders(List<CodelistOrderVisualisationDto> orders) {
         codelistOrdersSectionStack.setCodelistOrders(orders);
+
+        // Populate the form with the order list (to fill the default order)
+        diffusionDescriptorsEditionForm.getItem(CodelistDS.DEFAULT_ORDER).setValueMap(CommonUtils.getCodelistOrdersHashMap(orders));
     }
 
     @Override
     public void selectCodelistOrder(String codelistOrderIdentifier) {
-        // TODO decide what to do with the default order
         codelistOrdersSectionStack.selectCodelistOrder(codelistOrderIdentifier);
     }
 
@@ -432,13 +432,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         RelatedResourceListItem replaceToCodelists = new RelatedResourceListItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists(), false);
         ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
         ViewTextItem accessType = new ViewTextItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
+        ViewTextItem defaultOrder = new ViewTextItem(CodelistDS.DEFAULT_ORDER, getConstants().codelistDefaultOrder());
         ViewTextItem replacedByVersion = new ViewTextItem(CodelistDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(CodelistDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CodelistDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(CodelistDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(CodelistDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
         ViewTextItem externalPublicationFailedDate = new ViewTextItem(CodelistDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsForm.setFields(replaceToCodelists, replacedByCodelist, accessType, replacedByVersion, replaceTo, validFrom, validTo, externalPublicationFailed,
+        diffusionDescriptorsForm.setFields(replaceToCodelists, replacedByCodelist, accessType, defaultOrder, replacedByVersion, replaceTo, validFrom, validTo, externalPublicationFailed,
                 externalPublicationFailedDate);
 
         // Version responsibility
@@ -528,13 +529,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
         CustomSelectItem accessType = new CustomSelectItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
         accessType.setValueMap(CommonUtils.getAccessTypeHashMap());
+        CustomSelectItem defaultOrder = new CustomSelectItem(CodelistDS.DEFAULT_ORDER, getConstants().codelistDefaultOrder()); // ValueMap is set in setCodelistOrders method
         ViewTextItem replacedByVersion = new ViewTextItem(CodelistDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(CodelistDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CodelistDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(CodelistDS.VALID_TO, getConstants().maintainableArtefactValidTo());
         ViewTextItem externalPublicationFailed = new ViewTextItem(CodelistDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
         ViewTextItem externalPublicationFailedDate = new ViewTextItem(CodelistDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsEditionForm.setFields(replaceToCodelists, replacedByCodelist, accessType, replacedByVersion, replaceTo, validFrom, validTo, externalPublicationFailed,
+        diffusionDescriptorsEditionForm.setFields(replaceToCodelists, replacedByCodelist, accessType, defaultOrder, replacedByVersion, replaceTo, validFrom, validTo, externalPublicationFailed,
                 externalPublicationFailedDate);
 
         // Version responsibility
@@ -606,6 +608,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
         ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsForm.setValue(CodelistDS.ACCESS_TYPE, CommonUtils.getAccessTypeName(codelistDto.getAccessType()));
+        diffusionDescriptorsForm.setValue(CodelistDS.DEFAULT_ORDER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getDefaultOrderVisualisation()));
         diffusionDescriptorsForm.setValue(CodelistDS.REPLACED_BY_VERSION, codelistDto.getReplacedByVersion());
         diffusionDescriptorsForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
         diffusionDescriptorsForm.setValue(CodelistDS.VALID_FROM, codelistDto.getValidFrom());
@@ -667,6 +670,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.ACCESS_TYPE, codelistDto.getAccessType() != null ? codelistDto.getAccessType().name() : StringUtils.EMPTY);
+        // TODO order
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_VERSION, codelistDto.getReplacedByVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_FROM, DateUtils.getFormattedDate(codelistDto.getValidFrom()));
@@ -715,6 +719,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codelistDto.getReplaceToCodelists().addAll(((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).getSelectedRelatedResources());
         codelistDto.setAccessType(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.ACCESS_TYPE)) ? AccessTypeEnum.valueOf(diffusionDescriptorsEditionForm
                 .getValueAsString(CodelistDS.ACCESS_TYPE)) : null);
+        // TODO order
 
         // Comments
         codelistDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CodelistDS.COMMENTS));
@@ -860,5 +865,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             }
         });
         return variableItem;
+    }
+
+    private void updateCodesTitle(String title) {
+        codesLayoutTitle.setContents(title);
+        codesLayout.markForRedraw();
     }
 }
