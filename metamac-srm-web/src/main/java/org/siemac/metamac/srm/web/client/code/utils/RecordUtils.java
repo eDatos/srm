@@ -67,8 +67,8 @@ public class RecordUtils {
 
     // CODELIST ORDERS
 
-    public static CodelistOrderRecord getCodelistOrderRecord(CodelistOrderVisualisationDto variableElementDto) {
-        CodelistOrderRecord record = new CodelistOrderRecord(variableElementDto.getIdentifier(), getLocalisedString(variableElementDto.getName()), variableElementDto);
+    public static CodelistOrderRecord getCodelistOrderRecord(CodelistOrderVisualisationDto codelistOrder) {
+        CodelistOrderRecord record = new CodelistOrderRecord(codelistOrder.getCode(), getLocalisedString(codelistOrder.getName()), codelistOrder.getUrn(), codelistOrder);
         return record;
     }
 }
