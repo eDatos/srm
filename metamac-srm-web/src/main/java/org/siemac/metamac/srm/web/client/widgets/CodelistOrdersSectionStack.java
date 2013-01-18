@@ -43,10 +43,11 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
         setWidth("35%");
 
         // Add fields to the listGrid
-        ListGridField codeField = new ListGridField(CodelistOrderDS.CODE, getConstants().codelistOrderCode());
+        ListGridField codeField = new ListGridField(CodelistOrderDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
-        ListGridField nameField = new ListGridField(CodelistOrderDS.NAME, getConstants().codelistOrderName());
-        listGrid.setFields(codeField, nameField);
+        ListGridField nameField = new ListGridField(CodelistOrderDS.NAME, getConstants().nameableArtefactName());
+        ListGridField urnField = new ListGridField(CodelistOrderDS.URN, getConstants().identifiableArtefactUrn());
+        listGrid.setFields(codeField, nameField, urnField);
 
         // ToolBar to manage orders
         ToolStrip toolStrip = new ToolStrip();
@@ -161,9 +162,9 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
         listGrid.setData(records);
     }
 
-    public void selectCodelistOrder(String orderIdentifier) {
+    public void selectCodelistOrder(String orderUrn) {
         RecordList recordList = listGrid.getRecordList();
-        Record record = recordList.find(CodelistOrderDS.CODE, orderIdentifier);
+        Record record = recordList.find(CodelistOrderDS.URN, orderUrn);
         if (record != null) {
             listGrid.selectRecord(record);
         }

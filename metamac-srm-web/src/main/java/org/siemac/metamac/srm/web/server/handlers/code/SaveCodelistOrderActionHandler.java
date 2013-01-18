@@ -1,16 +1,19 @@
 package org.siemac.metamac.srm.web.server.handlers.code;
 
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -26,16 +29,19 @@ public class SaveCodelistOrderActionHandler extends SecurityActionHandler<SaveCo
     @Override
     public SaveCodelistOrderResult executeSecurityAction(SaveCodelistOrderAction action) throws ActionException {
         try {
-            CodelistOrderVisualisationDto codelistToSave = action.getCodelistOrderVisualisationDto();
-            CodelistOrderVisualisationDto savedCodelistDto = null;
-            if (codelistToSave.getId() == null) {
+            CodelistOrderVisualisationDto orderToSave = action.getCodelistOrderVisualisationDto();
+            CodelistOrderVisualisationDto orderSaved = null;
+
+            if (orderToSave.getId() == null) {
                 // Create
-                savedCodelistDto = srmCoreServiceFacade.createCodelistOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(), codelistToSave);
+                RelatedResourceDto codelist = RelatedResourceUtils.createRelatedResourceDto(TypeExternalArtefactsEnum.CODELIST, action.getCodelistUrn());
+                orderToSave.setCodelist(codelist);
+                orderSaved = srmCoreServiceFacade.createCodelistOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), orderToSave);
             } else {
                 // Update
-                savedCodelistDto = srmCoreServiceFacade.updateCodelistOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(), codelistToSave);
+                orderSaved = srmCoreServiceFacade.updateCodelistOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), orderToSave);
             }
-            return new SaveCodelistOrderResult(savedCodelistDto);
+            return new SaveCodelistOrderResult(orderSaved);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

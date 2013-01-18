@@ -83,11 +83,11 @@ public class CodesTreeGrid extends ItemsTreeGrid {
 
                     if (!StringUtils.equals(oldItemParent, newItemParent)) {
                         uiHandlers.updateCodeParent(droppedNode.getAttribute(CodeDS.URN), dropFolder.getAttribute(CodeDS.URN),
-                                codelistOrderVisualisationDto != null ? codelistOrderVisualisationDto.getIdentifier() : null);
+                                codelistOrderVisualisationDto != null ? codelistOrderVisualisationDto.getUrn() : null);
                     } else {
                         // Only update order if there is order selected
                         if (codelistOrderVisualisationDto != null) {
-                            uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getIdentifier(), order);
+                            uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), order);
                         }
                     }
                 }
