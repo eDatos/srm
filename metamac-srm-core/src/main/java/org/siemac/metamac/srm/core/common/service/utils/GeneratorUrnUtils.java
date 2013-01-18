@@ -37,9 +37,10 @@ public class GeneratorUrnUtils {
     }
 
     /**
-     * TODO Generate order visualisation
+     * TODO Generate order visualisation urn
      */
     public static String generateCodelistOrderVisualisationUrn(CodelistOrderVisualisation codelistOrderVisualisation) {
-        return "urn:" + codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getUrn() + "." + codelistOrderVisualisation.getNameableArtefact().getCode();
+        return "urn:" + codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getCode() + ":"
+                + codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getVersionLogic() + ":" + codelistOrderVisualisation.getNameableArtefact().getCode();
     }
 }

@@ -98,7 +98,7 @@ Application CodesMetamac {
 			// CODESLIST FAMILIES
 			
 			"Creates codelist family"
-			@CodelistFamily createCodelistFamily(String codelistUrn, @CodelistFamily codelistFamily) throws MetamacException;
+			@CodelistFamily createCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
 			"Updates codelist family"
 			@CodelistFamily updateCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
     		"Retrieves codelist family by urn"

@@ -1035,8 +1035,8 @@
                     
                     CODE="VISUALISATION01"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:CODELIST1_V2:VISUALISATION01"
-                    URN="urn:CODELIST1_V2:VISUALISATION01"
+                    URN_PROVIDER="urn:CODELIST01:02.000:VISUALISATION01"
+                    URN="urn:CODELIST01:02.000:VISUALISATION01"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
@@ -1240,8 +1240,8 @@
                     
                     CODE="VISUALISATION02"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:CODELIST1_V2:VISUALISATION02"
-                    URN="urn:CODELIST1_V2:VISUALISATION02"
+                    URN_PROVIDER="urn:CODELIST01:02.000:VISUALISATION02"
+                    URN="urn:CODELIST01:02.000:VISUALISATION02"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     

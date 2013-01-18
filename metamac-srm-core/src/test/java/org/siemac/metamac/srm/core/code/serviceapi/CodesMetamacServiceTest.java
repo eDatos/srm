@@ -3286,6 +3286,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), codelistOrderVisualisationCreated.getCodes());
     }
 
+    @Test
+    public void testCreateCodelistOrderVisualisationErrorDuplicatedCode() throws Exception {
+
+        CodelistOrderVisualisation codelistOrderVisualisation = CodesMetamacDoMocks.mockCodelistOrderVisualisation();
+        codelistOrderVisualisation.getNameableArtefact().setCode("VISUALISATION01");
+        String codelistUrn = CODELIST_1_V2;
+        try {
+            codesService.createCodelistOrderVisualisation(getServiceContextAdministrador(), codelistUrn, codelistOrderVisualisation);
+            fail("duplicated code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{CODELIST_1_V2_ORDER_VISUALISATION_01}, e.getExceptionItems().get(0));
+        }
+    }
+
     @Override
     @Test
     public void testUpdateCodelistOrderVisualisation() throws Exception {
@@ -3298,6 +3313,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate
         assertEqualsCodelistOrderVisualisation(codelistOrderVisualisation, codelistOrderVisualisationUpdated);
+    }
+
+    @Test
+    public void testUpdateCodelistOrderVisualisationErrorDuplicatedCode() throws Exception {
+        CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
+        codelistOrderVisualisation.getNameableArtefact().setCode("VISUALISATION02");
+        codelistOrderVisualisation.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        try {
+            codesService.updateCodelistOrderVisualisation(getServiceContextAdministrador(), codelistOrderVisualisation);
+            fail("duplicated code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{CODELIST_1_V2_ORDER_VISUALISATION_02}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
