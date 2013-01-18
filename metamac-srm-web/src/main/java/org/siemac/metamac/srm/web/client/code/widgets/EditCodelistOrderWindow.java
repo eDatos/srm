@@ -48,10 +48,10 @@ public class EditCodelistOrderWindow extends CustomWindow {
         });
 
         // Create form
-        RequiredTextItem codeItem = new RequiredTextItem(CodelistOrderDS.CODE, getConstants().codelistOrderCode());
+        RequiredTextItem codeItem = new RequiredTextItem(CodelistOrderDS.CODE, getConstants().identifiableArtefactCode());
         codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
-        MultiLanguageTextItem nameItem = new MultiLanguageTextItem(CodelistOrderDS.NAME, getConstants().codelistOrderName(), FORM_ITEM_CUSTOM_WIDTH - 28);
+        MultiLanguageTextItem nameItem = new MultiLanguageTextItem(CodelistOrderDS.NAME, getConstants().nameableArtefactName(), FORM_ITEM_CUSTOM_WIDTH - 28);
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         nameItem.setRequired(true);
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());
@@ -70,7 +70,7 @@ public class EditCodelistOrderWindow extends CustomWindow {
 
     public void setCodelistOrder(CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
         this.codelistOrderVisualisationDto = codelistOrderVisualisationDto;
-        form.setValue(CodelistOrderDS.CODE, codelistOrderVisualisationDto.getIdentifier());
+        form.setValue(CodelistOrderDS.CODE, codelistOrderVisualisationDto.getCode());
         form.setValue(CodelistOrderDS.NAME, RecordUtils.getInternationalStringRecord(codelistOrderVisualisationDto.getName()));
     }
 
@@ -83,7 +83,7 @@ public class EditCodelistOrderWindow extends CustomWindow {
     }
 
     public CodelistOrderVisualisationDto getCodelistOrderDto() {
-        codelistOrderVisualisationDto.setIdentifier(form.getValueAsString(CodelistOrderDS.CODE));
+        codelistOrderVisualisationDto.setCode(form.getValueAsString(CodelistOrderDS.CODE));
         codelistOrderVisualisationDto.setName((InternationalStringDto) form.getValue(CodelistOrderDS.NAME));
         return codelistOrderVisualisationDto;
     }
