@@ -2032,6 +2032,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Create
         CodelistFamily codelistVersionCreated = codesService.createCodelistFamily(ctx, codelistFamily);
+        assertNotNull(codelistVersionCreated.getNameableArtefact().getUrn());
         assertEquals(ctx.getUserId(), codelistVersionCreated.getCreatedBy());
         assertEquals(getServiceContextAdministrador().getUserId(), codelistVersionCreated.getCreatedBy());
         assertTrue(DateUtils.isSameDay(new Date(), codelistVersionCreated.getCreatedDate().toDate()));
@@ -2302,14 +2303,19 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Create
-        VariableFamily variableVersionCreated = codesService.createVariableFamily(ctx, variableFamily);
+        VariableFamily variableFamilyCreated = codesService.createVariableFamily(ctx, variableFamily);
+        String urn = variableFamilyCreated.getNameableArtefact().getUrn();
+        assertNotNull(urn);
 
-        assertEquals(ctx.getUserId(), variableVersionCreated.getCreatedBy());
-        assertEquals(getServiceContextAdministrador().getUserId(), variableVersionCreated.getCreatedBy());
-        assertTrue(DateUtils.isSameDay(new Date(), variableVersionCreated.getCreatedDate().toDate()));
-        assertEquals(getServiceContextAdministrador().getUserId(), variableVersionCreated.getLastUpdatedBy());
-        assertTrue(DateUtils.isSameDay(new Date(), variableVersionCreated.getLastUpdated().toDate()));
-        assertEqualsVariableFamily(variableFamily, variableVersionCreated);
+        // Validate
+        VariableFamily variableFamilyRetrieved = codesService.retrieveVariableFamilyByUrn(ctx, urn);
+
+        assertEquals(ctx.getUserId(), variableFamilyRetrieved.getCreatedBy());
+        assertEquals(getServiceContextAdministrador().getUserId(), variableFamilyRetrieved.getCreatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), variableFamilyRetrieved.getCreatedDate().toDate()));
+        assertEquals(getServiceContextAdministrador().getUserId(), variableFamilyRetrieved.getLastUpdatedBy());
+        assertTrue(DateUtils.isSameDay(new Date(), variableFamilyRetrieved.getLastUpdated().toDate()));
+        assertEqualsVariableFamily(variableFamily, variableFamilyRetrieved);
     }
 
     @Test
@@ -2527,6 +2533,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Create
         Variable variableCreated = codesService.createVariable(ctx, variable);
         String urn = variableCreated.getNameableArtefact().getUrn();
+        assertNotNull(urn);
 
         // Validate
         Variable variableRetrieved = codesService.retrieveVariableByUrn(ctx, urn);
@@ -2925,6 +2932,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = variableElementCreated.getNameableArtefact().getUrn();
 
         // Validate
+        assertNotNull(urn);
         VariableElement variableElementRetrieved = codesService.retrieveVariableElementByUrn(ctx, urn);
 
         assertEquals(ctx.getUserId(), variableElementRetrieved.getCreatedBy());
@@ -2958,7 +2966,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testCreateVariableElementErrorDuplicatedCode() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
-        variableElement.getNameableArtefact().setCode("VARIABLE_02_VARIABLE_ELEMENT_01");
+        variableElement.getNameableArtefact().setCode("VARIABLE_ELEMENT_01");
         try {
             codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
             fail("duplicated code");
@@ -3023,7 +3031,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateVariableElementErrorDuplicatedCode() throws Exception {
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
-        variableElement.getNameableArtefact().setCode("VARIABLE_02_VARIABLE_ELEMENT_02");
+        variableElement.getNameableArtefact().setCode("VARIABLE_ELEMENT_02");
         variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
@@ -3065,7 +3073,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
 
         assertEquals(urn, variableElement.getNameableArtefact().getUrn());
-        assertEquals("VARIABLE_02_VARIABLE_ELEMENT_01", variableElement.getNameableArtefact().getCode());
+        assertEquals("VARIABLE_ELEMENT_01", variableElement.getNameableArtefact().getCode());
         assertEqualsInternationalString(variableElement.getNameableArtefact().getName(), "es", "Nombre 2-1", "en", "Name 2-1");
         assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2-1", "en", "Short name 2-1");
         assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidFrom());
@@ -3270,6 +3278,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Create
         CodelistOrderVisualisation codelistOrderVisualisationCreated = codesService.createCodelistOrderVisualisation(ctx, codelistUrn, codelistOrderVisualisation);
         assertNotNull(codelistOrderVisualisationCreated.getId());
+        assertNotNull(codelistOrderVisualisationCreated.getNameableArtefact().getUrn());
         assertEqualsCodelistOrderVisualisation(codelistOrderVisualisation, codelistOrderVisualisationCreated);
 
         // Validate codes

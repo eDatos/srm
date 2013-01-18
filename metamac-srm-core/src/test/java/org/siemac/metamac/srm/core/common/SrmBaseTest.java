@@ -205,31 +205,31 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CODELIST_13_V1_CODE_3                       = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE03";
 
     // Codelist families
-    protected static final String CODELIST_FAMILY_1                           = "urn:CODELIST_FAMILY_01";
-    protected static final String CODELIST_FAMILY_2                           = "urn:CODELIST_FAMILY_02";
+    protected static final String CODELIST_FAMILY_1                           = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=CODELIST_FAMILY_01";
+    protected static final String CODELIST_FAMILY_2                           = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=CODELIST_FAMILY_02";
 
     // Variable families
-    protected static final String VARIABLE_FAMILY_1                           = "urn:VARIABLE_FAMILY_01";
-    protected static final String VARIABLE_FAMILY_2                           = "urn:VARIABLE_FAMILY_02";
-    protected static final String VARIABLE_FAMILY_3                           = "urn:VARIABLE_FAMILY_03";
-    protected static final String VARIABLE_FAMILY_4                           = "urn:VARIABLE_FAMILY_04";
+    protected static final String VARIABLE_FAMILY_1                           = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_01";
+    protected static final String VARIABLE_FAMILY_2                           = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_02";
+    protected static final String VARIABLE_FAMILY_3                           = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_03";
+    protected static final String VARIABLE_FAMILY_4                           = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_04";
 
     // Variables
-    protected static final String VARIABLE_1                                  = "urn:VARIABLE_01";
-    protected static final String VARIABLE_2                                  = "urn:VARIABLE_02";
-    protected static final String VARIABLE_3                                  = "urn:VARIABLE_03";
-    protected static final String VARIABLE_4                                  = "urn:VARIABLE_04";
-    protected static final String VARIABLE_5                                  = "urn:VARIABLE_05";
-    protected static final String VARIABLE_6                                  = "urn:VARIABLE_06";
+    protected static final String VARIABLE_1                                  = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_01";
+    protected static final String VARIABLE_2                                  = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_02";
+    protected static final String VARIABLE_3                                  = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_03";
+    protected static final String VARIABLE_4                                  = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_04";
+    protected static final String VARIABLE_5                                  = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_05";
+    protected static final String VARIABLE_6                                  = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_06";
 
     // Variable elements
-    protected static final String VARIABLE_2_VARIABLE_ELEMENT_1               = "urn:VARIABLE_02_VARIABLE_ELEMENT_01";
-    protected static final String VARIABLE_2_VARIABLE_ELEMENT_2               = "urn:VARIABLE_02_VARIABLE_ELEMENT_02";
-    protected static final String VARIABLE_5_VARIABLE_ELEMENT_1               = "urn:VARIABLE_05_VARIABLE_ELEMENT_01";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_1               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_2               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02";
+    protected static final String VARIABLE_5_VARIABLE_ELEMENT_1               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_01";
 
     // Codelist visualisations
-    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_01        = "urn:CODELIST01:02.000:VISUALISATION01";
-    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_02        = "urn:CODELIST01:02.000:VISUALISATION02";
+    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_01        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION01";
+    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_02        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION02";
 
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";

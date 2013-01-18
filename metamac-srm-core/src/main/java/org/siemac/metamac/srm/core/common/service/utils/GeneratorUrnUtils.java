@@ -6,41 +6,44 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 
-public class GeneratorUrnUtils {
+public class GeneratorUrnUtils extends com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils {
 
     /**
-     * TODO Generate codelist family urn
+     * Generate codelist family urn
      */
     public static String generateCodelistFamilyUrn(CodelistFamily codelistFamily) {
-        return "urn:" + codelistFamily.getNameableArtefact().getCode();
+        return generateSiemacStructuralResourcesCodelistFamilyUrn(codelistFamily.getNameableArtefact().getCode());
     }
 
     /**
-     * TODO Generate variable family urn
+     * Generate variable family urn
      */
     public static String generateVariableFamilyUrn(VariableFamily variableFamily) {
-        return "urn:" + variableFamily.getNameableArtefact().getCode();
+        return generateSiemacStructuralResourcesVariableFamilyUrn(variableFamily.getNameableArtefact().getCode());
     }
 
     /**
-     * TODO Generate variable urn
+     * Generate variable urn
      */
     public static String generateVariableUrn(Variable variable) {
-        return "urn:" + variable.getNameableArtefact().getCode();
+        return generateSiemacStructuralResourcesVariableUrn(variable.getNameableArtefact().getCode());
     }
 
     /**
-     * TODO Generate variable element urn
+     * Generate variable element urn
      */
     public static String generateVariableElementUrn(VariableElement variableElement) {
-        return "urn:" + variableElement.getNameableArtefact().getCode();
+        return generateSiemacStructuralResourcesVariableElementUrn(variableElement.getVariable().getNameableArtefact().getCode(), variableElement.getNameableArtefact().getCode());
     }
 
     /**
-     * TODO Generate order visualisation urn
+     * Generate order visualisation urn
      */
     public static String generateCodelistOrderVisualisationUrn(CodelistOrderVisualisation codelistOrderVisualisation) {
-        return "urn:" + codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getCode() + ":"
-                + codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getVersionLogic() + ":" + codelistOrderVisualisation.getNameableArtefact().getCode();
+        String[] maintainerCode = generateSdmxUrnMaintainerIdFragment(codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getMaintainer());
+        String codelistCode = codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getCode();
+        String codelistVersionNumber = codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getVersionLogic();
+
+        return generateSiemacStructuralResourcesCodelistOrderVisualisationUrn(maintainerCode, codelistCode, codelistVersionNumber, codelistOrderVisualisation.getNameableArtefact().getCode());
     }
 }

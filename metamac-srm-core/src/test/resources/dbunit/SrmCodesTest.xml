@@ -1035,8 +1035,8 @@
                     
                     CODE="VISUALISATION01"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:CODELIST01:02.000:VISUALISATION01"
-                    URN="urn:CODELIST01:02.000:VISUALISATION01"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION01"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
@@ -1240,8 +1240,8 @@
                     
                     CODE="VISUALISATION02"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:CODELIST01:02.000:VISUALISATION02"
-                    URN="urn:CODELIST01:02.000:VISUALISATION02"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION02"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION02"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
@@ -3931,8 +3931,8 @@
             CODE="CODELIST_FAMILY_01"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:CODELIST_FAMILY_01"
-            URN="urn:CODELIST_FAMILY_01"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=CODELIST_FAMILY_01"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=CODELIST_FAMILY_01"
             
             NAME_FK="51"
             DESCRIPTION_FK="[null]"
@@ -3968,8 +3968,8 @@
             CODE="CODELIST_FAMILY_02"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:CODELIST_FAMILY_02"
-            URN="urn:CODELIST_FAMILY_02"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=CODELIST_FAMILY_02"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=CODELIST_FAMILY_02"
             
             NAME_FK="52"
             DESCRIPTION_FK="[null]"
@@ -4009,8 +4009,8 @@
             CODE="VARIABLE_FAMILY_01"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_FAMILY_01"
-            URN="urn:VARIABLE_FAMILY_01"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_01"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_01"
             
             NAME_FK="53"
             DESCRIPTION_FK="[null]"
@@ -4046,8 +4046,8 @@
             CODE="VARIABLE_FAMILY_02"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_FAMILY_02"
-            URN="urn:VARIABLE_FAMILY_02"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_02"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_02"
             
             NAME_FK="54"
             DESCRIPTION_FK="[null]"
@@ -4083,8 +4083,8 @@
             CODE="VARIABLE_FAMILY_03"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_FAMILY_03"
-            URN="urn:VARIABLE_FAMILY_03"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_03"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_03"
             
             NAME_FK="55"
             DESCRIPTION_FK="[null]"
@@ -4120,8 +4120,8 @@
             CODE="VARIABLE_FAMILY_04"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_FAMILY_04"
-            URN="urn:VARIABLE_FAMILY_04"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_04"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=VARIABLE_FAMILY_04"
             
             NAME_FK="56"
             DESCRIPTION_FK="[null]"
@@ -4170,8 +4170,8 @@
             CODE="VARIABLE_04"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_04"
-            URN="urn:VARIABLE_04"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_04"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_04"
             
             NAME_FK="60"
             DESCRIPTION_FK="[null]"
@@ -4215,8 +4215,8 @@
             CODE="VARIABLE_03"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_03"
-            URN="urn:VARIABLE_03"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_03"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_03"
             
             NAME_FK="59"
             DESCRIPTION_FK="[null]"
@@ -4260,8 +4260,8 @@
             CODE="VARIABLE_01"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_01"
-            URN="urn:VARIABLE_01"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_01"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_01"
             
             NAME_FK="57"
             DESCRIPTION_FK="[null]"
@@ -4305,8 +4305,8 @@
             CODE="VARIABLE_02"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_02"
-            URN="urn:VARIABLE_02"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_02"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_02"
             
             NAME_FK="58"
             DESCRIPTION_FK="[null]"
@@ -4347,11 +4347,11 @@
                     ID="9999321"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="VARIABLE_02_VARIABLE_ELEMENT_01"
+                    CODE="VARIABLE_ELEMENT_01"
                     CODE_FULL="[null]"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:VARIABLE_02_VARIABLE_ELEMENT_01"
-                    URN="urn:VARIABLE_02_VARIABLE_ELEMENT_01"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01"
                     
                     NAME_FK="72"
                     DESCRIPTION_FK="[null]"
@@ -4391,11 +4391,11 @@
                     ID="9999322"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="VARIABLE_02_VARIABLE_ELEMENT_02"
+                    CODE="VARIABLE_ELEMENT_02"
                     CODE_FULL="[null]"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:VARIABLE_02_VARIABLE_ELEMENT_02"
-                    URN="urn:VARIABLE_02_VARIABLE_ELEMENT_02"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02"
                     
                     NAME_FK="74"
                     DESCRIPTION_FK="[null]"
@@ -4440,8 +4440,8 @@
             CODE="VARIABLE_05"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_05"
-            URN="urn:VARIABLE_05"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_05"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_05"
             
             NAME_FK="61"
             DESCRIPTION_FK="[null]"
@@ -4482,11 +4482,11 @@
                     ID="9999351"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="VARIABLE_05_VARIABLE_ELEMENT_01"
+                    CODE="VARIABLE_ELEMENT_01"
                     CODE_FULL="[null]"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:VARIABLE_05_VARIABLE_ELEMENT_01"
-                    URN="urn:VARIABLE_05_VARIABLE_ELEMENT_01"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_01"
                     
                     NAME_FK="76"
                     DESCRIPTION_FK="[null]"
@@ -4531,8 +4531,8 @@
             CODE="VARIABLE_06"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_06"
-            URN="urn:VARIABLE_06"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_06"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_06"
             
             NAME_FK="62"
             DESCRIPTION_FK="[null]"
