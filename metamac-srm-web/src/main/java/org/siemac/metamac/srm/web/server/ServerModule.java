@@ -52,6 +52,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.SaveVariableActionHandler
 import org.siemac.metamac.srm.web.server.handlers.code.SaveVariableElementActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeInOrderActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeParentActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodelistProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
@@ -152,6 +153,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
@@ -335,6 +337,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteCodelistOrdersAction.class, DeleteCodelistOrdersActionHandler.class);
         bindHandler(SaveCodelistOrderAction.class, SaveCodelistOrderActionHandler.class);
         bindHandler(UpdateCodeInOrderAction.class, UpdateCodeInOrderActionHandler.class);
+        bindHandler(UpdateCodeParentAction.class, UpdateCodeParentActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
