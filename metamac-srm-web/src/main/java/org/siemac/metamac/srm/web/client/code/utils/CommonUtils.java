@@ -69,7 +69,7 @@ public class CommonUtils {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : records) {
             CodelistOrderRecord codelistRecord = (CodelistOrderRecord) record;
-            urns.add(codelistRecord.getCode());
+            urns.add(codelistRecord.getUrn());
         }
         return urns;
     }
@@ -83,14 +83,14 @@ public class CommonUtils {
     }
 
     public static String getCodelistOrderVisualisationName(CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
-        return CommonWebUtils.getElementName(codelistOrderVisualisationDto.getIdentifier(), codelistOrderVisualisationDto.getName());
+        return CommonWebUtils.getElementName(codelistOrderVisualisationDto.getCode(), codelistOrderVisualisationDto.getName());
     }
 
     public static LinkedHashMap<String, String> getCodelistOrdersHashMap(List<CodelistOrderVisualisationDto> orders) {
         LinkedHashMap<String, String> ordersHashMap = new LinkedHashMap<String, String>();
         ordersHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
         for (CodelistOrderVisualisationDto order : orders) {
-            ordersHashMap.put(order.getIdentifier(), getCodelistOrderVisualisationName(order));
+            ordersHashMap.put(order.getUrn(), getCodelistOrderVisualisationName(order));
         }
         return ordersHashMap;
     }
