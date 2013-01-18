@@ -153,6 +153,7 @@ public abstract class ItemsTreeGrid extends TreeGrid {
             }
         });
     }
+
     public void removeHandlerRegistrations() {
         folderContextHandlerRegistration.removeHandler();
         leafContextHandlerRegistration.removeHandler();
@@ -168,7 +169,7 @@ public abstract class ItemsTreeGrid extends TreeGrid {
 
         TreeNode[] treeNodes = new TreeNode[itemHierarchyDtos.size()];
         for (int i = 0; i < itemHierarchyDtos.size(); i++) {
-            treeNodes[i] = createItemTreeNode(itemHierarchyDtos.get(i));
+            treeNodes[i] = createItemTreeNode(itemHierarchyDtos.get(i), null);
         }
 
         TreeNode organisationSchemeTreeNode = createItemSchemeTreeNode(itemSchemeDto);
@@ -210,17 +211,18 @@ public abstract class ItemsTreeGrid extends TreeGrid {
         return node;
     }
 
-    protected TreeNode createItemTreeNode(ItemHierarchyDto itemHierarchyDto) {
+    protected TreeNode createItemTreeNode(ItemHierarchyDto itemHierarchyDto, String itemParentUrn) {
         TreeNode node = new TreeNode(itemHierarchyDto.getItem().getId().toString());
         node.setAttribute(ItemDS.CODE, itemHierarchyDto.getItem().getCode());
         node.setAttribute(ItemDS.NAME, InternationalStringUtils.getLocalisedString(itemHierarchyDto.getItem().getName()));
         node.setAttribute(ItemDS.URN, itemHierarchyDto.getItem().getUrn());
+        node.setAttribute(ItemDS.ITEM_PARENT_URN, itemParentUrn);
         node.setAttribute(ItemDS.DTO, itemHierarchyDto.getItem());
 
         // Node children
         TreeNode[] children = new TreeNode[itemHierarchyDto.getChildren().size()];
         for (int i = 0; i < itemHierarchyDto.getChildren().size(); i++) {
-            children[i] = createItemTreeNode(itemHierarchyDto.getChildren().get(i));
+            children[i] = createItemTreeNode(itemHierarchyDto.getChildren().get(i), itemHierarchyDto.getItem().getUrn());
         }
         node.setChildren(children);
 
@@ -238,7 +240,5 @@ public abstract class ItemsTreeGrid extends TreeGrid {
     }
 
     protected abstract void onNodeClick(String nodeName, String itemUrn);
-
     protected abstract void onNodeContextClick(String nodeName, ItemDto itemDto);
-
 }

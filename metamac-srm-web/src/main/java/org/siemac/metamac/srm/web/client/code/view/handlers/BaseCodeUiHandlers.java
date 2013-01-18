@@ -10,4 +10,7 @@ public interface BaseCodeUiHandlers extends UiHandlers {
     void saveCode(CodeMetamacDto codeDto);
     void deleteCode(ItemDto itemDto);
     void goToCode(String urn);
+
+    void updateCodeInOrder(String codeUrn, String codelistOrderIdentifier, Long newCodeIndex);
+    void updateCodeParent(String codeUrn, String newParentUrn, String codelistOrderIdentifier);
 }
