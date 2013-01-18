@@ -302,7 +302,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Update orders, in previous and new level
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
 
-            Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = codeOrderVisualisationsToMapByCodeUrn(codelistOrderVisualisation.getCodes());
+            Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codeOrderVisualisationsToMapByCodeUrn(codelistOrderVisualisation.getCodes());
 
             // Update orders of other codes in previous level
             Long codeIndexInLevelBefore = mapCodeOrderVisualisationByCodeUrn.get(code.getNameableArtefact().getUrn()).getCodeIndex();
@@ -327,7 +327,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
         CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByIdentifier(codelistVersion.getMaintainableArtefact().getUrn(), codelistOrderVisualisationIdentifier);
-        Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = codeOrderVisualisationsToMapByCodeUrn(codelistOrderVisualisation.getCodes());
+        Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codeOrderVisualisationsToMapByCodeUrn(codelistOrderVisualisation.getCodes());
 
         // Change order of code
         CodeOrderVisualisation codeOrderVisualisation = mapCodeOrderVisualisationByCodeUrn.get(code.getNameableArtefact().getUrn());
@@ -370,7 +370,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Reorder codes in same level
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
-            Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = codeOrderVisualisationsToMapByCodeUrn(codelistOrderVisualisation.getCodes());
+            Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codeOrderVisualisationsToMapByCodeUrn(codelistOrderVisualisation.getCodes());
             updateAllCodesOrdersInLevelRemovingCode(ctx, codesInSameLevel, codeOrdersInVisualisations.get(codelistOrderVisualisation.getIdentifier()).getCodeIndex(),
                     mapCodeOrderVisualisationByCodeUrn);
         }
@@ -1039,17 +1039,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         variableElement.getNameableArtefact().setUrn(urn);
         variableElement.getNameableArtefact().setUrnProvider(urn);
-    }
-
-    /**
-     * Transform list to map indexed by code urn
-     */
-    private Map<String, CodeOrderVisualisation> codeOrderVisualisationsToMapByCodeUrn(List<CodeOrderVisualisation> orders) {
-        Map<String, CodeOrderVisualisation> target = new java.util.HashMap<String, CodeOrderVisualisation>();
-        for (CodeOrderVisualisation codeOrderVisualisation : orders) {
-            target.put(codeOrderVisualisation.getCode().getNameableArtefact().getUrn(), codeOrderVisualisation);
-        }
-        return target;
     }
 
     /**

@@ -204,7 +204,7 @@ Application CodesMetamac {
 			"Short name. Only filled if code has not related variable element"
 			- @InternationalString shortName nullable cascade="all" databaseColumn="SHORT_NAME_FK";
 			"Variable element"
-			- @VariableElement variableElement nullable cascade="none" databaseColumn="VARIABLE_ELEMENT_FK"  <-> codes;
+			- @VariableElement variableElement nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_ELEMENT_FK"  <-> codes;
 			"Order visualisations of code"
 			- Bag<@CodeOrderVisualisation> orderVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> code;
 			

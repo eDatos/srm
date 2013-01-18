@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
@@ -92,15 +93,26 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     @SuppressWarnings("rawtypes")
     @Override
     public List<CodeHierarchyDto> codeMetamacDoListToCodeHierarchyDtoList(List sources, CodelistOrderVisualisation codelistOrderVisualisation) {
+
+        Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = null;
+        if (codelistOrderVisualisation != null) {
+            mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codeOrderVisualisationsToMapByCodeUrn(codelistOrderVisualisation.getCodes());
+        }
+
+        List<CodeHierarchyDto> targets = codeMetamacDoListToCodeHierarchyDtoList(sources, mapCodeOrderVisualisationByCodeUrn);
+        return targets;
+    }
+
+    @SuppressWarnings("rawtypes")
+    private List<CodeHierarchyDto> codeMetamacDoListToCodeHierarchyDtoList(List sources, Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn) {
         List<CodeHierarchyDto> targets = new ArrayList<CodeHierarchyDto>();
         for (int i = 0; i < sources.size(); i++) {
             CodeMetamac source = (CodeMetamac) sources.get(i);
-            CodeHierarchyDto target = codeMetamacDoToCodeHierarchyDto(source, codelistOrderVisualisation);
-            target.getChildren().addAll(codeMetamacDoListToCodeHierarchyDtoList(source.getChildren(), codelistOrderVisualisation));
+            CodeHierarchyDto target = codeMetamacDoToCodeHierarchyDto(source, mapCodeOrderVisualisationByCodeUrn);
+            target.getChildren().addAll(codeMetamacDoListToCodeHierarchyDtoList(source.getChildren(), mapCodeOrderVisualisationByCodeUrn));
             targets.add(target);
         }
-
-        if (codelistOrderVisualisation == null) {
+        if (mapCodeOrderVisualisationByCodeUrn == null) {
             return targets;
         }
 
@@ -114,6 +126,14 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         });
         return targets;
     }
+
+    class MyComparator implements Comparator<CodeHierarchyDto> {
+
+        @Override
+        public int compare(CodeHierarchyDto o1, CodeHierarchyDto o2) {
+            return o1.getCodeIndex().compareTo(o2.getCodeIndex());
+        }
+    };
 
     @Override
     public CodelistFamilyDto codelistFamilyDoToDto(CodelistFamily source) {
@@ -293,11 +313,11 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         return target;
     }
 
-    private CodeHierarchyDto codeMetamacDoToCodeHierarchyDto(CodeMetamac codeMetamac, CodelistOrderVisualisation codelistOrderVisualisation) {
+    private CodeHierarchyDto codeMetamacDoToCodeHierarchyDto(CodeMetamac codeMetamac, Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn) {
         CodeHierarchyDto codeHierarchyDto = new CodeHierarchyDto();
         codeHierarchyDto.setItem(codeMetamacDoToDto(codeMetamac));
-        if (codelistOrderVisualisation != null) {
-            CodeOrderVisualisation codeOrderVisualisation = SrmServiceUtils.filterCodeOrderVisualisationsByCode(codelistOrderVisualisation.getCodes(), codeHierarchyDto.getItem().getUrn());
+        if (mapCodeOrderVisualisationByCodeUrn != null) {
+            CodeOrderVisualisation codeOrderVisualisation = mapCodeOrderVisualisationByCodeUrn.get(codeMetamac.getNameableArtefact().getUrn());
             codeHierarchyDto.setCodeIndex(codeOrderVisualisation.getCodeIndex());
         }
         return codeHierarchyDto;

@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.common.service.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeOrderVisualisation;
@@ -103,5 +104,16 @@ public class SrmServiceUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * Transform list to map indexed by code urn
+     */
+    public static Map<String, CodeOrderVisualisation> codeOrderVisualisationsToMapByCodeUrn(List<CodeOrderVisualisation> orders) {
+        Map<String, CodeOrderVisualisation> target = new java.util.HashMap<String, CodeOrderVisualisation>();
+        for (CodeOrderVisualisation codeOrderVisualisation : orders) {
+            target.put(codeOrderVisualisation.getCode().getNameableArtefact().getUrn(), codeOrderVisualisation);
+        }
+        return target;
     }
 }
