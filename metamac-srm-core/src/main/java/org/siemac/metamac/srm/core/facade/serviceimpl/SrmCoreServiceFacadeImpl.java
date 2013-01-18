@@ -839,17 +839,17 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<CodeHierarchyDto> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String orderVisualisationIdentifier) throws MetamacException {
+    public List<CodeHierarchyDto> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String orderVisualisationUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Retrieve
         List<CodeMetamac> codes = getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn);
         CodelistOrderVisualisation codelistOrderVisualisation = null;
-        if (orderVisualisationIdentifier != null) {
-            codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByIdentifier(ctx, codelistUrn, orderVisualisationIdentifier);
+        if (orderVisualisationUrn != null) {
+            codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
         } else {
-            // TODO orden por defecto
+            // order in database
         }
 
         // Transform
@@ -862,12 +862,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // ------------------------------------------------------------------------
 
     @Override
-    public CodelistOrderVisualisationDto retrieveCodelistOrderVisualisationByIdentifier(ServiceContext ctx, String codelistUrn, String identifier) throws MetamacException {
+    public CodelistOrderVisualisationDto retrieveCodelistOrderVisualisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindCodelistOrderVisualisation(ctx);
 
         // Retrieve
-        CodelistOrderVisualisation codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByIdentifier(ctx, codelistUrn, identifier);
+        CodelistOrderVisualisation codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByUrn(ctx, urn);
 
         // Transform
         CodelistOrderVisualisationDto codelistOrderVisualisationDto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(codelistOrderVisualisation);
@@ -875,15 +875,16 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public CodelistOrderVisualisationDto createCodelistOrderVisualisation(ServiceContext ctx, String codelistUrn, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
+    public CodelistOrderVisualisationDto createCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
         // Security TODO security visualisations
         // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
 
         // Transform
-        CodelistOrderVisualisation codelistOrderVisualisation = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(codelistUrn, codelistOrderVisualisationDto);
+        CodelistOrderVisualisation codelistOrderVisualisation = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(codelistOrderVisualisationDto);
 
         // Create
-        CodelistOrderVisualisation codelistOrderVisualisationCreated = getCodesMetamacService().createCodelistOrderVisualisation(ctx, codelistUrn, codelistOrderVisualisation);
+        CodelistOrderVisualisation codelistOrderVisualisationCreated = getCodesMetamacService().createCodelistOrderVisualisation(ctx, codelistOrderVisualisationDto.getCodelist().getUrn(),
+                codelistOrderVisualisation);
 
         // Transform to DTO
         codelistOrderVisualisationDto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(codelistOrderVisualisationCreated);
@@ -891,12 +892,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public CodelistOrderVisualisationDto updateCodelistOrderVisualisation(ServiceContext ctx, String codelistUrn, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
+    public CodelistOrderVisualisationDto updateCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
         // Security TODO security visualisations
         // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
 
         // Transform
-        CodelistOrderVisualisation codelistOrderVisualisationToUpdate = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(codelistUrn, codelistOrderVisualisationDto);
+        CodelistOrderVisualisation codelistOrderVisualisationToUpdate = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(codelistOrderVisualisationDto);
 
         // Update
         CodelistOrderVisualisation codelistOrderVisualisationUpdated = getCodesMetamacService().updateCodelistOrderVisualisation(ctx, codelistOrderVisualisationToUpdate);
@@ -907,12 +908,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void deleteCodelistOrderVisualisation(ServiceContext ctx, String codelistUrn, String identifier) throws MetamacException {
+    public void deleteCodelistOrderVisualisation(ServiceContext ctx, String urn) throws MetamacException {
         // Security TODO security visualisations
         // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
 
         // Delete
-        getCodesMetamacService().deleteCodelistOrderVisualisation(ctx, codelistUrn, identifier);
+        getCodesMetamacService().deleteCodelistOrderVisualisation(ctx, urn);
     }
 
     @Override

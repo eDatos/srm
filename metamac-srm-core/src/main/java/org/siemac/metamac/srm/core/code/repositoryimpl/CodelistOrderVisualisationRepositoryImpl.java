@@ -17,12 +17,10 @@ public class CodelistOrderVisualisationRepositoryImpl extends CodelistOrderVisua
     }
 
     @Override
-    public CodelistOrderVisualisation findByIdentifier(String codelistUrn, String identifier) {
+    public CodelistOrderVisualisation findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("identifier", identifier);
-        parameters.put("codelistUrn", codelistUrn);
-        List<CodelistOrderVisualisation> result = findByQuery("from CodelistOrderVisualisation where codelistVersion.maintainableArtefact.urn = :codelistUrn and identifier = :identifier", parameters,
-                1);
+        parameters.put("urn", urn);
+        List<CodelistOrderVisualisation> result = findByQuery("from CodelistOrderVisualisation where nameableArtefact.urn = :urn", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {

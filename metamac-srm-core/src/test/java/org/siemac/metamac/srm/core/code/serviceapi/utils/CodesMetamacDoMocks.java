@@ -157,9 +157,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
     public static CodelistOrderVisualisation mockCodelistOrderVisualisation() {
         CodelistOrderVisualisation codelistOrderVisualisation = new CodelistOrderVisualisation();
-        codelistOrderVisualisation.setName(BaseDoMocks.mockInternationalString());
-        codelistOrderVisualisation.setIdentifier("code-" + MetamacMocks.mockString(5));
-        // TODO is default?
+        codelistOrderVisualisation.setNameableArtefact(mockNameableArtefact("code-" + MetamacMocks.mockString(5)));
         return codelistOrderVisualisation;
     }
 

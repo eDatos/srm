@@ -228,8 +228,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_1               = "urn:VARIABLE_05_VARIABLE_ELEMENT_01";
 
     // Codelist visualisations
-    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_01        = "VISUALISATION01";
-    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_02        = "VISUALISATION02";
+    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_01        = "urn:CODELIST1_V2:VISUALISATION01";
+    protected static final String CODELIST_1_V2_ORDER_VISUALISATION_02        = "urn:CODELIST1_V2:VISUALISATION02";
 
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";

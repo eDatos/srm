@@ -1016,9 +1016,8 @@
                 
                 <TB_M_CODELIST_ORDER_VISUAL 
                     ID="121"
-                    IDENTIFIER="VISUALISATION01"
-                    NAME_FK="78"
                     CODELIST_FK="12"
+                    NAMEABLE_ARTEFACT_FK="9997121"
                     
                     UUID="codelist-visualisation-121"
                     VERSION="1"
@@ -1029,6 +1028,31 @@
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
                 /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9997121"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION01"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:CODELIST1_V2:VISUALISATION01"
+                    URN="urn:CODELIST1_V2:VISUALISATION01"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="78"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9997121"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                 
                 
                         <!--    -> CODE01 -->
                         <TB_M_CODE_ORDER_VISUAL 
@@ -1194,12 +1218,11 @@
                     <!-- -> CODE04 -->
                     <!--    -> CODE0401 -->
                     <!--        -> CODE040101 -->
-                
+
                 <TB_M_CODELIST_ORDER_VISUAL 
                     ID="122"
-                    IDENTIFIER="VISUALISATION02"
-                    NAME_FK="79"
                     CODELIST_FK="12"
+                    NAMEABLE_ARTEFACT_FK="9997122"
                     
                     UUID="codelist-visualisation-122"
                     VERSION="1"
@@ -1210,6 +1233,31 @@
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
                 /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9997122"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION02"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:CODELIST1_V2:VISUALISATION02"
+                    URN="urn:CODELIST1_V2:VISUALISATION02"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="79"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9997122"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                 
                 
                         <!--    -> CODE01 -->
                         <TB_M_CODE_ORDER_VISUAL 

@@ -131,9 +131,8 @@ public class CodesMetamacDtoMocks {
     // -----------------------------------------------------------------------------------
     public static CodelistOrderVisualisationDto mockCodelistOrderVisualisationDto() {
         CodelistOrderVisualisationDto codelistOrderVisualisationDto = new CodelistOrderVisualisationDto();
-        codelistOrderVisualisationDto.setIdentifier("code-" + MetamacMocks.mockString(10));
+        codelistOrderVisualisationDto.setCode("code-" + MetamacMocks.mockString(10));
         codelistOrderVisualisationDto.setName(MetamacMocks.mockInternationalStringDto());
-        // TODO is default
         return codelistOrderVisualisationDto;
     }
 

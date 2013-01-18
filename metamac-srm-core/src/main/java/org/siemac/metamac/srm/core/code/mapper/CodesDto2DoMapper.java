@@ -24,6 +24,6 @@ public interface CodesDto2DoMapper {
     public VariableFamily variableFamilyDtoToDo(VariableFamilyDto source) throws MetamacException;
     public Variable variableDtoToDo(VariableDto source) throws MetamacException;
     public VariableElement variableElementDtoToDo(VariableElementDto source) throws MetamacException;
-    public CodelistOrderVisualisation codelistOrderVisualisationDtoToDo(String codelistUrn, CodelistOrderVisualisationDto source) throws MetamacException;
+    public CodelistOrderVisualisation codelistOrderVisualisationDtoToDo(CodelistOrderVisualisationDto source) throws MetamacException;
 
 }

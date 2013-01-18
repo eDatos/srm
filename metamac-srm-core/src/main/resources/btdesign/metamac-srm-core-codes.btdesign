@@ -72,7 +72,7 @@ Application CodesMetamac {
 			"Updates parent of code. parentUrn is null when code is moved to first level. Code is moved at the end of new level"
 			updateCodeParent(String codeUrn, String newParentUrn) throws MetamacException;
 			"Updates position of code to visualisation requested"
-			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationIdentifier, Long newCodeIndex) throws MetamacException;
+			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationUrn, Long newCodeIndex) throws MetamacException;
     		"Retrieves code by urn"
     		@CodeMetamac retrieveCodeByUrn(String urn) throws MetamacException;
     		"Finds codes by criteria"
@@ -89,16 +89,16 @@ Application CodesMetamac {
 			"Updates visualisation"
 			@CodelistOrderVisualisation updateCodelistOrderVisualisation(@CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException;
     		"Retrieves visualisation by identifier"
-    		@CodelistOrderVisualisation retrieveCodelistOrderVisualisationByIdentifier(String codelistUrn, String identifier) throws MetamacException;
+    		@CodelistOrderVisualisation retrieveCodelistOrderVisualisationByUrn(String urn) throws MetamacException;
     		"Retrieve visualisations by codelist"
     		List<@CodelistOrderVisualisation> retrieveCodelistOrderVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
 			"Deletes visualisation"
-    		deleteCodelistOrderVisualisation(String codelistUrn, String identifier) throws MetamacException;
+    		deleteCodelistOrderVisualisation(String urn) throws MetamacException;
 
 			// CODESLIST FAMILIES
 			
 			"Creates codelist family"
-			@CodelistFamily createCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
+			@CodelistFamily createCodelistFamily(String codelistUrn, @CodelistFamily codelistFamily) throws MetamacException;
 			"Updates codelist family"
 			@CodelistFamily updateCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
     		"Retrieves codelist family by urn"
@@ -220,10 +220,8 @@ Application CodesMetamac {
 			databaseTable="TB_M_CODELIST_ORDER_VISUAL"
 			hint="idSequence=M_CODELIST_ORDER_VISUAL"
 			
-			"Identifier"
-			String identifier not nullable;
-			"Name"
-			- @InternationalString name nullable cascade="all" fetch="lazy" databaseColumn="NAME_FK";
+			"Nameable artefact"
+			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Last update to optimistic locking"
 			DateTimeTZ updateDate nullable;
 			"Codes"
@@ -235,7 +233,7 @@ Application CodesMetamac {
 				save;
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
-				@CodelistOrderVisualisation findByIdentifier(String codelistUrn, String identifier);
+				@CodelistOrderVisualisation findByUrn(String orderVisualisationUrn);
 			}			
 		}	
 		

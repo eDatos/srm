@@ -87,13 +87,9 @@ Application DtosMetamacCodeDomain {
 		}
 		
 		"Dto for CodelistOrderVisualisation"		
-		DataTransferObject CodelistOrderVisualisationDto {
-    		"Primary key"
-       		Long id;
-			"Code"
-			String identifier not nullable;
-			"Name"
-			- @InternationalStringDto name nullable;
+		DataTransferObject CodelistOrderVisualisationDto extends @NameableArtefactDto {
+			"Codelist"
+			- @RelatedResourceDto codelist not nullable;
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}

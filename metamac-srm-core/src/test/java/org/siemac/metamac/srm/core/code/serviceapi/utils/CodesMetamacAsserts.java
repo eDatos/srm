@@ -449,9 +449,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
         if (expected == null) {
             return;
         }
-        assertEqualsInternationalString(expected.getName(), actual.getName());
-        assertEquals(expected.getIdentifier(), actual.getIdentifier());
-        // TODO is default
+        // other artefacts
+        assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
     public static void assertEqualsCodelistOrderVisualisationDto(CodelistOrderVisualisationDto expected, CodelistOrderVisualisationDto actual) {
@@ -459,9 +458,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
         if (expected == null) {
             return;
         }
-        assertEqualsInternationalStringDto(expected.getName(), actual.getName());
-        assertEquals(expected.getIdentifier(), actual.getIdentifier());
-        // TODO is default
+        // other artefacts
+        CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
     }
 
 }

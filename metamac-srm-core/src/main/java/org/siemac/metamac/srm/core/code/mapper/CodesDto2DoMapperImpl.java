@@ -259,22 +259,29 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
     }
 
     @Override
-    public CodelistOrderVisualisation codelistOrderVisualisationDtoToDo(String codelistUrn, CodelistOrderVisualisationDto source) throws MetamacException {
+    public CodelistOrderVisualisation codelistOrderVisualisationDtoToDo(CodelistOrderVisualisationDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
 
         // If exists, retrieves existing entity. Otherwise, creates new entity.
-        CodelistOrderVisualisation target = codelistOrderVisualisationRepository.findByIdentifier(codelistUrn, source.getIdentifier());
-        if (target == null) {
+        CodelistOrderVisualisation target = null;
+        if (source.getUrn() == null) {
             target = new CodelistOrderVisualisation();
         } else {
+            target = retrieveCodelistOrderVisualisation(source.getUrn());
             OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
         }
-        target.setIdentifier(source.getIdentifier());
-        target.setName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getName(), target.getName(), ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_NAME));
-        // TODO is default
-        target.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
+
+        if (target.getId() == null) {
+            target.setNameableArtefact(new NameableArtefact());
+        }
+
+        target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
+
+        // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
+        target.setUpdateDate(new DateTime());
+
         return target;
     }
 
@@ -331,4 +338,14 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         }
         return target;
     }
+
+    private CodelistOrderVisualisation retrieveCodelistOrderVisualisation(String urn) throws MetamacException {
+        CodelistOrderVisualisation target = codelistOrderVisualisationRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
 }

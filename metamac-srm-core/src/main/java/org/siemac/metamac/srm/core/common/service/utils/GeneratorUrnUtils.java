@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.common.service.utils;
 
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
@@ -33,5 +34,12 @@ public class GeneratorUrnUtils {
      */
     public static String generateVariableElementUrn(VariableElement variableElement) {
         return "urn:" + variableElement.getNameableArtefact().getCode();
+    }
+
+    /**
+     * TODO Generate order visualisation
+     */
+    public static String generateCodelistOrderVisualisationUrn(CodelistOrderVisualisation codelistOrderVisualisation) {
+        return "urn:" + codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getUrn() + "." + codelistOrderVisualisation.getNameableArtefact().getCode();
     }
 }

@@ -96,7 +96,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
 
         Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = null;
         if (codelistOrderVisualisation != null) {
-            mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codeOrderVisualisationsToMapByCodeUrn(codelistOrderVisualisation.getCodes());
+            mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codelistOrderVisualisationToMapByCodeUrn(codelistOrderVisualisation);
         }
 
         List<CodeHierarchyDto> targets = codeMetamacDoListToCodeHierarchyDtoList(sources, mapCodeOrderVisualisationByCodeUrn);
@@ -262,11 +262,17 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         CodelistOrderVisualisationDto target = new CodelistOrderVisualisationDto();
-        target.setId(source.getId());
-        target.setIdentifier(source.getIdentifier());
-        target.setName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getName()));
-        target.setVersionOptimisticLocking(source.getVersion());
+        do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
 
+        // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)
+        target.setId(source.getId());
+        target.setUuid(source.getUuid());
+        target.setVersion(source.getVersion());
+        target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
+        target.setCreatedBy(source.getCreatedBy());
+        target.setLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getLastUpdated()));
+        target.setLastUpdatedBy(source.getLastUpdatedBy());
+        target.setVersionOptimisticLocking(source.getVersion());
         return target;
     }
 
