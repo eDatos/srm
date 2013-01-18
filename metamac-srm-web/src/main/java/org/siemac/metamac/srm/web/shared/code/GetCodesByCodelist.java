@@ -16,7 +16,7 @@ public class GetCodesByCodelist {
     String                        codelistUrn;
 
     @In(2)
-    String                        codelistOrderIdentifier;
+    String                        codelistOrderUrn;
 
     @Out(1)
     List<CodeHierarchyDto>        codeHierarchyDtos;

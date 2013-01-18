@@ -31,13 +31,12 @@ public class GetCodesByCodelistActionHandler extends SecurityActionHandler<GetCo
         try {
             // Codes
             List<CodeHierarchyDto> itemHierarchyDtos = srmCoreServiceFacade.retrieveCodesByCodelistUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(),
-                    action.getCodelistOrderIdentifier());
+                    action.getCodelistOrderUrn());
 
             // Order
             CodelistOrderVisualisationDto codelistOrderVisualisationDto = null;
-            if (action.getCodelistOrderIdentifier() != null) {
-                codelistOrderVisualisationDto = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByIdentifier(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(),
-                        action.getCodelistOrderIdentifier());
+            if (action.getCodelistOrderUrn() != null) {
+                codelistOrderVisualisationDto = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistOrderUrn());
             }
 
             return new GetCodesByCodelistResult(itemHierarchyDtos, codelistOrderVisualisationDto);
