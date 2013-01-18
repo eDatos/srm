@@ -7,9 +7,10 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CodelistOrderRecord extends ListGridRecord {
 
-    public CodelistOrderRecord(String code, String name, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+    public CodelistOrderRecord(String code, String name, String urn, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
         setCode(code);
         setName(name);
+        setUrn(urn);
         setCodelistOrderVisualisationDto(codelistOrderVisualisationDto);
     }
 
@@ -23,6 +24,14 @@ public class CodelistOrderRecord extends ListGridRecord {
 
     public void setName(String name) {
         setAttribute(CodelistOrderDS.NAME, name);
+    }
+
+    public void setUrn(String urn) {
+        setAttribute(CodelistOrderDS.URN, urn);
+    }
+
+    public String getUrn() {
+        return getAttributeAsString(CodelistOrderDS.URN);
     }
 
     public void setCodelistOrderVisualisationDto(CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
