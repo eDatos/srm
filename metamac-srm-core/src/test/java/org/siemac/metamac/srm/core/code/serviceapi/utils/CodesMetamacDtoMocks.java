@@ -136,4 +136,13 @@ public class CodesMetamacDtoMocks {
         return codelistOrderVisualisationDto;
     }
 
+    public static RelatedResourceDto mockCodelistOrderVisualisationRelatedResourceDto(String code, String urn) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(code);
+        relatedResourceDto.setUrn(urn);
+        relatedResourceDto.setUrnProvider(urn);
+        relatedResourceDto.setType(null);
+        return relatedResourceDto;
+    }
+
 }

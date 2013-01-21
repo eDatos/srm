@@ -188,6 +188,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersionMetamac = retrieveCodelistByUrn(ctx, urn);
         checkCodelistCanBeModified(codelistVersionMetamac);
         codelistVersionMetamac.removeAllReplaceToCodelists();
+        codelistVersionMetamac.setDefaultOrderVisualisation(null);
 
         // Delete
         codesService.deleteCodelist(ctx, urn);
@@ -808,8 +809,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
         checkCodelistCanBeModified(codelistVersion);
 
-        // TODO createCodelistOrderVisualisation: check código no duplicado
-
         // Create order visualisation
         codelistOrderVisualisation.setCodelistVersion(codelistVersion);
         // Add all codes, without hierarchy, but with default order by level
@@ -834,6 +833,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistOrderVisualisation updateCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelistOrderVisualisation(codelistOrderVisualisation, null);
+        checkCodelistCanBeModified(codelistOrderVisualisation.getCodelistVersion());;
 
         // If code has been changed, update URN
         if (codelistOrderVisualisation.getNameableArtefact().getIsCodeUpdated()) {
@@ -849,8 +849,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteCodelistOrderVisualisation(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
-
         CodelistOrderVisualisation codelistOrderVisualisationToDelete = retrieveCodelistOrderVisualisationByUrn(urn);
+
+        // Check codelist and default visualisation
+        CodelistVersionMetamac codelistVersion = codelistOrderVisualisationToDelete.getCodelistVersion();
+        checkCodelistCanBeModified(codelistVersion);
+        if (codelistVersion.getDefaultOrderVisualisation() != null && codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn().equals(urn)) {
+            codelistVersion.setDefaultOrderVisualisation(null);
+            getCodelistVersionMetamacRepository().save(codelistVersion);
+        }
 
         // TODO No permitir eliminar la visualización por orden alfabético
 
@@ -908,6 +915,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Maintainer
         srmValidation.checkMaintainer(ctx, codelist.getMaintainableArtefact(), codelist.getMaintainableArtefact().getIsImported());
+
+        // Visualisations
+        if (codelist.getDefaultOrderVisualisation() != null) {
+            // Check it is visualisation of this codelist
+            if (!codelist.getDefaultOrderVisualisation().getCodelistVersion().getMaintainableArtefact().getUrn().equals(codelist.getMaintainableArtefact().getUrn())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
+                        .withMessageParameters(ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION).build();
+            }
+        }
     }
 
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {

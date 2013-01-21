@@ -228,6 +228,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_1               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_01";
 
     // Codelist visualisations
+    protected static final String CODELIST_1_V1_ORDER_VISUALISATION_01        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(01.000).VISUALISATION01";
     protected static final String CODELIST_1_V2_ORDER_VISUALISATION_01        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION01";
     protected static final String CODELIST_1_V2_ORDER_VISUALISATION_02        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION02";
 

@@ -186,6 +186,8 @@ Application CodesMetamac {
 			- Bag<@CodelistVersionMetamac> replaceToCodelists cascade="none" fetch="lazy" <-> replacedByCodelist;
 			"Order visualisations of codelist"
 			- Bag<@CodelistOrderVisualisation> orderVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> codelistVersion;
+			"Default order visualisation"
+			- @CodelistOrderVisualisation defaultOrderVisualisation nullable cascade="none" databaseColumn="DEFAULT_ORDER_VISUALISATION_FK";
 			
 			Repository CodelistVersionMetamacRepository {
 				save;

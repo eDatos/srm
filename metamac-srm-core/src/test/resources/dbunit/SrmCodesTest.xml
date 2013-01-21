@@ -303,6 +303,7 @@
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="6"
         REPLACED_BY_CODELIST_FK="21"
+        DEFAULT_ORDER_VISUALISATION_FK="111"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -416,6 +417,68 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />      
+            
+                <!-- VISUALISATIONS -->
+                
+                <!-- VISUALISATION01 -->
+                    <!-- -> CODE01 -->
+                
+                <TB_M_CODELIST_ORDER_VISUAL 
+                    ID="111"
+                    CODELIST_FK="11"
+                    NAMEABLE_ARTEFACT_FK="9997111"
+                    
+                    UUID="codelist-visualisation-111"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9997111"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION01"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(01.000).VISUALISATION01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(01.000).VISUALISATION01"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="80"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9997111"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                 
+                
+                        <!--    -> CODE01 -->
+                        <TB_M_CODE_ORDER_VISUAL 
+                            ID="1111"
+                            CODE_INDEX="0"
+                            CODE_FK="111"
+                            CODELIST_VISUALISATION_FK="111"
+                            
+                            UUID="code-visualisation-1111"
+                            VERSION="1"
+                            CREATED_BY="user1"
+                            CREATED_DATE="2011-01-01 01:02:03"
+                            CREATED_DATE_TZ="Europe/London"
+                            LAST_UPDATED_BY="user2"
+                            LAST_UPDATED="2011-01-22 01:02:03"
+                            LAST_UPDATED_TZ="Europe/London"
+                        />             
     
     <!-- **************************************************************************************  -->                
     <!-- VERSION 2                                                                               -->
@@ -450,6 +513,7 @@
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="121"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -1455,6 +1519,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -1667,6 +1732,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2038,6 +2104,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2190,6 +2257,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2342,6 +2410,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="6"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="611"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2452,6 +2521,68 @@
                 LAST_UPDATED_TZ="Europe/London"
             />     
             
+                <!-- VISUALISATIONS -->
+                
+                <!-- VISUALISATION01 -->
+                    <!-- -> CODE01 -->
+                
+                <TB_M_CODELIST_ORDER_VISUAL 
+                    ID="611"
+                    CODELIST_FK="61"
+                    NAMEABLE_ARTEFACT_FK="9997611"
+                    
+                    UUID="codelist-visualisation-611"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9997611"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION01"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST06(01.000).VISUALISATION01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST06(01.000).VISUALISATION01"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="81"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9997611"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                 
+                
+                        <!--    -> CODE01 -->
+                        <TB_M_CODE_ORDER_VISUAL 
+                            ID="6111"
+                            CODE_INDEX="0"
+                            CODE_FK="611"
+                            CODELIST_VISUALISATION_FK="611"
+                            
+                            UUID="code-visualisation-6111"
+                            VERSION="1"
+                            CREATED_BY="user1"
+                            CREATED_DATE="2011-01-01 01:02:03"
+                            CREATED_DATE_TZ="Europe/London"
+                            LAST_UPDATED_BY="user2"
+                            LAST_UPDATED="2011-01-22 01:02:03"
+                            LAST_UPDATED_TZ="Europe/London"
+                        />                 
+            
     <!-- ************************************************************************************** -->
     <!-- CODELIST 7                                                                             -->
     <!--        - Version 1: externally published                                               -->
@@ -2497,6 +2628,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2586,6 +2718,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="5"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="721"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2694,7 +2827,69 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
-            />         
+            />      
+            
+                <!-- VISUALISATIONS -->
+                
+                <!-- VISUALISATION01 -->
+                    <!-- -> CODE01 -->
+                
+                <TB_M_CODELIST_ORDER_VISUAL 
+                    ID="721"
+                    CODELIST_FK="72"
+                    NAMEABLE_ARTEFACT_FK="9997721"
+                    
+                    UUID="codelist-visualisation-721"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9997721"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION01"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST07(02.000).VISUALISATION01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST07(02.000).VISUALISATION01"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="82"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9997721"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                 
+                
+                        <!--    -> CODE01 -->
+                        <TB_M_CODE_ORDER_VISUAL 
+                            ID="7211"
+                            CODE_INDEX="0"
+                            CODE_FK="721"
+                            CODELIST_VISUALISATION_FK="721"
+                            
+                            UUID="code-visualisation-7211"
+                            VERSION="1"
+                            CREATED_BY="user1"
+                            CREATED_DATE="2011-01-01 01:02:03"
+                            CREATED_DATE_TZ="Europe/London"
+                            LAST_UPDATED_BY="user2"
+                            LAST_UPDATED="2011-01-22 01:02:03"
+                            LAST_UPDATED_TZ="Europe/London"
+                        />                 
     
     <!-- ************************************************************************************** -->
     <!-- CODELIST 8                                                                             -->
@@ -2740,6 +2935,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2892,6 +3088,7 @@
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2995,6 +3192,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3084,6 +3282,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3226,6 +3425,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3380,6 +3580,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3535,6 +3736,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3689,6 +3891,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="[null]"
         REPLACED_BY_CODELIST_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -5964,5 +6167,68 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="79"
-    />            
+    />   
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="80"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="801"
+        LABEL="visualización - órdenes 1-1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="80"
+    />    
+
+    <TB_LOCALISED_STRINGS
+        ID="802"
+        LABEL="order - visualisation 1-1-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="80"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="81"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="811"
+        LABEL="visualización - órdenes 6-1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="81"
+    />    
+
+    <TB_LOCALISED_STRINGS
+        ID="812"
+        LABEL="order - visualisation 6-1-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="81"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="82"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="821"
+        LABEL="visualización - órdenes 7-2-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="82"
+    />    
+
+    <TB_LOCALISED_STRINGS
+        ID="822"
+        LABEL="order - visualisation 7-2-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="82"
+    />                                
 </dataset>

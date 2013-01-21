@@ -22,7 +22,6 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
@@ -101,6 +100,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
             CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
             ValidationUtils.checkMetadataRequired(codelistVersion.getAccessType(), ServiceExceptionParameters.CODELIST_ACCESS_TYPE, exceptions);
             ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.VARIABLE, exceptions);
+            ValidationUtils.checkMetadataRequired(codelistVersion.getDefaultOrderVisualisation(), ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION, exceptions);
         }
 
         @Override
@@ -159,7 +159,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         private List<Object> codelistMetamacToObject(List<CodelistVersionMetamac> codelistVersions) {
             List<Object> objects = new ArrayList<Object>();
             for (CodelistVersionMetamac codelistVersion : codelistVersions) {
-                objects.add((ItemSchemeVersion) codelistVersion);
+                objects.add(codelistVersion);
             }
             return objects;
         }

@@ -96,6 +96,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         }
         assertEqualsCodelistFamilyRelatedResourceDto(entity.getFamily(), dto.getFamily(), mapperEnum);
         assertEqualsVariableRelatedResourceDto(entity.getVariable(), dto.getVariable(), mapperEnum);
+        assertEqualsCodelistOrderVisualisationResourceDto(entity.getDefaultOrderVisualisation(), dto.getDefaultOrderVisualisation(), mapperEnum);
 
         // SDMX
         CodesAsserts.assertEqualsCodelist(entity, dto, mapperEnum);
@@ -460,6 +461,14 @@ public class CodesMetamacAsserts extends CodesAsserts {
         }
         // other artefacts
         CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
+    }
+
+    public static void assertEqualsCodelistOrderVisualisationResourceDto(CodelistOrderVisualisation entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
+        assertEqualsNullability(entity, dto);
+        if (entity == null) {
+            return;
+        }
+        assertEquals(entity.getNameableArtefact().getUrn(), dto.getUrn());
     }
 
 }

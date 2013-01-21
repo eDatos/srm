@@ -96,6 +96,11 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         } else {
             target.setVariable(null);
         }
+        if (source.getDefaultOrderVisualisation() != null) {
+            target.setDefaultOrderVisualisation(retrieveCodelistOrderVisualisation(source.getDefaultOrderVisualisation().getUrn()));
+        } else {
+            target.setDefaultOrderVisualisation(null);
+        }
 
         dto2DoMapperSdmxSrm.codelistDtoToDo(source, target);
 

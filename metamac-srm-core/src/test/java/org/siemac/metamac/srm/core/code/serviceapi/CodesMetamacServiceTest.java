@@ -255,6 +255,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testUpdateCodelistChangingDefaultOrderVisualisation() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+        assertEquals(CODELIST_1_V2_ORDER_VISUALISATION_01, codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn());
+
+        String visualisationUrnNew = CODELIST_1_V2_ORDER_VISUALISATION_02;
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setDefaultOrderVisualisation(codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), visualisationUrnNew));
+        codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+
+        CodelistVersionMetamac codelistVersionRetrieved = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+        assertEquals(visualisationUrnNew, codelistVersionRetrieved.getDefaultOrderVisualisation().getNameableArtefact().getUrn());
+    }
+
+    @Test
     public void testUpdateCodelistAddFamily() throws Exception {
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
 
@@ -457,6 +471,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEqualsInternationalString(codelistVersion.getShortName(), "es", "Nombre corto 1-1", "en", "Short name 1-1");
         assertEquals(CODELIST_FAMILY_2, codelistVersion.getFamily().getNameableArtefact().getUrn());
         assertEquals(VARIABLE_6, codelistVersion.getVariable().getNameableArtefact().getUrn());
+        assertEquals(CODELIST_1_V1_ORDER_VISUALISATION_01, codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn());
 
         assertEquals(CODELIST_2_V1, codelistVersion.getReplacedByCodelist().getMaintainableArtefact().getUrn());
         assertEquals(0, codelistVersion.getReplaceToCodelists().size());
@@ -1005,9 +1020,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn);
             fail("codelist cannot be publish without an access type defined and with an associated variable");
         } catch (MetamacException e) {
-            assertEquals(2, e.getExceptionItems().size());
+            assertEquals(3, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_ACCESS_TYPE}, e.getExceptionItems().get(0));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION}, e.getExceptionItems().get(2));
         }
     }
 
@@ -3418,7 +3434,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testDeleteCodelistOrderVisualisation() throws Exception {
 
-        String urn = CODELIST_1_V2_ORDER_VISUALISATION_01;
+        String urn = CODELIST_1_V2_ORDER_VISUALISATION_02;
 
         codesService.deleteCodelistOrderVisualisation(getServiceContextAdministrador(), urn);
 
@@ -3430,6 +3446,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
         }
+    }
+
+    @Test
+    public void testDeleteCodelistOrderVisualisationAsDefault() throws Exception {
+
+        String urn = CODELIST_1_V2_ORDER_VISUALISATION_01;
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+        assertEquals(urn, codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn());
+
+        codesService.deleteCodelistOrderVisualisation(getServiceContextAdministrador(), urn);
+
+        // Check default is null
+        codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+        assertNull(codelistVersion.getDefaultOrderVisualisation());
     }
 
     @Override
