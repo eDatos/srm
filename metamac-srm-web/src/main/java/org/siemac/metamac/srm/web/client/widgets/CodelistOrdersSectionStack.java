@@ -1,11 +1,14 @@
 package org.siemac.metamac.srm.web.client.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.code.model.ds.CodelistOrderDS;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistOrderRecord;
 import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
@@ -13,6 +16,7 @@ import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.EditCodelistOrderWindow;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -37,6 +41,8 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
     private DeleteConfirmationWindow deleteConfirmationWindow;
 
     private CodelistUiHandlers       uiHandlers;
+
+    private ProcStatusEnum           codelistProcStatus;
 
     public CodelistOrdersSectionStack() {
         super(new CustomListGrid(), getConstants().codelistOrders());
@@ -102,7 +108,13 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
 
             @Override
             public void onClick(ClickEvent event) {
-                deleteConfirmationWindow.show();
+                if (isAlphabeticalOrderSelected()) {
+                    // Alphabetical order can not be deleted
+                    InformationWindow informationWindow = new InformationWindow(getMessages().codelistOrderAlphabeticalInfoDeleteTitle(), getMessages().codelistOrderAlphabeticalInfoDeleteMessage());
+                    informationWindow.show();
+                } else {
+                    deleteConfirmationWindow.show();
+                }
             }
         });
 
@@ -144,8 +156,15 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String orderUrn = ((CodelistOrderRecord) event.getRecord()).getAttribute(CodelistOrderDS.URN);
-                    uiHandlers.retrieveCodesByCodelist(orderUrn);
+                    String orderCode = ((CodelistOrderRecord) event.getRecord()).getAttribute(CodelistOrderDS.CODE);
+                    if (SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(orderCode) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(codelistProcStatus)) {
+                        // The alphabetical order can not be visualized until the codelist is published
+                        InformationWindow informationWindow = new InformationWindow(getMessages().codelistOrderAlphabeticalInfoViewTitle(), getMessages().codelistOrderAlphabeticalInfoViewMessage());
+                        informationWindow.show();
+                    } else {
+                        String orderUrn = ((CodelistOrderRecord) event.getRecord()).getAttribute(CodelistOrderDS.URN);
+                        uiHandlers.retrieveCodesByCodelist(orderUrn);
+                    }
                 }
             }
         });
@@ -174,6 +193,10 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
         this.uiHandlers = uiHandlers;
     }
 
+    public void setCodelistProcStatus(ProcStatusEnum procStatusEnum) {
+        this.codelistProcStatus = procStatusEnum;
+    }
+
     private void showListGridDeleteButton() {
         // TODO Security
         deleteCodelistOrderButton.show();
@@ -191,5 +214,15 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
             codelistOrderVisualisationDto = ((CodelistOrderRecord) record).getCodelistOrderVisualisationDto();
         }
         return codelistOrderVisualisationDto;
+    }
+
+    private boolean isAlphabeticalOrderSelected() {
+        List<String> orderCodes = CommonUtils.getOrderCodesFromSelectedCodelistOrders(listGrid.getSelectedRecords());
+        for (String orderCode : orderCodes) {
+            if (SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(orderCode)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

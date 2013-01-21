@@ -325,6 +325,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     @Override
     public void setCodelist(CodelistMetamacDto codelist) {
         this.codelistDto = codelist;
+        this.codelistOrdersSectionStack.setCodelistProcStatus(codelist.getLifeCycle().getProcStatus());
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(codelist.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;

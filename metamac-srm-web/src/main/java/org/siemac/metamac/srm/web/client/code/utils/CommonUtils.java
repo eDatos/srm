@@ -74,6 +74,15 @@ public class CommonUtils {
         return urns;
     }
 
+    public static List<String> getOrderCodesFromSelectedCodelistOrders(ListGridRecord[] records) {
+        List<String> urns = new ArrayList<String>();
+        for (ListGridRecord record : records) {
+            CodelistOrderRecord codelistRecord = (CodelistOrderRecord) record;
+            urns.add(codelistRecord.getCode());
+        }
+        return urns;
+    }
+
     public static List<ItemHierarchyDto> getItemHierarchyDtosFromCodeHierarchyDtos(List<CodeHierarchyDto> codeHierarchyDtos) {
         List<ItemHierarchyDto> itemHierarchyDtos = new ArrayList<ItemHierarchyDto>();
         for (CodeHierarchyDto codeHierarchyDto : codeHierarchyDtos) {
