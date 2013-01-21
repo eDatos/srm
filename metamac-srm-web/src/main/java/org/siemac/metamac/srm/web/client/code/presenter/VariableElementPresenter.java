@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -23,6 +24,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableElementResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
@@ -101,18 +103,20 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String identifier = PlaceRequestUtils.getVariableElementParamFromUrl(placeManager);
-        if (!StringUtils.isBlank(identifier)) {
-            retrieveVariableElement(identifier);
+        String variableIdentifier = PlaceRequestUtils.getVariableParamFromUrl(placeManager);
+        String elementIdentifier = PlaceRequestUtils.getVariableElementParamFromUrl(placeManager);
+        if (!StringUtils.isBlank(variableIdentifier) && !StringUtils.isBlank(elementIdentifier)) {
+            retrieveVariableElement(variableIdentifier, elementIdentifier);
         } else {
             MetamacSrmWeb.showErrorPage();
         }
     }
 
-    private void retrieveVariableElement(String identifier) {
-        // TODO Variable URN
-        String urn = "urn:" + identifier;
-        retrieveVariableElementByUrn(urn);
+    private void retrieveVariableElement(String variableIdentifier, String elementIdentifier) {
+        String urn = UrnUtils.generateUrn(UrnConstants.URN_SIEMAC_CLASS_CODELIST_VARIABLE_ELEMENT_PREFIX, variableIdentifier, elementIdentifier);
+        if (!StringUtils.isBlank(urn)) {
+            retrieveVariableElementByUrn(urn);
+        }
     }
 
     private void retrieveVariableElementByUrn(String urn) {

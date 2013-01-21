@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -30,6 +31,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
@@ -121,10 +123,11 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
     }
 
     private void retrieveVariableFamily(String identifier) {
-        // TODO Family URN
-        String urn = "urn:" + identifier;
-        retrieveVariableFamilyByUrn(urn);
-        retrieveVariablesByFamily(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, urn);
+        String urn = UrnUtils.generateUrn(UrnConstants.URN_SIEMAC_CLASS_CODELIST_VARIABLE_FAMILY_PREFIX, identifier);
+        if (!StringUtils.isBlank(urn)) {
+            retrieveVariableFamilyByUrn(urn);
+            retrieveVariablesByFamily(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, urn);
+        }
     }
 
     @Override
