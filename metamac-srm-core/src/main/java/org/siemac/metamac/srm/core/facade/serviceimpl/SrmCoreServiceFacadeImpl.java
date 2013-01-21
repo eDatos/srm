@@ -502,7 +502,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionSecurityUtils.canImportDataStructureDefinition(ctx);
 
         // Import
-        importationService.importSDMXStructure(ctx, contentDto.getInput(), importationJaxb2DoCallback);
+        importationService.importSDMXStructure(ctx, contentDto.getInput(), contentDto.getName(), importationJaxb2DoCallback);
     }
 
     @Override

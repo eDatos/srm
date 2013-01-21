@@ -11,8 +11,10 @@ import com.arte.statistic.sdmx.srm.core.importation.serviceimpl.utils.Importatio
 import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureJaxb2DoCallback;
 
-@Component("importationMetamacJaxb2DoCallback")
+@Component(ImportationJaxb2DoCallbackImpl.BEAN_ID)
 public class ImportationJaxb2DoCallbackImpl implements ImportationJaxb2DoCallback {
+
+    public static final String           BEAN_ID = "importationMetamacJaxb2DoCallback";
 
     @Autowired
     @Qualifier("organisationsMetamacJaxb2DoCallback")
@@ -57,6 +59,11 @@ public class ImportationJaxb2DoCallbackImpl implements ImportationJaxb2DoCallbac
     @Override
     public StructureJaxb2DoCallback getStructureJaxb2DoCallback() {
         return structureJaxb2DoCallback;
+    }
+
+    @Override
+    public String getBeanName() {
+        return BEAN_ID;
     }
 
 }
