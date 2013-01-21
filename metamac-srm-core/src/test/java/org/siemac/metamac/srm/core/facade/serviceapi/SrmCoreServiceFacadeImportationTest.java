@@ -84,6 +84,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_EXAMPLE_ORGANISATIONS() throws Exception {
         File file = new File(SdmxResources.EXAMPLE_ORGANISATIONS);
 
@@ -116,6 +117,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_DEMOGRAPHY_CODELIST() throws Exception {
         File file = new File(SdmxResources.DEMOGRAPHY_CODELIST);
 
@@ -150,6 +152,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
+    @Ignore
     public void testImport_DEMOGRAPHY_CONCEPTS() throws Exception {
 
         File file = new File(SdmxResources.DEMOGRAPHY_CONCEPTS);
