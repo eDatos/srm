@@ -13,30 +13,21 @@ import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementUiHandlers> implements VariableElementPresenter.VariableElementView {
@@ -152,7 +143,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE_VIEW, getConstants().variable());
+        ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE, getConstants().variable());
         contentDescriptorsForm.setFields(variable);
 
         mainFormLayout.addViewCanvas(identifiersForm);
@@ -174,9 +165,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE, getConstants().variable());
-        variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem variableView = createVariableItem();
-        contentDescriptorsEditionForm.setFields(variable, variableView);
+        contentDescriptorsEditionForm.setFields(variable);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
@@ -194,7 +183,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
         // Content descriptors
-        contentDescriptorsForm.setValue(VariableElementDS.VARIABLE_VIEW, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
+        contentDescriptorsForm.setValue(VariableElementDS.VARIABLE, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
     }
 
     public void setVariableElementEditionMode(VariableElementDto variableElementDto) {
@@ -205,8 +194,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersEditionForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
         // Content descriptors
-        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE_VIEW, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
-        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, variableElementDto.getVariable() != null ? variableElementDto.getVariable().getUrn() : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, CommonUtils.getRelatedResourceName(variableElementDto.getVariable()));
     }
 
     public void saveVariableElement() {
@@ -216,68 +204,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         variableElementDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.SHORT_NAME));
 
         // Content descriptors
-        // It is necessary to update the place request hierarchy if the variable has been changed! If not, the URL would be incorrect.
-        String oldVariableUrn = variableElementDto.getVariable().getUrn();
-        String newVariableUrn = contentDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE);
-        boolean updatePlaceRequestHierarchy = !StringUtils.equals(oldVariableUrn, newVariableUrn);
-        variableElementDto.setVariable(RelatedResourceUtils.createRelatedResourceDto(newVariableUrn));
 
-        getUiHandlers().saveVariableElement(variableElementDto, updatePlaceRequestHierarchy);
+        getUiHandlers().saveVariableElement(variableElementDto);
     }
-
-    private SearchViewTextItem createVariableItem() {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
-
-        SearchViewTextItem variableItem = new SearchViewTextItem(VariableElementDS.VARIABLE_VIEW, getConstants().variable());
-        variableItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-
-            @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                searchVariableWindow = new SearchRelatedResourceWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, searchVariableWindow.getRelatedResourceCriteria());
-                    }
-                });
-
-                // Load variables (to populate the selection window)
-                getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, null);
-
-                searchVariableWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                searchVariableWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria);
-                    }
-                });
-
-                searchVariableWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
-                        RelatedResourceDto selectedVariable = searchVariableWindow.getSelectedRelatedResource();
-                        searchVariableWindow.markForDestroy();
-                        // Set selected family in form
-                        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
-                        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE_VIEW,
-                                selectedVariable != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariable) : null);
-                    }
-                });
-            }
-        });
-        // Set required with a customValidator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                return !StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(VariableElementDS.VARIABLE));
-            }
-        };
-        variableItem.setValidators(customValidator);
-        variableItem.setTitleStyle("staticFormItemTitle");
-        return variableItem;
-    };
 }
