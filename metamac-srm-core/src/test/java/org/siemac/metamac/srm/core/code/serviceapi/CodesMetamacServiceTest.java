@@ -60,6 +60,7 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
@@ -126,6 +127,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersionRetrieved = codesService.retrieveCodelistByUrn(ctx, urn);
         assertEquals(ProcStatusEnum.DRAFT, codelistVersionRetrieved.getLifeCycleMetadata().getProcStatus());
         assertFalse(codelistVersionRetrieved.getMaintainableArtefact().getIsExternalReference());
+        assertNull(codelistVersionRetrieved.getDefaultOrderVisualisation());
         assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getProductionValidationDate());
         assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getProductionValidationUser());
         assertNull(codelistVersionRetrieved.getLifeCycleMetadata().getDiffusionValidationDate());
@@ -149,8 +151,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(urn, codelistReplaced1.getReplacedByCodelist().getMaintainableArtefact().getUrn());
         codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
         assertEquals(urn, codelistReplaced2.getReplacedByCodelist().getMaintainableArtefact().getUrn());
-    }
 
+        // Check alphabetical order is created
+        assertEquals(1, codelistVersionRetrieved.getOrderVisualisations().size());
+        CodelistOrderVisualisation alphabetical = codelistVersionRetrieved.getOrderVisualisations().get(0);
+        assertEquals(SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE, alphabetical.getNameableArtefact().getCode());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=" + codelistVersion.getMaintainableArtefact().getMaintainer().getIdAsMaintainer() + ":"
+                + codelistVersion.getMaintainableArtefact().getCode() + "(01.000)." + alphabetical.getNameableArtefact().getCode(), alphabetical.getNameableArtefact().getUrn());
+        assertNotNull(alphabetical.getNameableArtefact().getName());
+
+    }
     @Test
     public void testCreateCodelistWithFamily() throws Exception {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
@@ -3449,7 +3459,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testDeleteCodelistOrderVisualisationAsDefault() throws Exception {
+    public void testDeleteCodelistOrderVisualisationWhenIsDefault() throws Exception {
 
         String urn = CODELIST_1_V2_ORDER_VISUALISATION_01;
 

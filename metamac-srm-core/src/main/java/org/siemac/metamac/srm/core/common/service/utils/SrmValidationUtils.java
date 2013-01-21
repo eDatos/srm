@@ -4,6 +4,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -45,6 +46,12 @@ public class SrmValidationUtils {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE)
                         .build();
             }
+        }
+    }
+
+    public static void checkNotAlphabeticalOrderVisualisation(CodelistOrderVisualisation orderVisualisation) throws MetamacException {
+        if (SrmServiceUtils.isAlphabeticalOrderVisualisation(orderVisualisation)) {
+            throw new MetamacException(ServiceExceptionType.CODELIST_ALPHABETICAL_ORDER_OPERATION_NOT_SUPPORTED, orderVisualisation.getNameableArtefact().getUrn());
         }
     }
 }

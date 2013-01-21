@@ -42,6 +42,7 @@ import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -848,6 +849,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         CodelistOrderVisualisation codelistOrderVisualisation = null;
         if (orderVisualisationUrn != null) {
             codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
+            SrmValidationUtils.checkNotAlphabeticalOrderVisualisation(codelistOrderVisualisation);
         } else {
             // order in database
         }

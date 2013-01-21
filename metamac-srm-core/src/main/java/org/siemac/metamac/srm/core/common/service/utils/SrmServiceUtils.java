@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -116,5 +117,9 @@ public class SrmServiceUtils {
             target.put(codeOrderVisualisation.getCode().getNameableArtefact().getUrn(), codeOrderVisualisation);
         }
         return target;
+    }
+
+    public static Boolean isAlphabeticalOrderVisualisation(CodelistOrderVisualisation orderVisualisation) {
+        return SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(orderVisualisation.getNameableArtefact().getCode());
     }
 }

@@ -13,6 +13,8 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
+import org.siemac.metamac.core.common.ent.domain.InternationalString;
+import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -43,6 +45,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactReposito
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
@@ -118,6 +121,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             codelistVersion.getVariable().addCodelist(codelistVersion);
         }
 
+        // Add alphabetical order
+        codelistVersion = createCodelistOrderVisualisationAlphabetical(codelistVersion);
         return codelistVersion;
     }
 
@@ -173,6 +178,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodelistVersionMetamac publishInternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
+        // TODO generar orden para alfabético
         return (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn);
     }
 
@@ -302,6 +308,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Update orders, in previous and new level
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
+            if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
+                continue;
+            }
 
             Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codelistOrderVisualisationToMapByCodeUrn(codelistOrderVisualisation);
 
@@ -313,11 +322,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             // Update order in new level
             updateOneCodeOrderInLevelPuttingAtTheEnd(codelistOrderVisualisation, code);
         }
-
-        // TODO reordenar el alfabético
     }
 
-    // TODO no se puede actualizar para ALFABÉTICO
     @Override
     public void updateCodeInOrderVisualisation(ServiceContext ctx, String codeUrn, String codelistOrderVisualisationUrn, Long newCodeIndex) throws MetamacException {
 
@@ -328,6 +334,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
         CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(codelistOrderVisualisationUrn);
+        SrmValidationUtils.checkNotAlphabeticalOrderVisualisation(codelistOrderVisualisation);
+
         Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codelistOrderVisualisationToMapByCodeUrn(codelistOrderVisualisation);
 
         // Change order of code
@@ -371,6 +379,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Reorder codes in same level
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
+            if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
+                continue;
+            }
             Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codelistOrderVisualisationToMapByCodeUrn(codelistOrderVisualisation);
             updateAllCodesOrdersInLevelRemovingCode(ctx, codesInSameLevel, codeOrdersInVisualisations.get(codelistOrderVisualisation.getNameableArtefact().getUrn()).getCodeIndex(),
                     mapCodeOrderVisualisationByCodeUrn);
@@ -837,6 +848,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // If code has been changed, update URN
         if (codelistOrderVisualisation.getNameableArtefact().getIsCodeUpdated()) {
+            if (codelistOrderVisualisation.getNameableArtefact().getUrn().endsWith("." + SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE)) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE);
+            }
             setCodelistOrderVisualisationUrnUnique(codelistOrderVisualisation);
         }
         codelistOrderVisualisation.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
@@ -850,6 +864,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
         CodelistOrderVisualisation codelistOrderVisualisationToDelete = retrieveCodelistOrderVisualisationByUrn(urn);
+        SrmValidationUtils.checkNotAlphabeticalOrderVisualisation(codelistOrderVisualisationToDelete);
 
         // Check codelist and default visualisation
         CodelistVersionMetamac codelistVersion = codelistOrderVisualisationToDelete.getCodelistVersion();
@@ -858,8 +873,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             codelistVersion.setDefaultOrderVisualisation(null);
             getCodelistVersionMetamacRepository().save(codelistVersion);
         }
-
-        // TODO No permitir eliminar la visualización por orden alfabético
 
         // Delete
         getCodelistOrderVisualisationRepository().delete(codelistOrderVisualisationToDelete);
@@ -1135,11 +1148,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     private void updateOneCodeOrderInLevelPuttingAtTheEnd(List<CodelistOrderVisualisation> codelistOrderVisualisations, CodeMetamac code) {
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistOrderVisualisations) {
+            if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
+                return;
+            }
             updateOneCodeOrderInLevelPuttingAtTheEnd(codelistOrderVisualisation, code);
         }
     }
 
     private void updateOneCodeOrderInLevelPuttingAtTheEnd(CodelistOrderVisualisation codelistOrderVisualisation, CodeMetamac code) {
+        if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
+            return;
+        }
         CodeOrderVisualisation codeOrderVisualisation = SrmServiceUtils.filterCodeOrderVisualisationsByCode(codelistOrderVisualisation.getCodes(), code.getNameableArtefact().getUrn());
         if (codeOrderVisualisation == null) {
             codeOrderVisualisation = new CodeOrderVisualisation();
@@ -1174,6 +1193,24 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
             parentTarget = parentTarget.getParent();
         }
+    }
+
+    private CodelistVersionMetamac createCodelistOrderVisualisationAlphabetical(CodelistVersionMetamac codelistVersion) throws MetamacException {
+        CodelistOrderVisualisation alphabeticalOrderVisualisation = new CodelistOrderVisualisation();
+        alphabeticalOrderVisualisation.setNameableArtefact(new NameableArtefact());
+        alphabeticalOrderVisualisation.getNameableArtefact().setCode(SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE);
+        // NameableArtefact
+        InternationalString name = new InternationalString();
+        name.addText(new LocalisedString("es", "Orden alfabético"));
+        name.addText(new LocalisedString("en", "Alphabetical order"));
+        name.addText(new LocalisedString("pt", "Ordem alfabética"));
+        alphabeticalOrderVisualisation.getNameableArtefact().setName(name);
+
+        // note: do not add codes, they will be added when publish
+        codelistVersion.addOrderVisualisation(alphabeticalOrderVisualisation);
+
+        setCodelistOrderVisualisationUrnUnique(alphabeticalOrderVisualisation);
+        return getCodelistVersionMetamacRepository().save(codelistVersion);
     }
 
 }
