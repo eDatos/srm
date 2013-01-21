@@ -34,5 +34,4 @@ public class GetOrganisationListBySchemeActionHandler extends SecurityActionHand
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

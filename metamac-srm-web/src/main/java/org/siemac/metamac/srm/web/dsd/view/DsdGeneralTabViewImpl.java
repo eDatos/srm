@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -392,7 +393,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General form
         generalForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
         generalForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
-        generalForm.setValue(DataStructureDefinitionDS.MAINTAINER, dsd.getMaintainer() != null ? dsd.getMaintainer().getCode() : StringUtils.EMPTY); // TODO AGENCY
+        generalForm.setValue(DataStructureDefinitionDS.MAINTAINER, CommonUtils.getRelatedResourceName(dsd.getMaintainer()));
 
         // Status form
         statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
@@ -435,7 +436,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General form
         generalEditionForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
         generalEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
-        generalEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, dsd.getMaintainer() != null ? dsd.getMaintainer().getCode() : StringUtils.EMPTY); // TODO AGENCY
+        generalEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, CommonUtils.getRelatedResourceName(dsd.getMaintainer()));
 
         // Status form
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());

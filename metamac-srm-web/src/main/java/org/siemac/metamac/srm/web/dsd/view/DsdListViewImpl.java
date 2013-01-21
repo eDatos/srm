@@ -11,7 +11,6 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.client.utils.MaintainerUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
@@ -27,7 +26,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -293,11 +291,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     public DataStructureDefinitionMetamacDto getNewDsd() {
         DataStructureDefinitionMetamacDto dsd = new DataStructureDefinitionMetamacDto();
         dsd.setCode(codeItem.getValueAsString());
-        InternationalStringDto internationalName = InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString());
-        dsd.setName(internationalName);
-        // TODO Organization (MaintainerIdLogic)
-        RelatedResourceDto maintainer = RelatedResourceUtils.createMaintainerAsRelatedResourceDto("agency_CODE", MaintainerUtils.getCurrentMaintainer());
-        dsd.setMaintainer(maintainer);
+        dsd.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString()));
+        dsd.setMaintainer(RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto());
         dsd.setFinalLogic(false);
         dsd.setIsExternalReference(false);
         return dsd;

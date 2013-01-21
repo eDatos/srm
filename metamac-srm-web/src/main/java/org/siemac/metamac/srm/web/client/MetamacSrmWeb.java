@@ -3,7 +3,10 @@ package org.siemac.metamac.srm.web.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.gin.MetamacSrmWebGinjector;
+import org.siemac.metamac.srm.web.shared.organisation.GetDefaultMaintainerAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetDefaultMaintainerResult;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.web.common.client.MetamacEntryPoint;
 import org.siemac.metamac.web.common.client.events.LoginAuthenticatedEvent;
@@ -36,10 +39,12 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
     private static SrmWebCoreMessages          coreMessages;
     private static SrmWebMessages              messages;
 
+    private static OrganisationMetamacDto      defaultMainatainer;
+
     public static final MetamacSrmWebGinjector ginjector = GWT.create(MetamacSrmWebGinjector.class);
 
-    // TODO This method should be removed to use CAS authentication
     // Application id should be the same than the one defined in org.siemac.metamac.srm.core.common.constants.SrmConstants.SECURITY_APPLICATION_ID
+    @Override
     public void onModuleLoad() {
         ginjector.getDispatcher().execute(new GetNavigationBarUrlAction(), new WaitingAsyncCallback<GetNavigationBarUrlResult>() {
 
@@ -48,6 +53,7 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
                 logger.log(Level.SEVERE, "Error loading toolbar");
                 loadNonSecuredApplication();
             }
+            @Override
             public void onWaitSuccess(GetNavigationBarUrlResult result) {
                 // Load scripts for navigation bar
                 MetamacNavBar.loadScripts(result.getNavigationBarUrl());
@@ -148,10 +154,26 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
     // }
 
     private void loadApplication() {
-        LoginAuthenticatedEvent.fire(ginjector.getEventBus(), MetamacSrmWeb.principal);
-        // This is required for GWT-Platform proxy's generator.
-        DelayedBindRegistry.bind(ginjector);
-        ginjector.getPlaceManager().revealCurrentPlace();
+        // Load the default maintainer
+        ginjector.getDispatcher().execute(new GetDefaultMaintainerAction(), new WaitingAsyncCallback<GetDefaultMaintainerResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                logger.log(Level.SEVERE, "Error loading the default maintainer");
+                showErrorPage();
+            }
+            @Override
+            public void onWaitSuccess(GetDefaultMaintainerResult result) {
+                // Store the default maintainer
+                defaultMainatainer = result.getOrganisationMetamacDto();
+
+                // Load the application
+                LoginAuthenticatedEvent.fire(ginjector.getEventBus(), MetamacSrmWeb.principal);
+                // This is required for GWT-Platform proxy's generator.
+                DelayedBindRegistry.bind(ginjector);
+                ginjector.getPlaceManager().revealCurrentPlace();
+            }
+        });
     }
 
     public void displayLoginView() {
@@ -167,6 +189,10 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
                 Window.Location.replace(result.getLoginPageUrl());
             }
         });
+    }
+
+    public static OrganisationMetamacDto getDefaultMaintainer() {
+        return defaultMainatainer;
     }
 
     public static MetamacPrincipal getCurrentUser() {

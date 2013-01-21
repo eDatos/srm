@@ -4,7 +4,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.utils.MaintainerUtils;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
@@ -16,7 +15,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
@@ -75,11 +73,7 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
 
     public OrganisationSchemeMetamacDto getNewOrganisationSchemeDto() {
         OrganisationSchemeMetamacDto organisationSchemeDto = new OrganisationSchemeMetamacDto();
-
-        // TODO agency
-        RelatedResourceDto maintainer = RelatedResourceUtils.createMaintainerAsRelatedResourceDto("SDMX_AGENCY", MaintainerUtils.getCurrentMaintainer());
-        organisationSchemeDto.setMaintainer(maintainer);
-
+        organisationSchemeDto.setMaintainer(RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto());
         organisationSchemeDto.setType(OrganisationSchemeTypeEnum.valueOf(form.getValueAsString(OrganisationSchemeDS.TYPE)));
         organisationSchemeDto.setCode(form.getItem(OrganisationSchemeDS.CODE).isVisible() ? form.getValueAsString(OrganisationSchemeDS.CODE) : null);
         organisationSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(OrganisationSchemeDS.NAME)));

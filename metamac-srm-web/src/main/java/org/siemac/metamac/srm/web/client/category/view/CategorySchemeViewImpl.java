@@ -442,7 +442,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsForm.setValue(CategorySchemeDS.MAINTAINER, categorySchemeDto.getMaintainer() != null ? categorySchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
+        productionDescriptorsForm.setValue(CategorySchemeDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(categorySchemeDto.getMaintainer()));
         productionDescriptorsForm.setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
@@ -494,7 +494,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         contentDescriptorsEditionForm.markForRedraw();
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(CategorySchemeDS.MAINTAINER, categorySchemeDto.getMaintainer() != null ? categorySchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
+        productionDescriptorsEditionForm.setValue(CategorySchemeDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(categorySchemeDto.getMaintainer()));
         productionDescriptorsEditionForm
                 .setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
 

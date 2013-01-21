@@ -11,17 +11,24 @@ import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 public class RelatedResourceUtils {
 
+    private static RelatedResourceDto maintainer = null;
+
     //
     // ORGANISATIONS
     //
 
-    public static RelatedResourceDto createMaintainerAsRelatedResourceDto(String code, String urn) {
-        RelatedResourceDto maintainer = new RelatedResourceDto(code, urn, TypeExternalArtefactsEnum.AGENCY);
+    public static RelatedResourceDto getDefaultMaintainerAsRelatedResourceDto() {
+        if (maintainer == null) {
+            OrganisationMetamacDto organisationMetamacDto = MetamacSrmWeb.getDefaultMaintainer();
+            maintainer = new RelatedResourceDto(organisationMetamacDto.getCode(), organisationMetamacDto.getUrn(), TypeExternalArtefactsEnum.AGENCY);
+        }
         return maintainer;
     }
 

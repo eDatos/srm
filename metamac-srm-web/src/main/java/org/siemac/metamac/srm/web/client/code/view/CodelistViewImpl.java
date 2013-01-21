@@ -593,7 +593,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsForm.setValue(CodelistDS.MAINTAINER, codelistDto.getMaintainer() != null ? codelistDto.getMaintainer().getCode() : StringUtils.EMPTY);
+        productionDescriptorsForm.setValue(CodelistDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getMaintainer()));
         productionDescriptorsForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
@@ -654,7 +654,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE, codelistDto.getVariable() != null ? codelistDto.getVariable().getUrn() : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(CodelistDS.MAINTAINER, codelistDto.getMaintainer() != null ? codelistDto.getMaintainer().getCode() : StringUtils.EMPTY);
+        productionDescriptorsEditionForm.setValue(CodelistDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getMaintainer()));
         productionDescriptorsEditionForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.markForRedraw();
 

@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.CodelistDS;
-import org.siemac.metamac.srm.web.client.utils.MaintainerUtils;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -14,7 +13,6 @@ import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class NewCodelistWindow extends CustomWindow {
@@ -55,11 +53,7 @@ public class NewCodelistWindow extends CustomWindow {
 
     public CodelistMetamacDto getNewCodelistDto() {
         CodelistMetamacDto codelistDto = new CodelistMetamacDto();
-
-        // TODO agency
-        RelatedResourceDto maintainer = RelatedResourceUtils.createMaintainerAsRelatedResourceDto("SDMX_AGENCY", MaintainerUtils.getCurrentMaintainer());
-        codelistDto.setMaintainer(maintainer);
-
+        codelistDto.setMaintainer(RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto());
         codelistDto.setCode(form.getValueAsString(CodelistDS.CODE));
         codelistDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(CodelistDS.NAME)));
         return codelistDto;

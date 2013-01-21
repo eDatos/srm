@@ -8,7 +8,6 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.web.client.utils.MaintainerUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
@@ -25,7 +24,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalPaginatedItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
@@ -129,11 +127,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
 
     public ConceptSchemeMetamacDto getNewConceptSchemeDto() {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
-
-        // TODO agency
-        RelatedResourceDto maintainer = RelatedResourceUtils.createMaintainerAsRelatedResourceDto("SDMX_AGENCY", MaintainerUtils.getCurrentMaintainer());
-        conceptSchemeDto.setMaintainer(maintainer);
-
+        conceptSchemeDto.setMaintainer(RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto());
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));
         conceptSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptSchemeDS.NAME)));
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(form.getValueAsString(ConceptSchemeDS.TYPE)));

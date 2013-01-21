@@ -619,7 +619,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
         productionDescriptorsForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 
@@ -674,7 +674,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         contentDescriptorsEditionForm.markForRedraw();
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER, organisationSchemeDto.getMaintainer() != null ? organisationSchemeDto.getMaintainer().getCode() : StringUtils.EMPTY);
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 
