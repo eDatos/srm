@@ -878,8 +878,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CodelistOrderVisualisationDto createCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
-        // Security TODO security visualisations
-        // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistOrderVisualisationDto.getCodelist().getUrn());
+        CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CodelistOrderVisualisation codelistOrderVisualisation = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(codelistOrderVisualisationDto);
@@ -895,8 +896,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public CodelistOrderVisualisationDto updateCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
-        // Security TODO security visualisations
-        // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistOrderVisualisationDto.getCodelist().getUrn());
+        CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CodelistOrderVisualisation codelistOrderVisualisationToUpdate = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(codelistOrderVisualisationDto);
@@ -911,8 +913,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void deleteCodelistOrderVisualisation(ServiceContext ctx, String urn) throws MetamacException {
-        // Security TODO security visualisations
-        // CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx);
+        // Security
+        CodelistOrderVisualisation codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByUrn(ctx, urn);
+        CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx, codelistOrderVisualisation.getCodelistVersion().getLifeCycleMetadata().getProcStatus());
 
         // Delete
         getCodesMetamacService().deleteCodelistOrderVisualisation(ctx, urn);

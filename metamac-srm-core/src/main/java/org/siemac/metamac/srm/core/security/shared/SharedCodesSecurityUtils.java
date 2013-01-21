@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.security.shared;
 
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_NORMALIZACION;
 
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 
 public class SharedCodesSecurityUtils extends SharedSecurityUtils {
@@ -12,6 +13,10 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
 
     public static boolean canRetrieveOrFindCodelistOrderVisualisation(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canCrudCodelistOrderVisualisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum codelistProcStatus) {
+        return SharedItemsSecurityUtils.canUpdateItemScheme(metamacPrincipal, codelistProcStatus);
     }
 
     public static boolean canRetrieveOrFindCodelistFamily(MetamacPrincipal metamacPrincipal) {

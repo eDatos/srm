@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.security;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
 import org.siemac.metamac.sso.utils.SecurityUtils;
 
@@ -16,6 +17,13 @@ public class CodesSecurityUtils extends SecurityUtils {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
+
+    public static void canCrudCodelistOrderVisualisation(ServiceContext ctx, ProcStatusEnum codelistProcStatus) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(getMetamacPrincipal(ctx), codelistProcStatus)) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canRetrieveOrFindCodelistFamily(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canRetrieveOrFindCodelistFamily(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
