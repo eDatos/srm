@@ -1733,14 +1733,14 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Test
     @Override
     public void testPreCreateOrganisationScheme() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testPreCreateOrganisationScheme
 
     }
 
     @Test
     @Override
     public void testPreCreateOrganisation() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testPreCreateOrganisation
 
     }
 

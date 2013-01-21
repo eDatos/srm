@@ -109,7 +109,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Test
     @Override
     public void testPreCreateDataStructureDefinition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testPreCreateDataStructureDefinition
 
     }
 

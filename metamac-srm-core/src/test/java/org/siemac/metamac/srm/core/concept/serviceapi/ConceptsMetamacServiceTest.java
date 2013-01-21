@@ -2514,14 +2514,14 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     @Override
     public void testPreCreateConceptScheme() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testPreCreateConceptScheme
 
     }
 
     @Test
     @Override
     public void testPreCreateConcept() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testPreCreateConcept
 
     }
 
