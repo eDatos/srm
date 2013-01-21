@@ -3905,8 +3905,8 @@
             CODE="VARIABLE_01"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_01"
-            URN="urn:VARIABLE_01"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_01"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_01"
             
             NAME_FK="49"
             DESCRIPTION_FK="[null]"
@@ -3948,8 +3948,8 @@
             CODE="VARIABLE_02"
             CODE_FULL="[null]"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:VARIABLE_02"
-            URN="urn:VARIABLE_02"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_02"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_02"
             
             NAME_FK="51"
             DESCRIPTION_FK="[null]"
