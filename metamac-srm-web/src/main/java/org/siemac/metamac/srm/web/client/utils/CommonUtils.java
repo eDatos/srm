@@ -6,9 +6,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.enums.BooleanItemEnum;
+import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
@@ -19,6 +22,7 @@ public class CommonUtils {
 
     private static LinkedHashMap<String, String> versionTypeHashMap        = null;
     private static LinkedHashMap<String, String> typeRepresentationHashMap = null;
+    private static LinkedHashMap<String, String> booleanItemHashMap        = null;
 
     public static String getProcStatusName(ProcStatusEnum procStatus) {
         return procStatus != null ? getCoreMessages().getString(getCoreMessages().procStatusEnum() + procStatus.getName()) : null;
@@ -50,6 +54,50 @@ public class CommonUtils {
 
     public static String getTypeRepresentationName(TypeRepresentationEnum typeRepresentationEnum) {
         return typeRepresentationEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + typeRepresentationEnum.name()) : null;
+    }
+
+    // BOOLEAN
+
+    public static LinkedHashMap<String, String> getBooleanHashMap() {
+        if (booleanItemHashMap == null) {
+            booleanItemHashMap = new LinkedHashMap<String, String>();
+            booleanItemHashMap.put(BooleanItemEnum.NULL_VALUE.toString(), StringUtils.EMPTY);
+            booleanItemHashMap.put(BooleanItemEnum.TRUE_VALUE.toString(), MetamacWebCommon.getConstants().yes());
+            booleanItemHashMap.put(BooleanItemEnum.FALSE_VALUE.toString(), MetamacWebCommon.getConstants().no());
+        }
+        return booleanItemHashMap;
+    }
+
+    public static Boolean getBooleanValue(String booleanItemEnumValue) {
+        if (booleanItemEnumValue != null) {
+            BooleanItemEnum booleanItemEnum = BooleanItemEnum.valueOf(booleanItemEnumValue);
+            if (BooleanItemEnum.TRUE_VALUE.equals(booleanItemEnum)) {
+                return true;
+            } else if (BooleanItemEnum.FALSE_VALUE.equals(booleanItemEnum)) {
+                return false;
+            }
+        }
+        return null;
+    }
+
+    public static BooleanItemEnum getBooleanItemEnum(Boolean booleanValue) {
+        if (BooleanUtils.isTrue(booleanValue)) {
+            return BooleanItemEnum.TRUE_VALUE;
+        } else if (BooleanUtils.isFalse(booleanValue)) {
+            return BooleanItemEnum.FALSE_VALUE;
+        } else {
+            return BooleanItemEnum.NULL_VALUE;
+        }
+    }
+
+    public static String getBooleanName(Boolean booleanValue) {
+        if (BooleanUtils.isTrue(booleanValue)) {
+            return MetamacWebCommon.getConstants().yes();
+        } else if (BooleanUtils.isFalse(booleanValue)) {
+            return MetamacWebCommon.getConstants().no();
+        } else {
+            return StringUtils.EMPTY;
+        }
     }
 
     // VALIDATION UTILS
