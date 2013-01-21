@@ -7,11 +7,13 @@ import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-categories.btdesign"
 
+
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
 
 import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-importation.btdesign"
 
 import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-organisations.btdesign"
@@ -40,6 +42,7 @@ Application SrmFacadeCore {
        		> @OrganisationsMetamacService
        		> @CategoriesMetamacService
        		> @CodesMetamacService
+       		> @ImportationService
 
 			"          
 			 @param ctx  
