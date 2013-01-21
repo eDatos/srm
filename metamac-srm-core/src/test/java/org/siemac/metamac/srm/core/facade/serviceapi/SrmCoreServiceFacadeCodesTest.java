@@ -1986,7 +1986,6 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         variableElementDto.setName(MetamacMocks.mockInternationalStringDto());
         variableElementDto.setShortName(MetamacMocks.mockInternationalStringDto());
         variableElementDto.setValidTo(new Date());
-        variableElementDto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
         // TODO replaceTo, replacedBy
 
         VariableElementDto variableElementDtoUpdated = srmCoreServiceFacade.updateVariableElement(getServiceContextAdministrador(), variableElementDto);

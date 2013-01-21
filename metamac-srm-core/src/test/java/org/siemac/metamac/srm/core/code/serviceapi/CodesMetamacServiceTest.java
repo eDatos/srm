@@ -2679,6 +2679,25 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         Variable variableNotReplaced3 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
         assertEquals(null, variableNotReplaced3.getReplacedByVariable());
     }
+
+    @Test
+    public void testUpdateVariableChangingCode() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
+        variable.getNameableArtefact().setCode("newCode");
+        variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+
+        Variable variableUpdated = codesService.updateVariable(getServiceContextAdministrador(), variable);
+
+        // Check urn
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=newCode", variableUpdated.getNameableArtefact().getUrn());
+
+        // Check variable elements urn
+        assertTrue(SrmServiceUtils.isVariableElementInList("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=newCode.VARIABLE_ELEMENT_01", variable.getVariableElements()));
+        assertTrue(SrmServiceUtils.isVariableElementInList("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=newCode.VARIABLE_ELEMENT_02", variable.getVariableElements()));
+        assertFalse(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_1, variable.getVariableElements()));
+        assertFalse(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_2, variable.getVariableElements()));
+    }
+
     @Test
     public void testUpdateVariableErrorWrongCode() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
@@ -3032,8 +3051,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         variableElement.setShortName(BaseDoMocks.mockInternationalString());
         variableElement.setValidFrom(MetamacMocks.mockDateTime());
         variableElement.setValidTo(null);
-        assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());
-        variableElement.setVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
 
         VariableElement variableElementUpdated = codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
 
@@ -3065,6 +3082,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_2_VARIABLE_ELEMENT_2}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableElementErrorChangeVariable() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());
+        variableElement.setVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
+        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        try {
+            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("variable unmodifiable");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE}, e.getExceptionItems().get(0));
         }
     }
 

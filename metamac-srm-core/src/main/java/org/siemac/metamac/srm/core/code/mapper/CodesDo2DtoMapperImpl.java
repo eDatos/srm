@@ -263,6 +263,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         }
         CodelistOrderVisualisationDto target = new CodelistOrderVisualisationDto();
         do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
+        target.setCodelist(codelistDoToRelatedResourceDto(source.getCodelistVersion()));
 
         // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)
         target.setId(source.getId());

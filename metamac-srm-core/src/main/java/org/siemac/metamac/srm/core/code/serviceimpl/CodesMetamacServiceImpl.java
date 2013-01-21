@@ -615,6 +615,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // If code has been changed, update URN
         if (variable.getNameableArtefact().getIsCodeUpdated()) {
             setVariableUrnUnique(variable);
+            for (VariableElement variableElement : variable.getVariableElements()) {
+                setVariableElementUrnUnique(variable, variableElement);
+            }
         }
         variable.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
@@ -726,7 +729,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Validation
         CodesMetamacInvocationValidator.checkCreateVariableElement(variableElement, null);
-        setVariableElementUrnUnique(variableElement);
+        setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
 
         // Create
         variableElement = getVariableElementRepository().save(variableElement);
@@ -737,10 +740,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public VariableElement updateVariableElement(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateVariableElement(variableElement, null);
+        // Check do not change variable (do with contains method to be more efficient, instead parse urn)
+        if (!variableElement.getNameableArtefact().getUrn().contains("=" + variableElement.getVariable().getNameableArtefact().getCode() + ".")) {
+            throw new MetamacException(ServiceExceptionType.METADATA_UNMODIFIABLE, ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE);
+        }
 
         // If code has been changed, update URN
         if (variableElement.getNameableArtefact().getIsCodeUpdated()) {
-            setVariableElementUrnUnique(variableElement);
+            setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
         }
         variableElement.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
@@ -1068,8 +1075,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     /**
      * Generate urn, check it is unique and set to variable element. Set also urnProvider
      */
-    private void setVariableElementUrnUnique(VariableElement variableElement) throws MetamacException {
-        String urn = GeneratorUrnUtils.generateVariableElementUrn(variableElement);
+    private void setVariableElementUrnUnique(Variable variable, VariableElement variableElement) throws MetamacException {
+        String urn = GeneratorUrnUtils.generateVariableElementUrn(variable, variableElement);
         identifiableArtefactRepository.checkUrnUnique(urn, variableElement.getNameableArtefact().getId());
 
         variableElement.getNameableArtefact().setUrn(urn);
