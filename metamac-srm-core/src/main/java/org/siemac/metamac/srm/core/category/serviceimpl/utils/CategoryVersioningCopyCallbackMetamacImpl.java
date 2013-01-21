@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
-import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesDoCopyUtils.CategoryCopyCallback;
+import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesVersioningCopyUtils.CategoryVersioningCopyCallback;
 
 /**
  * Copy Metamac metadata
  */
-@Component("categoryCopyCallbackMetamac")
-public class CategoryCopyCallbackMetamacImpl implements CategoryCopyCallback {
+@Component("categoryVersioningCopyCallbackMetamac")
+public class CategoryVersioningCopyCallbackMetamacImpl implements CategoryVersioningCopyCallback {
 
     @Override
     public CategorySchemeVersion createCategorySchemeVersion() {

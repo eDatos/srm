@@ -6,16 +6,16 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseDoCopyUtils;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
-import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesDoCopyUtils.CodesCopyCallback;
+import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
 
 /**
  * Copy Metamac metadata
  */
-@Component("codesCopyCallbackMetamac")
-public class CodesCopyCallbackMetamacImpl implements CodesCopyCallback {
+@Component("codesVersioningCopyCallbackMetamac")
+public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCopyCallback {
 
     @Override
     public CodelistVersion createCodelistVersion() {
@@ -26,7 +26,7 @@ public class CodesCopyCallbackMetamacImpl implements CodesCopyCallback {
     public void copyCodelistVersion(CodelistVersion sourceSdmx, CodelistVersion targetSdmx) {
         CodelistVersionMetamac source = (CodelistVersionMetamac) sourceSdmx;
         CodelistVersionMetamac target = (CodelistVersionMetamac) targetSdmx;
-        target.setShortName(BaseDoCopyUtils.copy(source.getShortName()));
+        target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
@@ -50,7 +50,7 @@ public class CodesCopyCallbackMetamacImpl implements CodesCopyCallback {
     public void copyCode(Code sourceSdmx, Code targetSdmx) {
         CodeMetamac source = (CodeMetamac) sourceSdmx;
         CodeMetamac target = (CodeMetamac) targetSdmx;
-        target.setShortName(BaseDoCopyUtils.copy(source.getShortName()));
+        target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
         target.setVariableElement(source.getVariableElement());
     }
 }

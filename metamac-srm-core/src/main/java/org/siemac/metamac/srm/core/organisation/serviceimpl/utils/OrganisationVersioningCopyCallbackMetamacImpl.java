@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
-import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils.OrganisationCopyCallback;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsVersioningCopyUtils.OrganisationVersioningCopyCallback;
 
 /**
  * Copy Metamac metadata
  */
-@Component("organisationCopyCallbackMetamac")
-public class OrganisationCopyCallbackMetamacImpl implements OrganisationCopyCallback {
+@Component("organisationVersioningCopyCallbackMetamac")
+public class OrganisationVersioningCopyCallbackMetamacImpl implements OrganisationVersioningCopyCallback {
 
     @Override
     public OrganisationSchemeVersion createOrganisationSchemeVersion() {

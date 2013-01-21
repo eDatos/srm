@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 /**
  * Copy Metamac metadata
  */
-@Component("codesCopyWithoutCodesCallbackMetamac")
-public class CodesCopyWithoutCodesCallbackMetamacImpl extends CodesCopyCallbackMetamacImpl {
+@Component("codesVersioningCopyWithoutCodesCallbackMetamac")
+public class CodesVersioningCopyWithoutCodesCallbackMetamacImpl extends CodesVersioningCopyCallbackMetamacImpl {
 
     @Override
     public Boolean mustCopyCodes() {

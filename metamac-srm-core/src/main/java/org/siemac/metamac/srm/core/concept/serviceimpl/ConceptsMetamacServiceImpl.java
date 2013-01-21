@@ -39,7 +39,7 @@ import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
-import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsDoCopyUtils.ConceptCopyCallback;
+import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsVersioningCopyUtils.ConceptVersioningCopyCallback;
 
 /**
  * Implementation of ConceptsMetamacService.
@@ -48,24 +48,24 @@ import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsDoCopy
 public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
-    private ConceptsService             conceptsService;
+    private ConceptsService               conceptsService;
 
     @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository   itemSchemeVersionRepository;
 
     @Autowired
-    private ConceptRepository           conceptRepository;
+    private ConceptRepository             conceptRepository;
 
     @Autowired
     @Qualifier("conceptSchemeLifeCycle")
-    private LifeCycle                   conceptSchemeLifeCycle;
+    private LifeCycle                     conceptSchemeLifeCycle;
 
     @Autowired
-    private SrmValidation               srmValidation;
+    private SrmValidation                 srmValidation;
 
     @Autowired
-    @Qualifier("conceptCopyCallbackMetamac")
-    private ConceptCopyCallback         conceptCopyCallback;
+    @Qualifier("conceptVersioningCopyCallbackMetamac")
+    private ConceptVersioningCopyCallback conceptVersioningCopyCallback;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -216,7 +216,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Versioning
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
+        ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptVersioningCopyCallback);
 
         // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
         for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {

@@ -49,7 +49,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
-import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesDoCopyUtils.CodesCopyCallback;
+import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
 
 /**
  * Implementation of CodesMetamacService.
@@ -74,12 +74,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private SrmValidation                  srmValidation;
 
     @Autowired
-    @Qualifier("codesCopyCallbackMetamac")
-    private CodesCopyCallback              codesCopyWithCodesCallback;
+    @Qualifier("codesVersioningCopyCallbackMetamac")
+    private CodesVersioningCopyCallback    codesVersioningCopyWithCodesCallback;
 
     @Autowired
-    @Qualifier("codesCopyWithoutCodesCallbackMetamac")
-    private CodesCopyCallback              codesCopyWithoutCodesCallback;
+    @Qualifier("codesVersioningCopyWithoutCodesCallbackMetamac")
+    private CodesVersioningCopyCallback    codesVersioningCopyWithoutCodesCallback;
 
     public CodesMetamacServiceImpl() {
     }
@@ -207,7 +207,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkCodelistToVersioning(ctx, urnToCopy);
 
         // Versioning
-        CodesCopyCallback callback = versioningCodes == null || versioningCodes ? codesCopyWithCodesCallback : codesCopyWithoutCodesCallback;
+        CodesVersioningCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningCopyWithCodesCallback : codesVersioningCopyWithoutCodesCallback;
         CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, callback);
 
         // TODO versionar visualizaciones

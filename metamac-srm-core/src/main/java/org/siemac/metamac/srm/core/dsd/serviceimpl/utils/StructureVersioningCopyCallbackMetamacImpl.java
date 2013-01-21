@@ -21,10 +21,10 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
 import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasureRelationship;
 import com.arte.statistic.sdmx.srm.core.structure.domain.ReportingYearStartDay;
 import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
-import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoCopyUtils.StructureCopyCallback;
+import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureVersioningCopyUtils.StructureVersioningCopyCallback;
 
-@Component("structureCopyCallbackMetamac")
-public class StructureCopyCallbackMetamacImpl implements StructureCopyCallback {
+@Component("structureVersioningCopyCallbackMetamac")
+public class StructureVersioningCopyCallbackMetamacImpl implements StructureVersioningCopyCallback {
 
     /****************
      * DSD

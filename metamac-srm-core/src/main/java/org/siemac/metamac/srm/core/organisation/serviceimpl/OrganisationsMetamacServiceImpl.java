@@ -36,7 +36,7 @@ import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUt
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
-import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsDoCopyUtils.OrganisationCopyCallback;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsVersioningCopyUtils.OrganisationVersioningCopyCallback;
 
 /**
  * Implementation of OrganisationsMetamacService.
@@ -45,24 +45,24 @@ import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.Organisat
 public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacServiceImplBase {
 
     @Autowired
-    private OrganisationsService        organisationsService;
+    private OrganisationsService               organisationsService;
 
     @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository        itemSchemeVersionRepository;
 
     @Autowired
     @Qualifier("organisationSchemeLifeCycle")
-    private LifeCycle                   organisationSchemeLifeCycle;
+    private LifeCycle                          organisationSchemeLifeCycle;
 
     @Autowired
-    private SrmValidation               srmValidation;
+    private SrmValidation                      srmValidation;
 
     @Autowired
-    private SrmConfiguration            srmConfiguration;
+    private SrmConfiguration                   srmConfiguration;
 
     @Autowired
-    @Qualifier("organisationCopyCallbackMetamac")
-    private OrganisationCopyCallback    organisationCopyCallback;
+    @Qualifier("organisationVersioningCopyCallbackMetamac")
+    private OrganisationVersioningCopyCallback organisationVersioningCopyCallback;
 
     public OrganisationsMetamacServiceImpl() {
     }
@@ -173,7 +173,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Versioning
         OrganisationSchemeVersionMetamac organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType,
-                organisationCopyCallback);
+                organisationVersioningCopyCallback);
 
         return organisationSchemeNewVersion;
     }

@@ -37,8 +37,8 @@ import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationRepository
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
-import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesDoCopyUtils.CategoryCopyCallback;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesInvocationValidator;
+import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesVersioningCopyUtils.CategoryVersioningCopyCallback;
 
 /**
  * Implementation of CategoriesMetamacService.
@@ -60,8 +60,8 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private SrmValidation                  srmValidation;
 
     @Autowired
-    @Qualifier("categoryCopyCallbackMetamac")
-    private CategoryCopyCallback           categoryCopyCallback;
+    @Qualifier("categoryVersioningCopyCallbackMetamac")
+    private CategoryVersioningCopyCallback categoryVersioningCopyCallback;
 
     @Autowired
     private MaintainableArtefactRepository maintainableArtefactRepository;
@@ -178,7 +178,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, null, null);
         checkCategorySchemeToVersioning(ctx, urnToCopy);
         // Versioning
-        CategorySchemeVersionMetamac categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, categoryCopyCallback);
+        CategorySchemeVersionMetamac categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, categoryVersioningCopyCallback);
 
         return categorySchemeNewVersion;
     }

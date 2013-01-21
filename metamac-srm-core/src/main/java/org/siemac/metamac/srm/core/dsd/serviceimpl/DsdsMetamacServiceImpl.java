@@ -37,7 +37,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinition
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
-import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoCopyUtils.StructureCopyCallback;
+import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureVersioningCopyUtils.StructureVersioningCopyCallback;
 
 /**
  * Implementation of DsdsMetamacService.
@@ -46,21 +46,21 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureDoC
 public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Autowired
-    private DataStructureDefinitionService dataStructureDefinitionService;
+    private DataStructureDefinitionService  dataStructureDefinitionService;
 
     @Autowired
     @Qualifier("dsdLifeCycle")
-    private LifeCycle                      dsdLifeCycle;
+    private LifeCycle                       dsdLifeCycle;
 
     @Autowired
-    private SrmValidation                  srmValidation;
+    private SrmValidation                   srmValidation;
 
     @Autowired
-    @Qualifier("structureCopyCallbackMetamac")
-    private StructureCopyCallback          structureCopyCallback;
+    @Qualifier("structureVersioningCopyCallbackMetamac")
+    private StructureVersioningCopyCallback structureVersioningCopyCallback;
 
     @Autowired
-    private StructureVersionRepository     structureVersionRepository;
+    private StructureVersionRepository      structureVersionRepository;
 
     public DsdsMetamacServiceImpl() {
     }
@@ -191,7 +191,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Versioning
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
-                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureCopyCallback);
+                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureVersioningCopyCallback);
 
         // Versioning heading and stub (metadata of Metamac). Note: other relations are copied in copy callback
         // Map of new dimension
