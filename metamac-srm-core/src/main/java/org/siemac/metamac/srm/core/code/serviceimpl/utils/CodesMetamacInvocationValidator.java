@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesInvocationValidator;
@@ -155,6 +156,9 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             return;
         }
         checkNameableArtefact(codelistOrderVisualisation.getNameableArtefact(), exceptions);
+        if (codelistOrderVisualisation.getNameableArtefact() != null) {
+            SemanticIdentifierValidationUtils.checkCodelistOrderVisualisationSemanticIdentifier(codelistOrderVisualisation, exceptions);
+        }
     }
 
     // ---------------------------------------------------------------------------
@@ -211,6 +215,9 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             return;
         }
         checkNameableArtefact(codelistFamily.getNameableArtefact(), exceptions);
+        if (codelistFamily.getNameableArtefact() != null) {
+            SemanticIdentifierValidationUtils.checkCodelistFamilySemanticIdentifier(codelistFamily, exceptions);
+        }
     }
 
     // ---------------------------------------------------------------------------
@@ -246,6 +253,9 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             return;
         }
         checkNameableArtefact(variableFamily.getNameableArtefact(), exceptions);
+        if (variableFamily.getNameableArtefact() != null) {
+            SemanticIdentifierValidationUtils.checkVariableFamilySemanticIdentifier(variableFamily, exceptions);
+        }
     }
 
     // ---------------------------------------------------------------------------
@@ -305,6 +315,10 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         // Check required metadata
         ValidationUtils.checkMetadataRequired(variable.getFamilies(), ServiceExceptionParameters.VARIABLE_FAMILY, exceptions);
         checkNameableArtefact(variable.getNameableArtefact(), exceptions);
+        if (variable.getNameableArtefact() != null) {
+            SemanticIdentifierValidationUtils.checkVariableSemanticIdentifier(variable, exceptions);
+        }
+
         ValidationUtils.checkMetadataRequired(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, exceptions);
 
         // Check dates: validFrom value must be lower than validTo value
@@ -368,6 +382,9 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         // Check required metadata
         ValidationUtils.checkMetadataRequired(variableElement.getVariable(), ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE, exceptions);
         checkNameableArtefact(variableElement.getNameableArtefact(), exceptions);
+        if (variableElement.getNameableArtefact() != null) {
+            SemanticIdentifierValidationUtils.checkVariableElementSemanticIdentifier(variableElement, exceptions);
+        }
         ValidationUtils.checkMetadataRequired(variableElement.getShortName(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME, exceptions);
 
         // Check dates: validFrom value must be lower than validTo value
