@@ -504,8 +504,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(DeleteCodelistOrdersResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistOrderDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveCodelistOrders(codelistMetamacDto.getUrn());
-                retrieveCodesByCodelist(null);
+                retrieveCodelistByUrn(codelistMetamacDto.getUrn(), null);
             }
         });
     }
