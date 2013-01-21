@@ -40,7 +40,7 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
 
     public CodelistOrdersSectionStack() {
         super(new CustomListGrid(), getConstants().codelistOrders());
-        setWidth("35%");
+        setWidth("40%");
 
         // Add fields to the listGrid
         ListGridField codeField = new ListGridField(CodelistOrderDS.CODE, getConstants().identifiableArtefactCode());
@@ -144,8 +144,8 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String orderIdentifier = ((CodelistOrderRecord) event.getRecord()).getAttribute(CodelistOrderDS.CODE);
-                    uiHandlers.retrieveCodesByCodelist(orderIdentifier);
+                    String orderUrn = ((CodelistOrderRecord) event.getRecord()).getAttribute(CodelistOrderDS.URN);
+                    uiHandlers.retrieveCodesByCodelist(orderUrn);
                 }
             }
         });

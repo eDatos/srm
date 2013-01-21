@@ -145,19 +145,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         codesTreeGrid = new CodesTreeGrid();
 
-        // codesTreeGridLayout = new VLayout();
-        // codesTreeGridTitle = new Label();
-        // codesTreeGridTitle.setAlign(Alignment.LEFT);
-        // codesTreeGridTitle.setOverflow(Overflow.HIDDEN);
-        // codesTreeGridTitle.setHeight(25);
-        // codesTreeGridTitle.setStyleName("subsectionTitle");
-        // codesTreeGridLayout.addMember(codesTreeGridTitle);
-        // codesTreeGridLayout.addMember(codesTreeGrid);
-
         HLayout codesHLayout = new HLayout();
         codesHLayout.setMembersMargin(10);
-        codesHLayout.addMember(codelistOrdersSectionStack);
         codesHLayout.addMember(codesTreeGrid);
+        codesHLayout.addMember(codelistOrdersSectionStack);
 
         codesLayout = new VLayout();
         codesLayout.setMargin(15);
@@ -670,7 +661,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.ACCESS_TYPE, codelistDto.getAccessType() != null ? codelistDto.getAccessType().name() : StringUtils.EMPTY);
-        // TODO order
+        diffusionDescriptorsEditionForm
+                .setValue(CodelistDS.DEFAULT_ORDER, codelistDto.getDefaultOrderVisualisation() != null ? codelistDto.getDefaultOrderVisualisation().getUrn() : StringUtils.EMPTY);
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_VERSION, codelistDto.getReplacedByVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_FROM, DateUtils.getFormattedDate(codelistDto.getValidFrom()));
@@ -719,7 +711,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codelistDto.getReplaceToCodelists().addAll(((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).getSelectedRelatedResources());
         codelistDto.setAccessType(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.ACCESS_TYPE)) ? AccessTypeEnum.valueOf(diffusionDescriptorsEditionForm
                 .getValueAsString(CodelistDS.ACCESS_TYPE)) : null);
-        // TODO order
+        codelistDto.setDefaultOrderVisualisation(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_ORDER)) ? RelatedResourceUtils
+                .createRelatedResourceDto(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_ORDER)) : null);
 
         // Comments
         codelistDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CodelistDS.COMMENTS));

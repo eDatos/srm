@@ -477,7 +477,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void saveCodelistOrder(CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+    public void saveCodelistOrder(final CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
         dispatcher.execute(new SaveCodelistOrderAction(codelistMetamacDto.getUrn(), codelistOrderVisualisationDto), new WaitingAsyncCallback<SaveCodelistOrderResult>() {
 
             @Override
@@ -488,6 +488,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(SaveCodelistOrderResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistOrderSaved()), MessageTypeEnum.SUCCESS);
                 retrieveCodelistOrders(codelistMetamacDto.getUrn());
+                retrieveCodesByCodelist(result.getCodelistOrderSaved().getUrn());
             }
         });
     }
@@ -504,6 +505,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(DeleteCodelistOrdersResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistOrderDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveCodelistOrders(codelistMetamacDto.getUrn());
+                retrieveCodesByCodelist(null);
             }
         });
     }
