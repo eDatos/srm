@@ -184,7 +184,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
                 // If the specified order is null, load the default order (if is exists)
                 String order = codelistOrderVisualisation == null
-                        ? (codelistMetamacDto.getDefaultOrderVisualisation() != null ? codelistMetamacDto.getDefaultOrderVisualisation().getCode() : null)
+                        ? (codelistMetamacDto.getDefaultOrderVisualisation() != null ? codelistMetamacDto.getDefaultOrderVisualisation().getUrn() : null)
                         : codelistOrderVisualisation;
 
                 retrieveCodesByCodelist(order);

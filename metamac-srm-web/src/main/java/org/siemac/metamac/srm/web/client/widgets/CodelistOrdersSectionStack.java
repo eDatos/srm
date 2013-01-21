@@ -23,6 +23,7 @@ import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -51,8 +52,35 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
         // Add fields to the listGrid
         ListGridField codeField = new ListGridField(CodelistOrderDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
+        codeField.setShowHover(true);
+        codeField.setHoverCustomizer(new HoverCustomizer() {
+
+            @Override
+            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
+                return ((CodelistOrderRecord) record).getCode();
+            }
+        });
+
         ListGridField nameField = new ListGridField(CodelistOrderDS.NAME, getConstants().nameableArtefactName());
+        nameField.setShowHover(true);
+        nameField.setHoverCustomizer(new HoverCustomizer() {
+
+            @Override
+            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
+                return ((CodelistOrderRecord) record).getName();
+            }
+        });
+
         ListGridField urnField = new ListGridField(CodelistOrderDS.URN, getConstants().identifiableArtefactUrn());
+        urnField.setShowHover(true);
+        urnField.setHoverCustomizer(new HoverCustomizer() {
+
+            @Override
+            public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
+                return ((CodelistOrderRecord) record).getUrn();
+            }
+        });
+
         listGrid.setFields(codeField, nameField, urnField);
 
         // ToolBar to manage orders

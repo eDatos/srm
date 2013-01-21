@@ -22,12 +22,8 @@ import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.tree.TreeNode;
-import com.smartgwt.client.widgets.tree.events.FolderClosedEvent;
-import com.smartgwt.client.widgets.tree.events.FolderClosedHandler;
 import com.smartgwt.client.widgets.tree.events.FolderDropEvent;
 import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
-import com.smartgwt.client.widgets.tree.events.FolderOpenedEvent;
-import com.smartgwt.client.widgets.tree.events.FolderOpenedHandler;
 
 public class CodesTreeGrid extends ItemsTreeGrid {
 
@@ -92,24 +88,6 @@ public class CodesTreeGrid extends ItemsTreeGrid {
                     }
                 }
                 event.cancel();
-            }
-        });
-
-        addFolderOpenedHandler(new FolderOpenedHandler() {
-
-            @Override
-            public void onFolderOpened(FolderOpenedEvent event) {
-                // TODO Auto-generated method stub
-                System.out.println();
-            }
-        });
-
-        addFolderClosedHandler(new FolderClosedHandler() {
-
-            @Override
-            public void onFolderClosed(FolderClosedEvent event) {
-                // TODO Auto-generated method stub
-                System.out.println();
             }
         });
 

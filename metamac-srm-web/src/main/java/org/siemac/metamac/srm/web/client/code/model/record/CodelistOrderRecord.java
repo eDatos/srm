@@ -26,6 +26,10 @@ public class CodelistOrderRecord extends ListGridRecord {
         setAttribute(CodelistOrderDS.NAME, name);
     }
 
+    public String getName() {
+        return getAttributeAsString(CodelistOrderDS.NAME);
+    }
+
     public void setUrn(String urn) {
         setAttribute(CodelistOrderDS.URN, urn);
     }

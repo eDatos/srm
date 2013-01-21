@@ -31,8 +31,6 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
-import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderAction;
-import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -66,8 +64,6 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     private final DispatchAsync           dispatcher;
     private final PlaceManager            placeManager;
-
-    private String                        codelistUrn;
 
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
@@ -124,7 +120,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
         String schemeParam = PlaceRequestUtils.getCodelistParamFromUrl(placeManager);
         String codeCode = PlaceRequestUtils.getCodeParamFromUrl(placeManager);
         if (!StringUtils.isBlank(schemeParam) && !StringUtils.isBlank(codeCode)) {
-            this.codelistUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CODELIST_PREFIX, schemeParam);
+            // this.codelistUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CODELIST_PREFIX, schemeParam);
             String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CODE_PREFIX, schemeParam, codeCode);
             retrieveCode(urn);
         } else {
@@ -148,26 +144,27 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
-    public void retrieveCodesByCodelist(String codelistUrn) {
-        // TODO Specify the order!
-        dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, null), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+    public void retrieveCodesByCodelist(final String codelistUrn) {
+        dispatcher.execute(new GetCodelistAction(codelistUrn), new WaitingAsyncCallback<GetCodelistResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetCodesByCodelistResult result) {
-                final List<ItemHierarchyDto> itemHierarchyDtos = CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos());
-                dispatcher.execute(new GetCodelistAction(CodePresenter.this.codelistUrn), new WaitingAsyncCallback<GetCodelistResult>() {
+            public void onWaitSuccess(GetCodelistResult result) {
+                final CodelistMetamacDto codelistMetamacDto = result.getCodelistMetamacDto();
+                String defaultOrder = codelistMetamacDto.getDefaultOrderVisualisation() != null ? codelistMetamacDto.getDefaultOrderVisualisation().getUrn() : null;
+                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, defaultOrder), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
                     }
                     @Override
-                    public void onWaitSuccess(GetCodelistResult result) {
-                        getView().setCodes(result.getCodelistMetamacDto(), itemHierarchyDtos);
+                    public void onWaitSuccess(GetCodesByCodelistResult result) {
+                        List<ItemHierarchyDto> itemHierarchyDtos = CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos());
+                        getView().setCodes(codelistMetamacDto, itemHierarchyDtos);
                     }
                 });
             }
@@ -231,21 +228,11 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void updateCodeInOrder(String codeUrn, final String codelistOrderIdentifier, Long newCodeIndex) {
-        dispatcher.execute(new UpdateCodeInOrderAction(codeUrn, codelistOrderIdentifier, newCodeIndex), new WaitingAsyncCallback<UpdateCodeInOrderResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingPosition()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(UpdateCodeInOrderResult result) {
-                // TODO retrieveCodesByCodelist(codelistOrderIdentifier);
-            }
-        });
+        // This method should not be called
     }
 
     @Override
-    public void updateCodeParent(String codeUrn, String newParentUrn, final String codelistOrderIdentifier) {
+    public void updateCodeParent(final String codeUrn, String newParentUrn, final String codelistOrderIdentifier) {
         dispatcher.execute(new UpdateCodeParentAction(codeUrn, newParentUrn), new WaitingAsyncCallback<UpdateCodeParentResult>() {
 
             @Override
@@ -254,7 +241,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             }
             @Override
             public void onWaitSuccess(UpdateCodeParentResult result) {
-                // TODO retrieveCodesByCodelist(codelistOrderIdentifier);
+                retrieveCode(codeUrn);
             }
         });
     }
