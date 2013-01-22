@@ -497,7 +497,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        BooleanSelectItem partial = new BooleanSelectItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
+        ViewTextItem partial = new ViewTextItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         BooleanSelectItem isRecommended = new BooleanSelectItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
@@ -577,8 +577,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Content descriptors
         contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
-        contentDescriptorsForm.setValue(CodelistDS.IS_PARTIAL, codelistDto.getIsPartial() != null ? (codelistDto.getIsPartial() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
-                .getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
         contentDescriptorsForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -640,7 +639,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, codelistDto.getIsPartial() != null ? codelistDto.getIsPartial() : false);
+        contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference() ? MetamacWebCommon.getConstants()
                 .yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
@@ -697,9 +696,6 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Content descriptors
         codelistDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CodelistDS.DESCRIPTION));
-        codelistDto.setIsPartial((contentDescriptorsEditionForm.getValue(CodelistDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(CodelistDS.IS_PARTIAL)))
-                ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(CodelistDS.IS_PARTIAL))
-                : false);
         codelistDto.setIsRecommended((contentDescriptorsEditionForm.getValue(CodelistDS.IS_RECOMMENDED) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
                 .getValueAsString(CodelistDS.IS_RECOMMENDED))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(CodelistDS.IS_RECOMMENDED)) : false);
         codelistDto.setFamily(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(CodelistDS.FAMILY)) ? RelatedResourceUtils.createRelatedResourceDto(contentDescriptorsEditionForm

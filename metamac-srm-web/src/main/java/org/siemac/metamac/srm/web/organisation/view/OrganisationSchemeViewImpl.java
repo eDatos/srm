@@ -37,7 +37,6 @@ import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
@@ -490,7 +489,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         });
 
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(OrganisationSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        BooleanSelectItem partial = new BooleanSelectItem(OrganisationSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
+        ViewTextItem partial = new ViewTextItem(OrganisationSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(OrganisationSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsEditionForm.setFields(type, staticType, description, partial, isExternalReference, isFinal);
@@ -610,9 +609,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // Content descriptors
         contentDescriptorsForm.setValue(OrganisationSchemeDS.TYPE, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
         contentDescriptorsForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
-        contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_PARTIAL, organisationSchemeDto.getIsPartial() != null ? (organisationSchemeDto.getIsPartial()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(organisationSchemeDto.getIsPartial()));
         contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, organisationSchemeDto.getIsExternalReference() != null ? (organisationSchemeDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -667,7 +664,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.TYPE, organisationSchemeDto.getType().name());
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.TYPE_VIEW, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_PARTIAL, organisationSchemeDto.getIsPartial() != null ? organisationSchemeDto.getIsPartial() : false);
+        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(organisationSchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, organisationSchemeDto.getIsExternalReference() != null ? (organisationSchemeDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -716,8 +713,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         organisationSchemeDto.setType(contentDescriptorsEditionForm.getValueAsString(OrganisationSchemeDS.TYPE) != null ? OrganisationSchemeTypeEnum.valueOf(contentDescriptorsEditionForm
                 .getValueAsString(OrganisationSchemeDS.TYPE)) : null);
         organisationSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(OrganisationSchemeDS.DESCRIPTION));
-        organisationSchemeDto.setIsPartial((contentDescriptorsEditionForm.getValue(OrganisationSchemeDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
-                .getValueAsString(OrganisationSchemeDS.IS_PARTIAL))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(OrganisationSchemeDS.IS_PARTIAL)) : false);
 
         // Comments
         organisationSchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(OrganisationSchemeDS.COMMENTS));

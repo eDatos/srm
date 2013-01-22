@@ -36,7 +36,6 @@ import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
@@ -424,7 +423,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(ConceptSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        BooleanSelectItem partial = new BooleanSelectItem(ConceptSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
+        ViewTextItem partial = new ViewTextItem(ConceptSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(ConceptSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
@@ -546,9 +545,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Content descriptors
         contentDescriptorsForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
-        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, conceptSchemeDto.getIsPartial() != null ? (conceptSchemeDto.getIsPartial()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(conceptSchemeDto.getIsPartial()));
         contentDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(ConceptSchemeDS.FINAL, conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
@@ -607,7 +604,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, conceptSchemeDto.getIsPartial() != null ? conceptSchemeDto.getIsPartial() : false);
+        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(conceptSchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.FINAL, conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic()
@@ -657,8 +654,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
         // Content descriptors
         conceptSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.DESCRIPTION));
-        conceptSchemeDto.setIsPartial((contentDescriptorsEditionForm.getValue(ConceptSchemeDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
-                .getValueAsString(ConceptSchemeDS.IS_PARTIAL))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.IS_PARTIAL)) : false);
         // Class descriptors
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.TYPE)));
         conceptSchemeDto.setRelatedOperation(ExternalItemUtils.removeTitle(relatedOperation));

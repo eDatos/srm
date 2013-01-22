@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.web.client.category.view.handlers.CategorySchemeUi
 import org.siemac.metamac.srm.web.client.category.widgets.CategoriesTreeGrid;
 import org.siemac.metamac.srm.web.client.category.widgets.CategorySchemeMainFormLayout;
 import org.siemac.metamac.srm.web.client.category.widgets.CategorySchemeVersionsSectionStack;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
@@ -28,7 +29,6 @@ import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -346,7 +346,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
 
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CategorySchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        BooleanSelectItem partial = new BooleanSelectItem(CategorySchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
+        ViewTextItem partial = new ViewTextItem(CategorySchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CategorySchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CategorySchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
@@ -432,9 +432,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Content descriptors
         contentDescriptorsForm.setValue(CategorySchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
-        contentDescriptorsForm.setValue(CategorySchemeDS.IS_PARTIAL, categorySchemeDto.getIsPartial() != null ? (categorySchemeDto.getIsPartial()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CategorySchemeDS.IS_PARTIAL, CommonUtils.getBooleanName(categorySchemeDto.getIsPartial()));
         contentDescriptorsForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CategorySchemeDS.FINAL, categorySchemeDto.getFinalLogic() != null ? (categorySchemeDto.getFinalLogic()
@@ -484,7 +482,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_PARTIAL, categorySchemeDto.getIsPartial() != null ? categorySchemeDto.getIsPartial() : false);
+        contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_PARTIAL, CommonUtils.getBooleanName(categorySchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -544,8 +542,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         categorySchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CategorySchemeDS.NAME));
         // Content descriptors
         categorySchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CategorySchemeDS.DESCRIPTION));
-        categorySchemeDto.setIsPartial((contentDescriptorsEditionForm.getValue(CategorySchemeDS.IS_PARTIAL) != null && !StringUtils.isEmpty(contentDescriptorsEditionForm
-                .getValueAsString(CategorySchemeDS.IS_PARTIAL))) ? Boolean.valueOf(contentDescriptorsEditionForm.getValueAsString(CategorySchemeDS.IS_PARTIAL)) : false);
 
         // Comments
         categorySchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CategorySchemeDS.COMMENTS));
