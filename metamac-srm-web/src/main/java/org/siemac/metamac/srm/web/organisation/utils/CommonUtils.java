@@ -119,4 +119,15 @@ public class CommonUtils {
         return null;
     }
 
+    public static boolean isDataConsumerScheme(OrganisationSchemeTypeEnum type) {
+        return OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME.equals(type);
+    }
+
+    public static boolean isDataProviderScheme(OrganisationSchemeTypeEnum type) {
+        return OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME.equals(type);
+    }
+
+    public static boolean isAgencyScheme(OrganisationSchemeTypeEnum type) {
+        return OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type);
+    }
 }

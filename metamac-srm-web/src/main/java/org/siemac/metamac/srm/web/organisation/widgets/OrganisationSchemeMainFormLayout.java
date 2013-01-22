@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
+import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -76,8 +77,9 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     @Override
     protected void showCancelValidityButton() {
         if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity()) {
-            cancelValidity.show();
+            if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
+                cancelValidity.show();
+            }
         }
     }
-
 }
