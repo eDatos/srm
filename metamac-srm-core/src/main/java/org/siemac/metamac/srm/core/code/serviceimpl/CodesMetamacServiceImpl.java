@@ -198,10 +198,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodelistVersionMetamac codelistVersionMetamac = retrieveCodelistByUrn(ctx, urn);
         checkCodelistCanBeModified(codelistVersionMetamac);
-        codelistVersionMetamac.removeAllReplaceToCodelists();
-        codelistVersionMetamac.setDefaultOrderVisualisation(null);
 
         // Delete
+        codelistVersionMetamac.removeAllReplaceToCodelists(); // codelist can be deleted although it replaces to another codelist
+        codelistVersionMetamac.setDefaultOrderVisualisation(null);
         codesService.deleteCodelist(ctx, urn);
     }
 
@@ -662,10 +662,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteVariable(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
-
-        Variable variableToDelete = retrieveVariableByUrn(urn);
-
         // Check variable has not concepts, variable elements neither codelists (in exception, say only one)
+        Variable variableToDelete = retrieveVariableByUrn(urn);
         if (CollectionUtils.isNotEmpty(variableToDelete.getCodelists())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
                     .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getCodelists().get(0).getMaintainableArtefact().getUrn()).build();
@@ -678,13 +676,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
                     .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getVariableElements().get(0).getNameableArtefact().getUrn()).build();
         }
-        // TODO ¿Se puede eliminar una variable que reemplazó o fue reemplazada por otra?
 
         // Delete associations with variable families
         variableToDelete.removeAllFamilies();
         getVariableRepository().save(variableToDelete);
 
         // Delete
+        variableToDelete.removeAllReplaceToVariables(); // variable can be deleted although it replaces to another variable
         getVariableRepository().delete(variableToDelete);
     }
 
@@ -805,18 +803,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteVariableElement(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
-
-        VariableElement variableElementToDelete = retrieveVariableElementByUrn(urn);
-
         // Check variableElement has not codes
+        VariableElement variableElementToDelete = retrieveVariableElementByUrn(urn);
         if (CollectionUtils.isNotEmpty(variableElementToDelete.getCodes())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_RELATIONS)
                     .withMessageParameters(variableElementToDelete.getNameableArtefact().getUrn(), variableElementToDelete.getCodes().get(0).getNameableArtefact().getUrn()).build(); // say one
         }
         // TODO Un elemento de variable puede eliminarse si no tiene operaciones de segregación o fusión
-        // TODO ¿Se puede eliminar una variableElement que reemplazó o fue reemplazada por otra?
 
         // Delete
+        variableElementToDelete.removeAllReplaceToVariableElements(); // variable element can be deleted although it replaces to another variable element
         getVariableElementRepository().delete(variableElementToDelete);
     }
 
