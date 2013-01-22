@@ -21,7 +21,7 @@ import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.util.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.imporation.ContentInputDto;
 import com.google.inject.Singleton;
 
 @Singleton
@@ -34,6 +34,7 @@ public class FileUploadServlet extends HttpServlet {
 
     // private File destinationDir;
 
+    @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         logger.info("FileUpload Servlet");
