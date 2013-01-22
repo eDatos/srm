@@ -93,8 +93,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testCreateCodelist() throws Exception {
         // Create
         CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
-        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST01", CODELIST_1_V1, null));
-        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST10", CODELIST_10_V1, null));
+        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST03", CODELIST_3_V1, null));
+        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST02", CODELIST_2_V1, null));
         codelistDto.setFamily(new RelatedResourceDto("CODELIST_FAMILY_01", CODELIST_FAMILY_1, null));
         codelistDto.setVariable(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
         CodelistMetamacDto codelistMetamacCreated = srmCoreServiceFacade.createCodelist(getServiceContextAdministrador(), codelistDto);
@@ -104,10 +104,26 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertNotNull(codelistMetamacCreated.getUrn());
         assertEquals(ProcStatusEnum.DRAFT, codelistMetamacCreated.getLifeCycle().getProcStatus());
         assertEquals(2, codelistMetamacCreated.getReplaceToCodelists().size());
-        assertEquals(CODELIST_1_V1, codelistMetamacCreated.getReplaceToCodelists().get(0).getUrn());
-        assertEquals(CODELIST_10_V1, codelistMetamacCreated.getReplaceToCodelists().get(1).getUrn());
+        assertEquals(CODELIST_3_V1, codelistMetamacCreated.getReplaceToCodelists().get(0).getUrn());
+        assertEquals(CODELIST_2_V1, codelistMetamacCreated.getReplaceToCodelists().get(1).getUrn());
         assertEquals(CODELIST_FAMILY_1, codelistMetamacCreated.getFamily().getUrn());
         assertEquals(VARIABLE_1, codelistMetamacCreated.getVariable().getUrn());
+    }
+
+    @Test
+    public void testCreateCodelistErrorReplaceTo() throws Exception {
+        CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
+        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST01", CODELIST_1_V1, null));
+
+        // Create
+        try {
+            srmCoreServiceFacade.createCodelist(getServiceContextAdministrador(), codelistDto);
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(CODELIST_1_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
     }
 
     @Test
@@ -1698,8 +1714,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         VariableDto variableDto = CodesMetamacDtoMocks.mockVariableDto();
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_02", VARIABLE_FAMILY_2));
-        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
-        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_03", VARIABLE_3, null));
+        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_04", VARIABLE_4, null));
+        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_05", VARIABLE_5, null));
 
         VariableDto variableCreated = srmCoreServiceFacade.createVariable(getServiceContextAdministrador(), variableDto);
 
@@ -1708,12 +1724,28 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertNotNull(variableCreated.getUrn());
         assertEquals(2, variableCreated.getFamilies().size());
         assertEquals(2, variableCreated.getReplaceToVariables().size());
-        assertEquals(VARIABLE_1, variableCreated.getReplaceToVariables().get(0).getUrn());
-        assertEquals(VARIABLE_3, variableCreated.getReplaceToVariables().get(1).getUrn());
+        assertEquals(VARIABLE_4, variableCreated.getReplaceToVariables().get(0).getUrn());
+        assertEquals(VARIABLE_5, variableCreated.getReplaceToVariables().get(1).getUrn());
 
         // Retrieve variable to check replacedBy
-        VariableDto variableReplaced = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        VariableDto variableReplaced = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4);
         assertEquals(variableCreated.getUrn(), variableReplaced.getReplacedByVariable().getUrn());
+    }
+
+    @Test
+    public void testCreateVariableErrorReplaceTo() throws Exception {
+        VariableDto variableDto = CodesMetamacDtoMocks.mockVariableDto();
+        variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
+        variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_02", VARIABLE_FAMILY_2));
+        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
+
+        try {
+            srmCoreServiceFacade.createVariable(getServiceContextAdministrador(), variableDto);
+            fail("wrong replace to");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
@@ -1982,7 +2014,20 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         // Retrieve variableElement to check replacedBy
         VariableElementDto variableElementReplaced = srmCoreServiceFacade.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_3);
         assertEquals(variableElementCreated.getUrn(), variableElementReplaced.getReplacedByVariableElement().getUrn());
+    }
 
+    @Test
+    public void testCreateVariableElementErrorReplaceTo() throws Exception {
+        VariableElementDto variableElementDto = CodesMetamacDtoMocks.mockVariableElementDto();
+        variableElementDto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_02", VARIABLE_2));
+        variableElementDto.getReplaceToVariableElements().add(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_ELEMENT_01", VARIABLE_2_VARIABLE_ELEMENT_1));
+        try {
+            srmCoreServiceFacade.createVariableElement(getServiceContextAdministrador(), variableElementDto);
+            fail("wrong replace to");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED, 1, new String[]{VARIABLE_2_VARIABLE_ELEMENT_1}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test

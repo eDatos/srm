@@ -23,10 +23,10 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_RELATIONS                     = create("exception.srm.codelists.variable_element.with_relations");
     public static final CommonServiceExceptionType CODELIST_ALPHABETICAL_ORDER_OPERATION_NOT_SUPPORTED = create("exception.srm.codelists.order_visualisation.alphabetical.operation_not_supported");
 
-    // Variables
-    public static final CommonServiceExceptionType VARIABLE_CAN_NOT_REPLACE_ITSELF                     = create("exception.srm.codelists.variable.cannot_replace_itself");
-
     // Variable elements
-    public static final CommonServiceExceptionType VARIABLE_ELEMENT_CAN_NOT_REPLACE_ITSELF             = create("exception.srm.codelists.variable_element.cannot_replace_itself");
     public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_FAMILY        = create("exception.srm.codelists.variable_element.must_belong_to_same_family");
+
+    // Codes miscellaneous
+    public static final CommonServiceExceptionType ARTEFACT_CAN_NOT_REPLACE_ITSELF                     = create("exception.srm.codelists.artefact.cannot_replace_itself");
+    public static final CommonServiceExceptionType ARTEFACT_IS_ALREADY_REPLACED                        = create("exception.srm.codelists.artefact.already_replaced");
 }

@@ -91,13 +91,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac createCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
 
-        // In creation, 'replaceTo' metadata must be copied to set after save codelist, due to flushing
-        List<CodelistVersionMetamac> replaceTo = new ArrayList<CodelistVersionMetamac>(codelistVersion.getReplaceToCodelists());
-        codelistVersion.removeAllReplaceToCodelists();
-
         // Validation
         CodesMetamacInvocationValidator.checkCreateCodelist(codelistVersion, null);
         checkCodelistToCreateOrUpdate(ctx, codelistVersion);
+
+        // In creation, 'replaceTo' metadata must be copied to set after save codelist, due to flushing
+        List<CodelistVersionMetamac> replaceTo = new ArrayList<CodelistVersionMetamac>(codelistVersion.getReplaceToCodelists());
+        codelistVersion.removeAllReplaceToCodelists();
 
         // Fill metadata
         codelistVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
@@ -107,7 +107,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Save codelist
         codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
 
-        // Fill replaceTo metadata after save entity
+        // Fill replaceTo metadata after save entity, fill replacedBy metadata too
         for (CodelistVersionMetamac codelistReplaceTo : replaceTo) {
             codelistVersion.addReplaceToCodelist(codelistReplaceTo);
         }
@@ -131,6 +131,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelist(codelistVersion, null);
         checkCodelistToCreateOrUpdate(ctx, codelistVersion);
+
+        // Fill replaceBy metadata
+        for (CodelistVersionMetamac replaceTo : codelistVersion.getReplaceToCodelists()) {
+            replaceTo.setReplacedByCodelist(codelistVersion);
+        }
 
         // Save codelist
         return (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
@@ -621,6 +626,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         variable.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
+        // Fill replaceBy metadata
+        for (Variable variableReplaceTo : variable.getReplaceToVariables()) {
+            variableReplaceTo.setReplacedByVariable(variable);
+        }
+
         // Update
         return getVariableRepository().save(variable);
     }
@@ -758,6 +768,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
         }
         variableElement.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
+
+        // Fill replaceBy metadata
+        for (VariableElement replaceTo : variableElement.getReplaceToVariableElements()) {
+            replaceTo.setReplacedByVariableElement(variableElement);
+        }
 
         // Update
         return getVariableElementRepository().save(variableElement);
@@ -952,6 +967,19 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         .withMessageParameters(ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION).build();
             }
         }
+
+        // Check codelist doesnt replace self
+        if (SrmServiceUtils.isCodelistInList(codelist.getMaintainableArtefact().getUrn(), codelist.getReplaceToCodelists())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(codelist.getMaintainableArtefact().getUrn()).build();
+        }
+
+        // Check any codelist in "replaceTo" was not already replaced by another codelist
+        for (CodelistVersionMetamac replaceTo : codelist.getReplaceToCodelists()) {
+            if (replaceTo.getReplacedByCodelist() != null && !replaceTo.getReplacedByCodelist().getMaintainableArtefact().getUrn().equals(codelist.getMaintainableArtefact().getUrn())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED).withMessageParameters(replaceTo.getMaintainableArtefact().getUrn())
+                        .build();
+            }
+        }
     }
 
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
@@ -1043,7 +1071,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private void checkVariableToCreateOrUpdate(ServiceContext ctx, Variable variable) throws MetamacException {
         // Check variable doesnt replace self
         if (SrmServiceUtils.isVariableInList(variable.getNameableArtefact().getUrn(), variable.getReplaceToVariables())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variable.getNameableArtefact().getUrn()).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variable.getNameableArtefact().getUrn()).build();
+        }
+
+        // Check any variable in "replaceTo" was not already replaced by another variable
+        for (Variable replaceTo : variable.getReplaceToVariables()) {
+            if (replaceTo.getReplacedByVariable() != null && !replaceTo.getReplacedByVariable().getNameableArtefact().getUrn().equals(variable.getNameableArtefact().getUrn())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED).withMessageParameters(replaceTo.getNameableArtefact().getUrn()).build();
+            }
         }
     }
 
@@ -1053,8 +1088,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private void checkVariableElementToCreateOrUpdate(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
         // Check variable doesnt replace self
         if (SrmServiceUtils.isVariableElementInList(variableElement.getNameableArtefact().getUrn(), variableElement.getReplaceToVariableElements())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_CAN_NOT_REPLACE_ITSELF)
-                    .withMessageParameters(variableElement.getNameableArtefact().getUrn()).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variableElement.getNameableArtefact().getUrn())
+                    .build();
         }
 
         // Check replaceTo belong to same variable
@@ -1069,6 +1104,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (variableElement.getId() != null) {
             if (!variableElement.getNameableArtefact().getUrn().contains("=" + variableElement.getVariable().getNameableArtefact().getCode() + ".")) {
                 throw new MetamacException(ServiceExceptionType.METADATA_UNMODIFIABLE, ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE);
+            }
+        }
+
+        // Check any variable element in "replaceTo" was not already replaced by another variable element
+        for (VariableElement replaceTo : variableElement.getReplaceToVariableElements()) {
+            if (replaceTo.getReplacedByVariableElement() != null && !replaceTo.getReplacedByVariableElement().getNameableArtefact().getUrn().equals(variableElement.getNameableArtefact().getUrn())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED).withMessageParameters(replaceTo.getNameableArtefact().getUrn()).build();
             }
         }
     }

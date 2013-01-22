@@ -81,10 +81,12 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         target.setAccessType(source.getAccessType());
 
         target.removeAllReplaceToCodelists();
+
         for (RelatedResourceDto replaceToCodelist : source.getReplaceToCodelists()) {
-            target.addReplaceToCodelist(retrieveCodelist(replaceToCodelist.getUrn()));
+            // note: do not use 'addReplaceToCodelist' method, to can check in service if any "replaceTo" variable was replaced by another variable
+            target.getReplaceToCodelists().add(retrieveCodelist(replaceToCodelist.getUrn()));
         }
-        // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
+        // note: replacedBy metadata is ignored, because it will be updated by replaceTo metadata
 
         if (source.getFamily() != null) {
             target.setFamily(retrieveCodelistFamily(source.getFamily().getUrn()));
@@ -216,9 +218,10 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         }
         target.removeAllReplaceToVariables();
         for (RelatedResourceDto replaceToVariable : source.getReplaceToVariables()) {
-            target.addReplaceToVariable(retrieveVariable(replaceToVariable.getUrn()));
+            // note: do not use 'addReplaceToVariable' method, to can check in service if any "replaceTo" variable was replaced by another variable
+            target.getReplaceToVariables().add(retrieveVariable(replaceToVariable.getUrn()));
         }
-        // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
+        // note: replacedBy metadata is ignored, because it will be updated by replaceTo metadata
 
         target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
 
@@ -255,10 +258,10 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         }
         target.removeAllReplaceToVariableElements();
         for (RelatedResourceDto replaceToVariableElement : source.getReplaceToVariableElements()) {
-            target.addReplaceToVariableElement(retrieveVariableElement(replaceToVariableElement.getUrn()));
+            // note: do not use 'addReplaceToVariableElement' method, to can check in service if any "replaceTo" variable was replaced by another variable
+            target.getReplaceToVariableElements().add(retrieveVariableElement(replaceToVariableElement.getUrn()));
         }
-        // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
-
+        // note: replacedBy metadata is ignored, because it will be updated by replaceTo metadata
         target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
 
         // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute

@@ -112,10 +112,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Replace to
-        CodelistVersionMetamac codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
-        CodelistVersionMetamac codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
-        codelistVersion.addReplaceToCodelist(codelistReplaced1);
-        codelistVersion.addReplaceToCodelist(codelistReplaced2);
+        String replaceTo1Urn = CODELIST_3_V1;
+        String replaceTo2Urn = CODELIST_2_V1;
+        CodelistVersionMetamac codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), replaceTo1Urn);
+        CodelistVersionMetamac codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), replaceTo2Urn);
+        codelistVersion.getReplaceToCodelists().add(codelistReplaced1);
+        codelistVersion.getReplaceToCodelists().add(codelistReplaced2);
 
         // Create
         CodelistVersionMetamac codelistVersionCreated = codesService.createCodelist(ctx, codelistVersion);
@@ -143,13 +145,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check replace metadata
         assertEquals(2, codelistVersionRetrieved.getReplaceToCodelists().size());
-        assertEquals(CODELIST_1_V1, codelistVersionRetrieved.getReplaceToCodelists().get(0).getMaintainableArtefact().getUrn());
-        assertEquals(CODELIST_2_V1, codelistVersionRetrieved.getReplaceToCodelists().get(1).getMaintainableArtefact().getUrn());
+        assertEquals(replaceTo1Urn, codelistVersionRetrieved.getReplaceToCodelists().get(0).getMaintainableArtefact().getUrn());
+        assertEquals(replaceTo2Urn, codelistVersionRetrieved.getReplaceToCodelists().get(1).getMaintainableArtefact().getUrn());
 
         // Check replaced by metadata
-        codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
+        codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), replaceTo1Urn);
         assertEquals(urn, codelistReplaced1.getReplacedByCodelist().getMaintainableArtefact().getUrn());
-        codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+        codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), replaceTo2Urn);
         assertEquals(urn, codelistReplaced2.getReplacedByCodelist().getMaintainableArtefact().getUrn());
 
         // Check alphabetical order is created
@@ -214,6 +216,28 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    public void testCreateCodelistErrorReplaceTo() throws Exception {
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        CodelistVersionMetamac codelistVersion = CodesMetamacDoMocks.mockCodelist(organisationMetamac);
+        codelistVersion.setVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Replace to
+        CodelistVersionMetamac codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
+        codelistVersion.getReplaceToCodelists().add(codelistReplaced1);
+
+        // Create
+        try {
+            codesService.createCodelist(ctx, codelistVersion);
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(CODELIST_1_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     @Override
     @Test
     public void testUpdateCodelist() throws Exception {
@@ -251,8 +275,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         // Replace to
         codelistVersion.removeAllReplaceToCodelists();
-        codelistVersion.addReplaceToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1));
-        codelistVersion.addReplaceToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_11_V1));
+        codelistVersion.getReplaceToCodelists().add(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1));
+        codelistVersion.getReplaceToCodelists().add(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_11_V1));
         codesService.updateCodelist(ctx, codelistVersion);
 
         // Check replaced by metadata
@@ -2551,10 +2575,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         variable.addFamily(codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1));
         variable.addFamily(codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_2));
         // Replace to
-        Variable variableReplaced1 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
-        Variable variableReplaced2 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
-        variable.addReplaceToVariable(variableReplaced1);
-        variable.addReplaceToVariable(variableReplaced2);
+        Variable variableReplaced1 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4);
+        Variable variableReplaced2 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
+        variable.getReplaceToVariables().add(variableReplaced1);
+        variable.getReplaceToVariables().add(variableReplaced2);
 
         // Create
         Variable variableCreated = codesService.createVariable(ctx, variable);
@@ -2582,14 +2606,28 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check replace metadata
         assertEquals(2, variableRetrieved.getReplaceToVariables().size());
-        assertEquals(VARIABLE_1, variableRetrieved.getReplaceToVariables().get(0).getNameableArtefact().getUrn());
-        assertEquals(VARIABLE_3, variableRetrieved.getReplaceToVariables().get(1).getNameableArtefact().getUrn());
+        assertEquals(variableReplaced1.getNameableArtefact().getUrn(), variableRetrieved.getReplaceToVariables().get(0).getNameableArtefact().getUrn());
+        assertEquals(variableReplaced2.getNameableArtefact().getUrn(), variableRetrieved.getReplaceToVariables().get(1).getNameableArtefact().getUrn());
 
         // Check replaced by metadata
-        variableReplaced1 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        variableReplaced1 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variableReplaced1.getNameableArtefact().getUrn());
         assertEquals(urn, variableReplaced1.getReplacedByVariable().getNameableArtefact().getUrn());
-        variableReplaced2 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+        variableReplaced2 = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variableReplaced2.getNameableArtefact().getUrn());
         assertEquals(urn, variableReplaced2.getReplacedByVariable().getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateVariableErrorReplaceTo() throws Exception {
+        Variable variable = CodesMetamacDoMocks.mockVariable();
+        variable.addFamily(codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1));
+        variable.getReplaceToVariables().add(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
+        try {
+            codesService.createVariable(getServiceContextAdministrador(), variable);
+            fail("wrong replace to");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED, 1, new String[]{VARIABLE_1}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
@@ -2666,8 +2704,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Replace to
         variable.removeAllReplaceToVariables();
-        variable.addReplaceToVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
-        variable.addReplaceToVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4));
+        variable.getReplaceToVariables().add(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
+        variable.getReplaceToVariables().add(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4));
         variable.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
         codesService.updateVariable(ctx, variable);
 
@@ -2972,10 +3010,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_2);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
         // Replace to
-        VariableElement variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
-        VariableElement variableElementReplaced2 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_2);
-        variableElement.addReplaceToVariableElement(variableElementReplaced1);
-        variableElement.addReplaceToVariableElement(variableElementReplaced2);
+        VariableElement variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_3);
+        variableElement.getReplaceToVariableElements().add(variableElementReplaced1);
 
         // Create
         VariableElement variableElementCreated = codesService.createVariableElement(ctx, variableElement);
@@ -2994,15 +3030,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEqualsVariableElement(variableElement, variableElementRetrieved);
 
         // Check replace metadata
-        assertEquals(2, variableElementRetrieved.getReplaceToVariableElements().size());
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, variableElementRetrieved.getReplaceToVariableElements().get(0).getNameableArtefact().getUrn());
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, variableElementRetrieved.getReplaceToVariableElements().get(1).getNameableArtefact().getUrn());
+        assertEquals(1, variableElementRetrieved.getReplaceToVariableElements().size());
+        assertEquals(variableElementReplaced1.getNameableArtefact().getUrn(), variableElementRetrieved.getReplaceToVariableElements().get(0).getNameableArtefact().getUrn());
 
         // Check replaced by metadata
-        variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementReplaced1.getNameableArtefact().getUrn());
         assertEquals(urn, variableElementReplaced1.getReplacedByVariableElement().getNameableArtefact().getUrn());
-        variableElementReplaced2 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_2);
-        assertEquals(urn, variableElementReplaced1.getReplacedByVariableElement().getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateVariableElementErrorReplaceTo() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+        variableElement.getReplaceToVariableElements().add(codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1));
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("wrong replace to");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED, 1, new String[]{VARIABLE_2_VARIABLE_ELEMENT_1}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
