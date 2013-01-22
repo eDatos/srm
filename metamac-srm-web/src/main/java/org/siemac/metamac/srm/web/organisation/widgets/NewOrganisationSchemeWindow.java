@@ -77,6 +77,7 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         organisationSchemeDto.setType(OrganisationSchemeTypeEnum.valueOf(form.getValueAsString(OrganisationSchemeDS.TYPE)));
         organisationSchemeDto.setCode(form.getItem(OrganisationSchemeDS.CODE).isVisible() ? form.getValueAsString(OrganisationSchemeDS.CODE) : null);
         organisationSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(OrganisationSchemeDS.NAME)));
+        organisationSchemeDto.setIsPartial(false);
         return organisationSchemeDto;
     }
 

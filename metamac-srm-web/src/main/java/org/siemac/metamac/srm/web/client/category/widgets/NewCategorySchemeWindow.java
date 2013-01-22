@@ -56,6 +56,7 @@ public class NewCategorySchemeWindow extends CustomWindow {
         categorySchemeDto.setMaintainer(RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto());
         categorySchemeDto.setCode(form.getValueAsString(CategorySchemeDS.CODE));
         categorySchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(CategorySchemeDS.NAME)));
+        categorySchemeDto.setIsPartial(false);
         return categorySchemeDto;
     }
 }

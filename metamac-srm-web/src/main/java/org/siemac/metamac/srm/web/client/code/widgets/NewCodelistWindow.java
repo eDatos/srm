@@ -56,6 +56,7 @@ public class NewCodelistWindow extends CustomWindow {
         codelistDto.setMaintainer(RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto());
         codelistDto.setCode(form.getValueAsString(CodelistDS.CODE));
         codelistDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(CodelistDS.NAME)));
+        codelistDto.setIsPartial(false);
         return codelistDto;
     }
 }
