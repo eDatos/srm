@@ -68,16 +68,19 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        // Agency schemes cannot be versioned
-        if (!OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeType) && OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {
-            versioning.show();
+        // Agency schemes, data consumer schemes and data provider schemes can not be versioned
+        if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
+            if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {
+                versioning.show();
+            }
         }
     }
 
     @Override
     protected void showCancelValidityButton() {
-        if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity()) {
-            if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
+        // Agency schemes, data consumer schemes and data provider schemes can not be canceled
+        if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
+            if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity()) {
                 cancelValidity.show();
             }
         }
