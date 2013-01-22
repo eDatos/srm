@@ -13,9 +13,9 @@ import org.siemac.metamac.srm.web.client.category.presenter.CategoryPresenter;
 import org.siemac.metamac.srm.web.client.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.category.view.handlers.CategoryUiHandlers;
 import org.siemac.metamac.srm.web.client.category.widgets.CategoriesTreeGrid;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
@@ -156,7 +156,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CategoryDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getCategoryIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(CategoryDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUri());

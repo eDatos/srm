@@ -15,11 +15,11 @@ import org.siemac.metamac.srm.web.client.code.model.record.VariableRecord;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableFamilyUiHandlers;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -232,7 +232,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(VariableFamilyDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getVariableFamilyIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(VariableFamilyDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         ViewTextItem urn = new ViewTextItem(VariableFamilyDS.URN, getConstants().identifiableArtefactUrn());

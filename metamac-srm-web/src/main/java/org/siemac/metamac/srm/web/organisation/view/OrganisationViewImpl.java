@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
@@ -21,7 +22,6 @@ import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurity
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.ContactMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
@@ -325,7 +325,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         });
 
         RequiredTextItem code = new RequiredTextItem(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getOrganisationIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
 
             @Override

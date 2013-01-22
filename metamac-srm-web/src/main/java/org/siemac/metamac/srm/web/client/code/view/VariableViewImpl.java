@@ -16,13 +16,13 @@ import org.siemac.metamac.srm.web.client.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.NewVariableElementWindow;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -269,7 +269,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(VariableDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getVariableIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(VariableDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(VariableDS.SHORT_NAME, getConstants().variableShortName());

@@ -5,7 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.VariableFamilyDS;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
@@ -26,7 +26,7 @@ public class NewVariableFamilyWindow extends CustomWindow {
         setAutoSize(true);
 
         RequiredTextItem codeItem = new RequiredTextItem(VariableFamilyDS.CODE, getConstants().identifiableArtefactCode());
-        codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        codeItem.setValidators(SemanticIdentifiersUtils.getVariableFamilyIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
         RequiredTextItem nameItem = new RequiredTextItem(VariableFamilyDS.NAME, getConstants().nameableArtefactName());

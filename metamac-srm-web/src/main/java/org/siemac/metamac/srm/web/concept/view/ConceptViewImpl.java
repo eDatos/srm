@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
@@ -283,7 +284,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(ConceptDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getConceptIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem pluralName = new MultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());

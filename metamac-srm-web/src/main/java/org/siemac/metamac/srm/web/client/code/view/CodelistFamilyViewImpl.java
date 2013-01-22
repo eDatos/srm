@@ -15,11 +15,11 @@ import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistFamilyUiHandlers;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -231,7 +231,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CodelistFamilyDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getCodelistFamilyIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodelistFamilyDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         ViewTextItem urn = new ViewTextItem(CodelistFamilyDS.URN, getConstants().identifiableArtefactUrn());

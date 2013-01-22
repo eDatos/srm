@@ -6,8 +6,8 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.code.model.ds.CodelistOrderDS;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.TranslateToolStripButton;
@@ -54,7 +54,7 @@ public class EditCodelistOrderWindow extends CustomWindow {
 
         // Create form
         RequiredTextItem codeItem = new RequiredTextItem(CodelistOrderDS.CODE, getConstants().identifiableArtefactCode());
-        codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        codeItem.setValidators(SemanticIdentifiersUtils.getCodelistOrderVisualisationIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         codeItem.setShowIfCondition(new FormItemIfFunction() {
 

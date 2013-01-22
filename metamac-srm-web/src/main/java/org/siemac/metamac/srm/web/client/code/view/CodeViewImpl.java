@@ -13,12 +13,12 @@ import org.siemac.metamac.srm.web.client.code.presenter.CodePresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -190,7 +190,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CodeDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getCodeIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(CodeDS.SHORT_NAME, getConstants().codeShortName());

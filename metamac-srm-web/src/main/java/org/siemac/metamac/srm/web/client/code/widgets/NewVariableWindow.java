@@ -9,8 +9,8 @@ import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableListPresenter;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableListUiHandlers;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedDragAndDropItem;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -39,7 +39,7 @@ public class NewVariableWindow extends CustomWindow {
         this.uiHandlers = uiHandlers;
 
         RequiredTextItem codeItem = new RequiredTextItem(VariableDS.CODE, getConstants().identifiableArtefactCode());
-        codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        codeItem.setValidators(SemanticIdentifiersUtils.getVariableIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
         RequiredTextItem nameItem = new RequiredTextItem(VariableDS.NAME, getConstants().nameableArtefactName());

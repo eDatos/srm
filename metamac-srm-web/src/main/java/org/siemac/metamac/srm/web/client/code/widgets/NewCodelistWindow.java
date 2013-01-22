@@ -5,8 +5,8 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.CodelistDS;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
@@ -27,7 +27,7 @@ public class NewCodelistWindow extends CustomWindow {
         setAutoSize(true);
 
         RequiredTextItem codeItem = new RequiredTextItem(CodelistDS.CODE, getConstants().identifiableArtefactCode());
-        codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        codeItem.setValidators(SemanticIdentifiersUtils.getCodelistIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
         RequiredTextItem nameItem = new RequiredTextItem(CodelistDS.NAME, getConstants().nameableArtefactName());

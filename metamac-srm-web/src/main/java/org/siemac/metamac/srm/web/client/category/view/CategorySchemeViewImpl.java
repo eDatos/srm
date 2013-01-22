@@ -18,10 +18,10 @@ import org.siemac.metamac.srm.web.client.category.view.handlers.CategorySchemeUi
 import org.siemac.metamac.srm.web.client.category.widgets.CategoriesTreeGrid;
 import org.siemac.metamac.srm.web.client.category.widgets.CategorySchemeMainFormLayout;
 import org.siemac.metamac.srm.web.client.category.widgets.CategorySchemeVersionsSectionStack;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -317,7 +317,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CategorySchemeDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getCategorySchemeIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
 
             @Override

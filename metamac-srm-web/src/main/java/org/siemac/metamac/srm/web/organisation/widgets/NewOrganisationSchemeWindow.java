@@ -4,10 +4,10 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
@@ -46,7 +46,7 @@ public class NewOrganisationSchemeWindow extends CustomWindow {
         });
 
         RequiredTextItem codeItem = new RequiredTextItem(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
-        codeItem.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        codeItem.setValidators(SemanticIdentifiersUtils.getOrganisationSchemeIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         codeItem.setShowIfCondition(getCodeShowIfFunction());
 

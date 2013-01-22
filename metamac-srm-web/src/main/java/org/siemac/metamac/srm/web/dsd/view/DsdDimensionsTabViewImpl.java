@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
@@ -26,7 +27,6 @@ import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.RoleSelectItem;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -328,7 +328,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         code = new RequiredTextItem(DimensionDS.CODE, MetamacSrmWeb.getConstants().dsdDimensionsId());
         code.setRedrawOnChange(true);
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getDimensionIdentifierCustomValidator());
 
         staticCodeEdit = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
         staticCodeEdit.setRedrawOnChange(true);

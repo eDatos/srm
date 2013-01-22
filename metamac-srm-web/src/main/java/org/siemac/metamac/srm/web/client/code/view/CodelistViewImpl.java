@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.web.client.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.client.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.client.code.widgets.VersionCodelistWindow;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CodelistOrdersSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
@@ -31,7 +32,6 @@ import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -468,7 +468,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(CodelistDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getCodelistIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
 
             @Override

@@ -12,6 +12,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -24,7 +25,6 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
@@ -396,7 +396,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getConceptSchemeIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
 
             @Override

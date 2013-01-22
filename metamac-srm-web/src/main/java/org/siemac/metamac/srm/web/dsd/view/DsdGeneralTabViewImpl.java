@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -21,7 +22,6 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdVersionsSectionStack;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -281,7 +281,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         identifiersEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().formIdentifiers());
 
         RequiredTextItem code = new RequiredTextItem(DataStructureDefinitionDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getDsdIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
 
             @Override

@@ -9,10 +9,10 @@ import org.siemac.metamac.srm.web.client.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableElementPresenter;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableElementUiHandlers;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -154,7 +154,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(CommonWebUtils.getSemanticIdentifierCustomValidator());
+        code.setValidators(SemanticIdentifiersUtils.getVariableElementIdentifierCustomValidator());
         MultiLanguageTextItem name = new MultiLanguageTextItem(VariableElementDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
