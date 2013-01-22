@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.core.security.shared;
 
-import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.ADMINISTRADOR;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMALIZACION;
@@ -27,7 +26,7 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canCrudCodelistFamily(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION, ADMINISTRADOR);
+        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
     }
 
     public static boolean canRetrieveOrFindVariableFamily(MetamacPrincipal metamacPrincipal) {
@@ -35,7 +34,7 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canCrudVariableFamily(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION); // TODO pendiente confirmación seguridad
+        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
     }
 
     public static boolean canRetrieveOrFindVariable(MetamacPrincipal metamacPrincipal) {
@@ -43,7 +42,7 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canCrudVariable(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION); // TODO pendiente confirmación seguridad
+        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
     }
 
     public static boolean canRetrieveOrFindVariableElement(MetamacPrincipal metamacPrincipal) {
