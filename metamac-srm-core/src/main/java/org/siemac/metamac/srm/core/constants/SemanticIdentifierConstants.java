@@ -1,8 +1,8 @@
-package org.siemac.metamac.srm.core.common.service.utils.shared;
+package org.siemac.metamac.srm.core.constants;
 
 import org.siemac.metamac.core.common.constants.shared.SDMXCommonRegExpV2_1;
 
-public class SemanticIdentifierConstants extends com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SemanticIdentifierConstants {
+public class SemanticIdentifierConstants extends com.arte.statistic.sdmx.srm.core.constants.SemanticIdentifierConstants {
 
     // Note: only for web
 
