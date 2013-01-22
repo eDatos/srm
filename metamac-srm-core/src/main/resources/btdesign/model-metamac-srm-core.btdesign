@@ -1,6 +1,6 @@
-import "classpath:/btdesign/statistic-sdmx-v2_1-domain-trans.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-trans.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
-import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-util.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-importations.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
