@@ -18,8 +18,9 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
     }
 
     public static boolean canUpdateOrganisationScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
-        // Agency schemes can be always updated (even when they are published)
-        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type) && (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus))) {
+        // DataConsumerScheme, DataProviderScheme and AgencyScheme can be always updated (even when they are published)
+        if ((OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type) || OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME.equals(type) || OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME.equals(type))
+                && ((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)))) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
         } else {
             return canUpdateItemScheme(metamacPrincipal, procStatus);
