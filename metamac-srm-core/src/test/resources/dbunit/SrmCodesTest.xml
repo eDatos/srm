@@ -4525,18 +4525,21 @@
         />
         
             <!-- VARIABLE ELEMENTS -->
+            <!-- IMPORTANT: the order of the rows in this table should take into account the "REPLACED_BY_VAR_ELEMENT_FK" field due to dbunit limitations. -->
+    
             <TB_M_VARIABLE_ELEMENTS
-                ID="21"
-                NAMEABLE_ARTEFACT_FK="9999321"
+                ID="23"
+                NAMEABLE_ARTEFACT_FK="9999323"
                 
-                SHORT_NAME_FK="71"
+                SHORT_NAME_FK="83"
                 VALID_FROM_TZ="Europe/London"
                 VALID_FROM="2011-01-02 02:02:04" 
                 VALID_TO_TZ="Europe/London"
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="2"
+                REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 
-                UUID="variable-element-21"
+                UUID="variable-element-23"
                 CREATED_DATE_TZ="Europe/London"
                 CREATED_DATE="2011-01-01 01:02:03"
                 CREATED_BY="user1"
@@ -4547,19 +4550,19 @@
             />
             
                <TB_ANNOTABLE_ARTEFACTS 
-                    ID="9999321"
+                    ID="9999323"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="VARIABLE_ELEMENT_01"
+                    CODE="VARIABLE_ELEMENT_03"
                     CODE_FULL="[null]"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01"
-                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_03"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_03"
                     
-                    NAME_FK="72"
+                    NAME_FK="74"
                     DESCRIPTION_FK="[null]"
                     
-                    UUID="annotableArtefact-9999321"
+                    UUID="annotableArtefact-9999323"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -4567,7 +4570,7 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />
+                />  
                 
             <TB_M_VARIABLE_ELEMENTS
                 ID="22"
@@ -4579,6 +4582,7 @@
                 VALID_TO_TZ="Europe/London"
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="2"
+                REPLACED_BY_VAR_ELEMENT_FK="23"
                 
                 UUID="variable-element-22"
                 CREATED_DATE_TZ="Europe/London"
@@ -4611,8 +4615,54 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                
+                />  
+                            
+            <TB_M_VARIABLE_ELEMENTS
+                ID="21"
+                NAMEABLE_ARTEFACT_FK="9999321"
+                
+                SHORT_NAME_FK="71"
+                VALID_FROM_TZ="Europe/London"
+                VALID_FROM="2011-01-02 02:02:04" 
+                VALID_TO_TZ="Europe/London"
+                VALID_TO="2012-01-02 02:02:04"
+                VARIABLE_FK="2"
+                REPLACED_BY_VAR_ELEMENT_FK="22"
+                
+                UUID="variable-element-21"
+                CREATED_DATE_TZ="Europe/London"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_BY="user1"
+                LAST_UPDATED_TZ="Europe/London"
+                LAST_UPDATED="2012-01-01 01:02:03"
+                LAST_UPDATED_BY="user2"
+                VERSION="1"
+            />
+            
+               <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9999321"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VARIABLE_ELEMENT_01"
+                    CODE_FULL="[null]"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01"
+                    
+                    NAME_FK="72"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-9999321"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                             
 
+  
             
     <TB_M_VARIABLES
         ID="5"
@@ -4670,6 +4720,7 @@
                 VALID_TO_TZ="Europe/London"
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="5"
+                REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 
                 UUID="variable-element-51"
                 CREATED_DATE_TZ="Europe/London"
@@ -6230,5 +6281,18 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="82"
-    />                                
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="83"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="831"
+        LABEL="nombre corto"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="83"
+    />                                        
 </dataset>

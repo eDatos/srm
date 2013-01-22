@@ -150,7 +150,9 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
     @Test
     public void testVariableElementDoToDto() {
         VariableElement entity = mockVariableElementWithAllMetadata();
-        // TODO replaceTo, replacedBy
+        entity.setReplacedByVariableElement(mockVariableElementWithAllMetadata());
+        entity.addReplaceToVariableElement(mockVariableElementWithAllMetadata());
+        entity.addReplaceToVariableElement(mockVariableElementWithAllMetadata());
 
         VariableElementDto dto = codesDo2DtoMapper.variableElementDoToDto(entity);
         CodesMetamacAsserts.assertEqualsVariableElement(entity, dto);

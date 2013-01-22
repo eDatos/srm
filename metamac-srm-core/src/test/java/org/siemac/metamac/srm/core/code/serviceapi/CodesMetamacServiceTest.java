@@ -2969,8 +2969,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         ServiceContext ctx = getServiceContextAdministrador();
 
-        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_2);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+        // Replace to
+        VariableElement variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        VariableElement variableElementReplaced2 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_2);
+        variableElement.addReplaceToVariableElement(variableElementReplaced1);
+        variableElement.addReplaceToVariableElement(variableElementReplaced2);
 
         // Create
         VariableElement variableElementCreated = codesService.createVariableElement(ctx, variableElement);
@@ -2986,11 +2991,36 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(getServiceContextAdministrador().getUserId(), variableElementRetrieved.getLastUpdatedBy());
         assertTrue(DateUtils.isSameDay(new Date(), variableElementRetrieved.getLastUpdated().toDate()));
 
-        // Check that the variableElement was added to variable
-        variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
-        assertTrue(SrmServiceUtils.isVariableElementInList(urn, variable.getVariableElements()));
-
         assertEqualsVariableElement(variableElement, variableElementRetrieved);
+
+        // Check replace metadata
+        assertEquals(2, variableElementRetrieved.getReplaceToVariableElements().size());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, variableElementRetrieved.getReplaceToVariableElements().get(0).getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, variableElementRetrieved.getReplaceToVariableElements().get(1).getNameableArtefact().getUrn());
+
+        // Check replaced by metadata
+        variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        assertEquals(urn, variableElementReplaced1.getReplacedByVariableElement().getNameableArtefact().getUrn());
+        variableElementReplaced2 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_2);
+        assertEquals(urn, variableElementReplaced1.getReplacedByVariableElement().getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateVariableElementErrorReplaceToDifferentFamily() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+
+        // Replace to
+        VariableElement variableElementAnotherFamily = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
+        variableElement.addReplaceToVariableElement(variableElementAnotherFamily);
+
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("wrong code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_FAMILY, 1, new String[]{VARIABLE_5_VARIABLE_ELEMENT_1}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
@@ -3101,6 +3131,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testUpdateVariableElementChangingReplaceTo() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+        String urn = VARIABLE_2_VARIABLE_ELEMENT_2;
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(ctx, urn);
+        assertEquals(1, variableElement.getReplaceToVariableElements().size());
+        assertTrue(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_1, variableElement.getReplaceToVariableElements()));
+
+        // Replace to
+        variableElement.removeAllReplaceToVariableElements();
+        variableElement.addReplaceToVariableElement(codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_3));
+        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codesService.updateVariableElement(ctx, variableElement);
+
+        // Check replaced by metadata
+        VariableElement variableElementReplaced2 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_3);
+        assertEquals(urn, variableElementReplaced2.getReplacedByVariableElement().getNameableArtefact().getUrn());
+        VariableElement variableElementNotReplaced3 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        assertEquals(null, variableElementNotReplaced3.getReplacedByVariableElement());
+    }
+
+    @Test
     public void testUpdateVariableElementErrorIncorrectMetadata() throws Exception {
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
         variableElement.setVariable(null);
@@ -3127,20 +3178,22 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testRetrieveVariableElementByUrn() throws Exception {
-        String urn = VARIABLE_2_VARIABLE_ELEMENT_1;
+        String urn = VARIABLE_2_VARIABLE_ELEMENT_2;
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
 
         assertEquals(urn, variableElement.getNameableArtefact().getUrn());
-        assertEquals("VARIABLE_ELEMENT_01", variableElement.getNameableArtefact().getCode());
-        assertEqualsInternationalString(variableElement.getNameableArtefact().getName(), "es", "Nombre 2-1", "en", "Name 2-1");
-        assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2-1", "en", "Short name 2-1");
+        assertEquals("VARIABLE_ELEMENT_02", variableElement.getNameableArtefact().getCode());
+        assertEqualsInternationalString(variableElement.getNameableArtefact().getName(), "es", "Nombre 2-2", "en", "Name 2-2");
+        assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2-2", "en", "Short name 2-2");
         assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidFrom());
         assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidTo());
         assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());
 
-        // TODO replaceTo, replacedBy
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, variableElement.getReplacedByVariableElement().getNameableArtefact().getUrn());
+        assertEquals(1, variableElement.getReplaceToVariableElements().size());
+        assertTrue(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_1, variableElement.getReplaceToVariableElements()));
 
-        assertEquals("variable-element-21", variableElement.getUuid());
+        assertEquals("variable-element-22", variableElement.getUuid());
         assertEquals("user1", variableElement.getCreatedBy());
         assertEquals("user2", variableElement.getLastUpdatedBy());
         assertEquals(Long.valueOf(1), variableElement.getVersion());
@@ -3179,10 +3232,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableElement> result = codesService.findVariableElementsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
-            assertEquals(3, result.getTotalRows());
+            assertEquals(4, result.getTotalRows());
             int i = 0;
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
         }
         // Find by urn

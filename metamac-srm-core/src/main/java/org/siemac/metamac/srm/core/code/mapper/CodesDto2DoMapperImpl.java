@@ -215,8 +215,8 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             target.addFamily(retrieveVariableFamily(variableFamilyDto.getUrn()));
         }
         target.removeAllReplaceToVariables();
-        for (RelatedResourceDto replaceToCodelist : source.getReplaceToVariables()) {
-            target.addReplaceToVariable(retrieveVariable(replaceToCodelist.getUrn()));
+        for (RelatedResourceDto replaceToVariable : source.getReplaceToVariables()) {
+            target.addReplaceToVariable(retrieveVariable(replaceToVariable.getUrn()));
         }
         // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
 
@@ -253,7 +253,11 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         if (source.getVariable() != null) {
             target.setVariable(retrieveVariable(source.getVariable().getUrn()));
         }
-        // TODO replaceTo, replacedBy
+        target.removeAllReplaceToVariableElements();
+        for (RelatedResourceDto replaceToVariableElement : source.getReplaceToVariableElements()) {
+            target.addReplaceToVariableElement(retrieveVariableElement(replaceToVariableElement.getUrn()));
+        }
+        // note: replacedBy metadata is ignored, because it is updated by replaceTo metadata
 
         target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
 

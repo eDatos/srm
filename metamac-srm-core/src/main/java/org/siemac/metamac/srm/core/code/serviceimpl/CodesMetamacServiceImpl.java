@@ -91,7 +91,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac createCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
 
-        // We must copy replaceTo metadata to set after save codelist, due to flushing
+        // In creation, 'replaceTo' metadata must be copied to set after save codelist, due to flushing
         List<CodelistVersionMetamac> replaceTo = new ArrayList<CodelistVersionMetamac>(codelistVersion.getReplaceToCodelists());
         codelistVersion.removeAllReplaceToCodelists();
 
@@ -586,16 +586,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public Variable createVariable(ServiceContext ctx, Variable variable) throws MetamacException {
 
-        // We must copy replaceTo metadata to set after save variable, due to flushing
-        List<Variable> replaceTo = new ArrayList<Variable>(variable.getReplaceToVariables());
-        variable.removeAllReplaceToVariables();
-
         // Validation
         CodesMetamacInvocationValidator.checkCreateVariable(variable, null);
         checkVariableToCreateOrUpdate(ctx, variable);
-        setVariableUrnUnique(variable);
+
+        // In creation, 'replaceTo' metadata must be copied to set after save variable, due to flushing
+        List<Variable> replaceTo = new ArrayList<Variable>(variable.getReplaceToVariables());
+        variable.removeAllReplaceToVariables();
 
         // Create
+        setVariableUrnUnique(variable);
         variable = getVariableRepository().save(variable);
 
         // Fill replaceTo metadata after save entity
@@ -729,9 +729,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Validation
         CodesMetamacInvocationValidator.checkCreateVariableElement(variableElement, null);
-        setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
+        checkVariableElementToCreateOrUpdate(ctx, variableElement);
+
+        // In creation, 'replaceTo' metadata must be copied to set after save variable, due to flushing
+        List<VariableElement> replaceTo = new ArrayList<VariableElement>(variableElement.getReplaceToVariableElements());
+        variableElement.removeAllReplaceToVariableElements();
 
         // Create
+        setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
+        variableElement = getVariableElementRepository().save(variableElement);
+
+        // Fill replaceTo metadata after save entity
+        for (VariableElement variableElementReplaceTo : replaceTo) {
+            variableElement.addReplaceToVariableElement(variableElementReplaceTo);
+        }
         variableElement = getVariableElementRepository().save(variableElement);
         return variableElement;
     }
@@ -740,10 +751,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public VariableElement updateVariableElement(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateVariableElement(variableElement, null);
-        // Check do not change variable (do with contains method to be more efficient, instead parse urn)
-        if (!variableElement.getNameableArtefact().getUrn().contains("=" + variableElement.getVariable().getNameableArtefact().getCode() + ".")) {
-            throw new MetamacException(ServiceExceptionType.METADATA_UNMODIFIABLE, ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE);
-        }
+        checkVariableElementToCreateOrUpdate(ctx, variableElement);
 
         // If code has been changed, update URN
         if (variableElement.getNameableArtefact().getIsCodeUpdated()) {
@@ -1036,6 +1044,32 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check variable doesnt replace self
         if (SrmServiceUtils.isVariableInList(variable.getNameableArtefact().getUrn(), variable.getReplaceToVariables())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variable.getNameableArtefact().getUrn()).build();
+        }
+    }
+
+    /**
+     * Common validations to create or update a variable element
+     */
+    private void checkVariableElementToCreateOrUpdate(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
+        // Check variable doesnt replace self
+        if (SrmServiceUtils.isVariableElementInList(variableElement.getNameableArtefact().getUrn(), variableElement.getReplaceToVariableElements())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_CAN_NOT_REPLACE_ITSELF)
+                    .withMessageParameters(variableElement.getNameableArtefact().getUrn()).build();
+        }
+
+        // Check replaceTo belong to same variable
+        for (VariableElement variableElementReplaceTo : variableElement.getReplaceToVariableElements()) {
+            if (!variableElement.getVariable().getNameableArtefact().getUrn().equals(variableElementReplaceTo.getVariable().getNameableArtefact().getUrn())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_FAMILY)
+                        .withMessageParameters(variableElementReplaceTo.getNameableArtefact().getUrn()).build();
+            }
+        }
+
+        // Check do not change variable (do with contains method to be more efficient, instead parse urn)
+        if (variableElement.getId() != null) {
+            if (!variableElement.getNameableArtefact().getUrn().contains("=" + variableElement.getVariable().getNameableArtefact().getCode() + ".")) {
+                throw new MetamacException(ServiceExceptionType.METADATA_UNMODIFIABLE, ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE);
+            }
         }
     }
 

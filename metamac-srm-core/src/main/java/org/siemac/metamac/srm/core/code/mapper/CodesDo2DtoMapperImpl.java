@@ -230,7 +230,10 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
         do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
         target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
-        // TODO replaceTo, replacedBy
+        target.setReplacedByVariableElement(variableElementDoToRelatedResourceDto(source.getReplacedByVariableElement()));
+        for (VariableElement replaceTo : source.getReplaceToVariableElements()) {
+            target.addReplaceToVariableElement(variableElementDoToRelatedResourceDto(replaceTo));
+        }
 
         // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)
         target.setId(source.getId());

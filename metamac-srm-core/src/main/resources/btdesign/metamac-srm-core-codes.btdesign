@@ -347,6 +347,10 @@ Application CodesMetamac {
 			DateTimeTZ validFrom nullable;
 			"Date from which variable element is superceded"
 			DateTimeTZ validTo nullable;
+			"Variable element that replaces this one. Update in this metadata is ignored. Must be updated by replacedToVariableElements metadata"
+			- @VariableElement replacedByVariableElement nullable cascade="none" databaseColumn="REPLACED_BY_VAR_ELEMENT_FK"  <-> replaceToVariableElements;
+			"Variable elements that are replaced by this one"
+			- Bag<@VariableElement> replaceToVariableElements cascade="none" fetch="lazy" <-> replacedByVariableElement;
 			
 			"Variable"
 			- @Variable variable not nullable cascade="none" databaseColumn="VARIABLE_FK"  <-> variableElements;

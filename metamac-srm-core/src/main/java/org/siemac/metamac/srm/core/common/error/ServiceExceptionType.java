@@ -25,4 +25,8 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
 
     // Variables
     public static final CommonServiceExceptionType VARIABLE_CAN_NOT_REPLACE_ITSELF                     = create("exception.srm.codelists.variable.cannot_replace_itself");
+
+    // Variable elements
+    public static final CommonServiceExceptionType VARIABLE_ELEMENT_CAN_NOT_REPLACE_ITSELF             = create("exception.srm.codelists.variable_element.cannot_replace_itself");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_FAMILY        = create("exception.srm.codelists.variable_element.must_belong_to_same_family");
 }

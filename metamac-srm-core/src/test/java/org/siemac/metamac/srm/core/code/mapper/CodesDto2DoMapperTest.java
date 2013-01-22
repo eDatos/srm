@@ -97,7 +97,8 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
     public void testVariableElementDtoToDo() throws MetamacException {
         VariableElementDto dto = CodesMetamacDtoMocks.mockVariableElementDto();
         dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
-        // TODO replaceTo, replacedBy
+        dto.addReplaceToVariableElement(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_ELEMENT_01", VARIABLE_2_VARIABLE_ELEMENT_1));
+        dto.addReplaceToVariableElement(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_ELEMENT_02", VARIABLE_2_VARIABLE_ELEMENT_2));
 
         VariableElement entity = codesDto2DoMapper.variableElementDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsVariableElement(dto, entity);

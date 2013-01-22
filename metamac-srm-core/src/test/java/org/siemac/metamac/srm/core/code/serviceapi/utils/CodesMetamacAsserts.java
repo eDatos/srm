@@ -374,7 +374,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsDate(expected.getValidTo(), actual.getValidTo());
         assertEquals(expected.getVariable().getNameableArtefact().getUrn(), actual.getVariable().getNameableArtefact().getUrn());
 
-        // TODO replaceTo, replacedBy
+        assertEqualsNullability(expected.getReplacedByVariableElement(), actual.getReplacedByVariableElement());
+        if (expected.getReplacedByVariableElement() != null) {
+            assertEquals(expected.getReplacedByVariableElement().getNameableArtefact().getUrn(), actual.getReplacedByVariableElement().getNameableArtefact().getUrn());
+        }
+        // cannot check here due to flush restrictions in create method. we must remove relations before save
+        // assertEquals(expected.getReplaceToVariableElements().size(), actual.getReplaceToVariableElements().size());
+        // for (int i = 0; i < expected.getReplaceToVariableElements().size(); i++) {
+        // assertEquals(expected.getReplaceToVariableElements().get(i).getNameableArtefact().getUrn(), actual.getReplaceToVariableElements().get(i).getNameableArtefact().getUrn());
+        // }
 
         // other artefacts
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
@@ -385,7 +393,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(expected.getValidFrom(), actual.getValidFrom());
         assertEquals(expected.getValidTo(), actual.getValidTo());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariable(), actual.getVariable());
-        // TODO replaceTo, replacedBy
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getReplacedByVariableElement(), actual.getReplacedByVariableElement());
+        BaseAsserts.assertEqualsRelatedResourcesDto(expected.getReplaceToVariableElements(), actual.getReplaceToVariableElements());
 
         // other artefacts
         CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
@@ -427,7 +436,14 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsDate(entity.getValidFrom(), dto.getValidFrom());
         assertEqualsDate(entity.getValidTo(), dto.getValidTo());
         assertEquals(entity.getVariable().getNameableArtefact().getUrn(), dto.getVariable().getUrn());
-        // TODO replaceTo, replacedBy
+        assertEqualsNullability(entity.getReplacedByVariableElement(), dto.getReplacedByVariableElement());
+        if (entity.getReplacedByVariableElement() != null) {
+            assertEquals(entity.getReplacedByVariableElement().getNameableArtefact().getUrn(), dto.getReplacedByVariableElement().getUrn());
+        }
+        assertEquals(entity.getReplaceToVariableElements().size(), dto.getReplaceToVariableElements().size());
+        for (int i = 0; i < entity.getReplaceToVariableElements().size(); i++) {
+            assertEquals(entity.getReplaceToVariableElements().get(i).getNameableArtefact().getUrn(), dto.getReplaceToVariableElements().get(i).getUrn());
+        }
 
         // other artefacts
         assertEqualsNameableArtefact(entity.getNameableArtefact(), dto, mapperEnum);
