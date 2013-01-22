@@ -281,7 +281,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             public void onClick(ClickEvent event) {
                 OrganisationSchemeTypeEnum type = organisationSchemeDto.getType();
                 ProcStatusEnum status = organisationSchemeDto.getLifeCycle().getProcStatus();
-                if (!OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type) && (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status))) {
+                // If the organisation selected is and OrganisationUnit (and its status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
+                if ((!CommonUtils.isAgencyScheme(type) && !CommonUtils.isDataConsumerScheme(type) && !CommonUtils.isDataProviderScheme(type))
+                        && ((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)))) {
                     // Create a new version
                     final InformationWindow window = new InformationWindow(getMessages().organisationSchemeEditionInfo(), getMessages().organisationSchemeEditionInfoDetailedMessage());
                     window.show();
