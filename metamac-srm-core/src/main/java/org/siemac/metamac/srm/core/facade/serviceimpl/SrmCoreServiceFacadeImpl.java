@@ -982,7 +982,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteCodelistFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudCodelistFamily(ctx); // TODO security CodelistFamily
+        CodesSecurityUtils.canCrudCodelistFamily(ctx);
 
         // Delete
         getCodesMetamacService().deleteCodelistFamily(ctx, urn);
@@ -990,7 +990,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void addCodelistsToCodelistFamily(ServiceContext ctx, List<String> codelistUrns, String codelistFamilyUrn) throws MetamacException {
-        // Security // TODO security CodelistFamily
+        // Security
+        CodesSecurityUtils.canCrudCodelistFamily(ctx);
 
         // Add
         getCodesMetamacService().addCodelistsToCodelistFamily(ctx, codelistUrns, codelistFamilyUrn);
@@ -998,7 +999,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public void removeCodelistFromCodelistFamily(ServiceContext ctx, String codelistUrn, String codelistFamilyUrn) throws MetamacException {
-        // Security // TODO security CodelistFamily
+        // Security
+        CodesSecurityUtils.canCrudCodelistFamily(ctx);
 
         // Delete
         getCodesMetamacService().removeCodelistFromCodelistFamily(ctx, codelistUrn, codelistFamilyUrn);

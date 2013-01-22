@@ -1,6 +1,9 @@
 package org.siemac.metamac.srm.core.security.shared;
 
+import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.ADMINISTRADOR;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_NORMALIZACION;
+import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO_NORMALIZACION;
+import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMALIZACION;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
@@ -24,7 +27,7 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canCrudCodelistFamily(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION); // TODO pendiente confirmación seguridad
+        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION, ADMINISTRADOR);
     }
 
     public static boolean canRetrieveOrFindVariableFamily(MetamacPrincipal metamacPrincipal) {
@@ -48,6 +51,6 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canCrudVariableElement(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION); // TODO pendiente confirmación seguridad
+        return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
     }
 }
