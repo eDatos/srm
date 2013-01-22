@@ -23,7 +23,7 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.imporation.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;

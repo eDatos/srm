@@ -84,7 +84,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescripto
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.imporation.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;

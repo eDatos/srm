@@ -29,7 +29,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
-import com.arte.statistic.sdmx.v2_1.domain.dto.imporation.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
