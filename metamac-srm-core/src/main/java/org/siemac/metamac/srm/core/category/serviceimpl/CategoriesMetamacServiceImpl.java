@@ -354,7 +354,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
      * Typecast to Metamac type
      */
     private List<CategoryMetamac> categoriesToCategoryMetamac(List<Category> sources) {
-        List<CategoryMetamac> targets = new ArrayList<CategoryMetamac>();
+        List<CategoryMetamac> targets = new ArrayList<CategoryMetamac>(sources.size());
         for (Item source : sources) {
             targets.add((CategoryMetamac) source);
         }
@@ -365,7 +365,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
      * Typecast to Metamac type
      */
     private List<CategorySchemeVersionMetamac> categorySchemeVersionsToCategorySchemeVersionsMetamac(List<CategorySchemeVersion> sources) {
-        List<CategorySchemeVersionMetamac> targets = new ArrayList<CategorySchemeVersionMetamac>();
+        List<CategorySchemeVersionMetamac> targets = new ArrayList<CategorySchemeVersionMetamac>(sources.size());
         for (ItemSchemeVersion source : sources) {
             targets.add((CategorySchemeVersionMetamac) source);
         }

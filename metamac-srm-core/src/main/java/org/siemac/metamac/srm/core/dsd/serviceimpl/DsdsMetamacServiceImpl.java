@@ -298,7 +298,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
      * Typecast to Metamac type
      */
     private List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsToMetamac(List<DataStructureDefinitionVersion> sources) {
-        List<DataStructureDefinitionVersionMetamac> targets = new ArrayList<DataStructureDefinitionVersionMetamac>();
+        List<DataStructureDefinitionVersionMetamac> targets = new ArrayList<DataStructureDefinitionVersionMetamac>(sources.size());
         for (DataStructureDefinitionVersion source : sources) {
             targets.add((DataStructureDefinitionVersionMetamac) source);
         }

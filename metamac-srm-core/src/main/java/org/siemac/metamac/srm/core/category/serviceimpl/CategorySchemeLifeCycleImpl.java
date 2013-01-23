@@ -11,21 +11,20 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
-import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
-import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 
 @Service("categorySchemeLifeCycle")
@@ -144,7 +143,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
             return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS)
                     .withMessageParameters(categorySchemeVersion.getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
         }
-        
+
         @Override
         public Boolean canHaveCategorisations() {
             return Boolean.FALSE;
@@ -155,9 +154,9 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         private List<Object> categorySchemeMetamacToObject(List<CategorySchemeVersionMetamac> categorySchemeVersions) {
-            List<Object> objects = new ArrayList<Object>();
+            List<Object> objects = new ArrayList<Object>(categorySchemeVersions.size());
             for (CategorySchemeVersionMetamac categorySchemeVersion : categorySchemeVersions) {
-                objects.add((ItemSchemeVersion) categorySchemeVersion);
+                objects.add(categorySchemeVersion);
             }
             return objects;
         }

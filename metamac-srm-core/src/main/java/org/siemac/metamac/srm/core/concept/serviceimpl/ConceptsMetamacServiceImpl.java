@@ -535,7 +535,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      * Typecast to Metamac type
      */
     private List<ConceptMetamac> conceptsToConceptMetamac(List<Concept> sources) {
-        List<ConceptMetamac> targets = new ArrayList<ConceptMetamac>();
+        List<ConceptMetamac> targets = new ArrayList<ConceptMetamac>(sources.size());
         for (Item source : sources) {
             targets.add((ConceptMetamac) source);
         }
@@ -546,7 +546,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      * Typecast to Metamac type
      */
     private List<ConceptSchemeVersionMetamac> conceptSchemeVersionsToConceptSchemeVersionsMetamac(List<ConceptSchemeVersion> sources) {
-        List<ConceptSchemeVersionMetamac> targets = new ArrayList<ConceptSchemeVersionMetamac>();
+        List<ConceptSchemeVersionMetamac> targets = new ArrayList<ConceptSchemeVersionMetamac>(sources.size());
         for (ItemSchemeVersion source : sources) {
             targets.add((ConceptSchemeVersionMetamac) source);
         }

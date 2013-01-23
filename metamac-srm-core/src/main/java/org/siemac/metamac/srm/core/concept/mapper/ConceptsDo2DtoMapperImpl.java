@@ -53,7 +53,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
 
     @Override
     public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) {
-        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = new ArrayList<ConceptSchemeMetamacDto>();
+        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = new ArrayList<ConceptSchemeMetamacDto>(conceptSchemeVersions.size());
         for (ConceptSchemeVersionMetamac conceptSchemeVersion : conceptSchemeVersions) {
             conceptSchemeMetamacDtos.add(conceptSchemeMetamacDoToDto(conceptSchemeVersion));
         }
@@ -95,7 +95,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
 
     @Override
     public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> sources) {
-        List<ConceptMetamacDto> targets = new ArrayList<ConceptMetamacDto>();
+        List<ConceptMetamacDto> targets = new ArrayList<ConceptMetamacDto>(sources.size());
         for (ConceptMetamac source : sources) {
             targets.add(conceptMetamacDoToDto(source));
         }
@@ -104,7 +104,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
 
     @Override
     public List<ItemHierarchyDto> conceptMetamacDoListToItemHierarchyDtoList(List<ConceptMetamac> sources) {
-        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>();
+        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>(sources.size());
         for (ConceptMetamac source : sources) {
             ItemHierarchyDto target = conceptMetamacDoToItemHierarchyDto(source);
             targets.add(target);
@@ -125,7 +125,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
 
     @Override
     public List<ConceptTypeDto> conceptTypeDoListToConceptTypeDtoList(List<ConceptType> sources) {
-        List<ConceptTypeDto> targets = new ArrayList<ConceptTypeDto>();
+        List<ConceptTypeDto> targets = new ArrayList<ConceptTypeDto>(sources.size());
         for (ConceptType source : sources) {
             targets.add(conceptTypeDoToDto(source));
         }

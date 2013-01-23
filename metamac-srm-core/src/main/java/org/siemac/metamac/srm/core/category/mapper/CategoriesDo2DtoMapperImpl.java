@@ -35,7 +35,7 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
 
     @Override
     public List<CategorySchemeMetamacDto> categorySchemeMetamacDoListToDtoList(List<CategorySchemeVersionMetamac> categorySchemeVersions) {
-        List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = new ArrayList<CategorySchemeMetamacDto>();
+        List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = new ArrayList<CategorySchemeMetamacDto>(categorySchemeVersions.size());
         for (CategorySchemeVersionMetamac categorySchemeVersion : categorySchemeVersions) {
             categorySchemeMetamacDtos.add(categorySchemeMetamacDoToDto(categorySchemeVersion));
         }
@@ -55,7 +55,7 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
 
     @Override
     public List<CategoryMetamacDto> categoryMetamacDoListToDtoList(List<CategoryMetamac> sources) {
-        List<CategoryMetamacDto> targets = new ArrayList<CategoryMetamacDto>();
+        List<CategoryMetamacDto> targets = new ArrayList<CategoryMetamacDto>(sources.size());
         for (CategoryMetamac source : sources) {
             targets.add(categoryMetamacDoToDto(source));
         }
@@ -64,7 +64,7 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
 
     @Override
     public List<ItemHierarchyDto> categoryMetamacDoListToItemHierarchyDtoList(List<CategoryMetamac> sources) {
-        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>();
+        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>(sources.size());
         for (CategoryMetamac source : sources) {
             ItemHierarchyDto target = categoryMetamacDoToItemHierarchyDto(source);
             targets.add(target);

@@ -22,7 +22,6 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
@@ -167,9 +166,9 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         private List<Object> organisationSchemeMetamacToObject(List<OrganisationSchemeVersionMetamac> organisationSchemeVersions) {
-            List<Object> objects = new ArrayList<Object>();
+            List<Object> objects = new ArrayList<Object>(organisationSchemeVersions.size());
             for (OrganisationSchemeVersionMetamac organisationSchemeVersion : organisationSchemeVersions) {
-                objects.add((ItemSchemeVersion) organisationSchemeVersion);
+                objects.add(organisationSchemeVersion);
             }
             return objects;
         }

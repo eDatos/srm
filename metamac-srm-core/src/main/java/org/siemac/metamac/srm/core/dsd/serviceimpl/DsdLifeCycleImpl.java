@@ -108,6 +108,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             return dataStructureDefinitionService.startDataStructureDefinitionValidity(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
         }
 
+        @Override
         public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             return dataStructureDefinitionService.endDataStructureDefinitionValidity(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
         }
@@ -142,9 +143,9 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         private List<Object> dataStructureDefinitionMetamacVersionsToObject(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersions) {
-            List<Object> structureVersions = new ArrayList<Object>();
+            List<Object> structureVersions = new ArrayList<Object>(dataStructureDefinitionVersions.size());
             for (DataStructureDefinitionVersionMetamac dataStructureVersion : dataStructureDefinitionVersions) {
-                structureVersions.add((Object) dataStructureVersion);
+                structureVersions.add(dataStructureVersion);
             }
             return structureVersions;
         }

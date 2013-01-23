@@ -28,7 +28,7 @@ public class SrmServiceUtils {
     }
 
     public static List<ProcStatusEnum> procStatusEnumToList(ProcStatusEnum[] procStatusArray) {
-        List<ProcStatusEnum> procStatus = new ArrayList<ProcStatusEnum>();
+        List<ProcStatusEnum> procStatus = new ArrayList<ProcStatusEnum>(procStatusArray.length);
         for (int i = 0; i < procStatusArray.length; i++) {
             procStatus.add(procStatusArray[i]);
         }

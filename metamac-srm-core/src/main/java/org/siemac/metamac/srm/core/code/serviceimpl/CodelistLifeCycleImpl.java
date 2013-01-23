@@ -157,7 +157,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         private List<Object> codelistMetamacToObject(List<CodelistVersionMetamac> codelistVersions) {
-            List<Object> objects = new ArrayList<Object>();
+            List<Object> objects = new ArrayList<Object>(codelistVersions.size());
             for (CodelistVersionMetamac codelistVersion : codelistVersions) {
                 objects.add(codelistVersion);
             }

@@ -63,7 +63,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
 
     @Override
     public List<CodelistMetamacDto> codelistMetamacDoListToDtoList(List<CodelistVersionMetamac> codelistVersions) {
-        List<CodelistMetamacDto> codelistMetamacDtos = new ArrayList<CodelistMetamacDto>();
+        List<CodelistMetamacDto> codelistMetamacDtos = new ArrayList<CodelistMetamacDto>(codelistVersions.size());
         for (CodelistVersionMetamac codelistVersion : codelistVersions) {
             codelistMetamacDtos.add(codelistMetamacDoToDto(codelistVersion));
         }
@@ -85,7 +85,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
 
     @Override
     public List<CodeMetamacDto> codeMetamacDoListToDtoList(List<CodeMetamac> sources) {
-        List<CodeMetamacDto> targets = new ArrayList<CodeMetamacDto>();
+        List<CodeMetamacDto> targets = new ArrayList<CodeMetamacDto>(sources.size());
         for (CodeMetamac source : sources) {
             targets.add(codeMetamacDoToDto(source));
         }
@@ -107,7 +107,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
 
     @SuppressWarnings("rawtypes")
     private List<CodeHierarchyDto> codeMetamacDoListToCodeHierarchyDtoList(List sources, Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn) {
-        List<CodeHierarchyDto> targets = new ArrayList<CodeHierarchyDto>();
+        List<CodeHierarchyDto> targets = new ArrayList<CodeHierarchyDto>(sources.size());
         for (int i = 0; i < sources.size(); i++) {
             CodeMetamac source = (CodeMetamac) sources.get(i);
             CodeHierarchyDto target = codeMetamacDoToCodeHierarchyDto(source, mapCodeOrderVisualisationByCodeUrn);
@@ -290,7 +290,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         if (sources == null) {
             return null;
         }
-        List<VariableElementOperationDto> targets = new ArrayList<VariableElementOperationDto>();
+        List<VariableElementOperationDto> targets = new ArrayList<VariableElementOperationDto>(sources.size());
         for (VariableElementOperation source : sources) {
             targets.add(variableElementOperationDoToDto(source));
         }
@@ -323,7 +323,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         if (sources == null) {
             return null;
         }
-        List<CodelistOrderVisualisationDto> targets = new ArrayList<CodelistOrderVisualisationDto>();
+        List<CodelistOrderVisualisationDto> targets = new ArrayList<CodelistOrderVisualisationDto>(sources.size());
         for (CodelistOrderVisualisation source : sources) {
             CodelistOrderVisualisationDto target = codelistOrderVisualisationDoToDto(source);
             targets.add(target);
@@ -365,7 +365,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         if (sources == null) {
             return null;
         }
-        List<RelatedResourceDto> targets = new ArrayList<RelatedResourceDto>();
+        List<RelatedResourceDto> targets = new ArrayList<RelatedResourceDto>(sources.size());
         for (VariableElement source : sources) {
             targets.add(variableElementDoToRelatedResourceDto(source));
         }

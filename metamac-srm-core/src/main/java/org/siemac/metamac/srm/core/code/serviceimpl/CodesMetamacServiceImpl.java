@@ -983,7 +983,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      * Typecast to Metamac type
      */
     private List<CodelistVersionMetamac> codelistVersionsToCodelistVersionsMetamac(List<CodelistVersion> sources) {
-        List<CodelistVersionMetamac> targets = new ArrayList<CodelistVersionMetamac>();
+        List<CodelistVersionMetamac> targets = new ArrayList<CodelistVersionMetamac>(sources.size());
         for (ItemSchemeVersion source : sources) {
             targets.add((CodelistVersionMetamac) source);
         }
@@ -1069,7 +1069,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      * Typecast to Metamac type
      */
     private List<CodeMetamac> codesToCodeMetamac(List<Code> sources) {
-        List<CodeMetamac> targets = new ArrayList<CodeMetamac>();
+        List<CodeMetamac> targets = new ArrayList<CodeMetamac>(sources.size());
         for (Item source : sources) {
             targets.add((CodeMetamac) source);
         }

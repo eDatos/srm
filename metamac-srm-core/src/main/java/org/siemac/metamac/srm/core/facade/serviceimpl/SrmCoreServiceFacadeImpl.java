@@ -2500,7 +2500,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // 1 - Retrieve DSD
         DataStructureDefinitionVersion dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
 
-        descriptorDtos = new ArrayList<DescriptorDto>();
+        descriptorDtos = new ArrayList<DescriptorDto>(dataStructureDefinitionVersion.getGrouping().size());
         for (ComponentList componentList : dataStructureDefinitionVersion.getGrouping()) {
             descriptorDtos.add((DescriptorDto) getDo2DtoMapper().componentListToComponentListDto(typeDozerCopyMode, componentList));
         }

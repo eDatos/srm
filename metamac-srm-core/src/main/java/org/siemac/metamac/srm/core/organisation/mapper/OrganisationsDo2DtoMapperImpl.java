@@ -34,7 +34,7 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
 
     @Override
     public List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDoListToDtoList(List<OrganisationSchemeVersionMetamac> sources) {
-        List<OrganisationSchemeMetamacDto> target = new ArrayList<OrganisationSchemeMetamacDto>();
+        List<OrganisationSchemeMetamacDto> target = new ArrayList<OrganisationSchemeMetamacDto>(sources.size());
         for (OrganisationSchemeVersionMetamac source : sources) {
             target.add(organisationSchemeMetamacDoToDto(source));
         }
@@ -62,7 +62,7 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
 
     @Override
     public List<ItemHierarchyDto> organisationMetamacDoListToItemHierarchyDtoList(List<OrganisationMetamac> sources) {
-        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>();
+        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>(sources.size());
         for (OrganisationMetamac source : sources) {
             ItemHierarchyDto target = organisationMetamacDoToItemHierarchyDto(source);
             targets.add(target);

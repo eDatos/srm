@@ -282,7 +282,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
      * Typecast to Metamac type
      */
     private List<OrganisationMetamac> organisationsToOrganisationMetamac(List<Organisation> sources) {
-        List<OrganisationMetamac> targets = new ArrayList<OrganisationMetamac>();
+        List<OrganisationMetamac> targets = new ArrayList<OrganisationMetamac>(sources.size());
         for (Item source : sources) {
             targets.add((OrganisationMetamac) source);
         }
@@ -293,7 +293,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
      * Typecast to Metamac type
      */
     private List<OrganisationSchemeVersionMetamac> organisationSchemeVersionsToOrganisationSchemeVersionsMetamac(List<OrganisationSchemeVersion> sources) {
-        List<OrganisationSchemeVersionMetamac> targets = new ArrayList<OrganisationSchemeVersionMetamac>();
+        List<OrganisationSchemeVersionMetamac> targets = new ArrayList<OrganisationSchemeVersionMetamac>(sources.size());
         for (ItemSchemeVersion source : sources) {
             targets.add((OrganisationSchemeVersionMetamac) source);
         }
