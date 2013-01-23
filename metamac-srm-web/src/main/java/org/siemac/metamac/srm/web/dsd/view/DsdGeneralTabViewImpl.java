@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
@@ -46,8 +47,6 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHandlers> implements DsdGeneralTabPresenter.DsdGeneralTabView {
 
-    private DsdGeneralTabUiHandlers           uiHandlers;
-
     private VLayout                           panel;
 
     private DsdMainFormLayout                 mainFormLayout;
@@ -60,6 +59,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  generalForm;
     private GroupDynamicForm                  statusForm;
     private GroupDynamicForm                  versionResponsibilityForm;
+    private GroupDynamicForm                  visualisationMetadataForm;
     private GroupDynamicForm                  commentsForm;
     private AnnotationsPanel                  annotationsPanel;
 
@@ -69,6 +69,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  generalEditionForm;
     private GroupDynamicForm                  statusEditionForm;
     private GroupDynamicForm                  versionResponsibilityEditionForm;
+    private GroupDynamicForm                  visualisationMetadataEditionForm;
     private GroupDynamicForm                  commentsEditionForm;
     private AnnotationsPanel                  annotationsEditionPanel;
 
@@ -87,7 +88,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 String urn = ((DsdRecord) event.getRecord()).getUrn();
-                uiHandlers.goToDsd(urn);
+                getUiHandlers().goToDsd(urn);
             }
         });
 
@@ -109,8 +110,20 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             public void onClick(ClickEvent event) {
                 boolean translationsShowed = mainFormLayout.getTranslateToolStripButton().isSelected();
 
+                identifiersForm.setTranslationsShowed(translationsShowed);
+                identifiersEditionForm.setTranslationsShowed(translationsShowed);
+
                 generalForm.setTranslationsShowed(translationsShowed);
                 generalEditionForm.setTranslationsShowed(translationsShowed);
+
+                statusForm.setTranslationsShowed(translationsShowed);
+                statusEditionForm.setTranslationsShowed(translationsShowed);
+
+                versionResponsibilityForm.setTranslationsShowed(translationsShowed);
+                versionResponsibilityEditionForm.setTranslationsShowed(translationsShowed);
+
+                visualisationMetadataForm.setTranslationsShowed(translationsShowed);
+                visualisationMetadataEditionForm.setTranslationsShowed(translationsShowed);
 
                 commentsForm.setTranslationsShowed(translationsShowed);
                 commentsEditionForm.setTranslationsShowed(translationsShowed);
@@ -142,8 +155,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && generalEditionForm.validate(false) && statusEditionForm.validate(false)) {
-                    uiHandlers.saveDsd(getDataStructureDefinitionDto());
+                if (identifiersEditionForm.validate(false) && generalEditionForm.validate(false) && statusEditionForm.validate(false) && visualisationMetadataEditionForm.validate(false)) {
+                    getUiHandlers().saveDsd(getDataStructureDefinitionDto());
                 }
             }
         });
@@ -153,35 +166,35 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToProductionValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().sendToProductionValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getSendToDiffusionValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToDiffusionValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().sendToDiffusionValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.rejectValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().rejectValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getPublishInternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.publishInternally(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.publishExternally(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().publishExternally(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
@@ -194,7 +207,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         if (versionWindow.validateForm()) {
-                            uiHandlers.versioning(dataStructureDefinitionMetamacDto.getUrn(), versionWindow.getSelectedVersion());
+                            getUiHandlers().versioning(dataStructureDefinitionMetamacDto.getUrn(), versionWindow.getSelectedVersion());
                             versionWindow.destroy();
                         }
                     }
@@ -205,7 +218,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.cancelValidity(dataStructureDefinitionMetamacDto.getUrn());
+                getUiHandlers().cancelValidity(dataStructureDefinitionMetamacDto.getUrn());
             }
         });
     }
@@ -255,6 +268,11 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
                 externalPublicationUser, externalPublicationDate);
 
+        // Visualisation metadata
+        visualisationMetadataForm = new GroupDynamicForm(getConstants().dsdVisualisationMetadata());
+        ViewTextItem autoOpen = new ViewTextItem(DataStructureDefinitionDS.AUTO_OPEN, getConstants().dsdAutoOpen());
+        visualisationMetadataForm.setFields(autoOpen);
+
         // Comments
         commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
         ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.COMMENTS, getConstants().nameableArtefactComments());
@@ -267,6 +285,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.addViewCanvas(generalForm);
         mainFormLayout.addViewCanvas(statusForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
+        mainFormLayout.addViewCanvas(visualisationMetadataForm);
         mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
     }
@@ -338,6 +357,11 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
                 internalPublicationDate, externalPublicationUser, externalPublicationDate);
 
+        // Visualisation metadata
+        visualisationMetadataEditionForm = new GroupDynamicForm(getConstants().dsdVisualisationMetadata());
+        BooleanSelectItem autoOpen = new BooleanSelectItem(DataStructureDefinitionDS.AUTO_OPEN, getConstants().dsdAutoOpen());
+        visualisationMetadataEditionForm.setFields(autoOpen);
+
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
         MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(DataStructureDefinitionDS.COMMENTS, getConstants().nameableArtefactComments());
@@ -350,6 +374,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.addEditionCanvas(generalEditionForm);
         mainFormLayout.addEditionCanvas(statusEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
+        mainFormLayout.addEditionCanvas(visualisationMetadataEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
@@ -357,11 +382,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     @Override
     public Widget asWidget() {
         return panel;
-    }
-
-    @Override
-    public void setUiHandlers(DsdGeneralTabUiHandlers uiHandlers) {
-        this.uiHandlers = uiHandlers;
     }
 
     @Override
@@ -417,6 +437,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, dsd.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, dsd.getLifeCycle().getExternalPublicationDate());
 
+        // Visualisation metadata
+        visualisationMetadataForm.setValue(DataStructureDefinitionDS.AUTO_OPEN, CommonUtils.getBooleanName(dsd.getAutoOpen()));
+
         // Comments
         commentsForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
 
@@ -458,6 +481,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, dsd.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, dsd.getLifeCycle().getExternalPublicationDate());
 
+        // Visualisation metadata
+        ((BooleanSelectItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.AUTO_OPEN)).setBooleanValue(dsd.getAutoOpen());
+
         // Comments
         commentsEditionForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
 
@@ -478,6 +504,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General form
         dataStructureDefinitionMetamacDto.setName((InternationalStringDto) generalEditionForm.getValue(DataStructureDefinitionDS.NAME));
         dataStructureDefinitionMetamacDto.setDescription((InternationalStringDto) generalEditionForm.getValue(DataStructureDefinitionDS.DESCRIPTION));
+
+        // Visualisation metadata
+        dataStructureDefinitionMetamacDto.setAutoOpen(((BooleanSelectItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.AUTO_OPEN)).getBooleanValue());
 
         // Comments
         dataStructureDefinitionMetamacDto.setComment((InternationalStringDto) commentsEditionForm.getValue(DataStructureDefinitionDS.COMMENTS));
@@ -503,5 +532,4 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private void setEditionMode() {
         mainFormLayout.setEditionMode();
     }
-
 }
