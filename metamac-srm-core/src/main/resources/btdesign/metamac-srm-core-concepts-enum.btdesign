@@ -17,7 +17,9 @@ Application EnumsMetamacConceptDomain {
     	enum ConceptRoleEnum {
     		DIMENSION,
     		ATTRIBUTE,
-    		PRIMARY_MEASURE
+    		PRIMARY_MEASURE,
+    		ATTRIBUTE_OR_DIMENSION,
+    		MEASURE_DIMENSION
     	}
 	}
 }
