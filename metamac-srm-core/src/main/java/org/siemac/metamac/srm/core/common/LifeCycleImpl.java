@@ -23,22 +23,23 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 
 public abstract class LifeCycleImpl implements LifeCycle {
 
-    private static final ProcStatusEnum[] procStatusToSendToProductionValidation = {ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED};
-    private static final ProcStatusEnum[] procStatusToSendToDiffusionValidation  = {ProcStatusEnum.PRODUCTION_VALIDATION};
-    private static final ProcStatusEnum[] procStatusToRejectProductionValidation = {ProcStatusEnum.PRODUCTION_VALIDATION};
-    private static final ProcStatusEnum[] procStatusToRejectDiffusionValidation  = {ProcStatusEnum.DIFFUSION_VALIDATION};
-    private static final ProcStatusEnum[] procStatusToPublishInternally          = {ProcStatusEnum.DIFFUSION_VALIDATION};
-    private static final ProcStatusEnum[] procStatusToPublishExternally          = {ProcStatusEnum.INTERNALLY_PUBLISHED};
+    protected static final ProcStatusEnum[] procStatusToSendToProductionValidation = {ProcStatusEnum.DRAFT, ProcStatusEnum.VALIDATION_REJECTED};
+    protected static final ProcStatusEnum[] procStatusToSendToDiffusionValidation  = {ProcStatusEnum.PRODUCTION_VALIDATION};
+    protected static final ProcStatusEnum[] procStatusToRejectProductionValidation = {ProcStatusEnum.PRODUCTION_VALIDATION};
+    protected static final ProcStatusEnum[] procStatusToRejectDiffusionValidation  = {ProcStatusEnum.DIFFUSION_VALIDATION};
+    protected static final ProcStatusEnum[] procStatusToPublishInternally          = {ProcStatusEnum.DIFFUSION_VALIDATION};
+    protected static final ProcStatusEnum[] procStatusToPublishExternally          = {ProcStatusEnum.INTERNALLY_PUBLISHED};
 
     // Due to java restrictions, this must be inialized out of constructor of LifeCycle
-    protected LifeCycleCallback           callback                               = null;
+    protected LifeCycleCallback             callback                               = null;
 
     @Autowired
-    private CategoriesMetamacService      categoriesService;
+    private CategoriesMetamacService        categoriesService;
 
     public LifeCycleImpl() {
     }
 
+    @Override
     public Object sendToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
@@ -62,6 +63,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         return srmResourceVersion;
     }
 
+    @Override
     public Object sendToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
@@ -85,6 +87,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         return srmResourceVersion;
     }
 
+    @Override
     public Object rejectProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
@@ -110,6 +113,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         return srmResourceVersion;
     }
 
+    @Override
     public Object rejectDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
@@ -135,6 +139,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         return srmResourceVersion;
     }
 
+    @Override
     public Object publishInternally(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
@@ -170,6 +175,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         return srmResourceVersion;
     }
 
+    @Override
     public Object publishExternally(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation

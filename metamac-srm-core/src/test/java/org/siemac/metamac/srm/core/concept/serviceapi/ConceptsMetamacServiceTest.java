@@ -50,6 +50,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptProperties;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
@@ -71,6 +73,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
+
+    @Autowired
+    private ItemSchemeVersionRepository   itemSchemeRepository;
+
+    @Autowired
+    private ItemRepository                itemRepository;
 
     @Override
     @Test
@@ -257,6 +265,22 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testUpdateConceptSchemeErrorMetadataRequired() throws Exception {
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1);
+        conceptSchemeVersion.setType(null);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.TRUE);
+        try {
+            conceptSchemeVersion = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+            fail("wrong metadata");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -615,6 +639,65 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendConceptSchemeToProductionValidationErrorToImportedRequiredMetadataInConceptScheme() throws Exception {
+
+        String urn = CONCEPT_SCHEME_2_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+        // save to force incorrect metadata
+        conceptSchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.TRUE);
+        conceptSchemeVersion.setType(null);
+        conceptSchemeVersion.setIsPartial(Boolean.TRUE);
+        itemSchemeRepository.save(conceptSchemeVersion);
+
+        try {
+            conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme metadata required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendConceptSchemeToProductionValidationErrorToImportedRequiredMetadataInConcept() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+        assertEquals(ConceptSchemeTypeEnum.TRANSVERSAL, conceptSchemeVersion.getType());
+
+        // save to force it is imported
+        conceptSchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        conceptSchemeVersion.setIsPartial(Boolean.TRUE);
+        itemSchemeRepository.save(conceptSchemeVersion);
+
+        ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept1.setSdmxRelatedArtefact(null);
+        // save to force incorrect metadata
+        itemRepository.save(concept1);
+
+        ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+        concept2.setSdmxRelatedArtefact(null);
+        // save to force incorrect metadata
+        itemRepository.save(concept2);
+
+        try {
+            conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+            MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, 1, new String[]{concept1.getNameableArtefact().getUrn()}, e.getExceptionItems().get(0));
+            MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, 1, new String[]{concept2.getNameableArtefact().getUrn()}, e.getExceptionItems().get(1));
         }
     }
 

@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.concept.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -15,13 +16,16 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
@@ -76,6 +80,28 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
             // One concept at least
             if (conceptSchemeVersion.getItems().size() == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
+            }
+
+            // Required metadata can be empty when importing.
+            // Note: this is a unefficient operation, so only check when send to production and not in next status. This metadata can not be changed in another status
+            if (conceptSchemeVersion.getMaintainableArtefact().getIsImported()
+                    && ArrayUtils.contains(procStatusToSendToProductionValidation, conceptSchemeVersion.getLifeCycleMetadata().getProcStatus())) {
+                List<MetamacExceptionItem> exceptionsConceptScheme = new ArrayList<MetamacExceptionItem>();
+                conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+                ConceptsMetamacInvocationValidator.checkConceptScheme(conceptSchemeVersion, exceptionsConceptScheme);
+                if (exceptionsConceptScheme.size() != 0) {
+                    exceptions.addAll(exceptionsConceptScheme);
+                } else {
+                    // only check concept if concept scheme is complete
+                    for (Item item : conceptSchemeVersion.getItems()) {
+                        // Create specific exception to identify the wrong concept
+                        List<MetamacExceptionItem> exceptionsConcepts = new ArrayList<MetamacExceptionItem>();
+                        ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, (ConceptMetamac) item, exceptionsConcepts);
+                        if (exceptionsConcepts.size() != 0) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, item.getNameableArtefact().getUrn()));
+                        }
+                    }
+                }
             }
         }
 

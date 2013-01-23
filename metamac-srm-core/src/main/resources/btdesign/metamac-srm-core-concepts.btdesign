@@ -105,7 +105,7 @@ Application ConceptsMetamac {
 			hint="idSequence=M_CONCEPT_SCHEMES_VERSIONS"
 			
 			"Type"
-			- @ConceptSchemeTypeEnum type databaseColumn="CONCEPT_SCHEME_TYPE";
+			- @ConceptSchemeTypeEnum type nullable databaseColumn="CONCEPT_SCHEME_TYPE";
 			"True if type has been updated"
 			Boolean isTypeUpdated nullable transient;
 			"Related operation, only when type is Operation"
