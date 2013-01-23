@@ -14,5 +14,5 @@ public class SaveCategoryScheme {
 
     @Out(1)
     CategorySchemeMetamacDto categorySchemeSaved;
-    
+
 }

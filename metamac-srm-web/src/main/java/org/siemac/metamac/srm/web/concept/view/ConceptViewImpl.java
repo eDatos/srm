@@ -79,39 +79,39 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
 
-    private VLayout                             panel;
-    private InternationalMainFormLayout         mainFormLayout;
+    private VLayout                                      panel;
+    private InternationalMainFormLayout                  mainFormLayout;
 
-    private ConceptsTreeGrid                    conceptsTreeGrid;
+    private ConceptsTreeGrid                             conceptsTreeGrid;
 
     // View forms
-    private GroupDynamicForm                    identifiersForm;
-    private GroupDynamicForm                    contentDescriptorsForm;
-    private StaticFacetForm                     facetForm;
-    private GroupDynamicForm                    classDescriptorsForm;
-    private GroupDynamicForm                    productionDescriptorsForm;
-    private GroupDynamicForm                    relationBetweenConceptsForm;
-    private GroupDynamicForm                    legalActsForm;
-    private GroupDynamicForm                    commentsForm;
-    private AnnotationsPanel                    annotationsPanel;
+    private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm                             contentDescriptorsForm;
+    private StaticFacetForm                              facetForm;
+    private GroupDynamicForm                             classDescriptorsForm;
+    private GroupDynamicForm                             productionDescriptorsForm;
+    private GroupDynamicForm                             relationBetweenConceptsForm;
+    private GroupDynamicForm                             legalActsForm;
+    private GroupDynamicForm                             commentsForm;
+    private AnnotationsPanel                             annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                    identifiersEditionForm;
-    private GroupDynamicForm                    contentDescriptorsEditionForm;
-    private ConceptFacetForm                    facetEditionForm;
-    private GroupDynamicForm                    classDescriptorsEditionForm;
-    private GroupDynamicForm                    productionDescriptorsEditionForm;
-    private GroupDynamicForm                    relationBetweenConceptsEditionForm;
-    private GroupDynamicForm                    legalActsEditionForm;
-    private GroupDynamicForm                    commentsEditionForm;
-    private AnnotationsPanel                    annotationsEditionPanel;
+    private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm                             contentDescriptorsEditionForm;
+    private ConceptFacetForm                             facetEditionForm;
+    private GroupDynamicForm                             classDescriptorsEditionForm;
+    private GroupDynamicForm                             productionDescriptorsEditionForm;
+    private GroupDynamicForm                             relationBetweenConceptsEditionForm;
+    private GroupDynamicForm                             legalActsEditionForm;
+    private GroupDynamicForm                             commentsEditionForm;
+    private AnnotationsPanel                             annotationsEditionPanel;
 
-    private List<ConceptTypeDto>                conceptTypeDtos;
-    private List<ExternalItemDto>               codeLists;
+    private List<ConceptTypeDto>                         conceptTypeDtos;
+    private List<ExternalItemDto>                        codeLists;
 
-    private ConceptSchemeMetamacDto             conceptSchemeMetamacDto;
-    private List<ItemHierarchyDto>              itemHierarchyDtos;
-    private ConceptMetamacDto                   conceptDto;
+    private ConceptSchemeMetamacDto                      conceptSchemeMetamacDto;
+    private List<ItemHierarchyDto>                       itemHierarchyDtos;
+    private ConceptMetamacDto                            conceptDto;
 
     private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
     private SearchRelatedResourcePaginatedWindow         searchExtendsWindow;
@@ -650,8 +650,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent arg0) {
-                searchRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()),
-                        new PaginatedAction() {
+                searchRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS,
+                        new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()), new PaginatedAction() {
 
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults) {

@@ -55,22 +55,22 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiHandlers> implements VariableFamilyPresenter.VariableFamilyView {
 
-    private VLayout                             panel;
-    private InternationalMainFormLayout         mainFormLayout;
+    private VLayout                                      panel;
+    private InternationalMainFormLayout                  mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                    identifiersForm;
+    private GroupDynamicForm                             identifiersForm;
 
     // Edition forms
-    private GroupDynamicForm                    identifiersEditionForm;
+    private GroupDynamicForm                             identifiersEditionForm;
 
-    private PaginatedCheckListGrid              variableListGrid;
-    private ToolStripButton                     addVariableToFamilyButton;
-    private ToolStripButton                     removeVariableToFamilyButton;
+    private PaginatedCheckListGrid                       variableListGrid;
+    private ToolStripButton                              addVariableToFamilyButton;
+    private ToolStripButton                              removeVariableToFamilyButton;
     private SearchMultipleRelatedResourcePaginatedWindow variablesWindow;
-    private DeleteConfirmationWindow            removeConfirmationWindow;
+    private DeleteConfirmationWindow                     removeConfirmationWindow;
 
-    private VariableFamilyDto                   variableFamilyDto;
+    private VariableFamilyDto                            variableFamilyDto;
 
     @Inject
     public VariableFamilyViewImpl() {

@@ -55,22 +55,22 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiHandlers> implements CodelistFamilyPresenter.CodelistFamilyView {
 
-    private VLayout                             panel;
-    private InternationalMainFormLayout         mainFormLayout;
+    private VLayout                                      panel;
+    private InternationalMainFormLayout                  mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                    identifiersForm;
+    private GroupDynamicForm                             identifiersForm;
 
     // Edition forms
-    private GroupDynamicForm                    identifiersEditionForm;
+    private GroupDynamicForm                             identifiersEditionForm;
 
-    private PaginatedCheckListGrid              codelistListGrid;
-    private ToolStripButton                     addCodelistToFamilyButton;
-    private ToolStripButton                     removeCodelistToFamilyButton;
+    private PaginatedCheckListGrid                       codelistListGrid;
+    private ToolStripButton                              addCodelistToFamilyButton;
+    private ToolStripButton                              removeCodelistToFamilyButton;
     private SearchMultipleRelatedResourcePaginatedWindow codelistsWindow;
-    private DeleteConfirmationWindow            removeConfirmationWindow;
+    private DeleteConfirmationWindow                     removeConfirmationWindow;
 
-    private CodelistFamilyDto                   codelistFamilyDto;
+    private CodelistFamilyDto                            codelistFamilyDto;
 
     @Inject
     public CodelistFamilyViewImpl() {

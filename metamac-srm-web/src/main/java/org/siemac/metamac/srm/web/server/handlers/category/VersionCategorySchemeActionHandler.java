@@ -26,8 +26,8 @@ public class VersionCategorySchemeActionHandler extends SecurityActionHandler<Ve
     @Override
     public VersionCategorySchemeResult executeSecurityAction(VersionCategorySchemeAction action) throws ActionException {
         try {
-            CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.versioningCategoryScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(),
-                    action.getVersionType());
+            CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade
+                    .versioningCategoryScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
             return new VersionCategorySchemeResult(categorySchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

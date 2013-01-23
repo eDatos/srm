@@ -71,41 +71,41 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
 
-    private VLayout                             panel;
-    private CodelistMainFormLayout              mainFormLayout;
+    private VLayout                                      panel;
+    private CodelistMainFormLayout                       mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                    identifiersForm;
-    private GroupDynamicForm                    contentDescriptorsForm;
-    private GroupDynamicForm                    productionDescriptorsForm;
-    private GroupDynamicForm                    diffusionDescriptorsForm;
-    private GroupDynamicForm                    versionResponsibilityForm;
-    private GroupDynamicForm                    commentsForm;
-    private AnnotationsPanel                    annotationsPanel;
+    private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm                             contentDescriptorsForm;
+    private GroupDynamicForm                             productionDescriptorsForm;
+    private GroupDynamicForm                             diffusionDescriptorsForm;
+    private GroupDynamicForm                             versionResponsibilityForm;
+    private GroupDynamicForm                             commentsForm;
+    private AnnotationsPanel                             annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                    identifiersEditionForm;
-    private GroupDynamicForm                    contentDescriptorsEditionForm;
-    private GroupDynamicForm                    productionDescriptorsEditionForm;
-    private GroupDynamicForm                    diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                    versionResponsibilityEditionForm;
-    private GroupDynamicForm                    commentsEditionForm;
-    private AnnotationsPanel                    annotationsEditionPanel;
+    private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm                             contentDescriptorsEditionForm;
+    private GroupDynamicForm                             productionDescriptorsEditionForm;
+    private GroupDynamicForm                             diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                             versionResponsibilityEditionForm;
+    private GroupDynamicForm                             commentsEditionForm;
+    private AnnotationsPanel                             annotationsEditionPanel;
 
     private SearchRelatedResourcePaginatedWindow         searchFamilyWindow;
     private SearchRelatedResourcePaginatedWindow         searchVariableWindow;
     private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToCodelistsWindow;
 
     // Versions
-    private CodelistVersionsSectionStack        versionsSectionStack;
+    private CodelistVersionsSectionStack                 versionsSectionStack;
 
     // Codes
-    private VLayout                             codesLayout;
-    private TitleLabel                          codesLayoutTitle;
-    private CodelistOrdersSectionStack          codelistOrdersSectionStack;
-    private CodesTreeGrid                       codesTreeGrid;
+    private VLayout                                      codesLayout;
+    private TitleLabel                                   codesLayoutTitle;
+    private CodelistOrdersSectionStack                   codelistOrdersSectionStack;
+    private CodesTreeGrid                                codesTreeGrid;
 
-    private CodelistMetamacDto                  codelistDto;
+    private CodelistMetamacDto                           codelistDto;
 
     @Inject
     public CodelistViewImpl() {

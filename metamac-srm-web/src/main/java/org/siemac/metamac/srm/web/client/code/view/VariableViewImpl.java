@@ -63,29 +63,29 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> implements VariablePresenter.VariableView {
 
-    private VLayout                             panel;
-    private InternationalMainFormLayout         mainFormLayout;
+    private VLayout                                      panel;
+    private InternationalMainFormLayout                  mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                    identifiersForm;
-    private GroupDynamicForm                    contentDescriptorsForm;
-    private GroupDynamicForm                    diffusionDescriptorsForm;
+    private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm                             contentDescriptorsForm;
+    private GroupDynamicForm                             diffusionDescriptorsForm;
 
     // Edition forms
-    private GroupDynamicForm                    identifiersEditionForm;
-    private GroupDynamicForm                    contentDescriptorsEditionForm;
-    private GroupDynamicForm                    diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm                             contentDescriptorsEditionForm;
+    private GroupDynamicForm                             diffusionDescriptorsEditionForm;
 
     private SearchMultipleRelatedResourcePaginatedWindow searchFamiliesWindow;
     private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToVariablesWindow;
 
-    private PaginatedCheckListGrid              variableElementListGrid;
-    private ToolStripButton                     createVariableElementButton;
-    private ToolStripButton                     deleteVariableElementButton;
-    private NewVariableElementWindow            newVariableElementWindow;
-    private DeleteConfirmationWindow            deleteConfirmationWindow;
+    private PaginatedCheckListGrid                       variableElementListGrid;
+    private ToolStripButton                              createVariableElementButton;
+    private ToolStripButton                              deleteVariableElementButton;
+    private NewVariableElementWindow                     newVariableElementWindow;
+    private DeleteConfirmationWindow                     deleteConfirmationWindow;
 
-    private VariableDto                         variableDto;
+    private VariableDto                                  variableDto;
 
     @Inject
     public VariableViewImpl() {

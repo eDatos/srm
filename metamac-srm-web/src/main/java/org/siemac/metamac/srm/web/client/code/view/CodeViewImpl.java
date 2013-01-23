@@ -49,26 +49,26 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements CodePresenter.CodeView {
 
-    private VLayout                     panel;
-    private InternationalMainFormLayout mainFormLayout;
+    private VLayout                              panel;
+    private InternationalMainFormLayout          mainFormLayout;
 
-    private CodesTreeGrid               codesTreeGrid;
+    private CodesTreeGrid                        codesTreeGrid;
 
     // View forms
-    private GroupDynamicForm            identifiersForm;
-    private GroupDynamicForm            contentDescriptorsForm;
-    private GroupDynamicForm            commentsForm;
-    private AnnotationsPanel            annotationsPanel;
+    private GroupDynamicForm                     identifiersForm;
+    private GroupDynamicForm                     contentDescriptorsForm;
+    private GroupDynamicForm                     commentsForm;
+    private AnnotationsPanel                     annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm            identifiersEditionForm;
-    private GroupDynamicForm            contentDescriptorsEditionForm;
-    private GroupDynamicForm            commentsEditionForm;
-    private AnnotationsPanel            annotationsEditionPanel;
+    private GroupDynamicForm                     identifiersEditionForm;
+    private GroupDynamicForm                     contentDescriptorsEditionForm;
+    private GroupDynamicForm                     commentsEditionForm;
+    private AnnotationsPanel                     annotationsEditionPanel;
 
     private SearchRelatedResourcePaginatedWindow searchVariableElementWindow;
 
-    private CodeMetamacDto              codeDto;
+    private CodeMetamacDto                       codeDto;
 
     @Inject
     public CodeViewImpl() {
