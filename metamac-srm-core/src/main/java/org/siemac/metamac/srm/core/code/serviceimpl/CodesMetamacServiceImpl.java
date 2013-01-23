@@ -468,7 +468,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistFamily codelistFamilyToDelete = retrieveCodelistFamilyByUrn(urn);
 
         // Delete association with codelists
-        // TODO Is necessary to check the codelist status?
+        // Note: It is not necessary to check the codelist status. Family can be modified although the codelist is published
         codelistFamilyToDelete.removeAllCodelists();
         getCodelistFamilyRepository().save(codelistFamilyToDelete);
 
@@ -480,7 +480,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Validation
         CodesMetamacInvocationValidator.checkAddCodelistsToCodelistFamily(codelistUrns, codelistFamilyUrn, null);
-        // TODO Is necessary to check the codelist status?
+        // Note: It is not necessary to check the codelist status. Family can be modified although the codelist is published
 
         CodelistFamily codelistFamily = retrieveCodelistFamilyByUrn(codelistFamilyUrn);
 
@@ -499,7 +499,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void removeCodelistFromCodelistFamily(ServiceContext ctx, String codelistUrn, String codelistFamilyUrn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkRemoveCodelistFromCodelistFamily(codelistUrn, codelistFamilyUrn, null);
-        // TODO Is necessary to check the codelist status?
+        // Note: It is not necessary to check the codelist status. Family can be modified although the codelist is published
 
         CodelistFamily codelistFamily = retrieveCodelistFamilyByUrn(codelistFamilyUrn);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
@@ -866,8 +866,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public void deleteVariableElementOperation(ServiceContext ctx, String code) throws MetamacException {
-        // TODO testear que no borra variableElement
-
         // Validation
         CodesMetamacInvocationValidator.checkDeleteVariableElementOperation(code, null);
 

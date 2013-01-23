@@ -2242,14 +2242,24 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testDeleteCodelistFamilyWithCodelists() throws Exception {
-        codesService.deleteCodelistFamily(getServiceContextAdministrador(), CODELIST_FAMILY_2);
+    public void testDeleteCodelistFamilyWithCodelistsAndPublishedCodelists() throws Exception {
 
-        CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1);
-        assertNotNull(codelist);
-        assertNull(codelist.getFamily());
+        String familyUrn = CODELIST_FAMILY_2;
+        String codelistPublishedUrn = CODELIST_1_V1;
+        String codelistDraftUrn = CODELIST_9_V1;
+
+        CodelistVersionMetamac codelistPublished = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistPublishedUrn);
+        assertEquals(familyUrn, codelistPublished.getFamily().getNameableArtefact().getUrn());
+        CodelistVersionMetamac codelistDraft = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistDraftUrn);
+        assertEquals(familyUrn, codelistDraft.getFamily().getNameableArtefact().getUrn());
+
+        codesService.deleteCodelistFamily(getServiceContextAdministrador(), familyUrn);
+
+        codelistPublished = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistPublishedUrn);
+        assertNull(codelistPublished.getFamily());
+        codelistDraft = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistDraftUrn);
+        assertNull(codelistDraft.getFamily());
     }
-
     @Override
     @Test
     public void testAddCodelistsToCodelistFamily() throws Exception {
@@ -2277,6 +2287,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
         {
             CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+            assertEquals(codelistFamilyUrn, codelist.getFamily().getNameableArtefact().getUrn());
+        }
+    }
+
+    @Test
+    public void testAddCodelistsPublishedToCodelistFamily() throws Exception {
+
+        String codelistFamilyUrn = CODELIST_FAMILY_1;
+        List<String> codelistUrns = new ArrayList<String>();
+        {
+            String codelistUrn = CODELIST_1_V1; // change family
+            codelistUrns.add(codelistUrn);
+            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+            assertEquals(CODELIST_FAMILY_2, codelist.getFamily().getNameableArtefact().getUrn());
+        }
+        codesService.addCodelistsToCodelistFamily(getServiceContextAdministrador(), codelistUrns, codelistFamilyUrn);
+
+        // Validation
+        {
+            CodelistVersionMetamac codelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1);
             assertEquals(codelistFamilyUrn, codelist.getFamily().getNameableArtefact().getUrn());
         }
     }
@@ -4062,6 +4092,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testDeleteVariableElementOperation() throws Exception {
         String code = VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1;
 
+        VariableElementOperation variableElementOperationRetrieved = codesService.retrieveVariableElementOperationByCode(getServiceContextAdministrador(), code);
+        VariableElement variableElementToCheckIsNotDeleted = variableElementOperationRetrieved.getSources().get(0);
+
+        // Delete
         codesService.deleteVariableElementOperation(getServiceContextAdministrador(), code);
 
         // Retrieve deleted operation
@@ -4080,6 +4114,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_OPERATION_NOT_FOUND, 1, new String[]{code}, e.getExceptionItems().get(0));
         }
+
+        // Test variable element is not deleted
+        codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementToCheckIsNotDeleted.getNameableArtefact().getUrn());
     }
 
     @Override
