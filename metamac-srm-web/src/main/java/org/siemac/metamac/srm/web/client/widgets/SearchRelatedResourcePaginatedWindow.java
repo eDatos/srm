@@ -15,18 +15,18 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
-public class SearchRelatedResourceWindow extends BaseSearchWindow {
+public class SearchRelatedResourcePaginatedWindow extends BaseSearchWindow {
 
     private SearchRelatedResourcePaginatedItem listGridItem;
 
     private FormItem                           initialSelectionItem;
 
-    public SearchRelatedResourceWindow(String title, int maxResults, PaginatedAction action) {
+    public SearchRelatedResourcePaginatedWindow(String title, int maxResults, PaginatedAction action) {
         super(title, maxResults);
         common(title, maxResults, null, action);
     }
 
-    public SearchRelatedResourceWindow(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
+    public SearchRelatedResourcePaginatedWindow(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
         super(title, maxResults);
         this.initialSelectionItem = initialSelectionItem;
         this.initialSelectionItem.setWidth("100%");

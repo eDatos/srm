@@ -16,7 +16,7 @@ import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
-import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
@@ -66,7 +66,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     private GroupDynamicForm            commentsEditionForm;
     private AnnotationsPanel            annotationsEditionPanel;
 
-    private SearchRelatedResourceWindow searchVariableElementWindow;
+    private SearchRelatedResourcePaginatedWindow searchVariableElementWindow;
 
     private CodeMetamacDto              codeDto;
 
@@ -333,7 +333,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
 
-                searchVariableElementWindow = new SearchRelatedResourceWindow(getConstants().variableElementSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchVariableElementWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableElementSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {

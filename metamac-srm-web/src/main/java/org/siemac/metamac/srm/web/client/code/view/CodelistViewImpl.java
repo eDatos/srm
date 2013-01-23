@@ -27,8 +27,8 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.client.widgets.CodelistOrdersSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
-import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
@@ -92,9 +92,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private GroupDynamicForm                    commentsEditionForm;
     private AnnotationsPanel                    annotationsEditionPanel;
 
-    private SearchRelatedResourceWindow         searchFamilyWindow;
-    private SearchRelatedResourceWindow         searchVariableWindow;
-    private SearchMultipleRelatedResourceWindow searchReplaceToCodelistsWindow;
+    private SearchRelatedResourcePaginatedWindow         searchFamilyWindow;
+    private SearchRelatedResourcePaginatedWindow         searchVariableWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToCodelistsWindow;
 
     // Versions
     private CodelistVersionsSectionStack        versionsSectionStack;
@@ -728,7 +728,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
 
-                searchFamilyWindow = new SearchRelatedResourceWindow(getConstants().codelistFamilySelection(), MAX_RESULTS, new PaginatedAction() {
+                searchFamilyWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistFamilySelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
@@ -773,7 +773,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent arg0) {
-                searchReplaceToCodelistsWindow = new SearchMultipleRelatedResourceWindow(getConstants().codelistsSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchReplaceToCodelistsWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().codelistsSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
@@ -819,7 +819,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
 
-                searchVariableWindow = new SearchRelatedResourceWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchVariableWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {

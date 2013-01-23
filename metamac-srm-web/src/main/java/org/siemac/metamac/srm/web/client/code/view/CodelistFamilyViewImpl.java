@@ -16,7 +16,7 @@ import org.siemac.metamac.srm.web.client.code.presenter.CodelistFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistFamilyUiHandlers;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -67,7 +67,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
     private PaginatedCheckListGrid              codelistListGrid;
     private ToolStripButton                     addCodelistToFamilyButton;
     private ToolStripButton                     removeCodelistToFamilyButton;
-    private SearchMultipleRelatedResourceWindow codelistsWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow codelistsWindow;
     private DeleteConfirmationWindow            removeConfirmationWindow;
 
     private CodelistFamilyDto                   codelistFamilyDto;
@@ -298,7 +298,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
 
             @Override
             public void onClick(ClickEvent arg0) {
-                codelistsWindow = new SearchMultipleRelatedResourceWindow(getConstants().codelistsSelection(), MAX_RESULTS, new PaginatedAction() {
+                codelistsWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().codelistsSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {

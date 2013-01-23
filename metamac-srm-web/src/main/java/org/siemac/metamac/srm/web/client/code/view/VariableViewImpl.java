@@ -18,7 +18,7 @@ import org.siemac.metamac.srm.web.client.code.widgets.NewVariableElementWindow;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -76,8 +76,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private GroupDynamicForm                    contentDescriptorsEditionForm;
     private GroupDynamicForm                    diffusionDescriptorsEditionForm;
 
-    private SearchMultipleRelatedResourceWindow searchFamiliesWindow;
-    private SearchMultipleRelatedResourceWindow searchReplaceToVariablesWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow searchFamiliesWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToVariablesWindow;
 
     private PaginatedCheckListGrid              variableElementListGrid;
     private ToolStripButton                     createVariableElementButton;
@@ -392,7 +392,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent arg0) {
-                searchFamiliesWindow = new SearchMultipleRelatedResourceWindow(getConstants().familiesSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchFamiliesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().familiesSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
@@ -449,7 +449,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-                searchReplaceToVariablesWindow = new SearchMultipleRelatedResourceWindow(getConstants().variablesSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchReplaceToVariablesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().variablesSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {

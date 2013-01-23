@@ -13,18 +13,18 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
-public class SearchMultipleRelatedResourceWindow extends BaseSearchWindow {
+public class SearchMultipleRelatedResourcePaginatedWindow extends BaseSearchWindow {
 
     private SearchRelatedResourcePaginatedDragAndDropItem relatedResourcesDragAndDropItem;
 
     private FormItem                                      initialSelectionItem;
 
-    public SearchMultipleRelatedResourceWindow(String title, int maxResults, PaginatedAction action) {
+    public SearchMultipleRelatedResourcePaginatedWindow(String title, int maxResults, PaginatedAction action) {
         super(title, maxResults);
         common(title, maxResults, null, action);
     }
 
-    public SearchMultipleRelatedResourceWindow(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
+    public SearchMultipleRelatedResourcePaginatedWindow(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
         super(title, maxResults);
         this.initialSelectionItem = initialSelectionItem;
         this.initialSelectionItem.setWidth(290);

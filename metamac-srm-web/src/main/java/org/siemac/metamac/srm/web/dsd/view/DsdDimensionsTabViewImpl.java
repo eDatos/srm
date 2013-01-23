@@ -17,7 +17,7 @@ import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DimensionDS;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
@@ -120,7 +120,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private RequiredSelectItem                  typeItem;
     private ExternalSelectItem                  conceptItem;
     private RoleSelectItem                      roleItem;
-    private SearchMultipleRelatedResourceWindow searchRolesWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
     // Representation
     private CustomSelectItem                    representationTypeItem;
     private CustomSelectItem                    codeListItem;
@@ -861,7 +861,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             public void onFormItemClick(FormItemIconClickEvent event) {
                 final int ROLES_FIRST_RESULT = 0;
                 final int ROLES_MAX_RESULTS = 5;
-                searchRolesWindow = new SearchMultipleRelatedResourceWindow(MetamacSrmWeb.getConstants().dsdDimensionsRole(), ROLES_MAX_RESULTS, new PaginatedAction() {
+                searchRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(MetamacSrmWeb.getConstants().dsdDimensionsRole(), ROLES_MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {

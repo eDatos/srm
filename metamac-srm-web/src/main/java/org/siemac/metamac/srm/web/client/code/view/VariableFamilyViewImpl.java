@@ -16,7 +16,7 @@ import org.siemac.metamac.srm.web.client.code.presenter.VariableFamilyPresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableFamilyUiHandlers;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -67,7 +67,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     private PaginatedCheckListGrid              variableListGrid;
     private ToolStripButton                     addVariableToFamilyButton;
     private ToolStripButton                     removeVariableToFamilyButton;
-    private SearchMultipleRelatedResourceWindow variablesWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow variablesWindow;
     private DeleteConfirmationWindow            removeConfirmationWindow;
 
     private VariableFamilyDto                   variableFamilyDto;
@@ -299,7 +299,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
             @Override
             public void onClick(ClickEvent arg0) {
-                variablesWindow = new SearchMultipleRelatedResourceWindow(getConstants().variablesSelection(), MAX_RESULTS, new PaginatedAction() {
+                variablesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().variablesSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {

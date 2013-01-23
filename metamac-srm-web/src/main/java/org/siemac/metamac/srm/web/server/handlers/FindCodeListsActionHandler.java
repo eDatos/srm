@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.web.server.handlers;
 
+import java.util.ArrayList;
+
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
@@ -29,6 +32,6 @@ public class FindCodeListsActionHandler extends SecurityActionHandler<FindCodeLi
         // } catch (MetamacException e) {
         // throw WebExceptionUtils.createMetamacWebException(e);
         // }
-        return null;
+        return new FindCodeListsResult(new ArrayList<ExternalItemDto>());
     }
 }

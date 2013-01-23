@@ -19,8 +19,8 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
-import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
@@ -113,9 +113,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private List<ItemHierarchyDto>              itemHierarchyDtos;
     private ConceptMetamacDto                   conceptDto;
 
-    private SearchMultipleRelatedResourceWindow searchRolesWindow;
-    private SearchRelatedResourceWindow         searchExtendsWindow;
-    private SearchRelatedResourceWindow         searchVariableWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
+    private SearchRelatedResourcePaginatedWindow         searchExtendsWindow;
+    private SearchRelatedResourcePaginatedWindow         searchVariableWindow;
 
     @Inject
     public ConceptViewImpl() {
@@ -650,7 +650,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent arg0) {
-                searchRolesWindow = new SearchMultipleRelatedResourceWindow(getConstants().conceptSelection(), MAX_RESULTS, new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()),
+                searchRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()),
                         new PaginatedAction() {
 
                             @Override
@@ -706,7 +706,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
 
-                searchExtendsWindow = new SearchRelatedResourceWindow(getConstants().conceptSelection(), MAX_RESULTS, new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()),
+                searchExtendsWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()),
                         new PaginatedAction() {
 
                             @Override
@@ -842,7 +842,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-                searchVariableWindow = new SearchRelatedResourceWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchVariableWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {

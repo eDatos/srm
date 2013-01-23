@@ -13,7 +13,7 @@ import org.siemac.metamac.srm.web.client.code.view.handlers.VariableElementUiHan
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -53,7 +53,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     private GroupDynamicForm                    contentDescriptorsEditionForm;
     private GroupDynamicForm                    diffusionDescriptorsEditionForm;
 
-    private SearchMultipleRelatedResourceWindow searchReplaceToElementsWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToElementsWindow;
 
     private VariableElementDto                  variableElementDto;
 
@@ -257,7 +257,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-                searchReplaceToElementsWindow = new SearchMultipleRelatedResourceWindow(getConstants().variableElementsSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchReplaceToElementsWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().variableElementsSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
