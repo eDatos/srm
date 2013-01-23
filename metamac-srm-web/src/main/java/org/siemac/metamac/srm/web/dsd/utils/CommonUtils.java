@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 
@@ -19,6 +20,8 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEn
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 
 public class CommonUtils {
+
+    private static LinkedHashMap<String, String> dsdShowDecimalsHashMap = null;
 
     /**
      * Returns true if representationType = ENUMERATED.
@@ -142,4 +145,19 @@ public class CommonUtils {
         return valueMap;
     }
 
+    // DSD VISUALISATION METADATA
+
+    /**
+     * Decimals between 0 and 6
+     */
+    public static LinkedHashMap<String, String> getDsdShowDecimalsHashMap() {
+        if (dsdShowDecimalsHashMap == null) {
+            dsdShowDecimalsHashMap = new LinkedHashMap<String, String>();
+            dsdShowDecimalsHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+            for (int i = 0; i < 7; i++) {
+                dsdShowDecimalsHashMap.put(String.valueOf(i), String.valueOf(i));
+            }
+        }
+        return dsdShowDecimalsHashMap;
+    }
 }
