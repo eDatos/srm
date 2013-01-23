@@ -13,6 +13,8 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
@@ -23,6 +25,7 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,14 +160,28 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Override
     public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component) throws MetamacException {
+
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
                 dataStructureDefinitionVersionUrn);
 
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersionMetamac);
 
+        // If is a Dimension check is not exist in the stub or heading, or delete it if exist
+        if (component instanceof DimensionComponent) {
+            for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getStubDimensions()) {
+                if (((DimensionComponent) component).equals(dimensionOrder.getDimension())) {
+                    dataStructureDefinitionVersionMetamac.removeStubDimension(dimensionOrder);
+                }
+            }
+            for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
+                if (((DimensionComponent) component).equals(dimensionOrder.getDimension())) {
+                    dataStructureDefinitionVersionMetamac.removeHeadingDimension(dimensionOrder);
+                }
+            }
+        }
+
         dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
-
     @Override
     public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
@@ -173,8 +190,6 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.removeAllHeadingDimensions();
         dataStructureDefinitionVersion.removeAllStubDimensions();
         dataStructureDefinitionVersion.removeAllShowDecimalsPrecisions();
-        // dataStructureDefinitionVersion.getMaintainableArtefact().setIsCodeUpdated(false);
-        // dataStructureDefinitionService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
         // Delete
         dataStructureDefinitionService.deleteDataStructureDefinition(ctx, urn);
     }
@@ -330,6 +345,22 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Maintainer
         srmValidation.checkMaintainer(ctx, dataStructureDefinitionVersion.getMaintainableArtefact(), dataStructureDefinitionVersion.getMaintainableArtefact().getIsImported());
+
+        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
+        // Show Decimals
+        if (dataStructureDefinitionVersion.getShowDecimals() != null) {
+            if (dataStructureDefinitionVersion.getShowDecimals() > 6 || dataStructureDefinitionVersion.getShowDecimals() < 0) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_SHOWDECIMALS));
+            }
+        }
+        // Show Decimals Precision
+        for (MeasureDimensionPrecision precision : dataStructureDefinitionVersion.getShowDecimalsPrecisions()) {
+            if (precision.getShowDecimalPrecision() > 6 || precision.getShowDecimalPrecision() < 0) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_SHOWDECIMALS_PRECISION));
+            }
+        }
+
+        ExceptionUtils.throwIfException(exceptions);
     }
 
     /**

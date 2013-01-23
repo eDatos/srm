@@ -76,7 +76,7 @@ Application DsdsMetamac {
 			Boolean autoOpen nullable;
 			
 			"Visualisation metadata Show Decimals"
-			Integer showDecimals nullable;
+			Integer showDecimals nullable range="min=0,max=6,message='exception.srm.dsd.validation.showdecimals_precision'";
 			
 			"Visualisation metadata Heading, dimensions list ordered"
 			- Bag<@DimensionOrder> headingDimensions cascade="all-delete-orphan" fetch="lazy" inverse orderby="dimOrder asc" <-> dsdVersionHeading;
@@ -122,7 +122,7 @@ Application DsdsMetamac {
 			-@CodeMetamac code cascade="none" databaseColumn="M_CODE_FK";
 			
 			"Show Decimal Precision, must a value between 0 and 6"
-			Integer showDecimalPrecision;
+			Integer showDecimalPrecision range="min=0,max=6,message='exception.srm.dsd.validation.showdecimals_precision'";
 			
 			"DSD version"
 			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> showDecimalsPrecisions;

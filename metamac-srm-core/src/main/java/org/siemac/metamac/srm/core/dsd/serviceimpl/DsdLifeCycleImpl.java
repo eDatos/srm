@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.core.dsd.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -11,18 +13,25 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
+import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Component;
+import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 
 @Service("dsdLifeCycle")
@@ -65,6 +74,40 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public void checkConcreteResourceInProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions) {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
+
+            // Auxiliary data structures
+            Set<DimensionComponent> stubDimensionSet = new HashSet<DimensionComponent>();
+            for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getStubDimensions()) {
+                stubDimensionSet.add(dimensionOrder.getDimension());
+            }
+            Set<DimensionComponent> headingDimensionSet = new HashSet<DimensionComponent>();
+            for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
+                headingDimensionSet.add(dimensionOrder.getDimension());
+            }
+
+            // Check mandatory attributes
+            ValidationUtils.checkMetadataRequired(dataStructureDefinitionVersionMetamac.getAutoOpen(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_AUTOPEN, exceptions);
+
+            // Check mutual exclusivity between dimensions in the heading and stub.
+            for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
+                if (stubDimensionSet.contains(dimensionOrder.getDimension())) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_OCCURRENCE, dimensionOrder.getDimension().getCode()));
+                }
+            }
+
+            // Check all dimensions must be appears in stub or heading
+            for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
+                if (componentList instanceof DimensionDescriptor) {
+                    for (Component component : componentList.getComponents()) {
+                        if (!stubDimensionSet.contains(component) && !headingDimensionSet.contains(component)) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_INCOMPLETE));
+                        }
+                    }
+                    break;
+                }
+            }
+
             // TODO grouping validation tiene que hacerse aquí???
         }
 

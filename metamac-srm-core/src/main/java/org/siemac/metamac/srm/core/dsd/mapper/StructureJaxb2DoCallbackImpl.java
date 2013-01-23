@@ -140,7 +140,10 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
         dsdsMetamacService.preCreateDataStructureDefinition(ctx, targetMetamac);
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
-        // TODO Completar con herencia en metadatos de visualización
+        // TODO Completar con herencia en metadatos, primero AVISAR A SAN para ver si el completado de metadatos de la versión
+        // anterior se puede hacer antes o después del precreate para hacer cosas como sólo t dejo q sean vacíos si es la primera versión
+        // en el resto los deberíashaber copiado, y por tanto se comprueban las restricciones. Ver si se fastidiase algo si lo hago ANTES y
+        // comentarlo con SAN.
     }
 
     @Override

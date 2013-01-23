@@ -107,6 +107,27 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     }
 
     @Test
+    public void testCreateDataStructureDefinitionErrorValidation() throws Exception {
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
+        dataStructureDefinitionVersionMetamac.setShowDecimals(45);
+
+        try {
+            dsdsMetamacService.createDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamac);
+            fail("maintainer not default");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.MAINTAINER_MUST_BE_DEFAULT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(AGENCY_ROOT_2_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(AGENCY_ROOT_1_V1, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        } catch (Exception e) {
+            int kaa = 2;
+        }
+
+    }
+
+    @Test
     @Override
     public void testPreCreateDataStructureDefinition() throws Exception {
         // TODO testPreCreateDataStructureDefinition
