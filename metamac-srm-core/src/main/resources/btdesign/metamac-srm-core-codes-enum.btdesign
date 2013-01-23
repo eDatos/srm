@@ -9,5 +9,12 @@ Application EnumsMetamacCodeDomain {
     		PUBLIC,
     		RESTRICTED
     	}
+    	
+    	
+		"Variable element operation type"
+    	enum VariableElementOperationTypeEnum {
+    		FUSION,
+    		SEGREGATION
+    	}
 	}
 }

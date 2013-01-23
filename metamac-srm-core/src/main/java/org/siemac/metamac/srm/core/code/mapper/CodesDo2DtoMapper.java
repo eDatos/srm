@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
@@ -16,6 +17,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -44,6 +46,8 @@ public interface CodesDo2DtoMapper {
     // Variable element
     public VariableElementDto variableElementDoToDto(VariableElement source);
     public RelatedResourceDto variableElementDoToRelatedResourceDto(VariableElement source);
+    public VariableElementOperationDto variableElementOperationDoToDto(VariableElementOperation source);
+    public List<VariableElementOperationDto> variableElementOperationsDoToDto(List<VariableElementOperation> sources);
 
     // Visualisations
     public CodelistOrderVisualisationDto codelistOrderVisualisationDoToDto(CodelistOrderVisualisation source);

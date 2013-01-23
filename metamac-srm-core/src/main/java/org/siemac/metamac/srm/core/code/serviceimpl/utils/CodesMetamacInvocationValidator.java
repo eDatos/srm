@@ -373,6 +373,37 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkAddVariableElementOperation(List<String> sources, List<String> targets, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(sources, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(targets, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveVariableElementOperationByCode(String code, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(code, ServiceExceptionParameters.CODE, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkDeleteVariableElementOperation(String code, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(code, ServiceExceptionParameters.CODE, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     private static void checkVariableElement(VariableElement variableElement, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkParameterRequired(variableElement, ServiceExceptionParameters.VARIABLE_ELEMENT, exceptions);
         if (variableElement == null) {

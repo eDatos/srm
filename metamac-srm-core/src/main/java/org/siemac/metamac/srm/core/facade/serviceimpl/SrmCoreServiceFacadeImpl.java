@@ -29,6 +29,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
@@ -37,6 +38,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
@@ -1277,6 +1279,80 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Add
         getCodesMetamacService().addVariableElementsToVariable(ctx, variableElementUrns, variableUrn);
+    }
+
+    @Override
+    public VariableElementOperationDto createVariableElementFusionOperation(ServiceContext ctx, List<String> sourcesUrn, String targetUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableElement(ctx);
+
+        // Create
+        VariableElementOperation variableElementOperationCreated = getCodesMetamacService().createVariableElementFusionOperation(ctx, sourcesUrn, targetUrn);
+
+        // Transform to DTO
+        VariableElementOperationDto variableElementOperationDto = codesDo2DtoMapper.variableElementOperationDoToDto(variableElementOperationCreated);
+        return variableElementOperationDto;
+    }
+
+    @Override
+    public VariableElementOperationDto createVariableElementSegregationOperation(ServiceContext ctx, String sourceUrn, List<String> targetsUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableElement(ctx);
+
+        // Create
+        VariableElementOperation variableElementOperationCreated = getCodesMetamacService().createVariableElementSegregationOperation(ctx, sourceUrn, targetsUrn);
+
+        // Transform to DTO
+        VariableElementOperationDto variableElementOperationDto = codesDo2DtoMapper.variableElementOperationDoToDto(variableElementOperationCreated);
+        return variableElementOperationDto;
+    }
+
+    @Override
+    public VariableElementOperationDto retrieveVariableElementOperationByCode(ServiceContext ctx, String code) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableElement(ctx);
+
+        // Retrieve
+        VariableElementOperation variableElementOperation = getCodesMetamacService().retrieveVariableElementOperationByCode(ctx, code);
+
+        // Transform
+        VariableElementOperationDto variableElementOperationDto = codesDo2DtoMapper.variableElementOperationDoToDto(variableElementOperation);
+        return variableElementOperationDto;
+    }
+
+    @Override
+    public void deleteVariableElementOperation(ServiceContext ctx, String code) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableElement(ctx);
+
+        // Delete
+        getCodesMetamacService().deleteVariableElementOperation(ctx, code);
+    }
+
+    @Override
+    public List<VariableElementOperationDto> retrieveVariableElementsOperationsByVariable(ServiceContext ctx, String variableUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableElement(ctx);
+
+        // Retrieve
+        List<VariableElementOperation> result = getCodesMetamacService().retrieveVariableElementsOperationsByVariable(ctx, variableUrn);
+
+        // Transform
+        List<VariableElementOperationDto> resultDto = codesDo2DtoMapper.variableElementOperationsDoToDto(result);
+        return resultDto;
+    }
+
+    @Override
+    public List<VariableElementOperationDto> retrieveVariableElementsOperationsByVariableElement(ServiceContext ctx, String variableElementUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableElement(ctx);
+
+        // Retrieve
+        List<VariableElementOperation> result = getCodesMetamacService().retrieveVariableElementsOperationsByVariableElement(ctx, variableElementUrn);
+
+        // Transform
+        List<VariableElementOperationDto> resultDto = codesDo2DtoMapper.variableElementOperationsDoToDto(result);
+        return resultDto;
     }
 
     /**************************************************************************

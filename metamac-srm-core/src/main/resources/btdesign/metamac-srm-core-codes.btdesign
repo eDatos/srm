@@ -27,6 +27,7 @@ Application CodesMetamac {
 			> @VariableFamilyRepository
 			> @VariableRepository
 			> @VariableElementRepository
+			> @VariableElementOperationRepository
 			> @CodelistOrderVisualisationRepository
 			> @CodeOrderVisualisationRepository
 
@@ -156,6 +157,18 @@ Application CodesMetamac {
     		deleteVariableElement(String urn) throws MetamacException;
     		"Adds variable element to a variable"
     		addVariableElementsToVariable(List<String> variableElementUrn, String variableUrn) throws MetamacException;
+    		"Creates fusion operation"
+    		@VariableElementOperation createVariableElementFusionOperation(List<String> sources, String target) throws MetamacException;
+    		"Creates segregation operation"
+    		@VariableElementOperation createVariableElementSegregationOperation(String source, List<String> targets) throws MetamacException;
+    		"Retrieves variable element operation by code"
+    		@VariableElementOperation retrieveVariableElementOperationByCode(String code) throws MetamacException;
+    		"Delete fusion or segregation operation"
+    		deleteVariableElementOperation(String code) throws MetamacException;
+    		"Retrieves all variable elements operations of one variable"
+ 			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariable(String variableUrn) throws MetamacException;
+ 			"Retrieves all variable elements operations of one variable element"
+ 			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -322,7 +335,10 @@ Application CodesMetamac {
 			"Concepts"
 			- Bag<@ConceptMetamac> concepts cascade="none" fetch="lazy" <-> variable;
 			"Elements"
-			- Bag<@VariableElement> variableElements cascade="none" fetch="lazy" <-> variable;
+			- Bag<@VariableElement> variableElements cascade="all-delete-orphan" fetch="lazy" <-> variable;
+			"Variable elements operations"
+			- Bag<@VariableElementOperation> variableElementsOperations cascade="all-delete-orphan" fetch="lazy" <-> variable;
+			
 			"Last update to optimistic locking"
 			DateTimeTZ updateDate nullable;
 			
@@ -367,6 +383,32 @@ Application CodesMetamac {
 				@VariableElement findByUrn(String urn);
 			}
 		}
-
+		
+		Entity VariableElementOperation {
+			databaseTable="TB_M_VAR_ELEM_OPERATIONS"
+			hint="idSequence=M_VAR_ELEM_OPERATIONS"
+			
+			"Code. It is a generated UUID, not semantic identifier"
+			String code not nullable;
+			"Operation type"
+			- @VariableElementOperationTypeEnum operationType not nullable;
+			"Sources"
+			- Bag<@VariableElement> sources cascade="none" databaseJoinTable="TB_M_VAR_ELEM_OP_SOURCES" databaseColumn="SOURCE_FK" databaseJoinColumn="OPERATION_FK";
+			"Targets"
+			- Bag<@VariableElement> targets cascade="none" databaseJoinTable="TB_M_VAR_ELEM_OP_TARGETS" databaseColumn="TARGET_FK" databaseJoinColumn="OPERATION_FK";
+			"Variable"
+			- @Variable variable not nullable cascade="none" databaseColumn="VARIABLE_FK" <-> variableElementsOperations;
+			
+			Repository VariableElementOperationRepository {
+				save;
+				delete;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByQuery(String query, Map<String, Object> parameters);
+				findByCondition;
+				findByCondition(PagingParameter pagingParameter);
+				@VariableElementOperation findByCode(String code);
+				List<@VariableElementOperation> findByVariableElementUrn(String urn);
+			}
+		}
 	}
 }

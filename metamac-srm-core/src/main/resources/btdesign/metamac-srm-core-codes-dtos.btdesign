@@ -89,6 +89,23 @@ Application DtosMetamacCodeDomain {
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}
+
+		"Dto for VariableElementOperation"		
+		DataTransferObject VariableElementOperationDto extends @AuditableDto {
+
+			"Code. It is a generated UUID, not semantic identifier"
+			String code not nullable;
+			"Operation type"
+			- @VariableElementOperationTypeEnum operationType not nullable;
+			"Sources"
+			- List<@RelatedResourceDto> sources not nullable;
+			"Targets"
+			- List<@RelatedResourceDto> targets not nullable;
+			"Variable"
+			- @RelatedResourceDto variable not nullable;
+			"Version to optimistic locking"
+			Long versionOptimisticLocking;
+		}		
 		
 		"Dto for CodelistOrderVisualisation"		
 		DataTransferObject CodelistOrderVisualisationDto extends @NameableArtefactDto {

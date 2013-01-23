@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
@@ -24,6 +25,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -260,6 +262,42 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
+    public VariableElementOperationDto variableElementOperationDoToDto(VariableElementOperation source) {
+        if (source == null) {
+            return null;
+        }
+        VariableElementOperationDto target = new VariableElementOperationDto();
+        target.setCode(source.getCode());
+        target.setOperationType(source.getOperationType());
+        target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
+        target.getSources().addAll(variableElementsDoToRelatedResourcesDto(source.getSources()));
+        target.getTargets().addAll(variableElementsDoToRelatedResourcesDto(source.getTargets()));
+
+        target.setId(source.getId());
+        target.setUuid(source.getUuid());
+        target.setVersion(source.getVersion());
+        target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
+        target.setCreatedBy(source.getCreatedBy());
+        target.setLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getLastUpdated()));
+        target.setLastUpdatedBy(source.getLastUpdatedBy());
+        target.setVersionOptimisticLocking(source.getVersion());
+
+        return target;
+    }
+
+    @Override
+    public List<VariableElementOperationDto> variableElementOperationsDoToDto(List<VariableElementOperation> sources) {
+        if (sources == null) {
+            return null;
+        }
+        List<VariableElementOperationDto> targets = new ArrayList<VariableElementOperationDto>();
+        for (VariableElementOperation source : sources) {
+            targets.add(variableElementOperationDoToDto(source));
+        }
+        return targets;
+    }
+
+    @Override
     public CodelistOrderVisualisationDto codelistOrderVisualisationDoToDto(CodelistOrderVisualisation source) {
         if (source == null) {
             return null;
@@ -321,6 +359,17 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
         target.setType(null);
         return target;
+    }
+
+    private List<RelatedResourceDto> variableElementsDoToRelatedResourcesDto(List<VariableElement> sources) {
+        if (sources == null) {
+            return null;
+        }
+        List<RelatedResourceDto> targets = new ArrayList<RelatedResourceDto>();
+        for (VariableElement source : sources) {
+            targets.add(variableElementDoToRelatedResourceDto(source));
+        }
+        return targets;
     }
 
     private RelatedResourceDto codelistOrderVisualisationDoToRelatedResourceDto(CodelistOrderVisualisation source) {

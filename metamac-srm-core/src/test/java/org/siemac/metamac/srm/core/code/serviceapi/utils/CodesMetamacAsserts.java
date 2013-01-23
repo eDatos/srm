@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
@@ -19,6 +20,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesAsserts;
@@ -455,6 +457,47 @@ public class CodesMetamacAsserts extends CodesAsserts {
             return;
         }
         assertEquals(entity.getNameableArtefact().getUrn(), dto.getUrn());
+    }
+
+    public static void assertEqualsVariableElementOperation(VariableElementOperation expected, VariableElementOperationDto actual) {
+        assertEqualsVariableElementOperation(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    private static void assertEqualsVariableElementOperation(VariableElementOperation entity, VariableElementOperationDto dto, MapperEnum mapperEnum) {
+        if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+            assertEquals(entity.getId(), dto.getId());
+
+            assertNotNull(entity.getUuid());
+            assertEquals(entity.getUuid(), dto.getUuid());
+
+            assertNotNull(entity.getCreatedBy());
+            assertEquals(entity.getCreatedBy(), dto.getCreatedBy());
+
+            assertNotNull(entity.getCreatedDate());
+            assertTrue(DateUtils.isSameInstant(entity.getCreatedDate().toDate(), dto.getCreatedDate()));
+
+            assertNotNull(entity.getLastUpdatedBy());
+            assertEquals(entity.getLastUpdatedBy(), dto.getLastUpdatedBy());
+
+            assertNotNull(entity.getLastUpdated());
+            assertTrue(DateUtils.isSameInstant(entity.getLastUpdated().toDate(), dto.getLastUpdated()));
+
+            assertNotNull(entity.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersionOptimisticLocking());
+        }
+
+        assertEquals(entity.getCode(), dto.getCode());
+        assertEquals(entity.getOperationType(), dto.getOperationType());
+        assertEquals(entity.getVariable().getNameableArtefact().getUrn(), dto.getVariable().getUrn());
+        assertEquals(entity.getSources().size(), dto.getSources().size());
+        for (int i = 0; i < entity.getSources().size(); i++) {
+            assertEquals(entity.getSources().get(i).getNameableArtefact().getUrn(), dto.getSources().get(i).getUrn());
+        }
+        assertEquals(entity.getTargets().size(), dto.getTargets().size());
+        for (int i = 0; i < entity.getTargets().size(); i++) {
+            assertEquals(entity.getTargets().get(i).getNameableArtefact().getUrn(), dto.getTargets().get(i).getUrn());
+        }
     }
 
     // ------------------------------------------------------------------------------------

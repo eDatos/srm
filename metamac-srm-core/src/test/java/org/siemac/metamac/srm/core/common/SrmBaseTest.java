@@ -226,7 +226,18 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_1               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01";
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_2               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02";
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_3               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_03";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_4               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_5               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_05";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_6               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_06";
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_1               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_01";
+    protected static final String VARIABLE_5_VARIABLE_ELEMENT_2               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_02";
+    protected static final String VARIABLE_5_VARIABLE_ELEMENT_3               = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_03";
+
+    // Variable elements operations
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1     = "VARIABLE_2_OPERATION_1";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_OPERATION_2     = "VARIABLE_2_OPERATION_2";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_OPERATION_3     = "VARIABLE_2_OPERATION_3";
+    protected static final String VARIABLE_5_VARIABLE_ELEMENT_OPERATION_1     = "VARIABLE_5_OPERATION_1";
 
     // Codelist visualisations
     protected static final String CODELIST_1_V1_ORDER_VISUALISATION_01        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(01.000).VISUALISATION01";
@@ -352,6 +363,9 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CODE_ORDER_VISUAL");
         tables.add("TB_M_CODELISTS_VERSIONS");
         tables.add("TB_M_VARIABLE_ELEMENTS");
+        tables.add("TB_M_VAR_ELEM_OPERATIONS");
+        tables.add("TB_M_VAR_ELEM_OP_SOURCES");
+        tables.add("TB_M_VAR_ELEM_OP_TARGETS");
         tables.add("TB_M_CODES");
         tables.add("TB_M_CONCEPT_RELATED");
         tables.add("TB_M_CONCEPT_ROLES");
@@ -383,6 +397,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_CONCEPT_RELATED", Arrays.asList("CONCEPT_RELATED_FK", "CONCEPT_FK"));
         tablePrimaryKeys.put("TB_M_VAR_FAMILIES_VARIABLES", Arrays.asList("VARIABLE_FAMILY_FK", "VARIABLE_FK"));
         tablePrimaryKeys.put("TB_M_DATASTRUCTURE_VERSIONS", Arrays.asList("TB_DATASTRUCTURE_VERSIONS"));
+        tablePrimaryKeys.put("TB_M_VAR_ELEM_OP_TARGETS", Arrays.asList("TARGET_FK", "OPERATION_FK"));
+        tablePrimaryKeys.put("TB_M_VAR_ELEM_OP_SOURCES", Arrays.asList("SOURCE_FK", "OPERATION_FK"));
         return tablePrimaryKeys;
     }
 

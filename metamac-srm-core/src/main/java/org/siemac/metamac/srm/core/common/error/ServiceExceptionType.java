@@ -21,10 +21,12 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType VARIABLE_ONLY_IN_ONE_FAMILY                         = create("exception.srm.codelists.variable.variable_only_one_family");
     public static final CommonServiceExceptionType VARIABLE_WITH_RELATIONS                             = create("exception.srm.codelists.variable.with_relations");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_RELATIONS                     = create("exception.srm.codelists.variable_element.with_relations");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_OPERATIONS                   = create("exception.srm.codelists.variable_element.with_operations");
     public static final CommonServiceExceptionType CODELIST_ALPHABETICAL_ORDER_OPERATION_NOT_SUPPORTED = create("exception.srm.codelists.order_visualisation.alphabetical.operation_not_supported");
 
     // Variable elements
-    public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_FAMILY        = create("exception.srm.codelists.variable_element.must_belong_to_same_family");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE      = create("exception.srm.codelists.variable_element.must_belong_to_same_variable");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENT_OPERATION_NOT_FOUND                = create("exception.srm.codelists.variable_element.operation.not_found");
 
     // Codes miscellaneous
     public static final CommonServiceExceptionType ARTEFACT_CAN_NOT_REPLACE_ITSELF                     = create("exception.srm.codelists.artefact.cannot_replace_itself");

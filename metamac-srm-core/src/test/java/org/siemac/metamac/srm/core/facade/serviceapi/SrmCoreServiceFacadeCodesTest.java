@@ -39,7 +39,9 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -2081,7 +2083,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
     @Test
     public void testDeleteVariableElement() throws Exception {
-        String urn = VARIABLE_2_VARIABLE_ELEMENT_1;
+        String urn = VARIABLE_2_VARIABLE_ELEMENT_6;
 
         // Delete codelist
         srmCoreServiceFacade.deleteVariableElement(getServiceContextAdministrador(), urn);
@@ -2118,24 +2120,17 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         {
             MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(9, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
-            {
-                VariableElementDto variableElementDto = result.getResults().get(i++);
-                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, variableElementDto.getUrn());
-            }
-            {
-                VariableElementDto variableElementDto = result.getResults().get(i++);
-                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, variableElementDto.getUrn());
-            }
-            {
-                VariableElementDto variableElementDto = result.getResults().get(i++);
-                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, variableElementDto.getUrn());
-            }
-            {
-                VariableElementDto variableElementDto = result.getResults().get(i++);
-                assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, variableElementDto.getUrn());
-            }
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
         // Find by Name
@@ -2172,7 +2167,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
         metamacCriteria.getOrdersBy().add(order);
         // Pagination
-        int maxResultSize = 2;
+        int maxResultSize = 4;
         metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
         metamacCriteria.getPaginator().setMaximumResultSize(maxResultSize);
         metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
@@ -2182,24 +2177,39 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
             MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(2, result.getResults().size());
-            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(4, result.getResults().size());
+            assertEquals(9, result.getPaginatorResult().getTotalResults().intValue());
             assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
             assertEquals(maxResultSize, result.getPaginatorResult().getMaximumResultSize().intValue());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getResults().get(0).getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getResults().get(1).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getResults().get(2).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, result.getResults().get(3).getUrn());
         }
         {
-            int firstResult = 2;
+            int firstResult = 4;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
             MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(2, result.getResults().size());
-            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(4, result.getResults().size());
+            assertEquals(9, result.getPaginatorResult().getTotalResults().intValue());
             assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getResults().get(0).getUrn());
-            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getResults().get(1).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getResults().get(0).getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getResults().get(1).getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getResults().get(2).getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getResults().get(3).getUrn());
+        }
+        {
+            int firstResult = 8;
+            metamacCriteria.getPaginator().setFirstResult(firstResult);
+
+            MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            assertEquals(1, result.getResults().size());
+            assertEquals(9, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getResults().get(0).getUrn());
         }
     }
 
@@ -2218,6 +2228,141 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         variableElement = srmCoreServiceFacade.retrieveVariableElementByUrn(ctx, variableElementUrn);
         assertEquals(variableUrn, variableElement.getVariable().getUrn());
+    }
+
+    @Test
+    public void testCreateVariableElementFusionOperation() throws Exception {
+        List<String> sources = Arrays.asList(VARIABLE_2_VARIABLE_ELEMENT_3, VARIABLE_2_VARIABLE_ELEMENT_4);
+        String target = VARIABLE_2_VARIABLE_ELEMENT_5;
+        VariableElementOperationDto variableElementOperationCreated = srmCoreServiceFacade.createVariableElementFusionOperation(getServiceContextAdministrador(), sources, target);
+        assertNotNull(variableElementOperationCreated.getCode());
+
+        // Validate
+        VariableElementOperationDto variableElementOperationRetrieved = srmCoreServiceFacade.retrieveVariableElementOperationByCode(getServiceContextAdministrador(),
+                variableElementOperationCreated.getCode());
+
+        // Validate some metadata
+        assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperationRetrieved.getOperationType());
+        assertEquals(VARIABLE_2, variableElementOperationRetrieved.getVariable().getUrn());
+        assertEquals(2, variableElementOperationRetrieved.getSources().size());
+        assertEquals(1, variableElementOperationRetrieved.getTargets().size());
+    }
+
+    @Test
+    public void testCreateVariableElementSegregationOperation() throws Exception {
+        String source = VARIABLE_2_VARIABLE_ELEMENT_1;
+        List<String> targets = Arrays.asList(VARIABLE_2_VARIABLE_ELEMENT_2, VARIABLE_2_VARIABLE_ELEMENT_4, VARIABLE_2_VARIABLE_ELEMENT_5);
+        VariableElementOperationDto variableElementOperationCreated = srmCoreServiceFacade.createVariableElementSegregationOperation(getServiceContextAdministrador(), source, targets);
+        assertNotNull(variableElementOperationCreated.getCode());
+
+        // Validate
+        VariableElementOperationDto variableElementOperationRetrieved = srmCoreServiceFacade.retrieveVariableElementOperationByCode(getServiceContextAdministrador(),
+                variableElementOperationCreated.getCode());
+
+        // Validate some metadata
+        assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperationRetrieved.getOperationType());
+        assertEquals(VARIABLE_2, variableElementOperationRetrieved.getVariable().getUrn());
+        assertEquals(1, variableElementOperationRetrieved.getSources().size());
+        assertEquals(3, variableElementOperationRetrieved.getTargets().size());
+    }
+
+    @Test
+    public void testDeleteVariableElementOperation() throws Exception {
+        String code = VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1;
+
+        srmCoreServiceFacade.deleteVariableElementOperation(getServiceContextAdministrador(), code);
+
+        // Retrieve deleted operation
+        try {
+            srmCoreServiceFacade.retrieveVariableElementOperationByCode(getServiceContextAdministrador(), code);
+            fail("deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_OPERATION_NOT_FOUND, 1, new String[]{code}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testRetrieveVariableElementsOperationsByVariable() throws Exception {
+        {
+            List<VariableElementOperationDto> operationsByVariable = srmCoreServiceFacade.retrieveVariableElementsOperationsByVariable(getServiceContextAdministrador(), VARIABLE_2);
+            assertEquals(3, operationsByVariable.size());
+
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperation.getOperationType());
+            }
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_2);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+            }
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_3);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+            }
+        }
+        {
+            List<VariableElementOperationDto> operationsByVariable = srmCoreServiceFacade.retrieveVariableElementsOperationsByVariable(getServiceContextAdministrador(), VARIABLE_5);
+            assertEquals(1, operationsByVariable.size());
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_5_VARIABLE_ELEMENT_OPERATION_1);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperation.getOperationType());
+            }
+        }
+    }
+
+    @Test
+    public void testRetrieveVariableElementsOperationsByVariableElement() throws Exception {
+
+        // Variable element in sources and targets
+        {
+            String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_3;
+            List<VariableElementOperationDto> operationsByVariable = srmCoreServiceFacade.retrieveVariableElementsOperationsByVariableElement(getServiceContextAdministrador(), variableElementUrn);
+            assertEquals(3, operationsByVariable.size());
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperation.getOperationType());
+            }
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_2);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+            }
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_3);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+            }
+        }
+
+        // Variable element only in sources
+        {
+            String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_1;
+            List<VariableElementOperationDto> operationsByVariable = srmCoreServiceFacade.retrieveVariableElementsOperationsByVariableElement(getServiceContextAdministrador(), variableElementUrn);
+            assertEquals(1, operationsByVariable.size());
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperation.getOperationType());
+            }
+        }
+
+        // Variable element only in targets
+        {
+            String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_5;
+            List<VariableElementOperationDto> operationsByVariable = srmCoreServiceFacade.retrieveVariableElementsOperationsByVariableElement(getServiceContextAdministrador(), variableElementUrn);
+            assertEquals(1, operationsByVariable.size());
+            {
+                VariableElementOperationDto variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_3);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+            }
+        }
     }
 
     // ------------------------------------------------------------------------------------
@@ -2313,6 +2458,15 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             }
         }
         fail("visualisation not found");
+    }
+
+    private VariableElementOperationDto getVariableElementOperationByCode(List<VariableElementOperationDto> operations, String code) {
+        for (VariableElementOperationDto variableElementOperation : operations) {
+            if (code.equals(variableElementOperation.getCode())) {
+                return variableElementOperation;
+            }
+        }
+        return null;
     }
 
     @Override

@@ -537,6 +537,18 @@ Application SrmFacadeCore {
     		deleteVariableElement(String urn) throws MetamacException;
     		"Adds variable elements to a variable"
     		addVariableElementsToVariable(List<String> variableElementUrn, String variableUrn) throws MetamacException;
+    		"Creates fusion operation"
+    		@VariableElementOperationDto createVariableElementFusionOperation(List<String> sourcesUrn, String targetUrn) throws MetamacException;
+    		"Creates segregation operation"
+    		@VariableElementOperationDto createVariableElementSegregationOperation(String sourceUrn, List<String> targetsUrn) throws MetamacException;
+    		"Retrieves variable element operation by code"
+    		@VariableElementOperationDto retrieveVariableElementOperationByCode(String code) throws MetamacException;
+    		"Delete fusion or segregation operation"
+    		deleteVariableElementOperation(String code) throws MetamacException;
+    		"Retrieves all variable elements operations of one variable"
+ 			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariable(String variableUrn) throws MetamacException;
+ 			"Retrieves all variable elements operations of one variable element"
+ 			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
     		    		
     		/**************************************************************************
 		     * COMMON

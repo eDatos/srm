@@ -50,11 +50,13 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -2811,6 +2813,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals("user2", variable.getLastUpdatedBy());
         assertEquals(Long.valueOf(1), variable.getVersion());
     }
+
     @Test
     public void testRetrieveVariableByUrnErrorNotFound() throws Exception {
         String urn = NOT_EXISTS;
@@ -3066,7 +3069,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("wrong code");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_FAMILY, 1, new String[]{VARIABLE_5_VARIABLE_ELEMENT_1}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE, 1, new String[]{VARIABLE_5_VARIABLE_ELEMENT_1}, e.getExceptionItems().get(0));
         }
     }
 
@@ -3279,12 +3282,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableElement> result = codesService.findVariableElementsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
-            assertEquals(4, result.getTotalRows());
+            assertEquals(9, result.getTotalRows());
             int i = 0;
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getValues().get(i++).getNameableArtefact().getUrn());
         }
         // Find by urn
         {
@@ -3302,7 +3310,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testDeleteVariableElement() throws Exception {
 
-        String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_1;
+        String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_6;
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementUrn);
         String variableUrn = variableElement.getVariable().getNameableArtefact().getUrn();
 
@@ -3327,6 +3335,19 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check that the variable has not been deleted
         codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variableUrn);
+    }
+
+    @Test
+    public void testDeleteVariableElementErrorWithOperations() throws Exception {
+        String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_1;
+
+        try {
+            codesService.deleteVariableElement(getServiceContextAdministrador(), variableElementUrn);
+            fail("variableElement has operations");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_WITH_OPERATIONS, 1, new String[]{variableElementUrn}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
@@ -3942,6 +3963,220 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Override
+    @Test
+    public void testRetrieveVariableElementOperationByCode() throws Exception {
+        String code = VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1;
+        VariableElementOperation variableElementOperation = codesService.retrieveVariableElementOperationByCode(getServiceContextAdministrador(), code);
+
+        // Validate
+        assertEquals(code, variableElementOperation.getCode());
+        assertEquals(2, variableElementOperation.getSources().size());
+        assertTrue(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_1, variableElementOperation.getSources()));
+        assertTrue(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_2, variableElementOperation.getSources()));
+        assertEquals(1, variableElementOperation.getTargets().size());
+        assertTrue(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_3, variableElementOperation.getTargets()));
+
+        assertEquals("VARIABLE_2_OPERATION_1", variableElementOperation.getUuid());
+        assertEqualsDate(new DateTime(2011, 01, 01, 01, 02, 03, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElementOperation.getCreatedDate());
+        assertEquals("user1", variableElementOperation.getCreatedBy());
+        assertEquals("user2", variableElementOperation.getLastUpdatedBy());
+        assertEquals(Long.valueOf(1), variableElementOperation.getVersion());
+    }
+
+    @Override
+    @Test
+    public void testCreateVariableElementFusionOperation() throws Exception {
+        List<String> sources = Arrays.asList(VARIABLE_2_VARIABLE_ELEMENT_3, VARIABLE_2_VARIABLE_ELEMENT_4);
+        String target = VARIABLE_2_VARIABLE_ELEMENT_5;
+        VariableElementOperation variableElementOperationCreated = codesService.createVariableElementFusionOperation(getServiceContextAdministrador(), sources, target);
+        assertNotNull(variableElementOperationCreated.getCode());
+
+        // Validate
+        VariableElementOperation variableElementOperationRetrieved = codesService.retrieveVariableElementOperationByCode(getServiceContextAdministrador(), variableElementOperationCreated.getCode());
+
+        // Validate
+        assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperationRetrieved.getOperationType());
+        assertEquals(VARIABLE_2, variableElementOperationRetrieved.getVariable().getNameableArtefact().getUrn());
+        assertEquals(2, variableElementOperationRetrieved.getSources().size());
+        assertTrue(SrmServiceUtils.isVariableElementInList(sources.get(0), variableElementOperationRetrieved.getSources()));
+        assertTrue(SrmServiceUtils.isVariableElementInList(sources.get(1), variableElementOperationRetrieved.getSources()));
+        assertEquals(1, variableElementOperationRetrieved.getTargets().size());
+        assertTrue(SrmServiceUtils.isVariableElementInList(target, variableElementOperationRetrieved.getTargets()));
+    }
+
+    @Test
+    public void testCreateVariableElementFusionOperationErrorDifferentVariable() throws Exception {
+        List<String> sources = Arrays.asList(VARIABLE_2_VARIABLE_ELEMENT_3, VARIABLE_5_VARIABLE_ELEMENT_1);
+        String target = VARIABLE_2_VARIABLE_ELEMENT_5;
+        try {
+            codesService.createVariableElementFusionOperation(getServiceContextAdministrador(), sources, target);
+            fail("different variable");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testCreateVariableElementFusionOperationErrorValidToEmpty() throws Exception {
+        List<String> sources = Arrays.asList(VARIABLE_2_VARIABLE_ELEMENT_3, VARIABLE_2_VARIABLE_ELEMENT_4);
+        String target = VARIABLE_2_VARIABLE_ELEMENT_6;
+        try {
+            codesService.createVariableElementFusionOperation(getServiceContextAdministrador(), sources, target);
+            fail("validTo");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Override
+    @Test
+    public void testCreateVariableElementSegregationOperation() throws Exception {
+        String source = VARIABLE_2_VARIABLE_ELEMENT_1;
+        List<String> targets = Arrays.asList(VARIABLE_2_VARIABLE_ELEMENT_2, VARIABLE_2_VARIABLE_ELEMENT_4, VARIABLE_2_VARIABLE_ELEMENT_5);
+        VariableElementOperation variableElementOperationCreated = codesService.createVariableElementSegregationOperation(getServiceContextAdministrador(), source, targets);
+        assertNotNull(variableElementOperationCreated.getCode());
+
+        // Validate
+        VariableElementOperation variableElementOperationRetrieved = codesService.retrieveVariableElementOperationByCode(getServiceContextAdministrador(), variableElementOperationCreated.getCode());
+
+        // Validate
+        assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperationRetrieved.getOperationType());
+        assertEquals(VARIABLE_2, variableElementOperationRetrieved.getVariable().getNameableArtefact().getUrn());
+        assertEquals(1, variableElementOperationRetrieved.getSources().size());
+        assertTrue(SrmServiceUtils.isVariableElementInList(source, variableElementOperationRetrieved.getSources()));
+        assertEquals(3, variableElementOperationRetrieved.getTargets().size());
+        assertTrue(SrmServiceUtils.isVariableElementInList(targets.get(0), variableElementOperationRetrieved.getTargets()));
+        assertTrue(SrmServiceUtils.isVariableElementInList(targets.get(1), variableElementOperationRetrieved.getTargets()));
+        assertTrue(SrmServiceUtils.isVariableElementInList(targets.get(2), variableElementOperationRetrieved.getTargets()));
+    }
+
+    @Override
+    @Test
+    public void testDeleteVariableElementOperation() throws Exception {
+        String code = VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1;
+
+        codesService.deleteVariableElementOperation(getServiceContextAdministrador(), code);
+
+        // Retrieve deleted operation
+        try {
+            codesService.retrieveVariableElementOperationByCode(getServiceContextAdministrador(), code);
+            fail("deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_OPERATION_NOT_FOUND, 1, new String[]{code}, e.getExceptionItems().get(0));
+        }
+        // Try to delete again the deleted operation
+        try {
+            codesService.deleteVariableElementOperation(getServiceContextAdministrador(), code);
+            fail("already deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_ELEMENT_OPERATION_NOT_FOUND, 1, new String[]{code}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Override
+    @Test
+    public void testRetrieveVariableElementsOperationsByVariable() throws Exception {
+        {
+            List<VariableElementOperation> operationsByVariable = codesService.retrieveVariableElementsOperationsByVariable(getServiceContextAdministrador(), VARIABLE_2);
+            assertEquals(3, operationsByVariable.size());
+
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperation.getOperationType());
+            }
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_2);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+            }
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_3);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+            }
+        }
+        {
+            List<VariableElementOperation> operationsByVariable = codesService.retrieveVariableElementsOperationsByVariable(getServiceContextAdministrador(), VARIABLE_5);
+            assertEquals(1, operationsByVariable.size());
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_5_VARIABLE_ELEMENT_OPERATION_1);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperation.getOperationType());
+            }
+        }
+    }
+
+    @Override
+    @Test
+    public void testRetrieveVariableElementsOperationsByVariableElement() throws Exception {
+
+        // Variable element in sources and targets
+        {
+            String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_3;
+            List<VariableElementOperation> operationsByVariable = codesService.retrieveVariableElementsOperationsByVariableElement(getServiceContextAdministrador(), variableElementUrn);
+            assertEquals(3, operationsByVariable.size());
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperation.getOperationType());
+                assertFalse(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getSources()));
+                assertTrue(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getTargets()));
+            }
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_2);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+                assertFalse(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getSources()));
+                assertTrue(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getTargets()));
+            }
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_3);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+                assertTrue(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getSources()));
+                assertFalse(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getTargets()));
+            }
+        }
+
+        // Variable element only in sources
+        {
+            String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_1;
+            List<VariableElementOperation> operationsByVariable = codesService.retrieveVariableElementsOperationsByVariableElement(getServiceContextAdministrador(), variableElementUrn);
+            assertEquals(1, operationsByVariable.size());
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.FUSION, variableElementOperation.getOperationType());
+                assertTrue(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getSources()));
+                assertFalse(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getTargets()));
+            }
+        }
+
+        // Variable element only in targets
+        {
+            String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_5;
+            List<VariableElementOperation> operationsByVariable = codesService.retrieveVariableElementsOperationsByVariableElement(getServiceContextAdministrador(), variableElementUrn);
+            assertEquals(1, operationsByVariable.size());
+            {
+                VariableElementOperation variableElementOperation = getVariableElementOperationByCode(operationsByVariable, VARIABLE_2_VARIABLE_ELEMENT_OPERATION_3);
+                assertNotNull(variableElementOperation);
+                assertEquals(VariableElementOperationTypeEnum.SEGREGATION, variableElementOperation.getOperationType());
+                assertFalse(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getSources()));
+                assertTrue(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getTargets()));
+            }
+        }
+    }
+
     private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationUrnExpected, List<CodelistOrderVisualisation> actuals) {
         for (CodelistOrderVisualisation actual : actuals) {
             if (actual.getNameableArtefact().getUrn().equals(codelistOrderVisualisationUrnExpected)) {
@@ -3959,6 +4194,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         }
         fail("code not found in order");
+    }
+
+    private VariableElementOperation getVariableElementOperationByCode(List<VariableElementOperation> operations, String code) {
+        for (VariableElementOperation variableElementOperation : operations) {
+            if (code.equals(variableElementOperation.getCode())) {
+                return variableElementOperation;
+            }
+        }
+        return null;
     }
 
     @Override

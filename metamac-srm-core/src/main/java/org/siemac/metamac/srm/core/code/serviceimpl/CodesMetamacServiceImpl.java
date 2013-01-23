@@ -1,9 +1,11 @@
 package org.siemac.metamac.srm.core.code.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -26,7 +28,9 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
@@ -809,7 +813,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_RELATIONS)
                     .withMessageParameters(variableElementToDelete.getNameableArtefact().getUrn(), variableElementToDelete.getCodes().get(0).getNameableArtefact().getUrn()).build(); // say one
         }
-        // TODO Un elemento de variable puede eliminarse si no tiene operaciones de segregación o fusión
+        // Check variableElement has not operations
+        List<VariableElementOperation> variableElementsOperations = getVariableElementOperationRepository().findByVariableElementUrn(urn);
+        if (CollectionUtils.isNotEmpty(variableElementsOperations)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_OPERATIONS)
+                    .withMessageParameters(variableElementToDelete.getNameableArtefact().getUrn()).build();
+        }
 
         // Delete
         variableElementToDelete.removeAllReplaceToVariableElements(); // variable element can be deleted although it replaces to another variable element
@@ -833,6 +842,57 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             variable.addVariableElement(variableElement);
         }
         getVariableRepository().save(variable);
+    }
+
+    @Override
+    public VariableElementOperation createVariableElementFusionOperation(ServiceContext ctx, List<String> sources, String target) throws MetamacException {
+        return createVariableElementOperationCommon(VariableElementOperationTypeEnum.FUSION, sources, Arrays.asList(target));
+    }
+
+    @Override
+    public VariableElementOperation createVariableElementSegregationOperation(ServiceContext ctx, String source, List<String> targets) throws MetamacException {
+        return createVariableElementOperationCommon(VariableElementOperationTypeEnum.SEGREGATION, Arrays.asList(source), targets);
+    }
+
+    @Override
+    public VariableElementOperation retrieveVariableElementOperationByCode(ServiceContext ctx, String code) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveVariableElementOperationByCode(code, null);
+
+        // Retrieve
+        VariableElementOperation variableElementOperation = retrieveVariableElementOperationByCode(code);
+        return variableElementOperation;
+    }
+
+    @Override
+    public void deleteVariableElementOperation(ServiceContext ctx, String code) throws MetamacException {
+        // TODO testear que no borra variableElement
+
+        // Validation
+        CodesMetamacInvocationValidator.checkDeleteVariableElementOperation(code, null);
+
+        // Delete
+        VariableElementOperation variableElementOperationToDelete = retrieveVariableElementOperationByCode(code);
+        getVariableElementOperationRepository().delete(variableElementOperationToDelete);
+    }
+
+    @Override
+    public List<VariableElementOperation> retrieveVariableElementsOperationsByVariable(ServiceContext ctx, String variableUrn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(variableUrn);
+
+        // Retrieve
+        Variable variable = retrieveVariableByUrn(variableUrn);
+        return variable.getVariableElementsOperations();
+    }
+
+    @Override
+    public List<VariableElementOperation> retrieveVariableElementsOperationsByVariableElement(ServiceContext ctx, String variableElementUrn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(variableElementUrn);
+
+        // Retrieve
+        return getVariableElementOperationRepository().findByVariableElementUrn(variableElementUrn);
     }
 
     // ------------------------------------------------------------------------------------
@@ -1019,8 +1079,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private CodelistFamily retrieveCodelistFamilyByUrn(String urn) throws MetamacException {
         CodelistFamily codelistFamily = getCodelistFamilyRepository().findByUrn(urn);
         if (codelistFamily == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build(); // TODO quitar lo de "IDENTIFICABLE" y
-                                                                                                                                                                 // dejar sólo artefact?
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
         }
         return codelistFamily;
     }
@@ -1049,6 +1108,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return variableElement;
     }
 
+    private VariableElementOperation retrieveVariableElementOperationByCode(String code) throws MetamacException {
+        VariableElementOperation variableElementOperation = getVariableElementOperationRepository().findByCode(code);
+        if (variableElementOperation == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_OPERATION_NOT_FOUND).withMessageParameters(code).build();
+        }
+        return variableElementOperation;
+    }
     private CodelistOrderVisualisation retrieveCodelistOrderVisualisationByUrn(String urn) throws MetamacException {
         CodelistOrderVisualisation codelistOrderVisualisation = getCodelistOrderVisualisationRepository().findByUrn(urn);
         if (codelistOrderVisualisation == null) {
@@ -1091,7 +1157,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check replaceTo belong to same variable
         for (VariableElement variableElementReplaceTo : variableElement.getReplaceToVariableElements()) {
             if (!variableElement.getVariable().getNameableArtefact().getUrn().equals(variableElementReplaceTo.getVariable().getNameableArtefact().getUrn())) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_FAMILY)
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE)
                         .withMessageParameters(variableElementReplaceTo.getNameableArtefact().getUrn()).build();
             }
         }
@@ -1292,4 +1358,50 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return getCodelistVersionMetamacRepository().save(codelistVersion);
     }
 
+    private VariableElementOperation createVariableElementOperationCommon(VariableElementOperationTypeEnum operationType, List<String> sources, List<String> targets) throws MetamacException {
+
+        // Validation
+
+        CodesMetamacInvocationValidator.checkAddVariableElementOperation(sources, targets, null);
+
+        VariableElementOperation variableElementOperation = new VariableElementOperation();
+        variableElementOperation.setOperationType(operationType);
+        variableElementOperation.setCode(UUID.randomUUID().toString());
+
+        // Add sources and targets
+        for (String sourceVariableElementUrn : sources) {
+            VariableElement sourceVariableElement = retrieveVariableElementByUrn(sourceVariableElementUrn);
+            variableElementOperation.addSource(sourceVariableElement);
+        }
+        for (String targetVariableElementUrn : targets) {
+            VariableElement targetVariableElement = retrieveVariableElementByUrn(targetVariableElementUrn);
+            variableElementOperation.addTarget(targetVariableElement);
+        }
+
+        // Check all elements belong to same variable and has validTo filled
+        List<VariableElement> variableElements = new ArrayList<VariableElement>(variableElementOperation.getSources().size() + variableElementOperation.getTargets().size());
+        variableElements.addAll(variableElementOperation.getSources());
+        variableElements.addAll(variableElementOperation.getTargets());
+        Variable variable = null;
+        for (VariableElement variableElement : variableElements) {
+            // ValidTo
+            if (variableElement.getValidTo() == null) {
+                throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO);
+            }
+            // Variable
+            if (variable == null) {
+                variable = variableElement.getVariable();
+            } else {
+                if (!variable.getNameableArtefact().getUrn().equals(variableElement.getVariable().getNameableArtefact().getUrn())) {
+                    throw new MetamacException(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE, variableElement.getNameableArtefact().getUrn());
+                }
+            }
+        }
+
+        // Create
+        variable.addVariableElementsOperation(variableElementOperation);
+        variableElementOperation = getVariableElementOperationRepository().save(variableElementOperation);
+
+        return variableElementOperation;
+    }
 }
