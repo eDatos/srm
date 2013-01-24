@@ -8,9 +8,9 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
@@ -25,7 +25,6 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
 
 @org.springframework.stereotype.Component("dataStructureDefinitionDto2DoMapper")
 public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDefinitionDto2DoMapper {
@@ -43,7 +42,21 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
     @SuppressWarnings("unchecked")
     @Override
     public <U extends Component> U componentDtoToComponent(ComponentDto source) throws MetamacException {
-        return (U) dto2DoMapperSdmxSrm.componentDtoToComponent(source);
+
+        U target = (U) dto2DoMapperSdmxSrm.componentDtoToComponent(source);
+
+        // Flag
+        // if (target instanceof MeasureDimension) {
+        // if (target.getId() == null) {
+        // ((MeasureDimension)target).setCodeListRepresentationChanged(Boolean.TRUE);
+        // }
+        // else {
+        // source.getLocalRepresentation().getEnumerated()
+        // }
+        // }
+        // target.setIsCodeUpdated(!StringUtils.equals(source.getCode(), target.getCode()));
+
+        return target;
     }
 
     @SuppressWarnings("unchecked")
@@ -61,7 +74,7 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
      * PRIVATE
      **************************************************************************/
 
-    private DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinitionPrivate(DataStructureDefinitionDto source) throws MetamacException {
+    private DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinitionPrivate(DataStructureDefinitionMetamacDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -80,15 +93,11 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         }
 
         // Modifiable attributes
-        if (source instanceof DataStructureDefinitionMetamacDto) {
-            DataStructureDefinitionMetamacDto sourceMetamacDto = (DataStructureDefinitionMetamacDto) source;
-            // Metamac attributes
-            target.setAutoOpen(sourceMetamacDto.getAutoOpen());
-            target.setShowDecimals(sourceMetamacDto.getShowDecimals());
-            headingProcess(sourceMetamacDto.getHeadingDimensions(), target);
-            stubProcess(sourceMetamacDto.getStubDimensions(), target);
-            showDecimalsPrecisionsProcess(sourceMetamacDto.getShowDecimalsPrecisions(), target);
-        }
+        target.setAutoOpen(source.getAutoOpen());
+        target.setShowDecimals(source.getShowDecimals());
+        headingProcess(source.getHeadingDimensions(), target);
+        stubProcess(source.getStubDimensions(), target);
+        showDecimalsPrecisionsProcess(source.getShowDecimalsPrecisions(), target);
 
         dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(source, target);
 
@@ -154,7 +163,7 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         // HashMap of actuals measure dimensions precision
         Map<String, MeasureDimensionPrecision> measureDimPrecisionMap = new HashMap<String, MeasureDimensionPrecision>();
         for (MeasureDimensionPrecision measureDimensionPrecision : dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions()) {
-            measureDimPrecisionMap.put(measureDimensionPrecision.getCode().getNameableArtefact().getUrn(), measureDimensionPrecision);
+            measureDimPrecisionMap.put(measureDimensionPrecision.getConcept().getNameableArtefact().getUrn(), measureDimensionPrecision);
         }
 
         dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().clear();
@@ -165,9 +174,9 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
                 measureDimensionPrecision = measureDimPrecisionMap.get(sourceList.get(i).getUrn());
                 measureDimensionPrecision.setShowDecimalPrecision(sourceList.get(i).getShowDecimalPrecision());
             } else {
-                CodeMetamac code = (CodeMetamac) dto2DoMapperSdmxSrm.relatedResourceDtoToEntity(sourceList.get(i), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_SHOW_DEC_PREC);
+                ConceptMetamac concept = (ConceptMetamac) dto2DoMapperSdmxSrm.relatedResourceDtoToEntity(sourceList.get(i), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_SHOW_DEC_PREC);
                 measureDimensionPrecision = new MeasureDimensionPrecision();
-                measureDimensionPrecision.setCode(code);
+                measureDimensionPrecision.setConcept(concept);
                 measureDimensionPrecision.setShowDecimalPrecision(sourceList.get(i).getShowDecimalPrecision());
             }
             dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(measureDimensionPrecision);

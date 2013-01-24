@@ -49,7 +49,7 @@ public class StructureVersioningCopyCallbackMetamacImpl implements StructureVers
         // showDecimalsPrecisions
         for (MeasureDimensionPrecision measureDimensionPrecision : source.getShowDecimalsPrecisions()) {
             MeasureDimensionPrecision targetMeasureDimensionPrecion = new MeasureDimensionPrecision();
-            targetMeasureDimensionPrecion.setCode(measureDimensionPrecision.getCode());
+            targetMeasureDimensionPrecion.setConcept(measureDimensionPrecision.getConcept());
             targetMeasureDimensionPrecion.setShowDecimalPrecision(measureDimensionPrecision.getShowDecimalPrecision());
             target.addShowDecimalsPrecision(targetMeasureDimensionPrecion);
         }

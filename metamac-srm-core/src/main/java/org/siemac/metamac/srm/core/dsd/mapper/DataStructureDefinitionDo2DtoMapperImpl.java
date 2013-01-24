@@ -115,11 +115,11 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         }
 
         MeasureDimensionPrecisionDto target = new MeasureDimensionPrecisionDto();
-        target.setCode(source.getCode().getNameableArtefact().getCode());
+        target.setCode(source.getConcept().getNameableArtefact().getCode());
         target.setTitle(null);
         target.setType(TypeExternalArtefactsEnum.CODE);
-        target.setUrn(source.getCode().getNameableArtefact().getUrn());
-        target.setUrnProvider(source.getCode().getNameableArtefact().getUrnProvider());
+        target.setUrn(source.getConcept().getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getConcept().getNameableArtefact().getUrnProvider());
         target.setShowDecimalPrecision(source.getShowDecimalPrecision());
 
         return target;

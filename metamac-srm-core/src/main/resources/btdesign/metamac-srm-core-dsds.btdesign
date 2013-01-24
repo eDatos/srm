@@ -4,7 +4,7 @@ import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
-import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
+import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 
 Application DsdsMetamac {
 	basePackage=unused
@@ -118,8 +118,8 @@ Application DsdsMetamac {
 			hint="idSequence=M_MEASURE_DIM_PRECISIONS"
 			!auditable
 
-			"Code of Codelist representation associate to Measure Dimension"
-			-@CodeMetamac code cascade="none" databaseColumn="M_CODE_FK";
+			"Code of Concept representation associate to Measure Dimension"
+			-@ConceptMetamac concept cascade="none" databaseColumn="M_CONCEPT_FK";
 			
 			"Show Decimal Precision, must a value between 0 and 6"
 			Integer showDecimalPrecision range="min=0,max=6,message='exception.srm.dsd.validation.showdecimals_precision'";

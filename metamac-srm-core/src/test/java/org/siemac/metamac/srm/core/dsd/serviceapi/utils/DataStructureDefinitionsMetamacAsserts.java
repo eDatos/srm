@@ -57,7 +57,7 @@ public class DataStructureDefinitionsMetamacAsserts extends DataStructureDefinit
     }
 
     private static void assertDecimalPrecision(MeasureDimensionPrecisionDto expected, MeasureDimensionPrecision actual, Integer i) {
-        assertEquals(expected.getUrn(), actual.getCode().getNameableArtefact().getUrn());
+        assertEquals(expected.getUrn(), actual.getConcept().getNameableArtefact().getUrn());
         assertEquals(expected.getShowDecimalPrecision(), actual.getShowDecimalPrecision());
     }
 }

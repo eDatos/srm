@@ -1,10 +1,13 @@
 package org.siemac.metamac.srm.core.dsd.mapper;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
+import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionMetamacDoMocks;
@@ -32,8 +35,14 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
     @Autowired
     private OrganisationMetamacRepository       organisationMetamacRepository;
 
+    @Autowired
+    private ConceptsMetamacService              conceptsService;
+
     @Test
     public void testDataStructureDefinitionMetamacDoToDto() throws MetamacException {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
 
@@ -46,8 +55,9 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
 
         dataStructureDefinitionVersionMetamac.addStubDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(1, DataStructureDefinitionMetamacDoMocks.mockMeasureDimension()));
 
-        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(5, CodesMetamacDoMocks.mockCode()));
-        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(4, CodesMetamacDoMocks.mockCode()));
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
+        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(5, ConceptsMetamacDoMocks.mockConcept(conceptType)));
+        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(4, ConceptsMetamacDoMocks.mockConcept(conceptType)));
 
         DataStructureDefinitionMetamacDto dto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dto, dataStructureDefinitionVersionMetamac);

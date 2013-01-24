@@ -117,7 +117,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             fail("maintainer not default");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.MAINTAINER_MUST_BE_DEFAULT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_SHOWDECIMALS.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(AGENCY_ROOT_2_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(AGENCY_ROOT_1_V1, e.getExceptionItems().get(0).getMessageParameters()[1]);
@@ -278,7 +278,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             for (int i = 0; i < dsdToCopy.getShowDecimalsPrecisions().size(); i++) {
                 MeasureDimensionPrecision measureDimensionPrecisionToCopy = dsdToCopy.getShowDecimalsPrecisions().get(i);
                 MeasureDimensionPrecision measureDimensionPrecisionToNewVersion = dsdNewVersion.getShowDecimalsPrecisions().get(i);
-                assertEquals(measureDimensionPrecisionToCopy.getCode().getNameableArtefact().getUrn(), measureDimensionPrecisionToNewVersion.getCode().getNameableArtefact().getUrn());
+                assertEquals(measureDimensionPrecisionToCopy.getConcept().getNameableArtefact().getUrn(), measureDimensionPrecisionToNewVersion.getConcept().getNameableArtefact().getUrn());
                 assertEquals(measureDimensionPrecisionToCopy.getShowDecimalPrecision(), measureDimensionPrecisionToNewVersion.getShowDecimalPrecision());
             }
 

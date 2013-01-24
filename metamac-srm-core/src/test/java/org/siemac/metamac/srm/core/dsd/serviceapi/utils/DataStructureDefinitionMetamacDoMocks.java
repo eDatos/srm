@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.dsd.serviceapi.utils;
 
-import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
@@ -28,9 +28,9 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
         return dimensionOrder;
     }
 
-    public static MeasureDimensionPrecision mockMeasureDimensionPrecision(Integer decimalPrecision, CodeMetamac code) {
+    public static MeasureDimensionPrecision mockMeasureDimensionPrecision(Integer decimalPrecision, ConceptMetamac concept) {
         MeasureDimensionPrecision measureDimensionPrecision = new MeasureDimensionPrecision();
-        measureDimensionPrecision.setCode(code);
+        measureDimensionPrecision.setConcept(concept);
         measureDimensionPrecision.setShowDecimalPrecision(decimalPrecision);
 
         return measureDimensionPrecision;
