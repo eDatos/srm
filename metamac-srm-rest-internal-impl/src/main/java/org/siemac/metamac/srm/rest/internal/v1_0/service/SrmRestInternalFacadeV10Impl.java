@@ -6,6 +6,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
+import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -54,7 +55,10 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -123,8 +127,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Autowired
     private CodesDo2RestMapperV10         codesDo2RestMapper;
 
-    private ServiceContext                ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
-    private Logger                        logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private final ServiceContext          ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
+    private final Logger                  logger = LoggerFactory.getLogger(LoggingInterceptor.class);
 
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
@@ -1013,6 +1017,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Criteria to find item schemes by criteria
         List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery, CodelistVersionMetamac.class);
+        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC)
+                .buildSingle());
 
         // Find
         PagedResult<CodelistVersionMetamac> entitiesPagedResult = codesService.findCodelistsByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1039,6 +1045,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Criteria to find items by criteria
         List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID, conditionalCriteriaQuery, CodeMetamac.class);
+        // Only codelists with access == public
+        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
+                .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
+                .eq(AccessTypeEnum.PUBLIC).buildSingle());
 
         // Find
         PagedResult<CodeMetamac> entitiesPagedResult = codesService.findCodesByCondition(ctx, conditionalCriteria, pagingParameter);
