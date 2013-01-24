@@ -18,9 +18,9 @@ import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
 public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     // Agencies
-    protected static final String ORGANISATION_SCHEME_ROOT_1_V1               = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)";
-    public static final String    AGENCY_ROOT_1_V1                            = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01";
-    public static final String    AGENCY_ROOT_2_V1                            = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02";
+    protected static final String ORGANISATION_SCHEME_ROOT_1_V1               = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(1.0)";
+    public static final String    AGENCY_ROOT_1_V1                            = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01";
+    public static final String    AGENCY_ROOT_2_V1                            = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX02";
     public static final String    AGENCY_ROOT_1_V1_CODE                       = "SDMX01";
 
     // Concepts schemes

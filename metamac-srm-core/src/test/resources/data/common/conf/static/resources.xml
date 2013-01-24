@@ -3,5 +3,5 @@
 <properties>
     <comment>Configurations</comment>
 	<!--  The following URN must be the same in the SQL script provided -->
-    <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01</entry>
+    <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01</entry>
 </properties>

@@ -107,8 +107,8 @@
         CODE="AGENCIES"
         CODE_FULL="[null]"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(1.0)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX:AGENCIES(1.0)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -116,7 +116,7 @@
         DESCRIPTION_FK="[null]"
         COMMENT_FK="[null]"
         
-        VERSION_LOGIC="01.000"
+        VERSION_LOGIC="1.0"
         FINAL_LOGIC="1"
         FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
@@ -188,8 +188,8 @@
                 
                 CODE="SDMX01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -242,8 +242,8 @@
                 
                 CODE="SDMX02"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX02"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX02"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -296,8 +296,8 @@
                 
                 CODE="SDMX"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).SDMX"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -350,8 +350,8 @@
                 
                 CODE="ISO"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).ISO"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(01.000).ISO"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).ISO"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).ISO"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
