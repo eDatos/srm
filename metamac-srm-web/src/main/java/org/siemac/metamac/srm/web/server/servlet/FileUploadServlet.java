@@ -21,7 +21,7 @@ import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.imporation.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
 import com.google.inject.Singleton;
 
 @Singleton
