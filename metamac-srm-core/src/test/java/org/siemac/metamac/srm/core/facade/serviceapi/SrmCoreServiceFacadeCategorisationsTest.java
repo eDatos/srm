@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorConstants;
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,9 +36,9 @@ public class SrmCoreServiceFacadeCategorisationsTest extends SrmBaseTest {
     // IMPORTANT: Metadata transformation is tested in Do2Dto tests
 
     // Categorisations
-    private String                 CATEGORISATION_1 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000)";
-    private String                 CATEGORISATION_2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000)";
-    private String                 CATEGORISATION_4 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)";
+    private final String           CATEGORISATION_1 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000)";
+    private final String           CATEGORISATION_2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000)";
+    private final String           CATEGORISATION_4 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)";
 
     @Test
     public void testRetrieveCategorisationByUrn() throws Exception {
@@ -62,7 +62,7 @@ public class SrmCoreServiceFacadeCategorisationsTest extends SrmBaseTest {
         CategorisationDto categorisationCreated = srmCoreServiceFacade.createCategorisation(getServiceContextAdministrador(), categoryUrn, artefactCategorisedUrn, maintainerUrn);
 
         // Validate some metadata
-        assertTrue(categorisationCreated.getCode().startsWith(GeneratorConstants.CATEGORISATION_CODE_PREFIX));
+        assertTrue(categorisationCreated.getCode().startsWith(SdmxConstants.CATEGORISATION_CODE_PREFIX));
         assertNotNull(categorisationCreated.getUrn());
     }
 
