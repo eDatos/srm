@@ -58,7 +58,7 @@ public class DataStructureDefinitionMetamacDtoMocks extends DataStructureDefinit
 
     private static MeasureDimensionPrecisionDto createMeasureDimensionPrecisionDto(String urn, Integer precision) {
         MeasureDimensionPrecisionDto measureDimensionPrecisionDto = new MeasureDimensionPrecisionDto();
-        measureDimensionPrecisionDto.setType(TypeExternalArtefactsEnum.CODE);
+        measureDimensionPrecisionDto.setType(TypeExternalArtefactsEnum.CONCEPT);
         measureDimensionPrecisionDto.setUrn(urn);
         measureDimensionPrecisionDto.setShowDecimalPrecision(precision);
 

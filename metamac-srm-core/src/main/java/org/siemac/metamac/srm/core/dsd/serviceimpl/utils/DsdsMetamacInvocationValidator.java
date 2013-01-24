@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
 
 public class DsdsMetamacInvocationValidator extends DataStructureInvocationValidator {
@@ -67,12 +68,17 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkDescriptorToCreateOrUpdate(Component component, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkComponentToCreateOrUpdate(Component component, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(component, ServiceExceptionParameters.COMPONENT, exceptions);
+
+        if (component instanceof MeasureDimension) {
+            ValidationUtils.checkMetadataRequired(((MeasureDimension) component).getRepresentationChanged(),
+                    ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_MEASURE_DIMENSION_REPRESENTATION_CHANGED, exceptions);
+        }
 
         ExceptionUtils.throwIfException(exceptions);
     }

@@ -706,7 +706,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="11"
         
-        UUID="dsd-1-v1"
+        UUID="conceptscheme1-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"

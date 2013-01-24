@@ -39,6 +39,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureVersioningCopyUtils.StructureVersioningCopyCallback;
 
@@ -152,15 +153,16 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 dataStructureDefinitionVersionUrn);
 
         // Validation
-        DsdsMetamacInvocationValidator.checkDescriptorToCreateOrUpdate(component, null);
+        DsdsMetamacInvocationValidator.checkComponentToCreateOrUpdate(component, null);
         checkComponentToCreateOrUpdate(ctx, dataStructureDefinitionVersionMetamac, component);
 
-        // TODO cuando se cambia la representacion de la measuredimension o se crea la measuredimension o se sustituye la emasure dimension con otra rep entonces debemos de borar
-        // los showdecimalsprecions
-        // if (component instanceof MeasureDimension) {
-        // Tengo que poner una bandera en el Dto2Do con chagned CodelistS, ponerlo como requerida en els ervicio para que no se olvide la gente, pero nullable en la entidad
-        // }
-        // jkakasjSS
+        // Clean Show Decimals Precision
+        if (component instanceof MeasureDimension) {
+            if (((MeasureDimension) component).getRepresentationChanged()) {
+                // perform a clean up of the Show Decimals Precision of DSD
+                dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().clear();
+            }
+        }
 
         return dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }

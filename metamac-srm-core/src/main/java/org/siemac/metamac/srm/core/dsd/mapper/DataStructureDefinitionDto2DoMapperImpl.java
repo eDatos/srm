@@ -21,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
@@ -45,20 +47,20 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
         U target = (U) dto2DoMapperSdmxSrm.componentDtoToComponent(source);
 
-        // Flag
-        // if (target instanceof MeasureDimension) {
-        // if (target.getId() == null) {
-        // ((MeasureDimension)target).setCodeListRepresentationChanged(Boolean.TRUE);
-        // }
-        // else {
-        // source.getLocalRepresentation().getEnumerated()
-        // }
-        // }
-        // target.setIsCodeUpdated(!StringUtils.equals(source.getCode(), target.getCode()));
+        // Flag for force to perform a clean up of the Show Decimals Precision of DSD
+        if (target instanceof MeasureDimension) {
+            if (target.getId() == null || target.getLocalRepresentation() == null) {
+                ((MeasureDimension) target).setRepresentationChanged(Boolean.TRUE);
+            } else {
+                EnumeratedRepresentation targetRepresentation = (EnumeratedRepresentation) target.getLocalRepresentation();
+                if (!source.getLocalRepresentation().getEnumerated().getUrn().equals(targetRepresentation.getEnumerated().getUrn())) {
+                    ((MeasureDimension) target).setRepresentationChanged(Boolean.TRUE);
+                }
+            }
+        }
 
         return target;
     }
-
     @SuppressWarnings("unchecked")
     @Override
     public <U extends ComponentList> U componentListDtoToComponentList(ComponentListDto componentListDto) throws MetamacException {

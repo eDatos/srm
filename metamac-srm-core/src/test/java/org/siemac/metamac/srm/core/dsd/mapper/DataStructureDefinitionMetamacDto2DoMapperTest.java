@@ -23,13 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class DataStructureDefinitionMetamacDto2DoMapperTest extends SrmBaseTest {
 
-    private static String                       DSD_06_URN              = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)";
-    private static String                       DSD_06_DIM01_URN        = "urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).dim-01";
-    private static String                       DSD_06_TIMEDIM01_URN    = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01";
-    private static String                       DSD_06_MEASUREDIM01_URN = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).measureDimension-01";
+    private static String                       DSD_06_URN                       = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)";
+    private static String                       DSD_06_DIM01_URN                 = "urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).dim-01";
+    private static String                       DSD_06_TIMEDIM01_URN             = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01";
+    private static String                       DSD_06_MEASUREDIM01_URN          = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).measureDimension-01";
 
-    private static String                       CODELIST_07_CODE_03_URN = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE03";
-    private static String                       CODELIST_07_CODE_04_URN = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE04";
+    private static String                       CONCEPT_SCHEME_13_CONCEPT_03_URN = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT03";
+    private static String                       CONCEPT_SCHEME_13_CONCEPT_02_URN = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME13(01.000).CONCEPT02";
 
     @Autowired
     private DataStructureDefinitionDto2DoMapper dataStructureDefinitionDto2DoMapper;
@@ -39,7 +39,7 @@ public class DataStructureDefinitionMetamacDto2DoMapperTest extends SrmBaseTest 
         DataStructureDefinitionMetamacDto dto = DataStructureDefinitionMetamacDtoMocks.mockDataStructureDefinitionMetamacDto();
         DataStructureDefinitionMetamacDtoMocks.mockHeading(dto, DSD_06_TIMEDIM01_URN, DSD_06_MEASUREDIM01_URN);
         DataStructureDefinitionMetamacDtoMocks.mockStub(dto, DSD_06_DIM01_URN);
-        DataStructureDefinitionMetamacDtoMocks.mockShowDecimalsPrecision(dto, CODELIST_07_CODE_03_URN, CODELIST_07_CODE_04_URN);
+        DataStructureDefinitionMetamacDtoMocks.mockShowDecimalsPrecision(dto, CONCEPT_SCHEME_13_CONCEPT_03_URN, CONCEPT_SCHEME_13_CONCEPT_02_URN);
 
         dto.setUrn(DSD_06_URN);
 
