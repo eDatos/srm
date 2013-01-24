@@ -20,12 +20,12 @@ public class SearchMultipleRelatedResourcePaginatedWindow extends BaseSearchWind
     private FormItem                                      initialSelectionItem;
 
     public SearchMultipleRelatedResourcePaginatedWindow(String title, int maxResults, PaginatedAction action) {
-        super(title, maxResults);
+        super(title);
         common(title, maxResults, null, action);
     }
 
     public SearchMultipleRelatedResourcePaginatedWindow(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
-        super(title, maxResults);
+        super(title);
         this.initialSelectionItem = initialSelectionItem;
         this.initialSelectionItem.setWidth(290);
         common(title, maxResults, initialSelectionItem, action);

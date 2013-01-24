@@ -22,12 +22,12 @@ public class SearchRelatedResourcePaginatedWindow extends BaseSearchWindow {
     private FormItem                           initialSelectionItem;
 
     public SearchRelatedResourcePaginatedWindow(String title, int maxResults, PaginatedAction action) {
-        super(title, maxResults);
+        super(title);
         common(title, maxResults, null, action);
     }
 
     public SearchRelatedResourcePaginatedWindow(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
-        super(title, maxResults);
+        super(title);
         this.initialSelectionItem = initialSelectionItem;
         this.initialSelectionItem.setWidth("100%");
         common(title, maxResults, initialSelectionItem, action);
