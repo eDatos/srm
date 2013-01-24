@@ -41,11 +41,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.enume.domain.ContactItemTypeEnum;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.OrganisationsAsserts;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.OrganisationsDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
@@ -126,6 +128,22 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertNotNull(organisationSchemeVersionUpdated);
         assertEquals("user1", organisationSchemeVersionUpdated.getCreatedBy());
         assertEquals(ctx.getUserId(), organisationSchemeVersionUpdated.getLastUpdatedBy());
+    }
+
+    @Test
+    public void testUpdateOrganisationSchemeAgencySchemeRoot() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_100_V1);
+        assertNull(organisationSchemeVersion.getMaintainableArtefact().getMaintainer());
+        assertTrue(SdmxSrmUtils.isAgencySchemeSdmx(organisationSchemeVersion.getMaintainableArtefact().getUrn()));
+        organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+        organisationSchemeVersion.getMaintainableArtefact().setName(OrganisationsDoMocks.mockInternationalString());
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
+        assertNull(organisationSchemeVersionUpdated.getMaintainableArtefact().getMaintainer());
+        OrganisationsAsserts.assertEqualsOrganisationScheme(organisationSchemeVersion, organisationSchemeVersionUpdated);
     }
 
     @Test
@@ -1378,6 +1396,24 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Validate
         OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
+    }
+
+    @Test
+    public void testUpdateOrganisationInAgencySchemeRoot() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, AGENCY_ROOT_2_V1);
+        assertNull(organisation.getItemSchemeVersion().getMaintainableArtefact().getMaintainer());
+        assertTrue(SdmxSrmUtils.isAgencySchemeSdmx(organisation.getItemSchemeVersion().getMaintainableArtefact().getUrn()));
+        organisation.getNameableArtefact().setName(OrganisationsDoMocks.mockInternationalString());
+        organisation.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        // Update
+        OrganisationMetamac organisationUpdated = organisationsService.updateOrganisation(ctx, organisation);
+
+        // Validate
+        assertNull(organisationUpdated.getItemSchemeVersion().getMaintainableArtefact().getMaintainer());
+        OrganisationsAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
     }
 
     @Override

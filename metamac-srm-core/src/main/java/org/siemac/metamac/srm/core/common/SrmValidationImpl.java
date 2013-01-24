@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 
 @Component("srmValidation")
 public class SrmValidationImpl implements SrmValidation {
@@ -26,8 +27,12 @@ public class SrmValidationImpl implements SrmValidation {
 
     @Override
     public void checkMaintainer(ServiceContext ctx, MaintainableArtefact maintainableArtefact, Boolean artefactImported) throws MetamacException {
+        if (SdmxSrmUtils.isAgencySchemeSdmx(maintainableArtefact.getUrn())) {
+            // AgencyScheme root has not maintainer
+            return;
+        }
+
         if (maintainableArtefact.getMaintainer() == null) {
-            // maintainer is required. Note: AgencyScheme root has not maintainer, but it must be inserted and modified directly in database
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.MAINTAINER).build();
         }
         String maintainerUrn = maintainableArtefact.getMaintainer().getNameableArtefact().getUrn();
@@ -37,7 +42,7 @@ public class SrmValidationImpl implements SrmValidation {
         SrmValidationUtils.checkArtefactInternallyOrExternallyPublished(maintainerOrganisationSchemeVersion.getMaintainableArtefact().getUrn(),
                 maintainerOrganisationSchemeVersion.getLifeCycleMetadata());
 
-        // If artefact is not imported, maintainer must be default
+        // If artefact is not imported, maintainer must be the default one
         if (!BooleanUtils.isTrue(artefactImported)) {
             String maintainerUrnDefault = srmConfiguration.retrieveMaintainerUrnDefault(); // can not be empty
             if (!maintainerUrnDefault.equals(maintainerUrn)) {
