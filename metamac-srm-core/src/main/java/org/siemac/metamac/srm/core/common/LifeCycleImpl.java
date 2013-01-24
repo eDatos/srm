@@ -14,12 +14,17 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
+import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
 public abstract class LifeCycleImpl implements LifeCycle {
 
@@ -32,6 +37,9 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
     // Due to java restrictions, this must be inialized out of constructor of LifeCycle
     protected LifeCycleCallback             callback                               = null;
+
+    @Autowired
+    private OrganisationsMetamacService     organisationsService;
 
     @Autowired
     private CategoriesMetamacService        categoriesService;
@@ -187,7 +195,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         ProcStatusEnum targetStatus = ProcStatusEnum.EXTERNALLY_PUBLISHED;
 
         // Validate to publish externally
-        checkResourceInExternallyPublished(urn, srmResourceVersion, targetStatus);
+        checkResourceInExternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
 
         // Start validity and mark as public. Note: is imported, validFrom can not be override
         if (!callback.getMaintainableArtefact(srmResourceVersion).getIsImported()) {
@@ -324,7 +332,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
     /**
      * Makes validations to publish externally. Also revalidates conditions that were checked to go previous statuses.
      */
-    private void checkResourceInExternallyPublished(String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
+    private void checkResourceInExternallyPublished(ServiceContext ctx, String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
@@ -333,7 +341,12 @@ public abstract class LifeCycleImpl implements LifeCycle {
             checkProcStatus(srmResourceVersion, procStatusToPublishExternally);
         }
 
-        // Note: sdmx module checks maintainer has validity started (externally published)
+        // Check maintainer is externally published
+        if (!SdmxSrmUtils.isAgencySchemeSdmx(urn)) {
+            Organisation maintainer = callback.getMaintainableArtefact(srmResourceVersion).getMaintainer();
+            OrganisationSchemeVersionMetamac agencyScheme = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainer.getNameableArtefact().getUrn());
+            SrmValidationUtils.checkArtefactExternallyPublished(agencyScheme.getMaintainableArtefact().getUrn(), agencyScheme.getLifeCycleMetadata());
+        }
 
         // Check other conditions
         checkResourceInInternallyPublished(urn, srmResourceVersion, targetStatus);
