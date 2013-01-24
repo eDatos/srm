@@ -75,16 +75,6 @@ Application SrmFacadeCore {
 			"
 	    	MetamacCriteriaResult<@DataStructureDefinitionMetamacDto> findDataStructureDefinitionsByCondition(MetamacCriteria criteria) throws MetamacException;
 
-          	"
-          	 Retrieve a DSD with Grouping relationships.
-		     @param ctx
-		     @param urn
-		     @param typeDozerCopyMode, in TypeDozerCopyMode.CREATE the object graph not contains id fields, always is a new DSD graph instance. Use TypeDozerCopyMode.UPDATE for normal use.
-		     @return
-		     @throws org.siemac.metamac.core.common.exception.MetamacException
-		    "
-          	@DataStructureDefinitionExtendDto retrieveExtendedDataStructureDefinition(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
-			
 			"
           	 Retrieve a DSD without Grouping relationships.
 		     @param ctx

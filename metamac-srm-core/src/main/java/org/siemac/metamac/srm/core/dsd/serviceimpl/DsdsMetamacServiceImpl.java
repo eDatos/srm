@@ -155,9 +155,15 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DsdsMetamacInvocationValidator.checkDescriptorToCreateOrUpdate(component, null);
         checkComponentToCreateOrUpdate(ctx, dataStructureDefinitionVersionMetamac, component);
 
+        // TODO cuando se cambia la representacion de la measuredimension o se crea la measuredimension o se sustituye la emasure dimension con otra rep entonces debemos de borar
+        // los showdecimalsprecions
+        // if (component instanceof MeasureDimension) {
+        // Tengo que poner una bandera en el Dto2Do con chagned CodelistS, ponerlo como requerida en els ervicio para que no se olvide la gente, pero nullable en la entidad
+        // }
+        // jkakasjSS
+
         return dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
-
     @Override
     public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component) throws MetamacException {
 

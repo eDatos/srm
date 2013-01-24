@@ -4,11 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,13 +22,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
-import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
@@ -46,11 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.criteria.DataStructureDefinitionCriteriaPropertyEnum;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
 import com.arte.statistic.sdmx.v2_1.domain.jaxb.message.Structure;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -107,8 +99,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
         assertEquals(0, result.getResults().size());
     }
-    // @DataStructureDefinitionExtendDto retrieveExtendedDsd(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
-    //
     // @DataStructureDefinitionMetamacDto retrieveDsd(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
     //
     // @DataStructureDefinitionMetamacDto retrieveDsdByUrn(String urn) throws MetamacException;
@@ -249,56 +239,56 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     public void testExportSDMXStructureMsg() throws Exception {
 
         // DSD: ECB_EXR_RG
-        exportStructureMessage("ECB_EXR_NG");
+        // exportStructureMessage("ECB_EXR_NG");
 
         // DSD: ECB_EXR_RG
-        exportStructureMessage("ECB_EXR_RG");
+        // exportStructureMessage("ECB_EXR_RG");
 
         // DSD: ECB_EXR_RG
-        exportStructureMessage("ECB_EXR_SG");
+        // exportStructureMessage("ECB_EXR_SG");
     }
 
-    private void exportStructureMessage(String code) throws MetamacException, FileNotFoundException {
-        StructureMsgDto structureMsgDto = new StructureMsgDto();
-
-        // DSD
-        MetamacCriteria metamacCriteria = new MetamacCriteria();
-        MetamacCriteriaDisjunctionRestriction disjunction = new MetamacCriteriaDisjunctionRestriction();
-        disjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionCriteriaPropertyEnum.CODE.name(), code, OperationType.EQ));
-        metamacCriteria.setRestriction(disjunction);
-
-        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> metamacCriteriaResult = srmCoreServiceFacade
-                .findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
-
-        if (metamacCriteriaResult.getResults().isEmpty()) {
-            if (code.equals("ECB_EXR_NG")) {
-                srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_NG_FULL)));
-            } else if (code.equals("ECB_EXR_RG")) {
-                srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_RG_FULL)));
-            } else if (code.equals("ECB_EXR_SG")) {
-                srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_SG_FULL)));
-            } else {
-                fail("Error in test");
-            }
-            metamacCriteriaResult = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
-        }
-
-        DataStructureDefinitionDto dataStructureDefinitionDto = metamacCriteriaResult.getResults().iterator().next();
-        // Create DSD extend (with descriptors)
-        DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = mapper.map(metamacCriteriaResult.getResults().iterator().next(), DataStructureDefinitionExtendDto.class);
-        // Name and descriptions
-        dataStructureDefinitionExtendDto.setName(dataStructureDefinitionDto.getName());
-        dataStructureDefinitionExtendDto.setDescription(dataStructureDefinitionDto.getDescription());
-        // Annotations
-        dataStructureDefinitionExtendDto.getAnnotations().addAll(dataStructureDefinitionDto.getAnnotations());
-
-        // Add descriptors
-        dataStructureDefinitionExtendDto.getGrouping().addAll(srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionDto.getUrn()));
-
-        structureMsgDto.getDataStructureDefinitionDtos().add(dataStructureDefinitionExtendDto);
-
-        System.out.println("Output: " + srmCoreServiceFacade.exportSDMXStructureMsg(getServiceContextAdministrador(), structureMsgDto));
-    }
+    // private void exportStructureMessage(String code) throws MetamacException, FileNotFoundException {
+    // StructureMsgDto structureMsgDto = new StructureMsgDto();
+    //
+    // // DSD
+    // MetamacCriteria metamacCriteria = new MetamacCriteria();
+    // MetamacCriteriaDisjunctionRestriction disjunction = new MetamacCriteriaDisjunctionRestriction();
+    // disjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionCriteriaPropertyEnum.CODE.name(), code, OperationType.EQ));
+    // metamacCriteria.setRestriction(disjunction);
+    //
+    // MetamacCriteriaResult<DataStructureDefinitionMetamacDto> metamacCriteriaResult = srmCoreServiceFacade
+    // .findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+    //
+    // if (metamacCriteriaResult.getResults().isEmpty()) {
+    // if (code.equals("ECB_EXR_NG")) {
+    // srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_NG_FULL)));
+    // } else if (code.equals("ECB_EXR_RG")) {
+    // srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_RG_FULL)));
+    // } else if (code.equals("ECB_EXR_SG")) {
+    // srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_SG_FULL)));
+    // } else {
+    // fail("Error in test");
+    // }
+    // metamacCriteriaResult = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+    // }
+    //
+    // DataStructureDefinitionDto dataStructureDefinitionDto = metamacCriteriaResult.getResults().iterator().next();
+    // // Create DSD extend (with descriptors)
+    // DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = mapper.map(metamacCriteriaResult.getResults().iterator().next(), DataStructureDefinitionExtendDto.class);
+    // // Name and descriptions
+    // dataStructureDefinitionExtendDto.setName(dataStructureDefinitionDto.getName());
+    // dataStructureDefinitionExtendDto.setDescription(dataStructureDefinitionDto.getDescription());
+    // // Annotations
+    // dataStructureDefinitionExtendDto.getAnnotations().addAll(dataStructureDefinitionDto.getAnnotations());
+    //
+    // // Add descriptors
+    // dataStructureDefinitionExtendDto.getGrouping().addAll(srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionDto.getUrn()));
+    //
+    // structureMsgDto.getDataStructureDefinitionDtos().add(dataStructureDefinitionExtendDto);
+    //
+    // System.out.println("Output: " + srmCoreServiceFacade.exportSDMXStructureMsg(getServiceContextAdministrador(), structureMsgDto));
+    // }
 
     @Test
     @Ignore

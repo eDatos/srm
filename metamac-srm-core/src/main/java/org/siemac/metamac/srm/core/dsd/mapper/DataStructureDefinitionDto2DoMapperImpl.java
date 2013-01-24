@@ -26,7 +26,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 
 @org.springframework.stereotype.Component("dataStructureDefinitionDto2DoMapper")
 public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDefinitionDto2DoMapper {
@@ -56,19 +55,6 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
     @Override
     public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionMetamacDto source) throws MetamacException {
         return dataStructureDefinitionDtoToDataStructureDefinitionPrivate(source);
-    }
-
-    @Override
-    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionExtendDto source) throws MetamacException {
-
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dataStructureDefinitionDtoToDataStructureDefinitionPrivate(source);
-
-        // Add Grouping
-        for (ComponentListDto componentListDto : source.getGrouping()) {
-            dataStructureDefinitionVersionMetamac.addGrouping(componentListDtoToComponentList(componentListDto));
-        }
-
-        return dataStructureDefinitionVersionMetamac;
     }
 
     /**************************************************************************

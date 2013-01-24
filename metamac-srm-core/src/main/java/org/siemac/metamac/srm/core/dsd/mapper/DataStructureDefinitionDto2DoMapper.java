@@ -8,7 +8,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataStructureDefinitionExtendDto;
 
 public interface DataStructureDefinitionDto2DoMapper {
 
@@ -17,5 +16,4 @@ public interface DataStructureDefinitionDto2DoMapper {
     public <U extends ComponentList> U componentListDtoToComponentList(ComponentListDto source) throws MetamacException;
 
     public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionMetamacDto source) throws MetamacException;
-    public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionExtendDto source) throws MetamacException;
 }
