@@ -67,5 +67,4 @@ public class NewConceptWindow extends CustomWindow {
     public boolean validateForm() {
         return form.validate(false);
     }
-
 }
