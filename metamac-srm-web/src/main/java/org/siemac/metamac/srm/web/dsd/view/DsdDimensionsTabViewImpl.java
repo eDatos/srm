@@ -290,8 +290,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void createViewForm() {
         form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
         staticCode = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
-        ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
-        ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         staticTypeItem = new ViewTextItem(DimensionDS.TYPE, MetamacSrmWeb.getConstants().dsdDimensionsType());
         staticConceptItem = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
 
@@ -304,7 +302,11 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
         staticConceptSchemeItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, MetamacSrmWeb.getConstants().conceptScheme());
-        form.setFields(staticCode, urn, urnProvider, staticTypeItem, staticConceptItem, staticRoleItem, conceptRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem);
+
+        ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+
+        form.setFields(staticCode, staticTypeItem, staticConceptItem, staticRoleItem, conceptRoleItem, staticRepresentationTypeItem, staticCodeListItem, staticConceptSchemeItem, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -347,9 +349,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 return TypeDimensionComponent.TIMEDIMENSION.toString().equals(typeItem.getValueAsString());
             }
         });
-
-        ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
-        ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         // Type (read only)
 
@@ -463,7 +462,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        editionForm.setFields(code, staticCodeEdit, urn, urnProvider, staticTypeItemEdit, typeItem, conceptItem, roleItem, conceptRoleItem, representationTypeItem, codeListItem, conceptSchemeItem);
+        ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+
+        editionForm.setFields(code, staticCodeEdit, staticTypeItemEdit, typeItem, conceptItem, roleItem, conceptRoleItem, representationTypeItem, codeListItem, conceptSchemeItem, urn, urnProvider);
 
         // Facet Form
 

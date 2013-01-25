@@ -291,8 +291,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void createViewForm() {
         staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
         staticCode = new ViewTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
-        ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
-        ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         staticConceptItem = new ViewTextItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         staticRoleItem = new ViewTextItem(DataAttributeDS.ROLE, MetamacSrmWeb.getConstants().dsdAttributeRole());
         staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
@@ -304,8 +302,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
         staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
-        staticForm.setFields(staticCode, urn, urnProvider, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
-                staticDimensionsForDimensionRelationshipItem, staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, staticCodeListItem);
+        ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        staticForm.setFields(staticCode, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
+                staticDimensionsForDimensionRelationshipItem, staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, staticCodeListItem, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -334,9 +334,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         code = new RequiredTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
         code.setValidators(SemanticIdentifiersUtils.getAttributeIdentifierCustomValidator());
-
-        ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
-        ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         // Assignment Status
 
@@ -452,8 +449,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        editionForm.setFields(code, urn, urnProvider, assignmentStatusItem, conceptItem, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
-                groupKeyFormForGroupRelationship, representationTypeItem, codeListItem);
+        ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+
+        editionForm.setFields(code, assignmentStatusItem, conceptItem, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
+                groupKeyFormForGroupRelationship, representationTypeItem, codeListItem, urn, urnProvider);
 
         // Facet Form
 
