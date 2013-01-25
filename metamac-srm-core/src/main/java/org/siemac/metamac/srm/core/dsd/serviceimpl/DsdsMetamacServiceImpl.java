@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
@@ -188,12 +189,12 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // If is a Dimension check is not exist in the stub or heading, or delete it if exist
         if (component instanceof DimensionComponent) {
             for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getStubDimensions()) {
-                if (((DimensionComponent) component).equals(dimensionOrder.getDimension())) {
+                if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionOrder.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeStubDimension(dimensionOrder);
                 }
             }
             for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
-                if (((DimensionComponent) component).equals(dimensionOrder.getDimension())) {
+                if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionOrder.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeHeadingDimension(dimensionOrder);
                 }
             }
