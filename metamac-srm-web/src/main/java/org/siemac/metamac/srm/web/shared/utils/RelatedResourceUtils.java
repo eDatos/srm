@@ -15,10 +15,29 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 
 public class RelatedResourceUtils {
 
     private static RelatedResourceDto maintainer = null;
+
+    // DSDs
+
+    public static RelatedResourceDto getRelatedResourceDtoFromDimensionComponentDto(DimensionComponentDto dimensionComponentDto) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(dimensionComponentDto.getCode());
+        relatedResourceDto.setType(TypeExternalArtefactsEnum.COMPONENT);
+        relatedResourceDto.setUrn(dimensionComponentDto.getUrn());
+        return relatedResourceDto;
+    }
+
+    public static List<RelatedResourceDto> getRelatedResourceDtosFromDimensionComponentDtos(List<DimensionComponentDto> dimensionComponentDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(dimensionComponentDtos.size());
+        for (DimensionComponentDto dimension : dimensionComponentDtos) {
+            relatedResourceDtos.add(getRelatedResourceDtoFromDimensionComponentDto(dimension));
+        }
+        return relatedResourceDtos;
+    }
 
     //
     // ORGANISATIONS
@@ -48,7 +67,7 @@ public class RelatedResourceUtils {
     }
 
     public static List<RelatedResourceDto> getRelatedResourceDtosFromConceptMetamacDtos(List<ConceptMetamacDto> conceptMetamacDtos) {
-        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(conceptMetamacDtos.size());
         for (ConceptMetamacDto concept : conceptMetamacDtos) {
             relatedResourceDtos.add(getRelatedResourceDtoFromConceptMetamacDto(concept));
         }
@@ -71,7 +90,7 @@ public class RelatedResourceUtils {
     }
 
     public static List<RelatedResourceDto> getRelatedResourceDtosFromCodelistDtos(List<CodelistMetamacDto> codelistDtos) {
-        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(codelistDtos.size());
         for (CodelistMetamacDto codelist : codelistDtos) {
             relatedResourceDtos.add(getRelatedResourceDtoFromCodelistDto(codelist));
         }
@@ -89,7 +108,7 @@ public class RelatedResourceUtils {
     }
 
     public static List<RelatedResourceDto> getRelatedResourceDtosFromCodelistFamilyDtos(List<CodelistFamilyDto> codelistFamilyDtos) {
-        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(codelistFamilyDtos.size());
         for (CodelistFamilyDto family : codelistFamilyDtos) {
             relatedResourceDtos.add(getRelatedResourceDtoFromCodelistFamilyDto(family));
         }
@@ -125,7 +144,7 @@ public class RelatedResourceUtils {
     }
 
     public static List<RelatedResourceDto> getRelatedResourceDtosFromVariableFamilyDtos(List<VariableFamilyDto> variableFamilyDtos) {
-        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(variableFamilyDtos.size());
         for (VariableFamilyDto family : variableFamilyDtos) {
             relatedResourceDtos.add(getRelatedResourceDtoFromVariableFamilyDto(family));
         }
@@ -143,7 +162,7 @@ public class RelatedResourceUtils {
     }
 
     public static List<RelatedResourceDto> getRelatedResourceDtosFromVariableElementDtos(List<VariableElementDto> variableElementDtos) {
-        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(variableElementDtos.size());
         for (VariableElementDto element : variableElementDtos) {
             relatedResourceDtos.add(getRelatedResourceDtoFromVariableElementDto(element));
         }
@@ -169,10 +188,37 @@ public class RelatedResourceUtils {
     }
 
     public static List<String> getUrnsFromRelatedResourceDtos(List<RelatedResourceDto> relatedResourceDtos) {
-        List<String> urns = new ArrayList<String>();
+        List<String> urns = new ArrayList<String>(relatedResourceDtos.size());
         for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
             urns.add(relatedResourceDto.getUrn());
         }
         return urns;
+    }
+
+    public static List<String> getCodesFromRelatedResourceDtos(List<RelatedResourceDto> relatedResourceDtos) {
+        List<String> codes = new ArrayList<String>(relatedResourceDtos.size());
+        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
+            codes.add(relatedResourceDto.getCode());
+        }
+        return codes;
+    }
+
+    public static boolean isRelatedResourceInList(List<RelatedResourceDto> relatedResourceDtos, RelatedResourceDto relatedResourceDto) {
+        for (RelatedResourceDto r : relatedResourceDtos) {
+            if (StringUtils.equals(relatedResourceDto.getUrn(), r.getUrn())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static List<RelatedResourceDto> substractLists(List<RelatedResourceDto> list1, List<RelatedResourceDto> list2) {
+        List<RelatedResourceDto> result = new ArrayList<RelatedResourceDto>();
+        for (RelatedResourceDto r : list1) {
+            if (!isRelatedResourceInList(list2, r)) {
+                result.add(r);
+            }
+        }
+        return result;
     }
 }

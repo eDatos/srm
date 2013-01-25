@@ -18,13 +18,18 @@ import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
+import org.siemac.metamac.srm.web.dsd.events.UpdateDimensionsEvent;
+import org.siemac.metamac.srm.web.dsd.events.UpdateDimensionsEvent.UpdateDimensionsHandler;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent.UpdateDsdHandler;
+import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
@@ -38,6 +43,7 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -60,7 +66,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         implements
             DsdGeneralTabUiHandlers,
             SelectDsdAndDescriptorsHandler,
-            UpdateDsdHandler {
+            UpdateDsdHandler,
+            UpdateDimensionsHandler {
 
     private final DispatchAsync               dispatcher;
     private final PlaceManager                placeManager;
@@ -86,6 +93,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         DataStructureDefinitionMetamacDto getDataStructureDefinitionDto();
         HasClickHandlers getSave();
         void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
+
+        void setDimensions(List<DimensionComponentDto> dimensionComponentDtos);
     }
 
     @Inject
@@ -108,7 +117,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         if (!StringUtils.isBlank(dsdIdentifier)) {
             // Load DSD completely if it hasn't been loaded previously
             if (dsd == null || !dsdIdentifier.equals(UrnUtils.removePrefix(dsd.getUrn()))) {
-                retrieveDsd(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
+                retrieveCompleteDsd(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
             }
         }
     }
@@ -129,6 +138,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
         dsd = event.getDataStructureDefinitionDto();
         getView().setDsd(dsd);
+        getView().setDimensions(CommonUtils.getDimensionComponents(event.getDimensions()));
     }
 
     @ProxyEvent
@@ -136,6 +146,13 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public void onUpdateDsd(UpdateDsdEvent event) {
         dsd = event.getDataStructureDefinitionDto();
         getView().setDsd(dsd);
+    }
+
+    @ProxyEvent
+    @Override
+    public void onUpdateDimensions(UpdateDimensionsEvent event) {
+        getView().setDimensions(event.getDimensionComponentDtos());
+        retrieveDsd(dsd.getUrn());
     }
 
     @Override
@@ -160,7 +177,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void retrieveDsd(String urn) {
+    public void retrieveCompleteDsd(String urn) {
         dispatcher.execute(new GetDsdAndDescriptorsAction(urn), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
@@ -187,7 +204,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSentToProductionValidation()), MessageTypeEnum.SUCCESS);
-                retrieveDsd(urn);
+                retrieveCompleteDsd(urn);
             }
         });
     }
@@ -203,7 +220,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
-                retrieveDsd(urn);
+                retrieveCompleteDsd(urn);
             }
         });
     }
@@ -219,7 +236,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdRejected()), MessageTypeEnum.SUCCESS);
-                retrieveDsd(urn);
+                retrieveCompleteDsd(urn);
             }
         });
     }
@@ -235,7 +252,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPublishedInternally()), MessageTypeEnum.SUCCESS);
-                retrieveDsd(urn);
+                retrieveCompleteDsd(urn);
             }
         });
     }
@@ -251,7 +268,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPublishedExternally()), MessageTypeEnum.SUCCESS);
-                retrieveDsd(urn);
+                retrieveCompleteDsd(urn);
             }
         });
     }
@@ -308,9 +325,23 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(CancelDsdValidityResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(getMessages().dsdCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveDsd(urn);
+                retrieveCompleteDsd(urn);
             }
         });
     }
 
+    private void retrieveDsd(String urn) {
+        dispatcher.execute(new GetDsdAction(urn), new WaitingAsyncCallback<GetDsdResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetDsdResult result) {
+                dsd = result.getDsd();
+                getView().setDsd(dsd);
+            }
+        });
+    }
 }

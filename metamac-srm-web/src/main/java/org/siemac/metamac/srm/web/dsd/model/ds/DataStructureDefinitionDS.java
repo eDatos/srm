@@ -37,6 +37,7 @@ public class DataStructureDefinitionDS {
     // Visualisation metadata
     public static final String AUTO_OPEN                        = "dsd-auto-open";
     public static final String SHOW_DECIMALS                    = "dsd-show-decimals";
+    public static final String DIMENSIONS_VISUALISATIONS        = "dsd-stub";
 
     // COMMENTS
     public static final String COMMENTS                         = "dsd-comments";
