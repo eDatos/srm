@@ -341,6 +341,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Delete bidirectional relations of concepts relate this concept and its children (will be removed in cascade)
         removeRelatedConceptsBidirectional(concept);
 
+        // note: do not check if it is role or extends of another concept, because one concept must be published to be role or extends
+
         conceptsService.deleteConcept(ctx, urn);
     }
 
