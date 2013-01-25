@@ -70,7 +70,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String DATA_STRUCTURE_DEFINITION_HEADING                                  = DATA_STRUCTURE_DEFINITION + ".heading";
     public static final String DATA_STRUCTURE_DEFINITION_STUB                                     = DATA_STRUCTURE_DEFINITION + ".stub";
     public static final String DATA_STRUCTURE_DEFINITION_SHOW_DEC_PREC                            = DATA_STRUCTURE_DEFINITION + ".show_decimals_precision";
-    public static final String DATA_STRUCTURE_DEFINITION_MEASURE_DIMENSION_REPRESENTATION_CHANGED = DATA_STRUCTURE_DEFINITION + ".measure_dimension.representation_changed";
+    public static final String DATA_STRUCTURE_DEFINITION_MEASURE_DIMENSION_REPRESENTATION_UPDATED = DATA_STRUCTURE_DEFINITION + ".measure_dimension.is_representation_updated";
 
     // LIFECYCLE
     public static final String PROC_STATUS_DRAFT                                                  = ProcStatusEnum.DRAFT.name();
