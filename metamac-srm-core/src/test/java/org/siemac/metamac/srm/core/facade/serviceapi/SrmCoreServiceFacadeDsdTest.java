@@ -375,6 +375,17 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
+        // Find by concept scheme
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(), CONCEPT_SCHEME_4_V1, OperationType.EQ));
+            MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsForDsdPrimaryMeasure(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
+
+            // Validate
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
     }
 
     @Override
