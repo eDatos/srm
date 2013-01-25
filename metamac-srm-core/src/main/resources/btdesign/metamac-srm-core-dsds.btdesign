@@ -4,6 +4,7 @@ import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
+import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 
 Application DsdsMetamac {
@@ -59,6 +60,9 @@ Application DsdsMetamac {
     		"Ends the data structure definition validity"
     		@DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(String urn) throws MetamacException;
    		
+    		"Find concepts for concept in primary measure"
+    		PagedResult<@ConceptMetamac> findConceptsForDsdPrimaryMeasure(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+   		
 		}
 
 		// ----------------------------------------------------------------
@@ -86,6 +90,9 @@ Application DsdsMetamac {
 			
 			"Visualisation metadata Stub, dimensions list ordered"
 			- Bag<@MeasureDimensionPrecision> showDecimalsPrecisions fetch="lazy" cascade="all-delete-orphan" inverse orderby="id asc" <-> dsdVersion;
+			
+			"Statistical operation"
+			- @ExternalItem statisticalOperation nullable cascade="all" databaseColumn="STATISTICAL_OPERATION_FK";
 			
 			Repository DataStructureDefinitionVersionMetamacRepository {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);

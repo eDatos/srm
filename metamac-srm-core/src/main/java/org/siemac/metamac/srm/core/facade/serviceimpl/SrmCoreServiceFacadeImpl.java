@@ -528,6 +528,22 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return (file == null) ? StringUtils.EMPTY : file.getAbsolutePath();
     }
 
+    @Override
+    public MetamacCriteriaResult<ConceptMetamacDto> findConceptsForDsdPrimaryMeasure(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsForDsdPrimaryMeasure(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
     // ------------------------------------------------------------------------
     // CODELISTS
     // ------------------------------------------------------------------------

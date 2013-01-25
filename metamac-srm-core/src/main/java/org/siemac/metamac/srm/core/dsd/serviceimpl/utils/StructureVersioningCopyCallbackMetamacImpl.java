@@ -54,6 +54,8 @@ public class StructureVersioningCopyCallbackMetamacImpl implements StructureVers
             target.addShowDecimalsPrecision(targetMeasureDimensionPrecion);
         }
 
+        // TODO copy statisticalOperation. create new external item, to set different id in database!!!
+
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // New structure in draft version
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
     }

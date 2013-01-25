@@ -244,6 +244,15 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CODELIST_1_V2_ORDER_VISUALISATION_01        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION01";
     protected static final String CODELIST_1_V2_ORDER_VISUALISATION_02        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION02";
 
+    // Dsd
+    protected static String       DSD_1_V1                                    = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION01(01.000)";
+    protected static String       DSD_1_V2                                    = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION01(02.000)";
+    protected static String       DSD_2_V1                                    = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION02(01.000)";
+    protected static String       DSD_3_V1                                    = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION03(01.000)";
+    protected static String       DSD_4_V1                                    = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION04(01.000)";
+    protected static String       DSD_5_V1                                    = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION05(01.000)";
+    protected static String       DSD_6_V1                                    = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)";
+
     // Other
     protected static final String NOT_EXISTS                                  = "not-exists";
 

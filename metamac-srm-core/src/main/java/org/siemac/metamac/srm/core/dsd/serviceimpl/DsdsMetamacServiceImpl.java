@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
+import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -18,9 +19,16 @@ import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
@@ -51,6 +59,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Autowired
     private DataStructureDefinitionService  dataStructureDefinitionService;
+
+    @Autowired
+    private ConceptMetamacRepository        conceptMetamacRepository;
 
     @Autowired
     @Qualifier("dsdLifeCycle")
@@ -289,6 +300,50 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.endDataStructureDefinitionValidity(ctx, urn, null);
 
         return dataStructureDefinitionVersionMetamac;
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsForDsdPrimaryMeasure(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
+            throws MetamacException {
+
+        // Validation
+        DsdsMetamacInvocationValidator.checkFindConceptsForDsdPrimaryMeasure(conditions, pagingParameter, dsdUrn, null);
+
+        // Retrieve dsd
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
+                dsdUrn);
+        if (dataStructureDefinitionVersionMetamac.getStatisticalOperation() == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED)
+                    .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_STATISTICAL_OPERATION).build();
+        }
+
+        // Prepare conditions
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().build();
+        }
+        // ConceptScheme internally or externally published
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient())
+                .eq(Boolean.TRUE).buildSingle());
+        // ConceptScheme Transversal u operation (of DSD)
+        conditions.add(ConditionalCriteriaBuilder
+                .criteriaFor(ConceptMetamac.class)
+                .withProperty(
+                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class))
+                .eq(ConceptSchemeTypeEnum.TRANSVERSAL)
+                .or()
+                .lbrace()
+                .withProperty(
+                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class))
+                .eq(ConceptSchemeTypeEnum.OPERATION)
+                .and()
+                .withProperty(
+                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.relatedOperation().urn().getName(), false,
+                                ConceptMetamac.class)).eq(dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn()).rbrace().buildSingle());
+        // Concept primary_measure
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.sdmxRelatedArtefact()).eq(ConceptRoleEnum.PRIMARY_MEASURE).buildSingle());
+
+        // Find
+        return conceptMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException (Concept to ConceptMetamac)
     }
 
     /**************************************************************************

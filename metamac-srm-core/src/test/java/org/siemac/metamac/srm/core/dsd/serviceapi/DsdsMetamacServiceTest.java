@@ -6,6 +6,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
+import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +19,8 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
@@ -48,8 +56,6 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
-
-    private static String                 DSD_06_URN     = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)";
 
     private final ServiceContext          serviceContext = new ServiceContext("system", "123456", "junit");
 
@@ -121,9 +127,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             assertEquals(1, e.getExceptionItems().size());
             assertEquals(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_SHOWDECIMALS.getCode(), e.getExceptionItems().get(0).getCode());
         } catch (Exception e) {
-            int kaa = 2;
+            fail("wrong exception");
         }
-
     }
 
     @Test
@@ -182,10 +187,10 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     public void testSaveComponentForDataStructureDefinition() throws Exception {
 
         ServiceContext ctx = getServiceContextAdministrador();
-        String urn = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION01(02.000)";
-        // String urn = DSD_06_URN;
+        String urn = DSD_1_V2;
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(ctx, urn);
+        assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() != 0);
 
         // Create Dimension Descriptor and components
         ComponentList componentList = DataStructureDefinitionDoMocks.mockDimensionDescriptor();
@@ -193,9 +198,9 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
         Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension();
         ((MeasureDimension) measureDim).setIsRepresentationUpdated(Boolean.TRUE);
-        Component measureDimCreated = dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), urn, measureDim);
+        /* Component measureDimCreated = */dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), urn, measureDim);
 
-        assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() != 0);
+        assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() == 0);
 
     }
     @Test
@@ -256,7 +261,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Test
     @Override
     public void testVersioningDataStructureDefinition() throws Exception {
-        String urn = DSD_06_URN;
+        String urn = DSD_6_V1;
         String versionExpected = "02.000";
 
         DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
@@ -313,6 +318,25 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     public void testEndDataStructureDefinitionValidity() throws Exception {
         // TODO Test dsd
 
+    }
+
+    @Override
+    @Test
+    public void testFindConceptsForDsdPrimaryMeasure() throws Exception {
+
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).orderBy(ConceptMetamacProperties.nameableArtefact().urn()).build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptMetamac> result = dsdsMetamacService.findConceptsForDsdPrimaryMeasure(getServiceContextAdministrador(), conditions, pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(2, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
     }
 
     @Override
