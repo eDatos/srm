@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.dsd.serviceapi;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -32,6 +33,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDoMocks;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -178,10 +180,24 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Test
     @Override
     public void testSaveComponentForDataStructureDefinition() throws Exception {
-        // TODO Test dsd
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        String urn = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION01(02.000)";
+        // String urn = DSD_06_URN;
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(ctx, urn);
+
+        // Create Dimension Descriptor and components
+        ComponentList componentList = DataStructureDefinitionDoMocks.mockDimensionDescriptor();
+        dsdsMetamacService.saveDescriptorForDataStructureDefinition(ctx, urn, componentList);
+
+        Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension();
+        ((MeasureDimension) measureDim).setIsRepresentationUpdated(Boolean.TRUE);
+        Component measureDimCreated = dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), urn, measureDim);
+
+        assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() != 0);
 
     }
-
     @Test
     @Override
     public void testDeleteComponentForDataStructureDefinition() throws Exception {

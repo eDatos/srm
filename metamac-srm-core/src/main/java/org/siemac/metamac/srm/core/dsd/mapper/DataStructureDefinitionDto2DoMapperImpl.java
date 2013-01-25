@@ -50,11 +50,11 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         // Flag for force to perform a clean up of the Show Decimals Precision of DSD
         if (target instanceof MeasureDimension) {
             if (target.getId() == null || target.getLocalRepresentation() == null) {
-                ((MeasureDimension) target).setRepresentationChanged(Boolean.TRUE);
+                ((MeasureDimension) target).setIsRepresentationUpdated(Boolean.TRUE);
             } else {
                 EnumeratedRepresentation targetRepresentation = (EnumeratedRepresentation) target.getLocalRepresentation();
                 if (!source.getLocalRepresentation().getEnumerated().getUrn().equals(targetRepresentation.getEnumerated().getUrn())) {
-                    ((MeasureDimension) target).setRepresentationChanged(Boolean.TRUE);
+                    ((MeasureDimension) target).setIsRepresentationUpdated(Boolean.TRUE);
                 }
             }
         }

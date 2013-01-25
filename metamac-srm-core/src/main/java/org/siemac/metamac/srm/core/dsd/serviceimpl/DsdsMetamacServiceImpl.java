@@ -158,7 +158,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Clean Show Decimals Precision
         if (component instanceof MeasureDimension) {
-            if (((MeasureDimension) component).getRepresentationChanged()) {
+            if (((MeasureDimension) component).getIsRepresentationUpdated()) {
                 // perform a clean up of the Show Decimals Precision of DSD
                 dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().clear();
             }
