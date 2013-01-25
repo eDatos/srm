@@ -48,25 +48,28 @@ public class DimensionsVisualisationItem extends CustomCanvasItem {
         hLayout.setAutoHeight();
         hLayout.setAutoWidth();
 
-        // List of dimensions that are not in the heading o stub dimensions
+        if (editionMode) {
 
-        Canvas vDropLineProp = new Canvas();
-        vDropLineProp.setBackgroundColor("#008BD0");
+            // List of dimensions that are not in the heading o stub dimensions
 
-        dimensionsStack = new VStack(10);
-        dimensionsStack.setHeight("*");
-        dimensionsStack.setLayoutMargin(15);
-        dimensionsStack.setCanAcceptDrop(editionMode);
-        dimensionsStack.setAnimateMembers(editionMode);
-        dimensionsStack.setShowDragPlaceHolder(editionMode);
-        dimensionsStack.setDropLineProperties(vDropLineProp);
-        dimensionsStack.setBackgroundColor("#d1d3da");
-        Canvas dimensionsCanvas = new Canvas();
-        dimensionsCanvas.setHeight("*");
-        dimensionsCanvas.setBackgroundColor("#d1d3da");
-        dimensionsCanvas.addChild(dimensionsStack);
+            Canvas vDropLineProp = new Canvas();
+            vDropLineProp.setBackgroundColor("#008BD0");
 
-        hLayout.addMember(dimensionsCanvas);
+            dimensionsStack = new VStack(10);
+            dimensionsStack.setHeight("*");
+            dimensionsStack.setLayoutMargin(15);
+            dimensionsStack.setCanAcceptDrop(editionMode);
+            dimensionsStack.setAnimateMembers(editionMode);
+            dimensionsStack.setShowDragPlaceHolder(editionMode);
+            dimensionsStack.setDropLineProperties(vDropLineProp);
+            dimensionsStack.setBackgroundColor("#d1d3da");
+            Canvas dimensionsCanvas = new Canvas();
+            dimensionsCanvas.setHeight("*");
+            dimensionsCanvas.setBackgroundColor("#d1d3da");
+            dimensionsCanvas.addChild(dimensionsStack);
+
+            hLayout.addMember(dimensionsCanvas);
+        }
 
         setCanvas(hLayout);
     }
@@ -103,11 +106,13 @@ public class DimensionsVisualisationItem extends CustomCanvasItem {
      * Update the dimensions in the dimensions list to avoid duplicate dimensions in the heading or stub ones.
      */
     private void updateDimensionList() {
-        List<RelatedResourceDto> dimensionsToAdd = new ArrayList<RelatedResourceDto>();
-        if (dsdDimensions != null && visualisationDimensions != null) {
-            dimensionsToAdd = RelatedResourceUtils.substractLists(dsdDimensions, visualisationDimensions);
+        if (editionMode) { // Dimensions list is only shown in the edition mode
+            List<RelatedResourceDto> dimensionsToAdd = new ArrayList<RelatedResourceDto>();
+            if (dsdDimensions != null && visualisationDimensions != null) {
+                dimensionsToAdd = RelatedResourceUtils.substractLists(dsdDimensions, visualisationDimensions);
+            }
+            setDimensionsInStack(dimensionsStack, dimensionsToAdd, false);
         }
-        setDimensionsInStack(dimensionsStack, dimensionsToAdd, false);
     }
 
     private void setDimensionsInStack(Layout stack, List<RelatedResourceDto> dimensions, boolean updateDimensionList) {

@@ -538,7 +538,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         dataStructureDefinitionMetamacDto.getStubDimensions().addAll(
                 ((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).getStubDimensions());
         // TODO
-        
+
         // Comments
         dataStructureDefinitionMetamacDto.setComment((InternationalStringDto) commentsEditionForm.getValue(DataStructureDefinitionDS.COMMENTS));
 
@@ -563,7 +563,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     @Override
     public void setDimensions(List<DimensionComponentDto> dimensionComponentDtos) {
         List<RelatedResourceDto> dimensions = RelatedResourceUtils.getRelatedResourceDtosFromDimensionComponentDtos(dimensionComponentDtos);
-        ((DimensionsVisualisationItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).setDimensions(dimensions);
         ((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).setDimensions(dimensions);
     }
 
