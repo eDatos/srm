@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -159,7 +160,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
     public static void checkConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
 
-        if (checkMetadataRequired(conceptSchemeVersion)) {
+        if (SrmValidationUtils.mustValidateMetadataRequired(conceptSchemeVersion)) {
             ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
             if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
                 ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
@@ -196,7 +197,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ValidationUtils.checkMetadataOptionalIsValid(concept.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, exceptions);
 
         if (conceptSchemeVersion != null) {
-            if (checkMetadataRequired(conceptSchemeVersion)) {
+            if (SrmValidationUtils.mustValidateMetadataRequired(conceptSchemeVersion)) {
                 ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
                 if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())
                         || ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
@@ -208,18 +209,5 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
 
         // common metadata in sdmx are checked in Sdmx module
-    }
-
-    /**
-     * Do not check required metadata when it is a new artefact and it is imported. It will checked when update ConceptScheme or Concept, or when send to production validation
-     */
-    private static boolean checkMetadataRequired(ConceptSchemeVersionMetamac conceptSchemeVersion) {
-        if (conceptSchemeVersion.getId() != null) {
-            return true;
-        } else if (conceptSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(conceptSchemeVersion.getMaintainableArtefact().getIsImported())) {
-            return false;
-        } else {
-            return true;
-        }
     }
 }

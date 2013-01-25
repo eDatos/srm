@@ -130,6 +130,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistVersion;
     }
 
+    // TODO PTE RI: qué hacer si cambia la variable? poner a null todos los variableElement de los codes?
     @Override
     public CodelistVersionMetamac updateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         // Validation
@@ -1051,8 +1052,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     /**
      * Common validations to create or update a code
      */
-    private void checkCodeToCreateOrUpdate(ServiceContext ctx, CodelistVersionMetamac codelistVersion, Code code) throws MetamacException {
+    private void checkCodeToCreateOrUpdate(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodeMetamac code) throws MetamacException {
         checkCodelistCanBeModified(codelistVersion);
+
+        // Check variable element belongs to same variable of codelist
+        if (code.getVariableElement() != null && !codelistVersion.getVariable().getNameableArtefact().getUrn().equals(code.getVariableElement().getVariable().getNameableArtefact().getUrn())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CODE_VARIABLE_ELEMENT).build();
+        }
     }
 
     /**

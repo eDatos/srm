@@ -250,7 +250,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         }
 
         // Conditions for concrete resource
-        callback.checkConcreteResourceInProductionValidation(srmResourceVersion, exceptions);
+        callback.checkConcreteResourceInProductionValidation(srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -269,7 +269,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Check other conditions
         checkResourceInProductionValidation(urn, srmResourceVersion, targetStatus);
-        callback.checkConcreteResourceInDiffusionValidation(srmResourceVersion, exceptions);
+        callback.checkConcreteResourceInDiffusionValidation(srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -287,7 +287,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         }
 
         // Check other conditions
-        callback.checkConcreteResourceInRejectProductionValidation(srmResourceVersion, exceptions);
+        callback.checkConcreteResourceInRejectProductionValidation(srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -305,7 +305,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         }
 
         // Check other conditions
-        callback.checkConcreteResourceInRejectDiffusionValidation(srmResourceVersion, exceptions);
+        callback.checkConcreteResourceInRejectDiffusionValidation(srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -324,7 +324,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Check other conditions
         checkResourceInDiffusionValidation(urn, srmResourceVersion, targetStatus);
-        callback.checkConcreteResourceInInternallyPublished(srmResourceVersion, exceptions);
+        callback.checkConcreteResourceInInternallyPublished(srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -350,7 +350,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Check other conditions
         checkResourceInInternallyPublished(urn, srmResourceVersion, targetStatus);
-        callback.checkConcreteResourceInExternallyPublished(srmResourceVersion, exceptions);
+        callback.checkConcreteResourceInExternallyPublished(srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -388,12 +388,12 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public List<Object> findSrmResourceVersionsOfSrmResourceInProcStatus(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum... procStatus);
 
         // Conditions to update state
-        public void checkConcreteResourceInProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
 
         // Validity, final, public
         public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;

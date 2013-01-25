@@ -1520,7 +1520,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="48"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -1733,7 +1733,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="49"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -2105,7 +2105,7 @@
         IS_RECOMMENDED="0"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -2258,7 +2258,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -2629,7 +2629,7 @@
         IS_RECOMMENDED="1"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -2936,7 +2936,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -3193,7 +3193,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -3283,7 +3283,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -3426,7 +3426,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -3581,7 +3581,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -3737,7 +3737,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
@@ -3892,7 +3892,7 @@
         IS_RECOMMENDED="[null]"
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="[null]"
+        VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         

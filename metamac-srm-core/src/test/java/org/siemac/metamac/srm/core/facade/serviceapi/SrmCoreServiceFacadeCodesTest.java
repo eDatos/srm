@@ -115,6 +115,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     @Test
     public void testCreateCodelistErrorReplaceTo() throws Exception {
         CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
+        codelistDto.setVariable(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
         codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST01", CODELIST_1_V1, null));
 
         // Create
@@ -1824,9 +1825,9 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
     @Test
     public void testDeleteVariable() throws Exception {
-        String urn = VARIABLE_1;
+        String urn = VARIABLE_4;
 
-        // Delete codelist
+        // Delete
         srmCoreServiceFacade.deleteVariable(getServiceContextAdministrador(), urn);
 
         // Validation

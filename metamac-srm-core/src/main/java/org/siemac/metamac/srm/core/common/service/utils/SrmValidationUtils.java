@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.common.service.utils;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
@@ -9,6 +10,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
 
@@ -52,6 +54,21 @@ public class SrmValidationUtils {
     public static void checkNotAlphabeticalOrderVisualisation(CodelistOrderVisualisation orderVisualisation) throws MetamacException {
         if (SrmServiceUtils.isAlphabeticalOrderVisualisation(orderVisualisation)) {
             throw new MetamacException(ServiceExceptionType.CODELIST_ALPHABETICAL_ORDER_OPERATION_NOT_SUPPORTED, orderVisualisation.getNameableArtefact().getUrn());
+        }
+    }
+
+    /**
+     * Do not check required metadata when it is a new artefact and it is imported. It will checked when update ItemScheme or Item, or when send to production validation
+     */
+    public static boolean mustValidateMetadataRequired(ItemSchemeVersion itemSchemeVersion) {
+        if (itemSchemeVersion.getId() != null) {
+            // Always in update
+            return true;
+        } else if (itemSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(itemSchemeVersion.getMaintainableArtefact().getIsImported())) {
+            // false it it is imported, because required metadata can not be filled automatically
+            return false;
+        } else {
+            return true;
         }
     }
 }

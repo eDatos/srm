@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesInvocationValidator;
@@ -51,10 +52,13 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    private static void checkCodelist(CodelistVersionMetamac codelistVersion, List<MetamacExceptionItem> exceptions) {
+    public static void checkCodelist(CodelistVersionMetamac codelistVersion, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, exceptions);
         if (codelistVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
+        }
+        if (SrmValidationUtils.mustValidateMetadataRequired(codelistVersion)) {
+            ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);
         }
     }
 
@@ -113,6 +117,9 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
     }
 
     private static void checkCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, List<MetamacExceptionItem> exceptions) {
+        if (SrmValidationUtils.mustValidateMetadataRequired(codelistVersion)) {
+            ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);
+        }
         if (code.getVariableElement() != null) {
             ValidationUtils.checkMetadataEmpty(code.getShortName(), ServiceExceptionParameters.CODE_SHORT_NAME, exceptions);
         } else {
