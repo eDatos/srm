@@ -128,7 +128,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // CONCEPTS HIERARCHY
         //
 
-        conceptsTreeGrid = new ConceptsTreeGrid();
+        conceptsTreeGrid = new ConceptsTreeGrid(false);
 
         CustomVLayout conceptsListGridLayout = new CustomVLayout();
         conceptsListGridLayout.addMember(new TitleLabel(getConstants().conceptSchemeConcepts()));

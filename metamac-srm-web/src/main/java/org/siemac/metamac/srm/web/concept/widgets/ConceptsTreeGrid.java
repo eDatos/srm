@@ -46,7 +46,8 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
 
     private BaseConceptUiHandlers    uiHandlers;
 
-    public ConceptsTreeGrid() {
+    public ConceptsTreeGrid(boolean alwaysShowEditors) {
+        super(alwaysShowEditors);
         // Remove the filter edition handler and add a new one (to support filter by concept type and SDMX role)
         removeFilterEditionHandler();
         addFilterEditorSubmitHandler(new FilterEditorSubmitHandler() {
@@ -165,6 +166,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
         this.conceptSchemeMetamacDto = (ConceptSchemeMetamacDto) itemSchemeDto;
         super.updateItemScheme(itemSchemeDto);
     }
+
     public void setUiHandlers(BaseConceptUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
     }

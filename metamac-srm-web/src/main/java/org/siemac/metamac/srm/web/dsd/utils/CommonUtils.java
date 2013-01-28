@@ -160,4 +160,23 @@ public class CommonUtils {
         }
         return dsdShowDecimalsHashMap;
     }
+
+    public static DimensionComponentDto getMesureDimension(List<DimensionComponentDto> dimensionComponentDtos) {
+        if (dimensionComponentDtos != null) {
+            for (DimensionComponentDto dimension : dimensionComponentDtos) {
+                if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimension.getTypeDimensionComponent())) {
+                    return dimension;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getConceptSchemeUrnOfMeasureDimensionRepresentation(List<DimensionComponentDto> dimensionComponentDtos) {
+        DimensionComponentDto measureDimension = getMesureDimension(dimensionComponentDtos);
+        if (measureDimension != null && measureDimension.getLocalRepresentation() != null && measureDimension.getLocalRepresentation().getEnumerated() != null) {
+            return measureDimension.getLocalRepresentation().getEnumerated().getUrn();
+        }
+        return null;
+    }
 }

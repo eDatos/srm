@@ -34,10 +34,11 @@ public class DataStructureDefinitionDS {
     public static final String IS_EXTERNAL_PUBLICATION_FAILED   = "dsd-ext-pub-fail";
     public static final String EXTERNAL_PUBLICATION_FAILED_DATE = "dsd-ext-pub-fail-date";
 
-    // Visualisation metadata
+    // VISUALISATION METADATA
     public static final String AUTO_OPEN                        = "dsd-auto-open";
     public static final String SHOW_DECIMALS                    = "dsd-show-decimals";
     public static final String DIMENSIONS_VISUALISATIONS        = "dsd-stub";
+    public static final String SHOW_DECIMALS_PRECISION          = "dsd-show-dec-prec";
 
     // COMMENTS
     public static final String COMMENTS                         = "dsd-comments";

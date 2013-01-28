@@ -8,6 +8,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -24,6 +25,10 @@ import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent.UpdateDsdHandler;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
@@ -44,6 +49,7 @@ import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -74,6 +80,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     private DataStructureDefinitionMetamacDto dsd;
 
+    private String                            conceptSchemeUrnOfMeasureDimensionRepresentation; // URN of the concept scheme that is associated to the measure dimension representation
+
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdGeneralPage)
     @UseGatekeeper(LoggedInGatekeeper.class)
@@ -94,7 +102,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         HasClickHandlers getSave();
         void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
 
-        void setDimensions(List<DimensionComponentDto> dimensionComponentDtos);
+        void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos);
+        void setConceptsForShowDecimalsPrecision(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> concepts);
     }
 
     @Inject
@@ -138,7 +147,11 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
         dsd = event.getDataStructureDefinitionDto();
         getView().setDsd(dsd);
-        getView().setDimensions(CommonUtils.getDimensionComponents(event.getDimensions()));
+
+        List<DimensionComponentDto> dimensionComponentDtos = CommonUtils.getDimensionComponents(event.getDimensions());
+
+        getView().setDimensionsForStubAndHeading(dimensionComponentDtos);
+        setConceptSchemeOfTheMeasureDimension(dimensionComponentDtos);
     }
 
     @ProxyEvent
@@ -151,8 +164,11 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     @ProxyEvent
     @Override
     public void onUpdateDimensions(UpdateDimensionsEvent event) {
-        getView().setDimensions(event.getDimensionComponentDtos());
+        getView().setDimensionsForStubAndHeading(event.getDimensionComponentDtos());
         retrieveDsd(dsd.getUrn());
+
+        // Measure dimension
+        setConceptSchemeOfTheMeasureDimension(event.getDimensionComponentDtos());
     }
 
     @Override
@@ -297,7 +313,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingVersions()), MessageTypeEnum.ERROR);
             }
-
             @Override
             public void onWaitSuccess(GetDsdVersionsResult result) {
                 getView().setDsdVersions(result.getDataStructureDefinitionMetamacDtos());
@@ -343,5 +358,44 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                 getView().setDsd(dsd);
             }
         });
+    }
+
+    private void retrieveConcepts(final String conceptSchemeUrn) {
+        dispatcher.execute(new GetConceptSchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieve()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptSchemeResult result) {
+                final ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getConceptSchemeDto();
+                dispatcher.execute(new GetConceptListBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptListBySchemeResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetConceptListBySchemeResult result) {
+                        getView().setConceptsForShowDecimalsPrecision(conceptSchemeMetamacDto, result.getItemHierarchyDtos());
+                    }
+                });
+
+            }
+        });
+    }
+
+    private void setConceptSchemeOfTheMeasureDimension(List<DimensionComponentDto> dimensionComponentDtos) {
+        String conceptSchemeUrn = CommonUtils.getConceptSchemeUrnOfMeasureDimensionRepresentation(dimensionComponentDtos);
+
+        // TODO Remove this!
+        conceptSchemeUrn = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:medida(01.000)";
+
+        if (!StringUtils.equals(conceptSchemeUrn, conceptSchemeUrnOfMeasureDimensionRepresentation)) {
+            this.conceptSchemeUrnOfMeasureDimensionRepresentation = conceptSchemeUrn;
+            // Load concepts of the specified concept scheme
+            retrieveConcepts(conceptSchemeUrn);
+        }
     }
 }

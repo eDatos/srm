@@ -37,7 +37,7 @@ public class ConceptsTreeWindow extends CustomWindow {
 
         int width = 650;
 
-        conceptsTreeGrid = new ConceptsTreeGrid();
+        conceptsTreeGrid = new ConceptsTreeGrid(false);
         conceptsTreeGrid.setWidth(width);
         conceptsTreeGrid.setMargin(5);
         conceptsTreeGrid.setAutoFitMaxRecords(15);
