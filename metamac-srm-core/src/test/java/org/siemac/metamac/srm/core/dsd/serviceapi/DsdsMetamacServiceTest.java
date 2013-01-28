@@ -570,6 +570,23 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     }
 
     @Override
+    @Test
+    public void testFindConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension() throws Exception {
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+
+        // Find
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(getServiceContextAdministrador(), conditions,
+                pagingParameter);
+
+        // Validate
+        assertEquals(1, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_7_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
     }

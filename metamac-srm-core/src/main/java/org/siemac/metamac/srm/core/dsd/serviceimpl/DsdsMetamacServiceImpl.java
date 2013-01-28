@@ -369,28 +369,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
             String dsdUrn) throws MetamacException {
-        // Validation
-        DsdsMetamacInvocationValidator.checkFindConceptsCanBeDsdRoleByCondition(conditions, pagingParameter, dsdUrn, null);
-
-        // Prepare conditions
-        Class entitySearchedClass = ConceptSchemeVersionMetamac.class;
-        if (conditions == null) {
-            conditions = new ArrayList<ConditionalCriteria>();
-        }
-        // ConceptScheme internally or externally published
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
-                .buildSingle());
-        // ConceptScheme Role
-        Property<ConceptSchemeVersionMetamac> conceptSchemeTypeProperty = ConceptSchemeVersionMetamacProperties.type();
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.ROLE).buildSingle());
-        // Do not repeat results
-        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build());
-
-        // Find
-        return conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+        return findConceptSchemesWithSpecificType(ctx, conditions, pagingParameter, ConceptSchemeTypeEnum.ROLE);
     }
 
     @Override
@@ -449,6 +430,12 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Find
         return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
+        return findConceptSchemesWithSpecificType(ctx, conditions, pagingParameter, ConceptSchemeTypeEnum.MEASURE);
     }
 
     /**************************************************************************
@@ -646,6 +633,30 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Find
         return conceptMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException (Concept to ConceptMetamac)
+    }
+
+    /**
+     * Finds concept schemes with type Role, Measure...
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithSpecificType(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
+            ConceptSchemeTypeEnum conceptSchemeTypeEnum) throws MetamacException {
+
+        // Prepare conditions
+        Class entitySearchedClass = ConceptSchemeVersionMetamac.class;
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        // ConceptScheme internally or externally published
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
+                .buildSingle());
+        // ConceptScheme measure
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(ConceptSchemeVersionMetamacProperties.type()).eq(conceptSchemeTypeEnum).buildSingle());
+        // Do not repeat results
+        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build());
+
+        // Find
+        return conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
 
     private Property<ConceptMetamac> buildConceptPropertyToConceptSchemeType() {

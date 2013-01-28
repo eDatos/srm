@@ -83,6 +83,8 @@ Application DsdsMetamac {
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
+    		"Find concept schemes to enumerated representation of measure dimension"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
