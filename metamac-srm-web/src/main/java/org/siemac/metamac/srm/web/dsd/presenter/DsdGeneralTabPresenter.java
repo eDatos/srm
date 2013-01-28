@@ -388,10 +388,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     private void setConceptSchemeOfTheMeasureDimension(List<DimensionComponentDto> dimensionComponentDtos) {
         String conceptSchemeUrn = CommonUtils.getConceptSchemeUrnOfMeasureDimensionRepresentation(dimensionComponentDtos);
-
-        // TODO Remove this!
-        conceptSchemeUrn = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ISTAC:medida(01.000)";
-
         if (!StringUtils.equals(conceptSchemeUrn, conceptSchemeUrnOfMeasureDimensionRepresentation)) {
             this.conceptSchemeUrnOfMeasureDimensionRepresentation = conceptSchemeUrn;
             // Load concepts of the specified concept scheme
