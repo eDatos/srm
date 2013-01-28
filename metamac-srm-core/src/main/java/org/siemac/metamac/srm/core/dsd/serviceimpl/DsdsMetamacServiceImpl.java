@@ -19,6 +19,10 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -33,6 +37,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
@@ -69,6 +74,12 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Autowired
     private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
+
+    @Autowired
+    private ConceptsMetamacService                conceptsService;
+
+    @Autowired
+    private CodelistVersionMetamacRepository      codelistVersionMetamacRepository;
 
     @Autowired
     @Qualifier("dsdLifeCycle")
@@ -405,6 +416,39 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Find
         return conceptMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
+            String conceptUrn) throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForDsd(conditions, pagingParameter, conceptUrn, null);
+
+        // Retrieve variable of concept
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(ctx, conceptUrn);
+        Variable variable = concept.getVariable();
+        if (variable == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
+
+        }
+
+        // Prepare conditions
+        Class entitySearchedClass = CodelistVersionMetamac.class;
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        // Codelist internally or externally published
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
+                .buildSingle());
+        // Same variable
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn())
+                .eq(variable.getNameableArtefact().getUrn()).buildSingle());
+        // Do not repeat results
+        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
+
+        // Find
+        return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
 
     /**************************************************************************

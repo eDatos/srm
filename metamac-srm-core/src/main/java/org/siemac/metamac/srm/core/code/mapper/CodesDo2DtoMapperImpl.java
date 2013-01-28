@@ -62,6 +62,15 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
+    public RelatedResourceDto codelistMetamacDoToRelatedResourceDto(CodelistVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.codelistDoToRelatedResourceDto(source);
+        return target;
+    }
+
+    @Override
     public List<CodelistMetamacDto> codelistMetamacDoListToDtoList(List<CodelistVersionMetamac> codelistVersions) {
         List<CodelistMetamacDto> codelistMetamacDtos = new ArrayList<CodelistMetamacDto>(codelistVersions.size());
         for (CodelistVersionMetamac codelistVersion : codelistVersions) {

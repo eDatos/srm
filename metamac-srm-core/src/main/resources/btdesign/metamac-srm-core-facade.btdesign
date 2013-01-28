@@ -241,6 +241,8 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be role"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		"Find codelists belong to same variable of concept"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
     		
 	    	/**************************************************************************
 		     * ORGANISATIONS

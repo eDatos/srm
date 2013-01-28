@@ -100,7 +100,18 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        ValidationUtils.checkParameterRequired(dsdUrn, ServiceExceptionParameters.URN, exceptions); // do dsd required, if in future more conditions are added
+        ValidationUtils.checkParameterRequired(dsdUrn, ServiceExceptionParameters.URN, exceptions); // do dsd required, to prevent in future more conditions are added
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkFindCodelistsCanBeEnumeratedRepresentationForDsd(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn,
+            List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(conceptUrn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

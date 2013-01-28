@@ -6,6 +6,7 @@ import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
+import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
 
 Application DsdsMetamac {
 	basePackage=unused
@@ -76,11 +77,12 @@ Application DsdsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find concepts can be dimension"
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
-
     		"Find concept schemes with concepts can be role"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find concepts can be role"
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find codelists belong to same variable of concept"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

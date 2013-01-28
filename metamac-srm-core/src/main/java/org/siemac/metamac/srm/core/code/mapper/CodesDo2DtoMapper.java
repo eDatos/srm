@@ -26,6 +26,7 @@ public interface CodesDo2DtoMapper {
 
     // Codelists
     public CodelistMetamacDto codelistMetamacDoToDto(CodelistVersionMetamac source);
+    public RelatedResourceDto codelistMetamacDoToRelatedResourceDto(CodelistVersionMetamac source);
     public List<CodelistMetamacDto> codelistMetamacDoListToDtoList(List<CodelistVersionMetamac> sources);
 
     // Codes

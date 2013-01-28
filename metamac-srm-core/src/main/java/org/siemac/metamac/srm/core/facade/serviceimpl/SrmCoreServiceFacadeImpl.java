@@ -708,6 +708,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return metamacCriteriaResult;
     }
 
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), conceptUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
     // ------------------------------------------------------------------------
     // CODELISTS
     // ------------------------------------------------------------------------
