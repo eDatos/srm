@@ -360,8 +360,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         typeItem.setValueMap(CommonUtils.getTypeDimensionComponentHashMap());
         typeItem.setRedrawOnChange(true);
         FormItemIcon infoIcon = new FormItemIcon();
-        infoIcon.setHeight(14);
-        infoIcon.setWidth(14);
         infoIcon.setSrc(GlobalResources.RESOURCE.info().getURL());
         infoIcon.setPrompt(MetamacSrmWeb.getMessages().infoDimensionType());
         typeItem.setIcons(infoIcon);
@@ -440,7 +438,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         timeCustomValidator.setErrorMessage(MetamacSrmWeb.getMessages().errorRequiredNonEnumeratedRepresentationInTimeDimension());
         representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
 
-        // Code List
+        // Codelist
 
         codeListItem = new CustomSelectItem(DimensionDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
         // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
@@ -452,7 +450,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        conceptSchemeItem = new CustomSelectItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, MetamacSrmWeb.getConstants().dsdConceptScheme());
+        // ConceptScheme
+
+        conceptSchemeItem = new CustomSelectItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, MetamacSrmWeb.getConstants().conceptScheme());
         // Show ConceptScheme if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
         conceptSchemeItem.setShowIfCondition(new FormItemIfFunction() {
 
@@ -461,6 +461,11 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 return CommonUtils.isRepresentationTypeEnumerated(representationTypeItem.getValueAsString()) && TypeDimensionComponent.MEASUREDIMENSION.toString().equals(typeItem.getValueAsString());
             }
         });
+        FormItemIcon measureDimensionInfo = new FormItemIcon();
+        measureDimensionInfo.setSrc(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.info().getURL());
+        measureDimensionInfo.setPrompt(getConstants().dsdMeasureDimensionRepresentation());
+        conceptSchemeItem.setIconVAlign(VerticalAlignment.TOP);
+        conceptSchemeItem.setIcons(measureDimensionInfo);
 
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
@@ -900,5 +905,4 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             searchRolesWindow.refreshSourcePaginationInfo(firstResult, concepts.size(), totalResults);
         }
     }
-
 }

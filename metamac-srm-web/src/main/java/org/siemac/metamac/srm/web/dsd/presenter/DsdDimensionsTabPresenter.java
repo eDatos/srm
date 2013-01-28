@@ -251,7 +251,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         DescriptorDto dimensionsDescriptor = event.getDimensions();
         isNewDescriptor = dimensionsDescriptor.getId() == null;
         dimensionComponentDtos = CommonUtils.getDimensionComponents(dimensionsDescriptor);
-        getView().setDsdDimensions(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), dimensionComponentDtos);
+        setDsdDimensions(dataStructureDefinitionDto, dimensionComponentDtos);
     }
 
     @ProxyEvent
@@ -345,7 +345,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                     }
                 }
                 if (updateView) {
-                    getView().setDsdDimensions(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), dimensionComponentDtos);
+                    setDsdDimensions(dataStructureDefinitionDto, dimensionComponentDtos);
                 }
                 UpdateDimensionsEvent.fire(DsdDimensionsTabPresenter.this, dimensionComponentDtos);
             }
@@ -433,5 +433,9 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                 getView().setConceptsAsRole(result.getConcepts(), result.getFirstResultOut(), result.getTotalResults());
             }
         });
+    }
+
+    private void setDsdDimensions(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
+        getView().setDsdDimensions(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dimensionComponentDtos);
     }
 }

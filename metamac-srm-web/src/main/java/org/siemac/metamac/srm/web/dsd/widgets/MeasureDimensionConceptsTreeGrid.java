@@ -86,22 +86,22 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
 
     @Override
     public void updateItemScheme(ItemSchemeDto itemSchemeDto) {
-        // Do nothing
+        // Overwrite this method to do nothing
     }
 
     @Override
     public void setUiHandlers(BaseConceptUiHandlers uiHandlers) {
-        // Do nothing
+        // Overwrite this method to do nothing
     }
 
     @Override
     protected void onNodeClick(String nodeName, String conceptUrn) {
-        // Do nothing
+        // Overwrite this method to do nothing
     }
 
     @Override
     protected void onNodeContextClick(String nodeName, ItemDto concept) {
-        // Do nothing
+        // Overwrite this method to do nothing
     }
 
     private void updateDecimalsPrecision() {
