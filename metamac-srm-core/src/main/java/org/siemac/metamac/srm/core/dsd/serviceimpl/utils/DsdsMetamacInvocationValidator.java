@@ -94,6 +94,17 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkFindConceptsCanBeDsdRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(dsdUrn, ServiceExceptionParameters.URN, exceptions); // do dsd required, if in future more conditions are added
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     /**************************************************************************
      * PRIVATES
      *************************************************************************/

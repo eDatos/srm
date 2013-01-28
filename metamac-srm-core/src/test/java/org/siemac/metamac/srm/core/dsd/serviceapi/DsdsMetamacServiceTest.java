@@ -494,6 +494,42 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     }
 
     @Override
+    @Test
+    public void testFindConceptsCanBeDsdRoleByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).orderBy(ConceptMetamacProperties.nameableArtefact().urn()).build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptMetamac> result = dsdsMetamacService.findConceptsCanBeDsdRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(1, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindConceptSchemesWithConceptsCanBeDsdRoleByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesWithConceptsCanBeDsdRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter,
+                dsdUrn);
+
+        // Validate
+        assertEquals(1, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_6_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
     }

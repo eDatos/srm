@@ -76,6 +76,11 @@ Application DsdsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find concepts can be dimension"
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+
+    		"Find concept schemes with concepts can be role"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts can be role"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeDsdRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

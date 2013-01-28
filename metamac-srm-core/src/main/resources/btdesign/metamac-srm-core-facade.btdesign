@@ -222,21 +222,25 @@ Application SrmFacadeCore {
 			" 
 	   		deleteComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto) throws MetamacException;
     		"Find concept schemes with concepts can be primary measure"
-    		MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be primary measure"
-    		MetamacCriteriaResult<@ConceptMetamacDto> findConceptsCanBeDsdPrimaryMeasureByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdPrimaryMeasureByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concept schemes with concepts can be time dimension"
-    		MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be time dimension"
-    		MetamacCriteriaResult<@ConceptMetamacDto> findConceptsCanBeDsdTimeDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdTimeDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concept schemes with concepts can be measure dimension"
-    		MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be measure dimension"
-    		MetamacCriteriaResult<@ConceptMetamacDto> findConceptsCanBeDsdMeasureDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdMeasureDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concept schemes with concepts can be dimension"
-    		MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be dimension"
-    		MetamacCriteriaResult<@ConceptMetamacDto> findConceptsCanBeDsdDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		"Find concept schemes with concepts can be role"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		"Find concepts can be role"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		
 	    	/**************************************************************************
 		     * ORGANISATIONS

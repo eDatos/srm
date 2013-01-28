@@ -529,7 +529,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
             throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
@@ -542,13 +542,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptMetamacDto> findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -560,12 +560,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 .findConceptsCanBeDsdPrimaryMeasureByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
             throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
@@ -578,13 +579,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptMetamacDto> findConceptsCanBeDsdTimeDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdTimeDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -595,12 +596,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsCanBeDsdTimeDimensionByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
             throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
@@ -613,13 +615,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptMetamacDto> findConceptsCanBeDsdMeasureDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdMeasureDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -631,13 +633,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
-            throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -649,13 +651,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptMetamacDto> findConceptsCanBeDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -666,7 +668,43 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsCanBeDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdRoleByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsCanBeDsdRoleByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
