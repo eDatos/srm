@@ -11,6 +11,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -27,7 +28,9 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
@@ -59,24 +62,27 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureVer
 public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Autowired
-    private DataStructureDefinitionService  dataStructureDefinitionService;
+    private DataStructureDefinitionService        dataStructureDefinitionService;
 
     @Autowired
-    private ConceptMetamacRepository        conceptMetamacRepository;
+    private ConceptMetamacRepository              conceptMetamacRepository;
+
+    @Autowired
+    private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
 
     @Autowired
     @Qualifier("dsdLifeCycle")
-    private LifeCycle                       dsdLifeCycle;
+    private LifeCycle                             dsdLifeCycle;
 
     @Autowired
-    private SrmValidation                   srmValidation;
+    private SrmValidation                         srmValidation;
 
     @Autowired
     @Qualifier("structureVersioningCopyCallbackMetamac")
-    private StructureVersioningCopyCallback structureVersioningCopyCallback;
+    private StructureVersioningCopyCallback       structureVersioningCopyCallback;
 
     @Autowired
-    private StructureVersionRepository      structureVersionRepository;
+    private StructureVersionRepository            structureVersionRepository;
 
     public DsdsMetamacServiceImpl() {
     }
@@ -303,12 +309,13 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return dataStructureDefinitionVersionMetamac;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public PagedResult<ConceptMetamac> findConceptsForDsdPrimaryMeasure(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
-            throws MetamacException {
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String dsdUrn) throws MetamacException {
 
         // Validation
-        DsdsMetamacInvocationValidator.checkFindConceptsForDsdPrimaryMeasure(conditions, pagingParameter, dsdUrn, null);
+        DsdsMetamacInvocationValidator.checkFindConceptsCanBeDsdPrimaryMeasureByCondition(conditions, pagingParameter, dsdUrn, null);
 
         // Retrieve dsd
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
@@ -319,29 +326,68 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         }
 
         // Prepare conditions
+        Class entitySearchedClass = ConceptSchemeVersionMetamac.class;
         if (conditions == null) {
-            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().build();
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+
+        // ConceptScheme internally or externally published
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
+                .buildSingle());
+        // ConceptScheme Transversal u operation (of DSD)
+        Property<ConceptSchemeVersionMetamac> conceptSchemeTypeProperty = ConceptSchemeVersionMetamacProperties.type();
+        Property conceptSchemeRelatedOperationUrnProperty = ConceptSchemeVersionMetamacProperties.relatedOperation().urn();
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.TRANSVERSAL).or().lbrace()
+                .withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.OPERATION).and().withProperty(conceptSchemeRelatedOperationUrnProperty)
+                .eq(dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn()).rbrace().buildSingle());
+        // Concept primary_measure
+        Property conceptRoleEnumProperty = new LeafProperty<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamacProperties.items().getName(), ConceptMetamacProperties.sdmxRelatedArtefact()
+                .getName(), false, entitySearchedClass);
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptRoleEnumProperty).eq(ConceptRoleEnum.PRIMARY_MEASURE).buildSingle());
+        // Do not repeat results and order by. Order by items id is due to bug in Sculpor criteria
+        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.items().id()).ascending().distinctRoot().build());
+
+        // Find
+        return conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
+            throws MetamacException {
+
+        // Validation
+        DsdsMetamacInvocationValidator.checkFindConceptsCanBeDsdPrimaryMeasureByCondition(conditions, pagingParameter, dsdUrn, null);
+
+        // Retrieve dsd
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
+                dsdUrn);
+        if (dataStructureDefinitionVersionMetamac.getStatisticalOperation() == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED)
+                    .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_STATISTICAL_OPERATION).build();
+        }
+
+        // Prepare conditions
+        Class entitySearchedClass = ConceptMetamac.class;
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
         }
         // ConceptScheme internally or externally published
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient())
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient())
                 .eq(Boolean.TRUE).buildSingle());
         // ConceptScheme Transversal u operation (of DSD)
-        conditions.add(ConditionalCriteriaBuilder
-                .criteriaFor(ConceptMetamac.class)
-                .withProperty(
-                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class))
-                .eq(ConceptSchemeTypeEnum.TRANSVERSAL)
-                .or()
-                .lbrace()
-                .withProperty(
-                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class))
-                .eq(ConceptSchemeTypeEnum.OPERATION)
-                .and()
-                .withProperty(
-                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.relatedOperation().urn().getName(), false,
-                                ConceptMetamac.class)).eq(dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn()).rbrace().buildSingle());
+        Property conceptSchemeTypeProperty = new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), false,
+                entitySearchedClass);
+        Property conceptSchemeRelatedOperationUrnProperty = new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties
+                .relatedOperation().urn().getName(), false, entitySearchedClass);
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.TRANSVERSAL).or().lbrace()
+                .withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.OPERATION).and().withProperty(conceptSchemeRelatedOperationUrnProperty)
+                .eq(dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn()).rbrace().buildSingle());
         // Concept primary_measure
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.sdmxRelatedArtefact()).eq(ConceptRoleEnum.PRIMARY_MEASURE).buildSingle());
+        Property conceptRoleEnumProperty = ConceptMetamacProperties.sdmxRelatedArtefact();
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptRoleEnumProperty).eq(ConceptRoleEnum.PRIMARY_MEASURE).buildSingle());
+        // Do not repeat results
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).distinctRoot().buildSingle());
 
         // Find
         return conceptMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException (Concept to ConceptMetamac)

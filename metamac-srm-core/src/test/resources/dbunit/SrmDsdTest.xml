@@ -1171,7 +1171,7 @@
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="116"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -3498,6 +3498,19 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="115"
-    />                    
+    /> 
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="116"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1161"
+        LABEL="concept-scheme-4-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="116"
+    />                        
 
 </dataset>

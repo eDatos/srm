@@ -60,8 +60,10 @@ Application DsdsMetamac {
     		"Ends the data structure definition validity"
     		@DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(String urn) throws MetamacException;
    		
-    		"Find concepts for concept in primary measure"
-    		PagedResult<@ConceptMetamac> findConceptsForDsdPrimaryMeasure(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concept schemes with concepts can be primary measure"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts can be primary measure"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeDsdPrimaryMeasureByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
    		
 		}
 

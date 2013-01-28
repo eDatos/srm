@@ -221,8 +221,10 @@ Application SrmFacadeCore {
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			" 
 	   		deleteComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto) throws MetamacException;
-    		"Find concepts for concept in primary measure"
-    		MetamacCriteriaResult<@ConceptMetamacDto> findConceptsForDsdPrimaryMeasure(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		"Find concept schemes with concepts can be primary measure"
+    		MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		"Find concepts can be primary measure"
+    		MetamacCriteriaResult<@ConceptMetamacDto> findConceptsCanBeDsdPrimaryMeasureByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
 
 	    	/**************************************************************************
 		     * ORGANISATIONS

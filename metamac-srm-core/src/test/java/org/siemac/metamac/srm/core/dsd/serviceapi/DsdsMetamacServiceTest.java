@@ -21,6 +21,8 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
@@ -322,20 +324,58 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Override
     @Test
-    public void testFindConceptsForDsdPrimaryMeasure() throws Exception {
-
+    public void testFindConceptsCanBeDsdPrimaryMeasureByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).orderBy(ConceptMetamacProperties.nameableArtefact().urn()).build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
         String dsdUrn = DSD_1_V2;
 
         // Find
-        PagedResult<ConceptMetamac> result = dsdsMetamacService.findConceptsForDsdPrimaryMeasure(getServiceContextAdministrador(), conditions, pagingParameter, dsdUrn);
+        PagedResult<ConceptMetamac> result = dsdsMetamacService.findConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(), conditions, pagingParameter, dsdUrn);
 
         // Validate
         assertEquals(2, result.getTotalRows());
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_5_V1_CONCEPT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(), conditions,
+                pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(2, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_5_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Test
+    public void testFindConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByConditionWithAdditionalCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label()).eq("concept-scheme-4-1")
+                .orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn()).build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(), conditions,
+                pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(1, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(result.getTotalRows(), i);
     }
 

@@ -32,8 +32,10 @@ import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
@@ -335,7 +337,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptsForDsdPrimaryMeasure() throws Exception {
+    public void testFindConceptsCanBeDsdPrimaryMeasureByCondition() throws Exception {
 
         String dsdUrn = DSD_1_V2;
 
@@ -355,7 +357,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         // Find all
         {
-            MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsForDsdPrimaryMeasure(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
+            MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
 
             // Validate
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -367,7 +369,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         // Find by name
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), "concept 5-1-1", OperationType.EQ));
-            MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsForDsdPrimaryMeasure(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
+            MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
 
             // Validate
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
@@ -378,12 +380,69 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         // Find by concept scheme
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(), CONCEPT_SCHEME_4_V1, OperationType.EQ));
-            MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsForDsdPrimaryMeasure(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
+            MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
 
             // Validate
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+    }
+
+    @Test
+    public void testFindConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition() throws Exception {
+
+        String dsdUrn = DSD_1_V2;
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        // Find all
+        {
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(),
+                    metamacCriteria, dsdUrn);
+
+            // Validate
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_4_V1, result.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_5_V1, result.getResults().get(i++).getUrn());
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        // Find by name
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), "concept-scheme-4-1", OperationType.EQ));
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(),
+                    metamacCriteria, dsdUrn);
+
+            // Validate
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_4_V1, result.getResults().get(i++).getUrn());
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        // Find by concept scheme urn
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), CONCEPT_SCHEME_5_V1, OperationType.EQ));
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(getServiceContextAdministrador(),
+                    metamacCriteria, dsdUrn);
+
+            // Validate
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            assertEquals(CONCEPT_SCHEME_5_V1, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
     }

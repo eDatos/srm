@@ -529,7 +529,26 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptMetamacDto> findConceptsForDsdPrimaryMeasure(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
+            throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<ConceptMetamacDto> findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -537,7 +556,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsForDsdPrimaryMeasure(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+        PagedResult<ConceptMetamac> result = getDsdsMetamacService()
+                .findConceptsCanBeDsdPrimaryMeasureByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
