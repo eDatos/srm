@@ -6,8 +6,8 @@ import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 
 @GenDispatch(isSecure = false)
-public class DeleteVariableElements {
+public class DeleteVariableElementOperations {
 
     @In(1)
-    List<String> urns;
+    List<String> codes;
 }
