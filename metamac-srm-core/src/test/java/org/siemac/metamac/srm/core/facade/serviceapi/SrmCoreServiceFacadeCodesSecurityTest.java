@@ -29,6 +29,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
@@ -99,7 +101,9 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
 
     @Test
     public void testCreateCodelist() throws Exception {
-        srmCoreServiceFacade.createCodelist(getServiceContextJefeNormalizacion(), CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
+        CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
+        codelistDto.setVariable(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
+        srmCoreServiceFacade.createCodelist(getServiceContextJefeNormalizacion(), codelistDto);
     }
 
     @Test
