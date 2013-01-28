@@ -380,6 +380,120 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     }
 
     @Override
+    @Test
+    public void testFindConceptsCanBeDsdTimeDimensionByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).orderBy(ConceptMetamacProperties.nameableArtefact().urn()).build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptMetamac> result = dsdsMetamacService.findConceptsCanBeDsdTimeDimensionByCondition(getServiceContextAdministrador(), conditions, pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(3, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(getServiceContextAdministrador(), conditions,
+                pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(2, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_2_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_3_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindConceptsCanBeDsdMeasureDimensionByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).orderBy(ConceptMetamacProperties.nameableArtefact().urn()).build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptMetamac> result = dsdsMetamacService.findConceptsCanBeDsdMeasureDimensionByCondition(getServiceContextAdministrador(), conditions, pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(1, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(getServiceContextAdministrador(), conditions,
+                pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(1, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_2_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindConceptsCanBeDsdDimensionByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).orderBy(ConceptMetamacProperties.nameableArtefact().urn()).build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptMetamac> result = dsdsMetamacService.findConceptsCanBeDsdDimensionByCondition(getServiceContextAdministrador(), conditions, pagingParameter, dsdUrn);
+
+        // Validate
+        assertEquals(3, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindConceptSchemesWithConceptsCanBeDsdDimensionByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(getServiceContextAdministrador(), conditions, pagingParameter,
+                dsdUrn);
+
+        // Validate
+        assertEquals(2, result.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_2_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_3_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
     }

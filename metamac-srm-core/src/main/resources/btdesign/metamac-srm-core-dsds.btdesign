@@ -64,7 +64,18 @@ Application DsdsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find concepts can be primary measure"
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdPrimaryMeasureByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
-   		
+    		"Find concept schemes with concepts can be time dimension"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts can be time dimension"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeDsdTimeDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concept schemes with concepts can be measure dimension"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts can be measure dimension"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeDsdMeasureDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concept schemes with concepts can be dimension"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts can be dimension"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

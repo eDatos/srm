@@ -683,16 +683,21 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />   
+            
+    <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 1                                                                       -->
+    <!-- *************************************************************************************  -->
+    <!-- nothing, to be easier ids  -->
+            
     
 	<!-- ************************************************************************************** -->
-    <!-- CONCEPT SCHEME 1                                                                       -->
+    <!-- CONCEPT SCHEME 2                                                                       -->
     <!--        - Version 1: final                                                              -->
-    <!--        - Version 2: no final                                                           -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
         ID="102"
-        UUID="itemScheme-1"
+        UUID="itemScheme-2"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
     />
@@ -706,7 +711,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="1021"
         
-        UUID="conceptscheme1-v1"
+        UUID="conceptscheme2-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -716,6 +721,28 @@
         LAST_UPDATED_TZ="Europe/London"  
     />
         
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="1021"
+        CONCEPT_SCHEME_TYPE="TRANSVERSAL"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user1"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-02 02:02:03"
+        DIFFUSION_VALIDATION_USER="user2"
+        INTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        INTERNAL_PUBLICATION_DATE="2011-01-03 03:02:03"
+        INTERNAL_PUBLICATION_USER="user3"
+        EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
+        EXTERNAL_PUBLICATION_DATE="2011-01-01 01:02:03"
+        EXTERNAL_PUBLICATION_USER="user4"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />
+            
     <TB_CONCEPT_SCHEMES_VERSIONS
         TB_ITEM_SCHEMES_VERSIONS="1021"
     />
@@ -724,10 +751,10 @@
         ID="1021"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="CONCEPTSCHEME01"
+        CODE="CONCEPTSCHEME02"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME01(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME01(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME02(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME02(01.000)"
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
         
@@ -764,8 +791,24 @@
     
         <!-- CONCEPTS -->
             <!-- -> CONCEPT01 -->
+            <!-- -> CONCEPT02 -->
             
             <!-- CONCEPT01 -->
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="MEASURE_DIMENSION"
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
+              TB_CONCEPTS="10211"
+             /> 
+                         
             <TB_CONCEPTS
                 TB_ITEMS="10211"
                 CORE_REPRESENTATION_FK="[null]"    
@@ -778,7 +821,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="1021"
                 NAMEABLE_ARTEFACT_FK="10211"
                       
-                UUID="dsd-1-v1-concept-1"
+                UUID="concept-scheme-2-v1-concept-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -794,8 +837,8 @@
                 
                 CODE="CONCEPT01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(01.000).CONCEPT01"
-                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(01.000).CONCEPT01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -812,10 +855,72 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />   
-            
+
+            <!-- CONCEPT02 -->
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="DIMENSION"
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
+              TB_CONCEPTS="10212"
+             /> 
+                         
+            <TB_CONCEPTS
+                TB_ITEMS="10212"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+        
+            <TB_ITEMS
+                ID="10212"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="1021"
+                ITEM_SCHEME_VERSION_FIRST_FK="1021"
+                NAMEABLE_ARTEFACT_FK="10212"
+                      
+                UUID="concept-scheme-2-v1-concept-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="10212"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT02"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT02"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-10212"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />               
             
     <!-- ************************************************************************************** -->
-    <!-- CONCEPT SCHEME 2                                                                      -->
+    <!-- CONCEPT SCHEME 3                                                                      -->
     <!--        - Version 1: externally published (role type)                              		-->
     <!-- *************************************************************************************  -->
 
@@ -834,7 +939,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="1031"
         
-        UUID="conceptScheme-02-v1"
+        UUID="conceptScheme-03-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -850,7 +955,7 @@
     
     <TB_M_CONCEPT_SCHEMES_VERSIONS
         TB_CONCEPT_SCHEMES_VERSIONS="1031"
-        CONCEPT_SCHEME_TYPE="ROLE"          
+        CONCEPT_SCHEME_TYPE="TRANSVERSAL"          
         RELATED_OPERATION_FK="13"
         PROC_STATUS="EXTERNALLY_PUBLISHED"
         
@@ -874,14 +979,14 @@
         ID="1031"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="CONCEPTSCHEME02"
+        CODE="CONCEPTSCHEME03"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME02(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME02(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="118"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -924,7 +1029,7 @@
               DOC_METHOD_FK="[null]"
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
-              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              SDMX_RELATED_ARTEFACT="ATTRIBUTE_OR_DIMENSION"
               CONCEPT_TYPE_FK="2"
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
@@ -938,7 +1043,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="1031"
                 NAMEABLE_ARTEFACT_FK="10311"
                       
-                UUID="conceptScheme-02-v1-concept-1"
+                UUID="conceptScheme-03-v1-concept-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -954,12 +1059,12 @@
                 
                 CODE="CONCEPT01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01"
-                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT01"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="117"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -1001,7 +1106,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="1031"
                 NAMEABLE_ARTEFACT_FK="10312"
                       
-                UUID="conceptScheme-02-v1-concept-2"
+                UUID="conceptScheme-03-v1-concept-2"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1017,8 +1122,8 @@
                 
                 CODE="CONCEPT02"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT02"
-                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT02"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT02"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -1036,74 +1141,70 @@
                 LAST_UPDATED_TZ="Europe/London"
             />  
             
-           <!-- CONCEPT03 -->
-            <TB_CONCEPTS
-                TB_ITEMS="10313"
-                CORE_REPRESENTATION_FK="[null]"    
-            />
- 
-            <TB_M_CONCEPTS
-              PLURAL_NAME_FK="[null]"
-              ACRONYM_FK="[null]"
-              DESCRIPTION_SOURCE_FK="[null]"
-              CONTEXT_FK="[null]"
-              DOC_METHOD_FK="[null]"
-              DERIVATION_FK="[null]"
-              LEGAL_ACTS_FK="[null]"
-              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
-              CONCEPT_TYPE_FK="2"
-              EXTENDS_FK="[null]"
-              VARIABLE_FK="[null]"              
-              TB_CONCEPTS="10313"
-             />            
-        
-            <TB_ITEMS
-                ID="10313"
-                PARENT_FK="[null]"
-                ITEM_SCHEME_VERSION_FK="1031"
-                ITEM_SCHEME_VERSION_FIRST_FK="1031"
-                NAMEABLE_ARTEFACT_FK="10313"
-                      
-                UUID="conceptScheme-02-v1-concept-3"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
-            />
-        
-            <TB_ANNOTABLE_ARTEFACTS 
-                ID="10313"
-                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
-                
-                CODE="CONCEPT03"
-                URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT03"
-                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT03"
-                REPLACED_BY_VERSION="[null]"
-                REPLACE_TO_VERSION="[null]"
-                
-                NAME_FK="[null]"
-                DESCRIPTION_FK="[null]"
-                COMMENT_FK="[null]"
-                
-                UUID="annotableArtefact-10313"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"
-            />       
+                <!-- CONCEPT0201 -->
+                <TB_CONCEPTS
+                    TB_ITEMS="103121"
+                    CORE_REPRESENTATION_FK="[null]"    
+                />
+     
+                <TB_M_CONCEPTS
+                  PLURAL_NAME_FK="[null]"
+                  ACRONYM_FK="[null]"
+                  DESCRIPTION_SOURCE_FK="[null]"
+                  CONTEXT_FK="[null]"
+                  DOC_METHOD_FK="[null]"
+                  DERIVATION_FK="[null]"
+                  LEGAL_ACTS_FK="[null]"
+                  SDMX_RELATED_ARTEFACT="DIMENSION"
+                  CONCEPT_TYPE_FK="2"
+                  EXTENDS_FK="[null]"
+                  VARIABLE_FK="[null]"              
+                  TB_CONCEPTS="103121"
+                 />            
             
-    <!-- ************************************************************************************** -->
-    <!-- CONCEPT SCHEME 3                                                                       -->
-    <!-- *************************************************************************************  -->
-    <!-- nothing  -->
-                
+                <TB_ITEMS
+                    ID="103121"
+                    PARENT_FK="10312"
+                    ITEM_SCHEME_VERSION_FK="1031"
+                    ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                    NAMEABLE_ARTEFACT_FK="103121"
+                          
+                    UUID="conceptScheme-03-v1-concept-2-1"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"  
+                />
+            
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="103121"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="CONCEPT0201"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT0201"
+                    URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(01.000).CONCEPT0201"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="[null]"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-103121"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />              
+                 
+            
     <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 4                                                                       -->
     <!--        - Version 1: externally published (transversal)                                 -->
@@ -1124,7 +1225,7 @@
         IS_PARTIAL="0"
         MAINTANABLE_ARTEFACT_FK="1041"
         
-        UUID="conceptScheme-03-v1"
+        UUID="conceptScheme-04-v1"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -1228,7 +1329,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="1041"
                 NAMEABLE_ARTEFACT_FK="10411"
                       
-                UUID="conceptScheme-03-v1-concept-1"
+                UUID="conceptScheme-04-v1-concept-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1291,7 +1392,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="1041"
                 NAMEABLE_ARTEFACT_FK="10412"
                       
-                UUID="conceptScheme-03-v1-concept-2"
+                UUID="conceptScheme-04-v1-concept-2"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -1701,7 +1802,7 @@
     	SHOW_DECIMAL_PRECISION="5"
     	UUID="dimPrecision-122"
     	VERSION="1"
-    	M_CONCEPT_FK="10313"
+    	M_CONCEPT_FK="10311"
     	DSD_VERSION_FK="12"
     />
     
@@ -2733,7 +2834,7 @@
     	SHOW_DECIMAL_PRECISION="5"
     	UUID="dimPrecision-612"
     	VERSION="1"
-    	M_CONCEPT_FK="10313"
+    	M_CONCEPT_FK="10311"
     	DSD_VERSION_FK="61"
     />
     
@@ -3511,6 +3612,31 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="116"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="117"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1171"
+        LABEL="concept 3-1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="117"
     />                        
 
+    <TB_INTERNATIONAL_STRINGS
+        ID="118"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1181"
+        LABEL="concept-scheme-3-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="118"
+    />    
 </dataset>
