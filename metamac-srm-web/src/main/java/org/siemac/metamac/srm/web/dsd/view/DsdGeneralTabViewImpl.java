@@ -540,7 +540,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         dataStructureDefinitionMetamacDto.getStubDimensions().clear();
         dataStructureDefinitionMetamacDto.getStubDimensions().addAll(
                 ((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).getStubDimensions());
-        // TODO
+        dataStructureDefinitionMetamacDto.getShowDecimalsPrecisions().clear();
+        dataStructureDefinitionMetamacDto.getShowDecimalsPrecisions().addAll(
+                ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).getMeasureDimensionPrecisionDtos());
 
         // Comments
         dataStructureDefinitionMetamacDto.setComment((InternationalStringDto) commentsEditionForm.getValue(DataStructureDefinitionDS.COMMENTS));

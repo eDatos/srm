@@ -154,11 +154,6 @@ public abstract class ItemsTreeGrid extends TreeGrid {
         });
     }
 
-    public ItemsTreeGrid(boolean alwaysShowEditors) {
-        this();
-        setAlwaysShowEditors(alwaysShowEditors);
-    }
-
     public void removeHandlerRegistrations() {
         folderContextHandlerRegistration.removeHandler();
         leafContextHandlerRegistration.removeHandler();

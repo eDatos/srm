@@ -21,10 +21,14 @@ public class ShowDecimalsPrecisionItem extends CustomCanvasItem {
     }
 
     public void setMeasureDimensionPrecisions(List<MeasureDimensionPrecisionDto> measureDimensionPrecisionDtos) {
-
+        measureDimensionConceptsTreeGrid.setMeasureDimensionPrecisions(measureDimensionPrecisionDtos);
     }
 
     public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> concepts) {
         measureDimensionConceptsTreeGrid.setItems(conceptSchemeMetamacDto, concepts);
+    }
+
+    public List<MeasureDimensionPrecisionDto> getMeasureDimensionPrecisionDtos() {
+        return measureDimensionConceptsTreeGrid.getMeasureDimensionPrecisionDtos();
     }
 }

@@ -134,7 +134,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // CONCEPTS
         //
 
-        conceptsTreeGrid = new ConceptsTreeGrid(false);
+        conceptsTreeGrid = new ConceptsTreeGrid();
 
         VLayout conceptsListGridLayout = new VLayout();
         conceptsListGridLayout.setMargin(15);
