@@ -62,7 +62,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
     // @Autowired
-    // private DsdsMetamacService dsdsMetamacService;
+    // private DsdsMetamacService srmCoreServiceFacade;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
@@ -470,11 +470,12 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
             MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeDsdTimeDimensionByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
 
             // Validate
-            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, result.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
         // Find by name
@@ -527,10 +528,11 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
                     dsdUrn);
 
             // Validate
-            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_2_V1, result.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1, result.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_8_V1, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
         // Find by name
@@ -656,11 +658,12 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
             MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeDsdDimensionByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
 
             // Validate
-            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_2_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, result.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
         // Find by name
@@ -712,10 +715,11 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
                     dsdUrn);
 
             // Validate
-            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_2_V1, result.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_3_V1, result.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_8_V1, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
         // Find by name
@@ -746,7 +750,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
     @Test
     public void testFindConceptsCanBeDsdRoleByCondition() throws Exception {
-        String dsdUrn = DSD_1_V2;
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         // Order
@@ -764,7 +767,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         // Find all
         {
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeDsdRoleByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeDsdRoleByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
@@ -775,7 +778,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         // Find by concept scheme
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(), CONCEPT_SCHEME_3_V1, OperationType.EQ));
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeDsdRoleByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeDsdRoleByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
@@ -885,8 +888,67 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_7_V1, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
-
     }
+
+    @Test
+    public void testFindConceptSchemesWithConceptsCanBeDsdAttributeByCondition() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
+
+        // Validate
+        assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_3_V1, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_8_V1, result.getResults().get(i++).getUrn());
+        assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+    }
+
+    @Test
+    public void testFindConceptsCanBeDsdAttributeByCondition() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        String dsdUrn = DSD_1_V2;
+
+        // Find
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeDsdAttributeByCondition(getServiceContextAdministrador(), metamacCriteria, dsdUrn);
+
+        // Validate
+        assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
+        assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+    }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";

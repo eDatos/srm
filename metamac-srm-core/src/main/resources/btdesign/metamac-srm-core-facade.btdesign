@@ -221,6 +221,7 @@ Application SrmFacadeCore {
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			" 
 	   		deleteComponentForDataStructureDefinition(String urnDsd, @ComponentDto componentDto) throws MetamacException;
+
     		"Find concept schemes with concepts can be primary measure"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be primary measure"
@@ -240,11 +241,15 @@ Application SrmFacadeCore {
     		"Find concept schemes with concepts can be role"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be role"
-    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
     		"Find concept schemes to enumerated representation of measure dimension"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(MetamacCriteria criteria) throws MetamacException;
+    		"Find concept schemes with concepts can be concept of attribute"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		"Find concepts can be concept of attribute"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdAttributeByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		
 	    	/**************************************************************************
 		     * ORGANISATIONS

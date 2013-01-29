@@ -376,10 +376,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public PagedResult<ConceptMetamac> findConceptsCanBeDsdRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
-            throws MetamacException {
+    public PagedResult<ConceptMetamac> findConceptsCanBeDsdRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         // Validation
-        DsdsMetamacInvocationValidator.checkFindConceptsCanBeDsdRoleByCondition(conditions, pagingParameter, dsdUrn, null);
+        DsdsMetamacInvocationValidator.checkFindConceptsCanBeDsdRoleByCondition(conditions, pagingParameter, null);
 
         // Prepare conditions
         Class entitySearchedClass = ConceptMetamac.class;
@@ -436,6 +435,17 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter) throws MetamacException {
         return findConceptSchemesWithSpecificType(ctx, conditions, pagingParameter, ConceptSchemeTypeEnum.MEASURE);
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String dsdUrn) throws MetamacException {
+        return findConceptSchemesWithConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
+    }
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
+            throws MetamacException {
+        return findConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
     }
 
     /**************************************************************************
