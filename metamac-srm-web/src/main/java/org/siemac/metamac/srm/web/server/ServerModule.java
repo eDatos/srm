@@ -40,6 +40,8 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistsActionHandler
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodesByCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableElementActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetVariableElementOperationsByVariableActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetVariableElementOperationsByVariableElementActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableElementsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamilyActionHandler;
@@ -144,6 +146,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamilyAction;
@@ -347,6 +351,8 @@ public class ServerModule extends HandlerModule {
         bindHandler(UpdateCodeParentAction.class, UpdateCodeParentActionHandler.class);
         bindHandler(DeleteVariableElementOperationsAction.class, DeleteVariableElementOperationsActionHandler.class);
         bindHandler(CreateVariableElementOperationAction.class, CreateVariableElementOperationActionHandler.class);
+        bindHandler(GetVariableElementOperationsByVariableAction.class, GetVariableElementOperationsByVariableActionHandler.class);
+        bindHandler(GetVariableElementOperationsByVariableElementAction.class, GetVariableElementOperationsByVariableElementActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);

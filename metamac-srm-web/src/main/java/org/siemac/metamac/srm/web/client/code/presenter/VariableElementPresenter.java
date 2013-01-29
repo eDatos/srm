@@ -16,6 +16,8 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableElementAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableElementResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
@@ -165,6 +167,21 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
                 getView().setVariableElements(result);
+            }
+        });
+    }
+
+    private void retrieveVariableElementOperations(String variableUrn) {
+        dispatcher.execute(new GetVariableElementOperationsByVariableElementAction(variableUrn), new WaitingAsyncCallback<GetVariableElementOperationsByVariableElementResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieve()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableElementOperationsByVariableElementResult result) {
+                // TODO Auto-generated method stub
+
             }
         });
     }

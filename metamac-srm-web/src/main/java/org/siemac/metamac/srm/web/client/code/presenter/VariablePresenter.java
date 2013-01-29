@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -19,9 +20,15 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationAction;
+import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
@@ -257,5 +264,71 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
         if (!StringUtils.isBlank(code)) {
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeVariableElementPlaceRequest(code));
         }
+    }
+
+    @Override
+    public void createSegregation(String variableElementUrn, List<String> variableElementUrns) {
+        createVariableElementOperation(VariableElementOperationTypeEnum.SEGREGATION, variableElementUrns, variableElementUrn);
+    }
+
+    @Override
+    public void createFusion(List<String> variableElementUrns, String variableElementUrn) {
+        createVariableElementOperation(VariableElementOperationTypeEnum.FUSION, variableElementUrns, variableElementUrn);
+    }
+
+    @Override
+    public void deleteVariableElementOperations(List<String> codes) {
+        dispatcher.execute(new DeleteVariableElementOperationsAction(codes), new WaitingAsyncCallback<DeleteVariableElementOperationsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementOperationErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteVariableElementOperationsResult result) {
+
+                // TODO Auto-generated method stub
+
+            }
+        });
+    }
+
+    private void retrieveVariableElementOperations(String variableUrn) {
+        dispatcher.execute(new GetVariableElementOperationsByVariableAction(variableUrn), new WaitingAsyncCallback<GetVariableElementOperationsByVariableResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementOperationErrorRetrieve()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableElementOperationsByVariableResult result) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+    }
+
+    private void createVariableElementOperation(final VariableElementOperationTypeEnum type, List<String> variableElementUrns, String variableElementUrn) {
+        dispatcher.execute(new CreateVariableElementOperationAction(type, variableElementUrns, variableElementUrn), new WaitingAsyncCallback<CreateVariableElementOperationResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                if (VariableElementOperationTypeEnum.FUSION.equals(type)) {
+                    ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementFusionError()), MessageTypeEnum.ERROR);
+                } else {
+                    ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementSegregationError()), MessageTypeEnum.ERROR);
+                }
+
+            }
+            @Override
+            public void onWaitSuccess(CreateVariableElementOperationResult result) {
+                if (VariableElementOperationTypeEnum.FUSION.equals(type)) {
+                    ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementFusioned()), MessageTypeEnum.SUCCESS);
+                } else {
+                    ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementSegregated()), MessageTypeEnum.SUCCESS);
+                }
+                // TODO Auto-generated method stub
+            }
+        });
     }
 }
