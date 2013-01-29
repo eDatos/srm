@@ -250,6 +250,8 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be concept of attribute"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdAttributeByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		"Find codelists belong to same variable of concept"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
     		
 	    	/**************************************************************************
 		     * ORGANISATIONS

@@ -399,36 +399,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
             String conceptUrn) throws MetamacException {
-        // Validation
-        DsdsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForDsd(conditions, pagingParameter, conceptUrn, null);
-
-        // Retrieve variable of concept
-        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(ctx, conceptUrn);
-        Variable variable = concept.getVariable();
-        if (variable == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
-
-        }
-
-        // Prepare conditions
-        Class entitySearchedClass = CodelistVersionMetamac.class;
-        if (conditions == null) {
-            conditions = new ArrayList<ConditionalCriteria>();
-        }
-        // Codelist internally or externally published
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
-                .buildSingle());
-        // Same variable
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn())
-                .eq(variable.getNameableArtefact().getUrn()).buildSingle());
-        // Do not repeat results
-        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
-
-        // Find
-        return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+        return findCodelistsCanBeEnumeratedRepresentationForDsd(ctx, conditions, pagingParameter, conceptUrn);
     }
 
     @Override
@@ -446,6 +419,12 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public PagedResult<ConceptMetamac> findConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
             throws MetamacException {
         return findConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
+    }
+
+    @Override
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
+            String conceptUrn) throws MetamacException {
+        return findCodelistsCanBeEnumeratedRepresentationForDsd(ctx, conditions, pagingParameter, conceptUrn);
     }
 
     /**************************************************************************
@@ -667,6 +646,38 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Find
         return conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsd(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
+            String conceptUrn) throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForDsd(conditions, pagingParameter, conceptUrn, null);
+
+        // Retrieve variable of concept
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(ctx, conceptUrn);
+        Variable variable = concept.getVariable();
+        if (variable == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
+
+        }
+
+        // Prepare conditions
+        Class entitySearchedClass = CodelistVersionMetamac.class;
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        // Codelist internally or externally published
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
+                .buildSingle());
+        // Same variable
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn())
+                .eq(variable.getNameableArtefact().getUrn()).buildSingle());
+        // Do not repeat results
+        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
+
+        // Find
+        return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
 
     private Property<ConceptMetamac> buildConceptPropertyToConceptSchemeType() {

@@ -89,6 +89,8 @@ Application DsdsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find concepts can be concept of attribute"
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find codelists belong to same variable of concept"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

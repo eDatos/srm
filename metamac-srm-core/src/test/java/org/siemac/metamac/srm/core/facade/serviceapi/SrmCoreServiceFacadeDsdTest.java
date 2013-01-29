@@ -949,6 +949,51 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
     }
 
+    @Test
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdAttribute() throws Exception {
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        // Order
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName(ConceptMetamacCriteriaOrderEnum.URN.name());
+        metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+        metamacCriteria.getOrdersBy().add(order);
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+        // Find
+        {
+            // Concept has Variable 1
+            String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(getServiceContextAdministrador(), metamacCriteria,
+                    conceptUrn);
+
+            // Validate
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            assertEquals(CODELIST_7_V1, result.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_9_V1, result.getResults().get(i++).getUrn());
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        {
+            // Concept has Variable 2
+            String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2_1;
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(getServiceContextAdministrador(), metamacCriteria,
+                    conceptUrn);
+
+            // Validate
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            assertEquals(CODELIST_8_V1, result.getResults().get(i++).getUrn());
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+    }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
