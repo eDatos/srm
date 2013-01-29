@@ -1700,6 +1700,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             }
         }
     }
+
     @Test
     public void testCreateConceptErrorConceptExtendsWrongProcStatus() throws Exception {
 
@@ -1754,6 +1755,32 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
             assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
             assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
+    }
+
+    @Test
+    public void testCreateConceptErrorConceptIsRolAndCanNotHaveVariable() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType);
+        concept.setParent(null);
+        concept.setSdmxRelatedArtefact(null);
+        concept.setVariable(codesService.retrieveVariableByUrn(ctx, VARIABLE_1));
+
+        String conceptSchemeUrn = CONCEPT_SCHEME_4_V1; // role type
+
+        // Create
+        try {
+            conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+            fail("error");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+
+            assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_VARIABLE, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 

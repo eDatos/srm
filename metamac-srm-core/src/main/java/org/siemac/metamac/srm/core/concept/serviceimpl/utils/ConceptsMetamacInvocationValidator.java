@@ -202,11 +202,18 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         if (conceptSchemeVersion != null) {
             if (SrmValidationUtils.mustValidateMetadataRequired(conceptSchemeVersion)) {
                 ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
+                // Sdmx related artefact
                 if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())
                         || ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
                     ValidationUtils.checkMetadataRequired(concept.getSdmxRelatedArtefact(), ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
                 } else {
                     ValidationUtils.checkMetadataEmpty(concept.getSdmxRelatedArtefact(), ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
+                }
+                // Variable
+                if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())) {
+                    // variable is optional
+                } else {
+                    ValidationUtils.checkMetadataEmpty(concept.getVariable(), ServiceExceptionParameters.CONCEPT_VARIABLE, exceptions);
                 }
             }
         }
