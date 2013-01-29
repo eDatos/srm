@@ -176,9 +176,9 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
     }
 
     @Override
-    public void goToVariable(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariablePlaceRequest(urn));
+    public void goToVariable(String code) {
+        if (!StringUtils.isBlank(code)) {
+            placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariablePlaceRequest(code));
         }
     }
 

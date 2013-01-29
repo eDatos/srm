@@ -119,9 +119,9 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
     }
 
     @Override
-    public void goToVariable(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeVariablePlaceRequest(urn));
+    public void goToVariable(String code) {
+        if (!StringUtils.isBlank(code)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeVariablePlaceRequest(code));
         }
     }
 
