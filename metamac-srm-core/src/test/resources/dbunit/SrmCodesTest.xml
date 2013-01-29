@@ -753,7 +753,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
+              SHORT_NAME_FK="94"
               TB_CODES="12211"
              />
         
@@ -6394,7 +6394,7 @@
 
     <TB_LOCALISED_STRINGS
         ID="712"
-        LABEL="Short name 2-1"
+        LABEL="short name 1 2-1"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="71"
@@ -6520,7 +6520,7 @@
 
     <TB_LOCALISED_STRINGS
         ID="772"
-        LABEL="short name code2"
+        LABEL="short name 1 code2"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="77"
@@ -6773,5 +6773,18 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="93"
-    />                                                                                       
+    />         
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="94"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="941"
+        LABEL="nombre corto"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="94"
+    />                                                                                           
 </dataset>

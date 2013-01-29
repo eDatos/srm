@@ -1823,6 +1823,76 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
+    public void testUpdateCodeVariableElement() throws Exception {
+        String codeUrn = CODELIST_1_V2_CODE_1;
+
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getNameableArtefact().getUrn());
+
+        // Change variable element
+        String variableElementUrnNew = VARIABLE_2_VARIABLE_ELEMENT_1;
+        codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), variableElementUrnNew);
+        code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(variableElementUrnNew, code.getVariableElement().getNameableArtefact().getUrn());
+
+        // Reset variable element
+        codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), null);
+        code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertNull(variableElementUrnNew, code.getVariableElement());
+    }
+
+    @Test
+    public void testUpdateCodeVariableElementBeforeWithoutVariableElementRemoveShortName() throws Exception {
+        String codeUrn = CODELIST_1_V2_CODE_2_1_1;
+
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertNull(code.getVariableElement());
+        assertNotNull(code.getShortName());
+
+        // Add variable element
+        String variableElementUrnNew = VARIABLE_2_VARIABLE_ELEMENT_1;
+        codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), variableElementUrnNew);
+        code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(variableElementUrnNew, code.getVariableElement().getNameableArtefact().getUrn());
+        assertNull(code.getShortName());
+    }
+
+    @Test
+    public void testUpdateCodeVariableElementErrorDifferentVariableCodelist() throws Exception {
+        String codeUrn = CODELIST_1_V2_CODE_1;
+
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getNameableArtefact().getUrn());
+
+        // Change variable element
+        String variableElementUrnNew = VARIABLE_5_VARIABLE_ELEMENT_1;
+        try {
+            codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), variableElementUrnNew);
+            fail("error");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.CODE_VARIABLE_ELEMENT}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateCodeVariableElementInCodelistPublished() throws Exception {
+        String codeUrn = CODELIST_7_V2_CODE_1;
+
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByCodeUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        assertNull(code.getVariableElement());
+
+        // Add variable element
+        String variableElementUrnNew = VARIABLE_5_VARIABLE_ELEMENT_1;
+        codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), variableElementUrnNew);
+        code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(variableElementUrnNew, code.getVariableElement().getNameableArtefact().getUrn());
+    }
+
+    @Override
+    @Test
     public void testRetrieveCodeByUrn() throws Exception {
         // Retrieve
         String urn = CODELIST_1_V2_CODE_1;
@@ -3487,7 +3557,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testDeleteVariableElementErrorWithOperations() throws Exception {
-        String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_1;
+        String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_4;
 
         try {
             codesService.deleteVariableElement(getServiceContextAdministrador(), variableElementUrn);

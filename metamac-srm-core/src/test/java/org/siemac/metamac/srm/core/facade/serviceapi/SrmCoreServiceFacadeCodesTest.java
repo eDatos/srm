@@ -818,6 +818,25 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     @Test
+    public void testUpdateCodeVariableElement() throws Exception {
+        String codeUrn = CODELIST_1_V2_CODE_1;
+
+        CodeMetamacDto codeMetamacDto = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, codeMetamacDto.getVariableElement().getUrn());
+
+        // Change variable element
+        String variableElementUrnNew = VARIABLE_2_VARIABLE_ELEMENT_1;
+        srmCoreServiceFacade.updateCodeVariableElement(getServiceContextAdministrador(), codeUrn, variableElementUrnNew);
+        codeMetamacDto = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+        assertEquals(variableElementUrnNew, codeMetamacDto.getVariableElement().getUrn());
+
+        // Reset variable element
+        srmCoreServiceFacade.updateCodeVariableElement(getServiceContextAdministrador(), codeUrn, null);
+        codeMetamacDto = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+        assertNull(variableElementUrnNew, codeMetamacDto.getVariableElement());
+    }
+
+    @Test
     public void testUpdateCodeParentSourceWithParentTargetWithoutParent() throws Exception {
 
         String codeUrn = CODELIST_1_V2_CODE_2_1;
@@ -1120,6 +1139,56 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getResults().get(i++).getUrn());
                 assertEquals(codesPagedResult.getResults().size(), i);
             }
+        }
+
+        // Find by short name (search in short name of code and short name of variable element)
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Order
+            metamacCriteria.setOrdersBy(new ArrayList<MetamacCriteriaOrder>());
+
+            MetamacCriteriaOrder orderUrn = new MetamacCriteriaOrder();
+            orderUrn.setType(OrderTypeEnum.ASC);
+            orderUrn.setPropertyName(CodeMetamacCriteriaOrderEnum.URN.name());
+            metamacCriteria.getOrdersBy().add(orderUrn);
+
+            // Restrictions
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), "short name 1", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_URN.name(), CODELIST_1_V2, OperationType.EQ));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(3, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(3, codesPagedResult.getResults().size());
+            assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
+
+            int i = 0;
+            assertNull(codesPagedResult.getResults().get(i).getVariableElement());
+            assertNotNull(codesPagedResult.getResults().get(i).getShortName());
+            assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i).getUrn());
+
+            i++;
+            assertNotNull(codesPagedResult.getResults().get(i).getVariableElement());
+            assertNull(codesPagedResult.getResults().get(i).getShortName());
+            assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i).getUrn());
+
+            i++;
+            assertNotNull(codesPagedResult.getResults().get(i).getVariableElement());
+            assertNull(codesPagedResult.getResults().get(i).getShortName());
+            assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getResults().get(i).getUrn());
+
+            i++;
+            assertEquals(codesPagedResult.getResults().size(), i);
         }
     }
 

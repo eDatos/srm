@@ -1039,6 +1039,20 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public CodeMetamacDto updateCodeVariableElement(ServiceContext ctx, String codeUrn, String variableElementUrn) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
+        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Update
+        CodeMetamac conceptUpdated = getCodesMetamacService().updateCodeVariableElement(ctx, codeUrn, variableElementUrn);
+
+        // Transform to DTO
+        CodeMetamacDto codeDto = codesDo2DtoMapper.codeMetamacDoToDto(conceptUpdated);
+        return codeDto;
+    }
+
+    @Override
     public void updateCodeParent(ServiceContext ctx, String codeUrn, String newParentUrn) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);

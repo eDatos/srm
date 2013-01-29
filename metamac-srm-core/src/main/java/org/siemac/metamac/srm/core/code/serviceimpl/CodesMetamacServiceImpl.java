@@ -293,6 +293,34 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
+    public CodeMetamac updateCodeVariableElement(ServiceContext ctx, String codeUrn, String variableElementUrn) throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkUpdateCodeVariableElement(codeUrn, variableElementUrn, null);
+        // Note: It is not necessary to check the codelist status. Variable element can be modified although the codelist is published
+
+        CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
+        if (variableElementUrn == null) {
+            // Delete
+            if (code.getVariableElement() != null) {
+                code.getVariableElement().removeCode(code);
+            }
+        } else {
+            // Add
+            VariableElement variableElement = retrieveVariableElementByUrn(variableElementUrn);
+            CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, codeUrn);
+            checkCodeVariableElement(codelistVersion, variableElement);
+
+            if (code.getVariableElement() != null) {
+                code.getVariableElement().removeCode(code);
+            }
+            variableElement.addCode(code);
+            code.setShortName(null); // reset name
+        }
+        return getCodeMetamacRepository().save(code);
+    }
+
+    @Override
     public void updateCodeParent(ServiceContext ctx, String codeUrn, String parentTargetUrn) throws MetamacException {
 
         // Validation
@@ -1063,9 +1091,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      */
     private void checkCodeToCreateOrUpdate(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodeMetamac code) throws MetamacException {
         checkCodelistCanBeModified(codelistVersion);
+        checkCodeVariableElement(codelistVersion, code.getVariableElement());
+    }
 
-        // Check variable element belongs to same variable of codelist
-        if (code.getVariableElement() != null && !codelistVersion.getVariable().getNameableArtefact().getUrn().equals(code.getVariableElement().getVariable().getNameableArtefact().getUrn())) {
+    /**
+     * Checks variable element belongs to same variable of codelist
+     */
+    private void checkCodeVariableElement(CodelistVersionMetamac codelistVersion, VariableElement variableElement) throws MetamacException {
+        if (variableElement != null && !codelistVersion.getVariable().getNameableArtefact().getUrn().equals(variableElement.getVariable().getNameableArtefact().getUrn())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CODE_VARIABLE_ELEMENT).build();
         }
     }

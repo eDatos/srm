@@ -623,6 +623,9 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                case SHORT_NAME:
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.shortName().texts().label(), CodeMetamacProperties.variableElement().shortName().texts().label(),
+                            propertyRestriction.getStringValue());
                 case CODE_PARENT_URN:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue());
                 case CODELIST_URN:
