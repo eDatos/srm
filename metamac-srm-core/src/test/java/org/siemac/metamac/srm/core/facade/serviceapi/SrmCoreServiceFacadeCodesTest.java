@@ -137,6 +137,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertEquals(CODELIST_1_V1, codelistMetamacDto.getReplaceToCodelists().get(0).getUrn());
 
         codelistMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
+        assertEquals(VARIABLE_1, codelistMetamacDto.getVariable().getUrn());
+        codelistMetamacDto.setVariable(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_02", VARIABLE_2));
         // add two replace to
         codelistMetamacDto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST03", CODELIST_3_V1));
         codelistMetamacDto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST10", CODELIST_10_V1));

@@ -130,7 +130,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistVersion;
     }
 
-    // TODO PTE RI: qué hacer si cambia la variable? poner a null todos los variableElement de los codes?
+    // Note: variable can not be changed after codelist is published, because other restrictions could be violated (see ConceptsMetamacService.checkConceptEnumeratedRepresentation)
     @Override
     public CodelistVersionMetamac updateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         // Validation
@@ -140,6 +140,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Fill replaceBy metadata
         for (CodelistVersionMetamac replaceTo : codelistVersion.getReplaceToCodelists()) {
             replaceTo.setReplacedByCodelist(codelistVersion);
+        }
+
+        // if variable is changed, remove variable elements of codes
+        if (codelistVersion.getIsVariableUpdated()) {
+            for (Item item : codelistVersion.getItems()) {
+                CodeMetamac code = (CodeMetamac) item;
+                code.setVariableElement(null);
+                getCodeMetamacRepository().save(code);
+            }
         }
 
         // Save codelist

@@ -254,6 +254,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, CODELIST_2_V1);
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
 
         CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(ctx, codelistVersion);
         assertNotNull(codelistVersionUpdated);
@@ -264,6 +265,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateCodelistChangingCode() throws Exception {
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
 
         // Change code
         codelistVersion.getMaintainableArtefact().setCode("codeNew");
@@ -282,6 +284,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(CODELIST_1_V1, codelistVersion.getReplaceToCodelists().get(0).getMaintainableArtefact().getUrn());
 
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
+
         // Replace to
         codelistVersion.removeAllReplaceToCodelists();
         codelistVersion.getReplaceToCodelists().add(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1));
@@ -304,6 +308,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         String visualisationUrnNew = CODELIST_1_V2_ORDER_VISUALISATION_02;
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
         codelistVersion.setDefaultOrderVisualisation(codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), visualisationUrnNew));
         codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
 
@@ -321,7 +326,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Associate the codelist to the family
         codelistVersion.setFamily(codelistFamily);
-        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
         CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
         assertEqualsCodelistFamily(codelistFamily, codelistVersionUpdated.getFamily());
 
@@ -338,24 +344,50 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
         assertEquals(VARIABLE_2, codelistVersion.getVariable().getNameableArtefact().getUrn());
 
+        // Check actual element variables of codes
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1).getVariableElement().getNameableArtefact().getUrn());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2).getVariableElement());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1).getVariableElement().getNameableArtefact().getUrn());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_2).getVariableElement());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_3).getVariableElement().getNameableArtefact().getUrn());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1).getVariableElement());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1).getVariableElement().getNameableArtefact().getUrn());
+
         // Check the variable has no codelists
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
         assertEquals(1, variable.getCodelists().size());
 
         // Associate the codelist to the variable
         codelistVersion.setVariable(variable);
-        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.TRUE);
         CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
         assertEqualsVariable(variable, codelistVersionUpdated.getVariable());
 
-        entityManager.clear(); // Clear hibernate cache to check that the variable has been updated
+        // Check element variables are removed from codes
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_2).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_3).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1).getVariableElement());
+        assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1).getVariableElement());
+
+        // Check variable element is not removed
+        codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_2);
+        codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_3);
 
         // Check variable has more codelists (and it's the one we have added previously)
+        entityManager.clear(); // Clear hibernate cache to check that the variable has been updated
         variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variable.getNameableArtefact().getUrn());
         assertEquals(2, variable.getCodelists().size());
         assertTrue(SrmServiceUtils.isCodelistInList(codelistVersion.getMaintainableArtefact().getUrn(), variable.getCodelists()));
     }
-
     /**
      * Change codelist from family CODELIST_FAMILY_2 to CODELIST_FAMILY_1
      */
@@ -372,7 +404,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Associate the codelist to the family
         codelistVersion.setFamily(family1);
-        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
         CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
         assertEqualsCodelistFamily(family1, codelistVersionUpdated.getFamily());
 
@@ -397,7 +430,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Update codelist (remove from family)
         codelistVersion.setFamily(null);
-        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(false);
+        codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
         CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
         assertNull(codelistVersionUpdated.getFamily());
 
@@ -415,6 +449,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, CODELIST_1_V2);
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
         codelistVersion.setAccessType(AccessTypeEnum.PUBLIC);
 
         codelistVersion.setShortName(com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks.mockInternationalString());
@@ -432,6 +467,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
             try {
                 codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                codelistVersion.setIsVariableUpdated(Boolean.FALSE);
                 codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
                 fail("wrong proc status");
             } catch (MetamacException e) {
@@ -452,6 +488,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
         codelistVersion.setVariable(null);
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
         try {
             codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
             fail("wrong metadata");
@@ -468,6 +505,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
         codelistVersion.getMaintainableArtefact().setCode("newCode");
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
 
         try {
             codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
@@ -484,6 +522,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testUpdateCodelistErrorExternalReference() throws Exception {
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V2);
         codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.TRUE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
 
         try {
             codelistVersion = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
@@ -764,6 +803,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
         codelistVersion.setIsPartial(null);
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        codelistVersion.setIsVariableUpdated(Boolean.FALSE);
         codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
 
         // Send to production validation
@@ -4315,6 +4355,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         for (VariableElementOperation variableElementOperation : operations) {
             if (code.equals(variableElementOperation.getCode())) {
                 return variableElementOperation;
+            }
+        }
+        return null;
+    }
+
+    private CodeMetamac getCode(List<Item> items, String urn) {
+        for (Item item : items) {
+            if (item.getNameableArtefact().getUrn().equals(urn)) {
+                return (CodeMetamac) item;
             }
         }
         return null;

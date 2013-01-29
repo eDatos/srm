@@ -699,7 +699,7 @@
             />
 
             <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
+              VARIABLE_ELEMENT_FK="21"
               SHORT_NAME_FK="[null]"
               TB_CODES="1221"
              />
@@ -858,7 +858,7 @@
             />
             
             <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
+              VARIABLE_ELEMENT_FK="23"
               SHORT_NAME_FK="[null]"
               TB_CODES="123"
              />
@@ -1017,7 +1017,7 @@
             />
             
             <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
+              VARIABLE_ELEMENT_FK="21"
               SHORT_NAME_FK="[null]"
               TB_CODES="12411"
              />

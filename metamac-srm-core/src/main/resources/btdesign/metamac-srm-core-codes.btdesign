@@ -189,7 +189,9 @@ Application CodesMetamac {
 			- @CodelistFamily family cascade="none" nullable databaseColumn="CODELIST_FAMILY_FK" <-> codelists;
 			"Variable"
 			- @Variable variable cascade="none" nullable databaseColumn="VARIABLE_FK" <-> codelists;
-			
+			"TRUE if variable has been updated. As a consequence, variable elements in codes must be removed"
+			Boolean isVariableUpdated nullable transient;
+
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 

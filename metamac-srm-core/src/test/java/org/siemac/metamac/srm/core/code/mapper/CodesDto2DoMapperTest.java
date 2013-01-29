@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.core.code.mapper;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -54,6 +56,17 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
         dto.setVersionOptimisticLocking(1L);
         CodelistVersionMetamac entity = codesDto2DoMapper.codelistDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsCodelist(dto, entity);
+    }
+
+    @Test
+    public void testCodelistMetamacDtoToDoCheckIsVariableUpdated() throws MetamacException {
+        CodelistMetamacDto dto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
+        dto.setUrn(CODELIST_1_V2);
+        dto.setVersionOptimisticLocking(1L);
+        dto.setVariable(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_01", VARIABLE_1)); // actual is VARIABLE_2
+        CodelistVersionMetamac entity = codesDto2DoMapper.codelistDtoToDo(dto);
+
+        assertTrue(entity.getIsVariableUpdated());
     }
 
     @Test

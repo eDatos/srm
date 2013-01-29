@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.code.mapper;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -93,6 +94,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         } else {
             target.setFamily(null);
         }
+        target.setIsVariableUpdated(guessIsCodelistVariableUpdated(source, target));
         if (source.getVariable() != null) {
             target.setVariable(retrieveVariable(source.getVariable().getUrn()));
         } else {
@@ -108,6 +110,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
         return target;
     }
+
     @Override
     public CodeMetamac codeDtoToDo(CodeMetamacDto source) throws MetamacException {
         if (source == null) {
@@ -358,6 +361,12 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
                     .build();
         }
         return target;
+    }
+
+    private Boolean guessIsCodelistVariableUpdated(CodelistMetamacDto source, CodelistVersionMetamac target) {
+        String sourceVariableUrn = source.getVariable() != null ? source.getVariable().getUrn() : null;
+        String targetVariableUrn = target.getVariable() != null ? target.getVariable().getNameableArtefact().getUrn() : null;
+        return !ObjectUtils.equals(sourceVariableUrn, targetVariableUrn);
     }
 
 }

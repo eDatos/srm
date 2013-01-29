@@ -60,6 +60,9 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         if (SrmValidationUtils.mustValidateMetadataRequired(codelistVersion)) {
             ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);
         }
+        if (codelistVersion.getId() != null) {
+            ValidationUtils.checkMetadataRequired(codelistVersion.getIsVariableUpdated(), ServiceExceptionParameters.CODELIST_IS_VARIABLE_UPDATED, exceptions);
+        }
     }
 
     // ---------------------------------------------------------------------------
