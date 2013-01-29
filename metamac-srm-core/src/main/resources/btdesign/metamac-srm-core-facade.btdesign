@@ -447,6 +447,11 @@ Application SrmFacadeCore {
 		     * CODES
 		     **************************************************************************/
 
+			"
+       		 REMOVE THIS METHOD WHEN THE RELATIONS BETWEEN RESOURCES WERE FINISHED
+			"        		
+       		List<@ExternalItemDto> findCodelists(String uriConcept) throws MetamacException;
+
        		"Creates codelist"
 	   		@CodelistMetamacDto createCodelist(@CodelistMetamacDto codelistDto) throws MetamacException;
 	   		"Updates codelist" 

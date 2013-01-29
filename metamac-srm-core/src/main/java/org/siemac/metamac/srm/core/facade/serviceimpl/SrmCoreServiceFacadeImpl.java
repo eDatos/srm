@@ -801,6 +801,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // CODELISTS
     // ------------------------------------------------------------------------
 
+    // TODO Remove this method when the relation between structural resources were finished!
+    @Override
+    public List<ExternalItemDto> findCodelists(ServiceContext ctx, String uriConcept) throws MetamacException {
+        return ServicesResolver.findAllCodelists();
+    }
+
     @Override
     public CodelistMetamacDto retrieveCodelistByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
