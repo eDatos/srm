@@ -1607,6 +1607,38 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEqualsInternationalStringDto(conceptType.getDescription(), "en", "Derived", "es", "Derivado");
     }
 
+    @Test
+    public void testFindCodelistsCanBeEnumeratedRepresentationForConcept() throws Exception {
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
+        metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
+
+        // Find
+        {
+            // Concept has Variable 1
+            String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConcept(getServiceContextAdministrador(), metamacCriteria, conceptUrn);
+
+            // Validate
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            assertEquals(CODELIST_7_V1, result.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_9_V1, result.getResults().get(i++).getUrn());
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        {
+            // Concept has Variable 2
+            String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConcept(getServiceContextAdministrador(), metamacCriteria, conceptUrn);
+
+            // Validate
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            assertEquals(CODELIST_8_V1, result.getResults().get(i++).getUrn());
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+    }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmConceptsTest.xml";

@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
@@ -422,5 +425,22 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     @Override
     protected DataBaseProvider getDatabaseProvider() {
         return DataBaseProvider.valueOf(databaseProvider);
+    }
+
+    protected MetamacCriteriaPaginator buildMetamacCriteriaPaginatorNoLimitsAndCountResults() {
+        MetamacCriteriaPaginator paginator = new MetamacCriteriaPaginator();
+        paginator.setFirstResult(0);
+        paginator.setMaximumResultSize(Integer.MAX_VALUE);
+        paginator.setCountTotalResults(Boolean.TRUE);
+        return paginator;
+    }
+
+    protected List<MetamacCriteriaOrder> buildMetamacCriteriaOrderByUrn() {
+        List<MetamacCriteriaOrder> orders = new ArrayList<MetamacCriteriaOrder>();
+        MetamacCriteriaOrder order = new MetamacCriteriaOrder();
+        order.setType(OrderTypeEnum.ASC);
+        order.setPropertyName("URN");
+        orders.add(order);
+        return orders;
     }
 }

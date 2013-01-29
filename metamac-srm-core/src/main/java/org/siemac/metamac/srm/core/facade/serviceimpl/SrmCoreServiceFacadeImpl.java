@@ -2412,6 +2412,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return conceptTypeDto;
     }
 
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConcept(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsCanBeEnumeratedRepresentationForConcept(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), conceptUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
     // ------------------------------------------------------------------------
     // CATEGORY SCHEMES
     // ------------------------------------------------------------------------

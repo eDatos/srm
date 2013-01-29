@@ -13,6 +13,10 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -48,24 +52,27 @@ import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsVersio
 public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
-    private ConceptsService               conceptsService;
+    private ConceptsService                  conceptsService;
 
     @Autowired
-    private ItemSchemeVersionRepository   itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository      itemSchemeVersionRepository;
 
     @Autowired
-    private ConceptRepository             conceptRepository;
+    private ConceptRepository                conceptRepository;
 
     @Autowired
     @Qualifier("conceptSchemeLifeCycle")
-    private LifeCycle                     conceptSchemeLifeCycle;
+    private LifeCycle                        conceptSchemeLifeCycle;
 
     @Autowired
-    private SrmValidation                 srmValidation;
+    private SrmValidation                    srmValidation;
+
+    @Autowired
+    private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
 
     @Autowired
     @Qualifier("conceptVersioningCopyCallbackMetamac")
-    private ConceptVersioningCopyCallback conceptVersioningCopyCallback;
+    private ConceptVersioningCopyCallback    conceptVersioningCopyCallback;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -523,6 +530,40 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(conceptUrn).build();
         }
         return conceptSchemeVersion;
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConcept(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
+            String conceptUrn) throws MetamacException {
+
+        // Validation
+        ConceptsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForConcept(conditions, pagingParameter, conceptUrn, null);
+
+        // Retrieve variable of concept
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
+        Variable variable = concept.getVariable();
+        if (variable == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
+
+        }
+
+        // Prepare conditions
+        Class entitySearchedClass = CodelistVersionMetamac.class;
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        // Codelist internally or externally published
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
+                .buildSingle());
+        // Same variable
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn())
+                .eq(variable.getNameableArtefact().getUrn()).buildSingle());
+        // Do not repeat results
+        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
+
+        // Find
+        return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
 
     /**

@@ -25,6 +25,8 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -2591,6 +2593,44 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Override
+    @Test
+    public void testFindCodelistsCanBeEnumeratedRepresentationForConcept() throws Exception {
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+
+        // Find
+        {
+            // Concept has Variable 1
+            String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
+            PagedResult<CodelistVersionMetamac> result = conceptsService
+                    .findCodelistsCanBeEnumeratedRepresentationForConcept(getServiceContextAdministrador(), conditions, pagingParameter, conceptUrn);
+
+            // Validate
+            assertEquals(2, result.getTotalRows());
+            int i = 0;
+            assertEquals(VARIABLE_1, result.getValues().get(i).getVariable().getNameableArtefact().getUrn());
+            assertEquals(CODELIST_7_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(VARIABLE_1, result.getValues().get(i).getVariable().getNameableArtefact().getUrn());
+            assertEquals(CODELIST_9_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(result.getTotalRows(), i);
+        }
+        {
+            // Concept has Variable 2
+            String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
+            PagedResult<CodelistVersionMetamac> result = conceptsService
+                    .findCodelistsCanBeEnumeratedRepresentationForConcept(getServiceContextAdministrador(), conditions, pagingParameter, conceptUrn);
+
+            // Validate
+            assertEquals(1, result.getTotalRows());
+            int i = 0;
+            assertEquals(VARIABLE_2, result.getValues().get(i).getVariable().getNameableArtefact().getUrn());
+            assertEquals(CODELIST_8_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(result.getTotalRows(), i);
         }
     }
 
