@@ -29,11 +29,13 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
     @Autowired
     private com.arte.statistic.sdmx.srm.core.structure.mapper.DataStructureDefinitionDo2DtoMapper do2DtoMapperSdmxSrm;
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U extends ComponentDto> U componentToComponentDto(TypeDozerCopyMode typeDozerCopyMode, Component component) {
         return (U) do2DtoMapperSdmxSrm.componentToComponentDto(typeDozerCopyMode, component);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U extends ComponentListDto> U componentListToComponentListDto(TypeDozerCopyMode typeDozerCopyMode, ComponentList componentList) {
         return (U) do2DtoMapperSdmxSrm.componentListToComponentListDto(typeDozerCopyMode, componentList);
