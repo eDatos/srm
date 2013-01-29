@@ -3,12 +3,14 @@ package org.siemac.metamac.srm.core.concept.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -36,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
@@ -533,7 +536,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConcept(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
             String conceptUrn) throws MetamacException {
 
@@ -542,12 +544,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Retrieve variable of concept
         ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
+
+        return findCodelistsCanBeEnumeratedRepresentationForConcept(conditions, pagingParameter, concept);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConcept(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, ConceptMetamac concept)
+            throws MetamacException {
+
+        // Validation
         Variable variable = concept.getVariable();
         if (variable == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
 
         }
-
         // Prepare conditions
         Class entitySearchedClass = CodelistVersionMetamac.class;
         if (conditions == null) {
@@ -689,12 +699,45 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             }
         }
     }
+
     /**
      * Common validations to create or update a concept
      */
     private void checkConceptToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
         checkConceptMetadataExtends(ctx, concept, conceptSchemeVersion.getMaintainableArtefact().getUrn());
+
+        // If it is not imported, check enumerated representation
+        checkConceptEnumeratedRepresentation(conceptSchemeVersion, concept);
+    }
+
+    /**
+     * If concept scheme is not imported, checks representation.
+     * If it is an enumerated representation must be a codelist of same variable of concept
+     */
+    private void checkConceptEnumeratedRepresentation(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
+        if (BooleanUtils.isFalse(conceptSchemeVersion.getMaintainableArtefact().getIsImported())) {
+            if (concept.getCoreRepresentation() != null && concept.getCoreRepresentation() instanceof EnumeratedRepresentation) {
+                EnumeratedRepresentation enumeratedRepresentation = (EnumeratedRepresentation) concept.getCoreRepresentation();
+                // check it is a codelist
+                if (!TypeExternalArtefactsEnum.CODELIST.equals(enumeratedRepresentation.getEnumerated().getType())) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_MUST_BE_CODELIST).build();
+                }
+                String codelistUrn = enumeratedRepresentation.getEnumerated().getUrn();
+                // check codelist belongs to same variable of concept
+                if (concept.getVariable() == null) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE).withMessageParameters(codelistUrn)
+                            .build();
+                }
+                List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().urn())
+                        .eq(codelistUrn).build();
+                PagedResult<CodelistVersionMetamac> codelists = findCodelistsCanBeEnumeratedRepresentationForConcept(conditions, PagingParameter.rowAccess(0, 1), concept);
+                if (codelists.getValues().size() != 1) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE).withMessageParameters(codelistUrn)
+                            .build();
+                }
+            }
+        }
     }
 
     private void checkConceptMetadataExtends(ServiceContext ctx, ConceptMetamac concept, String conceptSchemeUrn) throws MetamacException {

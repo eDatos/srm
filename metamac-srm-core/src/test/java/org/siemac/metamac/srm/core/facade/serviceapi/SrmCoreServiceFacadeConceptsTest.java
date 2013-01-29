@@ -1022,7 +1022,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals("http://managementCodeList1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getManagementAppUrl());
         assertEqualsInternationalStringDto(conceptMetamacDto.getCoreRepresentation().getEnumerated().getTitle(), "es", "CodeList1", null, null);
         assertEquals(TypeExternalArtefactsEnum.CODELIST, conceptMetamacDto.getCoreRepresentation().getEnumerated().getType());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.CodeList.1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getUrn());
+        assertEquals(CODELIST_7_V1, conceptMetamacDto.getCoreRepresentation().getEnumerated().getUrn());
         assertEquals("http://data.siemac.org/srm/v1/codeLists/1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getUri());
     }
 
@@ -1453,7 +1453,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
     @Test
     public void testCreateConcept() throws Exception {
-        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.TEXT_FORMAT);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
         conceptMetamacDto.setConceptExtends(ConceptsMetamacDtoMocks.mockConceptRelatedResourceDto("CONCEPT01", CONCEPT_SCHEME_7_V1_CONCEPT_1));
         conceptMetamacDto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
@@ -1479,7 +1479,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
     @Test
     public void testCreateConceptWithConceptParent() throws Exception {
-        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.TEXT_FORMAT);
         conceptMetamacDto.setItemParentUrn(CONCEPT_SCHEME_1_V2_CONCEPT_1);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
 
@@ -1490,7 +1490,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
     @Test
     public void testCreateConceptErrorParentNotExists() throws Exception {
-        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.TEXT_FORMAT);
         conceptMetamacDto.setItemParentUrn(NOT_EXISTS);
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
 

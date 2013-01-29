@@ -64,4 +64,15 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         externalItem.setTitle(mockInternationalString("title"));
         return externalItem;
     }
+
+    public static ExternalItem mockCodelistExternalItem(String code, String urn) {
+        ExternalItem externalItem = new ExternalItem();
+        externalItem.setCode(code);
+        externalItem.setUri("uri...");
+        externalItem.setUrn(urn);
+        externalItem.setType(TypeExternalArtefactsEnum.CODELIST);
+        externalItem.setManagementAppUrl("managementAppUrl" + MetamacMocks.mockString(10));
+        externalItem.setTitle(mockInternationalString("title"));
+        return externalItem;
+    }
 }

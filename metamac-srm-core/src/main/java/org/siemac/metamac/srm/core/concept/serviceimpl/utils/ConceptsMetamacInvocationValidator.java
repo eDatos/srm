@@ -224,5 +224,4 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ExceptionUtils.throwIfException(exceptions);
     }
-
 }
