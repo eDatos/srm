@@ -16,5 +16,4 @@ public class FindCodeLists {
 
     @Out(1)
     List<ExternalItemDto> codeLists;
-
 }
