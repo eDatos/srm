@@ -6,6 +6,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
@@ -17,9 +18,6 @@ import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
-import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridFieldIfFunction;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
@@ -44,20 +42,8 @@ public class ConceptsTreeWindow extends CustomWindow {
         conceptsTreeGrid.getField(ConceptDS.CODE).setWidth("50%");
 
         // Do not show TYPE and SDMX_RELATED_ARTEFACT fields
-        conceptsTreeGrid.getField(ConceptDS.TYPE).setShowIfCondition(new ListGridFieldIfFunction() {
-
-            @Override
-            public boolean execute(ListGrid grid, ListGridField field, int fieldNum) {
-                return false;
-            }
-        });
-        conceptsTreeGrid.getField(ConceptDS.SDMX_RELATED_ARTEFACT).setShowIfCondition(new ListGridFieldIfFunction() {
-
-            @Override
-            public boolean execute(ListGrid grid, ListGridField field, int fieldNum) {
-                return false;
-            }
-        });
+        conceptsTreeGrid.getField(ConceptDS.TYPE).setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        conceptsTreeGrid.getField(ConceptDS.SDMX_RELATED_ARTEFACT).setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         // Change selection type (checkBox)
         conceptsTreeGrid.setSelectionType(SelectionStyle.SIMPLE);

@@ -5,9 +5,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 
-import com.gwtplatform.mvp.client.UiHandlers;
-
-public interface VariableUiHandlers extends UiHandlers {
+public interface VariableUiHandlers extends BaseVariableUiHandlers {
 
     // Variables
 
@@ -23,7 +21,6 @@ public interface VariableUiHandlers extends UiHandlers {
     void deleteVariableElements(List<String> urns);
     void goToVariableElement(String urn);
 
-    void createSegregation(String variableElementUrn, List<String> variableElementUrns);
-    void createFusion(List<String> variableElementUrn, String variableElementUrns);
-    void deleteVariableElementOperations(List<String> codes);
+    void retrieveVariableElementsByVariableForFusionOperation(int firstResult, int maxResults, final String criteria, String variableUrn);
+    void retrieveVariableElementsByVariableForSegregationOperation(int firstResult, int maxResults, final String criteria, String variableUrn);
 }

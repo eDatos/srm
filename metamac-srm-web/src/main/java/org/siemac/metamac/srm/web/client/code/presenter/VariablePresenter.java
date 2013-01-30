@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -95,6 +96,9 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
         void setVariables(GetVariablesResult result);
 
         void setVariableElements(GetVariableElementsResult result);
+        void setVariableElementsForFusion(GetVariableElementsResult result);
+        void setVariableElementsForSegregation(GetVariableElementsResult result);
+        void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos);
     }
 
     @ContentSlot
@@ -142,6 +146,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
         if (!StringUtils.isBlank(urn)) {
             retrieveVariableByUrn(urn);
             retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, urn);
+            retrieveVariableElementOperations(urn);
         }
     }
 
@@ -228,6 +233,36 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     }
 
     @Override
+    public void retrieveVariableElementsByVariableForFusionOperation(int firstResult, int maxResults, String criteria, String variableUrn) {
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria, variableUrn), new WaitingAsyncCallback<GetVariableElementsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableElementsResult result) {
+                getView().setVariableElementsForFusion(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariableElementsByVariableForSegregationOperation(int firstResult, int maxResults, String criteria, String variableUrn) {
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria, variableUrn), new WaitingAsyncCallback<GetVariableElementsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableElementsResult result) {
+                getView().setVariableElementsForSegregation(result);
+            }
+        });
+    }
+
+    @Override
     public void createVariableElement(VariableElementDto variableElementDto) {
         dispatcher.execute(new SaveVariableElementAction(variableElementDto), new WaitingAsyncCallback<SaveVariableElementResult>() {
 
@@ -286,9 +321,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
             @Override
             public void onWaitSuccess(DeleteVariableElementOperationsResult result) {
-
-                // TODO Auto-generated method stub
-
+                retrieveVariableElementOperations(variableDto.getUrn());
             }
         });
     }
@@ -302,8 +335,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
             @Override
             public void onWaitSuccess(GetVariableElementOperationsByVariableResult result) {
-                // TODO Auto-generated method stub
-
+                getView().setVariableElementOperations(result.getOperations());
             }
         });
     }
@@ -327,7 +359,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
                 } else {
                     ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementSegregated()), MessageTypeEnum.SUCCESS);
                 }
-                // TODO Auto-generated method stub
+                retrieveVariableElementOperations(variableDto.getUrn());
             }
         });
     }

@@ -2,9 +2,7 @@ package org.siemac.metamac.srm.web.client.code.view.handlers;
 
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 
-import com.gwtplatform.mvp.client.UiHandlers;
-
-public interface VariableElementUiHandlers extends UiHandlers {
+public interface VariableElementUiHandlers extends BaseVariableUiHandlers {
 
     void saveVariableElement(VariableElementDto variableElementDto);
     void retrieveVariableElementsByVariable(int firstResult, int maxResults, final String criteria, String variableUrn);

@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.client.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
@@ -169,6 +171,24 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
                 getView().setVariableElements(result);
             }
         });
+    }
+
+    @Override
+    public void createSegregation(String variableElementUrn, List<String> variableElementUrns) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void createFusion(List<String> variableElementUrn, String variableElementUrns) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void deleteVariableElementOperations(List<String> codes) {
+        // TODO Auto-generated method stub
+
     }
 
     private void retrieveVariableElementOperations(String variableUrn) {

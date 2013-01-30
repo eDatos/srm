@@ -8,9 +8,11 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistOrderRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
+import org.siemac.metamac.srm.web.client.code.model.record.VariableElementOperationRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableRecord;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -65,6 +67,15 @@ public class CommonUtils {
         return urns;
     }
 
+    public static List<String> getCodesFromSelectedVariableElementOperations(ListGridRecord[] records) {
+        List<String> codes = new ArrayList<String>();
+        for (ListGridRecord record : records) {
+            VariableElementOperationRecord variableRecord = (VariableElementOperationRecord) record;
+            codes.add(variableRecord.getCode());
+        }
+        return codes;
+    }
+
     public static List<String> getUrnsFromSelectedCodelistOrders(ListGridRecord[] records) {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : records) {
@@ -102,5 +113,9 @@ public class CommonUtils {
             ordersHashMap.put(order.getUrn(), getCodelistOrderVisualisationName(order));
         }
         return ordersHashMap;
+    }
+
+    public static String getVariableElementOperationTypeName(VariableElementOperationTypeEnum operationTypeEnum) {
+        return operationTypeEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().variableElementOperationTypeEnum() + operationTypeEnum.name()) : null;
     }
 }

@@ -13,6 +13,8 @@ public class VariableElementDS extends DataSource {
     // Content descriptors
     public static final String VARIABLE            = "ele-variable";
     // Diffusion descriptors
+    public static final String VALID_FROM          = "ele-valid-from";
+    public static final String VALID_TO            = "ele-valid-to";
     public static final String REPLACE_TO_ELEMENTS = "ele-replace-to";
     public static final String REPLACED_BY_ELEMENT = "ele-replaced-by";
 

@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.client.code.widgets;
 
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
+import org.siemac.metamac.web.common.client.widgets.RadioToolStripButton;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -11,12 +11,12 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 public class CodesToolStripViewImpl implements CodesToolStripPresenterWidget.CodesToolStripView {
 
-    private ToolStrip             toolStrip;
+    private ToolStrip            toolStrip;
 
-    private CustomToolStripButton codelistFamiliesButton;
-    private CustomToolStripButton codelistsButton;
-    private CustomToolStripButton variableFamiliesButton;
-    private CustomToolStripButton variablesButton;
+    private RadioToolStripButton codelistFamiliesButton;
+    private RadioToolStripButton codelistsButton;
+    private RadioToolStripButton variableFamiliesButton;
+    private RadioToolStripButton variablesButton;
 
     @Inject
     public CodesToolStripViewImpl() {
@@ -26,13 +26,13 @@ public class CodesToolStripViewImpl implements CodesToolStripPresenterWidget.Cod
         toolStrip.setHeight(25);
         toolStrip.setAlign(Alignment.LEFT);
 
-        codelistFamiliesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().codelistFamilies());
+        codelistFamiliesButton = new RadioToolStripButton(MetamacSrmWeb.getConstants().codelistFamilies());
 
-        codelistsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().codelists());
+        codelistsButton = new RadioToolStripButton(MetamacSrmWeb.getConstants().codelists());
 
-        variableFamiliesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().variableFamilies());
+        variableFamiliesButton = new RadioToolStripButton(MetamacSrmWeb.getConstants().variableFamilies());
 
-        variablesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().variables());
+        variablesButton = new RadioToolStripButton(MetamacSrmWeb.getConstants().variables());
 
         toolStrip.addButton(codelistFamiliesButton);
         toolStrip.addButton(codelistsButton);

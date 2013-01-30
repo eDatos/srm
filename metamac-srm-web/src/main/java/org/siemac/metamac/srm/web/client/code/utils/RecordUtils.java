@@ -2,17 +2,21 @@ package org.siemac.metamac.srm.web.client.code.utils;
 
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
+import java.util.List;
+
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.client.code.model.record.CodeRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistFamilyRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistOrderRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
+import org.siemac.metamac.srm.web.client.code.model.record.VariableElementOperationRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableRecord;
@@ -64,6 +68,39 @@ public class RecordUtils {
                 variableElementDto.getUrn(), variableElementDto);
         return record;
     }
+
+    public static VariableElementOperationRecord getVariableElementOperationRecord(VariableElementOperationDto variableElementOperationDto) {
+        VariableElementOperationRecord record = new VariableElementOperationRecord(variableElementOperationDto.getId(), variableElementOperationDto.getCode(),
+                CommonUtils.getVariableElementOperationTypeName(variableElementOperationDto.getOperationType()),
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourcesName(variableElementOperationDto.getSources()),
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourcesName(variableElementOperationDto.getTargets()), variableElementOperationDto);
+        return record;
+    }
+
+    public static VariableElementOperationRecord[] getVariableElementOperationRecords(List<VariableElementOperationDto> variableElementOperationDtos) {
+        VariableElementOperationRecord[] records = new VariableElementOperationRecord[variableElementOperationDtos.size()];
+        int index = 0;
+        for (VariableElementOperationDto variableElementOperationDto : variableElementOperationDtos) {
+            records[index++] = getVariableElementOperationRecord(variableElementOperationDto);
+        }
+        return records;
+    }
+
+    // public static VariableElementOperationRecord[] getVariableElementOperationRecords(List<VariableElementOperationDto> variableElementOperationDtos) {
+    // List<VariableElementOperationRecord> records = new ArrayList<VariableElementOperationRecord>();
+    // for (VariableElementOperationDto variableElementOperationDto : variableElementOperationDtos) {
+    // for (RelatedResourceDto source : variableElementOperationDto.getSources()) {
+    // for (RelatedResourceDto target : variableElementOperationDto.getTargets()) {
+    // VariableElementOperationRecord record = new VariableElementOperationRecord(variableElementOperationDto.getId(), variableElementOperationDto.getCode(),
+    // CommonUtils.getVariableElementOperationTypeName(variableElementOperationDto.getOperationType()),
+    // org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(source), org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(target),
+    // variableElementOperationDto);
+    // records.add(record);
+    // }
+    // }
+    // }
+    // return records.toArray(new VariableElementOperationRecord[records.size()]);
+    // }
 
     // CODELIST ORDERS
 

@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.utils;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -131,5 +132,13 @@ public class CommonUtils {
         } else {
             return StringUtils.EMPTY;
         }
+    }
+
+    public static String getRelatedResourcesName(List<RelatedResourceDto> relatedResourceDtos) {
+        List<String> names = new ArrayList<String>(relatedResourceDtos.size());
+        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
+            names.add(getRelatedResourceName(relatedResourceDto));
+        }
+        return CommonWebUtils.getStringListToString(names);
     }
 }

@@ -89,4 +89,12 @@ public interface GlobalResources extends ClientBundleWithLookup {
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/version.png")
     ImageResource version();
+
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
+    @Source("images/segregate.png")
+    ImageResource segregate();
+
+    @ImageOptions(repeatStyle = RepeatStyle.Both)
+    @Source("images/fusion.png")
+    ImageResource fusion();
 }

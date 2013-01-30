@@ -9,16 +9,20 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.client.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.client.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.client.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.NewVariableElementWindow;
+import org.siemac.metamac.srm.web.client.code.widgets.VariableElementOperationLayout;
+import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -26,6 +30,7 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
@@ -46,6 +51,8 @@ import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -59,7 +66,6 @@ import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> implements VariablePresenter.VariableView {
 
@@ -79,11 +85,22 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private SearchMultipleRelatedResourcePaginatedWindow searchFamiliesWindow;
     private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToVariablesWindow;
 
+    // Variable elements
+
     private PaginatedCheckListGrid                       variableElementListGrid;
-    private ToolStripButton                              createVariableElementButton;
-    private ToolStripButton                              deleteVariableElementButton;
+    private CustomToolStripButton                        createVariableElementButton;
+    private CustomToolStripButton                        deleteVariableElementButton;
+    private CustomToolStripButton                        fusionVariableElementButton;
+    private CustomToolStripButton                        segregateVariableElementButton;
     private NewVariableElementWindow                     newVariableElementWindow;
     private DeleteConfirmationWindow                     deleteConfirmationWindow;
+
+    private SearchRelatedResourcePaginatedWindow         createFusionWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
+
+    // Variable element operations
+
+    private VariableElementOperationLayout               variableElementOperationsLayout;
 
     private VariableDto                                  variableDto;
 
@@ -111,8 +128,12 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         toolStrip.setWidth100();
         createVariableElementButton = createCreateVariableElementButton();
         deleteVariableElementButton = createDeleteVariableElementButton();
+        fusionVariableElementButton = createFusionButton();
+        segregateVariableElementButton = createSegregateButton();
         toolStrip.addButton(createVariableElementButton);
         toolStrip.addButton(deleteVariableElementButton);
+        toolStrip.addButton(fusionVariableElementButton);
+        toolStrip.addButton(segregateVariableElementButton);
 
         // ListGrid
 
@@ -130,12 +151,11 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
             @Override
             public void onSelectionChanged(SelectionEvent event) {
-                if (variableElementListGrid.getListGrid().getSelectedRecords().length > 0) {
-                    // Show delete button
-                    showListGridDeleteButton();
-                } else {
-                    deleteVariableElementButton.hide();
-                }
+                int selectedRecords = variableElementListGrid.getListGrid().getSelectedRecords().length;
+                updateListGridDeleteButtonVisibility(selectedRecords);
+                updateListGridFusionButtonVisibility(selectedRecords);
+                updateListGridSegregateButtonVisibility(selectedRecords);
+
             }
         });
         variableElementListGrid.getListGrid().addRecordClickHandler(new RecordClickHandler() {
@@ -167,14 +187,25 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
             }
         });
 
-        VLayout codelistsLayout = new VLayout();
-        codelistsLayout.setMargin(15);
-        codelistsLayout.addMember(new TitleLabel(getConstants().variableVariableElements()));
-        codelistsLayout.addMember(toolStrip);
-        codelistsLayout.addMember(variableElementListGrid);
+        // VARIABLE ELEMENT OPERATIONS
+
+        variableElementOperationsLayout = new VariableElementOperationLayout(getConstants().variableOperationsBetweenElements());
+
+        VLayout layout = new VLayout();
+        layout.setMargin(15);
+        layout.addMember(new TitleLabel(getConstants().variableVariableElements()));
+        layout.addMember(toolStrip);
+        layout.addMember(variableElementListGrid);
+        layout.addMember(variableElementOperationsLayout);
 
         panel.addMember(mainFormLayout);
-        panel.addMember(codelistsLayout);
+        panel.addMember(layout);
+    }
+
+    @Override
+    public void setUiHandlers(VariableUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        variableElementOperationsLayout.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -254,11 +285,11 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
-        RelatedResourceListItem replaceToVariables = new RelatedResourceListItem(VariableDS.REPLACE_TO_VARIABLES, getConstants().variableReplaceToVariables(), false);
-        ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY_VARIABLE, getConstants().variableReplacedByVariable());
         ViewTextItem validFrom = new ViewTextItem(VariableDS.VALID_FROM, getConstants().variableValidFrom());
         ViewTextItem validTo = new ViewTextItem(VariableDS.VALID_TO, getConstants().variableValidTo());
-        diffusionDescriptorsForm.setFields(replaceToVariables, replacedByVariable, validFrom, validTo);
+        RelatedResourceListItem replaceToVariables = new RelatedResourceListItem(VariableDS.REPLACE_TO_VARIABLES, getConstants().variableReplaceToVariables(), false);
+        ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY_VARIABLE, getConstants().variableReplacedByVariable());
+        diffusionDescriptorsForm.setFields(validFrom, validTo, replaceToVariables, replacedByVariable);
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
@@ -284,11 +315,11 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
-        RelatedResourceListItem replaceToVariables = createReplaceToVariablesItem();
-        ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY_VARIABLE, getConstants().variableReplacedByVariable());
         CustomDateItem validFrom = new CustomDateItem(VariableDS.VALID_FROM, getConstants().variableValidFrom());
         CustomDateItem validTo = new CustomDateItem(VariableDS.VALID_TO, getConstants().variableValidTo());
-        diffusionDescriptorsEditionForm.setFields(replaceToVariables, replacedByVariable, validFrom, validTo);
+        RelatedResourceListItem replaceToVariables = createReplaceToVariablesItem();
+        ViewTextItem replacedByVariable = new ViewTextItem(VariableDS.REPLACED_BY_VARIABLE, getConstants().variableReplacedByVariable());
+        diffusionDescriptorsEditionForm.setFields(validFrom, validTo, replaceToVariables, replacedByVariable);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
@@ -310,10 +341,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         ((RelatedResourceListItem) contentDescriptorsForm.getItem(VariableDS.FAMILIES)).setRelatedResources(variableDto.getFamilies());
 
         // Diffusion descriptors
-        ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
-        diffusionDescriptorsForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
         diffusionDescriptorsForm.setValue(VariableDS.VALID_FROM, DateUtils.getFormattedDate(variableDto.getValidFrom()));
         diffusionDescriptorsForm.setValue(VariableDS.VALID_TO, DateUtils.getFormattedDate(variableDto.getValidTo()));
+        ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
+        diffusionDescriptorsForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
     }
 
     public void setVariableEditionMode(VariableDto variableDto) {
@@ -327,10 +358,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).setRelatedResources(variableDto.getFamilies());
 
         // Diffusion descriptors
-        ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
-        diffusionDescriptorsEditionForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
         diffusionDescriptorsEditionForm.setValue(VariableDS.VALID_FROM, variableDto.getValidFrom());
         diffusionDescriptorsEditionForm.setValue(VariableDS.VALID_TO, variableDto.getValidTo());
+        ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
+        diffusionDescriptorsEditionForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
     }
 
     public VariableDto getVariableDto() {
@@ -344,10 +375,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         variableDto.getFamilies().addAll(((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).getSelectedRelatedResources());
 
         // Diffusion descriptors
-        variableDto.getReplaceToVariables().clear();
-        variableDto.getReplaceToVariables().addAll(((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).getSelectedRelatedResources());
         variableDto.setValidFrom(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableDS.VALID_FROM)).getValueAsDate());
         variableDto.setValidTo(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableDS.VALID_TO)).getValueAsDate());
+        variableDto.getReplaceToVariables().clear();
+        variableDto.getReplaceToVariables().addAll(((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).getSelectedRelatedResources());
 
         return variableDto;
     }
@@ -372,6 +403,27 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     public void setVariableElements(GetVariableElementsResult result) {
         setVariableElements(result.getVariableElements());
         variableElementListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
+    }
+
+    @Override
+    public void setVariableElementsForFusion(GetVariableElementsResult result) {
+        if (createFusionWindow != null) {
+            createFusionWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableElementDtos(result.getVariableElements()));
+            createFusionWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
+        }
+    }
+
+    @Override
+    public void setVariableElementsForSegregation(GetVariableElementsResult result) {
+        if (createSegregationWindow != null) {
+            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableElementDtos(result.getVariableElements()));
+            createSegregationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
+        }
+    }
+
+    @Override
+    public void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos) {
+        variableElementOperationsLayout.setVariableElementOperations(variableElementOperationDtos);
     }
 
     private void setVariableElements(List<VariableElementDto> variableElementDtos) {
@@ -487,12 +539,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         return replaceToItem;
     }
 
-    private void showListGridDeleteButton() {
-        deleteVariableElementButton.show();
-    }
-
-    private ToolStripButton createCreateVariableElementButton() {
-        ToolStripButton createButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+    private CustomToolStripButton createCreateVariableElementButton() {
+        CustomToolStripButton createButton = new CustomToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
         createButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -515,8 +563,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         return createButton;
     }
 
-    private ToolStripButton createDeleteVariableElementButton() {
-        ToolStripButton deleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+    private CustomToolStripButton createDeleteVariableElementButton() {
+        CustomToolStripButton deleteButton = new CustomToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteButton.setVisibility(Visibility.HIDDEN);
         deleteButton.addClickHandler(new ClickHandler() {
 
@@ -526,5 +574,123 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
             }
         });
         return deleteButton;
+    }
+
+    private CustomToolStripButton createFusionButton() {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        CustomToolStripButton fusionButton = new CustomToolStripButton(getConstants().actionFusion(), GlobalResources.RESOURCE.fusion().getURL());
+        fusionButton.setVisibility(Visibility.HIDDEN);
+        fusionButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                createFusionWindow = new SearchRelatedResourcePaginatedWindow(getConstants().actionFusion(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveVariableElementsByVariableForFusionOperation(firstResult, maxResults, createFusionWindow.getRelatedResourceCriteria(), variableDto.getUrn());
+                    }
+                });
+
+                // Load variable elements (to populate the selection window)
+                getUiHandlers().retrieveVariableElementsByVariableForFusionOperation(FIRST_RESULST, MAX_RESULTS, null, variableDto.getUrn());
+
+                createFusionWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                createFusionWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveVariableElementsByVariableForFusionOperation(firstResult, maxResults, criteria, variableDto.getUrn());
+                    }
+                });
+
+                createFusionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        RelatedResourceDto selectedVariableElement = createFusionWindow.getSelectedRelatedResource();
+                        createFusionWindow.markForDestroy();
+                        // Fusion the selected variable elements
+                        List<String> sourceUrns = org.siemac.metamac.srm.web.client.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid()
+                                .getSelectedRecords());
+                        String targetUrn = selectedVariableElement.getUrn();
+                        getUiHandlers().createFusion(sourceUrns, targetUrn);
+                    }
+                });
+
+            }
+        });
+        return fusionButton;
+    }
+
+    private CustomToolStripButton createSegregateButton() {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        CustomToolStripButton segregateButton = new CustomToolStripButton(getConstants().actionSegregate(), GlobalResources.RESOURCE.segregate().getURL());
+        segregateButton.setValign(VerticalAlignment.CENTER);
+        segregateButton.setVisibility(Visibility.HIDDEN);
+        segregateButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                createSegregationWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().actionSegregate(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(firstResult, maxResults, createSegregationWindow.getRelatedResourceCriteria(), variableDto.getUrn());
+                    }
+                });
+
+                // Load variable elements (to populate the selection window)
+                getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(FIRST_RESULST, MAX_RESULTS, null, variableDto.getUrn());
+
+                createSegregationWindow.setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(firstResult, maxResults, criteria, variableDto.getUrn());
+                    }
+                });
+                createSegregationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        List<RelatedResourceDto> selectedVariableElements = createSegregationWindow.getSelectedRelatedResources();
+                        createSegregationWindow.markForDestroy();
+                        // Segregate the selected variable elements
+                        String sourceUrn = org.siemac.metamac.srm.web.client.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid().getSelectedRecords())
+                                .get(0);
+                        List<String> targetUrns = RelatedResourceUtils.getUrnsFromRelatedResourceDtos(selectedVariableElements);
+                        getUiHandlers().createSegregation(sourceUrn, targetUrns);
+                    }
+                });
+            }
+        });
+        return segregateButton;
+    }
+
+    private void updateListGridDeleteButtonVisibility(int selectedRecords) {
+        if (selectedRecords > 0) {
+            deleteVariableElementButton.show();
+        } else {
+            deleteVariableElementButton.hide();
+        }
+    }
+
+    private void updateListGridFusionButtonVisibility(int selectedRecords) {
+        if (selectedRecords > 1) {
+            fusionVariableElementButton.show();
+        } else {
+            fusionVariableElementButton.hide();
+        }
+    }
+
+    private void updateListGridSegregateButtonVisibility(int selectedRecords) {
+        if (selectedRecords == 1) {
+            segregateVariableElementButton.show();
+        } else {
+            segregateVariableElementButton.hide();
+        }
     }
 }

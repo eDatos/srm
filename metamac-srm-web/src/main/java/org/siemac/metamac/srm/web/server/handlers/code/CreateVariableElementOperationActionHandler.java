@@ -31,7 +31,7 @@ public class CreateVariableElementOperationActionHandler extends SecurityActionH
             if (VariableElementOperationTypeEnum.FUSION.equals(action.getOperationType())) {
                 variableElementOperationDto = srmCoreServiceFacade.createVariableElementFusionOperation(ServiceContextHolder.getCurrentServiceContext(), action.getVariableElementUrns(),
                         action.getVariableElementUrn());
-            } else if (VariableElementOperationTypeEnum.FUSION.equals(action.getOperationType())) {
+            } else if (VariableElementOperationTypeEnum.SEGREGATION.equals(action.getOperationType())) {
                 variableElementOperationDto = srmCoreServiceFacade.createVariableElementSegregationOperation(ServiceContextHolder.getCurrentServiceContext(), action.getVariableElementUrn(),
                         action.getVariableElementUrns());
             }

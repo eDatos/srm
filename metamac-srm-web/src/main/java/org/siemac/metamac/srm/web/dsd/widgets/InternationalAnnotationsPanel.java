@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
+import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
 import com.google.gwt.resources.client.ImageResource;
@@ -188,13 +189,7 @@ public class InternationalAnnotationsPanel extends VLayout {
         grid.setBackgroundComponent(background);
 
         ListGridField id = new ListGridField(InternationalAnnotationRecord.ID, "Id");
-        id.setShowIfCondition(new ListGridFieldIfFunction() {
-
-            @Override
-            public boolean execute(ListGrid grid, ListGridField field, int fieldNum) {
-                return false;
-            }
-        });
+        id.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
         id.setGroupTitleRenderer(new GroupTitleRenderer() {
 
             @Override
@@ -204,13 +199,7 @@ public class InternationalAnnotationsPanel extends VLayout {
             }
         });
         ListGridField idDs = new ListGridField(InternationalAnnotationRecord.ID_DS, "Id Ds");
-        idDs.setShowIfCondition(new ListGridFieldIfFunction() {
-
-            @Override
-            public boolean execute(ListGrid grid, ListGridField field, int fieldNum) {
-                return false;
-            }
-        });
+        idDs.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
         ListGridField title = new ListGridField(InternationalAnnotationRecord.TITLE, "Title");
         title.setWidth("15%");
         title.setShowIfCondition(new ListGridFieldIfFunction() {
@@ -231,13 +220,7 @@ public class InternationalAnnotationsPanel extends VLayout {
             }
         });
         ListGridField locale = new ListGridField(InternationalAnnotationRecord.LOCALE, "Locale");
-        locale.setShowIfCondition(new ListGridFieldIfFunction() {
-
-            @Override
-            public boolean execute(ListGrid grid, ListGridField field, int fieldNum) {
-                return false;
-            }
-        });
+        locale.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
         ListGridField text = new ListGridField(InternationalAnnotationRecord.TEXT, "Annotation");
         ListGridField removeField = new ListGridField(InternationalAnnotationRecord.REMOVE_FIELD, "Remove");
         removeField.setIsRemoveField(true);
