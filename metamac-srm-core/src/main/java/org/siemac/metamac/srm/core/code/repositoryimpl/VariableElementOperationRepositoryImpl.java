@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.core.code.repositoryimpl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +32,9 @@ public class VariableElementOperationRepositoryImpl extends VariableElementOpera
     public List<VariableElementOperation> findByVariableElementUrn(String variableElementUrn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("variableElementUrn", variableElementUrn);
-        List<VariableElementOperation> resultInSource = findByQuery("select op from VariableElementOperation op join op.sources s where s.nameableArtefact.urn = :variableElementUrn", parameters);
-        List<VariableElementOperation> resultInTarget = findByQuery("select op from VariableElementOperation op join op.targets t where t.nameableArtefact.urn = :variableElementUrn", parameters);
-
-        List<VariableElementOperation> result = new ArrayList<VariableElementOperation>(resultInSource.size() + resultInTarget.size());
-        result.addAll(resultInSource);
-        result.addAll(resultInTarget);
+        List<VariableElementOperation> result = findByQuery(
+                "select distinct(op) from VariableElementOperation op join op.sources s join op.targets t where s.nameableArtefact.urn = :variableElementUrn or t.nameableArtefact.urn = :variableElementUrn",
+                parameters);
         return result;
     }
 }
