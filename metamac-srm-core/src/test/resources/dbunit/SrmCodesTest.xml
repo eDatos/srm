@@ -305,7 +305,7 @@
         SHORT_NAME_FK="70"
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="6"
-        REPLACED_BY_CODELIST_FK="21"
+        REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUALISATION_FK="111"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
@@ -3738,7 +3738,7 @@
         SHORT_NAME_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
-        REPLACED_BY_CODELIST_FK="[null]"
+        REPLACED_BY_CODELIST_FK="21"
         DEFAULT_ORDER_VISUALISATION_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"

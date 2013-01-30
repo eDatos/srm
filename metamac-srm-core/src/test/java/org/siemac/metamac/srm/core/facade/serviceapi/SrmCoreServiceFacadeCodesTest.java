@@ -95,8 +95,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testCreateCodelist() throws Exception {
         // Create
         CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
-        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST03", CODELIST_3_V1, null));
-        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST02", CODELIST_2_V1, null));
+        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST07", CODELIST_7_V1, null));
+        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST10", CODELIST_10_V1, null));
         codelistDto.setFamily(new RelatedResourceDto("CODELIST_FAMILY_01", CODELIST_FAMILY_1, null));
         codelistDto.setVariable(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
         CodelistMetamacDto codelistMetamacCreated = srmCoreServiceFacade.createCodelist(getServiceContextAdministrador(), codelistDto);
@@ -106,8 +106,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertNotNull(codelistMetamacCreated.getUrn());
         assertEquals(ProcStatusEnum.DRAFT, codelistMetamacCreated.getLifeCycle().getProcStatus());
         assertEquals(2, codelistMetamacCreated.getReplaceToCodelists().size());
-        assertEquals(CODELIST_3_V1, codelistMetamacCreated.getReplaceToCodelists().get(0).getUrn());
-        assertEquals(CODELIST_2_V1, codelistMetamacCreated.getReplaceToCodelists().get(1).getUrn());
+        assertEquals(CODELIST_7_V1, codelistMetamacCreated.getReplaceToCodelists().get(0).getUrn());
+        assertEquals(CODELIST_10_V1, codelistMetamacCreated.getReplaceToCodelists().get(1).getUrn());
         assertEquals(CODELIST_FAMILY_1, codelistMetamacCreated.getFamily().getUrn());
         assertEquals(VARIABLE_1, codelistMetamacCreated.getVariable().getUrn());
     }
@@ -116,7 +116,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testCreateCodelistErrorReplaceTo() throws Exception {
         CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
         codelistDto.setVariable(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
-        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST01", CODELIST_1_V1, null));
+        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST12", CODELIST_12_V1, null));
 
         // Create
         try {
@@ -125,7 +125,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(1, e.getExceptionItems().size());
             assertEquals(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CODELIST_1_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(CODELIST_12_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -134,13 +134,13 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         // Update
         CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
         assertEquals(1, codelistMetamacDto.getReplaceToCodelists().size());
-        assertEquals(CODELIST_1_V1, codelistMetamacDto.getReplaceToCodelists().get(0).getUrn());
+        assertEquals(CODELIST_12_V1, codelistMetamacDto.getReplaceToCodelists().get(0).getUrn());
 
         codelistMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
         assertEquals(VARIABLE_1, codelistMetamacDto.getVariable().getUrn());
         codelistMetamacDto.setVariable(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_02", VARIABLE_2));
         // add two replace to
-        codelistMetamacDto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST03", CODELIST_3_V1));
+        codelistMetamacDto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST07", CODELIST_7_V1));
         codelistMetamacDto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST10", CODELIST_10_V1));
         CodelistMetamacDto codelistMetamacDtoUpdated = srmCoreServiceFacade.updateCodelist(getServiceContextAdministrador(), codelistMetamacDto);
 
@@ -149,13 +149,14 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertEqualsCodelistMetamacDto(codelistMetamacDto, codelistMetamacDtoUpdated);
         assertTrue(codelistMetamacDtoUpdated.getVersionOptimisticLocking() > codelistMetamacDto.getVersionOptimisticLocking());
         assertEquals(3, codelistMetamacDtoUpdated.getReplaceToCodelists().size());
-        assertEquals(CODELIST_1_V1, codelistMetamacDtoUpdated.getReplaceToCodelists().get(0).getUrn());
-        assertEquals(CODELIST_3_V1, codelistMetamacDtoUpdated.getReplaceToCodelists().get(1).getUrn());
+        assertEquals(CODELIST_12_V1, codelistMetamacDtoUpdated.getReplaceToCodelists().get(0).getUrn());
+        assertEquals(CODELIST_7_V1, codelistMetamacDtoUpdated.getReplaceToCodelists().get(1).getUrn());
         assertEquals(CODELIST_10_V1, codelistMetamacDtoUpdated.getReplaceToCodelists().get(2).getUrn());
 
         // Validate replaced by
-        assertEquals(CODELIST_2_V1, srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1).getReplacedByCodelist().getUrn());
+        assertEquals(CODELIST_2_V1, srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V1).getReplacedByCodelist().getUrn());
         assertEquals(CODELIST_2_V1, srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_10_V1).getReplacedByCodelist().getUrn());
+        assertEquals(CODELIST_2_V1, srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_12_V1).getReplacedByCodelist().getUrn());
     }
 
     @Test
