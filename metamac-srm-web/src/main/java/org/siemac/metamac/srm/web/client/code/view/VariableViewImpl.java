@@ -190,6 +190,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // VARIABLE ELEMENT OPERATIONS
 
         variableElementOperationsLayout = new VariableElementOperationLayout(getConstants().variableOperationsBetweenElements());
+        variableElementOperationsLayout.setStyleName("marginTop15");
 
         VLayout layout = new VLayout();
         layout.setMargin(15);

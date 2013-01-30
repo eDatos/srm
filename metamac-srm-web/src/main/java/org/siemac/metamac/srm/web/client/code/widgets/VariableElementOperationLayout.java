@@ -120,7 +120,6 @@ public class VariableElementOperationLayout extends VLayout {
             }
         });
 
-        setStyleName("marginTop15");
         addMember(new TitleLabel(title));
         addMember(toolStrip);
         addMember(variableElementOperationsListGrid);

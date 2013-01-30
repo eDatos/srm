@@ -7,9 +7,12 @@ import java.util.List;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.web.client.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.client.code.presenter.VariableElementPresenter;
 import org.siemac.metamac.srm.web.client.code.view.handlers.VariableElementUiHandlers;
+import org.siemac.metamac.srm.web.client.code.widgets.VariableElementMainFormLayout;
+import org.siemac.metamac.srm.web.client.code.widgets.VariableElementOperationLayout;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
@@ -22,7 +25,6 @@ import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -43,7 +45,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementUiHandlers> implements VariableElementPresenter.VariableElementView {
 
     private VLayout                                      panel;
-    private InternationalMainFormLayout                  mainFormLayout;
+    private VariableElementMainFormLayout                mainFormLayout;
 
     // View forms
     private GroupDynamicForm                             identifiersForm;
@@ -56,6 +58,10 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     private GroupDynamicForm                             diffusionDescriptorsEditionForm;
 
     private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToElementsWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
+
+    // Variable element operations
+    private VariableElementOperationLayout               variableElementOperationsLayout;
 
     private VariableElementDto                           variableElementDto;
 
@@ -70,12 +76,31 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // VARIABLE ELEMENT
         //
 
-        mainFormLayout = new InternationalMainFormLayout(); // TODO Security
+        mainFormLayout = new VariableElementMainFormLayout(); // TODO Security
+        mainFormLayout.getSegregate().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                showCreateSegregationWindow();
+            }
+        });
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
 
+        // VARIABLE ELEMENT OPERATIONS
+
+        variableElementOperationsLayout = new VariableElementOperationLayout(getConstants().variableElementOperations());
+        variableElementOperationsLayout.setMargin(15);
+
         panel.addMember(mainFormLayout);
+        panel.addMember(variableElementOperationsLayout);
+    }
+
+    @Override
+    public void setUiHandlers(VariableElementUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        variableElementOperationsLayout.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -140,10 +165,23 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     }
 
     @Override
-    public void setVariableElements(GetVariableElementsResult result) {
+    public void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos) {
+        variableElementOperationsLayout.setVariableElementOperations(variableElementOperationDtos);
+    }
+
+    @Override
+    public void setVariableElementsForReplaceTo(GetVariableElementsResult result) {
         if (searchReplaceToElementsWindow != null) {
             searchReplaceToElementsWindow.setSourceRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableElementDtos(result.getVariableElements()));
             searchReplaceToElementsWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
+        }
+    }
+
+    @Override
+    public void setVariableElementsForSegregation(GetVariableElementsResult result) {
+        if (createSegregationWindow != null) {
+            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableElementDtos(result.getVariableElements()));
+            createSegregationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
         }
     }
 
@@ -273,13 +311,13 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariableElementsByVariable(firstResult, maxResults, searchReplaceToElementsWindow.getRelatedResourceCriteria(),
+                        getUiHandlers().retrieveVariableElementsByVariableForReplaceTo(firstResult, maxResults, searchReplaceToElementsWindow.getRelatedResourceCriteria(),
                                 variableElementDto.getVariable().getUrn());
                     }
                 });
 
                 // Load variables
-                getUiHandlers().retrieveVariableElementsByVariable(FIRST_RESULST, MAX_RESULTS, null, variableElementDto.getVariable().getUrn());
+                getUiHandlers().retrieveVariableElementsByVariableForReplaceTo(FIRST_RESULST, MAX_RESULTS, null, variableElementDto.getVariable().getUrn());
 
                 // Set the selected variables
                 List<RelatedResourceDto> selectedElements = ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).getRelatedResourceDtos();
@@ -289,7 +327,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariableElementsByVariable(firstResult, maxResults, criteria, variableElementDto.getVariable().getUrn());
+                        getUiHandlers().retrieveVariableElementsByVariableForReplaceTo(firstResult, maxResults, criteria, variableElementDto.getVariable().getUrn());
                     }
                 });
 
@@ -306,5 +344,41 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
             }
         });
         return replaceToItem;
+    }
+
+    private void showCreateSegregationWindow() {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        createSegregationWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().actionSegregate(), MAX_RESULTS, new PaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults) {
+                getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(firstResult, maxResults, createSegregationWindow.getRelatedResourceCriteria(),
+                        variableElementDto.getVariable().getUrn());
+            }
+        });
+
+        // Load variable elements (to populate the selection window)
+        getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(FIRST_RESULST, MAX_RESULTS, null, variableElementDto.getVariable().getUrn());
+
+        createSegregationWindow.setSearchAction(new SearchPaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(firstResult, maxResults, criteria, variableElementDto.getVariable().getUrn());
+            }
+        });
+        createSegregationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                List<RelatedResourceDto> selectedVariableElements = createSegregationWindow.getSelectedRelatedResources();
+                createSegregationWindow.markForDestroy();
+                // Segregate the selected variable elements
+                String sourceUrn = variableElementDto.getUrn();
+                List<String> targetUrns = RelatedResourceUtils.getUrnsFromRelatedResourceDtos(selectedVariableElements);
+                getUiHandlers().createSegregation(sourceUrn, targetUrns);
+            }
+        });
     }
 }
