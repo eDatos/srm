@@ -1445,7 +1445,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Create
-        variable.addVariableElementsOperation(variableElementOperation);
+        variableElementOperation.setVariable(variable);
         variableElementOperation = getVariableElementOperationRepository().save(variableElementOperation);
 
         return variableElementOperation;

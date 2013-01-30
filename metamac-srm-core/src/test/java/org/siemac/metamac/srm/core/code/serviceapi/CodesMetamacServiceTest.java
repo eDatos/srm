@@ -1913,7 +1913,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         assertEquals(urn, code.getNameableArtefact().getUrn());
         assertNull(code.getVariableElement());
-        assertEqualsInternationalString(code.getShortName(), "es", "nombre corto code2", "en", "short name code2");
+        assertEqualsInternationalString(code.getShortName(), "es", "nombre corto code2", "en", "short name 1 code2");
     }
 
     @Test
