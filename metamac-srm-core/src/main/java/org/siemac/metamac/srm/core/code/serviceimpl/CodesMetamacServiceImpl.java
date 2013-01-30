@@ -1432,7 +1432,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         for (VariableElement variableElement : variableElements) {
             // ValidTo
             if (variableElement.getValidTo() == null) {
-                throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO);
+                throw new MetamacException(ServiceExceptionType.VARIABLE_ELEMENT_MUST_HAVE_VALID_TO_FILLED, variableElement.getNameableArtefact().getUrn());
             }
             // Variable
             if (variable == null) {

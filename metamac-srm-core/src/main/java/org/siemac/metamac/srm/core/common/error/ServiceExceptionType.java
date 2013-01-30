@@ -29,6 +29,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
 
     // Variable elements
     public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE                = create("exception.srm.codelists.variable_element.must_belong_to_same_variable");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENT_MUST_HAVE_VALID_TO_FILLED                    = create("exception.srm.codelists.variable_element.valid_to_required");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_OPERATION_NOT_FOUND                          = create("exception.srm.codelists.variable_element.operation.not_found");
 
     // Data Structure Definitions

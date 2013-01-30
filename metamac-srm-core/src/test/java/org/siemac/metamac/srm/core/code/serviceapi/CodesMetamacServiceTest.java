@@ -4247,9 +4247,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("validTo");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.VARIABLE_ELEMENT_MUST_HAVE_VALID_TO_FILLED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(target, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
