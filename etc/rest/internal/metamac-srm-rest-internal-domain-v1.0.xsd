@@ -34,7 +34,6 @@
                     <xs:element name="roles" type="tns:Urns" minOccurs="0" />
                     <xs:element name="extends" type="xs:string" minOccurs="0" />
                     <xs:element name="relatedConcepts" type="tns:Urns" minOccurs="0" />
-                    <xs:element name="variable" type="common:Resource" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
