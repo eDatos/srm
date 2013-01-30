@@ -18,7 +18,7 @@ public class GetConceptSchemePaginatedList {
     int                           maxResults;
 
     @In(3)
-    String                        conceptScheme;
+    String                        criteria;
 
     @Out(1)
     List<ConceptSchemeMetamacDto> conceptSchemeList;
@@ -28,5 +28,4 @@ public class GetConceptSchemePaginatedList {
 
     @Out(3)
     Integer                       totalResults;
-
 }
