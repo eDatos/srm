@@ -27,6 +27,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginat
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -107,8 +108,8 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Override
-    public void retrieveConceptSchemes(int firstResult, int maxResults, final String conceptScheme) {
-        dispatcher.execute(new GetConceptSchemePaginatedListAction(firstResult, maxResults, conceptScheme), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
+    public void retrieveConceptSchemes(int firstResult, int maxResults, final String criteria) {
+        dispatcher.execute(new GetConceptSchemePaginatedListAction(firstResult, maxResults, new ConceptSchemeWebCriteria(criteria)), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -117,7 +118,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitSuccess(GetConceptSchemePaginatedListResult result) {
                 getView().setConceptSchemePaginatedList(result);
-                if (StringUtils.isBlank(conceptScheme)) {
+                if (StringUtils.isBlank(criteria)) {
                     getView().clearSearchSection();
                 }
             }

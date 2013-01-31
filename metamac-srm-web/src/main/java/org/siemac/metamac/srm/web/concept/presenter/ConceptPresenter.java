@@ -43,6 +43,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -284,8 +285,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String concept, String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, concept, conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
+    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
+        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, new ConceptWebCriteria(criteria, conceptSchemeUrn)), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -299,8 +300,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String concept, String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, concept, conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
+    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
+        dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, new ConceptWebCriteria(criteria, conceptSchemeUrn)), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
