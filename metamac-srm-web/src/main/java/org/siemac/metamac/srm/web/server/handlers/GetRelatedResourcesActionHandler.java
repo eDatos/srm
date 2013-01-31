@@ -45,7 +45,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
             criteria.getPaginator().setMaximumResultSize(action.getMaxResults());
             criteria.getPaginator().setCountTotalResults(true);
 
-            switch (action.getRelatedArtefactsEnum()) {
+            switch (action.getStructuralResourcesRelationEnum()) {
                 case CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE:
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));

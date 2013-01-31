@@ -13,23 +13,23 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetRelatedResources {
 
     @In(1)
-    RelatedArtefactsEnum     relatedArtefactsEnum;
+    StructuralResourcesRelationEnum structuralResourcesRelationEnum;
 
     @In(2)
-    int                      firstResult;
+    int                             firstResult;
 
     @In(3)
-    int                      maxResults;
+    int                             maxResults;
 
     @In(4)
-    MetamacWebCriteria       criteria;
+    MetamacWebCriteria              criteria;
 
     @Out(1)
-    List<RelatedResourceDto> relatedResourceDtos;
+    List<RelatedResourceDto>        relatedResourceDtos;
 
     @Out(2)
-    Integer                  firstResultOut;
+    Integer                         firstResultOut;
 
     @Out(3)
-    Integer                  totalResults;
+    Integer                         totalResults;
 }
