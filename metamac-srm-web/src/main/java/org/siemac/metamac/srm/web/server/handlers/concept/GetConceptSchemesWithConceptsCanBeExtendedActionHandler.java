@@ -3,10 +3,8 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
@@ -49,12 +47,12 @@ public class GetConceptSchemesWithConceptsCanBeExtendedActionHandler extends Sec
         criteria.setOrdersBy(criteriaOrders);
 
         // Criteria
-        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-        if (!StringUtils.isBlank(action.getCriteria())) {
-            MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = MetamacCriteriaUtils.getConceptSchemeCriteriaDisjunctionRestriction(action.getCriteria());
-            restriction.getRestrictions().add(conceptSchemeCriteriaDisjuction);
+
+        if (action.getCriteria() != null) {
+            MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+            restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(action.getCriteria()));
+            criteria.setRestriction(restriction);
         }
-        criteria.setRestriction(restriction);
 
         // Pagination
         criteria.setPaginator(new MetamacCriteriaPaginator());

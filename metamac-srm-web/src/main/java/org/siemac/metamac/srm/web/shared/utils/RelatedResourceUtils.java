@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.shared.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
@@ -220,5 +221,15 @@ public class RelatedResourceUtils {
             }
         }
         return result;
+    }
+
+    // TODO REMOVE THIS METHOD: RelatedResourceDto instead of ExternalItemDto
+    public static ExternalItemDto createExternalItemDto(TypeExternalArtefactsEnum type, String urn) {
+        ExternalItemDto externalItemDto = new ExternalItemDto();
+        externalItemDto.setCode(urn);
+        externalItemDto.setUri("dummy");
+        externalItemDto.setType(type);
+        externalItemDto.setUrn(urn);
+        return externalItemDto;
     }
 }

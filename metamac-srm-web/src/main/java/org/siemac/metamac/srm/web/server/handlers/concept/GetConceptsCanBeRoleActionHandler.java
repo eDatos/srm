@@ -3,19 +3,14 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
@@ -51,19 +46,12 @@ public class GetConceptsCanBeRoleActionHandler extends SecurityActionHandler<Get
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
-        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-
         // Concept criteria
-        if (StringUtils.isNotBlank(action.getCriteria())) {
-            MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjuction = MetamacCriteriaUtils.getConceptCriteriaDisjunctionRestriction(action.getCriteria());
-            restriction.getRestrictions().add(conceptCriteriaDisjuction);
+        if (action.getCriteria() != null) {
+            MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+            restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(action.getCriteria()));
+            criteria.setRestriction(restriction);
         }
-        // Specify the scheme URN
-        if (StringUtils.isNotBlank(action.getConceptSchemeUrn())) {
-            restriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(), action.getConceptSchemeUrn(), OperationType.EQ));
-        }
-
-        criteria.setRestriction(restriction);
 
         // Pagination
         criteria.setPaginator(new MetamacCriteriaPaginator());

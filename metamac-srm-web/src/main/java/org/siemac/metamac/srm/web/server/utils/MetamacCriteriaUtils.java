@@ -1,11 +1,17 @@
 package org.siemac.metamac.srm.web.server.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaRestriction;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 
 public class MetamacCriteriaUtils {
 
@@ -15,12 +21,15 @@ public class MetamacCriteriaUtils {
      * @param criteria
      * @return
      */
-    public static MetamacCriteriaDisjunctionRestriction getConceptSchemeCriteriaDisjunctionRestriction(String criteria) {
+    public static MetamacCriteriaRestriction getConceptSchemeCriteriaRestriction(ConceptSchemeWebCriteria criteria) {
         MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (StringUtils.isNotBlank(criteria)) {
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria, OperationType.ILIKE));
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria, OperationType.ILIKE));
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria, OperationType.ILIKE));
+        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
+            conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+            conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+            conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
         }
         return conceptSchemeCriteriaDisjuction;
     }
@@ -31,13 +40,22 @@ public class MetamacCriteriaUtils {
      * @param criteria
      * @return
      */
-    public static MetamacCriteriaDisjunctionRestriction getConceptCriteriaDisjunctionRestriction(String criteria) {
-        MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
-        if (StringUtils.isNotBlank(criteria)) {
-            conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), criteria, OperationType.ILIKE));
-            conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), criteria, OperationType.ILIKE));
-            conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), criteria, OperationType.ILIKE));
+    public static List<MetamacCriteriaRestriction> getConceptCriteriaRestriction(ConceptWebCriteria criteria) {
+        List<MetamacCriteriaRestriction> restrictions = new ArrayList<MetamacCriteriaRestriction>();
+        if (criteria != null) {
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
+                conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+                restrictions.add(conceptCriteriaDisjunction);
+            }
+            if (StringUtils.isNotBlank(criteria.getConceptSchemeUrn())) {
+                MetamacCriteriaPropertyRestriction conceptSchemePropertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(),
+                        criteria.getConceptSchemeUrn(), OperationType.EQ);
+                restrictions.add(conceptSchemePropertyRestriction);
+            }
         }
-        return conceptCriteriaDisjunction;
+        return restrictions;
     }
 }

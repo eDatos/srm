@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.shared;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.web.shared.criteria.MetamacWebCriteria;
+
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -14,10 +16,13 @@ public class GetRelatedResources {
     RelatedArtefactsEnum     relatedArtefactsEnum;
 
     @In(2)
-    String                   dsdUrn;
+    int                      firstResult;
 
     @In(3)
-    String                   criteria;
+    int                      maxResults;
+
+    @In(4)
+    MetamacWebCriteria       criteria;
 
     @Out(1)
     List<RelatedResourceDto> relatedResourceDtos;

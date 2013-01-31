@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -18,7 +19,7 @@ public class GetConceptSchemePaginatedList {
     int                           maxResults;
 
     @In(3)
-    String                        criteria;
+    ConceptSchemeWebCriteria      criteria;
 
     @Out(1)
     List<ConceptSchemeMetamacDto> conceptSchemeList;

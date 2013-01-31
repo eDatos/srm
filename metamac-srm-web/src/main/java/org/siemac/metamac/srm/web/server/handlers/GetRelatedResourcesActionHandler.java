@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.web.server.handlers;
 
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -8,6 +10,8 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -34,15 +38,26 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
 
         try {
             MetamacCriteriaResult<RelatedResourceDto> result = null;
+
             MetamacCriteria criteria = new MetamacCriteria();
+            criteria.setPaginator(new MetamacCriteriaPaginator());
+            criteria.getPaginator().setFirstResult(action.getFirstResult());
+            criteria.getPaginator().setMaximumResultSize(action.getMaxResults());
+            criteria.getPaginator().setCountTotalResults(true);
+
             switch (action.getRelatedArtefactsEnum()) {
                 case CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE:
-                    criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaDisjunctionRestriction(action.getCriteria()));
-                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContextHolder.getCurrentServiceContext(), null, action.getDsdUrn());
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            conceptSchemeWebCriteria.getDsdUrn());
                     break;
                 case CONCEPTS_WITH_DSD_PRIMARY_MEASURE:
-                    criteria.setRestriction(MetamacCriteriaUtils.getConceptCriteriaDisjunctionRestriction(action.getCriteria()));
-                    result = srmCoreServiceFacade.findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContextHolder.getCurrentServiceContext(), null, action.getDsdUrn());
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    criteria.setRestriction(restriction);
+                    result = srmCoreServiceFacade.findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, MetamacSrmWeb.getCoreMessages().exception_common_unknown());

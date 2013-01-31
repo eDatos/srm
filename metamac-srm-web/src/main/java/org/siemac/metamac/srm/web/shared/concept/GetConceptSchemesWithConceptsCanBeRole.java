@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -17,7 +19,7 @@ public class GetConceptSchemesWithConceptsCanBeRole {
     int                      maxResults;
 
     @In(3)
-    String                   criteria;
+    ConceptSchemeWebCriteria criteria;
 
     @Out(1)
     List<RelatedResourceDto> conceptSchemes;
