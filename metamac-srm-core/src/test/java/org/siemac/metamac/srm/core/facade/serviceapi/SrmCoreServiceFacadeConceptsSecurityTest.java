@@ -121,7 +121,8 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
     @Test
     public void testCreateConceptSchemeTypeOperationErrorWithoutOperation() throws Exception {
         try {
-            srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacionWithOperation1(), ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
+            srmCoreServiceFacade.createConceptScheme(getServiceContextJefeNormalizacionWithOperation1(),
+                    ConceptsMetamacDtoMocks.mockConceptSchemeDtoOperationType(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1));
             fail("action not allowed");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -1024,7 +1025,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
             ConceptSchemeMetamacDto[] conceptSchemeMetamacDtos = {draftNonOperationSchemeVersion, draftOperationSchemeVersion};
 
-            ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+            ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.TEXT_FORMAT);
             for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : conceptSchemeMetamacDtos) {
                 conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeMetamacDto.getUrn());
                 srmCoreServiceFacade.createConcept(getServiceContextJefeNormalizacion(), conceptMetamacDto);
@@ -1036,7 +1037,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
             ConceptSchemeMetamacDto prodValidationOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_10_V3);
             ConceptSchemeMetamacDto[] conceptSchemeMetamacDtos = {draftOperationSchemeVersion, prodValidationOperationSchemeVersion};
 
-            ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+            ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.TEXT_FORMAT);
             for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : conceptSchemeMetamacDtos) {
                 conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeMetamacDto.getUrn());
                 srmCoreServiceFacade.createConcept(getServiceContextTecnicoProduccion(), conceptMetamacDto);
@@ -1236,7 +1237,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
             }
         }
     }
-    
+
     @Test
     public void testAddConceptRole() throws Exception {
         srmCoreServiceFacade.addRoleConcept(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_1_V2_CONCEPT_1, CONCEPT_SCHEME_13_V1_CONCEPT_2);
@@ -1248,7 +1249,6 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
         srmCoreServiceFacade.deleteRoleConcept(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_1_V2_CONCEPT_1, CONCEPT_SCHEME_13_V1_CONCEPT_1);
         // Note: no more tests because security is same that update concept
     }
-
 
     @Test
     public void testRetrieveRelatedConceptsRoles() throws Exception {
