@@ -86,7 +86,7 @@ public class SearchRelatedResourcePaginatedWindow extends BaseSearchWindow {
         return initialSelectionItem;
     }
 
-    public String getIntialSelectionValue() {
+    public String getInitialSelectionValue() {
         return initialSelectionItem.getValue() != null && StringUtils.isNotEmpty(String.valueOf(initialSelectionItem.getValue())) ? String.valueOf(initialSelectionItem.getValue()) : null;
     }
 }

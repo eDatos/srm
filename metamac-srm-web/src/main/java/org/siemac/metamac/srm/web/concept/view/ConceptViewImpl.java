@@ -712,7 +712,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults) {
                                 getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, searchExtendsWindow.getRelatedResourceCriteria(),
-                                        searchExtendsWindow.getIntialSelectionValue());
+                                        searchExtendsWindow.getInitialSelectionValue());
                             }
                         });
 
@@ -724,7 +724,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, searchExtendsWindow.getRelatedResourceCriteria(), searchExtendsWindow.getIntialSelectionValue());
+                        getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, searchExtendsWindow.getRelatedResourceCriteria(), searchExtendsWindow.getInitialSelectionValue());
                     }
                 });
 
@@ -733,7 +733,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept, searchExtendsWindow.getIntialSelectionValue());
+                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept, searchExtendsWindow.getInitialSelectionValue());
                     }
                 });
                 searchExtendsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
