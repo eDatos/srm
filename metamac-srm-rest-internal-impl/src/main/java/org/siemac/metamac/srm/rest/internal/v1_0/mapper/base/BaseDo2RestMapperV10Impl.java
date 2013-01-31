@@ -1,11 +1,11 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.base;
 
-import java.math.BigInteger;
-import java.util.List;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
@@ -13,9 +13,15 @@ import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.constants.RestEndpointsConstants;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Urns;
+import org.siemac.metamac.rest.exception.RestException;
+import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.LifeCycle;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.utils.RestCommonUtil;
 import org.siemac.metamac.rest.utils.RestUtils;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,36 +60,66 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         return statisticalOperationsApiInternalEndpoint;
     }
 
+    @Override
+    public InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString sources) {
+        if (sources == null) {
+            return null;
+        }
+        InternationalString targets = new InternationalString();
+        for (org.siemac.metamac.core.common.ent.domain.LocalisedString source : sources.getTexts()) {
+            LocalisedString target = new LocalisedString();
+            target.setValue(source.getLabel());
+            target.setLang(source.getLocale());
+            targets.getTexts().add(target);
+        }
+        return targets;
+    }
+
+    @Override
+    public org.siemac.metamac.rest.srm_internal.v1_0.domain.LifeCycle toLifeCycle(org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata source) {
+        LifeCycle target = new LifeCycle();
+        target.setProcStatus(toProcStatus(source.getProcStatus()));
+        target.setProductionValidationDate(toDate(source.getProductionValidationDate()));
+        target.setProductionValidationUser(source.getProductionValidationUser());
+        target.setDiffusionValidationDate(toDate(source.getDiffusionValidationDate()));
+        target.setDiffusionValidationUser(source.getDiffusionValidationUser());
+        target.setInternalPublicationDate(toDate(source.getInternalPublicationDate()));
+        target.setInternalPublicationUser(source.getInternalPublicationUser());
+        target.setExternalPublicationDate(toDate(source.getExternalPublicationDate()));
+        target.setExternalPublicationUser(source.getExternalPublicationUser());
+        target.setIsExternalPublicationFailed(source.getIsExternalPublicationFailed());
+        target.setExternalPublicationFailedDate(toDate(source.getExternalPublicationFailedDate()));
+        return target;
+    }
+
+    @Override
+    public ProcStatus toProcStatus(ProcStatusEnum source) {
+        switch (source) {
+            case INTERNALLY_PUBLISHED:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus.INTERNALLY_PUBLISHED;
+            case EXTERNALLY_PUBLISHED:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus.EXTERNALLY_PUBLISHED;
+            default:
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public Date toDate(DateTime source) {
+        return RestCommonUtil.transformDateTimeToDate(source);
+    }
+
     protected Resource toResource(NameableArtefact source, String kind, ResourceLink selfLink) {
         if (source == null) {
             return null;
         }
         Resource target = new Resource();
         target.setId(source.getCode());
-        target.setUrn(source.getUrn());
+        target.setUrn(source.getUrnProvider());
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setTitle(toInternationalString(source.getName()));
-        return target;
-    }
-
-    @SuppressWarnings("rawtypes")
-    protected Urns itemsToUrns(List sources) {
-        if (CollectionUtils.isEmpty(sources)) {
-            return null;
-        }
-        Urns target = new Urns();
-        target.setKind("TODO"); // TODO kind
-        for (Object sourceObject : sources) {
-            com.arte.statistic.sdmx.srm.core.base.domain.Item source = (Item) sourceObject;
-            // TODO utilidad para obtener urn
-            if (source.getNameableArtefact().getUrnProvider() != null) {
-                target.getUrns().add(source.getNameableArtefact().getUrnProvider());
-            } else {
-                target.getUrns().add(source.getNameableArtefact().getUrn());
-            }
-        }
-        target.setTotal(BigInteger.valueOf(target.getUrns().size()));
         return target;
     }
 
@@ -105,20 +141,6 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItem, source.getUri())));
         target.setTitle(toInternationalString(source.getTitle()));
         return target;
-    }
-
-    protected InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString sources) {
-        if (sources == null) {
-            return null;
-        }
-        InternationalString targets = new InternationalString();
-        for (org.siemac.metamac.core.common.ent.domain.LocalisedString source : sources.getTexts()) {
-            LocalisedString target = new LocalisedString();
-            target.setValue(source.getLabel());
-            target.setLang(source.getLocale());
-            targets.getTexts().add(target);
-        }
-        return targets;
     }
 
     protected ResourceLink toResourceLink(String kind, String href) {
@@ -170,7 +192,6 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         link = RestUtils.createLink(link, getCode(item.getNameableArtefact()));
         return link;
     }
-
     private String readProperty(String property) {
         String propertyValue = configurationService.getProperty(property);
         if (propertyValue == null) {

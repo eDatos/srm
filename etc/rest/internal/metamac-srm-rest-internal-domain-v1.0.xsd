@@ -9,9 +9,10 @@
         <xs:complexContent>
             <xs:extension base="sdmx:ConceptSchemeType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemSchemeGroup" />
+                    <xs:group ref="tns:SrmMaintainableGroup" />
                     <xs:element name="type" type="tns:ConceptSchemeType" />
                     <xs:element name="statisticalOperation" type="common:Resource" minOccurs="0" />
+                    <xs:element name="comment" type="common:InternationalString" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -22,29 +23,32 @@
         <xs:complexContent>
             <xs:extension base="sdmx:ConceptType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemGroup" />
+                    <xs:group ref="tns:SrmNameableGroup" />
                     <xs:element name="pluralName" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="acronym" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="context" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="docMethod" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="sdmxRelatedArtefact" type="tns:SdmxRelatedArtefact" minOccurs="0" />
                     <xs:element name="type" type="common:Item" minOccurs="0" />
+                    <xs:element name="roles" type="tns:RoleConcepts" minOccurs="0" />
+                    <xs:element name="variable" type="common:Item" minOccurs="0" />
                     <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="extends" type="common:Resource" minOccurs="0" />
+                    <xs:element name="relatedConcepts" type="tns:RelatedConcepts" minOccurs="0" />
                     <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="roles" type="tns:Urns" minOccurs="0" />
-                    <xs:element name="extends" type="xs:string" minOccurs="0" />
-                    <xs:element name="relatedConcepts" type="tns:Urns" minOccurs="0" />
+                    <xs:element name="comment" type="common:InternationalString" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-
+    
     <xs:complexType name="CategoryScheme">
         <xs:complexContent>
             <xs:extension base="sdmx:CategorySchemeType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemSchemeGroup" />
+                    <xs:group ref="tns:SrmMaintainableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -55,7 +59,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:CategoryType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemGroup" />
+                    <xs:group ref="tns:SrmNameableGroup" />
                     <xs:element name="parent" type="xs:string" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
@@ -67,7 +71,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:CategorisationType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemSchemeGroup" />
+                    <xs:group ref="tns:SrmMaintainableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -78,7 +82,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:CodelistType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemSchemeGroup" />
+                    <xs:group ref="tns:SrmMaintainableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -89,7 +93,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:CodeType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemGroup" />
+                    <xs:group ref="tns:SrmNameableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -221,7 +225,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:AgencySchemeType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemSchemeGroup" />
+                    <xs:group ref="tns:SrmMaintainableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -232,7 +236,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:OrganisationUnitSchemeType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemSchemeGroup" />
+                    <xs:group ref="tns:SrmMaintainableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -243,7 +247,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:DataProviderSchemeType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemSchemeGroup" />
+                    <xs:group ref="tns:SrmMaintainableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -254,7 +258,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:DataConsumerSchemeType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemSchemeGroup" />
+                    <xs:group ref="tns:SrmMaintainableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -325,7 +329,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:AgencyType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemGroup" />
+                    <xs:group ref="tns:SrmNameableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -336,7 +340,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:OrganisationUnitType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemGroup" />
+                    <xs:group ref="tns:SrmNameableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -347,7 +351,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:DataProviderType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemGroup" />
+                    <xs:group ref="tns:SrmNameableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -358,7 +362,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:DataConsumerType">
                 <xs:sequence>
-                    <xs:group ref="tns:ItemGroup" />
+                    <xs:group ref="tns:SrmNameableGroup" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -385,21 +389,41 @@
         </xs:complexContent>
     </xs:complexType>     
 
-    <xs:complexType name="Urns">
+    <xs:complexType name="RelatedConcepts">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="urn" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="relatedConcept" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:complexType name="RoleConcepts">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="roleConcept" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
 
     <!-- Enums -->
     <xs:simpleType name="ProcStatus">
         <xs:restriction base="xs:token">
-            <xs:enumeration value="PUBLISH_INTERNALLY" />
-            <xs:enumeration value="PUBLISH_EXTERNALLY" />
+            <xs:enumeration value="INTERNALLY_PUBLISHED" />
+            <xs:enumeration value="EXTERNALLY_PUBLISHED" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="SdmxRelatedArtefact">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="DIMENSION" />
+            <xs:enumeration value="ATTRIBUTE" />
+            <xs:enumeration value="PRIMARY_MEASURE" />
+            <xs:enumeration value="ATTRIBUTE_OR_DIMENSION" />
+            <xs:enumeration value="MEASURE_DIMENSION" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -587,14 +611,32 @@
         </xs:restriction>
     </xs:simpleType>    
 
-    <xs:group name="ItemSchemeGroup">
+    <xs:group name="SrmMaintainableGroup">
         <xs:sequence>
             <xs:group ref="common:ResourceGroup" />
+            <xs:element name="lifeCycle" type="tns:LifeCycle" minOccurs="1" />
+            <xs:element name="replacedByVersion" type="xs:string" minOccurs="0" />
             <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
         </xs:sequence>
     </xs:group>
+    
+    <xs:complexType name="LifeCycle">
+        <xs:sequence>
+            <xs:element name="procStatus" type="tns:ProcStatus" minOccurs="1" />
+            <xs:element name="productionValidationDate" type="xs:dateTime" minOccurs="1" />
+            <xs:element name="productionValidationUser" type="xs:string" minOccurs="1" />
+            <xs:element name="diffusionValidationDate" type="xs:dateTime" minOccurs="1" />
+            <xs:element name="diffusionValidationUser" type="xs:string" minOccurs="1" />
+            <xs:element name="internalPublicationDate" type="xs:dateTime" minOccurs="1" />
+            <xs:element name="internalPublicationUser" type="xs:string" minOccurs="1" />
+            <xs:element name="externalPublicationDate" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="externalPublicationUser" type="xs:string" minOccurs="0" />
+            <xs:element name="isExternalPublicationFailed" type="xs:boolean" minOccurs="0" />
+            <xs:element name="externalPublicationFailedDate" type="xs:dateTime" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>    
 
-    <xs:group name="ItemGroup">
+    <xs:group name="SrmNameableGroup">
         <xs:sequence>
             <xs:group ref="common:ResourceGroup" />
         </xs:sequence>

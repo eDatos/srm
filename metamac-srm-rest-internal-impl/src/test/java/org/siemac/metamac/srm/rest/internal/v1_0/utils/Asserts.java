@@ -4,13 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
+import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Urns;
-import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.LifeCycle;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -42,14 +45,6 @@ public class Asserts extends MetamacRestAsserts {
         }
     }
 
-    public static void assertEqualsUrnsNotNull(List<ConceptMetamac> expecteds, Urns actuals) {
-        assertTrue(expecteds.size() > 0);
-        assertEquals(expecteds.size(), actuals.getTotal().intValue());
-        for (int i = 0; i < expecteds.size(); i++) {
-            assertEquals(expecteds.get(i).getNameableArtefact().getUrnProvider(), actuals.getUrns().get(i)); // TODO urn provider?
-        }
-    }
-
     public static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, Resource actual) {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getMaintainableArtefact().getCode(), actual.getId());
@@ -74,5 +69,31 @@ public class Asserts extends MetamacRestAsserts {
         } else {
             assertTrue(uriActual.startsWith("http:"));
         }
+    }
+
+    public static void assertEqualsProcStatus(ProcStatusEnum expected, ProcStatus actual) {
+        assertEquals(expected.getName(), actual.name());
+    }
+
+    public static void assertEqualsDate(DateTime expected, Date actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEquals(expected.toDate(), actual);
+    }
+
+    public static void assertEqualsLifeCycle(SrmLifeCycleMetadata expected, LifeCycle actual) {
+        assertEqualsProcStatus(expected.getProcStatus(), actual.getProcStatus());
+        assertEqualsDate(expected.getProductionValidationDate(), actual.getProductionValidationDate());
+        assertEquals(expected.getProductionValidationUser(), actual.getProductionValidationUser());
+        assertEqualsDate(expected.getDiffusionValidationDate(), actual.getDiffusionValidationDate());
+        assertEquals(expected.getDiffusionValidationUser(), actual.getDiffusionValidationUser());
+        assertEqualsDate(expected.getInternalPublicationDate(), actual.getInternalPublicationDate());
+        assertEquals(expected.getInternalPublicationUser(), actual.getInternalPublicationUser());
+        assertEqualsDate(expected.getExternalPublicationDate(), actual.getExternalPublicationDate());
+        assertEquals(expected.getExternalPublicationUser(), actual.getExternalPublicationUser());
+        assertEquals(expected.getIsExternalPublicationFailed(), actual.isIsExternalPublicationFailed());
+        assertEqualsDate(expected.getExternalPublicationFailedDate(), actual.getExternalPublicationFailedDate());
     }
 }

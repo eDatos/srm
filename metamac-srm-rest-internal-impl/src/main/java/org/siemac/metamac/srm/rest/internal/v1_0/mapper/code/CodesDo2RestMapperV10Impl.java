@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
+import org.siemac.metamac.rest.common.v1_0.domain.Item;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
@@ -13,6 +14,7 @@ import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
@@ -120,6 +122,17 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(toCodeSelfLink(source).getHref());
         }
+    }
+
+    @Override
+    public Item toItem(Variable source) {
+        if (source == null) {
+            return null;
+        }
+        Item target = new Item();
+        target.setId(source.getNameableArtefact().getCode());
+        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
+        return target;
     }
 
     private ResourceLink toCodelistSelfLink(CodelistVersionMetamac source) {

@@ -6,11 +6,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.RelatedConcepts;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.RoleConcepts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -40,7 +44,11 @@ public class ConceptsAsserts extends Asserts {
         if (source.getRelatedOperation() != null) {
             assertEquals(source.getRelatedOperation().getUrn(), target.getStatisticalOperation().getUrn());
         }
+        assertEqualsInternationalStringNotNull(source.getMaintainableArtefact().getComment(), target.getComment());
         assertEquals(source.getMaintainableArtefact().getReplaceToVersion(), target.getReplaceToVersion());
+        assertEquals(source.getMaintainableArtefact().getReplacedByVersion(), target.getReplacedByVersion());
+        assertEqualsLifeCycle(source.getLifeCycleMetadata(), target.getLifeCycle());
+
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/concepts", target.getChildLinks().getChildLinks().get(0).getHref());
@@ -83,6 +91,7 @@ public class ConceptsAsserts extends Asserts {
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
 
+        // note: not null to force check mapper
         assertEqualsInternationalStringNotNull(source.getPluralName(), target.getPluralName());
         assertEqualsInternationalStringNotNull(source.getAcronym(), target.getAcronym());
         assertEqualsInternationalStringNotNull(source.getDescriptionSource(), target.getDescriptionSource());
@@ -93,10 +102,9 @@ public class ConceptsAsserts extends Asserts {
 
         assertEquals(source.getType().getIdentifier(), target.getType().getId());
         assertEqualsInternationalStringNotNull(source.getType().getDescription(), target.getType().getTitle());
-
-        assertEqualsUrnsNotNull(source.getRoleConcepts(), target.getRoles());
-        assertEqualsUrnsNotNull(source.getRelatedConcepts(), target.getRelatedConcepts());
-        assertEquals(source.getConceptExtends().getNameableArtefact().getUrnProvider(), target.getExtends());
+        assertEqualsRoleConcepts(source.getRoleConcepts(), target.getRoles());
+        assertEqualsRelatedConcepts(source.getRelatedConcepts(), target.getRelatedConcepts());
+        assertEqualsResource(source.getConceptExtends(), target.getExtends());
 
         // Sdmx
         assertEqualsConceptSdmx(source, target);
@@ -115,5 +123,27 @@ public class ConceptsAsserts extends Asserts {
         String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
                 + maintainableArtefact.getVersionLogic() + "/concepts/" + expected.getNameableArtefact().getCode();
         assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, actual);
+    }
+
+    private static void assertEqualsRoleConcepts(List<ConceptMetamac> expecteds, RoleConcepts actuals) {
+        if (CollectionUtils.isEmpty(expecteds)) {
+            assertNull(actuals);
+            return;
+        }
+        assertEquals(expecteds.size(), actuals.getTotal().intValue());
+        for (int i = 0; i < expecteds.size(); i++) {
+            assertEqualsResource(expecteds.get(i), actuals.getRoleConcepts().get(i));
+        }
+    }
+
+    private static void assertEqualsRelatedConcepts(List<ConceptMetamac> expecteds, RelatedConcepts actuals) {
+        if (CollectionUtils.isEmpty(expecteds)) {
+            assertNull(actuals);
+            return;
+        }
+        assertEquals(expecteds.size(), actuals.getTotal().intValue());
+        for (int i = 0; i < expecteds.size(); i++) {
+            assertEqualsResource(expecteds.get(i), actuals.getRelatedConcepts().get(i));
+        }
     }
 }
