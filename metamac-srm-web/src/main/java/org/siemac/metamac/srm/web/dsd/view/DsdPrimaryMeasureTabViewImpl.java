@@ -57,7 +57,6 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     // VIEW FORM
 
     private GroupDynamicForm            form;
-    private ViewTextItem                staticConceptItem;
     private ViewTextItem                staticRepresentationTypeItem;
     private ViewTextItem                staticCodeListItem;
     private StaticFacetForm             staticFacetForm;
@@ -101,10 +100,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem code = new ViewTextItem(PrimaryMeasureDS.CODE, getConstants().identifiableArtefactCode());
         ViewTextItem urn = new ViewTextItem(PrimaryMeasureDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        staticConceptItem = new ViewTextItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
+        ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().dsdCodeList());
-        form.setFields(code, urn, urnProvider, staticConceptItem, staticRepresentationTypeItem, staticCodeListItem);
+        form.setFields(code, urn, urnProvider, concept, staticRepresentationTypeItem, staticCodeListItem);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -203,7 +202,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         form.setValue(PrimaryMeasureDS.URN_PROVIDER, componentDto.getUrnProvider());
 
         // Concept
-        staticConceptItem.setValue(componentDto.getCptIdRef() == null ? null : componentDto.getCptIdRef().getCode());
+        form.setValue(PrimaryMeasureDS.CONCEPT, ExternalItemUtils.getExternalItemName(componentDto.getCptIdRef()));
 
         // Representation
         staticFacetForm.hide();
