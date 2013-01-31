@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.server;
 import org.siemac.metamac.srm.web.server.handlers.FindCodeListsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.FindConceptSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.FindConceptsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.GetRelatedResourcesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.GetUserGuideUrlActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CancelCategorySchemeValidityActionHandler;
@@ -110,6 +111,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.VersionOrganisati
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
@@ -356,6 +358,7 @@ public class ServerModule extends HandlerModule {
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
+        bindHandler(GetRelatedResourcesAction.class, GetRelatedResourcesActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);
         bindHandler(GetLoginPageUrlAction.class, GetLoginPageUrlActionHandler.class);

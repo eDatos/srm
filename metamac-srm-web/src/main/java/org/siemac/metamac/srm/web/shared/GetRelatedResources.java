@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.shared.concept;
+package org.siemac.metamac.srm.web.shared;
 
 import java.util.List;
 
@@ -8,19 +8,19 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetConceptSchemesWithConceptsCanBeExtended {
+public class GetRelatedResources {
 
     @In(1)
-    int                      firstResult;
+    RelatedArtefactsEnum     relatedArtefactsEnum;
 
     @In(2)
-    int                      maxResults;
+    String                   dsdUrn;
 
     @In(3)
     String                   criteria;
 
     @Out(1)
-    List<RelatedResourceDto> conceptSchemes;
+    List<RelatedResourceDto> relatedResourceDtos;
 
     @Out(2)
     Integer                  firstResultOut;

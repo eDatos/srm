@@ -17,6 +17,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -53,11 +54,8 @@ public class GetConceptsCanBeRoleActionHandler extends SecurityActionHandler<Get
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Concept criteria
-        MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
         if (StringUtils.isNotBlank(action.getCriteria())) {
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), action.getCriteria(), OperationType.ILIKE));
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), action.getCriteria(), OperationType.ILIKE));
-            conceptCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), action.getCriteria(), OperationType.ILIKE));
+            MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjuction = MetamacCriteriaUtils.getConceptCriteriaDisjunctionRestriction(action.getCriteria());
             restriction.getRestrictions().add(conceptCriteriaDisjuction);
         }
         // Specify the scheme URN

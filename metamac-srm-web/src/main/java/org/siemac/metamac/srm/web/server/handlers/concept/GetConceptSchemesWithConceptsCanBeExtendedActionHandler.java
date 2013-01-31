@@ -10,13 +10,11 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestric
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -52,14 +50,8 @@ public class GetConceptSchemesWithConceptsCanBeExtendedActionHandler extends Sec
 
         // Criteria
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-        if (!StringUtils.isBlank(action.getConceptScheme())) {
-            MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getConceptScheme(), OperationType.ILIKE));
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getConceptScheme(), OperationType.ILIKE));
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), action.getConceptScheme(), OperationType.ILIKE));
+        if (!StringUtils.isBlank(action.getCriteria())) {
+            MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = MetamacCriteriaUtils.getConceptSchemeCriteriaDisjunctionRestriction(action.getCriteria());
             restriction.getRestrictions().add(conceptSchemeCriteriaDisjuction);
         }
         criteria.setRestriction(restriction);
