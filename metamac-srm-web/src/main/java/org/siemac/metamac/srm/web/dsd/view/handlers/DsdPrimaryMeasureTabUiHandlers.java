@@ -5,7 +5,8 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface DsdPrimaryMeasureTabUiHandlers extends UiHandlers {
 
-    void retrieveDsd(String urn);
     void savePrimaryMeasure(ComponentDto componentDto);
 
+    void retrieveConceptSchemes(int firstResult, int maxResults);
+    void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn);
 }

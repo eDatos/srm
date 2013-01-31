@@ -20,8 +20,11 @@ import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
-import org.siemac.metamac.srm.web.shared.FindConceptsAction;
-import org.siemac.metamac.srm.web.shared.FindConceptsResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.RelatedArtefactsEnum;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
@@ -30,8 +33,6 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
-import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent.UpdateConceptSchemesHandler;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -56,9 +57,6 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
 import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
@@ -66,8 +64,7 @@ import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
 public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView, DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabProxy>
         implements
             DsdPrimaryMeasureTabUiHandlers,
-            SelectDsdAndDescriptorsHandler,
-            UpdateConceptSchemesHandler {
+            SelectDsdAndDescriptorsHandler {
 
     private final DispatchAsync               dispatcher;
     private final PlaceManager                placeManager;
@@ -77,7 +74,6 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     private ComponentDto                      primaryMeasure;
 
     // Storing selected concept and representation type allows improving performance when loading code lists
-    private String                            selectedConceptUri;
     private boolean                           enumeratedRepresentation;
 
     @ProxyCodeSplit
@@ -94,21 +90,14 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     public interface DsdPrimaryMeasureTabView extends View, HasUiHandlers<DsdPrimaryMeasureTabUiHandlers> {
 
-        void setConceptSchemes(List<ExternalItemDto> concepts);
-        void setConcepts(List<ExternalItemDto> concepts);
-        HasChangeHandlers onConceptSchemeChange();
-        HasChangeHandlers onConceptChange();
+        void setConceptSchemes(GetRelatedResourcesResult result);
+        void setConcepts(GetRelatedResourcesResult result);
 
         void setCodeLists(List<ExternalItemDto> codeLists);
         HasChangeHandlers onRepresentationTypeChange();
 
         void setDsdPrimaryMeasure(ProcStatusEnum procStatus, ComponentDto componentDto);
-        ComponentDto getDsdPrimaryMeasure(ComponentDto componentDto);
         void onPrimaryMeasureSaved(ProcStatusEnum procStatus, ComponentDto componentDto);
-        boolean validate();
-
-        HasClickHandlers getSave();
-
     }
 
     @Inject
@@ -140,46 +129,13 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     @Override
     protected void onBind() {
         super.onBind();
-
-        registerHandler(getView().getSave().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                if (getView().validate()) {
-                    savePrimaryMeasure(getView().getDsdPrimaryMeasure(primaryMeasure));
-                }
-            }
-        }));
-
-        registerHandler(getView().onConceptSchemeChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                if (event.getValue() != null) {
-                    populateConcepts(event.getValue().toString());
-                }
-            }
-        }));
-
-        registerHandler(getView().onConceptChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                selectedConceptUri = event.getValue() != null ? (String) event.getValue() : null;
-                // if selected representation is enumerated, load the appropriate code lists
-                if (enumeratedRepresentation) {
-                    populateCodeLists(selectedConceptUri);
-                }
-            }
-        }));
-
         registerHandler(getView().onRepresentationTypeChange().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent event) {
                 enumeratedRepresentation = CommonUtils.isRepresentationTypeEnumerated(event.getValue() != null ? (String) event.getValue() : "");
                 if (enumeratedRepresentation) {
-                    populateCodeLists(selectedConceptUri);
+                    // TODO populateCodeLists(selectedConceptUri);
                 }
             }
         }));
@@ -207,12 +163,6 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
                 ? primaryMeasure.getLocalRepresentation().getTypeRepresentationEnum()
                 : false);
         getView().setDsdPrimaryMeasure(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), primaryMeasure);
-    }
-
-    @ProxyEvent
-    @Override
-    public void onUpdateConceptSchemes(UpdateConceptSchemesEvent event) {
-        getView().setConceptSchemes(event.getConceptSchemes());
     }
 
     @Override
@@ -251,7 +201,6 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         });
     }
 
-    @Override
     public void retrieveDsd(String urn) {
         dispatcher.execute(new GetDsdAndDescriptorsAction(urn), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
@@ -263,20 +212,6 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
                 SelectDsdAndDescriptorsEvent.fire(DsdPrimaryMeasureTabPresenter.this, result.getDsd(), result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(),
                         result.getGroupKeys());
-            }
-        });
-    }
-
-    private void populateConcepts(String uriConceptScheme) {
-        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new WaitingAsyncCallback<FindConceptsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindConceptsResult result) {
-                getView().setConcepts(result.getConcepts());
             }
         });
     }
@@ -293,5 +228,38 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
                 getView().setCodeLists(result.getCodeLists());
             }
         });
+    }
+
+    @Override
+    public void retrieveConceptSchemes(int firstResult, int maxResults) {
+        dispatcher.execute(new GetRelatedResourcesAction(RelatedArtefactsEnum.CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, new ConceptSchemeWebCriteria(null,
+                dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConceptSchemes(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
+        dispatcher.execute(
+                new GetRelatedResourcesAction(RelatedArtefactsEnum.CONCEPTS_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, new ConceptWebCriteria(criteria, dataStructureDefinitionDto.getUrn(),
+                        conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConcepts(result);
+                    }
+                });
     }
 }

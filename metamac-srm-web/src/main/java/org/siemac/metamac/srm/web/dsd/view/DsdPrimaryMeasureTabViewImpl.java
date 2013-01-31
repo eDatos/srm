@@ -5,24 +5,35 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.PrimaryMeasureDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalSelectItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
@@ -30,44 +41,46 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEn
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryMeasureTabUiHandlers> implements DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView {
 
-    private List<ExternalItemDto>       concepts;
-    private List<ExternalItemDto>       codeLists;
+    private List<ExternalItemDto>                codeLists;
 
-    private VLayout                     panel;
+    private VLayout                              panel;
 
-    private InternationalMainFormLayout mainFormLayout;
-
-    private AnnotationsPanel            viewAnnotationsPanel;
-    private AnnotationsPanel            editionAnnotationsPanel;
+    private InternationalMainFormLayout          mainFormLayout;
 
     // VIEW FORM
-
-    private GroupDynamicForm            form;
-    private ViewTextItem                staticRepresentationTypeItem;
-    private ViewTextItem                staticCodeListItem;
-    private StaticFacetForm             staticFacetForm;
+    private GroupDynamicForm                     form;
+    private ViewTextItem                         staticRepresentationTypeItem;
+    private ViewTextItem                         staticCodeListItem;
+    private StaticFacetForm                      staticFacetForm;
+    private AnnotationsPanel                     viewAnnotationsPanel;
 
     // EDITION FORM
+    private GroupDynamicForm                     editionForm;
+    private CustomSelectItem                     representationTypeItem;
+    private CustomSelectItem                     codeListItem;
+    private DsdFacetForm                         facetForm;
+    private AnnotationsPanel                     editionAnnotationsPanel;
 
-    private GroupDynamicForm            editionForm;
-    private ExternalSelectItem          conceptItem;
-    private CustomSelectItem            representationTypeItem;
-    private CustomSelectItem            codeListItem;
-    private DsdFacetForm                facetForm;
+    private SearchRelatedResourcePaginatedWindow searchConceptWindow;
+
+    private ComponentDto                         primaryMeasure;
 
     @Inject
     public DsdPrimaryMeasureTabViewImpl() {
@@ -79,7 +92,18 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
             @Override
             public void onClick(ClickEvent event) {
-                setTranslationsShowed(mainFormLayout.getTranslateToolStripButton().isSelected());
+                boolean translationsShowed = mainFormLayout.getTranslateToolStripButton().isSelected();
+                viewAnnotationsPanel.setTranslationsShowed(translationsShowed);
+                editionAnnotationsPanel.setTranslationsShowed(translationsShowed);
+            }
+        });
+        mainFormLayout.getSave().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (validate()) {
+                    getUiHandlers().savePrimaryMeasure(getDsdPrimaryMeasure());
+                }
             }
         });
 
@@ -100,7 +124,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem code = new ViewTextItem(PrimaryMeasureDS.CODE, getConstants().identifiableArtefactCode());
         ViewTextItem urn = new ViewTextItem(PrimaryMeasureDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
+        ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
         staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         staticCodeListItem = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().dsdCodeList());
         form.setFields(code, urn, urnProvider, concept, staticRepresentationTypeItem, staticCodeListItem);
@@ -122,12 +146,13 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
      */
     private void createEditionForm() {
         editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdPrimaryMeasureDetails());
-
         ViewTextItem code = new ViewTextItem(PrimaryMeasureDS.CODE, getConstants().identifiableArtefactCode());
         ViewTextItem urn = new ViewTextItem(PrimaryMeasureDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        conceptItem = new ExternalSelectItem(PrimaryMeasureDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
-        conceptItem.setRequired(true);
+        ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT, getConstants().concept());
+        concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem conceptView = createConceptItem(PrimaryMeasureDS.CONCEPT_VIEW, getConstants().concept());
+
         representationTypeItem = new CustomSelectItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
@@ -150,7 +175,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         });
 
-        editionForm.setFields(code, urn, urnProvider, conceptItem, representationTypeItem, codeListItem);
+        editionForm.setFields(code, urn, urnProvider, concept, conceptView, representationTypeItem, codeListItem);
 
         facetForm = new DsdFacetForm();
         facetForm.setVisibility(Visibility.HIDDEN);
@@ -169,14 +194,18 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     @Override
-    public void setConceptSchemes(List<ExternalItemDto> conceptSchemes) {
-        conceptItem.setSchemesValueMap(ExternalItemUtils.getExternalItemsHashMap(conceptSchemes));
+    public void setConceptSchemes(GetRelatedResourcesResult result) {
+        if (searchConceptWindow != null) {
+            searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
+        }
     }
 
     @Override
-    public void setConcepts(List<ExternalItemDto> concepts) {
-        this.concepts = concepts;
-        conceptItem.setItemsValueMap(ExternalItemUtils.getExternalItemsHashMap(concepts));
+    public void setConcepts(GetRelatedResourcesResult result) {
+        if (searchConceptWindow != null) {
+            searchConceptWindow.setRelatedResources(result.getRelatedResourceDtos());
+            searchConceptWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+        }
     }
 
     @Override
@@ -187,6 +216,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     @Override
     public void setDsdPrimaryMeasure(ProcStatusEnum procStatus, ComponentDto componentDto) {
+        this.primaryMeasure = componentDto;
+
         mainFormLayout.setViewMode();
 
         // Security
@@ -202,7 +233,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         form.setValue(PrimaryMeasureDS.URN_PROVIDER, componentDto.getUrnProvider());
 
         // Concept
-        form.setValue(PrimaryMeasureDS.CONCEPT, ExternalItemUtils.getExternalItemName(componentDto.getCptIdRef()));
+        form.setValue(PrimaryMeasureDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(componentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
 
         // Representation
         staticFacetForm.hide();
@@ -234,7 +265,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         editionForm.setValue(PrimaryMeasureDS.URN_PROVIDER, componentDto.getUrnProvider());
 
         // Concept
-        conceptItem.clearValue(); // Clear concept value: which is the scheme of a concept?
+        editionForm.setValue(PrimaryMeasureDS.CONCEPT, componentDto.getCptIdRef() != null ? componentDto.getCptIdRef().getUrn() : null);
+        editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(componentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
 
         // Representation
         codeListItem.clearValue();
@@ -265,47 +297,44 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         editionAnnotationsPanel.setAnnotations(componentDto.getAnnotations());
     }
 
-    @Override
-    public ComponentDto getDsdPrimaryMeasure(ComponentDto componentDto) {
+    public ComponentDto getDsdPrimaryMeasure() {
         // Concept
-        componentDto.setCptIdRef(conceptItem.getSelectedExternalItem(concepts));
+        // TODO RelatedResourceDto instead of ExternalItemDto
+        // primaryMeasure.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)) ? null :
+        // RelatedResourceUtils.createRelatedResourceDto(TypeExternalArtefactsEnum.CONCEPT,
+        // editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
+        primaryMeasure.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)) ? null : RelatedResourceUtils.createExternalItemDto(TypeExternalArtefactsEnum.CONCEPT,
+                editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
 
         // Representation
         if (representationTypeItem.getValue() != null && !representationTypeItem.getValue().toString().isEmpty()) {
             TypeRepresentationEnum representationType = TypeRepresentationEnum.valueOf(representationTypeItem.getValue().toString());
 
-            if (componentDto.getLocalRepresentation() == null) {
-                componentDto.setLocalRepresentation(new RepresentationDto());
+            if (primaryMeasure.getLocalRepresentation() == null) {
+                primaryMeasure.setLocalRepresentation(new RepresentationDto());
             }
 
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
-                componentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                componentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, codeListItem.getValueAsString()));
-                componentDto.getLocalRepresentation().setNonEnumerated(null);
+                primaryMeasure.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
+                primaryMeasure.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, codeListItem.getValueAsString()));
+                primaryMeasure.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
-                componentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
+                primaryMeasure.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
                 FacetDto facetDto = facetForm.getFacet();
-                componentDto.getLocalRepresentation().setNonEnumerated(facetDto);
-                componentDto.getLocalRepresentation().setEnumerated(null);
+                primaryMeasure.getLocalRepresentation().setNonEnumerated(facetDto);
+                primaryMeasure.getLocalRepresentation().setEnumerated(null);
             }
         } else {
             // No representation
-            componentDto.setLocalRepresentation(null);
+            primaryMeasure.setLocalRepresentation(null);
         }
 
         // Annotations
-        componentDto.getAnnotations().clear();
-        componentDto.getAnnotations().addAll(editionAnnotationsPanel.getAnnotations());
-        return componentDto;
-    }
-
-    @Override
-    public boolean validate() {
-        return Visibility.HIDDEN.equals(facetForm.getVisibility())
-                ? editionForm.validate(false) && conceptItem.validateItem()
-                : (editionForm.validate(false) && facetForm.validate(false) && conceptItem.validateItem());
+        primaryMeasure.getAnnotations().clear();
+        primaryMeasure.getAnnotations().addAll(editionAnnotationsPanel.getAnnotations());
+        return primaryMeasure;
     }
 
     @Override
@@ -315,28 +344,68 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     @Override
-    public HasClickHandlers getSave() {
-        return mainFormLayout.getSave();
-    }
-
-    @Override
-    public HasChangeHandlers onConceptSchemeChange() {
-        return conceptItem.getSchemeItem();
-    }
-
-    @Override
-    public HasChangeHandlers onConceptChange() {
-        return conceptItem.getItem();
-    }
-
-    @Override
     public HasChangeHandlers onRepresentationTypeChange() {
         return representationTypeItem;
     }
 
-    public void setTranslationsShowed(boolean translationsShowed) {
-        viewAnnotationsPanel.setTranslationsShowed(translationsShowed);
-        editionAnnotationsPanel.setTranslationsShowed(translationsShowed);
+    private boolean validate() {
+        return Visibility.HIDDEN.equals(facetForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetForm.validate(false));
     }
 
+    private SearchViewTextItem createConceptItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        SearchViewTextItem conceptItem = new SearchViewTextItem(name, title);
+        conceptItem.setRequired(true);
+        conceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                SelectItem conceptSchemeSelectItem = new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme());
+                searchConceptWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, conceptSchemeSelectItem, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveConcepts(firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                    }
+                });
+
+                // Load concept schemes and concepts (to populate the selection window)
+                getUiHandlers().retrieveConceptSchemes(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                getUiHandlers().retrieveConcepts(FIRST_RESULST, MAX_RESULTS, null, null);
+
+                searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        getUiHandlers().retrieveConcepts(FIRST_RESULST, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                    }
+                });
+
+                searchConceptWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchConceptWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String concept) {
+                        getUiHandlers().retrieveConcepts(firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue());
+                    }
+                });
+
+                searchConceptWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
+                        searchConceptWindow.markForDestroy();
+                        // Set selected concepts in form
+                        editionForm.setValue(PrimaryMeasureDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
+                        editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, selectedConcept != null
+                                ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept)
+                                : null);
+                    }
+                });
+            }
+        });
+        return conceptItem;
+    }
 }
