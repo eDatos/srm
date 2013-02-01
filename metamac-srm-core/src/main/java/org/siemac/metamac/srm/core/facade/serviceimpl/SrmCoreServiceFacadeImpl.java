@@ -44,7 +44,7 @@ import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -1122,8 +1122,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<CodeMetamac> codes = getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn);
         CodelistOrderVisualisation codelistOrderVisualisation = null;
         if (orderVisualisationUrn != null) {
+            CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
             codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
-            SrmValidationUtils.checkNotAlphabeticalOrderVisualisation(codelistOrderVisualisation);
+            if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation) && !codelistVersion.getMaintainableArtefact().getFinalLogicClient()) {
+                // note: alphabetic order is generated when codelist is published
+                codelistOrderVisualisation = null; // avoid error
+            }
         } else {
             // order in database
         }
