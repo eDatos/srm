@@ -2,9 +2,6 @@ package org.siemac.metamac.srm.web.dsd.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import java.util.List;
-
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -53,12 +50,9 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryMeasureTabUiHandlers> implements DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView {
-
-    private List<ExternalItemDto>                codeLists;
 
     private VLayout                              panel;
 
@@ -66,19 +60,16 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     // VIEW FORM
     private GroupDynamicForm                     form;
-    private ViewTextItem                         staticRepresentationTypeItem;
-    private ViewTextItem                         staticCodeListItem;
     private StaticFacetForm                      staticFacetForm;
     private AnnotationsPanel                     viewAnnotationsPanel;
 
     // EDITION FORM
     private GroupDynamicForm                     editionForm;
-    private CustomSelectItem                     representationTypeItem;
-    private CustomSelectItem                     codeListItem;
     private DsdFacetForm                         facetForm;
     private AnnotationsPanel                     editionAnnotationsPanel;
 
     private SearchRelatedResourcePaginatedWindow searchConceptWindow;
+    private SearchRelatedResourcePaginatedWindow searchCodelistForEnumeratedRepresentationWindow;
 
     private ComponentDto                         primaryMeasure;
 
@@ -125,9 +116,9 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem urn = new ViewTextItem(PrimaryMeasureDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
-        staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
-        staticCodeListItem = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().dsdCodeList());
-        form.setFields(code, urn, urnProvider, concept, staticRepresentationTypeItem, staticCodeListItem);
+        ViewTextItem staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
+        ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, MetamacSrmWeb.getConstants().representationEnumerated());
+        form.setFields(code, urn, urnProvider, concept, staticRepresentationTypeItem, enumeratedRepresentation);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -153,7 +144,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem conceptView = createConceptItem(PrimaryMeasureDS.CONCEPT_VIEW, getConstants().concept());
 
-        representationTypeItem = new CustomSelectItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
+        final CustomSelectItem representationTypeItem = new CustomSelectItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
@@ -164,18 +155,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
             }
         });
-
-        codeListItem = new CustomSelectItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().dsdCodeList());
-        // Show CodeList if RepresentationTypeEnum = ENUMERATED
-        codeListItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isRepresentationTypeEnumerated(representationTypeItem.getValueAsString());
-            }
-        });
-
-        editionForm.setFields(code, urn, urnProvider, concept, conceptView, representationTypeItem, codeListItem);
+        SearchViewTextItem enumeratedRepresentation = new SearchViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().representationEnumerated());
+        enumeratedRepresentation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem enumeratedRepresentationView = createEnumeratedRepresentationItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, MetamacSrmWeb.getConstants().representationEnumerated());
+        editionForm.setFields(code, urn, urnProvider, concept, conceptView, representationTypeItem, enumeratedRepresentation, enumeratedRepresentationView);
 
         facetForm = new DsdFacetForm();
         facetForm.setVisibility(Visibility.HIDDEN);
@@ -209,9 +192,11 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     @Override
-    public void setCodeLists(List<ExternalItemDto> codeLists) {
-        this.codeLists = codeLists;
-        codeListItem.setValueMap(ExternalItemUtils.getExternalItemsHashMap(codeLists));
+    public void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result) {
+        if (searchCodelistForEnumeratedRepresentationWindow != null) {
+            searchCodelistForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
+            searchCodelistForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+        }
     }
 
     @Override
@@ -237,18 +222,23 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // Representation
         staticFacetForm.hide();
-        staticCodeListItem.hide();
-        staticCodeListItem.clearValue();
-        staticRepresentationTypeItem.clearValue();
+        form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).hide();
+        form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
+        form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).clearValue();
+        form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
         staticFacetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
             if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                staticCodeListItem.setValue(componentDto.getLocalRepresentation().getEnumerated().getCode());
-                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
-                staticCodeListItem.show();
+                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumerated().getUrn());
+                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(ExternalItemUtils.getExternalItemName(componentDto.getLocalRepresentation().getEnumerated())); // TODO
+                                                                                                                                                                                      // RelatedResourceDto
+                                                                                                                                                                                      // instead of
+                                                                                                                                                                                      // ExternalItemDto
+                form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
+                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).show();
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumTEXT_FORMAT());
+                form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumTEXT_FORMAT());
                 FacetDto facetDto = componentDto.getLocalRepresentation().getNonEnumerated();
                 staticFacetForm.setFacet(facetDto);
                 staticFacetForm.show();
@@ -269,24 +259,29 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(componentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
 
         // Representation
-        codeListItem.clearValue();
-        representationTypeItem.clearValue();
+        editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
+        editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).clearValue();
+        editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
         facetForm.clearValues();
         facetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                // codeListItem.setValue(componentDto.getLocalRepresentation().getEnumCodeList().getCodeId());
-                codeListItem.clearValue(); // don´t know the concept (which is the scheme?), so code list neither
-                representationTypeItem.setValue(TypeRepresentationEnum.ENUMERATED.toString());
+                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumerated().getUrn());
+                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(ExternalItemUtils.getExternalItemName(componentDto.getLocalRepresentation().getEnumerated())); // TODO
+                                                                                                                                                                                             // RelatedResourceDto
+                                                                                                                                                                                             // instead
+                                                                                                                                                                                             // of
+                                                                                                                                                                                             // ExternalItemDto
+                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(TypeRepresentationEnum.ENUMERATED.toString());
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                representationTypeItem.setValue(TypeRepresentationEnum.TEXT_FORMAT.toString());
+                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(TypeRepresentationEnum.TEXT_FORMAT.toString());
                 FacetDto facetDto = componentDto.getLocalRepresentation().getNonEnumerated();
                 facetForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
+        FacetFormUtils.setFacetFormVisibility(facetForm, ((CustomSelectItem) editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE)).getValueAsString());
         editionForm.redraw();
 
         // Clear errors
@@ -307,8 +302,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
 
         // Representation
-        if (representationTypeItem.getValue() != null && !representationTypeItem.getValue().toString().isEmpty()) {
-            TypeRepresentationEnum representationType = TypeRepresentationEnum.valueOf(representationTypeItem.getValue().toString());
+        if (editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue() != null && !editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue().toString().isEmpty()) {
+            TypeRepresentationEnum representationType = TypeRepresentationEnum.valueOf(editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue().toString());
 
             if (primaryMeasure.getLocalRepresentation() == null) {
                 primaryMeasure.setLocalRepresentation(new RepresentationDto());
@@ -317,7 +312,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 primaryMeasure.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                primaryMeasure.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, codeListItem.getValueAsString()));
+                // TODO RelatedResourceDto instead of ExternalItemDto
+                primaryMeasure.getLocalRepresentation().setEnumerated(
+                        StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)) ? null : RelatedResourceUtils.createExternalItemDto(
+                                TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)));
                 primaryMeasure.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
@@ -341,11 +339,6 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     public void onPrimaryMeasureSaved(ProcStatusEnum procStatus, ComponentDto componentDto) {
         setDsdPrimaryMeasure(procStatus, componentDto);
         mainFormLayout.setViewMode();
-    }
-
-    @Override
-    public HasChangeHandlers onRepresentationTypeChange() {
-        return representationTypeItem;
     }
 
     private boolean validate() {
@@ -407,5 +400,57 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         });
         return conceptItem;
+    }
+
+    private SearchViewTextItem createEnumeratedRepresentationItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        SearchViewTextItem enumeratedRepresentationItem = new SearchViewTextItem(name, title);
+        enumeratedRepresentationItem.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isRepresentationTypeEnumerated(((CustomSelectItem) editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE)).getValueAsString());
+            }
+        });
+        enumeratedRepresentationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                searchCodelistForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria());
+                    }
+                });
+
+                // Load codelists (to populate the selection window)
+                getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null);
+
+                searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria);
+                    }
+                });
+
+                searchCodelistForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        RelatedResourceDto selectedCodelist = searchConceptWindow.getSelectedRelatedResource();
+                        searchConceptWindow.markForDestroy();
+                        // Set selected codelist in form
+                        editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, selectedCodelist != null ? selectedCodelist.getUrn() : null);
+                        editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW,
+                                selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                    }
+                });
+            }
+        });
+        return enumeratedRepresentationItem;
     }
 }

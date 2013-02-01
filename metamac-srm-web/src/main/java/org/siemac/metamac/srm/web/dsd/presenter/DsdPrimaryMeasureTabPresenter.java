@@ -1,9 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
-import java.util.List;
-
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -16,13 +13,11 @@ import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
-import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
-import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
-import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
-import org.siemac.metamac.srm.web.shared.RelatedArtefactsEnum;
+import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
@@ -40,7 +35,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -57,9 +51,6 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
-import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
 
 public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView, DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabProxy>
         implements
@@ -72,9 +63,6 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
     private boolean                           isNewDescriptor;
     private ComponentDto                      primaryMeasure;
-
-    // Storing selected concept and representation type allows improving performance when loading code lists
-    private boolean                           enumeratedRepresentation;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdPrimaryMeasurePage)
@@ -93,8 +81,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         void setConceptSchemes(GetRelatedResourcesResult result);
         void setConcepts(GetRelatedResourcesResult result);
 
-        void setCodeLists(List<ExternalItemDto> codeLists);
-        HasChangeHandlers onRepresentationTypeChange();
+        void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
 
         void setDsdPrimaryMeasure(ProcStatusEnum procStatus, ComponentDto componentDto);
         void onPrimaryMeasureSaved(ProcStatusEnum procStatus, ComponentDto componentDto);
@@ -127,21 +114,6 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     }
 
     @Override
-    protected void onBind() {
-        super.onBind();
-        registerHandler(getView().onRepresentationTypeChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                enumeratedRepresentation = CommonUtils.isRepresentationTypeEnumerated(event.getValue() != null ? (String) event.getValue() : "");
-                if (enumeratedRepresentation) {
-                    // TODO populateCodeLists(selectedConceptUri);
-                }
-            }
-        }));
-    }
-
-    @Override
     protected void onReveal() {
         super.onReveal();
         SelectViewDsdDescriptorEvent.fire(this, TypeComponentList.MEASURE_DESCRIPTOR);
@@ -159,9 +131,6 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         DescriptorDto primaryMeasureDescriptor = event.getPrimaryMeasure();
         isNewDescriptor = primaryMeasureDescriptor.getId() == null;
         primaryMeasure = primaryMeasureDescriptor.getComponents().isEmpty() ? new ComponentDto(TypeComponent.PRIMARY_MEASURE, null) : primaryMeasureDescriptor.getComponents().iterator().next();
-        enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(primaryMeasure.getLocalRepresentation() != null
-                ? primaryMeasure.getLocalRepresentation().getTypeRepresentationEnum()
-                : false);
         getView().setDsdPrimaryMeasure(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), primaryMeasure);
     }
 
@@ -216,23 +185,9 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         });
     }
 
-    private void populateCodeLists(String uriConcept) {
-        dispatcher.execute(new FindCodeListsAction(uriConcept), new WaitingAsyncCallback<FindCodeListsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindCodeListsResult result) {
-                getView().setCodeLists(result.getCodeLists());
-            }
-        });
-    }
-
     @Override
     public void retrieveConceptSchemes(int firstResult, int maxResults) {
-        dispatcher.execute(new GetRelatedResourcesAction(RelatedArtefactsEnum.CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, new ConceptSchemeWebCriteria(null,
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, new ConceptSchemeWebCriteria(null,
                 dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
             @Override
@@ -248,18 +203,33 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @Override
     public void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        dispatcher.execute(
-                new GetRelatedResourcesAction(RelatedArtefactsEnum.CONCEPTS_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, new ConceptWebCriteria(criteria, dataStructureDefinitionDto.getUrn(),
-                        conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, new ConceptWebCriteria(criteria,
+                dataStructureDefinitionDto.getUrn(), conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        getView().setConcepts(result);
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConcepts(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_DSD_PRIMARY_MEASURE_ENUMERATED_REPRESENTATION, firstResult, maxResults, new CodelistWebCriteria(
+                criteria)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setCodelistsForEnumeratedRepresentation(result);
+            }
+        });
     }
 }

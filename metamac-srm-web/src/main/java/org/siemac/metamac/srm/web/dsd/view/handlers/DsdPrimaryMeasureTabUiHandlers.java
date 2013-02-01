@@ -9,4 +9,5 @@ public interface DsdPrimaryMeasureTabUiHandlers extends UiHandlers {
 
     void retrieveConceptSchemes(int firstResult, int maxResults);
     void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn);
+    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria);
 }
