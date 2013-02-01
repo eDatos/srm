@@ -474,7 +474,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             protected boolean condition(Object value) {
                 if (operation.getValue() != null) {
                     String operationValue = String.valueOf(operation.getValue());
-                    return !StringUtils.isEmpty(operationValue);
+                    return !StringUtils.isBlank(operationValue);
                 }
                 return true;
             }

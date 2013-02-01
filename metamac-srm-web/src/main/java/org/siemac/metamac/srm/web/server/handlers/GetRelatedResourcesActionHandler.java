@@ -35,7 +35,6 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
 
     @Override
     public GetRelatedResourcesResult executeSecurityAction(GetRelatedResourcesAction action) throws ActionException {
-
         try {
             MetamacCriteriaResult<RelatedResourceDto> result = null;
 
@@ -46,21 +45,68 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
             criteria.getPaginator().setCountTotalResults(true);
 
             switch (action.getStructuralResourcesRelationEnum()) {
-                case CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE:
+                case CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
                     result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
                             conceptSchemeWebCriteria.getDsdUrn());
                     break;
-                case CONCEPTS_WITH_DSD_PRIMARY_MEASURE:
+                }
+                case CONCEPTS_WITH_DSD_PRIMARY_MEASURE: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
                     MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
                     restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     criteria.setRestriction(restriction);
                     result = srmCoreServiceFacade.findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
-                case CODELIST_WITH_DSD_PRIMARY_MEASURE_ENUMERATED_REPRESENTATION:
+                }
+                case CODELIST_WITH_DSD_PRIMARY_MEASURE_ENUMERATED_REPRESENTATION: {
                     // TODO
+                    break;
+                }
+                case CONCEPT_SCHEMES_WITH_DSD_DIMENSION: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            conceptSchemeWebCriteria.getDsdUrn());
+                    break;
+                }
+                case CONCEPT_WITH_DSD_DIMENSION: {
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    criteria.setRestriction(restriction);
+                    result = srmCoreServiceFacade.findConceptsCanBeDsdDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
+                    break;
+                }
+                case CONCEPT_SCHEMES_WITH_DSD_MEASURE_DIMENSION: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            conceptSchemeWebCriteria.getDsdUrn());
+                    break;
+                }
+                case CONCEPT_WITH_DSD_MEASURE_DIMENSION: {
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    criteria.setRestriction(restriction);
+                    result = srmCoreServiceFacade.findConceptsCanBeDsdMeasureDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
+                    break;
+                }
+                case CONCEPT_SCHEMES_WITH_DSD_TIME_DIMENSION: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            conceptSchemeWebCriteria.getDsdUrn());
+                    break;
+                }
+                case CONCEPT_WITH_DSD_TIME_DIMENSION:
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    criteria.setRestriction(restriction);
+                    result = srmCoreServiceFacade.findConceptsCanBeDsdTimeDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, MetamacSrmWeb.getCoreMessages().exception_common_unknown());

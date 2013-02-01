@@ -50,6 +50,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryMeasureTabUiHandlers> implements DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView {
@@ -224,12 +225,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         staticFacetForm.hide();
         form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).hide();
         form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
-        form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).clearValue();
         form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
         staticFacetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
             if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumerated().getUrn());
                 form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(ExternalItemUtils.getExternalItemName(componentDto.getLocalRepresentation().getEnumerated())); // TODO
                                                                                                                                                                                       // RelatedResourceDto
                                                                                                                                                                                       // instead of
@@ -348,7 +347,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     private SearchViewTextItem createConceptItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        SearchViewTextItem conceptItem = new SearchViewTextItem(name, title);
+        final SearchViewTextItem conceptItem = new SearchViewTextItem(name, title);
         conceptItem.setRequired(true);
         conceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
@@ -399,6 +398,19 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 });
             }
         });
+        // Set requited with a custom validator
+        CustomValidator customValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                if (conceptItem.getValue() != null) {
+                    String conceptValue = String.valueOf(conceptItem.getValue());
+                    return !StringUtils.isBlank(conceptValue);
+                }
+                return true;
+            }
+        };
+        conceptItem.setValidators(customValidator);
         return conceptItem;
     }
 
