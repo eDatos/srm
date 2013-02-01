@@ -6,11 +6,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.impl.SchedulerRepository;
+import org.siemac.metamac.common.test.utils.DirtyDatabase;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -20,16 +25,22 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
-import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -37,6 +48,8 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
 @Transactional
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
+
+    private static Logger                 logger                                             = LoggerFactory.getLogger(SrmCoreServiceFacadeImportationTest.class);
 
     // AGENCIES SCHEMES
     private final String                  AGENCYSCHEME_SDMX01_AGENCIES_V1                    = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX01:AGENCIES(1.0)";
@@ -78,19 +91,36 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     @Autowired
     protected ConceptsMetamacService      conceptsMetamacService;
 
+    @Autowired
+    protected PlatformTransactionManager  transactionManager;
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
     }
 
     @Test
-    @Ignore
+    @DirtyDatabase
     public void testImport_EXAMPLE_ORGANISATIONS() throws Exception {
-        File file = new File(SdmxResources.EXAMPLE_ORGANISATIONS);
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        ContentInputDto contentInputDto = new ContentInputDto();
-        contentInputDto.setInput(new FileInputStream(file));
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), contentInputDto);
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.EXAMPLE_ORGANISATIONS)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
 
         OrganisationSchemeVersionMetamac organisationSchemeVersion = null;
 
@@ -117,14 +147,27 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
+    @DirtyDatabase
     public void testImport_DEMOGRAPHY_CODELIST() throws Exception {
-        File file = new File(SdmxResources.DEMOGRAPHY_CODELIST);
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        ContentInputDto contentInputDto = new ContentInputDto();
-        contentInputDto.setInput(new FileInputStream(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
 
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), contentInputDto);
+        WaitUntilJobFinished();
 
         CodelistVersionMetamac codelistVersion = null;
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_DECIMALS_V1);
@@ -152,15 +195,27 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
+    @DirtyDatabase
     public void testImport_DEMOGRAPHY_CONCEPTS() throws Exception {
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        File file = new File(SdmxResources.DEMOGRAPHY_CONCEPTS);
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
 
-        ContentInputDto contentInputDto = new ContentInputDto();
-        contentInputDto.setInput(new FileInputStream(file));
-
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), contentInputDto);
+        WaitUntilJobFinished();
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = null;
 
@@ -183,125 +238,279 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
+    @DirtyDatabase
     public void testImport_DSD_ECB_EXR_NG_FULL() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_ECB_EXR_NG_FULL);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_NG_FULL)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_NG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_NG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
     @Test
-    @Ignore
+    @DirtyDatabase
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_ECB_EXR_SG_FULL);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_SG_FULL)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_SG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_SG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
     @Test
-    @Ignore
+    @DirtyDatabase
     public void testImport_DSD_ECB_EXR_RG_FULL() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_ECB_EXR_RG_FULL);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_RG_FULL)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_RG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_RG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
-    @Test
     @Ignore
+    @Test
+    @DirtyDatabase
     public void testImport_DSD_INE_DPOP() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_INE_DPOP);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_DPOP)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_DPOP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_DPOP_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
     @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @DirtyDatabase
     public void testImport_DSD_INE_EPOP() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_INE_EPOP);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_EPOP)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_EPOP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_EPOP_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
     @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @DirtyDatabase
     public void testImport_DSD_INE_IDB() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_INE_IDB);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IDB)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IDB_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IDB_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
     @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @DirtyDatabase
     public void testImport_DSD_INE_IPC() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_INE_IPC);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IPC)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IPC_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IPC_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
     @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @DirtyDatabase
     public void testImport_DSD_INE_IPCA() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_INE_IPCA);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IPCA)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IPCA_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IPCA_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
 
     @Ignore
-    // TODO se ignora hasta que se arregle la incidencia del tipo de esquema de concepto
     @Test
+    @DirtyDatabase
     public void testImport_DSD_INE_MNP() throws Exception {
-        File file = null;
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
 
-        file = new File(SdmxResources.DSD_INE_MNP);
-        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(file));
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), SrmDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_MNP)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        WaitUntilJobFinished();
+
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_MNP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_MNP_URN, dataStructureDefinitionMetamacDto.getUrn());
+    }
+
+    private void WaitUntilJobFinished() throws InterruptedException, SchedulerException {
+        // Wait until the job is finished
+        Thread.sleep(5 * 1000l);
+        Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
+        while (sched.getCurrentlyExecutingJobs().size() != 0) {
+            Thread.sleep(5 * 1000l);
+        }
     }
 
 }
