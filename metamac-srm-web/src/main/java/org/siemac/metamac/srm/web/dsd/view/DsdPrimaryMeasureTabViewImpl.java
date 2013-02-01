@@ -407,7 +407,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                     String conceptValue = String.valueOf(conceptItem.getValue());
                     return !StringUtils.isBlank(conceptValue);
                 }
-                return true;
+                return false;
             }
         };
         conceptItem.setValidators(customValidator);
@@ -453,8 +453,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        RelatedResourceDto selectedCodelist = searchConceptWindow.getSelectedRelatedResource();
-                        searchConceptWindow.markForDestroy();
+                        RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
+                        searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
                         // Set selected codelist in form
                         editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, selectedCodelist != null ? selectedCodelist.getUrn() : null);
                         editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW,

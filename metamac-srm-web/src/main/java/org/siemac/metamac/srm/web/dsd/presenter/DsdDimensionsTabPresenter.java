@@ -112,6 +112,8 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         void setConceptSchemes(GetRelatedResourcesResult result);
         void setConcepts(GetRelatedResourcesResult result);
 
+        void setConceptSchemesForMeasureDimensionEnumeratedRepresentation(GetRelatedResourcesResult result);
+
         void setRoleConcepts(List<ExternalItemDto> roleConcepts);
         HasChangeHandlers onRoleConceptSchemeChange();
 
@@ -432,6 +434,22 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                 });
     }
 
+    @Override
+    public void retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_DSD_MEASURE_DIMENSION_ENUMERATED_REPRESENTATION, firstResult, maxResults,
+                new ConceptSchemeWebCriteria(criteria, dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConceptSchemesForMeasureDimensionEnumeratedRepresentation(result);
+            }
+        });
+    }
+
     private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(TypeDimensionComponent dimensionType) {
         StructuralResourcesRelationEnum relationType = null;
         if (TypeDimensionComponent.DIMENSION.equals(dimensionType)) {
@@ -455,4 +473,5 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         }
         return relationType;
     }
+
 }

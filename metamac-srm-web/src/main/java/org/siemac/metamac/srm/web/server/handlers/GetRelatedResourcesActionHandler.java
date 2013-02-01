@@ -101,13 +101,20 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                             conceptSchemeWebCriteria.getDsdUrn());
                     break;
                 }
-                case CONCEPT_WITH_DSD_TIME_DIMENSION:
+                case CONCEPT_WITH_DSD_TIME_DIMENSION: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
                     MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
                     restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     criteria.setRestriction(restriction);
                     result = srmCoreServiceFacade.findConceptsCanBeDsdTimeDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
+                }
+                case CONCEPT_SCHEME_WITH_DSD_MEASURE_DIMENSION_ENUMERATED_REPRESENTATION: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, MetamacSrmWeb.getCoreMessages().exception_common_unknown());
             }
