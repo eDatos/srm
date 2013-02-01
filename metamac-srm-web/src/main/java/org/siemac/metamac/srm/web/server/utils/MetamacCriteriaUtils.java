@@ -8,8 +8,10 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestric
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaRestriction;
+import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 
@@ -57,5 +59,24 @@ public class MetamacCriteriaUtils {
             }
         }
         return restrictions;
+    }
+
+    /**
+     * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE, NAME and URN of the Codelist
+     * 
+     * @param criteria
+     * @return
+     */
+    public static MetamacCriteriaRestriction getCodelistCriteriaRestriction(CodelistWebCriteria criteria) {
+        MetamacCriteriaDisjunctionRestriction codelistCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
+            codelistCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+            codelistCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+            codelistCriteriaDisjuction.getRestrictions()
+                    .add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+        }
+        return codelistCriteriaDisjuction;
     }
 }

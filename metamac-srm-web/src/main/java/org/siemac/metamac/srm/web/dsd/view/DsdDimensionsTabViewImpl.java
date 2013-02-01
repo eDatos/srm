@@ -76,7 +76,6 @@ import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.HasSelectionChangedHandlers;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -90,7 +89,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private ProcStatusEnum                               procStatus;
 
     private DimensionComponentDto                        dimensionComponentDto;
-    private List<ExternalItemDto>                        codeLists;
 
     private VLayout                                      panel;
     private VLayout                                      selectedComponentLayout;
@@ -108,7 +106,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     // private StaticTextItem staticPositionItem;
     // Representation
     private ViewTextItem                                 staticRepresentationTypeItem;
-    private ViewTextItem                                 staticCodeListItem;
     private StaticFacetForm                              staticFacetForm;
 
     // EDITION FORM
@@ -120,7 +117,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
     // Representation
     private CustomSelectItem                             representationTypeItem;
-    private CustomSelectItem                             codeListItem;
     private DsdFacetForm                                 facetForm;
 
     private ToolStripButton                              newToolStripButton;
@@ -130,7 +126,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     private NewDimensionWindow                           newDimensionWindow;
     private SearchRelatedResourcePaginatedWindow         searchConceptWindow;
-    private SearchRelatedResourcePaginatedWindow         searchMeasureDimensionEnumeratedRepresentationWindow;
+    private SearchRelatedResourcePaginatedWindow         searchConceptSchemeForEnumeratedRepresentationWindow;
+    private SearchRelatedResourcePaginatedWindow         searchCodelistForEnumeratedRepresentationWindow;
 
     @Inject
     public DsdDimensionsTabViewImpl() {
@@ -313,13 +310,13 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // staticPositionItem = new StaticTextItem("position-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsPosition());
         staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
-        staticCodeListItem = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
+        ViewTextItem codelist = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
         ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, MetamacSrmWeb.getConstants().conceptScheme());
 
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        form.setFields(staticCode, dimensionType, concept, staticRoleItem, conceptRoleItem, staticRepresentationTypeItem, staticCodeListItem, conceptScheme, urn, urnProvider);
+        form.setFields(staticCode, dimensionType, concept, staticRoleItem, conceptRoleItem, staticRepresentationTypeItem, codelist, conceptScheme, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -434,17 +431,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
 
         // Codelist
-
-        codeListItem = new CustomSelectItem(DimensionDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
-        codeListItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
-                return CommonUtils.isRepresentationTypeEnumerated(representationTypeItem.getValueAsString())
-                        && !CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE));
-            }
-        });
+        ViewTextItem codelist = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, MetamacSrmWeb.getConstants().codelist());
+        codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem codelistView = createEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist());
 
         // ConceptScheme
 
@@ -456,7 +445,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, conceptView, roleItem, conceptRoleItem, representationTypeItem, codeListItem, conceptScheme,
+        editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, conceptView, roleItem, conceptRoleItem, representationTypeItem, codelist, codelistView, conceptScheme,
                 conceptSchemeView, urn, urnProvider);
 
         // Facet Form
@@ -529,10 +518,18 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
+    public void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result) {
+        if (searchCodelistForEnumeratedRepresentationWindow != null) {
+            searchCodelistForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
+            searchCodelistForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+        }
+    }
+
+    @Override
     public void setConceptSchemesForMeasureDimensionEnumeratedRepresentation(GetRelatedResourcesResult result) {
-        if (searchMeasureDimensionEnumeratedRepresentationWindow != null) {
-            searchMeasureDimensionEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
-            searchMeasureDimensionEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+        if (searchConceptSchemeForEnumeratedRepresentationWindow != null) {
+            searchConceptSchemeForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
+            searchConceptSchemeForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
         }
     }
 
@@ -547,12 +544,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     @Override
     public void setRoleConcepts(List<ExternalItemDto> roleConcepts) {
         roleItem.setConcepts(roleConcepts);
-    }
-
-    @Override
-    public void setCodeLists(List<ExternalItemDto> codeLists) {
-        this.codeLists = codeLists;
-        codeListItem.setValueMap(ExternalItemUtils.getExternalItemsHashMap(codeLists));
     }
 
     @Override
@@ -596,7 +587,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                             StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)) ? null : RelatedResourceUtils.createExternalItemDto(
                                     TypeExternalArtefactsEnum.CONCEPT_SCHEME, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)));
                 } else {
-                    dimensionComponentDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, codeListItem.getValueAsString()));
+                    // TODO RelatedResourceDto instead of ExternalItemDto
+                    dimensionComponentDto.getLocalRepresentation().setEnumerated(
+                            StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createExternalItemDto(
+                                    TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)));
                 }
                 dimensionComponentDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
@@ -671,22 +665,31 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // staticPositionItem.setValue(dimensionComponentDto.getOrderLogic().toString());
         // Representation
         staticFacetForm.hide();
-        staticCodeListItem.hide();
-        staticCodeListItem.clearValue();
+        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).hide();
+        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).hide();
+        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).clearValue();
         staticRepresentationTypeItem.clearValue();
         staticFacetForm.clearValues();
         if (dimensionComponentDto.getLocalRepresentation() != null) {
             if (TypeRepresentationEnum.ENUMERATED.equals(dimensionComponentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                // Code List
+
                 if (TypeExternalArtefactsEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
+
+                    // Code List
                     staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        staticCodeListItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumerated().getCode());
-                        staticCodeListItem.show();
+                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated())); // TODO
+                                                                                                                                                                                                   // RelatedResourceDto
+                                                                                                                                                                                                   // instead
+                                                                                                                                                                                                   // of
+                                                                                                                                                                                                   // ExternalItemDto
+                        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).show();
                     }
-                    // ConceptScheme
+
                 } else if (TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
+
+                    // ConceptScheme
                     staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated())); // TODO
@@ -733,7 +736,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         roleItem.setRoleConcepts(dimensionComponentDto.getRole());
 
         // Representation
-        codeListItem.clearValue();
+        editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
+        editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME).clearValue();
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).clearValue();
         representationTypeItem.clearValue();
@@ -744,15 +748,20 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 // Code List
                 if (TypeExternalArtefactsEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        // codeListItem.setValue(dimensionComponentDto.getLocalRepresentation().getEnumCodeList().getCodeId());
-                        codeListItem.clearValue(); // don´t know the concept (which is the scheme?), so code list neither
+                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, dimensionComponentDto.getLocalRepresentation().getEnumerated().getUrn());
+                        editionForm
+                                .setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated())); // TODO
+                                                                                                                                                                                                       // RelatedResourceDto
+                                                                                                                                                                                                       // instead
+                                                                                                                                                                                                       // of
+                                                                                                                                                                                                       // ExternalItemDto
                     }
                     // ConceptScheme
                 } else if (TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, dimensionComponentDto.getLocalRepresentation().getEnumerated().getUrn());
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW,
-                                ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated()));
+                                ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated())); // TODO RelatedResourceDto instead of ExternalItemDto
                     }
                 }
                 // Facet
@@ -798,16 +807,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     @Override
     public HasChangeHandlers onRoleConceptSchemeChange() {
         return roleItem.getConceptSchemeItem();
-    }
-
-    @Override
-    public HasSelectionChangedHandlers onDimensionSelected() {
-        return dimensionsGrid;
-    }
-
-    @Override
-    public HasChangeHandlers onRepresentationTypeChange() {
-        return representationTypeItem;
     }
 
     /**
@@ -966,6 +965,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
+                        // TODO if concept has changed, clear the codelist field (ENUMERATED_REPRESENTATION_CODELIST and ENUMERATED_REPRESENTATION_CODELIST_VIEW)
                         editionForm.setValue(DimensionDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
                         editionForm.setValue(DimensionDS.CONCEPT_VIEW, selectedConcept != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept) : null);
                     }
@@ -1012,20 +1012,20 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-                searchMeasureDimensionEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSchemeSelection(), MAX_RESULTS, new PaginatedAction() {
+                searchConceptSchemeForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSchemeSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
                         getUiHandlers().retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(firstResult, maxResults,
-                                searchMeasureDimensionEnumeratedRepresentationWindow.getRelatedResourceCriteria());
+                                searchConceptSchemeForEnumeratedRepresentationWindow.getRelatedResourceCriteria());
                     }
                 });
 
                 // Load concept schemes (to populate the selection window)
                 getUiHandlers().retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null);
 
-                searchMeasureDimensionEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                searchMeasureDimensionEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+                searchConceptSchemeForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchConceptSchemeForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
@@ -1033,12 +1033,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     }
                 });
 
-                searchMeasureDimensionEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                searchConceptSchemeForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        RelatedResourceDto selectedConceptScheme = searchMeasureDimensionEnumeratedRepresentationWindow.getSelectedRelatedResource();
-                        searchMeasureDimensionEnumeratedRepresentationWindow.markForDestroy();
+                        RelatedResourceDto selectedConceptScheme = searchConceptSchemeForEnumeratedRepresentationWindow.getSelectedRelatedResource();
+                        searchConceptSchemeForEnumeratedRepresentationWindow.markForDestroy();
                         // Set selected concept scheme in form
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, selectedConceptScheme != null ? selectedConceptScheme.getUrn() : null);
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW,
@@ -1061,5 +1061,62 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         };
         conceptSchemeItem.setValidators(customValidator);
         return conceptSchemeItem;
+    }
+
+    private SearchViewTextItem createEnumeratedRepresentationItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        SearchViewTextItem codelist = new SearchViewTextItem(name, title);
+        codelist.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
+                return CommonUtils.isRepresentationTypeEnumerated(representationTypeItem.getValueAsString())
+                        && !CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE));
+            }
+        });
+        codelist.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+
+                final String conceptUrn = editionForm.getValueAsString(DimensionDS.CONCEPT);
+
+                searchCodelistForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn);
+                    }
+                });
+
+                // Load codelists (to populate the selection window)
+                getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
+
+                searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn);
+                    }
+                });
+
+                searchCodelistForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
+                        searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
+                        // Set selected codelist in form
+                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
+                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW,
+                                selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                    }
+                });
+            }
+        });
+        return codelist;
     }
 }

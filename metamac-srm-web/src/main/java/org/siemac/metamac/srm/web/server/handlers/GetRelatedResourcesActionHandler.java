@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -113,6 +114,13 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
                     result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CODELIST_WITH_DSD_DIMENSION_ENUMERATED_REPRESENTATION: {
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            codelistWebCriteria.getConceptUrn());
                     break;
                 }
                 default:

@@ -301,7 +301,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 .dsdAttributeDimensionsForDimensionRelationship());
         staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
         staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
-        staticCodeListItem = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
+        staticCodeListItem = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().codelist());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         staticForm.setFields(staticCode, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
@@ -438,7 +438,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        codeListItem = new CustomSelectItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().dsdCodeList());
+        codeListItem = new CustomSelectItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().codelist());
         codeListItem.setType("comboBox");
         // Show CodeList if RepresentationTypeEnum = ENUMERATED
         codeListItem.setShowIfCondition(new FormItemIfFunction() {

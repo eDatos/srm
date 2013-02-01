@@ -16,6 +16,7 @@ public interface DsdDimensionsTabUiHandlers extends UiHandlers {
     void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, String criteria, String conceptSchemeUrn);
 
     void retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(int firstResult, int maxResults, String criteria);
+    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn);
 
     void retrieveConceptsAsRole(int firstResult, int maxResult, String criteria);
 }

@@ -18,11 +18,8 @@ import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.Select
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDimensionsEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
-import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
-import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
-import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsResult;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
@@ -30,6 +27,7 @@ import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
@@ -53,7 +51,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -76,9 +73,6 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
 import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
-import com.smartgwt.client.widgets.grid.events.HasSelectionChangedHandlers;
-import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresenter.DsdDimensionsTabView, DsdDimensionsTabPresenter.DsdDimensionsTabProxy>
         implements
@@ -91,9 +85,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
     private boolean                           isNewDescriptor;
     private List<DimensionComponentDto>       dimensionComponentDtos;
-
-    // Storing selected concept and representation type allows improving performance when loading code lists
-    private boolean                           enumeratedRepresentation;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdDimensionsPage)
@@ -113,13 +104,10 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         void setConcepts(GetRelatedResourcesResult result);
 
         void setConceptSchemesForMeasureDimensionEnumeratedRepresentation(GetRelatedResourcesResult result);
+        void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
 
         void setRoleConcepts(List<ExternalItemDto> roleConcepts);
         HasChangeHandlers onRoleConceptSchemeChange();
-
-        void setCodeLists(List<ExternalItemDto> codeLists);
-        HasSelectionChangedHandlers onDimensionSelected();
-        HasChangeHandlers onRepresentationTypeChange();
 
         void setDsdDimensions(ProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos);
         DimensionComponentDto getDsdDimension();
@@ -187,33 +175,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             public void onChange(ChangeEvent event) {
                 if (event.getValue() != null) {
                     populateRoleConcepts(event.getValue().toString());
-                }
-
-            }
-        }));
-
-        registerHandler(getView().onRepresentationTypeChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                enumeratedRepresentation = CommonUtils.isRepresentationTypeEnumerated(event.getValue() != null ? (String) event.getValue() : "");
-                if (enumeratedRepresentation) {
-                    // populateCodeLists(selectedConceptUri);
-                }
-            }
-        }));
-
-        registerHandler(getView().onDimensionSelected().addSelectionChangedHandler(new SelectionChangedHandler() {
-
-            @Override
-            public void onSelectionChanged(SelectionEvent event) {
-                if (event.getSelection() != null && event.getSelection().length == 1) {
-                    DimensionRecord record = (DimensionRecord) event.getSelectedRecord();
-                    if (record != null && record.getDimensionComponentDto() != null) {
-                        // selectedConceptUri = record.getDimensionComponentDto().getCptIdRef() != null ? record.getDimensionComponentDto().getCptIdRef().getCode() : null;
-                        enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(record.getDimensionComponentDto().getLocalRepresentation() != null ? record.getDimensionComponentDto()
-                                .getLocalRepresentation().getTypeRepresentationEnum() : "");
-                    }
                 }
             }
         }));
@@ -365,20 +326,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         });
     }
 
-    private void populateCodeLists(String uriConcept) {
-        dispatcher.execute(new FindCodeListsAction(uriConcept), new WaitingAsyncCallback<FindCodeListsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindCodeListsResult result) {
-                getView().setCodeLists(result.getCodeLists());
-            }
-        });
-    }
-
     @Override
     public void retrieveConceptsAsRole(int firstResult, int maxResults, String criteria) {
         // TODO Specify the concept scheme URN
@@ -450,6 +397,21 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         });
     }
 
+    @Override
+    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_DSD_DIMENSION_ENUMERATED_REPRESENTATION, firstResult, maxResults, new CodelistWebCriteria(
+                criteria, conceptUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setCodelistsForEnumeratedRepresentation(result);
+            }
+        });
+    }
     private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(TypeDimensionComponent dimensionType) {
         StructuralResourcesRelationEnum relationType = null;
         if (TypeDimensionComponent.DIMENSION.equals(dimensionType)) {
@@ -473,5 +435,4 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         }
         return relationType;
     }
-
 }

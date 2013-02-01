@@ -13,7 +13,8 @@ public class DimensionDS {
     public static final String CONCEPT_VIEW                                  = "dim-con-view";
     public static final String ROLE                                          = "dim-role";
     public static final String REPRESENTATION_TYPE                           = "dim-repr-type";
-    public static final String ENUMERATED_REPRESENTATION_CODE_LIST           = "dim-repr-enum-code";
+    public static final String ENUMERATED_REPRESENTATION_CODELIST            = "dim-repr-enum-code";
+    public static final String ENUMERATED_REPRESENTATION_CODELIST_VIEW       = "dim-repr-enum-code-view";  // Not mapped in DTO
     public static final String ENUMERATED_REPRESENTATION_CONCEPT_SCHEME      = "dim-repr-enum-scheme";
     public static final String ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW = "dim-repr-enum-scheme-view"; // Not mapped in DTO
 }
