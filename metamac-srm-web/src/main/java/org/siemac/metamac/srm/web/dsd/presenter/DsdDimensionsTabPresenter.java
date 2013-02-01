@@ -25,8 +25,12 @@ import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.FindConceptsResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdResult;
@@ -40,8 +44,6 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
-import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent.UpdateConceptSchemesHandler;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -50,6 +52,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
@@ -80,8 +83,7 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresenter.DsdDimensionsTabView, DsdDimensionsTabPresenter.DsdDimensionsTabProxy>
         implements
             DsdDimensionsTabUiHandlers,
-            SelectDsdAndDescriptorsHandler,
-            UpdateConceptSchemesHandler {
+            SelectDsdAndDescriptorsHandler {
 
     private final DispatchAsync               dispatcher;
     private final PlaceManager                placeManager;
@@ -91,7 +93,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     private List<DimensionComponentDto>       dimensionComponentDtos;
 
     // Storing selected concept and representation type allows improving performance when loading code lists
-    private String                            selectedConceptUri;
     private boolean                           enumeratedRepresentation;
 
     @ProxyCodeSplit
@@ -108,11 +109,10 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     public interface DsdDimensionsTabView extends View, HasUiHandlers<DsdDimensionsTabUiHandlers> {
 
-        void setConceptSchemes(List<ExternalItemDto> conceptSchemes);
-        void setConcepts(List<ExternalItemDto> concepts);
+        void setConceptSchemes(GetRelatedResourcesResult result);
+        void setConcepts(GetRelatedResourcesResult result);
+
         void setRoleConcepts(List<ExternalItemDto> roleConcepts);
-        HasChangeHandlers onConceptSchemeChange();
-        HasChangeHandlers onConceptChange();
         HasChangeHandlers onRoleConceptSchemeChange();
 
         void setCodeLists(List<ExternalItemDto> codeLists);
@@ -179,16 +179,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             }
         }));
 
-        registerHandler(getView().onConceptSchemeChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                if (event.getValue() != null) {
-                    populateConcepts(event.getValue().toString());
-                }
-            }
-        }));
-
         registerHandler(getView().onRoleConceptSchemeChange().addChangeHandler(new ChangeHandler() {
 
             @Override
@@ -200,25 +190,13 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             }
         }));
 
-        registerHandler(getView().onConceptChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                selectedConceptUri = event.getValue() != null ? (String) event.getValue() : null;
-                // if selected representation is enumerated, load the appropriate code lists
-                if (enumeratedRepresentation) {
-                    populateCodeLists(selectedConceptUri);
-                }
-            }
-        }));
-
         registerHandler(getView().onRepresentationTypeChange().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent event) {
                 enumeratedRepresentation = CommonUtils.isRepresentationTypeEnumerated(event.getValue() != null ? (String) event.getValue() : "");
                 if (enumeratedRepresentation) {
-                    populateCodeLists(selectedConceptUri);
+                    // populateCodeLists(selectedConceptUri);
                 }
             }
         }));
@@ -230,7 +208,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                 if (event.getSelection() != null && event.getSelection().length == 1) {
                     DimensionRecord record = (DimensionRecord) event.getSelectedRecord();
                     if (record != null && record.getDimensionComponentDto() != null) {
-                        selectedConceptUri = record.getDimensionComponentDto().getCptIdRef() != null ? record.getDimensionComponentDto().getCptIdRef().getCode() : null;
+                        // selectedConceptUri = record.getDimensionComponentDto().getCptIdRef() != null ? record.getDimensionComponentDto().getCptIdRef().getCode() : null;
                         enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(record.getDimensionComponentDto().getLocalRepresentation() != null ? record.getDimensionComponentDto()
                                 .getLocalRepresentation().getTypeRepresentationEnum() : "");
                     }
@@ -253,12 +231,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         isNewDescriptor = dimensionsDescriptor.getId() == null;
         dimensionComponentDtos = CommonUtils.getDimensionComponents(dimensionsDescriptor);
         setDsdDimensions(dataStructureDefinitionDto, dimensionComponentDtos);
-    }
-
-    @ProxyEvent
-    @Override
-    public void onUpdateConceptSchemes(UpdateConceptSchemesEvent event) {
-        getView().setConceptSchemes(event.getConceptSchemes());
     }
 
     @Override
@@ -377,20 +349,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         });
     }
 
-    private void populateConcepts(String uriConceptScheme) {
-        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new WaitingAsyncCallback<FindConceptsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindConceptsResult result) {
-                getView().setConcepts(result.getConcepts());
-            }
-        });
-    }
-
     private void populateRoleConcepts(String uriConceptScheme) {
         dispatcher.execute(new FindConceptsAction(uriConceptScheme), new WaitingAsyncCallback<FindConceptsResult>() {
 
@@ -438,5 +396,63 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     private void setDsdDimensions(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
         getView().setDsdDimensions(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dimensionComponentDtos);
+    }
+
+    @Override
+    public void retrieveConceptSchemes(TypeDimensionComponent dimensionType, int firstResult, int maxResults) {
+        StructuralResourcesRelationEnum relationType = getRelationTypeForConceptScheme(dimensionType);
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, new ConceptSchemeWebCriteria(null, dataStructureDefinitionDto.getUrn())),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptSchemes(result);
+                    }
+                });
+    }
+
+    @Override
+    public void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
+        StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(dimensionType);
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, new ConceptWebCriteria(criteria, dataStructureDefinitionDto.getUrn(), conceptSchemeUrn)),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConcepts(result);
+                    }
+                });
+    }
+
+    private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(TypeDimensionComponent dimensionType) {
+        StructuralResourcesRelationEnum relationType = null;
+        if (TypeDimensionComponent.DIMENSION.equals(dimensionType)) {
+            relationType = StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_DIMENSION;
+        } else if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionType)) {
+            relationType = StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_MEASURE_DIMENSION;
+        } else if (TypeDimensionComponent.TIMEDIMENSION.equals(dimensionType)) {
+            relationType = StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_TIME_DIMENSION;
+        }
+        return relationType;
+    }
+
+    private StructuralResourcesRelationEnum getRelationTypeForConcept(TypeDimensionComponent dimensionType) {
+        StructuralResourcesRelationEnum relationType = null;
+        if (TypeDimensionComponent.DIMENSION.equals(dimensionType)) {
+            relationType = StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_DIMENSION;
+        } else if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionType)) {
+            relationType = StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_MEASURE_DIMENSION;
+        } else if (TypeDimensionComponent.TIMEDIMENSION.equals(dimensionType)) {
+            relationType = StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_TIME_DIMENSION;
+        }
+        return relationType;
     }
 }

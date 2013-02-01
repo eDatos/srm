@@ -21,108 +21,70 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 
 public class CommonUtils {
 
-    private static LinkedHashMap<String, String> dsdShowDecimalsHashMap = null;
+    private static LinkedHashMap<String, String> usageStatusHashMap            = null;
+    private static LinkedHashMap<String, String> typeRelationShipHashMap       = null;
+    private static LinkedHashMap<String, String> typeDimensionComponentHashMap = null;
+    private static LinkedHashMap<String, String> facetValueTypeHashMap         = null;
+    private static LinkedHashMap<String, String> dsdShowDecimalsHashMap        = null;
 
-    /**
-     * Returns true if representationType = ENUMERATED.
-     * 
-     * @param representationType
-     * @return
-     */
-    public static boolean isRepresentationTypeEnumerated(String representationType) {
-        if (representationType != null && !representationType.isEmpty()) {
-            return TypeRepresentationEnum.ENUMERATED.equals(TypeRepresentationEnum.valueOf(representationType)) ? true : false;
-        }
-        return false;
-    }
-
-    /**
-     * Returns dimension components of dimensionsDescriptor
-     * 
-     * @param dimensionsDescriptor
-     * @return
-     */
-    public static List<DimensionComponentDto> getDimensionComponents(DescriptorDto dimensionsDescriptor) {
-        List<DimensionComponentDto> dimensionComponentDtos = new ArrayList<DimensionComponentDto>();
-        for (ComponentDto componentDto : dimensionsDescriptor.getComponents()) {
-            if (componentDto instanceof DimensionComponentDto) {
-                DimensionComponentDto dimensionComponentDto = (DimensionComponentDto) componentDto;
-                dimensionComponentDtos.add(dimensionComponentDto);
-            }
-        }
-        return dimensionComponentDtos;
-    }
-
-    /**
-     * Returns attribute components of attributesDescriptor
-     * 
-     * @param attributesDescriptor
-     * @return
-     */
-    public static List<DataAttributeDto> getAttributeComponents(DescriptorDto attributesDescriptor) {
-        List<DataAttributeDto> dataAttributeDtos = new ArrayList<DataAttributeDto>();
-        for (ComponentDto componentDto : attributesDescriptor.getComponents()) {
-            if (componentDto instanceof DataAttributeDto) {
-                DataAttributeDto dataAttributeDto = (DataAttributeDto) componentDto;
-                dataAttributeDtos.add(dataAttributeDto);
-            }
-        }
-        return dataAttributeDtos;
-    }
-
-    /**
-     * @param list
-     * @return
-     */
-    public static String getRoleListToString(List<ExternalItemDto> list) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            builder.append(i != 0 ? ",  " : "");
-            builder.append(list.get(i).getCode());
-        }
-        return builder.toString();
-    }
-
-    // ENUM linkedHashMaps
+    // USAGE STATUS
 
     public static LinkedHashMap<String, String> getUsageStatusHashMap() {
-        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
-        for (UsageStatus u : UsageStatus.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().usageStatus() + u.getName());
-            valueMap.put(u.toString(), value);
+        if (usageStatusHashMap == null) {
+            usageStatusHashMap = new LinkedHashMap<String, String>();
+            usageStatusHashMap.put(new String(), new String());
+            for (UsageStatus u : UsageStatus.values()) {
+                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().usageStatus() + u.getName());
+                usageStatusHashMap.put(u.toString(), value);
+            }
         }
-        return valueMap;
+        return usageStatusHashMap;
     }
+
+    // TYPE RELATIONSHIP
 
     public static LinkedHashMap<String, String> getTypeRelathionshipHashMap() {
-        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
-        for (TypeRelathionship t : TypeRelathionship.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + t.getName());
-            valueMap.put(t.toString(), value);
+        if (typeRelationShipHashMap == null) {
+            typeRelationShipHashMap = new LinkedHashMap<String, String>();
+            typeRelationShipHashMap.put(new String(), new String());
+            for (TypeRelathionship t : TypeRelathionship.values()) {
+                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + t.getName());
+                typeRelationShipHashMap.put(t.toString(), value);
+            }
         }
-        return valueMap;
+        return typeRelationShipHashMap;
     }
+
+    // TYPE DIMENSION COMPONENT
 
     public static LinkedHashMap<String, String> getTypeDimensionComponentHashMap() {
-        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
-        for (TypeDimensionComponent t : TypeDimensionComponent.values()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + t.getName());
-            valueMap.put(t.toString(), value);
+        if (typeDimensionComponentHashMap == null) {
+            typeDimensionComponentHashMap = new LinkedHashMap<String, String>();
+            typeDimensionComponentHashMap.put(new String(), new String());
+            for (TypeDimensionComponent t : TypeDimensionComponent.values()) {
+                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + t.getName());
+                typeDimensionComponentHashMap.put(t.name(), value);
+            }
         }
-        return valueMap;
+        return typeDimensionComponentHashMap;
     }
 
+    public static String getTypeDimensionComponentName(TypeDimensionComponent typeDimensionComponentEnum) {
+        return typeDimensionComponentEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + typeDimensionComponentEnum.name()) : null;
+    }
+
+    // FACET VALUE TYPE
+
     public static LinkedHashMap<String, String> getDsdFacetValueTypeHashMap() {
-        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
-        for (FacetValueTypeEnum f : FacetFormUtils.getDsdFacetValueTypeEnums()) {
-            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + f.getName());
-            valueMap.put(f.toString(), value);
+        if (facetValueTypeHashMap == null) {
+            facetValueTypeHashMap = new LinkedHashMap<String, String>();
+            facetValueTypeHashMap.put(new String(), new String());
+            for (FacetValueTypeEnum f : FacetFormUtils.getDsdFacetValueTypeEnums()) {
+                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + f.getName());
+                facetValueTypeHashMap.put(f.toString(), value);
+            }
         }
-        return valueMap;
+        return facetValueTypeHashMap;
     }
 
     // DTO linkedHashMaps
@@ -178,5 +140,87 @@ public class CommonUtils {
             return measureDimension.getLocalRepresentation().getEnumerated().getUrn();
         }
         return null;
+    }
+
+    /**
+     * Returns true if representationType = ENUMERATED.
+     * 
+     * @param representationType
+     * @return
+     */
+    public static boolean isRepresentationTypeEnumerated(String representationType) {
+        if (representationType != null && !representationType.isEmpty()) {
+            return TypeRepresentationEnum.ENUMERATED.equals(TypeRepresentationEnum.valueOf(representationType)) ? true : false;
+        }
+        return false;
+    }
+
+    public static boolean isDimensionTypeMeasureDimension(String typeDimensionComponent) {
+        return StringUtils.equals(TypeDimensionComponent.MEASUREDIMENSION.name(), typeDimensionComponent);
+    }
+
+    public static boolean isDimensionTypeTimeDimension(String typeDimensionComponent) {
+        return StringUtils.equals(TypeDimensionComponent.TIMEDIMENSION.name(), typeDimensionComponent);
+    }
+
+    public static boolean isDimensionTypeTimeDimension(TypeDimensionComponent typeDimensionComponent) {
+        return TypeDimensionComponent.TIMEDIMENSION.equals(typeDimensionComponent);
+    }
+
+    /**
+     * Returns dimension components of dimensionsDescriptor
+     * 
+     * @param dimensionsDescriptor
+     * @return
+     */
+    public static List<DimensionComponentDto> getDimensionComponents(DescriptorDto dimensionsDescriptor) {
+        List<DimensionComponentDto> dimensionComponentDtos = new ArrayList<DimensionComponentDto>();
+        for (ComponentDto componentDto : dimensionsDescriptor.getComponents()) {
+            if (componentDto instanceof DimensionComponentDto) {
+                DimensionComponentDto dimensionComponentDto = (DimensionComponentDto) componentDto;
+                dimensionComponentDtos.add(dimensionComponentDto);
+            }
+        }
+        return dimensionComponentDtos;
+    }
+
+    /**
+     * Returns attribute components of attributesDescriptor
+     * 
+     * @param attributesDescriptor
+     * @return
+     */
+    public static List<DataAttributeDto> getAttributeComponents(DescriptorDto attributesDescriptor) {
+        List<DataAttributeDto> dataAttributeDtos = new ArrayList<DataAttributeDto>();
+        for (ComponentDto componentDto : attributesDescriptor.getComponents()) {
+            if (componentDto instanceof DataAttributeDto) {
+                DataAttributeDto dataAttributeDto = (DataAttributeDto) componentDto;
+                dataAttributeDtos.add(dataAttributeDto);
+            }
+        }
+        return dataAttributeDtos;
+    }
+
+    /**
+     * @param list
+     * @return
+     */
+    public static String getRoleListToString(List<ExternalItemDto> list) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            builder.append(i != 0 ? ",  " : "");
+            builder.append(list.get(i).getCode());
+        }
+        return builder.toString();
+    }
+
+    // METADATA VISIBILITY
+
+    public static boolean canDimensionCodeBeEdited(String typeDimensionComponent) {
+        return !isDimensionTypeTimeDimension(typeDimensionComponent);
+    }
+
+    public static boolean isDimensionRoleVisible(TypeDimensionComponent typeDimensionComponent) {
+        return !isDimensionTypeTimeDimension(typeDimensionComponent);
     }
 }
