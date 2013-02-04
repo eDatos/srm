@@ -369,8 +369,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
-            String dsdUrn) throws MetamacException {
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
         return findConceptSchemesWithSpecificType(ctx, conditions, pagingParameter, ConceptSchemeTypeEnum.ROLE);
     }
 
@@ -396,6 +396,16 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Find
         return conceptMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+    }
+
+    @Override
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(conditions, pagingParameter, null);
+
+        // Find
+        return findCodelistsPublishedByConditions(ctx, conditions, pagingParameter, null);
     }
 
     @Override
@@ -648,7 +658,6 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     private PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsd(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
             String conceptUrn) throws MetamacException {
         // Validation
@@ -659,8 +668,13 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         Variable variable = concept.getVariable();
         if (variable == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
-
         }
+        return findCodelistsPublishedByConditions(ctx, conditions, pagingParameter, variable.getNameableArtefact().getUrn());
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private PagedResult<CodelistVersionMetamac> findCodelistsPublishedByConditions(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String variableUrn)
+            throws MetamacException {
 
         // Prepare conditions
         Class entitySearchedClass = CodelistVersionMetamac.class;
@@ -670,9 +684,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Codelist internally or externally published
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
                 .buildSingle());
-        // Same variable
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn())
-                .eq(variable.getNameableArtefact().getUrn()).buildSingle());
+        // Variable
+        if (variableUrn != null) {
+            conditions
+                    .add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn()).eq(variableUrn).buildSingle());
+        }
         // Do not repeat results
         conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
 

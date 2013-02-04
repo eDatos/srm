@@ -521,11 +521,9 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        String dsdUrn = DSD_1_V2;
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesWithConceptsCanBeDsdRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter,
-                dsdUrn);
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesWithConceptsCanBeDsdRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
         assertEquals(1, result.getTotalRows());
@@ -586,6 +584,22 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         assertEquals(1, result.getTotalRows());
         int i = 0;
         assertEquals(CONCEPT_SCHEME_7_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(result.getTotalRows(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(getServiceContextAdministrador(), conditions, pagingParameter);
+
+        // Validate
+        assertEquals(3, result.getTotalRows());
+        int i = 0;
+        assertEquals(CODELIST_7_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CODELIST_8_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CODELIST_9_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(result.getTotalRows(), i);
     }
 

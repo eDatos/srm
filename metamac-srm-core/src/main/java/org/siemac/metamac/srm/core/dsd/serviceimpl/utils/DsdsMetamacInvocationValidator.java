@@ -116,10 +116,9 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
     public static void checkFindConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(List<ConditionalCriteria> conditions, PagingParameter pagingParametern,
             List<MetamacExceptionItem> exceptions) throws MetamacException {
         // nothing
-        // if (exceptions == null) {
-        // exceptions = new ArrayList<MetamacExceptionItem>();
-        // }
-        // ExceptionUtils.throwIfException(exceptions);
+    }
+    public static void checkFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, Object object) {
+        // nothing
     }
 
     /**************************************************************************

@@ -239,13 +239,15 @@ Application SrmFacadeCore {
     		"Find concepts can be dimension"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdDimensionByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concept schemes with concepts can be role"
-    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find concepts can be role"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
     		"Find concept schemes to enumerated representation of measure dimension"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(MetamacCriteria criteria) throws MetamacException;
+    		"Find codelists to enumerated representation of primary measure"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(MetamacCriteria criteria) throws MetamacException;
     		"Find concept schemes with concepts can be concept of attribute"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find concepts can be concept of attribute"
