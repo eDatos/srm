@@ -986,9 +986,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                         editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, selectedConcept != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept) : null);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
-                        // TODO
-                        // editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
-                        // editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, StringUtils.EMPTY);
+                        editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
+                        editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, StringUtils.EMPTY);
 
                         editionForm.markForRedraw();
                     }
@@ -1021,7 +1020,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
                 SelectItem conceptSchemeSelectItem = new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme());
-                searchConceptsForRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(MetamacSrmWeb.getConstants().dsdDimensionsRole(), MAX_RESULTS, conceptSchemeSelectItem,
+                searchConceptsForRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(MetamacSrmWeb.getConstants().dsdAttributeRole(), MAX_RESULTS, conceptSchemeSelectItem,
                         new PaginatedAction() {
 
                             @Override
@@ -1091,7 +1090,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
                 if (StringUtils.isBlank(conceptUrn)) {
                     // If a concept has not been selected, show a message and do not let the user to select a codelist
-                    InformationWindow conceptRequiredWindow = new InformationWindow(getConstants().codelistSelection(), getConstants().dsdDimensionCodelistSelectionConceptRequired());
+                    InformationWindow conceptRequiredWindow = new InformationWindow(getConstants().codelistSelection(), getConstants().dsdAttributeCodelistSelectionConceptRequired());
                     conceptRequiredWindow.show();
                 } else {
                     searchCodelistForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {

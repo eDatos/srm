@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -21,14 +20,12 @@ import org.siemac.metamac.srm.web.dsd.events.UpdateDimensionsEvent.UpdateDimensi
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateGroupKeysEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateGroupKeysEvent.UpdateGroupKeysHandler;
-import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
-import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
-import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributeListForDsdAction;
@@ -51,7 +48,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -71,12 +67,6 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
-import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
-import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
-import com.smartgwt.client.widgets.grid.events.HasSelectionChangedHandlers;
-import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresenter.DsdAttributesTabView, DsdAttributesTabPresenter.DsdAttributesTabProxy>
         implements
@@ -91,10 +81,6 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
     private boolean                           isNewDescriptor;
     private List<DataAttributeDto>            dataAttributeDtos;
-
-    // Storing selected concept and representation type allows improving performance when loading code lists
-    private String                            selectedConceptUri;
-    private boolean                           enumeratedRepresentation;
 
     @ProxyCodeSplit
     @NameToken(NameTokens.dsdAttributesPage)
@@ -116,9 +102,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         void setConceptSchemesForAttributeRole(GetRelatedResourcesResult result);
         void setConceptsForAttributeRole(GetRelatedResourcesResult result);
 
-        void setCodeLists(List<ExternalItemDto> codeLists);
-        HasSelectionChangedHandlers onAttributeSelected();
-        HasChangeHandlers onRepresentationTypeChange();
+        void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
 
         void setDimensions(List<DimensionComponentDto> dimensionComponentDtos);
         void setGroupKeys(List<DescriptorDto> descriptorDtos);
@@ -248,32 +232,6 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             public void onClick(ClickEvent event) {
                 List<DataAttributeDto> attributesToDelete = getView().getSelectedAttributes();
                 deleteAttributes(attributesToDelete);
-            }
-        }));
-
-        registerHandler(getView().onRepresentationTypeChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                enumeratedRepresentation = CommonUtils.isRepresentationTypeEnumerated(event.getValue() != null ? (String) event.getValue() : "");
-                if (enumeratedRepresentation) {
-                    populateCodeLists(selectedConceptUri);
-                }
-            }
-        }));
-
-        registerHandler(getView().onAttributeSelected().addSelectionChangedHandler(new SelectionChangedHandler() {
-
-            @Override
-            public void onSelectionChanged(SelectionEvent event) {
-                if (event.getSelection() != null && event.getSelection().length == 1) {
-                    AttributeRecord record = (AttributeRecord) event.getSelectedRecord();
-                    if (record != null && record.getDataAttributeDto() != null) {
-                        selectedConceptUri = record.getDataAttributeDto().getCptIdRef() != null ? record.getDataAttributeDto().getCptIdRef().getCode() : null;
-                        enumeratedRepresentation = TypeRepresentationEnum.ENUMERATED.equals(record.getDataAttributeDto().getLocalRepresentation() != null ? record.getDataAttributeDto()
-                                .getLocalRepresentation().getTypeRepresentationEnum() : "");
-                    }
-                }
             }
         }));
     }
@@ -417,6 +375,22 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                 });
     }
 
+    @Override
+    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_DSD_ATTRIBUTE_ENUMERATED_REPRESENTATION, firstResult, maxResults, new CodelistWebCriteria(
+                criteria, conceptUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setCodelistsForEnumeratedRepresentation(result);
+            }
+        });
+    }
+
     private void updateAttributeList(final boolean updateView) {
         dataAttributeDtos = new ArrayList<DataAttributeDto>();
         dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
@@ -459,19 +433,4 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             }
         });
     }
-
-    private void populateCodeLists(String uriConcept) {
-        dispatcher.execute(new FindCodeListsAction(uriConcept), new WaitingAsyncCallback<FindCodeListsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindCodeListsResult result) {
-                getView().setCodeLists(result.getCodeLists());
-            }
-        });
-    }
-
 }

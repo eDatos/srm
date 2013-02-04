@@ -18,7 +18,8 @@ public enum StructuralResourcesRelationEnum implements Serializable {
     CONCEPT_SCHEMES_WITH_DSD_ROLES,
     CONCEPTS_WITH_DSD_ROLES,
     CONCEPT_SCHEMES_WITH_DSD_ATTRIBUTE,
-    CONCEPT_WITH_DSD_ATTRIBUTE;
+    CONCEPT_WITH_DSD_ATTRIBUTE,
+    CODELIST_WITH_DSD_ATTRIBUTE_ENUMERATED_REPRESENTATION;
 
     private StructuralResourcesRelationEnum() {
     }

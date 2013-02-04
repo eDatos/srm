@@ -180,12 +180,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void saveDimension(DimensionComponentDto dimensionToSave) {
-        // if (dimensionToSave.getId() == null) {
-        // if (TypeDimensionComponent.DIMENSION.equals(dimensionToSave.getTypeDimensionComponent())) {
-        // dimensionToSave.setOrderLogic(getLastDimensionPosition());
-        // }
-        // }
-
         dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionToSave, TypeComponentList.DIMENSION_DESCRIPTOR),
                 new WaitingAsyncCallback<SaveComponentForDsdResult>() {
 
@@ -269,16 +263,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             }
         });
     }
-
-    // private Integer getLastDimensionPosition() {
-    // Integer position = 0;
-    // for (DimensionComponentDto d : dimensionComponentDtos) {
-    // if (position.compareTo(d.getOrderLogic()) < 0) {
-    // position = d.getOrderLogic();
-    // }
-    // }
-    // return position + 1;
-    // }
 
     private void updateDsd() {
         dispatcher.execute(new GetDsdAction(dataStructureDefinitionDto.getUrn()), new WaitingAsyncCallback<GetDsdResult>() {

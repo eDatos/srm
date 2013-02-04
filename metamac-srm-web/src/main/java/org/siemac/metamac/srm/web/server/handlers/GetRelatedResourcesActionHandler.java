@@ -154,6 +154,13 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     result = srmCoreServiceFacade.findConceptsCanBeDsdAttributeByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 }
+                case CODELIST_WITH_DSD_ATTRIBUTE_ENUMERATED_REPRESENTATION: {
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            codelistWebCriteria.getConceptUrn());
+                    break;
+                }
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, MetamacSrmWeb.getCoreMessages().exception_common_unknown());
             }

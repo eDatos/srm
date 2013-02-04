@@ -16,4 +16,6 @@ public interface DsdAttributesTabUiHandlers extends UiHandlers {
 
     void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults);
     void retrieveConceptsForAttributeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn);
+
+    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn);
 }
