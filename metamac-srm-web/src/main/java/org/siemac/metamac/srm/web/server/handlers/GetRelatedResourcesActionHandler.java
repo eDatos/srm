@@ -62,7 +62,9 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     break;
                 }
                 case CODELIST_WITH_DSD_PRIMARY_MEASURE_ENUMERATED_REPRESENTATION: {
-                    // TODO
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEMES_WITH_DSD_DIMENSION: {
@@ -121,6 +123,20 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
                     result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ServiceContextHolder.getCurrentServiceContext(), criteria,
                             codelistWebCriteria.getConceptUrn());
+                    break;
+                }
+                case CONCEPT_SCHEMES_WITH_DSD_ROLES: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CONCEPTS_WITH_DSD_ROLES: {
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    criteria.setRestriction(restriction);
+                    result = srmCoreServiceFacade.findConceptsCanBeDsdRoleByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 default:

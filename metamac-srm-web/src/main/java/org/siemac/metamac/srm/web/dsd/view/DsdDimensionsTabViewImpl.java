@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -28,7 +27,6 @@ import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
-import org.siemac.metamac.srm.web.dsd.widgets.RoleSelectItem;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
@@ -70,7 +68,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -102,7 +99,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     private GroupDynamicForm                             form;
     private ViewTextItem                                 staticCode;
-    private ViewTextItem                                 staticRoleItem;
     // Representation
     private ViewTextItem                                 staticRepresentationTypeItem;
     private StaticFacetForm                              staticFacetForm;
@@ -112,8 +108,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private GroupDynamicForm                             editionForm;
     private RequiredTextItem                             code;
     private ViewTextItem                                 staticCodeEdit;
-    private RoleSelectItem                               roleItem;
-    private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
     // Representation
     private CustomSelectItem                             representationTypeItem;
     private DsdFacetForm                                 facetForm;
@@ -125,6 +119,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     private NewDimensionWindow                           newDimensionWindow;
     private SearchRelatedResourcePaginatedWindow         searchConceptWindow;
+    private SearchMultipleRelatedResourcePaginatedWindow searchConceptsForRolesWindow;
     private SearchRelatedResourcePaginatedWindow         searchConceptSchemeForEnumeratedRepresentationWindow;
     private SearchRelatedResourcePaginatedWindow         searchCodelistForEnumeratedRepresentationWindow;
 
@@ -289,15 +284,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem dimensionType = new ViewTextItem(DimensionDS.TYPE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsType());
         ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
 
-        // TODO Role: remove this item
-        staticRoleItem = new ViewTextItem(DimensionDS.ROLE + "temp", MetamacSrmWeb.getConstants().dsdDimensionsRole());
-        staticRoleItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionRoleVisible(dimensionComponentDto.getTypeDimensionComponent());
-            }
-        });
         RelatedResourceListItem conceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE, MetamacSrmWeb.getConstants().dsdDimensionsRole(), false);
         conceptRoleItem.setShowIfCondition(new FormItemIfFunction() {
 
@@ -314,7 +300,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        form.setFields(staticCode, dimensionType, concept, staticRoleItem, conceptRoleItem, staticRepresentationTypeItem, codelist, conceptScheme, urn, urnProvider);
+        form.setFields(staticCode, dimensionType, concept, conceptRoleItem, staticRepresentationTypeItem, codelist, conceptScheme, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -370,24 +356,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Role
 
-        // TODO Remove this item
-        roleItem = new RoleSelectItem(DimensionDS.ROLE + "temp", getConstants().dsdDimensionsRole());
-        roleItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionRoleVisible(dimensionComponentDto.getTypeDimensionComponent());
-            }
-        });
-
         RelatedResourceListItem conceptRoleItem = createRoleItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole());
-        conceptRoleItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionRoleVisible(dimensionComponentDto.getTypeDimensionComponent());
-            }
-        });
 
         // Representation
 
@@ -443,7 +412,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, conceptView, roleItem, conceptRoleItem, representationTypeItem, codelist, codelistView, conceptScheme,
+        editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, conceptView, conceptRoleItem, representationTypeItem, codelist, codelistView, conceptScheme,
                 conceptSchemeView, urn, urnProvider);
 
         // Facet Form
@@ -516,6 +485,21 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
+    public void setConceptSchemesForDimensionRole(GetRelatedResourcesResult result) {
+        if (searchConceptsForRolesWindow != null) {
+            searchConceptsForRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
+        }
+    }
+
+    @Override
+    public void setConceptsForDimensionRole(GetRelatedResourcesResult result) {
+        if (searchConceptsForRolesWindow != null) {
+            searchConceptsForRolesWindow.setSourceRelatedResources(result.getRelatedResourceDtos());
+            searchConceptsForRolesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+        }
+    }
+
+    @Override
     public void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result) {
         if (searchCodelistForEnumeratedRepresentationWindow != null) {
             searchCodelistForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
@@ -533,15 +517,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     @Override
     public void setConceptsAsRole(List<RelatedResourceDto> concepts, int firstResult, int totalResults) {
-        if (searchRolesWindow != null) {
-            searchRolesWindow.setSourceRelatedResources(concepts);
-            searchRolesWindow.refreshSourcePaginationInfo(firstResult, concepts.size(), totalResults);
+        if (searchConceptsForRolesWindow != null) {
+            searchConceptsForRolesWindow.setSourceRelatedResources(concepts);
+            searchConceptsForRolesWindow.refreshSourcePaginationInfo(firstResult, concepts.size(), totalResults);
         }
-    }
-
-    @Override
-    public void setRoleConcepts(List<ExternalItemDto> roleConcepts) {
-        roleItem.setConcepts(roleConcepts);
     }
 
     @Override
@@ -552,14 +531,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Type
         dimensionComponentDto.setTypeDimensionComponent(TypeDimensionComponent.valueOf(editionForm.getValueAsString(DimensionDS.TYPE)));
 
-        // Role
-        dimensionComponentDto.getRole().clear();
-        if (!TypeDimensionComponent.TIMEDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-            List<ExternalItemDto> roleConcepts = roleItem.getSelectedConcepts();
-            dimensionComponentDto.getRole().addAll(roleConcepts);
-        }
-        // TODO Return roles as RelatedResourcesDto
-
         // Concept
         // TODO RelatedResourceDto instead of ExternalItemDto
         // dimensionComponentDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.CONCEPT)) ? null :
@@ -567,6 +538,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // editionForm.getValueAsString(DimensionDS.CONCEPT)));
         dimensionComponentDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.CONCEPT)) ? null : RelatedResourceUtils.createExternalItemDto(TypeExternalArtefactsEnum.CONCEPT,
                 editionForm.getValueAsString(DimensionDS.CONCEPT)));
+
+        // Role
+        // TODO RelatedResourceDto instead of ExternalItemDto
+        dimensionComponentDto.getRole().clear();
+        if (!TypeDimensionComponent.TIMEDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
+            List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).getSelectedRelatedResources();
+            dimensionComponentDto.getRole().addAll(RelatedResourceUtils.createExternalItemDtosFromRelatedResourceDtos(selectedRoles));
+        }
 
         // Representation
         if (representationTypeItem.getValue() != null && !representationTypeItem.getValue().toString().isEmpty()) {
@@ -646,12 +625,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         form.setValue(DimensionDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
 
         // Role
-        staticRoleItem.hide();
-        staticRoleItem.clearValue();
+        form.getItem(DimensionDS.ROLE).hide();
+        form.getItem(DimensionDS.ROLE).clearValue();
         if (!TypeDimensionComponent.TIMEDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-            List<ExternalItemDto> roleConcepts = new ArrayList<ExternalItemDto>(dimensionComponentDto.getRole());
-            staticRoleItem.setValue(CommonUtils.getRoleListToString(roleConcepts));
-            staticRoleItem.show();
+            // TODO RelatedResourceDto instead of ExternalItemDto
+            ((RelatedResourceListItem) form.getItem(DimensionDS.ROLE)).setRelatedResources(RelatedResourceUtils.createRelatedResourceDtosFromExternalItemDtos(dimensionComponentDto.getRole()));
+            form.getItem(DimensionDS.ROLE).show();
         }
 
         // Representation
@@ -723,8 +702,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         editionForm.setValue(DimensionDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
 
         // Role
-        roleItem.clearValue();
-        roleItem.setRoleConcepts(dimensionComponentDto.getRole());
+        // TODO RelatedResourceDto instead of ExternalItemDto
+        ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(RelatedResourceUtils.createRelatedResourceDtosFromExternalItemDtos(dimensionComponentDto.getRole()));
 
         // Representation
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
@@ -793,11 +772,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         dimensionsGrid.addData(record);
         dimensionsGrid.selectRecord(record);
         mainFormLayout.setViewMode();
-    }
-
-    @Override
-    public HasChangeHandlers onRoleConceptSchemeChange() {
-        return roleItem.getConceptSchemeItem();
     }
 
     /**
@@ -871,36 +845,64 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     private RelatedResourceListItem createRoleItem(String name, String title) {
+        final int FIRST_RESULT = 0;
+        final int MAX_RESULTS = 8;
+
         RelatedResourceListItem relatedResources = new RelatedResourceListItem(name, title, true);
+        relatedResources.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionRoleVisible(dimensionComponentDto.getTypeDimensionComponent());
+            }
+        });
         relatedResources.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-                final int ROLES_FIRST_RESULT = 0;
-                final int ROLES_MAX_RESULTS = 5;
-                searchRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(MetamacSrmWeb.getConstants().dsdDimensionsRole(), ROLES_MAX_RESULTS, new PaginatedAction() {
+                SelectItem conceptSchemeSelectItem = new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme());
+                searchConceptsForRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(MetamacSrmWeb.getConstants().dsdDimensionsRole(), MAX_RESULTS, conceptSchemeSelectItem,
+                        new PaginatedAction() {
+
+                            @Override
+                            public void retrieveResultSet(int firstResult, int maxResults) {
+                                getUiHandlers().retrieveConceptsForDimensionRole(firstResult, maxResults, searchConceptsForRolesWindow.getRelatedResourceCriteria(),
+                                        searchConceptsForRolesWindow.getInitialSelectionValue());
+
+                            }
+                        });
+
+                // Load concept schemes and concepts (to populate the selection window)
+                getUiHandlers().retrieveConceptSchemesForDimensionRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                getUiHandlers().retrieveConceptsForDimensionRole(FIRST_RESULT, MAX_RESULTS, null, null);
+
+                // Set the selected concepts
+                List<RelatedResourceDto> selectedConcepts = ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).getRelatedResourceDtos();
+                searchConceptsForRolesWindow.setTargetRelatedResources(selectedConcepts);
+
+                searchConceptsForRolesWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveConceptsAsRole(firstResult, maxResults, null);
-
+                    public void onChanged(ChangedEvent event) {
+                        getUiHandlers().retrieveConceptsForDimensionRole(FIRST_RESULT, MAX_RESULTS, searchConceptsForRolesWindow.getRelatedResourceCriteria(),
+                                searchConceptsForRolesWindow.getInitialSelectionValue());
                     }
                 });
-                getUiHandlers().retrieveConceptsAsRole(ROLES_FIRST_RESULT, ROLES_MAX_RESULTS, null);
-                searchRolesWindow.setSearchAction(new SearchPaginatedAction() {
+
+                searchConceptsForRolesWindow.setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveConceptsAsRole(firstResult, maxResults, criteria);
+                        getUiHandlers().retrieveConceptsForDimensionRole(firstResult, maxResults, criteria, searchConceptsForRolesWindow.getInitialSelectionValue());
                     }
                 });
-                searchRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                searchConceptsForRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        List<RelatedResourceDto> selectedRelatedResources = searchRolesWindow.getSelectedRelatedResources();
+                        List<RelatedResourceDto> selectedRelatedResources = searchConceptsForRolesWindow.getSelectedRelatedResources();
                         ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(selectedRelatedResources);
-                        searchRolesWindow.markForDestroy();
+                        searchConceptsForRolesWindow.markForDestroy();
                     }
                 });
             }

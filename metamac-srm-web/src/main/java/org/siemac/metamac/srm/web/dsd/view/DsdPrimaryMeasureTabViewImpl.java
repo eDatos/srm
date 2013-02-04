@@ -345,7 +345,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     private SearchViewTextItem createConceptItem(String name, String title) {
-        final int FIRST_RESULST = 0;
+        final int FIRST_RESULT = 0;
         final int MAX_RESULTS = 8;
         final SearchViewTextItem conceptItem = new SearchViewTextItem(name, title);
         conceptItem.setRequired(true);
@@ -363,14 +363,14 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 });
 
                 // Load concept schemes and concepts (to populate the selection window)
-                getUiHandlers().retrieveConceptSchemes(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
-                getUiHandlers().retrieveConcepts(FIRST_RESULST, MAX_RESULTS, null, null);
+                getUiHandlers().retrieveConceptSchemes(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                getUiHandlers().retrieveConcepts(FIRST_RESULT, MAX_RESULTS, null, null);
 
                 searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConcepts(FIRST_RESULST, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                        getUiHandlers().retrieveConcepts(FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
                     }
                 });
 
@@ -417,7 +417,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     private SearchViewTextItem createEnumeratedRepresentationItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        SearchViewTextItem enumeratedRepresentationItem = new SearchViewTextItem(name, title);
+        final SearchViewTextItem enumeratedRepresentationItem = new SearchViewTextItem(name, title);
         enumeratedRepresentationItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -463,6 +463,19 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 });
             }
         });
+        // Set requited with a custom validator
+        CustomValidator customValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                if (enumeratedRepresentationItem.getValue() != null) {
+                    String conceptValue = String.valueOf(enumeratedRepresentationItem.getValue());
+                    return !StringUtils.isBlank(conceptValue);
+                }
+                return false;
+            }
+        };
+        enumeratedRepresentationItem.setValidators(customValidator);
         return enumeratedRepresentationItem;
     }
 }

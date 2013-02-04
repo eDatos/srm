@@ -655,7 +655,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults) {
-                                getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getIntialSelectionValue());
+                                getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue());
                             }
                         });
 
@@ -667,7 +667,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getIntialSelectionValue());
+                        getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue());
                     }
                 });
 
@@ -679,7 +679,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, concept, searchRolesWindow.getIntialSelectionValue());
+                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, concept, searchRolesWindow.getInitialSelectionValue());
                     }
                 });
                 searchRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {

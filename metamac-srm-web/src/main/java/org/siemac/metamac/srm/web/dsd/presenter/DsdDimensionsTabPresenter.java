@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -20,13 +19,9 @@ import org.siemac.metamac.srm.web.dsd.events.UpdateDimensionsEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
-import org.siemac.metamac.srm.web.shared.FindConceptsAction;
-import org.siemac.metamac.srm.web.shared.FindConceptsResult;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
@@ -70,9 +65,6 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
-import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
-import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
 
 public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresenter.DsdDimensionsTabView, DsdDimensionsTabPresenter.DsdDimensionsTabProxy>
         implements
@@ -103,11 +95,11 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         void setConceptSchemes(GetRelatedResourcesResult result);
         void setConcepts(GetRelatedResourcesResult result);
 
+        void setConceptSchemesForDimensionRole(GetRelatedResourcesResult result);
+        void setConceptsForDimensionRole(GetRelatedResourcesResult result);
+
         void setConceptSchemesForMeasureDimensionEnumeratedRepresentation(GetRelatedResourcesResult result);
         void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
-
-        void setRoleConcepts(List<ExternalItemDto> roleConcepts);
-        HasChangeHandlers onRoleConceptSchemeChange();
 
         void setDsdDimensions(ProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos);
         DimensionComponentDto getDsdDimension();
@@ -166,16 +158,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             public void onClick(ClickEvent event) {
                 List<DimensionComponentDto> dimensionsToDelete = getView().getSelectedDimensions();
                 deleteDimensions(dimensionsToDelete);
-            }
-        }));
-
-        registerHandler(getView().onRoleConceptSchemeChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                if (event.getValue() != null) {
-                    populateRoleConcepts(event.getValue().toString());
-                }
             }
         }));
     }
@@ -312,41 +294,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         });
     }
 
-    private void populateRoleConcepts(String uriConceptScheme) {
-        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new WaitingAsyncCallback<FindConceptsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindConceptsResult result) {
-                getView().setRoleConcepts(result.getConcepts());
-            }
-        });
-    }
-
-    @Override
-    public void retrieveConceptsAsRole(int firstResult, int maxResults, String criteria) {
-        // TODO Specify the concept scheme URN
-        String conceptSchemeUrn = null;
-        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, new ConceptWebCriteria(criteria, conceptSchemeUrn)), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingConceptsAsRole()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetConceptsCanBeRoleResult result) {
-                getView().setConceptsAsRole(result.getConcepts(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
-    }
-
-    private void setDsdDimensions(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
-        getView().setDsdDimensions(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dimensionComponentDtos);
-    }
-
     @Override
     public void retrieveConceptSchemes(TypeDimensionComponent dimensionType, int firstResult, int maxResults) {
         StructuralResourcesRelationEnum relationType = getRelationTypeForConceptScheme(dimensionType);
@@ -412,6 +359,45 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             }
         });
     }
+
+    @Override
+    public void retrieveConceptSchemesForDimensionRole(int firstResult, int maxResults) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_ROLES, firstResult, maxResults, new ConceptSchemeWebCriteria(null,
+                dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConceptSchemesForDimensionRole(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptsForDimensionRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
+        dispatcher.execute(
+                new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, new ConceptWebCriteria(criteria, dataStructureDefinitionDto.getUrn(),
+                        conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingConceptsAsRole()),
+                                MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptsForDimensionRole(result);
+                    }
+                });
+    }
+
+    private void setDsdDimensions(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
+        getView().setDsdDimensions(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dimensionComponentDtos);
+    }
+
     private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(TypeDimensionComponent dimensionType) {
         StructuralResourcesRelationEnum relationType = null;
         if (TypeDimensionComponent.DIMENSION.equals(dimensionType)) {
