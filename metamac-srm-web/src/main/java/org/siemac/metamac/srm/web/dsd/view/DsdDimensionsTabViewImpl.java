@@ -965,9 +965,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
-                        // TODO if concept has changed, clear the codelist field (ENUMERATED_REPRESENTATION_CODELIST and ENUMERATED_REPRESENTATION_CODELIST_VIEW)
                         editionForm.setValue(DimensionDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
                         editionForm.setValue(DimensionDS.CONCEPT_VIEW, selectedConcept != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept) : null);
+
+                        // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
+                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
+                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, StringUtils.EMPTY);
+
+                        editionForm.markForRedraw();
                     }
                 });
             }
@@ -1066,8 +1071,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private SearchViewTextItem createEnumeratedRepresentationItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        SearchViewTextItem codelist = new SearchViewTextItem(name, title);
-        codelist.setShowIfCondition(new FormItemIfFunction() {
+        final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
+        codelistItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
@@ -1076,7 +1081,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         && !CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE));
             }
         });
-        codelist.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        codelistItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
@@ -1117,6 +1122,19 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 });
             }
         });
-        return codelist;
+        // Set requited with a custom validator
+        CustomValidator customValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                if (codelistItem.getValue() != null) {
+                    String codelistValue = String.valueOf(codelistItem.getValue());
+                    return !StringUtils.isBlank(codelistValue);
+                }
+                return false;
+            }
+        };
+        codelistItem.setValidators(customValidator);
+        return codelistItem;
     }
 }
