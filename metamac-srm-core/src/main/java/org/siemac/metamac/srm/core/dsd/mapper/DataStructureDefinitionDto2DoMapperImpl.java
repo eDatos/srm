@@ -21,9 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
-import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
-import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
@@ -46,19 +44,6 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
     public <U extends Component> U componentDtoToComponent(ComponentDto source) throws MetamacException {
 
         U target = (U) dto2DoMapperSdmxSrm.componentDtoToComponent(source);
-
-        // Flag for force to perform a clean up of the Show Decimals Precision of DSD
-        if (target instanceof MeasureDimension) {
-            if (target.getId() == null || target.getLocalRepresentation() == null) {
-                ((MeasureDimension) target).setIsRepresentationUpdated(Boolean.TRUE);
-            } else {
-                EnumeratedRepresentation targetRepresentation = (EnumeratedRepresentation) target.getLocalRepresentation();
-                if (!source.getLocalRepresentation().getEnumerated().getUrn().equals(targetRepresentation.getEnumerated().getUrn())) {
-                    ((MeasureDimension) target).setIsRepresentationUpdated(Boolean.TRUE);
-                }
-            }
-        }
-
         return target;
     }
     @SuppressWarnings("unchecked")

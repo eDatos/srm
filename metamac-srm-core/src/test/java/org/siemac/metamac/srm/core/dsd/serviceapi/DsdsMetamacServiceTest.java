@@ -43,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
@@ -193,18 +194,24 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         ServiceContext ctx = getServiceContextAdministrador();
         String urn = DSD_1_V2;
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(ctx, urn);
-        assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() != 0);
+        {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(ctx, urn);
+            assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() != 0);
 
-        // Create Dimension Descriptor and components
-        ComponentList componentList = DataStructureDefinitionDoMocks.mockDimensionDescriptor();
-        dsdsMetamacService.saveDescriptorForDataStructureDefinition(ctx, urn, componentList);
+            // Create Dimension Descriptor and components
+            ComponentList componentList = DataStructureDefinitionDoMocks.mockDimensionDescriptor();
+            dsdsMetamacService.saveDescriptorForDataStructureDefinition(ctx, urn, componentList);
 
-        Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension();
-        ((MeasureDimension) measureDim).setIsRepresentationUpdated(Boolean.TRUE);
-        /* Component measureDimCreated = */dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), urn, measureDim);
+            Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension();
+            ((MeasureDimension) measureDim).setIsRepresentationUpdated(Boolean.TRUE);
+            Component measureDimCreated = dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), urn, measureDim);
+            assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() == 0);
 
-        assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() == 0);
+            ((EnumeratedRepresentation) measureDimCreated.getLocalRepresentation()).setEnumerated(null);
+            ((MeasureDimension) measureDimCreated).setIsRepresentationUpdated(Boolean.TRUE);
+            dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), urn, measureDimCreated);
+
+        }
 
     }
     @Test
