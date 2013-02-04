@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <srm:dataProvider xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#dataProvider" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/srm/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders/item1">
     <common:Annotations>
-        <common:Annotation id="code1">
-            <common:AnnotationTitle>title-tQXdZrQ0x2</common:AnnotationTitle>
-            <common:AnnotationType>type-LoZxDlrX79</common:AnnotationType>
-            <common:AnnotationURL>url-8mU1A5mmtE</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-YaPfZZ3Ozr in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-U7ZJ4JfjN2 en Español</common:AnnotationText>
-        </common:Annotation>
         <common:Annotation id="code2">
-            <common:AnnotationTitle>title-Q65HbuxwZX</common:AnnotationTitle>
-            <common:AnnotationType>type-Zogr0516xN</common:AnnotationType>
-            <common:AnnotationURL>url-NRV0DFYleG</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-G5wFRcfoX7 in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-yUbWArIUz8 en Español</common:AnnotationText>
+            <common:AnnotationTitle>title-code2</common:AnnotationTitle>
+            <common:AnnotationType>type-code2</common:AnnotationType>
+            <common:AnnotationURL>url-code2</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
         </common:Annotation>
-        <common:Annotation id="code3">
-            <common:AnnotationTitle>title-ZLAkfMPr86</common:AnnotationTitle>
-            <common:AnnotationType>type-21J6OuTIYd</common:AnnotationType>
-            <common:AnnotationURL>url-lp3q58RV4U</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-e4cszrhj0r in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-AH9fbcZCDg en Español</common:AnnotationText>
+        <common:Annotation id="code1">
+            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+            <common:AnnotationType>type-code1</common:AnnotationType>
+            <common:AnnotationURL>url-code1</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="es">name-item1 en Español</common:Name>
     <common:Name xml:lang="en">name-item1 in English</common:Name>
-    <common:Description xml:lang="en">description-item1 in English</common:Description>
     <common:Description xml:lang="es">description-item1 en Español</common:Description>
+    <common:Description xml:lang="en">description-item1 in English</common:Description>
     <cdomain:selfLink kind="srm#dataProvider" href="http://data.istac.es/apis/srm/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders/item1"/>
     <cdomain:parentLink kind="srm#dataProviders" href="http://data.istac.es/apis/srm/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders"/>
+    <srm:comment>
+        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
+    </srm:comment>
 </srm:dataProvider>

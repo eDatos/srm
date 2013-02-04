@@ -540,6 +540,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     private void mockFindConceptSchemesByCondition() throws MetamacException {
         when(conceptsService.findConceptSchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<ConceptSchemeVersionMetamac>>() {
 
+            @Override
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<ConceptSchemeVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
                 List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
 
@@ -579,6 +580,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     private void mockFindConceptsByCondition() throws MetamacException {
         when(conceptsService.findConceptsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<ConceptMetamac>>() {
 
+            @Override
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<ConceptMetamac> answer(InvocationOnMock invocation) throws Throwable {
                 List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
 
@@ -595,7 +597,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                     } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
                         ConceptSchemeVersionMetamac conceptScheme1 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
                         ConceptMetamac parent = ConceptsDoMocks.mockConcept(ITEM_2_CODE, conceptScheme1, null);
-                        concept = ConceptsDoMocks.mockConcept(ITEM_1_CODE, conceptScheme1, parent);
+                        concept = ConceptsDoMocks.mockConceptWithConceptRelations(ITEM_1_CODE, conceptScheme1, parent);
                     } else {
                         fail();
                     }

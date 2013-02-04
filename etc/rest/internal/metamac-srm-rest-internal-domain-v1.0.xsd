@@ -12,7 +12,6 @@
                     <xs:group ref="tns:SrmMaintainableGroup" />
                     <xs:element name="type" type="tns:ConceptSchemeType" />
                     <xs:element name="statisticalOperation" type="common:Resource" minOccurs="0" />
-                    <xs:element name="comment" type="common:InternationalString" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -37,7 +36,6 @@
                     <xs:element name="extends" type="common:Resource" minOccurs="0" />
                     <xs:element name="relatedConcepts" type="tns:RelatedConcepts" minOccurs="0" />
                     <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="comment" type="common:InternationalString" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -83,6 +81,14 @@
             <xs:extension base="sdmx:CodelistType">
                 <xs:sequence>
                     <xs:group ref="tns:SrmMaintainableGroup" />
+                    <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="isRecommended" type="xs:boolean" minOccurs="0" />
+                    <xs:element name="family" type="common:Item" minOccurs="0" />
+                    <xs:element name="variable" type="common:Item" minOccurs="1" />
+                    <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
+                    <xs:element name="replaceTo" type="tns:ReplaceTo" minOccurs="0" />
+                    <xs:element name="accessType" type="tns:AccessType" minOccurs="1" />
+                    <xs:element name="defaultOrderVisualisation" type="xs:string" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -94,6 +100,8 @@
             <xs:extension base="sdmx:CodeType">
                 <xs:sequence>
                     <xs:group ref="tns:SrmNameableGroup" />
+                    <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="variableElement" type="common:Item" minOccurs="0" />                    
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -403,7 +411,17 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="roleConcept" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="role" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+
+    <xs:complexType name="ReplaceTo">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="replaceTo" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -436,6 +454,14 @@
             <xs:enumeration value="MEASURE" />
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:simpleType name="AccessType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="PUBLIC" />
+            <xs:enumeration value="RESTRICTED" />
+        </xs:restriction>
+    </xs:simpleType>
+
 
     <!-- Criterias -->
     <xs:simpleType name="ConceptSchemeCriteriaPropertyRestriction">
@@ -601,6 +627,7 @@
             <xs:enumeration value="ID" />
             <xs:enumeration value="URN" />
             <xs:enumeration value="NAME" />
+            <xs:enumeration value="SHORT_NAME" />
             <xs:enumeration value="DESCRIPTION" />
         </xs:restriction>
     </xs:simpleType>
@@ -617,6 +644,7 @@
             <xs:element name="lifeCycle" type="tns:LifeCycle" minOccurs="1" />
             <xs:element name="replacedByVersion" type="xs:string" minOccurs="0" />
             <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
+            <xs:element name="comment" type="common:InternationalString" minOccurs="0" />
         </xs:sequence>
     </xs:group>
     
@@ -639,6 +667,7 @@
     <xs:group name="SrmNameableGroup">
         <xs:sequence>
             <xs:group ref="common:ResourceGroup" />
+            <xs:element name="comment" type="common:InternationalString" minOccurs="0" />
         </xs:sequence>
     </xs:group>
 

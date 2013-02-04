@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <srm:code xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#code" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/item1">
     <common:Annotations>
-        <common:Annotation id="code2">
-            <common:AnnotationTitle>title-IHjezRQulv</common:AnnotationTitle>
-            <common:AnnotationType>type-CvbDg5MRwX</common:AnnotationType>
-            <common:AnnotationURL>url-IOaCVh1eGR</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-kBJ7cPk6D8 en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-RtXRK9A8w4 in English</common:AnnotationText>
-        </common:Annotation>
         <common:Annotation id="code1">
-            <common:AnnotationTitle>title-FVItflYvMt</common:AnnotationTitle>
-            <common:AnnotationType>type-kaIh3Qj8ix</common:AnnotationType>
-            <common:AnnotationURL>url-d9Z5malZ9z</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-VaeFAu2sie in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-SogPRDICXa en Español</common:AnnotationText>
+            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+            <common:AnnotationType>type-code1</common:AnnotationType>
+            <common:AnnotationURL>url-code1</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
         </common:Annotation>
-        <common:Annotation id="code3">
-            <common:AnnotationTitle>title-VlJqjbMS31</common:AnnotationTitle>
-            <common:AnnotationType>type-SnSRdOMVfB</common:AnnotationType>
-            <common:AnnotationURL>url-7OJuTNb9f3</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-LZsgeteOtK en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-nTPzQsQBUS in English</common:AnnotationText>
+        <common:Annotation id="code2">
+            <common:AnnotationTitle>title-code2</common:AnnotationTitle>
+            <common:AnnotationType>type-code2</common:AnnotationType>
+            <common:AnnotationURL>url-code2</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="en">name-item1 in English</common:Name>
@@ -32,4 +25,19 @@
     </structure:Parent>
     <cdomain:selfLink kind="srm#code" href="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/item1"/>
     <cdomain:parentLink kind="srm#codes" href="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes"/>
+    <srm:comment>
+        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
+    </srm:comment>
+    <srm:shortName>
+        <cdomain:text xml:lang="es">shortName-variableElement1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">shortName-variableElement1 in English</cdomain:text>
+    </srm:shortName>
+    <srm:variableElement>
+        <cdomain:id>variableElement1</cdomain:id>
+        <cdomain:title>
+            <cdomain:text xml:lang="es">name-variableElement1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-variableElement1 in English</cdomain:text>
+        </cdomain:title>
+    </srm:variableElement>
 </srm:code>

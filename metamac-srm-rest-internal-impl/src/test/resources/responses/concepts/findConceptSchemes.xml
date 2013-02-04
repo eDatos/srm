@@ -14,8 +14,8 @@
         <cdomain:urn>urn:itemScheme2:01.000</cdomain:urn>
         <cdomain:selfLink kind="srm#conceptScheme" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme2/01.000"/>
         <cdomain:title>
-            <cdomain:text xml:lang="es">name-itemScheme2v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-itemScheme2v01.000 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-itemScheme2v01.000 en Español</cdomain:text>
         </cdomain:title>
     </srm:conceptScheme>
     <srm:conceptScheme kind="srm#conceptScheme">

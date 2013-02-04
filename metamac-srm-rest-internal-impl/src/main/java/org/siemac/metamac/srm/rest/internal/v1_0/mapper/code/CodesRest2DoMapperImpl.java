@@ -106,6 +106,9 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue());
+                case SHORT_NAME:
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.shortName().texts().label(), CodeMetamacProperties.variableElement().shortName().texts().label(),
+                            propertyRestriction.getValue());
                 case DESCRIPTION:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue());
                 default:

@@ -1,79 +1,137 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <srm:concept xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#concept" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item1">
     <common:Annotations>
-        <common:Annotation id="code2">
-            <common:AnnotationTitle>title-m9hbtlRO0d</common:AnnotationTitle>
-            <common:AnnotationType>type-LmLzMxmMu3</common:AnnotationType>
-            <common:AnnotationURL>url-ejbShr6pWe</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-bvkcvnrbcd in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-4HW5J5Knfs en Español</common:AnnotationText>
-        </common:Annotation>
-        <common:Annotation id="code3">
-            <common:AnnotationTitle>title-DYQS8HbnLX</common:AnnotationTitle>
-            <common:AnnotationType>type-rBCtWU8pbC</common:AnnotationType>
-            <common:AnnotationURL>url-pWcyWPfGTz</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-85L8Q0vGZt en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-Cd8WbatkJN in English</common:AnnotationText>
-        </common:Annotation>
         <common:Annotation id="code1">
-            <common:AnnotationTitle>title-ogx4ofJAuC</common:AnnotationTitle>
-            <common:AnnotationType>type-1IuoHezpwJ</common:AnnotationType>
-            <common:AnnotationURL>url-0gDi9FlvVU</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-QYyDnjYSZk en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-2UsTpbaD1l in English</common:AnnotationText>
+            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+            <common:AnnotationType>type-code1</common:AnnotationType>
+            <common:AnnotationURL>url-code1</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+        </common:Annotation>
+        <common:Annotation id="code2">
+            <common:AnnotationTitle>title-code2</common:AnnotationTitle>
+            <common:AnnotationType>type-code2</common:AnnotationType>
+            <common:AnnotationURL>url-code2</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="es">name-item1 en Español</common:Name>
     <common:Name xml:lang="en">name-item1 in English</common:Name>
-    <common:Description xml:lang="es">description-item1 en Español</common:Description>
     <common:Description xml:lang="en">description-item1 in English</common:Description>
+    <common:Description xml:lang="es">description-item1 en Español</common:Description>
     <structure:Parent>
         <Ref id="item2"/>
     </structure:Parent>
     <structure:CoreRepresentation>
         <structure:Enumeration>
-            <URN>urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=MaintainerMock:ConceptSchemeMock(01.000)</URN>
+            <URN>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX:CodelistMock(1.0)</URN>
         </structure:Enumeration>
     </structure:CoreRepresentation>
     <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item1"/>
     <cdomain:parentLink kind="srm#concepts" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
     <srm:pluralName>
-        <cdomain:text xml:lang="en">pluralName-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">pluralName-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">pluralName-item1 in English</cdomain:text>
     </srm:pluralName>
     <srm:acronym>
-        <cdomain:text xml:lang="en">acronym-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">acronym-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">acronym-item1 in English</cdomain:text>
     </srm:acronym>
     <srm:descriptionSource>
         <cdomain:text xml:lang="es">descriptionSource-item1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">descriptionSource-item1 in English</cdomain:text>
     </srm:descriptionSource>
     <srm:context>
-        <cdomain:text xml:lang="en">context-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">context-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">context-item1 in English</cdomain:text>
     </srm:context>
     <srm:docMethod>
-        <cdomain:text xml:lang="en">docMethod-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">docMethod-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">docMethod-item1 in English</cdomain:text>
     </srm:docMethod>
     <srm:type>
         <cdomain:id>conceptType1</cdomain:id>
         <cdomain:title>
-            <cdomain:text xml:lang="es">description-conceptType1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">description-conceptType1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">description-conceptType1 en Español</cdomain:text>
         </cdomain:title>
     </srm:type>
+    <srm:roles kind="srm#concepts" total="2">
+        <srm:role kind="srm#concept">
+            <cdomain:id>1_conceptRole1</cdomain:id>
+            <cdomain:urn>urn:1_conceptRole1</cdomain:urn>
+            <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID22/02.000/concepts/1_conceptRole1"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="en">name-1_conceptRole1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-1_conceptRole1 en Español</cdomain:text>
+            </cdomain:title>
+        </srm:role>
+        <srm:role kind="srm#concept">
+            <cdomain:id>1_conceptRole2</cdomain:id>
+            <cdomain:urn>urn:1_conceptRole2</cdomain:urn>
+            <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID33/03.000/concepts/1_conceptRole2"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="en">name-1_conceptRole2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-1_conceptRole2 en Español</cdomain:text>
+            </cdomain:title>
+        </srm:role>
+    </srm:roles>
+    <srm:variable>
+        <cdomain:id>variable1</cdomain:id>
+        <cdomain:title>
+            <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
+        </cdomain:title>
+    </srm:variable>
     <srm:derivation>
         <cdomain:text xml:lang="es">derivation-item1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">derivation-item1 in English</cdomain:text>
     </srm:derivation>
+    <srm:extends kind="srm#concept">
+        <cdomain:id>1_conceptExtends1</cdomain:id>
+        <cdomain:urn>urn:1_conceptExtends1</cdomain:urn>
+        <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID11/01.000/concepts/1_conceptExtends1"/>
+        <cdomain:title>
+            <cdomain:text xml:lang="es">name-1_conceptExtends1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-1_conceptExtends1 in English</cdomain:text>
+        </cdomain:title>
+    </srm:extends>
+    <srm:relatedConcepts kind="srm#concepts" total="3">
+        <srm:relatedConcept kind="srm#concept">
+            <cdomain:id>1_conceptRelated1</cdomain:id>
+            <cdomain:urn>urn:1_conceptRelated1</cdomain:urn>
+            <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/1_conceptRelated1"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="es">name-1_conceptRelated1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-1_conceptRelated1 in English</cdomain:text>
+            </cdomain:title>
+        </srm:relatedConcept>
+        <srm:relatedConcept kind="srm#concept">
+            <cdomain:id>1_conceptRelated2</cdomain:id>
+            <cdomain:urn>urn:1_conceptRelated2</cdomain:urn>
+            <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/1_conceptRelated2"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="es">name-1_conceptRelated2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-1_conceptRelated2 in English</cdomain:text>
+            </cdomain:title>
+        </srm:relatedConcept>
+        <srm:relatedConcept kind="srm#concept">
+            <cdomain:id>1_conceptRelated3</cdomain:id>
+            <cdomain:urn>urn:1_conceptRelated3</cdomain:urn>
+            <cdomain:selfLink kind="srm#concept" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/1_conceptRelated3"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="es">name-1_conceptRelated3 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-1_conceptRelated3 in English</cdomain:text>
+            </cdomain:title>
+        </srm:relatedConcept>
+    </srm:relatedConcepts>
     <srm:legalActs>
         <cdomain:text xml:lang="en">legalActs-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">legalActs-item1 en Español</cdomain:text>
     </srm:legalActs>
     <srm:comment>
-        <cdomain:text xml:lang="es">comment-uOwTKpQSU4 en Español</cdomain:text>
-        <cdomain:text xml:lang="en">comment-W4x3aWgDpc in English</cdomain:text>
+        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
     </srm:comment>
 </srm:concept>

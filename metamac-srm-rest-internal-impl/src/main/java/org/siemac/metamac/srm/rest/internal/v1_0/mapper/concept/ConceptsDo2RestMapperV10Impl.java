@@ -255,9 +255,9 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
 
         for (ConceptMetamac source : concept.getRoleConcepts()) {
             Resource target = toResource(source);
-            targets.getRoleConcepts().add(target);
+            targets.getRoles().add(target);
         }
-        targets.setTotal(BigInteger.valueOf(targets.getRoleConcepts().size()));
+        targets.setTotal(BigInteger.valueOf(targets.getRoles().size()));
         return targets;
     }
 

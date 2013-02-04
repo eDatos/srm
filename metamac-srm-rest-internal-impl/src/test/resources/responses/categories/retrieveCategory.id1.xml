@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <srm:category xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#category" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/item1">
     <common:Annotations>
-        <common:Annotation id="code2">
-            <common:AnnotationTitle>title-nt1AVSBzSd</common:AnnotationTitle>
-            <common:AnnotationType>type-V3FWC95cPO</common:AnnotationType>
-            <common:AnnotationURL>url-VtF7orqvSC</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-NpWYeyMPlv in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-NBYhzwAbTG en Español</common:AnnotationText>
-        </common:Annotation>
         <common:Annotation id="code1">
-            <common:AnnotationTitle>title-233yq1bCPO</common:AnnotationTitle>
-            <common:AnnotationType>type-JW2U0hHM9a</common:AnnotationType>
-            <common:AnnotationURL>url-gehe2Nl2pL</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-mVV21Acc47 in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-e0wc8dAR1B en Español</common:AnnotationText>
+            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+            <common:AnnotationType>type-code1</common:AnnotationType>
+            <common:AnnotationURL>url-code1</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
         </common:Annotation>
-        <common:Annotation id="code3">
-            <common:AnnotationTitle>title-yY7gHWi5NN</common:AnnotationTitle>
-            <common:AnnotationType>type-iqiN6tbhGt</common:AnnotationType>
-            <common:AnnotationURL>url-pxUeTfefS6</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-5NkrUC9X9u in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-5PC411KiiV en Español</common:AnnotationText>
+        <common:Annotation id="code2">
+            <common:AnnotationTitle>title-code2</common:AnnotationTitle>
+            <common:AnnotationType>type-code2</common:AnnotationType>
+            <common:AnnotationURL>url-code2</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="es">name-item1 en Español</common:Name>
     <common:Name xml:lang="en">name-item1 in English</common:Name>
-    <common:Description xml:lang="es">description-item1 en Español</common:Description>
     <common:Description xml:lang="en">description-item1 in English</common:Description>
+    <common:Description xml:lang="es">description-item1 en Español</common:Description>
     <cdomain:selfLink kind="srm#category" href="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/item1"/>
     <cdomain:parentLink kind="srm#categories" href="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories"/>
+    <srm:comment>
+        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
+    </srm:comment>
     <srm:parent>urn:item2</srm:parent>
 </srm:category>

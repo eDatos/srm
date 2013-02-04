@@ -2,20 +2,29 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 
 import java.math.BigInteger;
 
+import javax.ws.rs.core.Response.Status;
+
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
+import org.siemac.metamac.rest.exception.RestException;
+import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
+import org.siemac.metamac.rest.srm_internal.v1_0.domain.AccessType;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,9 +82,19 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
         }
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toCodelistParentLink(source));
         target.setChildLinks(toCodelistChildLinks(source));
+
+        target.setShortName(toInternationalString(source.getShortName()));
+        target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
+        target.setIsRecommended(source.getIsRecommended());
+        target.setFamily(toItem(source.getFamily()));
+        target.setVariable(toItem(source.getVariable()));
+        target.setAccessType(toAccessType(source.getAccessType()));
+        target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode());
+        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
+        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
     }
 
     @Override
@@ -111,6 +130,15 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         }
         target.setParentLink(toCodeParentLink(source));
         target.setChildLinks(toCodeChildLinks(source));
+
+        target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
+        if (source.getVariableElement() == null) {
+            target.setShortName(toInternationalString(source.getShortName()));
+        } else {
+            target.setShortName(toInternationalString(source.getVariableElement().getShortName()));
+        }
+        target.setVariableElement(toItem(source.getVariableElement()));
+
         return target;
     }
 
@@ -126,6 +154,26 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
 
     @Override
     public Item toItem(Variable source) {
+        if (source == null) {
+            return null;
+        }
+        Item target = new Item();
+        target.setId(source.getNameableArtefact().getCode());
+        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
+        return target;
+    }
+
+    private Item toItem(VariableElement source) {
+        if (source == null) {
+            return null;
+        }
+        Item target = new Item();
+        target.setId(source.getNameableArtefact().getCode());
+        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
+        return target;
+    }
+
+    private Item toItem(CodelistFamily source) {
         if (source == null) {
             return null;
         }
@@ -198,5 +246,17 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
     }
     private String toSubpathItems() {
         return RestInternalConstants.LINK_SUBPATH_CODES;
+    }
+
+    private AccessType toAccessType(AccessTypeEnum source) {
+        switch (source) {
+            case PUBLIC:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.AccessType.PUBLIC;
+            case RESTRICTED:
+                return org.siemac.metamac.rest.srm_internal.v1_0.domain.AccessType.RESTRICTED;
+            default:
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+        }
     }
 }

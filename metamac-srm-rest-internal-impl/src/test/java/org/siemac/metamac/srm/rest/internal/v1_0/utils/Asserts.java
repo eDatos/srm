@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
+import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.srm_internal.v1_0.domain.LifeCycle;
@@ -43,6 +44,20 @@ public class Asserts extends MetamacRestAsserts {
             }
             assertTrue(existsItem);
         }
+    }
+
+    public static void assertEqualsInternationalString(String locale1, String label1, String locale2, String label2, InternationalString actual) {
+        int count = 0;
+        for (LocalisedString localisedString : actual.getTexts()) {
+            if (localisedString.getLang().equals(locale1)) {
+                assertEquals(label1, localisedString.getValue());
+                count++;
+            } else if (localisedString.getLang().equals(locale2)) {
+                assertEquals(label2, localisedString.getValue());
+                count++;
+            }
+        }
+        assertEquals(count, actual.getTexts().size());
     }
 
     public static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, Resource actual) {

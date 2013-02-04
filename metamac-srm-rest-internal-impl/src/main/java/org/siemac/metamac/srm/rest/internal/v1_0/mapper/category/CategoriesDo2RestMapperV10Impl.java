@@ -70,12 +70,15 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         }
         target.setKind(RestInternalConstants.KIND_CATEGORY_SCHEME);
         target.setSelfLink(toCategorySchemeSelfLink(source));
+        target.setParentLink(toCategorySchemeParentLink(source));
+        target.setChildLinks(toCategorySchemeChildLinks(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
         }
+        target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setParentLink(toCategorySchemeParentLink(source));
-        target.setChildLinks(toCategorySchemeChildLinks(source));
+        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
     }
 
     @Override
@@ -111,6 +114,7 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         }
         target.setParentLink(toCategoryParentLink(source));
         target.setParent(source.getParent() != null ? source.getParent().getNameableArtefact().getUrn() : null);
+        target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         target.setChildLinks(toCategoryChildLinks(source));
         return target;
     }
@@ -159,7 +163,6 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         }
         target.setKind(RestInternalConstants.KIND_CATEGORISATION);
         target.setSelfLink(toCategorisationSelfLink(source));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setParentLink(toCategorisationParentLink(source));
         target.setChildLinks(toCategorisationChildLinks(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {

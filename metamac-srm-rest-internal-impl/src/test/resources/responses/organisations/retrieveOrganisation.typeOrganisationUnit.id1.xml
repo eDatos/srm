@@ -2,30 +2,23 @@
 <srm:organisation xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#organisation">
     <srm:organisationUnit kind="srm#organisationUnit" id="itemOrganisationUnit1" urn="urn:itemOrganisationUnit1" uri="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits/itemOrganisationUnit1">
         <common:Annotations>
-            <common:Annotation id="code1">
-                <common:AnnotationTitle>title-2i1m6yUASw</common:AnnotationTitle>
-                <common:AnnotationType>type-HK6afzEppa</common:AnnotationType>
-                <common:AnnotationURL>url-jpmfZI6Pwj</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-1xXo8pJ5N5 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-daLBLdDJJH in English</common:AnnotationText>
-            </common:Annotation>
             <common:Annotation id="code2">
-                <common:AnnotationTitle>title-jiYln1ZJpn</common:AnnotationTitle>
-                <common:AnnotationType>type-gwPWdchfN1</common:AnnotationType>
-                <common:AnnotationURL>url-WCOqmqlLDA</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-mmk6OdRKPh en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-O7089BmDt8 in English</common:AnnotationText>
+                <common:AnnotationTitle>title-code2</common:AnnotationTitle>
+                <common:AnnotationType>type-code2</common:AnnotationType>
+                <common:AnnotationURL>url-code2</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             </common:Annotation>
-            <common:Annotation id="code3">
-                <common:AnnotationTitle>title-ym5MNSB7hK</common:AnnotationTitle>
-                <common:AnnotationType>type-QwlFc4e11h</common:AnnotationType>
-                <common:AnnotationURL>url-F11DxhNXI3</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-gg38mqoJgO en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-W8HAYcFdHU in English</common:AnnotationText>
+            <common:Annotation id="code1">
+                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+                <common:AnnotationType>type-code1</common:AnnotationType>
+                <common:AnnotationURL>url-code1</common:AnnotationURL>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="en">name-itemOrganisationUnit1 in English</common:Name>
         <common:Name xml:lang="es">name-itemOrganisationUnit1 en Español</common:Name>
+        <common:Name xml:lang="en">name-itemOrganisationUnit1 in English</common:Name>
         <common:Description xml:lang="en">description-itemOrganisationUnit1 in English</common:Description>
         <common:Description xml:lang="es">description-itemOrganisationUnit1 en Español</common:Description>
         <structure:Parent>
@@ -33,5 +26,9 @@
         </structure:Parent>
         <cdomain:selfLink kind="srm#organisationUnit" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits/itemOrganisationUnit1"/>
         <cdomain:parentLink kind="srm#organisationUnits" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits"/>
+        <srm:comment>
+            <cdomain:text xml:lang="es">comment-itemOrganisationUnit1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">comment-itemOrganisationUnit1 in English</cdomain:text>
+        </srm:comment>
     </srm:organisationUnit>
 </srm:organisation>
