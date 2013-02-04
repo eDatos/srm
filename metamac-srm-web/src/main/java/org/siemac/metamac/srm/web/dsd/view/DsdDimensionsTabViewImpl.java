@@ -103,7 +103,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private GroupDynamicForm                             form;
     private ViewTextItem                                 staticCode;
     private ViewTextItem                                 staticRoleItem;
-    // private StaticTextItem staticPositionItem;
     // Representation
     private ViewTextItem                                 staticRepresentationTypeItem;
     private StaticFacetForm                              staticFacetForm;
@@ -308,7 +307,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        // staticPositionItem = new StaticTextItem("position-dim-view", MetamacSrmWeb.getConstants().dsdDimensionsPosition());
         staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         ViewTextItem codelist = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
         ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, MetamacSrmWeb.getConstants().conceptScheme());
@@ -605,14 +603,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             dimensionComponentDto.setLocalRepresentation(null);
         }
 
-        // If it is a new component, specify type and Position (if needed)
         if (dimensionComponentDto.getId() == null) {
             dimensionComponentDto.setTypeComponent(TypeComponent.DIMENSION_COMPONENT);
-            // if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-            // dimensionComponentDto.setOrderLogic(-1);
-            // } else if (TypeDimensionComponent.TIMEDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-            // dimensionComponentDto.setOrderLogic(0);
-            // }
         }
 
         // Annotations
@@ -661,8 +653,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             staticRoleItem.setValue(CommonUtils.getRoleListToString(roleConcepts));
             staticRoleItem.show();
         }
-        // Position
-        // staticPositionItem.setValue(dimensionComponentDto.getOrderLogic().toString());
+
         // Representation
         staticFacetForm.hide();
         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).hide();
