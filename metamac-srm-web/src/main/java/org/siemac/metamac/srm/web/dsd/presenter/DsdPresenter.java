@@ -7,7 +7,6 @@ import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -15,18 +14,11 @@ import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent.Select
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent.UpdateDsdHandler;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdUiHandlers;
-import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
-import org.siemac.metamac.srm.web.shared.FindConceptSchemesResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.events.UpdateConceptSchemesEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -50,7 +42,6 @@ import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.DsdProxy> implements DsdUiHandlers, SelectDsdAndDescriptorsHandler, UpdateDsdHandler, SelectViewDsdDescriptorHandler {
 
     private final PlaceManager                        placeManager;
-    private final DispatchAsync                       dispatcher;
 
     private DataStructureDefinitionMetamacDto         dsd;
 
@@ -84,10 +75,9 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     }
 
     @Inject
-    public DsdPresenter(EventBus eventBus, DsdView dsdView, DsdProxy dsdProxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+    public DsdPresenter(EventBus eventBus, DsdView dsdView, DsdProxy dsdProxy, PlaceManager placeManager) {
         super(eventBus, dsdView, dsdProxy);
         this.placeManager = placeManager;
-        this.dispatcher = dispatcher;
         getView().setUiHandlers(this);
     }
 
@@ -185,8 +175,6 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
         dsd = event.getDataStructureDefinitionDto();
         getView().setDsd(dsd);
-        // Populate concept schemes every time a DSD is selected
-        populateConceptSchemes();
         // Select general tab
         getView().getDsdTabSet().selectTab(0);
         if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
@@ -219,19 +207,4 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
             getView().getDsdTabSet().selectTab(0);
         }
     }
-
-    private void populateConceptSchemes() {
-        dispatcher.execute(new FindConceptSchemesAction(), new WaitingAsyncCallback<FindConceptSchemesResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().schemeConceptsErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindConceptSchemesResult result) {
-                UpdateConceptSchemesEvent.fire(DsdPresenter.this, result.getConceptSchemes());
-            }
-        });
-    }
-
 }
