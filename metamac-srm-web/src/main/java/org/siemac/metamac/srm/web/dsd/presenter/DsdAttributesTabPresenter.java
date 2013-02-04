@@ -26,8 +26,6 @@ import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
 import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
-import org.siemac.metamac.srm.web.shared.FindConceptsAction;
-import org.siemac.metamac.srm.web.shared.FindConceptsResult;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
@@ -115,8 +113,8 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         void setConceptSchemes(GetRelatedResourcesResult result);
         void setConcepts(GetRelatedResourcesResult result);
 
-        void setRoleConcepts(List<ExternalItemDto> roleConcepts);
-        HasChangeHandlers onRoleConceptSchemeChange();
+        void setConceptSchemesForAttributeRole(GetRelatedResourcesResult result);
+        void setConceptsForAttributeRole(GetRelatedResourcesResult result);
 
         void setCodeLists(List<ExternalItemDto> codeLists);
         HasSelectionChangedHandlers onAttributeSelected();
@@ -253,17 +251,6 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             }
         }));
 
-        registerHandler(getView().onRoleConceptSchemeChange().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                if (event.getValue() != null) {
-                    populateRoleConcepts(event.getValue().toString());
-                }
-
-            }
-        }));
-
         registerHandler(getView().onRepresentationTypeChange().addChangeHandler(new ChangeHandler() {
 
             @Override
@@ -396,6 +383,40 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         });
     }
 
+    @Override
+    public void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_ROLES, firstResult, maxResults, new ConceptSchemeWebCriteria(null,
+                dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConceptSchemesForAttributeRole(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptsForAttributeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
+        dispatcher.execute(
+                new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, new ConceptWebCriteria(criteria, dataStructureDefinitionDto.getUrn(),
+                        conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingConceptsAsRole()),
+                                MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptsForAttributeRole(result);
+                    }
+                });
+    }
+
     private void updateAttributeList(final boolean updateView) {
         dataAttributeDtos = new ArrayList<DataAttributeDto>();
         dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
@@ -439,20 +460,6 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         });
     }
 
-    private void populateRoleConcepts(String uriConceptScheme) {
-        dispatcher.execute(new FindConceptsAction(uriConceptScheme), new WaitingAsyncCallback<FindConceptsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindConceptsResult result) {
-                getView().setRoleConcepts(result.getConcepts());
-            }
-        });
-    }
-
     private void populateCodeLists(String uriConcept) {
         dispatcher.execute(new FindCodeListsAction(uriConcept), new WaitingAsyncCallback<FindCodeListsResult>() {
 
@@ -466,4 +473,5 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             }
         });
     }
+
 }
