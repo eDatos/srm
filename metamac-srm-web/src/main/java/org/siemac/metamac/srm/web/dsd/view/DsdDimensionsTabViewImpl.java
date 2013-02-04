@@ -32,6 +32,7 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -98,7 +99,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     // VIEW FORM
 
     private GroupDynamicForm                             form;
-    private ViewTextItem                                 staticCode;
     // Representation
     private ViewTextItem                                 staticRepresentationTypeItem;
     private StaticFacetForm                              staticFacetForm;
@@ -106,8 +106,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     // EDITION FORM
 
     private GroupDynamicForm                             editionForm;
-    private RequiredTextItem                             code;
-    private ViewTextItem                                 staticCodeEdit;
     // Representation
     private CustomSelectItem                             representationTypeItem;
     private DsdFacetForm                                 facetForm;
@@ -280,7 +278,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
      */
     private void createViewForm() {
         form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
-        staticCode = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
+        ViewTextItem code = new ViewTextItem(DimensionDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsId());
         ViewTextItem dimensionType = new ViewTextItem(DimensionDS.TYPE_VIEW, MetamacSrmWeb.getConstants().dsdDimensionsType());
         ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
 
@@ -300,7 +298,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        form.setFields(staticCode, dimensionType, concept, conceptRoleItem, staticRepresentationTypeItem, codelist, conceptScheme, urn, urnProvider);
+        form.setFields(code, dimensionType, concept, conceptRoleItem, staticRepresentationTypeItem, codelist, conceptScheme, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -322,7 +320,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Code
 
-        code = new RequiredTextItem(DimensionDS.CODE, getConstants().dsdDimensionsId());
+        RequiredTextItem code = new RequiredTextItem(DimensionDS.CODE, getConstants().dsdDimensionsId());
         code.setRedrawOnChange(true);
         code.setValidators(SemanticIdentifiersUtils.getDimensionIdentifierCustomValidator());
         code.setShowIfCondition(new FormItemIfFunction() {
@@ -333,7 +331,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        staticCodeEdit = new ViewTextItem(DimensionDS.CODE_VIEW, getConstants().dsdDimensionsId());
+        ViewTextItem staticCodeEdit = new ViewTextItem(DimensionDS.CODE_VIEW, getConstants().dsdDimensionsId());
         staticCodeEdit.setRedrawOnChange(true);
         staticCodeEdit.setShowIfCondition(new FormItemIfFunction() {
 
@@ -526,7 +524,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     @Override
     public DimensionComponentDto getDsdDimension() {
         // Id
-        dimensionComponentDto.setCode(code.getVisible() ? code.getValueAsString() : null);
+        dimensionComponentDto.setCode(editionForm.getItem(DimensionDS.CODE).getVisible() ? editionForm.getValueAsString(DimensionDS.CODE) : null);
 
         // Type
         dimensionComponentDto.setTypeDimensionComponent(TypeDimensionComponent.valueOf(editionForm.getValueAsString(DimensionDS.TYPE)));
@@ -615,7 +613,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void setDimensionViewMode(DimensionComponentDto dimensionComponentDto) {
         this.dimensionComponentDto = dimensionComponentDto;
         // Id
-        staticCode.setValue(dimensionComponentDto.getCode());
+        form.setValue(DimensionDS.CODE_VIEW, dimensionComponentDto.getCode());
         // URNs
         form.setValue(DimensionDS.URN, dimensionComponentDto.getUrn());
         form.setValue(DimensionDS.URN_PROVIDER, dimensionComponentDto.getUrnProvider());
@@ -688,8 +686,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private void setDimensionEditionMode(DimensionComponentDto dimensionComponentDto) {
         this.dimensionComponentDto = dimensionComponentDto;
         // Id
-        code.setValue(dimensionComponentDto.getCode());
-        staticCodeEdit.setValue(dimensionComponentDto.getCode());
+        editionForm.setValue(DimensionDS.CODE, dimensionComponentDto.getCode());
+        editionForm.setValue(DimensionDS.CODE_VIEW, dimensionComponentDto.getCode());
         // URNs
         editionForm.setValue(DimensionDS.URN, dimensionComponentDto.getUrn());
         editionForm.setValue(DimensionDS.URN_PROVIDER, dimensionComponentDto.getUrnProvider());
@@ -1081,38 +1079,45 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                 final String conceptUrn = editionForm.getValueAsString(DimensionDS.CONCEPT);
 
-                searchCodelistForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {
+                if (StringUtils.isBlank(conceptUrn)) {
+                    // If a concept has not been selected, show a message and do not let the user to select a codelist
+                    InformationWindow conceptRequiredWindow = new InformationWindow(getConstants().codelistSelection(), getConstants().dsdDimensionCodelistSelectionConceptRequired());
+                    conceptRequiredWindow.show();
+                } else {
+                    searchCodelistForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {
 
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn);
-                    }
-                });
+                        @Override
+                        public void retrieveResultSet(int firstResult, int maxResults) {
+                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(),
+                                    conceptUrn);
+                        }
+                    });
 
-                // Load codelists (to populate the selection window)
-                getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
+                    // Load codelists (to populate the selection window)
+                    getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
 
-                searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+                    searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                    searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn);
-                    }
-                });
+                        @Override
+                        public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn);
+                        }
+                    });
 
-                searchCodelistForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                    searchCodelistForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
-                        searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
-                        // Set selected codelist in form
-                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
-                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW,
-                                selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
-                    }
-                });
+                        @Override
+                        public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                            RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
+                            searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
+                            // Set selected codelist in form
+                            editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
+                            editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW,
+                                    selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                        }
+                    });
+                }
             }
         });
         // Set requited with a custom validator
