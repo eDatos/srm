@@ -88,16 +88,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private ListGrid                    attributesGrid;
 
     private InternationalMainFormLayout mainFormLayout;
-    // private VLayout viewLayout;
-    // private VLayout editionLayout;
 
     private AnnotationsPanel            viewAnnotationsPanel;
     private AnnotationsPanel            editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private GroupDynamicForm            staticForm;
-    private ViewTextItem                staticCode;
+    private GroupDynamicForm            form;
     private ViewTextItem                staticConceptItem;
     private ViewTextItem                staticRoleItem;
     private ViewTextItem                staticAssignmentStatusItem;
@@ -114,7 +111,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // EDITION FORM
 
     private GroupDynamicForm            editionForm;
-    private RequiredTextItem            code;
     private ExternalSelectItem          conceptItem;
     private RoleSelectItem              roleItem;
     private RequiredSelectItem          assignmentStatusItem;
@@ -289,8 +285,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
      * @return
      */
     private void createViewForm() {
-        staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
-        staticCode = new ViewTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
+        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
+        ViewTextItem staticCode = new ViewTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
         staticConceptItem = new ViewTextItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         staticRoleItem = new ViewTextItem(DataAttributeDS.ROLE, MetamacSrmWeb.getConstants().dsdAttributeRole());
         staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
@@ -304,7 +300,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticCodeListItem = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().codelist());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        staticForm.setFields(staticCode, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
+        form.setFields(staticCode, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
                 staticDimensionsForDimensionRelationshipItem, staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, staticCodeListItem, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
@@ -312,7 +308,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Annotations
         viewAnnotationsPanel = new AnnotationsPanel(true);
 
-        mainFormLayout.addViewCanvas(staticForm);
+        mainFormLayout.addViewCanvas(form);
         mainFormLayout.addViewCanvas(staticFacetForm);
         mainFormLayout.addViewCanvas(viewAnnotationsPanel);
 
@@ -332,7 +328,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Id
 
-        code = new RequiredTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
+        RequiredTextItem code = new RequiredTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
         code.setValidators(SemanticIdentifiersUtils.getAttributeIdentifierCustomValidator());
 
         // Assignment Status
@@ -539,11 +535,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         this.dataAttributeDto = dataAttributeDto;
 
         // Id
-        staticCode.setValue(dataAttributeDto.getCode());
+        form.setValue(DataAttributeDS.CODE, dataAttributeDto.getCode());
 
         // URNs
-        staticForm.setValue(DataAttributeDS.URN, dataAttributeDto.getUrn());
-        staticForm.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
+        form.setValue(DataAttributeDS.URN, dataAttributeDto.getUrn());
+        form.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
         staticConceptItem.setValue(dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode());
@@ -632,7 +628,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         this.dataAttributeDto = dataAttributeDto;
 
         // Id
-        code.setValue(dataAttributeDto.getCode());
+        editionForm.setValue(DataAttributeDS.CODE, dataAttributeDto.getCode());
 
         // URNs
         editionForm.setValue(DataAttributeDS.URN, dataAttributeDto.getUrn());
@@ -721,7 +717,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public DataAttributeDto getDsdAttribute() {
         // Id
-        dataAttributeDto.setCode(code.getValueAsString());
+        dataAttributeDto.setCode(editionForm.getValueAsString(DataAttributeDS.CODE));
 
         // Role
         dataAttributeDto.getRole().clear();
@@ -930,5 +926,4 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             deleteToolStripButton.show();
         }
     }
-
 }

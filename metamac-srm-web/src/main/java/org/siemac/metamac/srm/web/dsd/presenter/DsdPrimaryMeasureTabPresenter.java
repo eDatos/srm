@@ -203,7 +203,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @Override
     public void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, new ConceptWebCriteria(criteria,
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, new ConceptWebCriteria(criteria,
                 dataStructureDefinitionDto.getUrn(), conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
             @Override

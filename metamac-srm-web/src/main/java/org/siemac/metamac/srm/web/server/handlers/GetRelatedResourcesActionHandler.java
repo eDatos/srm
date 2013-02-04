@@ -53,7 +53,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                             conceptSchemeWebCriteria.getDsdUrn());
                     break;
                 }
-                case CONCEPTS_WITH_DSD_PRIMARY_MEASURE: {
+                case CONCEPT_WITH_DSD_PRIMARY_MEASURE: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
                     MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
                     restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
@@ -137,6 +137,21 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     criteria.setRestriction(restriction);
                     result = srmCoreServiceFacade.findConceptsCanBeDsdRoleByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CONCEPT_SCHEMES_WITH_DSD_ATTRIBUTE: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            conceptSchemeWebCriteria.getDsdUrn());
+                    break;
+                }
+                case CONCEPT_WITH_DSD_ATTRIBUTE: {
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    criteria.setRestriction(restriction);
+                    result = srmCoreServiceFacade.findConceptsCanBeDsdAttributeByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 }
                 default:
