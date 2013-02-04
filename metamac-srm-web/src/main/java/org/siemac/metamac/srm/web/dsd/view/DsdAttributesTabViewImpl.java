@@ -539,6 +539,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         if (searchCodelistForEnumeratedRepresentationWindow != null) {
             searchCodelistForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
             searchCodelistForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+            // If there is no results, show an info message (maybe the attribute concept has no variable)
+            if (result.getRelatedResourceDtos().size() > 0) {
+                searchCodelistForEnumeratedRepresentationWindow.hideInfoMessage();
+            } else {
+                searchCodelistForEnumeratedRepresentationWindow.showInfoMessage();
+            }
         }
     }
 
@@ -1101,6 +1107,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                                     conceptUrn);
                         }
                     });
+                    searchCodelistForEnumeratedRepresentationWindow.setInfoMessage(getConstants().dsdAttributeEnumeratedRepresentationInfoMessage());
 
                     // Load codelists (to populate the selection window)
                     getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn);

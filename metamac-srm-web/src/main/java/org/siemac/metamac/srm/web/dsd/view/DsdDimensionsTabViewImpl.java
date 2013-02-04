@@ -502,6 +502,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         if (searchCodelistForEnumeratedRepresentationWindow != null) {
             searchCodelistForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
             searchCodelistForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+            // If there is no results, show an info message (maybe the dimension concept has no variable)
+            if (result.getRelatedResourceDtos().size() > 0) {
+                searchCodelistForEnumeratedRepresentationWindow.hideInfoMessage();
+            } else {
+                searchCodelistForEnumeratedRepresentationWindow.showInfoMessage();
+            }
         }
     }
 
@@ -1092,6 +1098,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                                     conceptUrn);
                         }
                     });
+                    searchCodelistForEnumeratedRepresentationWindow.setInfoMessage(getConstants().dsdDimensionEnumeratedRepresentationInfoMessage());
 
                     // Load codelists (to populate the selection window)
                     getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn);

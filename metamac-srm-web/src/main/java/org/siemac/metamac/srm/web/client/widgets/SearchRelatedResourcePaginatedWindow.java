@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.BaseSearchWindow;
@@ -11,14 +12,17 @@ import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedActio
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.types.Visibility;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class SearchRelatedResourcePaginatedWindow extends BaseSearchWindow {
 
+    private Label                              infoMessageLabel;
     private SearchRelatedResourcePaginatedItem listGridItem;
-
     private FormItem                           initialSelectionItem;
 
     public SearchRelatedResourcePaginatedWindow(String title, int maxResults, PaginatedAction action) {
@@ -48,6 +52,26 @@ public class SearchRelatedResourcePaginatedWindow extends BaseSearchWindow {
             listGridItem.setColSpan(2);
             form.setFields(initialSelectionItem, listGridItem, saveItem);
         }
+    }
+
+    public void setInfoMessage(String text) {
+        infoMessageLabel = new Label(text);
+        infoMessageLabel.setIcon(GlobalResources.RESOURCE.info().getURL());
+        infoMessageLabel.setHeight(20);
+        infoMessageLabel.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        infoMessageLabel.setOverflow(Overflow.VISIBLE);
+        infoMessageLabel.setMargin(10);
+        infoMessageLabel.setVisibility(Visibility.HIDDEN);
+
+        getSearchWindowLayout().addMember(infoMessageLabel, 0);
+    }
+
+    public void showInfoMessage() {
+        infoMessageLabel.show();
+    }
+
+    public void hideInfoMessage() {
+        infoMessageLabel.hide();
     }
 
     public HasClickHandlers getSave() {
