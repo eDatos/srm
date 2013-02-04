@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -19,8 +18,9 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
-import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
-import org.siemac.metamac.srm.web.shared.FindCodeListsResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
@@ -43,6 +43,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -98,7 +99,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
-        void setCodeLists(List<ExternalItemDto> codeLists);
+
+        void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
 
         void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes);
         void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes);
@@ -270,16 +272,17 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveCodeLists(String conceptUrn) {
-        dispatcher.execute(new FindCodeListsAction(conceptUrn), new WaitingAsyncCallback<FindCodeListsResult>() {
+    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, new CodelistWebCriteria(criteria,
+                conceptUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codeListsErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(FindCodeListsResult result) {
-                getView().setCodeLists(result.getCodeLists());
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setCodelistsForEnumeratedRepresentation(result);
             }
         });
     }

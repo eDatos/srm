@@ -12,7 +12,7 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
     void retrieveConceptTypes();
 
-    void retrieveCodeLists(String conceptUrn);
+    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn);
 
     void retrieveVariables(int firstResult, int maxResults, String criteria);
 }

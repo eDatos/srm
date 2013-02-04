@@ -161,6 +161,12 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                             codelistWebCriteria.getConceptUrn());
                     break;
                 }
+                case CODELIST_WITH_CONCEPT_ENUMERATED_REPRESENTATION: {
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConcept(ServiceContextHolder.getCurrentServiceContext(), criteria, codelistWebCriteria.getConceptUrn());
+                    break;
+                }
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, MetamacSrmWeb.getCoreMessages().exception_common_unknown());
             }
