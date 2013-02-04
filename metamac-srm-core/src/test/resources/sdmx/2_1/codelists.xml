@@ -53,7 +53,7 @@
 			</structure:Codelist>
 			<structure:Codelist id="CL_DECIMALS" agencyID="SDMX01" isFinal="true"
 				version="2.0"
-				urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(1.0)">
+				urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(2.0)">
 				<common:Name>Code list for Decimals (DECIMALS)</common:Name>
 				<common:Description xml:lang="en">It provides a list
 					of values showing the number of decimal digits used in the data.
