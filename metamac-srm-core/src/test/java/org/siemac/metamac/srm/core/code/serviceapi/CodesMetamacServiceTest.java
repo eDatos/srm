@@ -169,6 +169,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(alphabetical.getNameableArtefact().getName());
 
     }
+
     @Test
     public void testCreateCodelistWithFamily() throws Exception {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
@@ -269,6 +270,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(codelistReplacedUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
+    }
+
+    @Override
+    public void testPreCreateCodelist() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+    @Override
+    public void testPostCreateCodelist() throws Exception {
+        // TODO Auto-generated method stub
+
     }
 
     @Override

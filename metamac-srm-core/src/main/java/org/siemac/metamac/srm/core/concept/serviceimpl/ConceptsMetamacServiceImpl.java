@@ -229,10 +229,17 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptVersioningCopyCallback);
 
         // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
-        for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
-            versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
-        }
+        versioningRelatedConcepts(ctx, conceptSchemeVersionToCopy, conceptSchemeNewVersion);
+
         return conceptSchemeNewVersion;
+    }
+
+    @Override
+    public void versioningRelatedConcepts(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
+        // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
+        for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
+            versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion);
+        }
     }
 
     @Override
@@ -647,20 +654,28 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
     }
 
-    private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, String conceptSchemeNewVersionUrn) {
+    private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) {
         if (conceptToCopy.getRelatedConcepts().size() == 0) {
             return;
         }
+        ConceptMetamac conceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
+                .getMaintainableArtefact().getUrn());
 
-        ConceptMetamac conceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersionUrn);
-        // Copy relations with concepts in new version
-        for (ConceptMetamac relatedConcept : conceptToCopy.getRelatedConcepts()) {
-            ConceptMetamac relatedConceptIntNewVersion = (ConceptMetamac) conceptRepository
-                    .findByCodeInConceptSchemeVersion(relatedConcept.getNameableArtefact().getCode(), conceptSchemeNewVersionUrn);
-            conceptIntNewVersion.addRelatedConcept(relatedConceptIntNewVersion);
+        if (conceptIntNewVersion != null) {
+            // Copy relations with concepts in new version
+            for (ConceptMetamac relatedConcept : conceptToCopy.getRelatedConcepts()) {
+                ConceptMetamac relatedConceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(relatedConcept.getNameableArtefact().getCode(),
+                        conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
+                if (relatedConceptIntNewVersion != null) {
+                    conceptIntNewVersion.addRelatedConcept(relatedConceptIntNewVersion);
+                } else if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
+                    throw new RuntimeException("Error copying related concepts to versioning");
+                }
+            }
+        } else if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
+            throw new RuntimeException("Error copying related concepts to versioning");
         }
     }
-
     /**
      * Common validations to create or update a concept scheme
      */

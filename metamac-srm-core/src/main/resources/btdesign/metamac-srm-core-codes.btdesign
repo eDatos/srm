@@ -35,6 +35,10 @@ Application CodesMetamac {
 
 			"Creates codelist"
 			@CodelistVersionMetamac createCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
+			"Pre-Create code list"
+			public CodelistVersionMetamac preCreateCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
+			"post-Create code list"
+			public CodelistVersionMetamac postCreateCodelist(@CodelistVersionMetamac codelistVersion, List<@CodelistVersionMetamac> replaceTo) throws MetamacException
 			"Updates codelist"
 			@CodelistVersionMetamac updateCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
 			"Retrieves codelist by urn"

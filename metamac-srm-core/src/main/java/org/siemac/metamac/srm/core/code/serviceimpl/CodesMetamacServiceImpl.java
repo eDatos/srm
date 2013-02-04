@@ -95,22 +95,38 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac createCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
 
-        // Validation
-        CodesMetamacInvocationValidator.checkCreateCodelist(codelistVersion, null);
-        checkCodelistToCreateOrUpdate(ctx, codelistVersion);
+        // Fill and validate Code list
+        preCreateCodelist(ctx, codelistVersion);
 
         // In creation, 'replaceTo' metadata must be copied to set after save codelist, due to flushing
         List<CodelistVersionMetamac> replaceTo = new ArrayList<CodelistVersionMetamac>(codelistVersion.getReplaceToCodelists());
         codelistVersion.removeAllReplaceToCodelists();
+
+        // Save codelist
+        codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+
+        // Post create actions
+        postCreateCodelist(ctx, codelistVersion, replaceTo);
+
+        return codelistVersion;
+    }
+
+    @Override
+    public CodelistVersionMetamac preCreateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkCreateCodelist(codelistVersion, null);
+        checkCodelistToCreateOrUpdate(ctx, codelistVersion);
 
         // Fill metadata
         codelistVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         codelistVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
-        // Save codelist
-        codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
+        return codelistVersion;
+    }
 
+    @Override
+    public CodelistVersionMetamac postCreateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion, List<CodelistVersionMetamac> replaceTo) throws MetamacException {
         // Fill replaceTo metadata after save entity, fill replacedBy metadata too
         for (CodelistVersionMetamac codelistReplaceTo : replaceTo) {
             codelistVersion.addReplaceToCodelist(codelistReplaceTo);
@@ -127,6 +143,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Add alphabetical order
         codelistVersion = createCodelistOrderVisualisationAlphabetical(codelistVersion);
+
         return codelistVersion;
     }
 

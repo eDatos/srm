@@ -1541,6 +1541,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
+    public void testVersioningRelatedConcepts() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    @Test
     public void testEndConceptSchemeValidity() throws Exception {
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.endConceptSchemeValidity(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1);
 
