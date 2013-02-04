@@ -55,84 +55,155 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
      * @throws MetamacException
      **************************************************************************/
     @Override
-    public void agencySchemeJaxbToDoExtension(ServiceContext ctx, AgencySchemeType source, OrganisationSchemeVersion target) throws MetamacException {
+    public void agencySchemeJaxbToDoExtensionPreCreate(ServiceContext ctx, AgencySchemeType source, OrganisationSchemeVersion previous, OrganisationSchemeVersion target) throws MetamacException {
+        OrganisationSchemeVersionMetamac previousMetamac = (OrganisationSchemeVersionMetamac) previous;
         OrganisationSchemeVersionMetamac targetMetamac = (OrganisationSchemeVersionMetamac) target;
 
-        // Meta-data in previous version -> Nothing to extends
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO completar con metadata heredable
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+        }
 
-        // Fill pre-persist meta-data
-        organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
+
+        // Validate and complete fill
+        organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
     }
 
     @Override
-    public void agencyJaxbToDoExtension(ServiceContext ctx, AgencyType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation target) throws MetamacException {
+    public void agencyJaxbToDoExtensionPreCreate(ServiceContext ctx, AgencyType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation previous, Organisation target)
+            throws MetamacException {
+        OrganisationMetamac previousMetamac = (OrganisationMetamac) target;
         OrganisationMetamac targetMetamac = (OrganisationMetamac) target;
 
-        // Meta-data in previous version -> Nothing to extends
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO completar con metadata heredable
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+            // TODO herencia IString --> De contacts
+        }
 
         // Fill pre-persist meta-data
         organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     @Override
-    public void dataConsumerSchemeJaxbToDoExtension(ServiceContext ctx, DataConsumerSchemeType source, OrganisationSchemeVersion target) throws MetamacException {
+    public void dataConsumerSchemeJaxbToDoExtensionPreCreate(ServiceContext ctx, DataConsumerSchemeType source, OrganisationSchemeVersion previous, OrganisationSchemeVersion target)
+            throws MetamacException {
+        OrganisationSchemeVersionMetamac previousMetamac = (OrganisationSchemeVersionMetamac) previous;
         OrganisationSchemeVersionMetamac targetMetamac = (OrganisationSchemeVersionMetamac) target;
 
-        // Meta-data in previous version -> Nothing to extends
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO completar con metadata heredable
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+        }
 
-        // Fill pre-persist meta-data
-        organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
+
+        // Validate and complete fill
+        organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
     }
 
     @Override
-    public void dataConsumerJaxbToDoExtension(ServiceContext ctx, DataConsumerType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation target) throws MetamacException {
+    public void dataConsumerJaxbToDoExtensionPreCreate(ServiceContext ctx, DataConsumerType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation previous, Organisation target)
+            throws MetamacException {
+        OrganisationMetamac previousMetamac = (OrganisationMetamac) target;
         OrganisationMetamac targetMetamac = (OrganisationMetamac) target;
 
-        // Meta-data in previous version -> Nothing to extends
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO completar con metadata heredable
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+            // TODO herencia IString --> De contacts
+        }
 
         // Fill pre-persist meta-data
         organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     @Override
-    public void dataProviderSchemeJaxbToDoExtension(ServiceContext ctx, DataProviderSchemeType source, OrganisationSchemeVersion target) throws MetamacException {
+    public void dataProviderSchemeJaxbToDoExtensionPreCreate(ServiceContext ctx, DataProviderSchemeType source, OrganisationSchemeVersion previous, OrganisationSchemeVersion target)
+            throws MetamacException {
+        OrganisationSchemeVersionMetamac previousMetamac = (OrganisationSchemeVersionMetamac) previous;
         OrganisationSchemeVersionMetamac targetMetamac = (OrganisationSchemeVersionMetamac) target;
 
-        // Meta-data in previous version -> Nothing to extends
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO completar con metadata heredable
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+        }
+
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
         // Fill pre-persist meta-data
         organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
-        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
-    public void dataProviderJaxbToDoExtension(ServiceContext ctx, DataProviderType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation target) throws MetamacException {
+    public void dataProviderJaxbToDoExtensionPreCreate(ServiceContext ctx, DataProviderType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation previous, Organisation target)
+            throws MetamacException {
+        OrganisationMetamac previousMetamac = (OrganisationMetamac) target;
         OrganisationMetamac targetMetamac = (OrganisationMetamac) target;
 
-        // Meta-data in previous version -> Nothing to extends
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO completar con metadata heredable
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+            // TODO herencia IString --> De contacts
+        }
 
         // Fill pre-persist meta-data
         organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
     @Override
-    public void organisationUnitSchemeJaxbToDoExtension(ServiceContext ctx, OrganisationUnitSchemeType source, OrganisationSchemeVersion target) throws MetamacException {
+    public void organisationUnitSchemeJaxbToDoExtensionPreCreate(ServiceContext ctx, OrganisationUnitSchemeType source, OrganisationSchemeVersion previous, OrganisationSchemeVersion target)
+            throws MetamacException {
+        OrganisationSchemeVersionMetamac previousMetamac = (OrganisationSchemeVersionMetamac) previous;
         OrganisationSchemeVersionMetamac targetMetamac = (OrganisationSchemeVersionMetamac) target;
 
-        // Meta-data in previous version -> Nothing to extends
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO completar con metadata heredable
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+        }
+
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
         // Fill meta-data
         organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
-        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
-    public void organisationUnitJaxbToDoExtension(ServiceContext ctx, OrganisationUnitType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation target) throws MetamacException {
+    public void organisationUnitJaxbToDoExtensionPreCreate(ServiceContext ctx, OrganisationUnitType source, OrganisationSchemeVersion organisationSchemeVersion, Organisation previous,
+            Organisation target) throws MetamacException {
+        OrganisationMetamac previousMetamac = (OrganisationMetamac) target;
         OrganisationMetamac targetMetamac = (OrganisationMetamac) target;
 
-        // Meta-data in previous version -> Nothing to extends
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO completar con metadata heredable
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+            // TODO herencia IString --> De contacts
+        }
 
         // Fill pre-persist meta-data
         organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
@@ -149,7 +220,6 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         } else {
             validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), true);
         }
-
     }
 
 }
