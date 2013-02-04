@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -33,6 +32,7 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -72,7 +72,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
@@ -80,7 +79,6 @@ import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.HasSelectionChangedHandlers;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -94,9 +92,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private ProcStatusEnum                               procStatus;
 
     private DataAttributeDto                             dataAttributeDto;
-    private List<ExternalItemDto>                        codeLists;
     private List<DimensionComponentDto>                  dimensionComponentDtos;
-    private List<DescriptorDto>                          descriptorDtos;                              // Group Keys
+    private List<DescriptorDto>                          descriptorDtos;                                 // Group Keys
 
     private VLayout                                      panel;
     private VLayout                                      selectedComponentLayout;
@@ -118,7 +115,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private ViewTextItem                                 staticGroupKeyFormForGroupRelationship;
     // Representation
     private ViewTextItem                                 staticRepresentationTypeItem;
-    private ViewTextItem                                 staticCodeListItem;
     private StaticFacetForm                              staticFacetForm;
 
     // EDITION FORM
@@ -128,11 +124,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // Relation
     private RequiredSelectItem                           relationType;
     private CustomSelectItem                             groupKeysForDimensionRelationshipItem;
-    private RequiredSelectItem                           dimensionsForDimensionRelationshipItem;      // Required if relationType == DIMENSION_RELATIONSHIP
-    private RequiredSelectItem                           groupKeyFormForGroupRelationship;            // Required if relationType == GROUP_RELATIONSHIP
+    private RequiredSelectItem                           dimensionsForDimensionRelationshipItem;         // Required if relationType == DIMENSION_RELATIONSHIP
+    private RequiredSelectItem                           groupKeyFormForGroupRelationship;               // Required if relationType == GROUP_RELATIONSHIP
     // Representation
     private CustomSelectItem                             representationTypeItem;
-    private CustomSelectItem                             codeListItem;
     private DsdFacetForm                                 facetForm = null;
 
     private ToolStripButton                              newToolStripButton;
@@ -142,6 +137,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     private SearchRelatedResourcePaginatedWindow         searchConceptWindow;
     private SearchMultipleRelatedResourcePaginatedWindow searchConceptsForRolesWindow;
+    private SearchRelatedResourcePaginatedWindow         searchCodelistForEnumeratedRepresentationWindow;
 
     @Inject
     public DsdAttributesTabViewImpl() {
@@ -311,11 +307,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 .dsdAttributeDimensionsForDimensionRelationship());
         staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
         staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
-        staticCodeListItem = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().codelist());
+        ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         form.setFields(staticCode, staticAssignmentStatusItem, concept, roleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
-                staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, staticCodeListItem, urn, urnProvider);
+                staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, codelist, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -448,22 +444,15 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        codeListItem = new CustomSelectItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().codelist());
-        codeListItem.setType("comboBox");
-        // Show CodeList if RepresentationTypeEnum = ENUMERATED
-        codeListItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isRepresentationTypeEnumerated(representationTypeItem.getValueAsString());
-            }
-        });
+        ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, MetamacSrmWeb.getConstants().codelist());
+        codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem codelistView = createEnumeratedRepresentationItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist());
 
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, assignmentStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
-                groupKeyFormForGroupRelationship, representationTypeItem, codeListItem, urn, urnProvider);
+                groupKeyFormForGroupRelationship, representationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
 
@@ -481,13 +470,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public Widget asWidget() {
         return panel;
-    }
-
-    @Override
-    public void setCodeLists(List<ExternalItemDto> codeLists) {
-        this.codeLists = codeLists;
-        codeListItem.setValueMap(ExternalItemUtils.getExternalItemsHashMap(codeLists));
-
     }
 
     @Override
@@ -549,6 +531,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         if (searchConceptsForRolesWindow != null) {
             searchConceptsForRolesWindow.setSourceRelatedResources(result.getRelatedResourceDtos());
             searchConceptsForRolesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+        }
+    }
+
+    @Override
+    public void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result) {
+        if (searchCodelistForEnumeratedRepresentationWindow != null) {
+            searchCodelistForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
+            searchCodelistForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
         }
     }
 
@@ -629,18 +619,22 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
         staticFacetForm.hide();
-        staticCodeListItem.hide();
-        staticCodeListItem.clearValue();
+        form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).hide();
+        form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         staticRepresentationTypeItem.clearValue();
         staticFacetForm.clearValues();
         if (dataAttributeDto.getLocalRepresentation() != null) {
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                staticCodeListItem.setValue(dataAttributeDto.getLocalRepresentation().getEnumerated().getCode());
+                // Codelist
                 staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
-                staticCodeListItem.show();
-                // Facet
+                form.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, ExternalItemUtils.getExternalItemName(dataAttributeDto.getLocalRepresentation().getEnumerated())); // TODO
+                                                                                                                                                                                          // RelatedResourceDto
+                                                                                                                                                                                          // instead of
+                                                                                                                                                                                          // ExternalItemDto
+                form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).show();
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+                // Facet
                 staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumTEXT_FORMAT());
                 // Only one facet in a Representation
                 FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getNonEnumerated();
@@ -706,17 +700,21 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         assignmentStatusItem.setValue((dataAttributeDto.getUsageStatus() == null) ? null : dataAttributeDto.getUsageStatus().toString());
 
         // Representation
-        codeListItem.clearValue();
+        editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
+        editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         representationTypeItem.clearValue();
         facetForm.clearValues();
         if (dataAttributeDto.getLocalRepresentation() != null) {
-            // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                // codeListItem.setValue(dataAttributeDto.getLocalRepresentation().getEnumCodeList().getCodeId());
-                codeListItem.clearValue(); // don´t know the concept (which is the scheme?), so code list neither
                 representationTypeItem.setValue(TypeRepresentationEnum.ENUMERATED.toString());
-                // Facet
+                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, dataAttributeDto.getLocalRepresentation().getEnumerated().getUrn());
+                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, ExternalItemUtils.getExternalItemName(dataAttributeDto.getLocalRepresentation().getEnumerated())); // TODO
+                                                                                                                                                                                                 // RelatedResourceDto
+                                                                                                                                                                                                 // instead
+                                                                                                                                                                                                 // of
+                                                                                                                                                                                                 // ExternalItemDto
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+                // Facet
                 representationTypeItem.setValue(TypeRepresentationEnum.TEXT_FORMAT.toString());
                 // Only one facet in a Representation
                 FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getNonEnumerated();
@@ -803,7 +801,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 dataAttributeDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                dataAttributeDto.getLocalRepresentation().setEnumerated(ExternalItemUtils.getExternalItemDtoFromUrn(codeLists, codeListItem.getValueAsString()));
+                // TODO RelatedResourceDto instead of ExternalItemDto
+                dataAttributeDto.getLocalRepresentation().setEnumerated(
+                        StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createExternalItemDto(
+                                TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)));
                 dataAttributeDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
@@ -854,16 +855,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         mainFormLayout.setViewMode();
     }
 
-    @Override
-    public HasChangeHandlers onRepresentationTypeChange() {
-        return representationTypeItem;
-    }
-
-    @Override
-    public HasSelectionChangedHandlers onAttributeSelected() {
-        return attributesGrid;
-    }
-
     private void selectAttribute(DataAttributeDto attributeSelected) {
         if (attributeSelected.getId() == null) {
             // New attribute
@@ -890,7 +881,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void deselectAttribute() {
         selectedComponentLayout.hide();
         deleteToolStripButton.hide();
-        // editToolStripButton.hide();
     }
 
     private List<DimensionComponentDto> getDimensions(String[] dimensions) {
@@ -1078,5 +1068,81 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
         return relatedResources;
+    }
+
+    private SearchViewTextItem createEnumeratedRepresentationItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
+        codelistItem.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                // Show CodeList if RepresentationTypeEnum = ENUMERATED
+                return CommonUtils.isRepresentationTypeEnumerated(representationTypeItem.getValueAsString());
+            }
+        });
+        codelistItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+
+                final String conceptUrn = editionForm.getValueAsString(DataAttributeDS.CONCEPT);
+
+                if (StringUtils.isBlank(conceptUrn)) {
+                    // If a concept has not been selected, show a message and do not let the user to select a codelist
+                    InformationWindow conceptRequiredWindow = new InformationWindow(getConstants().codelistSelection(), getConstants().dsdDimensionCodelistSelectionConceptRequired());
+                    conceptRequiredWindow.show();
+                } else {
+                    searchCodelistForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                        @Override
+                        public void retrieveResultSet(int firstResult, int maxResults) {
+                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(),
+                                    conceptUrn);
+                        }
+                    });
+
+                    // Load codelists (to populate the selection window)
+                    getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
+
+                    searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                    searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                        @Override
+                        public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn);
+                        }
+                    });
+
+                    searchCodelistForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                        @Override
+                        public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                            RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
+                            searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
+                            // Set selected codelist in form
+                            editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
+                            editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW,
+                                    selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                        }
+                    });
+                }
+            }
+        });
+        // Set requited with a custom validator
+        CustomValidator customValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                if (codelistItem.getValue() != null) {
+                    String codelistValue = String.valueOf(codelistItem.getValue());
+                    return !StringUtils.isBlank(codelistValue);
+                }
+                return false;
+            }
+        };
+        codelistItem.setValidators(customValidator);
+        return codelistItem;
     }
 }
