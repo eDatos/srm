@@ -10,4 +10,7 @@ public interface DsdAttributesTabUiHandlers extends UiHandlers {
     void retrieveDsd(String urn);
     void saveAttribute(DataAttributeDto dataAttributeDto);
     void deleteAttributes(List<DataAttributeDto> dataAttributeDtos);
+
+    void retrieveConceptSchemes(int firstResult, int maxResults);
+    void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn);
 }

@@ -7,12 +7,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataAttributeDS;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
@@ -22,16 +27,22 @@ import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.RoleSelectItem;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -55,9 +66,13 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
@@ -75,59 +90,58 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTabUiHandlers> implements DsdAttributesTabPresenter.DsdAttributesTabView {
 
-    private ProcStatusEnum              procStatus;
+    private ProcStatusEnum                       procStatus;
 
-    private DataAttributeDto            dataAttributeDto;
-    private List<ExternalItemDto>       concepts;
-    private List<ExternalItemDto>       codeLists;
-    private List<DimensionComponentDto> dimensionComponentDtos;
-    private List<DescriptorDto>         descriptorDtos;                              // Group Keys
+    private DataAttributeDto                     dataAttributeDto;
+    private List<ExternalItemDto>                codeLists;
+    private List<DimensionComponentDto>          dimensionComponentDtos;
+    private List<DescriptorDto>                  descriptorDtos;                              // Group Keys
 
-    private VLayout                     panel;
-    private VLayout                     selectedComponentLayout;
-    private ListGrid                    attributesGrid;
+    private VLayout                              panel;
+    private VLayout                              selectedComponentLayout;
+    private ListGrid                             attributesGrid;
 
-    private InternationalMainFormLayout mainFormLayout;
+    private InternationalMainFormLayout          mainFormLayout;
 
-    private AnnotationsPanel            viewAnnotationsPanel;
-    private AnnotationsPanel            editionAnnotationsPanel;
+    private AnnotationsPanel                     viewAnnotationsPanel;
+    private AnnotationsPanel                     editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private GroupDynamicForm            form;
-    private ViewTextItem                staticConceptItem;
-    private ViewTextItem                staticRoleItem;
-    private ViewTextItem                staticAssignmentStatusItem;
+    private GroupDynamicForm                     form;
+    private ViewTextItem                         staticRoleItem;
+    private ViewTextItem                         staticAssignmentStatusItem;
     // Relation
-    private ViewTextItem                staticRelationType;
-    private ViewTextItem                staticGroupKeysForDimensionRelationshipItem;
-    private ViewTextItem                staticDimensionsForDimensionRelationshipItem;
-    private ViewTextItem                staticGroupKeyFormForGroupRelationship;
+    private ViewTextItem                         staticRelationType;
+    private ViewTextItem                         staticGroupKeysForDimensionRelationshipItem;
+    private ViewTextItem                         staticDimensionsForDimensionRelationshipItem;
+    private ViewTextItem                         staticGroupKeyFormForGroupRelationship;
     // Representation
-    private ViewTextItem                staticRepresentationTypeItem;
-    private ViewTextItem                staticCodeListItem;
-    private StaticFacetForm             staticFacetForm;
+    private ViewTextItem                         staticRepresentationTypeItem;
+    private ViewTextItem                         staticCodeListItem;
+    private StaticFacetForm                      staticFacetForm;
 
     // EDITION FORM
 
-    private GroupDynamicForm            editionForm;
-    private ExternalSelectItem          conceptItem;
-    private RoleSelectItem              roleItem;
-    private RequiredSelectItem          assignmentStatusItem;
+    private GroupDynamicForm                     editionForm;
+    private RoleSelectItem                       roleItem;
+    private RequiredSelectItem                   assignmentStatusItem;
     // Relation
-    private RequiredSelectItem          relationType;
-    private CustomSelectItem            groupKeysForDimensionRelationshipItem;
-    private RequiredSelectItem          dimensionsForDimensionRelationshipItem;      // Required if relationType == DIMENSION_RELATIONSHIP
-    private RequiredSelectItem          groupKeyFormForGroupRelationship;            // Required if relationType == GROUP_RELATIONSHIP
+    private RequiredSelectItem                   relationType;
+    private CustomSelectItem                     groupKeysForDimensionRelationshipItem;
+    private RequiredSelectItem                   dimensionsForDimensionRelationshipItem;      // Required if relationType == DIMENSION_RELATIONSHIP
+    private RequiredSelectItem                   groupKeyFormForGroupRelationship;            // Required if relationType == GROUP_RELATIONSHIP
     // Representation
-    private CustomSelectItem            representationTypeItem;
-    private CustomSelectItem            codeListItem;
-    private DsdFacetForm                facetForm = null;
+    private CustomSelectItem                     representationTypeItem;
+    private CustomSelectItem                     codeListItem;
+    private DsdFacetForm                         facetForm = null;
 
-    private ToolStripButton             newToolStripButton;
-    private ToolStripButton             deleteToolStripButton;
+    private ToolStripButton                      newToolStripButton;
+    private ToolStripButton                      deleteToolStripButton;
 
-    private DeleteConfirmationWindow    importDsdWindow;
+    private DeleteConfirmationWindow             deleteConfirmationWindow;
+
+    private SearchRelatedResourcePaginatedWindow searchConceptWindow;
 
     @Inject
     public DsdAttributesTabViewImpl() {
@@ -151,8 +165,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        importDsdWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().dsdAttributeDeleteConfirmation());
-        importDsdWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().dsdAttributeDeleteConfirmation());
+        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
 
         deleteToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         deleteToolStripButton.setVisibility(Visibility.HIDDEN);
@@ -160,7 +174,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public void onClick(ClickEvent event) {
-                importDsdWindow.show();
+                deleteConfirmationWindow.show();
             }
         });
 
@@ -287,7 +301,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void createViewForm() {
         form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
         ViewTextItem staticCode = new ViewTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
-        staticConceptItem = new ViewTextItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
+        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
         staticRoleItem = new ViewTextItem(DataAttributeDS.ROLE, MetamacSrmWeb.getConstants().dsdAttributeRole());
         staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
         staticRelationType = new ViewTextItem(DataAttributeDS.RELATED_WITH, MetamacSrmWeb.getConstants().dsdAttributeRelatedWith());
@@ -300,8 +314,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticCodeListItem = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODE_LIST, MetamacSrmWeb.getConstants().codelist());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        form.setFields(staticCode, staticAssignmentStatusItem, staticConceptItem, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem,
-                staticDimensionsForDimensionRelationshipItem, staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, staticCodeListItem, urn, urnProvider);
+        form.setFields(staticCode, staticAssignmentStatusItem, concept, staticRoleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
+                staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, staticCodeListItem, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
 
@@ -311,7 +325,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         mainFormLayout.addViewCanvas(form);
         mainFormLayout.addViewCanvas(staticFacetForm);
         mainFormLayout.addViewCanvas(viewAnnotationsPanel);
-
     }
 
     /**
@@ -338,8 +351,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Concept
 
-        conceptItem = new ExternalSelectItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
-        conceptItem.setRequired(true);
+        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
+        concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchViewTextItem conceptView = createConceptItem(DataAttributeDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
 
         // Role
 
@@ -448,7 +462,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, assignmentStatusItem, conceptItem, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
+        editionForm.setFields(code, assignmentStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
                 groupKeyFormForGroupRelationship, representationTypeItem, codeListItem, urn, urnProvider);
 
         // Facet Form
@@ -467,19 +481,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public Widget asWidget() {
         return panel;
-    }
-
-    @Override
-    public void setConceptSchemes(List<ExternalItemDto> conceptSchemes) {
-        LinkedHashMap<String, String> map = ExternalItemUtils.getExternalItemsHashMap(conceptSchemes);
-        conceptItem.setSchemesValueMap(map);
-        roleItem.setConceptSchemesValueMap(map);
-    }
-
-    @Override
-    public void setConcepts(List<ExternalItemDto> concepts) {
-        this.concepts = concepts;
-        conceptItem.setItemsValueMap(ExternalItemUtils.getExternalItemsHashMap(concepts));
     }
 
     @Override
@@ -526,7 +527,22 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         }
     }
 
-    public void setAttribute(DataAttributeDto dataAttributeDto) {
+    @Override
+    public void setConceptSchemes(GetRelatedResourcesResult result) {
+        if (searchConceptWindow != null) {
+            searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
+        }
+    }
+
+    @Override
+    public void setConcepts(GetRelatedResourcesResult result) {
+        if (searchConceptWindow != null) {
+            searchConceptWindow.setRelatedResources(result.getRelatedResourceDtos());
+            searchConceptWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+        }
+    }
+
+    private void setAttribute(DataAttributeDto dataAttributeDto) {
         setAttributeViewMode(dataAttributeDto);
         setAttributeEditionMode(dataAttributeDto);
     }
@@ -542,7 +558,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
-        staticConceptItem.setValue(dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode());
+        form.setValue(DataAttributeDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(dataAttributeDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
 
         // Role
         List<ExternalItemDto> roleConcepts = new ArrayList<ExternalItemDto>(dataAttributeDto.getRole());
@@ -635,7 +651,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionForm.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
-        conceptItem.clearValue(); // Clear concept value: which is the scheme of a concept?
+        editionForm.setValue(DataAttributeDS.CONCEPT, dataAttributeDto.getCptIdRef() != null ? dataAttributeDto.getCptIdRef().getUrn() : null);
+        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(dataAttributeDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
 
         // RelateTo
         relationType.setValue(new String());
@@ -725,7 +742,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         dataAttributeDto.getRole().addAll(roleConcepts);
 
         // Concept
-        dataAttributeDto.setCptIdRef(conceptItem.getSelectedExternalItem(concepts));
+        // TODO RelatedResourceDto instead of ExternalItemDto
+        // dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null :
+        // RelatedResourceUtils.createRelatedResourceDto(TypeExternalArtefactsEnum.CONCEPT,
+        // editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
+        dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null : RelatedResourceUtils.createExternalItemDto(TypeExternalArtefactsEnum.CONCEPT,
+                editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
 
         // Assignment Status
         dataAttributeDto.setUsageStatus((assignmentStatusItem.getValueAsString() == null || assignmentStatusItem.getValueAsString().isEmpty()) ? null : UsageStatus.valueOf(assignmentStatusItem
@@ -795,9 +817,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     @Override
     public boolean validate() {
-        return Visibility.HIDDEN.equals(facetForm.getVisibility())
-                ? editionForm.validate(false) && conceptItem.validateItem()
-                : (editionForm.validate(false) && facetForm.validate(false) && conceptItem.validateItem());
+        return Visibility.HIDDEN.equals(facetForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetForm.validate(false));
     }
 
     @Override
@@ -807,7 +827,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     @Override
     public HasClickHandlers getDelete() {
-        return importDsdWindow.getYesButton();
+        return deleteConfirmationWindow.getYesButton();
     }
 
     @Override
@@ -818,16 +838,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         attributesGrid.addData(record);
         attributesGrid.selectRecord(record);
         mainFormLayout.setViewMode();
-    }
-
-    @Override
-    public HasChangeHandlers onConceptSchemeChange() {
-        return conceptItem.getSchemeItem();
-    }
-
-    @Override
-    public HasChangeHandlers onConceptChange() {
-        return conceptItem.getItem();
     }
 
     @Override
@@ -925,5 +935,80 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         if (DsdClientSecurityUtils.canUpdateAttributes(procStatus)) {
             deleteToolStripButton.show();
         }
+    }
+
+    private SearchViewTextItem createConceptItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        final SearchViewTextItem conceptItem = new SearchViewTextItem(name, title);
+        conceptItem.setRequired(true);
+        conceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                SelectItem conceptSchemeSelectItem = new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme());
+                searchConceptWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, conceptSchemeSelectItem, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveConcepts(firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                    }
+                });
+
+                // Load concept schemes and concepts (to populate the selection window)
+                getUiHandlers().retrieveConceptSchemes(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                getUiHandlers().retrieveConcepts(FIRST_RESULST, MAX_RESULTS, null, null);
+
+                searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        getUiHandlers().retrieveConcepts(FIRST_RESULST, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                    }
+                });
+
+                searchConceptWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchConceptWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String concept) {
+                        getUiHandlers().retrieveConcepts(firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue());
+                    }
+                });
+
+                searchConceptWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
+                        searchConceptWindow.markForDestroy();
+                        // Set selected concepts in form
+                        editionForm.setValue(DataAttributeDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
+                        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, selectedConcept != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept) : null);
+
+                        // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
+                        // TODO
+                        // editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
+                        // editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, StringUtils.EMPTY);
+
+                        editionForm.markForRedraw();
+                    }
+                });
+            }
+        });
+        // Set requited with a custom validator
+        CustomValidator customValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                if (conceptItem.getValue() != null) {
+                    String conceptValue = String.valueOf(conceptItem.getValue());
+                    return !StringUtils.isBlank(conceptValue);
+                }
+                return false;
+            }
+        };
+        conceptItem.setValidators(customValidator);
+        return conceptItem;
     }
 }

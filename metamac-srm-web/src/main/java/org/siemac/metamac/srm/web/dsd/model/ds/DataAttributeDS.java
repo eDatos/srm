@@ -8,6 +8,7 @@ public class DataAttributeDS {
     public static final String URN_PROVIDER                         = "attr-urn-provider";
     public static final String ASSIGMENT_STATUS                     = "attr-assign-status";
     public static final String CONCEPT                              = "attr-con";
+    public static final String CONCEPT_VIEW                         = "attr-con-view";
     public static final String ROLE                                 = "attr-role";
     public static final String RELATED_WITH                         = "attr-related-with";
     public static final String GROUP_KEY_FOR_GROUP_RELATIONSHIP     = "attr-group-group";
