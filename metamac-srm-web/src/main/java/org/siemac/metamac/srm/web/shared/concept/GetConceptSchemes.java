@@ -10,7 +10,7 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetConceptSchemePaginatedList {
+public class GetConceptSchemes {
 
     @In(1)
     int                           firstResult;

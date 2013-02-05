@@ -19,8 +19,8 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
@@ -147,14 +147,14 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveConceptSchemes() {
-        dispatcher.execute(new GetConceptSchemePaginatedListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
+        dispatcher.execute(new GetConceptSchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetConceptSchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetConceptSchemePaginatedListResult result) {
+            public void onWaitSuccess(GetConceptSchemesResult result) {
                 getView().setConceptSchemeList(result.getConceptSchemeList());
             }
         });

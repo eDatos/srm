@@ -21,8 +21,8 @@ import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityActi
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListResult;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
@@ -75,7 +75,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     public interface ConceptSchemeListView extends View, HasUiHandlers<ConceptSchemeListUiHandlers> {
 
-        void setConceptSchemePaginatedList(GetConceptSchemePaginatedListResult conceptSchemesPaginatedList);
+        void setConceptSchemePaginatedList(GetConceptSchemesResult conceptSchemesPaginatedList);
         void goToConceptSchemeListLastPageAfterCreate();
         void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
         void clearSearchSection();
@@ -109,14 +109,14 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void retrieveConceptSchemes(int firstResult, int maxResults, final String criteria) {
-        dispatcher.execute(new GetConceptSchemePaginatedListAction(firstResult, maxResults, new ConceptSchemeWebCriteria(criteria)), new WaitingAsyncCallback<GetConceptSchemePaginatedListResult>() {
+        dispatcher.execute(new GetConceptSchemesAction(firstResult, maxResults, new ConceptSchemeWebCriteria(criteria)), new WaitingAsyncCallback<GetConceptSchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetConceptSchemePaginatedListResult result) {
+            public void onWaitSuccess(GetConceptSchemesResult result) {
                 getView().setConceptSchemePaginatedList(result);
                 if (StringUtils.isBlank(criteria)) {
                     getView().clearSearchSection();

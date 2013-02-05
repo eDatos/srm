@@ -17,7 +17,7 @@ import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
@@ -192,7 +192,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
     }
 
     @Override
-    public void setConceptSchemePaginatedList(GetConceptSchemePaginatedListResult conceptSchemesPaginatedList) {
+    public void setConceptSchemePaginatedList(GetConceptSchemesResult conceptSchemesPaginatedList) {
         setConceptSchemeList(conceptSchemesPaginatedList.getConceptSchemeList());
         conceptSchemesList.refreshPaginationInfo(conceptSchemesPaginatedList.getPageNumber(), conceptSchemesPaginatedList.getConceptSchemeList().size(), conceptSchemesPaginatedList.getTotalResults());
     }

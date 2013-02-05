@@ -17,8 +17,8 @@ import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaO
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -28,17 +28,17 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetConceptSchemePaginatedListActionHandler extends SecurityActionHandler<GetConceptSchemePaginatedListAction, GetConceptSchemePaginatedListResult> {
+public class GetConceptSchemesActionHandler extends SecurityActionHandler<GetConceptSchemesAction, GetConceptSchemesResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetConceptSchemePaginatedListActionHandler() {
-        super(GetConceptSchemePaginatedListAction.class);
+    public GetConceptSchemesActionHandler() {
+        super(GetConceptSchemesAction.class);
     }
 
     @Override
-    public GetConceptSchemePaginatedListResult executeSecurityAction(GetConceptSchemePaginatedListAction action) throws ActionException {
+    public GetConceptSchemesResult executeSecurityAction(GetConceptSchemesAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
@@ -70,7 +70,7 @@ public class GetConceptSchemePaginatedListActionHandler extends SecurityActionHa
 
         try {
             MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetConceptSchemePaginatedListResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            return new GetConceptSchemesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
