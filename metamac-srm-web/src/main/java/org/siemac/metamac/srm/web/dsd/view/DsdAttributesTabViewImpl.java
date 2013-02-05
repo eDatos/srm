@@ -72,7 +72,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
@@ -996,23 +995,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                         editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, StringUtils.EMPTY);
 
                         editionForm.markForRedraw();
+                        editionForm.validate(false);
                     }
                 });
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (conceptItem.getValue() != null) {
-                    String conceptValue = String.valueOf(conceptItem.getValue());
-                    return !StringUtils.isBlank(conceptValue);
-                }
-                return false;
-            }
-        };
-        conceptItem.setValidators(customValidator);
         return conceptItem;
     }
 
@@ -1079,6 +1066,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
+        codelistItem.setRequired(true);
         codelistItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -1131,24 +1119,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                             editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
                             editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW,
                                     selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                            editionForm.validate(false);
                         }
                     });
                 }
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (codelistItem.getValue() != null) {
-                    String codelistValue = String.valueOf(codelistItem.getValue());
-                    return !StringUtils.isBlank(codelistValue);
-                }
-                return false;
-            }
-        };
-        codelistItem.setValidators(customValidator);
         return codelistItem;
     }
 }
