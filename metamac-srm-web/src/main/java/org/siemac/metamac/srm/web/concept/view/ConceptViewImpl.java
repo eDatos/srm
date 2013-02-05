@@ -93,7 +93,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private GroupDynamicForm                             identifiersForm;
     private GroupDynamicForm                             contentDescriptorsForm;
     private StaticFacetForm                              facetForm;
-    private GroupDynamicForm                             productionDescriptorsForm;
+    private GroupDynamicForm                             classDescriptorsForm;
     private GroupDynamicForm                             relationBetweenConceptsForm;
     private GroupDynamicForm                             legalActsForm;
     private GroupDynamicForm                             commentsForm;
@@ -103,7 +103,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private GroupDynamicForm                             identifiersEditionForm;
     private GroupDynamicForm                             contentDescriptorsEditionForm;
     private ConceptFacetForm                             facetEditionForm;
-    private GroupDynamicForm                             productionDescriptorsEditionForm;
+    private GroupDynamicForm                             classDescriptorsEditionForm;
     private GroupDynamicForm                             relationBetweenConceptsEditionForm;
     private GroupDynamicForm                             legalActsEditionForm;
     private GroupDynamicForm                             commentsEditionForm;
@@ -155,8 +155,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
-                productionDescriptorsForm.setTranslationsShowed(translationsShowed);
-                productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
+                classDescriptorsForm.setTranslationsShowed(translationsShowed);
+                classDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
                 relationBetweenConceptsForm.setTranslationsShowed(translationsShowed);
                 relationBetweenConceptsEditionForm.setTranslationsShowed(translationsShowed);
@@ -242,9 +242,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         facetForm = new StaticFacetForm();
 
         // Production descriptors
-        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        classDescriptorsForm = new GroupDynamicForm(getConstants().formClassDescriptors());
         ViewMultiLanguageTextItem derivation = new ViewMultiLanguageTextItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
-        productionDescriptorsForm.setFields(derivation);
+        classDescriptorsForm.setFields(derivation);
 
         // Relation between concepts
         relationBetweenConceptsForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
@@ -268,7 +268,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(facetForm);
-        mainFormLayout.addViewCanvas(productionDescriptorsForm);
+        mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(relationBetweenConceptsForm);
         mainFormLayout.addViewCanvas(legalActsForm);
         mainFormLayout.addViewCanvas(commentsForm);
@@ -327,9 +327,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         facetEditionForm = new ConceptFacetForm();
 
         // Production descriptors
-        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
         MultiLanguageTextItem derivation = new MultiLanguageTextItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
-        productionDescriptorsEditionForm.setFields(derivation);
+        classDescriptorsEditionForm.setFields(derivation);
 
         // Relation between concepts
         relationBetweenConceptsEditionForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
@@ -355,7 +355,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(facetEditionForm);
-        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
         mainFormLayout.addEditionCanvas(legalActsEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
@@ -460,7 +460,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // Class descriptors
 
         // Production descriptors
-        productionDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
+        classDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
         relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
@@ -515,7 +515,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // Class descriptors
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
+        classDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
@@ -574,7 +574,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // Class descriptors
 
         // Production descriptors
-        conceptDto.setDerivation((InternationalStringDto) productionDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
+        conceptDto.setDerivation((InternationalStringDto) classDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
 
         // Relation between concepts
         conceptDto.setConceptExtends(StringUtils.isBlank(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)) ? null : RelatedResourceUtils.createRelatedResourceDto(
@@ -801,7 +801,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     private boolean validateEditionForms() {
         return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && (facetEditionForm.isVisible() ? facetEditionForm.validate(false) : true)
-                && contentDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false) && relationBetweenConceptsEditionForm.validate(false)
+                && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false) && relationBetweenConceptsEditionForm.validate(false)
                 && legalActsEditionForm.validate(false);
     }
 
