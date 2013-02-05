@@ -109,7 +109,9 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void retrieveConceptSchemes(int firstResult, int maxResults, final String criteria) {
-        dispatcher.execute(new GetConceptSchemesAction(firstResult, maxResults, new ConceptSchemeWebCriteria(criteria)), new WaitingAsyncCallback<GetConceptSchemesResult>() {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
+        conceptSchemeWebCriteria.setIsLastVersion(true);
+        dispatcher.execute(new GetConceptSchemesAction(firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetConceptSchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

@@ -5,6 +5,7 @@ public class ConceptSchemeWebCriteria extends MetamacWebCriteria {
     private static final long serialVersionUID = 1L;
 
     private String            dsdUrn;
+    private Boolean           isLastVersion;
 
     public ConceptSchemeWebCriteria() {
     }
@@ -24,5 +25,13 @@ public class ConceptSchemeWebCriteria extends MetamacWebCriteria {
 
     public void setDsdUrn(String dsdUrn) {
         this.dsdUrn = dsdUrn;
+    }
+
+    public Boolean getIsLastVersion() {
+        return isLastVersion;
+    }
+
+    public void setIsLastVersion(Boolean isLastVersion) {
+        this.isLastVersion = isLastVersion;
     }
 }

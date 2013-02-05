@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -49,16 +50,20 @@ public class GetConceptSchemesActionHandler extends SecurityActionHandler<GetCon
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = action.getCriteria();
+
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Only find last versions
-        MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
-                OperationType.EQ);
-        restriction.getRestrictions().add(lastVersionRestriction);
+        if (conceptSchemeWebCriteria != null && conceptSchemeWebCriteria.getIsLastVersion() != null) {
+            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
+                    OperationType.EQ);
+            restriction.getRestrictions().add(lastVersionRestriction);
+        }
 
         // Concept scheme Criteria
-        if (action.getCriteria() != null) {
-            restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(action.getCriteria()));
+        if (conceptSchemeWebCriteria != null) {
+            restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
         }
         criteria.setRestriction(restriction);
 
