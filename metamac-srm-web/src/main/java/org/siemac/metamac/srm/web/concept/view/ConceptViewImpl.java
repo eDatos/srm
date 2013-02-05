@@ -878,10 +878,15 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
                         RelatedResourceDto selectedVariable = searchVariableWindow.getSelectedRelatedResource();
                         searchVariableWindow.markForDestroy();
+
                         // Set selected family in form
                         contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
                         contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE_VIEW,
                                 selectedVariable != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariable) : null);
+
+                        // Reset the codelist associated with the enumerated representation of the concept (the codelist depends on the variable selected)
+                        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, StringUtils.EMPTY);
+                        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW, StringUtils.EMPTY);
                     }
                 });
             }
