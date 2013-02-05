@@ -17,6 +17,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.shared.criteria.DsdWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -50,20 +51,26 @@ public class GetDsdsActionHandler extends SecurityActionHandler<GetDsdsAction, G
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
+        DsdWebCriteria dsdWebCriteria = action.getCriteria();
+
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Only find last versions
-        MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
-                Boolean.TRUE, OperationType.EQ);
-        restriction.getRestrictions().add(lastVersionRestriction);
+        if (dsdWebCriteria.getIsLastVersion() != null) {
+            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
+                    dsdWebCriteria.getIsLastVersion(), OperationType.EQ);
+            restriction.getRestrictions().add(lastVersionRestriction);
+        }
 
         // DSD Criteria
         MetamacCriteriaDisjunctionRestriction dsdCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (!StringUtils.isBlank(action.getDsd())) {
+        if (!StringUtils.isBlank(dsdWebCriteria.getCriteria())) {
             dsdCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getDsd(), OperationType.ILIKE));
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), dsdWebCriteria.getCriteria(), OperationType.ILIKE));
             dsdCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getDsd(), OperationType.ILIKE));
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), dsdWebCriteria.getCriteria(), OperationType.ILIKE));
+            dsdCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.URN.name(), dsdWebCriteria.getCriteria(), OperationType.ILIKE));
             restriction.getRestrictions().add(dsdCriteriaDisjuction);
         }
 

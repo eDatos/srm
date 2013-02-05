@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.DsdWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
@@ -136,7 +137,9 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveDsds() {
-        dispatcher.execute(new GetDsdsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetDsdsResult>() {
+        DsdWebCriteria dsdWebCriteria = new DsdWebCriteria();
+        dsdWebCriteria.setIsLastVersion(true);
+        dispatcher.execute(new GetDsdsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, dsdWebCriteria), new WaitingAsyncCallback<GetDsdsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
