@@ -42,6 +42,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
     private final static int            OPERATION_LIST_MAX_RESULTS  = 6;
 
     private CustomDynamicForm           form;
+    private SearchExternalPaginatedItem searchOperationItem;
 
     private ConceptSchemeListUiHandlers uiHandlers;
 
@@ -70,24 +71,24 @@ public class NewConceptSchemeWindow extends CustomWindow {
             }
         });
 
-        final SearchExternalPaginatedItem operation = new SearchExternalPaginatedItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation(), FORM_ITEM_CUSTOM_WIDTH + 100,
-                OPERATION_LIST_MAX_RESULTS, new PaginatedAction() {
+        searchOperationItem = new SearchExternalPaginatedItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation(), FORM_ITEM_CUSTOM_WIDTH + 100, OPERATION_LIST_MAX_RESULTS,
+                new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, null);
+                        uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, searchOperationItem.getSearchCriteria());
                     }
                 });
-        operation.getListGrid().setSelectionType(SelectionStyle.SINGLE);
-        operation.setSearchAction(new SearchPaginatedAction() {
+        searchOperationItem.getListGrid().setSelectionType(SelectionStyle.SINGLE);
+        searchOperationItem.setSearchAction(new SearchPaginatedAction() {
 
             @Override
-            public void retrieveResultSet(int firstResult, int maxResults, String code) {
-                uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, code);
+            public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, criteria);
             }
         });
-        operation.setWidth(FORM_ITEM_CUSTOM_WIDTH + 100);
-        operation.setShowIfCondition(new FormItemIfFunction() {
+        searchOperationItem.setWidth(FORM_ITEM_CUSTOM_WIDTH + 100);
+        searchOperationItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
@@ -98,16 +99,16 @@ public class NewConceptSchemeWindow extends CustomWindow {
 
             @Override
             protected boolean condition(Object value) {
-                return operation.isVisible() ? !(operation.getSelectedExternalItem() == null) : true;
+                return searchOperationItem.isVisible() ? !(searchOperationItem.getSelectedExternalItem() == null) : true;
             }
         };
-        operation.setValidators(customValidator);
+        searchOperationItem.setValidators(customValidator);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().conceptSchemeCreate());
 
         form = new CustomDynamicForm();
         form.setMargin(5);
-        form.setFields(codeItem, nameItem, type, operation, saveItem);
+        form.setFields(codeItem, nameItem, type, searchOperationItem, saveItem);
 
         addItem(form);
         show();
@@ -143,5 +144,4 @@ public class NewConceptSchemeWindow extends CustomWindow {
     public void setUiHandlers(ConceptSchemeListUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
     }
-
 }
