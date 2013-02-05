@@ -69,6 +69,8 @@ public class GetCodelistsActionHandler extends SecurityActionHandler<GetCodelist
                     new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), codelistWebCriteria.getCriteria(), OperationType.ILIKE));
             codelistCriteriaDisjuction.getRestrictions().add(
                     new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), codelistWebCriteria.getCriteria(), OperationType.ILIKE));
+            codelistCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), codelistWebCriteria.getCriteria(), OperationType.ILIKE));
             restriction.getRestrictions().add(codelistCriteriaDisjuction);
         }
 

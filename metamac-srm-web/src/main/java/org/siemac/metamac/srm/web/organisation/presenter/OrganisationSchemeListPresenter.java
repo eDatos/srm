@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
@@ -152,8 +153,10 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     }
 
     @Override
-    public void retrieveOrganisationSchemes(int firstResult, int maxResults, final String organisationScheme) {
-        dispatcher.execute(new GetOrganisationSchemesAction(firstResult, maxResults, organisationScheme), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
+    public void retrieveOrganisationSchemes(int firstResult, int maxResults, final String criteria) {
+        OrganisationSchemeWebCriteria organisationSchemeWebCriteria = new OrganisationSchemeWebCriteria(criteria);
+        organisationSchemeWebCriteria.setIsLastVersion(true);
+        dispatcher.execute(new GetOrganisationSchemesAction(firstResult, maxResults, organisationSchemeWebCriteria), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -162,7 +165,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitSuccess(GetOrganisationSchemesResult result) {
                 getView().setOrganisationSchemesPaginatedList(result);
-                if (StringUtils.isBlank(organisationScheme)) {
+                if (StringUtils.isBlank(criteria)) {
                     getView().clearSearchSection();
                 }
             }

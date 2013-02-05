@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCrit
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -50,20 +51,26 @@ public class GetOrganisationSchemesActionHandler extends SecurityActionHandler<G
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
+        OrganisationSchemeWebCriteria organisationSchemeWebCriteria = action.getCriteria();
+
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Only find last versions
-        MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
-                OperationType.EQ);
-        restriction.getRestrictions().add(lastVersionRestriction);
+        if (organisationSchemeWebCriteria.getIsLastVersion() != null) {
+            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
+                    organisationSchemeWebCriteria.getIsLastVersion(), OperationType.EQ);
+            restriction.getRestrictions().add(lastVersionRestriction);
+        }
 
         // Organisation scheme Criteria
         MetamacCriteriaDisjunctionRestriction organisationSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (!StringUtils.isBlank(action.getOrganisationScheme())) {
+        if (!StringUtils.isBlank(organisationSchemeWebCriteria.getCriteria())) {
             organisationSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getOrganisationScheme(), OperationType.ILIKE));
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), organisationSchemeWebCriteria.getCriteria(), OperationType.ILIKE));
             organisationSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getOrganisationScheme(), OperationType.ILIKE));
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), organisationSchemeWebCriteria.getCriteria(), OperationType.ILIKE));
+            organisationSchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), organisationSchemeWebCriteria.getCriteria(), OperationType.ILIKE));
             restriction.getRestrictions().add(organisationSchemeCriteriaDisjuction);
         }
 

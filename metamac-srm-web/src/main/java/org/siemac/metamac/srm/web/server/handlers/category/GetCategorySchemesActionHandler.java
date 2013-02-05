@@ -69,6 +69,8 @@ public class GetCategorySchemesActionHandler extends SecurityActionHandler<GetCa
                     new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), categorySchemeWebCriteria.getCriteria(), OperationType.ILIKE));
             categorySchemeCriteriaDisjuction.getRestrictions().add(
                     new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), categorySchemeWebCriteria.getCriteria(), OperationType.ILIKE));
+            categorySchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.URN.name(), categorySchemeWebCriteria.getCriteria(), OperationType.ILIKE));
             restriction.getRestrictions().add(categorySchemeCriteriaDisjuction);
         }
 

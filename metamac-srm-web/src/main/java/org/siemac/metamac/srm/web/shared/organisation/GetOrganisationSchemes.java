@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.shared.organisation;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -18,7 +19,7 @@ public class GetOrganisationSchemes {
     int                                maxResults;
 
     @In(3)
-    String                             organisationScheme;
+    OrganisationSchemeWebCriteria      criteria;
 
     @Out(1)
     List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos;

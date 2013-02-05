@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
@@ -165,17 +166,21 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveOrganisationSchemes() {
-        dispatcher.execute(new GetOrganisationSchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
+        OrganisationSchemeWebCriteria organisationSchemeWebCriteria = new OrganisationSchemeWebCriteria();
+        organisationSchemeWebCriteria.setIsLastVersion(true);
+        dispatcher.execute(new GetOrganisationSchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, organisationSchemeWebCriteria),
+                new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().organisationSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetOrganisationSchemesResult result) {
-                getView().setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().organisationSchemeErrorRetrieveList()),
+                                MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetOrganisationSchemesResult result) {
+                        getView().setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
+                    }
+                });
     }
 
     private void retrieveCategorySchemes() {
