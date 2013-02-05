@@ -14,7 +14,7 @@ import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListP
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.NewOrganisationSchemeWindow;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
@@ -201,7 +201,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     }
 
     @Override
-    public void setOrganisationSchemesPaginatedList(GetOrganisationSchemeListResult result) {
+    public void setOrganisationSchemesPaginatedList(GetOrganisationSchemesResult result) {
         setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
         organisationSchemeList.refreshPaginationInfo(result.getPageNumber(), result.getOrganisationSchemeMetamacDtos().size(), result.getTotalResults());
     }

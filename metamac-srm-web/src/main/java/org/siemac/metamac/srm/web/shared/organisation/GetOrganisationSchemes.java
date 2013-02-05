@@ -9,7 +9,7 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetOrganisationSchemeList {
+public class GetOrganisationSchemes {
 
     @In(1)
     int                                firstResult;
@@ -28,5 +28,4 @@ public class GetOrganisationSchemeList {
 
     @Out(3)
     Integer                            totalResults;
-
 }

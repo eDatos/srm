@@ -99,7 +99,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.GetDefaultMaintai
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationListBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeVersionListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationSchemeActionHandler;
@@ -203,7 +203,7 @@ import org.siemac.metamac.srm.web.shared.organisation.GetDefaultMaintainerAction
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
@@ -275,7 +275,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetConceptsCanBeExtendedAction.class, GetConceptsCanBeExtendedActionHandler.class);
 
         // Organisations
-        bindHandler(GetOrganisationSchemeListAction.class, GetOrganisationSchemeListActionHandler.class);
+        bindHandler(GetOrganisationSchemesAction.class, GetOrganisationSchemesActionHandler.class);
         bindHandler(GetOrganisationSchemeAction.class, GetOrganisationSchemeActionHandler.class);
         bindHandler(UpdateOrganisationSchemeProcStatusAction.class, UpdateOrganisationSchemeProcStatusActionHandler.class);
         bindHandler(GetOrganisationSchemeVersionListAction.class, GetOrganisationSchemeVersionListActionHandler.class);

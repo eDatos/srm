@@ -18,8 +18,8 @@ import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCrit
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -29,17 +29,17 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetOrganisationSchemeListActionHandler extends SecurityActionHandler<GetOrganisationSchemeListAction, GetOrganisationSchemeListResult> {
+public class GetOrganisationSchemesActionHandler extends SecurityActionHandler<GetOrganisationSchemesAction, GetOrganisationSchemesResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetOrganisationSchemeListActionHandler() {
-        super(GetOrganisationSchemeListAction.class);
+    public GetOrganisationSchemesActionHandler() {
+        super(GetOrganisationSchemesAction.class);
     }
 
     @Override
-    public GetOrganisationSchemeListResult executeSecurityAction(GetOrganisationSchemeListAction action) throws ActionException {
+    public GetOrganisationSchemesResult executeSecurityAction(GetOrganisationSchemesAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
@@ -77,7 +77,7 @@ public class GetOrganisationSchemeListActionHandler extends SecurityActionHandle
 
         try {
             MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetOrganisationSchemeListResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            return new GetOrganisationSchemesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

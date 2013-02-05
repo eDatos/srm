@@ -24,8 +24,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -161,14 +161,14 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveOrganisationSchemes() {
-        dispatcher.execute(new GetOrganisationSchemeListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetOrganisationSchemeListResult>() {
+        dispatcher.execute(new GetOrganisationSchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().organisationSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetOrganisationSchemeListResult result) {
+            public void onWaitSuccess(GetOrganisationSchemesResult result) {
                 getView().setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
             }
         });

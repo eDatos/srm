@@ -20,8 +20,8 @@ import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeVa
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListResult;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -75,7 +75,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
 
     public interface OrganisationSchemeListView extends View, HasUiHandlers<OrganisationSchemeListUiHandlers> {
 
-        void setOrganisationSchemesPaginatedList(GetOrganisationSchemeListResult result);
+        void setOrganisationSchemesPaginatedList(GetOrganisationSchemesResult result);
         void clearSearchSection();
     }
 
@@ -153,14 +153,14 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
 
     @Override
     public void retrieveOrganisationSchemes(int firstResult, int maxResults, final String organisationScheme) {
-        dispatcher.execute(new GetOrganisationSchemeListAction(firstResult, maxResults, organisationScheme), new WaitingAsyncCallback<GetOrganisationSchemeListResult>() {
+        dispatcher.execute(new GetOrganisationSchemesAction(firstResult, maxResults, organisationScheme), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetOrganisationSchemeListResult result) {
+            public void onWaitSuccess(GetOrganisationSchemesResult result) {
                 getView().setOrganisationSchemesPaginatedList(result);
                 if (StringUtils.isBlank(organisationScheme)) {
                     getView().clearSearchSection();
