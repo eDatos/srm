@@ -1,13 +1,11 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
-import org.siemac.metamac.srm.web.dsd.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
@@ -69,17 +67,6 @@ public class RecordUtils {
      */
     public static GroupKeysRecord getGroupKeysRecord(DescriptorDto groupKeys) {
         GroupKeysRecord record = new GroupKeysRecord(groupKeys.getId(), groupKeys.getCode(), null, groupKeys);
-        return record;
-    }
-
-    /**
-     * Returns {@link ConceptRecord} from {@link ExternalItemDto}
-     * 
-     * @param concept
-     * @return
-     */
-    public static ConceptRecord getConceptRecord(ExternalItemDto concept) {
-        ConceptRecord record = new ConceptRecord(concept.getCode(), null, concept.getCode(), concept);
         return record;
     }
 

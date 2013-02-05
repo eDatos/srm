@@ -1,8 +1,5 @@
 package org.siemac.metamac.srm.web.server;
 
-import org.siemac.metamac.srm.web.server.handlers.FindCodeListsActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.FindConceptSchemesActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.FindConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.GetRelatedResourcesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.GetUserGuideUrlActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
@@ -108,9 +105,6 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationA
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.UpdateOrganisationSchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.VersionOrganisationSchemeActionHandler;
-import org.siemac.metamac.srm.web.shared.FindCodeListsAction;
-import org.siemac.metamac.srm.web.shared.FindConceptSchemesAction;
-import org.siemac.metamac.srm.web.shared.FindConceptsAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
@@ -246,8 +240,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetDsdAction.class, GetDsdActionHandler.class);
         bindHandler(GetDsdAndDescriptorsAction.class, GetDsdAndDescriptorsActionHandler.class);
         bindHandler(FindDescriptorForDsdAction.class, FindDescriptorForDsdActionHandler.class);
-        bindHandler(FindConceptSchemesAction.class, FindConceptSchemesActionHandler.class);
-        bindHandler(FindConceptsAction.class, FindConceptsActionHandler.class);
         bindHandler(SaveDsdAction.class, SaveDsdActionHandler.class);
         bindHandler(SaveComponentForDsdAction.class, SaveComponentForDsdActionHandler.class);
         bindHandler(SaveDescriptorForDsdAction.class, SaveDescriptorForDsdActionHandler.class);
@@ -255,7 +247,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteDimensionListForDsdAction.class, DeleteDimensionListForDsdActionHandler.class);
         bindHandler(DeleteAttributeListForDsdAction.class, DeleteAttributeListForDsdActionHandler.class);
         bindHandler(DeleteDescriptorListForDsdAction.class, DeleteDescriptorListForDsdActionHandler.class);
-        bindHandler(FindCodeListsAction.class, FindCodeListsActionHandler.class);
         bindHandler(ExportDsdAction.class, ExportDsdActionHandler.class);
         bindHandler(UpdateDsdProcStatusAction.class, UpdateDsdProcStatusActionHandlder.class);
         bindHandler(VersionDsdAction.class, VersionDsdActionHandler.class);
