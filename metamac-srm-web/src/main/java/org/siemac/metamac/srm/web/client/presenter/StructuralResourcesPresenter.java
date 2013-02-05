@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
@@ -178,7 +179,9 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveCategorySchemes() {
-        dispatcher.execute(new GetCategorySchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetCategorySchemesResult>() {
+        CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria();
+        categorySchemeWebCriteria.setIsLastVersion(true);
+        dispatcher.execute(new GetCategorySchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

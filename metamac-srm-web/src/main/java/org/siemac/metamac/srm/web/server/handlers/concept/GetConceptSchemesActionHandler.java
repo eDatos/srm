@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
@@ -55,14 +56,14 @@ public class GetConceptSchemesActionHandler extends SecurityActionHandler<GetCon
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Only find last versions
-        if (conceptSchemeWebCriteria != null && conceptSchemeWebCriteria.getIsLastVersion() != null) {
-            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
-                    OperationType.EQ);
+        if (conceptSchemeWebCriteria.getIsLastVersion() != null) {
+            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
+                    conceptSchemeWebCriteria.getIsLastVersion(), OperationType.EQ);
             restriction.getRestrictions().add(lastVersionRestriction);
         }
 
         // Concept scheme Criteria
-        if (conceptSchemeWebCriteria != null) {
+        if (!StringUtils.isBlank(conceptSchemeWebCriteria.getCriteria())) {
             restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
         }
         criteria.setRestriction(restriction);

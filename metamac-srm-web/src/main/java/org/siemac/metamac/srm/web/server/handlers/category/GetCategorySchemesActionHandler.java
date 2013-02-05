@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteria
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -50,20 +51,24 @@ public class GetCategorySchemesActionHandler extends SecurityActionHandler<GetCa
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
+        CategorySchemeWebCriteria categorySchemeWebCriteria = action.getCategorySchemeWebCriteria();
+
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Only find last versions
-        MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), Boolean.TRUE,
-                OperationType.EQ);
-        restriction.getRestrictions().add(lastVersionRestriction);
+        if (categorySchemeWebCriteria.getIsLastVersion() != null) {
+            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
+                    categorySchemeWebCriteria.getIsLastVersion(), OperationType.EQ);
+            restriction.getRestrictions().add(lastVersionRestriction);
+        }
 
         // Category scheme Criteria
         MetamacCriteriaDisjunctionRestriction categorySchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (!StringUtils.isBlank(action.getCategoryScheme())) {
+        if (!StringUtils.isBlank(categorySchemeWebCriteria.getCriteria())) {
             categorySchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), action.getCategoryScheme(), OperationType.ILIKE));
+                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), categorySchemeWebCriteria.getCriteria(), OperationType.ILIKE));
             categorySchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), action.getCategoryScheme(), OperationType.ILIKE));
+                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), categorySchemeWebCriteria.getCriteria(), OperationType.ILIKE));
             restriction.getRestrictions().add(categorySchemeCriteriaDisjuction);
         }
 

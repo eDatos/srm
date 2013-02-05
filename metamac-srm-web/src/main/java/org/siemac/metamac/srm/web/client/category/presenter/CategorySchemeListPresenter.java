@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -106,8 +107,10 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     }
 
     @Override
-    public void retrieveCategorySchemes(int firstResult, int maxResults, final String categoryScheme) {
-        dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categoryScheme), new WaitingAsyncCallback<GetCategorySchemesResult>() {
+    public void retrieveCategorySchemes(int firstResult, int maxResults, final String criteria) {
+        CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria(criteria);
+        categorySchemeWebCriteria.setIsLastVersion(true);
+        dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -116,7 +119,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
                 getView().setCategorySchemePaginatedList(result);
-                if (StringUtils.isBlank(categoryScheme)) {
+                if (StringUtils.isBlank(criteria)) {
                     getView().clearSearchSection();
                 }
             }

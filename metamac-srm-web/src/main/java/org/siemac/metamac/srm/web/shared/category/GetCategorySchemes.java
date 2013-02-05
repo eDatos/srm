@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.shared.category;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -18,7 +19,7 @@ public class GetCategorySchemes {
     int                            maxResults;
 
     @In(3)
-    String                         categoryScheme;
+    CategorySchemeWebCriteria      categorySchemeWebCriteria;
 
     @Out(1)
     List<CategorySchemeMetamacDto> categorySchemeList;
