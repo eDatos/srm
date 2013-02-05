@@ -50,7 +50,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryMeasureTabUiHandlers> implements DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView {
@@ -394,23 +393,11 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                         editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, selectedConcept != null
                                 ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept)
                                 : null);
+                        editionForm.validate(false);
                     }
                 });
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (conceptItem.getValue() != null) {
-                    String conceptValue = String.valueOf(conceptItem.getValue());
-                    return !StringUtils.isBlank(conceptValue);
-                }
-                return false;
-            }
-        };
-        conceptItem.setValidators(customValidator);
         return conceptItem;
     }
 
@@ -418,6 +405,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         final SearchViewTextItem enumeratedRepresentationItem = new SearchViewTextItem(name, title);
+        enumeratedRepresentationItem.setRequired(true);
         enumeratedRepresentationItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -459,23 +447,11 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                         editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, selectedCodelist != null ? selectedCodelist.getUrn() : null);
                         editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW,
                                 selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                        editionForm.validate(false);
                     }
                 });
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (enumeratedRepresentationItem.getValue() != null) {
-                    String conceptValue = String.valueOf(enumeratedRepresentationItem.getValue());
-                    return !StringUtils.isBlank(conceptValue);
-                }
-                return false;
-            }
-        };
-        enumeratedRepresentationItem.setValidators(customValidator);
         return enumeratedRepresentationItem;
     }
 }

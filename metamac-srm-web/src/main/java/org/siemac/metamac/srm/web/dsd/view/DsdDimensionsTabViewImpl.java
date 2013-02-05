@@ -970,28 +970,17 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, StringUtils.EMPTY);
 
                         editionForm.markForRedraw();
+                        editionForm.validate(false);
                     }
                 });
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (conceptItem.getValue() != null) {
-                    String conceptValue = String.valueOf(conceptItem.getValue());
-                    return !StringUtils.isBlank(conceptValue);
-                }
-                return false;
-            }
-        };
-        conceptItem.setValidators(customValidator);
         return conceptItem;
     }
 
     private SearchViewTextItem createMeasureDimensionEnumeratedRepresentationItem(String name, String title) {
         final SearchViewTextItem conceptSchemeItem = new SearchViewTextItem(name, title);
+        conceptSchemeItem.setRequired(true);
         conceptSchemeItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -1045,23 +1034,11 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, selectedConceptScheme != null ? selectedConceptScheme.getUrn() : null);
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW,
                                 selectedConceptScheme != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConceptScheme) : null);
+                        editionForm.validate(false);
                     }
                 });
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (conceptSchemeItem.getValue() != null) {
-                    String conceptValue = String.valueOf(conceptSchemeItem.getValue());
-                    return !StringUtils.isBlank(conceptValue);
-                }
-                return false;
-            }
-        };
-        conceptSchemeItem.setValidators(customValidator);
         return conceptSchemeItem;
     }
 
@@ -1069,6 +1046,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
+        codelistItem.setRequired(true);
         codelistItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -1122,24 +1100,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                             editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
                             editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW,
                                     selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                            editionForm.validate(false);
                         }
                     });
                 }
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (codelistItem.getValue() != null) {
-                    String codelistValue = String.valueOf(codelistItem.getValue());
-                    return !StringUtils.isBlank(codelistValue);
-                }
-                return false;
-            }
-        };
-        codelistItem.setValidators(customValidator);
         return codelistItem;
     }
 }
