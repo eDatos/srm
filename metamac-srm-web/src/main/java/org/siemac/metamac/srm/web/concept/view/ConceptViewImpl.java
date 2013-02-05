@@ -93,7 +93,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private GroupDynamicForm                             identifiersForm;
     private GroupDynamicForm                             contentDescriptorsForm;
     private StaticFacetForm                              facetForm;
-    private GroupDynamicForm                             classDescriptorsForm;
     private GroupDynamicForm                             productionDescriptorsForm;
     private GroupDynamicForm                             relationBetweenConceptsForm;
     private GroupDynamicForm                             legalActsForm;
@@ -104,7 +103,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private GroupDynamicForm                             identifiersEditionForm;
     private GroupDynamicForm                             contentDescriptorsEditionForm;
     private ConceptFacetForm                             facetEditionForm;
-    private GroupDynamicForm                             classDescriptorsEditionForm;
     private GroupDynamicForm                             productionDescriptorsEditionForm;
     private GroupDynamicForm                             relationBetweenConceptsEditionForm;
     private GroupDynamicForm                             legalActsEditionForm;
@@ -156,9 +154,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
-
-                classDescriptorsForm.setTranslationsShowed(translationsShowed);
-                classDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
                 productionDescriptorsForm.setTranslationsShowed(translationsShowed);
                 productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
@@ -225,10 +220,15 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewMultiLanguageTextItem context = new ViewMultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         ViewMultiLanguageTextItem docMethod = new ViewMultiLanguageTextItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
         ViewTextItem variable = new ViewTextItem(ConceptDS.VARIABLE_VIEW, getConstants().variable());
+        ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
+        sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
+        ViewTextItem type = new ViewTextItem(ConceptDS.TYPE, getConstants().conceptType());
+        RelatedResourceListItem roles = new RelatedResourceListItem(ConceptDS.ROLES, getConstants().conceptRoles(), false);
+        roles.setShowIfCondition(getRolesFormItemIfFunction());
         ViewTextItem representation = new ViewTextItem(RepresentationDS.TYPE, getConstants().representation());
         representation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         ViewTextItem representationView = new ViewTextItem(RepresentationDS.TYPE_VIEW, getConstants().representation());
-        ViewTextItem enumeratedRepresentation = new ViewTextItem(RepresentationDS.ENUMERATED_CODELIST_VIEW, getConstants().representationCodeList());
+        ViewTextItem enumeratedRepresentation = new ViewTextItem(RepresentationDS.ENUMERATED_CODELIST_VIEW, getConstants().codelist());
         enumeratedRepresentation.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -236,19 +236,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 return org.siemac.metamac.srm.web.dsd.utils.CommonUtils.isRepresentationTypeEnumerated(form.getValueAsString(RepresentationDS.TYPE));
             }
         });
-        contentDescriptorsForm.setFields(description, descriptionSource, context, docMethod, variable, representation, representationView, enumeratedRepresentation);
+        contentDescriptorsForm.setFields(description, descriptionSource, context, docMethod, variable, sdmxRelatedArtefact, type, roles, representation, representationView, enumeratedRepresentation);
 
         // Non enumerated representation
         facetForm = new StaticFacetForm();
-
-        // Class descriptors
-        classDescriptorsForm = new GroupDynamicForm(getConstants().formClassDescriptors());
-        ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
-        sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
-        ViewTextItem type = new ViewTextItem(ConceptDS.TYPE, getConstants().conceptType());
-        RelatedResourceListItem roles = new RelatedResourceListItem(ConceptDS.ROLES, getConstants().conceptRoles(), false);
-        roles.setShowIfCondition(getRolesFormItemIfFunction());
-        classDescriptorsForm.setFields(sdmxRelatedArtefact, type, roles);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -277,7 +268,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(facetForm);
-        mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(relationBetweenConceptsForm);
         mainFormLayout.addViewCanvas(legalActsForm);
@@ -308,6 +298,12 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem variable = new ViewTextItem(ConceptDS.VARIABLE, getConstants().variable());
         variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem variableView = createVariableItem(ConceptDS.VARIABLE_VIEW, getConstants().variable());
+        RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
+        sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
+        sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
+        SelectItem type = new SelectItem(ConceptDS.TYPE, getConstants().conceptType()); // Value map set in setConceptTypes method
+        RelatedResourceListItem roles = createRolesItem(ConceptDS.ROLES, getConstants().conceptRoles());
+        roles.setShowIfCondition(getRolesFormItemIfFunction());
         final CustomSelectItem representation = new CustomSelectItem(RepresentationDS.TYPE, getConstants().representation());
         representation.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representation.addChangedHandler(new ChangedHandler() {
@@ -325,20 +321,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem codelist = new ViewTextItem(RepresentationDS.ENUMERATED_CODELIST, MetamacSrmWeb.getConstants().codelist());
         codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem codelistView = createEnumeratedRepresentationItem(RepresentationDS.ENUMERATED_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist());
-        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, variable, variableView, representation, codelist, codelistView);
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, variable, variableView, sdmxRelatedArtefact, type, roles, representation, codelist, codelistView);
 
         // Non enumerated representation
         facetEditionForm = new ConceptFacetForm();
-
-        // Class descriptors
-        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
-        RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
-        sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
-        sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
-        SelectItem type = new SelectItem(ConceptDS.TYPE, getConstants().conceptType()); // Value map set in setConceptTypes method
-        RelatedResourceListItem roles = createRolesItem(ConceptDS.ROLES, getConstants().conceptRoles());
-        roles.setShowIfCondition(getRolesFormItemIfFunction());
-        classDescriptorsEditionForm.setFields(sdmxRelatedArtefact, type, roles);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -369,7 +355,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(facetEditionForm);
-        mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
         mainFormLayout.addEditionCanvas(legalActsEditionForm);
@@ -408,14 +393,14 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
 
-        classDescriptorsForm.markForRedraw();
-        classDescriptorsEditionForm.markForRedraw();
+        contentDescriptorsForm.markForRedraw();
+        contentDescriptorsEditionForm.markForRedraw();
     }
 
     @Override
     public void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos) {
         this.conceptTypeDtos = conceptTypeDtos;
-        classDescriptorsEditionForm.getItem(ConceptDS.TYPE).setValueMap(CommonUtils.getConceptTypeHashMap(conceptTypeDtos));
+        contentDescriptorsEditionForm.getItem(ConceptDS.TYPE).setValueMap(CommonUtils.getConceptTypeHashMap(conceptTypeDtos));
     }
 
     @Override
@@ -456,6 +441,11 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW,
                 conceptDto.getCoreRepresentation() != null ? ExternalItemUtils.getExternalItemName(conceptDto.getCoreRepresentation().getEnumerated()) : null); // TODO RelatedResourceDto instead of
                                                                                                                                                                 // ExternalItemDto
+        contentDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
+        contentDescriptorsForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null
+                ? CommonWebUtils.getElementName(conceptDto.getType().getIdentifier(), conceptDto.getType().getDescription())
+                : null);
+        ((RelatedResourceListItem) contentDescriptorsForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
         contentDescriptorsForm.markForRedraw();
 
         // Non enumerated representation
@@ -468,9 +458,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         facetForm.markForRedraw();
 
         // Class descriptors
-        classDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
-        classDescriptorsForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? CommonWebUtils.getElementName(conceptDto.getType().getIdentifier(), conceptDto.getType().getDescription()) : null);
-        ((RelatedResourceListItem) classDescriptorsForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
         // Production descriptors
         productionDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
@@ -513,6 +500,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumerated() != null
                 ? ExternalItemUtils.getExternalItemName(conceptDto.getCoreRepresentation().getEnumerated())
                 : null); // TODO RelatedResourceDto instead of ExternalItemDto
+        contentDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? conceptDto.getType().getIdentifier() : null);
+        ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
         // Non enumerated representation
         if (conceptDto.getCoreRepresentation() != null && TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
@@ -523,9 +513,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         facetEditionForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getNonEnumerated() : null);
 
         // Class descriptors
-        classDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
-        classDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? conceptDto.getType().getIdentifier() : null);
-        ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
         // Production descriptors
         productionDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
@@ -579,12 +566,12 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         } else {
             conceptDto.setCoreRepresentation(null);
         }
+        conceptDto.setSdmxRelatedArtefact(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) ? ConceptRoleEnum.valueOf(contentDescriptorsEditionForm
+                .getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) : null);
+        conceptDto.setType(contentDescriptorsEditionForm.getValue(ConceptDS.TYPE) != null ? getConceptTypeDto(contentDescriptorsEditionForm.getValueAsString(ConceptDS.TYPE)) : null);
+        // Roles get in getRoles method
 
         // Class descriptors
-        conceptDto.setSdmxRelatedArtefact(!StringUtils.isBlank(classDescriptorsEditionForm.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) ? ConceptRoleEnum.valueOf(classDescriptorsEditionForm
-                .getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) : null);
-        conceptDto.setType(classDescriptorsEditionForm.getValue(ConceptDS.TYPE) != null ? getConceptTypeDto(classDescriptorsEditionForm.getValueAsString(ConceptDS.TYPE)) : null);
-        // Roles get in getRoles method
 
         // Production descriptors
         conceptDto.setDerivation((InternationalStringDto) productionDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
@@ -658,7 +645,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     private List<String> getRoles() {
-        return ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getSelectedRelatedResourceUrns();
+        return ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getSelectedRelatedResourceUrns();
     }
 
     private RelatedResourceListItem createRolesItem(String name, String title) {
@@ -692,7 +679,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 });
 
                 // Set the selected concepts
-                List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getRelatedResourceDtos();
+                List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getRelatedResourceDtos();
                 searchRolesWindow.setTargetRelatedResources(selectedRoles);
 
                 searchRolesWindow.setSearchAction(new SearchPaginatedAction() {
@@ -709,7 +696,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         List<RelatedResourceDto> conceptDtos = searchRolesWindow.getSelectedRelatedResources();
                         searchRolesWindow.markForDestroy();
                         // Set selected concepts in form
-                        ((RelatedResourceListItem) classDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(conceptDtos);
+                        ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(conceptDtos);
                     }
                 });
             }
@@ -814,7 +801,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     private boolean validateEditionForms() {
         return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && (facetEditionForm.isVisible() ? facetEditionForm.validate(false) : true)
-                && classDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false) && relationBetweenConceptsEditionForm.validate(false)
+                && contentDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false) && relationBetweenConceptsEditionForm.validate(false)
                 && legalActsEditionForm.validate(false);
     }
 
