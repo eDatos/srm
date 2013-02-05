@@ -13,4 +13,6 @@ public interface CodelistListUiHandlers extends UiHandlers {
     void deleteCodelists(List<String> urns);
     void retrieveCodelists(int firstResult, int maxResults, String criteria);
     void cancelValidity(List<String> urns);
+
+    void retrieveVariables(int firstResult, int maxResults, String criteria);
 }

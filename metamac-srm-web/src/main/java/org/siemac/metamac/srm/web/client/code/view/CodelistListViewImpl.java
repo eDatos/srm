@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistListUiHandlers;
 import org.siemac.metamac.srm.web.client.code.widgets.NewCodelistWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
@@ -71,7 +72,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
             @Override
             public void onClick(ClickEvent event) {
-                newCodelistWindow = new NewCodelistWindow(getConstants().codelistCreate());
+                newCodelistWindow = new NewCodelistWindow(getConstants().codelistCreate(), getUiHandlers());
                 newCodelistWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
@@ -208,6 +209,13 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     public void setCodelistPaginatedList(GetCodelistsResult codelistsPaginatedList) {
         setCodelistList(codelistsPaginatedList.getCodelists());
         codelistsList.refreshPaginationInfo(codelistsPaginatedList.getFirstResultOut(), codelistsPaginatedList.getCodelists().size(), codelistsPaginatedList.getTotalResults());
+    }
+
+    @Override
+    public void setVariables(GetVariablesResult result) {
+        if (newCodelistWindow != null) {
+            newCodelistWindow.setVariables(result);
+        }
     }
 
     private void setCodelistList(List<CodelistMetamacDto> codelistDtos) {

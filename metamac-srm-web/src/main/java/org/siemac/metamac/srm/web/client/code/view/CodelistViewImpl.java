@@ -64,6 +64,7 @@ import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -813,7 +814,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private SearchViewTextItem createVariableItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        SearchViewTextItem variableItem = new SearchViewTextItem(name, title);
+        final SearchViewTextItem variableItem = new SearchViewTextItem(name, title);
+        variableItem.setRequired(true);
         variableItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -852,6 +854,19 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 });
             }
         });
+        // Set requited with a custom validator
+        CustomValidator customValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                if (variableItem.getValue() != null) {
+                    String conceptValue = String.valueOf(variableItem.getValue());
+                    return !StringUtils.isBlank(conceptValue);
+                }
+                return false;
+            }
+        };
+        variableItem.setValidators(customValidator);
         return variableItem;
     }
 

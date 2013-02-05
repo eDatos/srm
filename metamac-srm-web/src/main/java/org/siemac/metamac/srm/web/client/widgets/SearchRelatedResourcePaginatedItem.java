@@ -11,6 +11,7 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BaseSearchPaginatedItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -86,5 +87,19 @@ public class SearchRelatedResourcePaginatedItem extends BaseSearchPaginatedItem 
 
     public String getRelatedResourceCriteria() {
         return searchItem.getValueAsString();
+    }
+
+    public void setRequired(boolean required) {
+        if (required) {
+            setTitleStyle("requiredFormLabel");
+            CustomValidator customValidator = new CustomValidator() {
+
+                @Override
+                protected boolean condition(Object value) {
+                    return getSelectedRelatedResource() != null;
+                }
+            };
+            setValidators(customValidator);
+        }
     }
 }

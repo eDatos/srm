@@ -23,6 +23,8 @@ import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
@@ -79,6 +81,8 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
         void setCodelistPaginatedList(GetCodelistsResult codelistsPaginatedList);
         void clearSearchSection();
+
+        void setVariables(GetVariablesResult result);
     }
 
     @Inject
@@ -185,6 +189,21 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             public void onWaitSuccess(CancelCodelistValidityResult result) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistCanceledValidity()), MessageTypeEnum.SUCCESS);
                 retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariables(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariablesResult result) {
+                getView().setVariables(result);
             }
         });
     }
