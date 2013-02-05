@@ -114,7 +114,7 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveVariableFamilies(firstResult, maxResults, null);
+                getUiHandlers().retrieveVariableFamilies(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
         variableFamilyList.getListGrid().setAutoFitMaxRecords(VariableFamilyListPresenter.FAMILY_LIST_MAX_RESULTS);

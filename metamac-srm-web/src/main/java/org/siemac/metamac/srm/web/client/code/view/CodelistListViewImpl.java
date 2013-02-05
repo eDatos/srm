@@ -127,7 +127,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCodelists(firstResult, maxResults, null);
+                getUiHandlers().retrieveCodelists(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
         codelistsList.getListGrid().setAutoFitMaxRecords(CodelistListPresenter.SCHEME_LIST_MAX_RESULTS);

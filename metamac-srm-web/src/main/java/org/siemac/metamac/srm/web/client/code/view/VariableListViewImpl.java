@@ -116,7 +116,7 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveVariables(firstResult, maxResults, null);
+                getUiHandlers().retrieveVariables(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
         variablesList.getListGrid().setAutoFitMaxRecords(VariableListPresenter.VARIABLE_LIST_MAX_RESULTS);
