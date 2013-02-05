@@ -12,7 +12,7 @@
     <groupId>org.siemac.metamac.metamac-srm</groupId>
     <artifactId>metamac-srm-soap-external-api</artifactId>
     <packaging>jar</packaging>
-    <name>SIEMAC :: METAMAC :: SRM :: WS SOAP :: EXTERNAL</name>
+    <name>SIEMAC :: METAMAC :: SRM :: WS SOAP :: EXTERNAL API</name>
 
     <dependencies>
     </dependencies>

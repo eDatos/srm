@@ -15,10 +15,11 @@
 
     <modules>
         <module>metamac-srm-parent</module>
-        <module>metamac-srm-soap-external-api</module>
         <module>metamac-srm-core</module>
         <module>metamac-srm-rest-internal-api</module>
         <module>metamac-srm-rest-internal-impl</module>
+        <module>metamac-srm-soap-external-api</module>
+        <module>metamac-srm-soap-external-impl</module>
         <module>metamac-srm-external-web</module>
         <module>metamac-srm-web</module>
     </modules>
