@@ -237,8 +237,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public void versioningRelatedConcepts(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
         // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
-        for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
-            versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion);
+        if (conceptSchemeVersionToCopy != null) {
+            for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
+                versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion);
+            }
+        } else if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
+            throw new RuntimeException("Error copying related concepts to versioning");
         }
     }
 

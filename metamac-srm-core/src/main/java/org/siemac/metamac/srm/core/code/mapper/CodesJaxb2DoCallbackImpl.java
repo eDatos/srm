@@ -87,10 +87,12 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
 
         // Fill metadata
         codesMetamacService.postCreateCodelist(ctx, targetMetamac, (previousVersion != null) ? previousMetamac.getReplaceToCodelists() : new ArrayList<CodelistVersionMetamac>()); // ReplaceToCodelists
+
+        // TODO falta añadir los defaultOrder y los niveles de apertura
     }
 
     @Override
-    public void codeJaxb2DoExtension(ServiceContext ctx, CodeType source, Code previous, Code target) throws MetamacException {
+    public void codeJaxb2DoExtensionPreCreate(ServiceContext ctx, CodeType source, CodelistVersion codelistVersion, Code previous, Code target) throws MetamacException {
         CodeMetamac previousMetamac = (CodeMetamac) previous;
         CodeMetamac targetMetamac = (CodeMetamac) target;
 
@@ -102,6 +104,9 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
             targetMetamac.setShortName(BaseVersioningCopyUtils.copy(previousMetamac.getShortName())); // ShortName
             targetMetamac.setVariableElement(previousMetamac.getVariableElement());
         }
+
+        // Fill metadata
+        codesMetamacService.preCreateCode(ctx, codelistVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
     /**************************************************************************
      * VALIDATE

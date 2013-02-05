@@ -1835,6 +1835,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    @Override
+    public void testPreCreateCode() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
     @Override
     @Test
     public void testUpdateCode() throws Exception {

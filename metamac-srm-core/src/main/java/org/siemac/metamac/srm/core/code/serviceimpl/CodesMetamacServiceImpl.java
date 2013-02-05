@@ -283,17 +283,26 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac createCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
+        preCreateCode(ctx, codelistUrn, code);
+
+        // Save code
+        code = (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
+
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+
+        // Add to all visualisations of codelist, at the end of level
+        updateOneCodeOrderInLevelPuttingAtTheEnd(codelistVersion.getOrderVisualisations(), code);
+
+        return code;
+    }
+
+    @Override
+    public CodeMetamac preCreateCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
 
         // Validation
         CodesMetamacInvocationValidator.checkCreateCode(codelistVersion, code, null);
         checkCodeToCreateOrUpdate(ctx, codelistVersion, code);
-
-        // Save code
-        code = (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
-
-        // Add to all visualisations of codelist, at the end of level
-        updateOneCodeOrderInLevelPuttingAtTheEnd(codelistVersion.getOrderVisualisations(), code);
 
         return code;
     }
