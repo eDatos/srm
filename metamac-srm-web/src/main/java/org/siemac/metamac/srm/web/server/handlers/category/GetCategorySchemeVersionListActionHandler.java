@@ -34,5 +34,4 @@ public class GetCategorySchemeVersionListActionHandler extends SecurityActionHan
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

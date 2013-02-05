@@ -39,5 +39,4 @@ public class CancelCategorySchemeValidityActionHandler extends SecurityActionHan
         }
         return new CancelCategorySchemeValidityResult(categorySchemeMetamacDtos);
     }
-
 }
