@@ -14,7 +14,7 @@ import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemeListPr
 import org.siemac.metamac.srm.web.client.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.category.view.handlers.CategorySchemeListUiHandlers;
 import org.siemac.metamac.srm.web.client.category.widgets.NewCategorySchemeWindow;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
@@ -193,7 +193,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     }
 
     @Override
-    public void setCategorySchemePaginatedList(GetCategorySchemeListResult categorySchemesPaginatedList) {
+    public void setCategorySchemePaginatedList(GetCategorySchemesResult categorySchemesPaginatedList) {
         setCategorySchemeList(categorySchemesPaginatedList.getCategorySchemeList());
         categorySchemesList.refreshPaginationInfo(categorySchemesPaginatedList.getPageNumber(), categorySchemesPaginatedList.getCategorySchemeList().size(),
                 categorySchemesPaginatedList.getTotalResults());

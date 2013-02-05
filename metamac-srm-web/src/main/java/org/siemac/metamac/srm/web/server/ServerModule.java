@@ -9,7 +9,7 @@ import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorySchemeL
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryListBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeVersionListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategorySchemeActionHandler;
@@ -113,7 +113,7 @@ import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListAction
 import org.siemac.metamac.srm.web.shared.category.GetCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionListAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
@@ -290,7 +290,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetDefaultMaintainerAction.class, GetDefaultMaintainerActionHandler.class);
 
         // Categories
-        bindHandler(GetCategorySchemeListAction.class, GetCategorySchemeListActionHandler.class);
+        bindHandler(GetCategorySchemesAction.class, GetCategorySchemesActionHandler.class);
         bindHandler(SaveCategorySchemeAction.class, SaveCategorySchemeActionHandler.class);
         bindHandler(CancelCategorySchemeValidityAction.class, CancelCategorySchemeValidityActionHandler.class);
         bindHandler(DeleteCategorySchemeListAction.class, DeleteCategorySchemeListActionHandler.class);

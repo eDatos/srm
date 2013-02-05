@@ -15,8 +15,8 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
@@ -175,14 +175,14 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveCategorySchemes() {
-        dispatcher.execute(new GetCategorySchemeListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetCategorySchemeListResult>() {
+        dispatcher.execute(new GetCategorySchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetCategorySchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetCategorySchemeListResult result) {
+            public void onWaitSuccess(GetCategorySchemesResult result) {
                 getView().setCategorySchemesList(result.getCategorySchemeList());
             }
         });

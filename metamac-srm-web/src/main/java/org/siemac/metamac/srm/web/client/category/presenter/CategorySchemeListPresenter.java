@@ -20,8 +20,8 @@ import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAc
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -73,7 +73,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
     public interface CategorySchemeListView extends View, HasUiHandlers<CategorySchemeListUiHandlers> {
 
-        void setCategorySchemePaginatedList(GetCategorySchemeListResult categorySchemesPaginatedList);
+        void setCategorySchemePaginatedList(GetCategorySchemesResult categorySchemesPaginatedList);
         void goToCategorySchemeListLastPageAfterCreate();
         void clearSearchSection();
     }
@@ -107,14 +107,14 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
     @Override
     public void retrieveCategorySchemes(int firstResult, int maxResults, final String categoryScheme) {
-        dispatcher.execute(new GetCategorySchemeListAction(firstResult, maxResults, categoryScheme), new WaitingAsyncCallback<GetCategorySchemeListResult>() {
+        dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categoryScheme), new WaitingAsyncCallback<GetCategorySchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetCategorySchemeListResult result) {
+            public void onWaitSuccess(GetCategorySchemesResult result) {
                 getView().setCategorySchemePaginatedList(result);
                 if (StringUtils.isBlank(categoryScheme)) {
                     getView().clearSearchSection();

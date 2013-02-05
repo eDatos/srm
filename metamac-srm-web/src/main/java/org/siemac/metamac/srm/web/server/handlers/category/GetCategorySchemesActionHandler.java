@@ -18,8 +18,8 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeListResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -29,17 +29,17 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetCategorySchemeListActionHandler extends SecurityActionHandler<GetCategorySchemeListAction, GetCategorySchemeListResult> {
+public class GetCategorySchemesActionHandler extends SecurityActionHandler<GetCategorySchemesAction, GetCategorySchemesResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetCategorySchemeListActionHandler() {
-        super(GetCategorySchemeListAction.class);
+    public GetCategorySchemesActionHandler() {
+        super(GetCategorySchemesAction.class);
     }
 
     @Override
-    public GetCategorySchemeListResult executeSecurityAction(GetCategorySchemeListAction action) throws ActionException {
+    public GetCategorySchemesResult executeSecurityAction(GetCategorySchemesAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
@@ -77,7 +77,7 @@ public class GetCategorySchemeListActionHandler extends SecurityActionHandler<Ge
 
         try {
             MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetCategorySchemeListResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            return new GetCategorySchemesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
