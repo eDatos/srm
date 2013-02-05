@@ -681,7 +681,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, null);
+                        uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, searchOperationsWindow.getSearchCriteria());
                     }
                 });
                 uiHandlers.retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
