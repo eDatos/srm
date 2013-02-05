@@ -118,7 +118,7 @@ public class SearchRelatedResourcePaginatedDragAndDropItem extends BaseSearchPag
     }
 
     public String getRelatedResourceCriteria() {
-        return searchItem.getValueAsString();
+        return getSearchCriteria();
     }
 
     private boolean isRecordInTargetList(RelatedResourceRecord record) {
