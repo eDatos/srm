@@ -114,7 +114,7 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCodelistFamilies(firstResult, maxResults, null);
+                getUiHandlers().retrieveCodelistFamilies(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
         codelistFamilyList.getListGrid().setAutoFitMaxRecords(CodelistFamilyListPresenter.FAMILY_LIST_MAX_RESULTS);
