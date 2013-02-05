@@ -85,7 +85,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.ExportDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.FindDescriptorForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdAndDescriptorsActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.SaveComponentForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDescriptorForDsdActionHandler;
@@ -189,7 +189,7 @@ import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.FindDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdAction;
@@ -236,7 +236,7 @@ public class ServerModule extends HandlerModule {
     @Override
     protected void configureHandlers() {
         // DSDs
-        bindHandler(GetDsdListAction.class, GetDsdListActionHandler.class);
+        bindHandler(GetDsdsAction.class, GetDsdsActionHandler.class);
         bindHandler(GetDsdAction.class, GetDsdActionHandler.class);
         bindHandler(GetDsdAndDescriptorsAction.class, GetDsdAndDescriptorsActionHandler.class);
         bindHandler(FindDescriptorForDsdAction.class, FindDescriptorForDsdActionHandler.class);

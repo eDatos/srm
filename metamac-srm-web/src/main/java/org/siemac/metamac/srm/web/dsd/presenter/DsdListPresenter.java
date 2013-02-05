@@ -26,8 +26,8 @@ import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
@@ -237,14 +237,14 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
      */
     @Override
     public void retrieveDsdList(int firstResult, int maxResults, final String dsd) {
-        dispatcher.execute(new GetDsdListAction(firstResult, maxResults, dsd), new WaitingAsyncCallback<GetDsdListResult>() {
+        dispatcher.execute(new GetDsdsAction(firstResult, maxResults, dsd), new WaitingAsyncCallback<GetDsdsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetDsdListResult result) {
+            public void onWaitSuccess(GetDsdsResult result) {
                 getView().setDsds(result.getDsdDtos(), result.getFirstResultOut(), result.getTotalResults());
                 if (StringUtils.isBlank(dsd)) {
                     getView().clearSearchSection();

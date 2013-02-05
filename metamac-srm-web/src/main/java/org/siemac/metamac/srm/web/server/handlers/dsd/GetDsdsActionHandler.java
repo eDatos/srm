@@ -17,8 +17,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -29,17 +29,17 @@ import com.arte.statistic.sdmx.srm.core.criteria.DataStructureDefinitionCriteria
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAction, GetDsdListResult> {
+public class GetDsdsActionHandler extends SecurityActionHandler<GetDsdsAction, GetDsdsResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetDsdListActionHandler() {
-        super(GetDsdListAction.class);
+    public GetDsdsActionHandler() {
+        super(GetDsdsAction.class);
     }
 
     @Override
-    public GetDsdListResult executeSecurityAction(GetDsdListAction action) throws ActionException {
+    public GetDsdsResult executeSecurityAction(GetDsdsAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
@@ -77,7 +77,7 @@ public class GetDsdListActionHandler extends SecurityActionHandler<GetDsdListAct
 
         try {
             MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetDsdListResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            return new GetDsdsResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

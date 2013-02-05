@@ -22,8 +22,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -133,14 +133,14 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveDsds() {
-        dispatcher.execute(new GetDsdListAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetDsdListResult>() {
+        dispatcher.execute(new GetDsdsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null), new WaitingAsyncCallback<GetDsdsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetDsdListResult result) {
+            public void onWaitSuccess(GetDsdsResult result) {
                 getView().setDsdList(result.getDsdDtos());
             }
         });
