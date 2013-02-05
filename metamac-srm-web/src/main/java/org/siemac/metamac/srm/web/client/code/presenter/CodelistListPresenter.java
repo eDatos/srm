@@ -25,6 +25,7 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -153,7 +154,9 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void retrieveCodelists(int firstResult, int maxResults, final String criteria) {
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, null, null), new WaitingAsyncCallback<GetCodelistsResult>() {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+        codelistWebCriteria.setIsLastVersion(true);
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

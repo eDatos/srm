@@ -58,6 +58,7 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusResult;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -432,7 +433,10 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     @Override
     public void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria) {
         // The codelists that can be replaced should be externally published
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, ProcStatusEnum.EXTERNALLY_PUBLISHED, null), new WaitingAsyncCallback<GetCodelistsResult>() {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+        codelistWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

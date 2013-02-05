@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemePaginatedListResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdListResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeListAction;
@@ -188,7 +189,9 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     }
 
     private void retrieveCodelists() {
-        dispatcher.execute(new GetCodelistsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, null, null, null), new WaitingAsyncCallback<GetCodelistsResult>() {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setIsLastVersion(true);
+        dispatcher.execute(new GetCodelistsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

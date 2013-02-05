@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.shared.code;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -19,13 +19,7 @@ public class GetCodelists {
     int                      maxResults;
 
     @In(3)
-    String                   criteria;
-
-    @In(4)
-    ProcStatusEnum           procStatus;
-
-    @In(5)
-    String                   codelistFamilyUrn;
+    CodelistWebCriteria      criteria;
 
     @Out(1)
     List<CodelistMetamacDto> codelists;
@@ -35,5 +29,4 @@ public class GetCodelists {
 
     @Out(3)
     Integer                  totalResults;
-
 }

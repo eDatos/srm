@@ -28,6 +28,7 @@ import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyA
 import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -147,7 +148,9 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
     @Override
     public void retrieveCodelists(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, null, null), new WaitingAsyncCallback<GetCodelistsResult>() {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setCriteria(criteria);
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -162,7 +165,10 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
     @Override
     public void retrieveCodelistsByFamily(int firstResult, int maxResults, final String criteria, String familyUrn) {
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria, null, familyUrn), new WaitingAsyncCallback<GetCodelistsResult>() {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setCriteria(criteria);
+        codelistWebCriteria.setCodelistFamilyUrn(familyUrn);
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

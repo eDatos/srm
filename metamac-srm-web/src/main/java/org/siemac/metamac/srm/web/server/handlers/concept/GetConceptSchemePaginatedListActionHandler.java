@@ -75,5 +75,4 @@ public class GetConceptSchemePaginatedListActionHandler extends SecurityActionHa
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }
