@@ -915,7 +915,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     private SearchViewTextItem createConceptItem(String name, String title) {
-        final int FIRST_RESULST = 0;
+        final int FIRST_RESULT = 0;
         final int MAX_RESULTS = 8;
         final SearchViewTextItem conceptItem = new SearchViewTextItem(name, title);
         conceptItem.setRequired(true);
@@ -935,14 +935,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 });
 
                 // Load concept schemes and concepts (to populate the selection window)
-                getUiHandlers().retrieveConceptSchemes(dimensionType, FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
-                getUiHandlers().retrieveConcepts(dimensionType, FIRST_RESULST, MAX_RESULTS, null, null);
+                getUiHandlers().retrieveConceptSchemes(dimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                getUiHandlers().retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, null, null);
 
                 searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConcepts(dimensionType, FIRST_RESULST, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                        getUiHandlers().retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
                     }
                 });
 
