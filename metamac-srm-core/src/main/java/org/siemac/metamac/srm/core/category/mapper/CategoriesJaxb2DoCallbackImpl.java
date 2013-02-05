@@ -70,17 +70,34 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
      * EXTENSIONS
      **************************************************************************/
     @Override
-    public void categorySchemeJaxbToDoExtension(ServiceContext ctx, CategorySchemeType source, CategorySchemeVersion target) throws MetamacException {
+    public void categorySchemeJaxbToDoExtension(ServiceContext ctx, CategorySchemeType source, CategorySchemeVersion previous, CategorySchemeVersion target) throws MetamacException {
+        CategorySchemeVersionMetamac previousMetamac = (CategorySchemeVersionMetamac) previous;
         CategorySchemeVersionMetamac targetMetamac = (CategorySchemeVersionMetamac) target;
+
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+        }
+
+        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
         // Fill Metadata
         categoriesMetamacService.preCreateCategoryScheme(ctx, targetMetamac);
-        targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
     }
 
     @Override
-    public void categoryJaxbToDoExtension(ServiceContext ctx, CategoryType source, CategorySchemeVersion categorySchemeVersion, Category target) throws MetamacException {
+    public void categoryJaxbToDoExtension(ServiceContext ctx, CategoryType source, CategorySchemeVersion categorySchemeVersion, Category previous, Category target) throws MetamacException {
+        CategoryMetamac previousMetamac = (CategoryMetamac) previous;
         CategoryMetamac targetMetamac = (CategoryMetamac) target;
+
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // TODO herencia IString --> Name
+            // TODO herencia IString --> Description
+            // TODO herencia IString --> Annotations
+        }
 
         // Fill Metadata
         categoriesMetamacService.preCreateCategory(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
