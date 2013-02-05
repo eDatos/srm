@@ -60,15 +60,12 @@ public class SrmValidationUtils {
     /**
      * Do not check required metadata when it is a new artefact and it is imported. It will checked when update ItemScheme or Item, or when send to production validation
      */
-    public static boolean mustValidateMetadataRequired(ItemSchemeVersion itemSchemeVersion) {
-        if (itemSchemeVersion.getId() != null) {
-            // Always in update
-            return true;
-        } else if (itemSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(itemSchemeVersion.getMaintainableArtefact().getIsImported())) {
+    public static boolean mustValidateMetadataRequired(ItemSchemeVersion itemSchemeVersion, boolean creating) {
+        if (creating && BooleanUtils.isTrue(itemSchemeVersion.getMaintainableArtefact().getIsImported())) {
             // false it it is imported, because required metadata can not be filled automatically
             return false;
-        } else {
-            return true;
         }
+        // creating not imported, updating...
+        return true;
     }
 }

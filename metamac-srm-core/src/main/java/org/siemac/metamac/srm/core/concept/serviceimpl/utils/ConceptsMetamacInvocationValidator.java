@@ -27,7 +27,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
         ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
         if (conceptSchemeVersion != null) {
-            checkConceptScheme(conceptSchemeVersion, exceptions);
+            checkConceptScheme(conceptSchemeVersion, true, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -39,7 +39,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
         ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
         if (conceptSchemeVersion != null) {
-            checkConceptScheme(conceptSchemeVersion, exceptions);
+            checkConceptScheme(conceptSchemeVersion, false, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -53,7 +53,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
         ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
         if (concept != null && conceptSchemeVersion != null) {
-            checkConcept(conceptSchemeVersion, concept, exceptions);
+            checkConcept(conceptSchemeVersion, concept, true, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -66,7 +66,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
         if (concept != null) {
-            checkConcept(conceptSchemeVersionMetamac, concept, exceptions);
+            checkConcept(conceptSchemeVersionMetamac, concept, false, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -160,9 +160,9 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, List<MetamacExceptionItem> exceptions) {
+    public static void checkConceptScheme(ConceptSchemeVersionMetamac conceptSchemeVersion, boolean creating, List<MetamacExceptionItem> exceptions) {
 
-        if (SrmValidationUtils.mustValidateMetadataRequired(conceptSchemeVersion)) {
+        if (SrmValidationUtils.mustValidateMetadataRequired(conceptSchemeVersion, creating)) {
             ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
             if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
                 ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
@@ -182,7 +182,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
     }
 
-    public static void checkConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, List<MetamacExceptionItem> exceptions) {
+    public static void checkConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, boolean creating, List<MetamacExceptionItem> exceptions) {
 
         // Not same concept scheme
         if (concept.getConceptExtends() != null) {
@@ -200,7 +200,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         // note: variable is optional
 
         if (conceptSchemeVersion != null) {
-            if (SrmValidationUtils.mustValidateMetadataRequired(conceptSchemeVersion)) {
+            if (SrmValidationUtils.mustValidateMetadataRequired(conceptSchemeVersion, creating)) {
                 ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getType(), ServiceExceptionParameters.CONCEPT_SCHEME_TYPE, exceptions);
                 // Sdmx related artefact
                 if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())

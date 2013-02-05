@@ -34,7 +34,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
         ValidationUtils.checkParameterRequired(codelistVersion, ServiceExceptionParameters.CODELIST, exceptions);
         if (codelistVersion != null) {
-            checkCodelist(codelistVersion, exceptions);
+            checkCodelist(codelistVersion, true, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -46,18 +46,18 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
         ValidationUtils.checkParameterRequired(codelistVersion, ServiceExceptionParameters.CODELIST, exceptions);
         if (codelistVersion != null) {
-            checkCodelist(codelistVersion, exceptions);
+            checkCodelist(codelistVersion, false, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkCodelist(CodelistVersionMetamac codelistVersion, List<MetamacExceptionItem> exceptions) {
+    public static void checkCodelist(CodelistVersionMetamac codelistVersion, boolean creating, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, exceptions);
         if (codelistVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
         }
-        if (SrmValidationUtils.mustValidateMetadataRequired(codelistVersion)) {
+        if (SrmValidationUtils.mustValidateMetadataRequired(codelistVersion, creating)) {
             ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);
         }
         if (codelistVersion.getId() != null) {
@@ -77,7 +77,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ValidationUtils.checkParameterRequired(codelistVersion, ServiceExceptionParameters.CODELIST, exceptions);
         ValidationUtils.checkParameterRequired(code, ServiceExceptionParameters.CODE, exceptions);
         if (code != null && codelistVersion != null) {
-            checkCode(codelistVersion, code, exceptions);
+            checkCode(codelistVersion, code, true, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -90,7 +90,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
         ValidationUtils.checkParameterRequired(code, ServiceExceptionParameters.CODE, exceptions);
         if (code != null) {
-            checkCode(codelistVersionMetamac, code, exceptions);
+            checkCode(codelistVersionMetamac, code, false, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -119,8 +119,8 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    private static void checkCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, List<MetamacExceptionItem> exceptions) {
-        if (SrmValidationUtils.mustValidateMetadataRequired(codelistVersion)) {
+    private static void checkCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, boolean creating, List<MetamacExceptionItem> exceptions) {
+        if (SrmValidationUtils.mustValidateMetadataRequired(codelistVersion, creating)) {
             ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);
         }
         if (code.getVariableElement() != null) {

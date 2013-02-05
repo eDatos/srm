@@ -86,7 +86,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
             if (conceptSchemeVersion.getMaintainableArtefact().getIsImported() && ProcStatusEnum.PRODUCTION_VALIDATION.equals(targetStatus)) {
                 List<MetamacExceptionItem> exceptionsConceptScheme = new ArrayList<MetamacExceptionItem>();
                 conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
-                ConceptsMetamacInvocationValidator.checkConceptScheme(conceptSchemeVersion, exceptionsConceptScheme);
+                ConceptsMetamacInvocationValidator.checkConceptScheme(conceptSchemeVersion, false, exceptionsConceptScheme);
                 if (exceptionsConceptScheme.size() != 0) {
                     exceptions.addAll(exceptionsConceptScheme);
                 } else {
@@ -94,7 +94,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                     for (Item item : conceptSchemeVersion.getItems()) {
                         // Create specific exception to identify the wrong concept
                         List<MetamacExceptionItem> exceptionsConcepts = new ArrayList<MetamacExceptionItem>();
-                        ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, (ConceptMetamac) item, exceptionsConcepts);
+                        ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, (ConceptMetamac) item, false, exceptionsConcepts);
                         if (exceptionsConcepts.size() != 0) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, item.getNameableArtefact().getUrn()));
                         }
