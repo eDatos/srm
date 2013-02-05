@@ -14,5 +14,6 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
     void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn);
 
-    void retrieveVariables(int firstResult, int maxResults, String criteria);
+    void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn);
+    void retrieveVariableFamilies(int firstResult, int maxResults, String criteria);
 }

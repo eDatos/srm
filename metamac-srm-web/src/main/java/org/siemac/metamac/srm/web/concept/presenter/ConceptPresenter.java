@@ -21,6 +21,8 @@ import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
@@ -108,6 +110,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         void setConceptThatCanBeExtended(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
 
         void setVariables(GetVariablesResult result);
+        void setVariableFamilies(GetVariableFamiliesResult result);
     }
 
     @ContentSlot
@@ -348,8 +351,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveVariables(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+    public void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn) {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, variableFamilyUrn), new WaitingAsyncCallback<GetVariablesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -358,6 +361,21 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
                 getView().setVariables(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariableFamilies(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetVariableFamiliesResult result) {
+                getView().setVariableFamilies(result);
             }
         });
     }

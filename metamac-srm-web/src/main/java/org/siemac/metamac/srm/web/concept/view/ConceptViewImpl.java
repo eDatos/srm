@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
@@ -32,6 +33,7 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptsListItem;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -636,6 +638,14 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
+    public void setVariableFamilies(GetVariableFamiliesResult result) {
+        if (searchVariableWindow != null) {
+            List<RelatedResourceDto> families = RelatedResourceUtils.getRelatedResourceDtosFromVariableFamilyDtos(result.getFamilies());
+            searchVariableWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(families));
+        }
+    }
+
+    @Override
     public void setVariables(GetVariablesResult result) {
         if (searchVariableWindow != null) {
             searchVariableWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableDtos(result.getVariables()));
@@ -844,7 +854,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     private SearchViewTextItem createVariableItem(String name, String title) {
-        final int FIRST_RESULST = 0;
+        final int FIRST_RESULT = 0;
         final int MAX_RESULTS = 8;
 
         SearchViewTextItem variableItem = new SearchViewTextItem(name, title);
@@ -852,23 +862,33 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-                searchVariableWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
+                SelectItem variableFamilySelectItem = new SelectItem(VariableFamilyDS.URN, getConstants().variableFamily());
+                searchVariableWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableSelection(), MAX_RESULTS, variableFamilySelectItem, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, searchVariableWindow.getRelatedResourceCriteria());
+                        getUiHandlers().retrieveVariables(FIRST_RESULT, MAX_RESULTS, searchVariableWindow.getRelatedResourceCriteria(), searchVariableWindow.getInitialSelectionValue());
                     }
                 });
 
                 // Load variables (to populate the selection window)
-                getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, null);
+                getUiHandlers().retrieveVariableFamilies(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, null);
+                getUiHandlers().retrieveVariables(FIRST_RESULT, MAX_RESULTS, null, null);
+
+                searchVariableWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        getUiHandlers().retrieveVariables(FIRST_RESULT, MAX_RESULTS, searchVariableWindow.getRelatedResourceCriteria(), searchVariableWindow.getInitialSelectionValue());
+                    }
+                });
 
                 searchVariableWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                 searchVariableWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria);
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria, searchVariableWindow.getInitialSelectionValue());
                     }
                 });
 
