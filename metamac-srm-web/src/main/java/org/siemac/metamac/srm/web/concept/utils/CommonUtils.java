@@ -91,4 +91,8 @@ public class CommonUtils {
     public static boolean isMetadataExtendsVisible(ConceptSchemeTypeEnum type) {
         return !ConceptSchemeTypeEnum.ROLE.equals(type);
     }
+
+    public static boolean isMetadataVariableVisible(ConceptSchemeTypeEnum type) {
+        return ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type);
+    }
 }

@@ -220,6 +220,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewMultiLanguageTextItem context = new ViewMultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         ViewMultiLanguageTextItem docMethod = new ViewMultiLanguageTextItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
         ViewTextItem variable = new ViewTextItem(ConceptDS.VARIABLE_VIEW, getConstants().variable());
+        variable.setShowIfCondition(getVariableFormItemIfFunction());
         ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
         ViewTextItem type = new ViewTextItem(ConceptDS.TYPE, getConstants().conceptType());
@@ -298,6 +299,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem variable = new ViewTextItem(ConceptDS.VARIABLE, getConstants().variable());
         variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem variableView = createVariableItem(ConceptDS.VARIABLE_VIEW, getConstants().variable());
+        variableView.setShowIfCondition(getVariableFormItemIfFunction());
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
@@ -825,6 +827,19 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             public boolean execute(FormItem arg0, Object arg1, DynamicForm arg2) {
                 if (conceptSchemeMetamacDto != null) {
                     return CommonUtils.isMetadataRolesVisible(conceptSchemeMetamacDto.getType());
+                }
+                return false;
+            }
+        };
+    }
+
+    private FormItemIfFunction getVariableFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem arg0, Object arg1, DynamicForm arg2) {
+                if (conceptSchemeMetamacDto != null) {
+                    return CommonUtils.isMetadataVariableVisible(conceptSchemeMetamacDto.getType());
                 }
                 return false;
             }
