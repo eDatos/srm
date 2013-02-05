@@ -128,7 +128,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCategorySchemes(firstResult, maxResults, null);
+                getUiHandlers().retrieveCategorySchemes(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
         categorySchemesList.getListGrid().setAutoFitMaxRecords(CategorySchemeListPresenter.SCHEME_LIST_MAX_RESULTS);

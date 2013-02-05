@@ -86,7 +86,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveDsdList(firstResult, maxResults, null);
+                getUiHandlers().retrieveDsdList(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
 

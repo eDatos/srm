@@ -129,7 +129,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveOrganisationSchemes(firstResult, maxResults);
+                getUiHandlers().retrieveOrganisationSchemes(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
         organisationSchemeList.getListGrid().setAutoFitMaxRecords(OrganisationSchemeListPresenter.SCHEME_LIST_MAX_RESULTS);

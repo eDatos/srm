@@ -132,7 +132,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                uiHandlers.retrieveConceptSchemes(firstResult, maxResults, null);
+                uiHandlers.retrieveConceptSchemes(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
         conceptSchemesList.getListGrid().setAutoFitMaxRecords(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS);
