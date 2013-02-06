@@ -547,21 +547,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConcept(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
-            String conceptUrn) throws MetamacException {
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String conceptUrn) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForConcept(conditions, pagingParameter, conceptUrn, null);
+        ConceptsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForConceptByCondition(conditions, pagingParameter, conceptUrn, null);
 
-        // Retrieve variable of concept
+        // Find
         ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
-
-        return findCodelistsCanBeEnumeratedRepresentationForConcept(conditions, pagingParameter, concept);
+        return findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(conditions, pagingParameter, concept);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConcept(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, ConceptMetamac concept)
-            throws MetamacException {
+    private PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
+            ConceptMetamac concept) throws MetamacException {
 
         // Validation
         Variable variable = concept.getVariable();
@@ -750,7 +749,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 }
                 List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().urn())
                         .eq(codelistUrn).build();
-                PagedResult<CodelistVersionMetamac> codelists = findCodelistsCanBeEnumeratedRepresentationForConcept(conditions, PagingParameter.rowAccess(0, 1), concept);
+                PagedResult<CodelistVersionMetamac> codelists = findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(conditions, PagingParameter.rowAccess(0, 1), concept);
                 if (codelists.getValues().size() != 1) {
                     throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE).withMessageParameters(codelistUrn)
                             .build();

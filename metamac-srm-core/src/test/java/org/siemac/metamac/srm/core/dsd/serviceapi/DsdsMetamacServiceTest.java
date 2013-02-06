@@ -536,7 +536,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Override
     @Test
-    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdDimension() throws Exception {
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition() throws Exception {
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
 
         // Find
@@ -544,8 +544,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             // Concept has Variable 1
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-            PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdDimension(getServiceContextAdministrador(), conditions, pagingParameter,
-                    conceptUrn);
+            PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(getServiceContextAdministrador(), conditions,
+                    pagingParameter, conceptUrn);
 
             // Validate
             assertEquals(2, result.getTotalRows());
@@ -560,8 +560,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             // Concept has Variable 2
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2_1;
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-            PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdDimension(getServiceContextAdministrador(), conditions, pagingParameter,
-                    conceptUrn);
+            PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(getServiceContextAdministrador(), conditions,
+                    pagingParameter, conceptUrn);
 
             // Validate
             assertEquals(1, result.getTotalRows());
@@ -574,13 +574,13 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Override
     @Test
-    public void testFindConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension() throws Exception {
+    public void testFindConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition() throws Exception {
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
 
         // Find
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(getServiceContextAdministrador(), conditions,
-                pagingParameter);
+        PagedResult<ConceptSchemeVersionMetamac> result = dsdsMetamacService.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(getServiceContextAdministrador(),
+                conditions, pagingParameter);
 
         // Validate
         assertEquals(1, result.getTotalRows());
@@ -591,10 +591,11 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Override
     @Test
-    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure() throws Exception {
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(getServiceContextAdministrador(), conditions, pagingParameter);
+        PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(getServiceContextAdministrador(), conditions,
+                pagingParameter);
 
         // Validate
         assertEquals(3, result.getTotalRows());
@@ -646,7 +647,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Override
     @Test
-    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdAttribute() throws Exception {
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition() throws Exception {
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
 
         // Find
@@ -654,8 +655,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             // Concept has Variable 1
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-            PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(getServiceContextAdministrador(), conditions, pagingParameter,
-                    conceptUrn);
+            PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(getServiceContextAdministrador(), conditions,
+                    pagingParameter, conceptUrn);
 
             // Validate
             assertEquals(2, result.getTotalRows());
@@ -670,8 +671,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             // Concept has Variable 2
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2_1;
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-            PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(getServiceContextAdministrador(), conditions, pagingParameter,
-                    conceptUrn);
+            PagedResult<CodelistVersionMetamac> result = dsdsMetamacService.findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(getServiceContextAdministrador(), conditions,
+                    pagingParameter, conceptUrn);
 
             // Validate
             assertEquals(1, result.getTotalRows());

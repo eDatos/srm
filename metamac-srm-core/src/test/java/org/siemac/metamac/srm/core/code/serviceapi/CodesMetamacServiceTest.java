@@ -3589,6 +3589,37 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
+    public void testFindVariableElementsForCodesByCondition() throws Exception {
+        String codelistUrn = CODELIST_7_V2;
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(VARIABLE_5, codelistVersion.getVariable().getNameableArtefact().getUrn());
+
+        // Find all
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).orderBy(VariableElementProperties.nameableArtefact().urn()).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<VariableElement> result = codesService.findVariableElementsForCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter, codelistUrn);
+
+            assertEquals(3, result.getTotalRows());
+            int i = 0;
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getValues().get(i++).getNameableArtefact().getUrn());
+        }
+        // Find by name
+        {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.nameableArtefact().name().texts().label())
+                    .like("Nombre 5-1").orderBy(VariableElementProperties.nameableArtefact().urn()).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<VariableElement> result = codesService.findVariableElementsForCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter, codelistUrn);
+            assertEquals(1, result.getTotalRows());
+            int i = 0;
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+        }
+    }
+
+    @Override
+    @Test
     public void testDeleteVariableElement() throws Exception {
 
         String variableElementUrn = VARIABLE_2_VARIABLE_ELEMENT_6;

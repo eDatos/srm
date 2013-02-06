@@ -99,7 +99,7 @@ Application ConceptsMetamac {
     		@ConceptType retrieveConceptTypeByIdentifier(String identifier) throws MetamacException;
     		
     		"Find codelists belong to same variable of concept"
-    		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConcept(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
+    		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

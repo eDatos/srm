@@ -709,7 +709,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn)
+            throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -717,7 +718,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
@@ -727,7 +728,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -735,7 +736,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -745,7 +746,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria)
+            throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -753,8 +755,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter());
+        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
@@ -798,7 +800,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn)
+            throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -806,7 +809,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
@@ -1564,6 +1567,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Transform
         MetamacCriteriaResult<VariableElementDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariableElement(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findVariableElementsForCodesByCondition(ServiceContext ctx, MetamacCriteria criteria, String codelistUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindVariableElement(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getVariableElementCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<VariableElement> result = getCodesMetamacService().findVariableElementsForCodesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(),
+                codelistUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariableElementRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2449,7 +2471,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConcept(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn)
+            throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -2457,7 +2480,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsCanBeEnumeratedRepresentationForConcept(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform

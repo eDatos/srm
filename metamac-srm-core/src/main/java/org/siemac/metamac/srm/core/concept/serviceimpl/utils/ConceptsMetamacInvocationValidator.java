@@ -221,7 +221,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         // common metadata in sdmx are checked in Sdmx module
     }
 
-    public static void checkFindCodelistsCanBeEnumeratedRepresentationForConcept(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn,
+    public static void checkFindCodelistsCanBeEnumeratedRepresentationForConceptByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn,
             List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();

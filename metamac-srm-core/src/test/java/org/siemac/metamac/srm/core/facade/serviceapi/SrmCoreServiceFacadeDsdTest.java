@@ -815,7 +815,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure() throws Exception {
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition() throws Exception {
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         // Order
@@ -831,7 +831,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
         metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(getServiceContextAdministrador(), metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(getServiceContextAdministrador(),
+                metamacCriteria);
 
         // Validate
         assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
@@ -843,7 +844,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdDimension() throws Exception {
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition() throws Exception {
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         // Order
@@ -863,8 +864,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         {
             // Concept has Variable 1
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdDimension(getServiceContextAdministrador(), metamacCriteria,
-                    conceptUrn);
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(getServiceContextAdministrador(),
+                    metamacCriteria, conceptUrn);
 
             // Validate
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -876,8 +877,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         {
             // Concept has Variable 2
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2_1;
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdDimension(getServiceContextAdministrador(), metamacCriteria,
-                    conceptUrn);
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(getServiceContextAdministrador(),
+                    metamacCriteria, conceptUrn);
 
             // Validate
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
@@ -888,7 +889,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension() throws Exception {
+    public void testFindConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition() throws Exception {
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         // Order
@@ -906,7 +907,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         // Find all
         {
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(getServiceContextAdministrador(),
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(getServiceContextAdministrador(),
                     metamacCriteria);
 
             // Validate
@@ -977,7 +978,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdAttribute() throws Exception {
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition() throws Exception {
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         // Order
@@ -997,8 +998,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         {
             // Concept has Variable 1
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(getServiceContextAdministrador(), metamacCriteria,
-                    conceptUrn);
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(getServiceContextAdministrador(),
+                    metamacCriteria, conceptUrn);
 
             // Validate
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -1010,8 +1011,8 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         {
             // Concept has Variable 2
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2_1;
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(getServiceContextAdministrador(), metamacCriteria,
-                    conceptUrn);
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(getServiceContextAdministrador(),
+                    metamacCriteria, conceptUrn);
 
             // Validate
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());

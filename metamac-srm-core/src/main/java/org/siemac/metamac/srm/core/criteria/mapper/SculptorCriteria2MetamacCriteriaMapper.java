@@ -55,4 +55,5 @@ public interface SculptorCriteria2MetamacCriteriaMapper {
     public MetamacCriteriaResult<VariableFamilyDto> pageResultToMetamacCriteriaResultVariableFamily(PagedResult<VariableFamily> source, Integer pageSize);
     public MetamacCriteriaResult<VariableDto> pageResultToMetamacCriteriaResultVariable(PagedResult<Variable> source, Integer pageSize);
     public MetamacCriteriaResult<VariableElementDto> pageResultToMetamacCriteriaResultVariableElement(PagedResult<VariableElement> source, Integer pageSize);
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultToMetamacCriteriaResultVariableElementRelatedResource(PagedResult<VariableElement> source, Integer pageSize);
 }

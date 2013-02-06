@@ -301,4 +301,17 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         return target;
     }
 
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultToMetamacCriteriaResultVariableElementRelatedResource(PagedResult<VariableElement> source, Integer pageSize) {
+        MetamacCriteriaResult<RelatedResourceDto> target = new MetamacCriteriaResult<RelatedResourceDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<RelatedResourceDto>(source.getValues().size()));
+            for (VariableElement scheme : source.getValues()) {
+                target.getResults().add(codesDo2DtoMapper.variableElementDoToRelatedResourceDto(scheme));
+            }
+        }
+        return target;
+    }
+
 }

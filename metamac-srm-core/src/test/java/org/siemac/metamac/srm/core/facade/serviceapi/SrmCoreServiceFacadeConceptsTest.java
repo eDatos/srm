@@ -1608,7 +1608,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodelistsCanBeEnumeratedRepresentationForConcept() throws Exception {
+    public void testFindCodelistsCanBeEnumeratedRepresentationForConceptByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
@@ -1617,7 +1617,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         {
             // Concept has Variable 1
             String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConcept(getServiceContextAdministrador(), metamacCriteria, conceptUrn);
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(getServiceContextAdministrador(), metamacCriteria,
+                    conceptUrn);
 
             // Validate
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -1629,7 +1630,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         {
             // Concept has Variable 2
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
-            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConcept(getServiceContextAdministrador(), metamacCriteria, conceptUrn);
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(getServiceContextAdministrador(), metamacCriteria,
+                    conceptUrn);
 
             // Validate
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());

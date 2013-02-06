@@ -2287,6 +2287,40 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     @Test
+    public void testFindVariableElementsForCodesByCondition() throws Exception {
+        String codelistUrn = CODELIST_7_V2;
+        CodelistMetamacDto codelistVersion = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(VARIABLE_5, codelistVersion.getVariable().getUrn());
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
+        metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
+
+        // Pagination
+        metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+        metamacCriteria.getPaginator().setFirstResult(0);
+        metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+        metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+        // Find all
+        {
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findVariableElementsForCodesByCondition(getServiceContextAdministrador(), metamacCriteria, codelistUrn);
+            assertEquals(3, result.getResults().size());
+            int i = 0;
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getResults().get(i++).getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getResults().get(i++).getUrn());
+        }
+        // Find by name
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), "Nombre 5-1", OperationType.EQ));
+            MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findVariableElementsForCodesByCondition(getServiceContextAdministrador(), metamacCriteria, codelistUrn);
+            assertEquals(1, result.getResults().size());
+            int i = 0;
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getResults().get(i++).getUrn());
+        }
+    }
+
+    @Test
     public void testAddVariableElementsToVariable() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 

@@ -2727,7 +2727,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
-    public void testFindCodelistsCanBeEnumeratedRepresentationForConcept() throws Exception {
+    public void testFindCodelistsCanBeEnumeratedRepresentationForConceptByCondition() throws Exception {
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
 
         // Find
@@ -2735,8 +2735,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             // Concept has Variable 1
             String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-            PagedResult<CodelistVersionMetamac> result = conceptsService
-                    .findCodelistsCanBeEnumeratedRepresentationForConcept(getServiceContextAdministrador(), conditions, pagingParameter, conceptUrn);
+            PagedResult<CodelistVersionMetamac> result = conceptsService.findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(getServiceContextAdministrador(), conditions, pagingParameter,
+                    conceptUrn);
 
             // Validate
             assertEquals(2, result.getTotalRows());
@@ -2751,8 +2751,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             // Concept has Variable 2
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-            PagedResult<CodelistVersionMetamac> result = conceptsService
-                    .findCodelistsCanBeEnumeratedRepresentationForConcept(getServiceContextAdministrador(), conditions, pagingParameter, conceptUrn);
+            PagedResult<CodelistVersionMetamac> result = conceptsService.findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(getServiceContextAdministrador(), conditions, pagingParameter,
+                    conceptUrn);
 
             // Validate
             assertEquals(1, result.getTotalRows());

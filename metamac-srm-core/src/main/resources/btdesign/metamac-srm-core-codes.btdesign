@@ -161,6 +161,8 @@ Application CodesMetamac {
     		@VariableElement retrieveVariableElementByUrn(String urn) throws MetamacException;
     		"Finds variable elements by criteria"
     		PagedResult<@VariableElement> findVariableElementsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		"Find variable elements can be for codes of codelist"
+    		PagedResult<@VariableElement> findVariableElementsForCodesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String codelistUrn) throws MetamacException;
 			"Deletes variable element"
     		deleteVariableElement(String urn) throws MetamacException;
     		"Adds variable element to a variable"

@@ -399,23 +399,23 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
-            throws MetamacException {
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
         // Validation
-        DsdsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(conditions, pagingParameter, null);
+        DsdsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(conditions, pagingParameter, null);
 
         // Find
         return findCodelistsPublishedByConditions(ctx, conditions, pagingParameter, null);
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
-            String conceptUrn) throws MetamacException {
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String conceptUrn) throws MetamacException {
         return findCodelistsCanBeEnumeratedRepresentationForDsd(ctx, conditions, pagingParameter, conceptUrn);
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(ServiceContext ctx, List<ConditionalCriteria> conditions,
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter) throws MetamacException {
         return findConceptSchemesWithSpecificType(ctx, conditions, pagingParameter, ConceptSchemeTypeEnum.MEASURE);
     }
@@ -432,8 +432,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
-            String conceptUrn) throws MetamacException {
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String conceptUrn) throws MetamacException {
         return findCodelistsCanBeEnumeratedRepresentationForDsd(ctx, conditions, pagingParameter, conceptUrn);
     }
 
