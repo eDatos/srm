@@ -1,11 +1,19 @@
 package org.siemac.metamac.srm.web.client.code.widgets;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import org.siemac.metamac.srm.web.client.code.utils.CodesClientSecurityUtils;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
+import org.siemac.metamac.web.common.client.resources.GlobalResources;
+import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 
 import com.smartgwt.client.types.Visibility;
+import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
+
+    private MainFormLayoutButton addCodelistToFamilyButton;
 
     public CodelistMainFormLayout() {
         common();
@@ -17,6 +25,29 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     private void common() {
         announce.setVisibility(CodesClientSecurityUtils.canAnnounceCodelist() ? Visibility.VISIBLE : Visibility.HIDDEN);
+
+        // Add button to add the codelist to a family (when is published)
+        addCodelistToFamilyButton = new MainFormLayoutButton(getConstants().codelistModifyCodelistFamily(), GlobalResources.RESOURCE.editListGrid().getURL());
+        toolStrip.addButton(addCodelistToFamilyButton, 1);
+    }
+
+    @Override
+    protected void hideAllLifeCycleButtons() {
+        super.hideAllLifeCycleButtons();
+        addCodelistToFamilyButton.hide();
+    }
+
+    @Override
+    protected void updateVisibility() {
+        super.updateVisibility();
+        if (CommonUtils.isItemSchemePublished(status)) {
+            addCodelistToFamilyButton.show();
+        }
+    }
+
+    protected void showAddCodelistToFamilyButton() {
+        // TODO Security
+        addCodelistToFamilyButton.show();
     }
 
     @Override
@@ -66,5 +97,9 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
         if (CodesClientSecurityUtils.canCancelCodelistValidity()) {
             cancelValidity.show();
         }
+    }
+
+    public HasClickHandlers getAddCodelistToFamily() {
+        return addCodelistToFamilyButton;
     }
 }

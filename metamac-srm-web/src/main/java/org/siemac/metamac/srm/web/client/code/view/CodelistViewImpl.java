@@ -295,6 +295,21 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 getUiHandlers().cancelValidity(codelistDto.getUrn());
             }
         });
+        mainFormLayout.getAddCodelistToFamily().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                showSearchFamilyWindow(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        RelatedResourceDto selectedFamily = searchFamilyWindow.getSelectedRelatedResource();
+                        searchFamilyWindow.markForDestroy();
+                        getUiHandlers().addCodelistToFamily(codelistDto.getUrn(), selectedFamily.getUrn());
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -720,34 +735,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private SearchViewTextItem createFamilyItem(String name, String title) {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
+
         SearchViewTextItem familyItem = new SearchViewTextItem(name, title);
         familyItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-
-                searchFamilyWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistFamilySelection(), MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveFamilies(firstResult, maxResults, searchFamilyWindow.getRelatedResourceCriteria());
-                    }
-                });
-
-                // Load families (to populate the selection window)
-                getUiHandlers().retrieveFamilies(FIRST_RESULST, MAX_RESULTS, null);
-
-                searchFamilyWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                searchFamilyWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveFamilies(firstResult, maxResults, criteria);
-                    }
-                });
-                searchFamilyWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                showSearchFamilyWindow(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
@@ -762,6 +756,32 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             }
         });
         return familyItem;
+    }
+
+    private void showSearchFamilyWindow(com.smartgwt.client.widgets.form.fields.events.ClickHandler acceptButtonHandler) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+
+        searchFamilyWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistFamilySelection(), MAX_RESULTS, new PaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults) {
+                getUiHandlers().retrieveFamilies(firstResult, maxResults, searchFamilyWindow.getRelatedResourceCriteria());
+            }
+        });
+
+        // Load families (to populate the selection window)
+        getUiHandlers().retrieveFamilies(FIRST_RESULST, MAX_RESULTS, null);
+
+        searchFamilyWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+        searchFamilyWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                getUiHandlers().retrieveFamilies(firstResult, maxResults, criteria);
+            }
+        });
+        searchFamilyWindow.getSave().addClickHandler(acceptButtonHandler);
     }
 
     private RelatedResourceListItem createReplaceToCodelistsItem(String name, String title) {

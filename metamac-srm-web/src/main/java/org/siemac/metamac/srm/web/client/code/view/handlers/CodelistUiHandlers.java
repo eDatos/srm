@@ -14,12 +14,14 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void saveCodelist(CodelistMetamacDto codelist);
     void cancelValidity(String urn);
     void goToCodelist(String urn);
+    void addCodelistToFamily(String codelistUrn, String familyUrn);
 
     void retrieveFamilies(int firstResult, int maxResults, String criteria);
     void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria);
     void retrieveVariables(int firstResult, int maxResults, String criteria);
 
     // Codes
+
     void retrieveCodesByCodelist(String orderIdentifier);
     void retrieveCodelistOrders(String codelistUrn);
     void saveCodelistOrder(CodelistOrderVisualisationDto codelistOrderVisualisationDto);

@@ -26,7 +26,7 @@ public class CodeMainFormLayout extends InternationalMainFormLayout {
         // Add a button to update the variable element of the code
         updateVariableElementButton = new MainFormLayoutButton(getConstants().codeUpdateVariableElement(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.editListGrid()
                 .getURL());
-        toolStrip.addButton(updateVariableElementButton);
+        toolStrip.addButton(updateVariableElementButton, 1);
     }
 
     public HasClickHandlers getUpdateVariableElement() {
@@ -35,9 +35,14 @@ public class CodeMainFormLayout extends InternationalMainFormLayout {
 
     public void updateButtonsVisibility(ProcStatusEnum procStatusEnum) {
         if (CommonUtils.isItemSchemePublished(procStatusEnum)) {
-            updateVariableElementButton.show();
+            showUpdateVariableElementButton();
         } else {
             updateVariableElementButton.hide();
         }
+    }
+
+    protected void showUpdateVariableElementButton() {
+        // TODO Security
+        updateVariableElementButton.show();
     }
 }
