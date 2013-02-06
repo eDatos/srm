@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:codelist xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#codelist" id="itemScheme1" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" isPartial="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:itemScheme1:01.000" uri="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
+<sr:codelist xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#codelist" id="itemScheme1" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" isPartial="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:itemScheme1:01.000" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
     <common:Annotations>
         <common:Annotation id="code2">
             <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -20,7 +20,7 @@
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
     <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
-    <structure:Code id="code1" urn="urn:code1" uri="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code1">
+    <structure:Code id="code1" urn="urn:code1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code1">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -42,7 +42,7 @@
         <common:Description xml:lang="en">description-code1 in English</common:Description>
         <common:Description xml:lang="es">description-code1 en Español</common:Description>
     </structure:Code>
-    <structure:Code id="code2" urn="urn:code2" uri="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2">
+    <structure:Code id="code2" urn="urn:code2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -64,7 +64,7 @@
         <common:Description xml:lang="en">description-code2 in English</common:Description>
         <common:Description xml:lang="es">description-code2 en Español</common:Description>
     </structure:Code>
-    <structure:Code id="code2A" urn="urn:code2A" uri="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2A">
+    <structure:Code id="code2A" urn="urn:code2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2A">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -89,7 +89,7 @@
             <Ref id="code2"/>
         </structure:Parent>
     </structure:Code>
-    <structure:Code id="code2B" urn="urn:code2B" uri="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2B">
+    <structure:Code id="code2B" urn="urn:code2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2B">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -114,49 +114,49 @@
             <Ref id="code2"/>
         </structure:Parent>
     </structure:Code>
-    <cdomain:selfLink kind="srm#codelist" href="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000"/>
-    <cdomain:parentLink kind="srm#codelists" href="http://data.istac.es/apis/srm/v1.0/codelists"/>
+    <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:parentLink kind="structuralResources#codelists" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists"/>
     <cdomain:childLinks total="1">
-        <cdomain:childLink kind="srm#codes" href="http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes"/>
+        <cdomain:childLink kind="structuralResources#codes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes"/>
     </cdomain:childLinks>
-    <srm:lifeCycle>
-        <srm:procStatus>EXTERNALLY_PUBLISHED</srm:procStatus>
-        <srm:productionValidationDate>2009-09-01T01:01:01.001+01:00</srm:productionValidationDate>
-        <srm:productionValidationUser>production-user</srm:productionValidationUser>
-        <srm:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</srm:diffusionValidationDate>
-        <srm:diffusionValidationUser>diffusion-user</srm:diffusionValidationUser>
-        <srm:internalPublicationDate>2011-11-03T01:01:01.001Z</srm:internalPublicationDate>
-        <srm:internalPublicationUser>internal-publication-user</srm:internalPublicationUser>
-        <srm:externalPublicationDate>2012-12-04T01:01:01.001Z</srm:externalPublicationDate>
-        <srm:externalPublicationUser>external-publication-user</srm:externalPublicationUser>
-        <srm:isExternalPublicationFailed>false</srm:isExternalPublicationFailed>
-        <srm:externalPublicationFailedDate>2013-08-02T01:01:01.001+01:00</srm:externalPublicationFailedDate>
-    </srm:lifeCycle>
-    <srm:replacedByVersion>replacedBy</srm:replacedByVersion>
-    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
-    <srm:comment>
+    <sr:lifeCycle>
+        <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
+        <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>
+        <sr:productionValidationUser>production-user</sr:productionValidationUser>
+        <sr:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</sr:diffusionValidationDate>
+        <sr:diffusionValidationUser>diffusion-user</sr:diffusionValidationUser>
+        <sr:internalPublicationDate>2011-11-03T01:01:01.001Z</sr:internalPublicationDate>
+        <sr:internalPublicationUser>internal-publication-user</sr:internalPublicationUser>
+        <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
+        <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
+        <sr:isExternalPublicationFailed>false</sr:isExternalPublicationFailed>
+        <sr:externalPublicationFailedDate>2013-08-02T01:01:01.001+01:00</sr:externalPublicationFailedDate>
+    </sr:lifeCycle>
+    <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
+    <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
+    <sr:comment>
         <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
         <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
-    </srm:comment>
-    <srm:shortName>
+    </sr:comment>
+    <sr:shortName>
         <cdomain:text xml:lang="es">shortName-itemScheme1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">shortName-itemScheme1v01.000 in English</cdomain:text>
-    </srm:shortName>
-    <srm:isRecommended>true</srm:isRecommended>
-    <srm:family>
+    </sr:shortName>
+    <sr:isRecommended>true</sr:isRecommended>
+    <sr:family>
         <cdomain:id>family1</cdomain:id>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-family1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-family1 en Español</cdomain:text>
         </cdomain:title>
-    </srm:family>
-    <srm:variable>
+    </sr:family>
+    <sr:variable>
         <cdomain:id>variable1</cdomain:id>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
         </cdomain:title>
-    </srm:variable>
-    <srm:accessType>PUBLIC</srm:accessType>
-    <srm:defaultOrderVisualisation>defaultOrderVisualisation1</srm:defaultOrderVisualisation>
-</srm:codelist>
+    </sr:variable>
+    <sr:accessType>PUBLIC</sr:accessType>
+    <sr:defaultOrderVisualisation>defaultOrderVisualisation1</sr:defaultOrderVisualisation>
+</sr:codelist>

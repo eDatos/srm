@@ -4,7 +4,7 @@ import org.siemac.metamac.rest.constants.RestConstants;
 
 public class RestInternalConstants {
 
-    public static String API_NAME                               = "srm";
+    public static String API_NAME                               = "structuralResources";
     public static String API_VERSION_1_0                        = "v1.0";
 
     public static String WILDCARD                               = "~all";

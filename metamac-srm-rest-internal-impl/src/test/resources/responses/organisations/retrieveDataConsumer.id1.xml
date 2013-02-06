@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:dataConsumer xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#dataConsumer" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/srm/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers/item1">
+<sr:dataConsumer xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#dataConsumer" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers/item1">
     <common:Annotations>
         <common:Annotation id="code1">
             <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -20,10 +20,10 @@
     <common:Name xml:lang="es">name-item1 en Español</common:Name>
     <common:Description xml:lang="en">description-item1 in English</common:Description>
     <common:Description xml:lang="es">description-item1 en Español</common:Description>
-    <cdomain:selfLink kind="srm#dataConsumer" href="http://data.istac.es/apis/srm/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers/item1"/>
-    <cdomain:parentLink kind="srm#dataConsumers" href="http://data.istac.es/apis/srm/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers"/>
-    <srm:comment>
+    <cdomain:selfLink kind="structuralResources#dataConsumer" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers/item1"/>
+    <cdomain:parentLink kind="structuralResources#dataConsumers" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers"/>
+    <sr:comment>
         <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
-    </srm:comment>
-</srm:dataConsumer>
+    </sr:comment>
+</sr:dataConsumer>

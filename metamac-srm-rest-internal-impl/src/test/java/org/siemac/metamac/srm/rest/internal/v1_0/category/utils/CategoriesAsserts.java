@@ -15,7 +15,7 @@ public class CategoriesAsserts extends Asserts {
 
     public static void assertEqualsResource(CategorySchemeVersionMetamac expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/categoryschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
                 + maintainableArtefact.getVersionLogic();
 
         assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY_SCHEME, expectedSelfLink, actual);
@@ -23,14 +23,14 @@ public class CategoriesAsserts extends Asserts {
 
     public static void assertEqualsResource(CategoryMetamac expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/categoryschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
                 + maintainableArtefact.getVersionLogic() + "/categories/" + expected.getNameableArtefact().getCode();
         assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, actual);
     }
 
     public static void assertEqualsResource(Categorisation expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/categorisations/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
                 + maintainableArtefact.getVersionLogic();
 
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getKind());

@@ -28,7 +28,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.N
 
 public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTest {
 
-    private static String                   jaxrsServerAddress = "http://localhost:" + ServerResource.PORT + "/apis/srm-internal";
+    private static String                   jaxrsServerAddress = "http://localhost:" + ServerResource.PORT + "/apis/structural-resources-internal";
     protected String                        baseApi            = jaxrsServerAddress + "/v1.0";
     protected static ApplicationContext     applicationContext = null;
     private static SrmRestInternalFacadeV10 srmRestInternalFacadeClientXml;
@@ -120,7 +120,7 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, maintainableArtefactProperty.versionLogic());
         return conditionalCriteria != null ? (String) conditionalCriteria.getFirstOperant() : null;
     }
-    
+
     @SuppressWarnings("rawtypes")
     protected Boolean getVersionLatestFromConditionalCriteria(List<ConditionalCriteria> conditions, MaintainableArtefactProperty maintainableArtefactProperty) {
         ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, maintainableArtefactProperty.latestFinal());

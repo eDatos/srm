@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:organisation xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#organisation">
-    <srm:agency kind="srm#agency" id="itemAgency1" urn="urn:itemAgency1" uri="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/itemAgency1">
+<sr:organisation xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#organisation">
+    <sr:agency kind="structuralResources#agency" id="itemAgency1" urn="urn:itemAgency1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/itemAgency1">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -21,11 +21,11 @@
         <common:Name xml:lang="en">name-itemAgency1 in English</common:Name>
         <common:Description xml:lang="es">description-itemAgency1 en Español</common:Description>
         <common:Description xml:lang="en">description-itemAgency1 in English</common:Description>
-        <cdomain:selfLink kind="srm#agency" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/itemAgency1"/>
-        <cdomain:parentLink kind="srm#agencies" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies"/>
-        <srm:comment>
+        <cdomain:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/itemAgency1"/>
+        <cdomain:parentLink kind="structuralResources#agencies" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies"/>
+        <sr:comment>
             <cdomain:text xml:lang="es">comment-itemAgency1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">comment-itemAgency1 in English</cdomain:text>
-        </srm:comment>
-    </srm:agency>
-</srm:organisation>
+        </sr:comment>
+    </sr:agency>
+</sr:organisation>

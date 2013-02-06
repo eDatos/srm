@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:organisation xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#organisation">
-    <srm:organisationUnit kind="srm#organisationUnit" id="itemOrganisationUnit1" urn="urn:itemOrganisationUnit1" uri="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits/itemOrganisationUnit1">
+<sr:organisation xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#organisation">
+    <sr:organisationUnit kind="structuralResources#organisationUnit" id="itemOrganisationUnit1" urn="urn:itemOrganisationUnit1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits/itemOrganisationUnit1">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -24,11 +24,11 @@
         <structure:Parent>
             <Ref id="item2"/>
         </structure:Parent>
-        <cdomain:selfLink kind="srm#organisationUnit" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits/itemOrganisationUnit1"/>
-        <cdomain:parentLink kind="srm#organisationUnits" href="http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits"/>
-        <srm:comment>
+        <cdomain:selfLink kind="structuralResources#organisationUnit" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits/itemOrganisationUnit1"/>
+        <cdomain:parentLink kind="structuralResources#organisationUnits" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/idAsMaintaineragency1/itemScheme1/01.000/organisationunits"/>
+        <sr:comment>
             <cdomain:text xml:lang="es">comment-itemOrganisationUnit1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">comment-itemOrganisationUnit1 in English</cdomain:text>
-        </srm:comment>
-    </srm:organisationUnit>
-</srm:organisation>
+        </sr:comment>
+    </sr:organisationUnit>
+</sr:organisation>

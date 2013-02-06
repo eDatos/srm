@@ -12,7 +12,7 @@ public class CodesAsserts extends Asserts {
 
     public static void assertEqualsResource(CodelistVersionMetamac expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/codelists/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
                 + maintainableArtefact.getVersionLogic();
 
         assertEqualsResource(expected, RestInternalConstants.KIND_CODELIST, expectedSelfLink, actual);
@@ -20,7 +20,7 @@ public class CodesAsserts extends Asserts {
 
     public static void assertEqualsResource(CodeMetamac expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/codelists/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
                 + maintainableArtefact.getVersionLogic() + "/codes/" + expected.getNameableArtefact().getCode();
         assertEqualsResource(expected, RestInternalConstants.KIND_CODE, expectedSelfLink, actual);
     }

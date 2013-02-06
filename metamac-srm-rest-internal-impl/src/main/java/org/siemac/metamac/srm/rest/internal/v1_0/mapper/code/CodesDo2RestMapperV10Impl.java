@@ -12,11 +12,11 @@ import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.AccessType;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Code;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -251,9 +251,9 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
     private AccessType toAccessType(AccessTypeEnum source) {
         switch (source) {
             case PUBLIC:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.AccessType.PUBLIC;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType.PUBLIC;
             case RESTRICTED:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.AccessType.RESTRICTED;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType.RESTRICTED;
             default:
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);

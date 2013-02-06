@@ -16,41 +16,41 @@ import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.SculptorCriteria;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agencies;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agency;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categories;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Code;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumer;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumers;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProvider;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviders;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisation;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnit;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencySchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categories;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Category;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategorySchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumer;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumers;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProvider;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviders;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisation;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnit;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnits;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisations;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
@@ -155,7 +155,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Find one
             PagedResult<ConceptSchemeVersionMetamac> entitiesPagedResult = findConceptSchemesCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -192,7 +192,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Find one
             PagedResult<ConceptMetamac> entitiesPagedResult = findConceptsCore(agencyID, resourceID, version, conceptID, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_NOT_FOUND, conceptID, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_NOT_FOUND, conceptID, version, resourceID, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -243,7 +243,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Find one
             PagedResult<CategorySchemeVersionMetamac> entitiesPagedResult = findCategorySchemesCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -281,7 +281,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, categoryID, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils
-                        .getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, categoryID, agencyID, resourceID, version);
+                        .getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, categoryID, version, resourceID, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -319,7 +319,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> entitiesPagedResult = findCategorisationsCore(agencyID, resourceID, version, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORISATION_NOT_FOUND, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORISATION_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -356,7 +356,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Find one
             PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(null, agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -394,8 +394,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(null, agencyID, resourceID, version, organisationID, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_NOT_FOUND, organisationID, agencyID, resourceID,
-                        version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_NOT_FOUND, organisationID, version, resourceID,
+                        agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -433,7 +433,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.AGENCY_SCHEME, agencyID, resourceID, version, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.AGENCY_SCHEME_NOT_FOUND, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.AGENCY_SCHEME_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -472,8 +472,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.AGENCY, agencyID, resourceID, version, organisationID, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.AGENCY_NOT_FOUND, organisationID, agencyID, resourceID,
-                        version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.AGENCY_NOT_FOUND, organisationID, version, resourceID,
+                        agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -511,8 +511,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, agencyID, resourceID, version, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_SCHEME_NOT_FOUND, agencyID, resourceID,
-                        version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_SCHEME_NOT_FOUND, resourceID, version,
+                        agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -551,8 +551,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.ORGANISATION_UNIT, agencyID, resourceID, version, organisationID, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_NOT_FOUND, organisationID, agencyID,
-                        resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_NOT_FOUND, organisationID, version,
+                        resourceID, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -591,7 +591,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils
-                        .getException(RestServiceExceptionType.DATA_PROVIDER_SCHEME_NOT_FOUND, agencyID, resourceID, version);
+                        .getException(RestServiceExceptionType.DATA_PROVIDER_SCHEME_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -630,8 +630,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_PROVIDER, agencyID, resourceID, version, organisationID, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_PROVIDER_NOT_FOUND, organisationID, agencyID,
-                        resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_PROVIDER_NOT_FOUND, organisationID, version, resourceID,
+                        agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -670,7 +670,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils
-                        .getException(RestServiceExceptionType.DATA_CONSUMER_SCHEME_NOT_FOUND, agencyID, resourceID, version);
+                        .getException(RestServiceExceptionType.DATA_CONSUMER_SCHEME_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -709,8 +709,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_CONSUMER, agencyID, resourceID, version, organisationID, null,
                     PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_CONSUMER_NOT_FOUND, organisationID, agencyID,
-                        resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_CONSUMER_NOT_FOUND, organisationID, version, resourceID,
+                        agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -747,7 +747,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Find one
             PagedResult<CodelistVersionMetamac> entitiesPagedResult = findCodelistsCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_NOT_FOUND, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -784,7 +784,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Find one
             PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, codeID, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODE_NOT_FOUND, codeID, agencyID, resourceID, version);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODE_NOT_FOUND, codeID, version, resourceID, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 

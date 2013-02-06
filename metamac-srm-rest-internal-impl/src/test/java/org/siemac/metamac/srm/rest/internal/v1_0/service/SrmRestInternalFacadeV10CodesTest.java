@@ -42,10 +42,10 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Code;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -242,11 +242,11 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CODELIST_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("Codelist not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("Codelist " + resourceID + " not found in version " + version + " from Agency " + agencyID, exception.getMessage());
             assertEquals(3, exception.getParameters().getParameters().size());
-            assertEquals(agencyID, exception.getParameters().getParameters().get(0));
-            assertEquals(resourceID, exception.getParameters().getParameters().get(1));
-            assertEquals(version, exception.getParameters().getParameters().get(2));
+            assertEquals(resourceID, exception.getParameters().getParameters().get(0));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
+            assertEquals(agencyID, exception.getParameters().getParameters().get(2));
             assertNull(exception.getErrors());
         } catch (Exception e) {
             fail("Incorrect exception");
@@ -399,13 +399,12 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CODE_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("Code not found with ID " + codeID + " in Codelist in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("Code " + codeID + " not found in version " + version + " of Codelist " + resourceID + " from Agency " + agencyID, exception.getMessage());
             assertEquals(4, exception.getParameters().getParameters().size());
             assertEquals(codeID, exception.getParameters().getParameters().get(0));
-            assertEquals(agencyID, exception.getParameters().getParameters().get(1));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
             assertEquals(resourceID, exception.getParameters().getParameters().get(2));
-            assertEquals(version, exception.getParameters().getParameters().get(3));
-            assertNull(exception.getErrors());
+            assertEquals(agencyID, exception.getParameters().getParameters().get(3));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -518,6 +517,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     private void mockFindCodelistsByCondition() throws MetamacException {
         when(codesService.findCodelistsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<CodelistVersionMetamac>>() {
 
+            @Override
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<CodelistVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
                 List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
 
@@ -557,6 +557,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     private void mockFindCodesByCondition() throws MetamacException {
         when(codesService.findCodesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<CodeMetamac>>() {
 
+            @Override
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<CodeMetamac> answer(InvocationOnMock invocation) throws Throwable {
                 List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
 

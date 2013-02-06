@@ -4,28 +4,28 @@ import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 
 public class RestServiceExceptionType extends RestCommonServiceExceptionType {
 
-    public static final RestCommonServiceExceptionType CONCEPT_SCHEME_NOT_FOUND           = create("exception.srm.concept_scheme.not_found");
-    public static final RestCommonServiceExceptionType CONCEPT_NOT_FOUND                  = create("exception.srm.concept.not_found");
+    public static final RestCommonServiceExceptionType CONCEPT_SCHEME_NOT_FOUND           = create("exception.structural_resources.concept_scheme.not_found");
+    public static final RestCommonServiceExceptionType CONCEPT_NOT_FOUND                  = create("exception.structural_resources.concept.not_found");
 
-    public static final RestCommonServiceExceptionType CATEGORY_SCHEME_NOT_FOUND          = create("exception.srm.category_scheme.not_found");
-    public static final RestCommonServiceExceptionType CATEGORY_NOT_FOUND                 = create("exception.srm.category.not_found");
-    public static final RestCommonServiceExceptionType CATEGORISATION_NOT_FOUND           = create("exception.srm.categorisation.not_found");
+    public static final RestCommonServiceExceptionType CATEGORY_SCHEME_NOT_FOUND          = create("exception.structural_resources.category_scheme.not_found");
+    public static final RestCommonServiceExceptionType CATEGORY_NOT_FOUND                 = create("exception.structural_resources.category.not_found");
+    public static final RestCommonServiceExceptionType CATEGORISATION_NOT_FOUND           = create("exception.structural_resources.categorisation.not_found");
 
-    public static final RestCommonServiceExceptionType ORGANISATION_SCHEME_NOT_FOUND      = create("exception.srm.organisation_scheme.not_found");
-    public static final RestCommonServiceExceptionType ORGANISATION_NOT_FOUND             = create("exception.srm.organisation.not_found");
+    public static final RestCommonServiceExceptionType ORGANISATION_SCHEME_NOT_FOUND      = create("exception.structural_resources.organisation_scheme.not_found");
+    public static final RestCommonServiceExceptionType ORGANISATION_NOT_FOUND             = create("exception.structural_resources.organisation.not_found");
 
-    public static final RestCommonServiceExceptionType AGENCY_SCHEME_NOT_FOUND            = create("exception.srm.agency_scheme.not_found");
-    public static final RestCommonServiceExceptionType AGENCY_NOT_FOUND                   = create("exception.srm.agency.not_found");
+    public static final RestCommonServiceExceptionType AGENCY_SCHEME_NOT_FOUND            = create("exception.structural_resources.agency_scheme.not_found");
+    public static final RestCommonServiceExceptionType AGENCY_NOT_FOUND                   = create("exception.structural_resources.agency.not_found");
 
-    public static final RestCommonServiceExceptionType ORGANISATION_UNIT_SCHEME_NOT_FOUND = create("exception.srm.organisation_unit_scheme.not_found");
-    public static final RestCommonServiceExceptionType ORGANISATION_UNIT_NOT_FOUND        = create("exception.srm.organisation_unit.not_found");
+    public static final RestCommonServiceExceptionType ORGANISATION_UNIT_SCHEME_NOT_FOUND = create("exception.structural_resources.organisation_unit_scheme.not_found");
+    public static final RestCommonServiceExceptionType ORGANISATION_UNIT_NOT_FOUND        = create("exception.structural_resources.organisation_unit.not_found");
 
-    public static final RestCommonServiceExceptionType DATA_PROVIDER_SCHEME_NOT_FOUND     = create("exception.srm.data_provider_scheme.not_found");
-    public static final RestCommonServiceExceptionType DATA_PROVIDER_NOT_FOUND            = create("exception.srm.data_provider.not_found");
+    public static final RestCommonServiceExceptionType DATA_PROVIDER_SCHEME_NOT_FOUND     = create("exception.structural_resources.data_provider_scheme.not_found");
+    public static final RestCommonServiceExceptionType DATA_PROVIDER_NOT_FOUND            = create("exception.structural_resources.data_provider.not_found");
 
-    public static final RestCommonServiceExceptionType DATA_CONSUMER_SCHEME_NOT_FOUND     = create("exception.srm.data_consumer_scheme.not_found");
-    public static final RestCommonServiceExceptionType DATA_CONSUMER_NOT_FOUND            = create("exception.srm.data_consumer.not_found");
+    public static final RestCommonServiceExceptionType DATA_CONSUMER_SCHEME_NOT_FOUND     = create("exception.structural_resources.data_consumer_scheme.not_found");
+    public static final RestCommonServiceExceptionType DATA_CONSUMER_NOT_FOUND            = create("exception.structural_resources.data_consumer.not_found");
 
-    public static final RestCommonServiceExceptionType CODELIST_NOT_FOUND                 = create("exception.srm.codelist.not_found");
-    public static final RestCommonServiceExceptionType CODE_NOT_FOUND                     = create("exception.srm.code.not_found");
+    public static final RestCommonServiceExceptionType CODELIST_NOT_FOUND                 = create("exception.structural_resources.codelist.not_found");
+    public static final RestCommonServiceExceptionType CODE_NOT_FOUND                     = create("exception.structural_resources.code.not_found");
 }

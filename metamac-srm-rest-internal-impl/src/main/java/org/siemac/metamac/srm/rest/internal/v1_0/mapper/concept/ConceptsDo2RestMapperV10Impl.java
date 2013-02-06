@@ -14,13 +14,13 @@ import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.RelatedConcepts;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.RoleConcepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RelatedConcepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RoleConcepts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -201,21 +201,21 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
         return null;
     }
 
-    private org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType toConceptSchemeTypeEnum(ConceptSchemeTypeEnum source) {
+    private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeType toConceptSchemeTypeEnum(ConceptSchemeTypeEnum source) {
         if (source == null) {
             return null;
         }
         switch (source) {
             case GLOSSARY:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.GLOSSARY;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeType.GLOSSARY;
             case OPERATION:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.OPERATION;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeType.OPERATION;
             case ROLE:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.ROLE;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeType.ROLE;
             case TRANSVERSAL:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.TRANSVERSAL;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeType.TRANSVERSAL;
             case MEASURE:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType.MEASURE;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeType.MEASURE;
             default:
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);

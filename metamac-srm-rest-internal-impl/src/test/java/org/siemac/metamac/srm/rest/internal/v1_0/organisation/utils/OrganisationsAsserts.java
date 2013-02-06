@@ -11,7 +11,7 @@ public class OrganisationsAsserts extends Asserts {
 
     public static void assertEqualsResource(OrganisationSchemeVersionMetamac expected, String kindExpected, String itemSchemeSubpathExpected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/" + itemSchemeSubpathExpected + "/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/"
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + itemSchemeSubpathExpected + "/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/"
                 + maintainableArtefact.getCode() + "/" + maintainableArtefact.getVersionLogic();
 
         Asserts.assertEqualsResource(expected, kindExpected, expectedSelfLink, actual);
@@ -19,7 +19,7 @@ public class OrganisationsAsserts extends Asserts {
 
     public static void assertEqualsResource(OrganisationMetamac expected, String kindExpected, String itemSchemeSubpathExpected, String itemsSubpathExpected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/srm/v1.0/" + itemSchemeSubpathExpected + "/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/"
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + itemSchemeSubpathExpected + "/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/"
                 + maintainableArtefact.getCode() + "/" + maintainableArtefact.getVersionLogic() + "/" + itemsSubpathExpected + "/" + expected.getNameableArtefact().getCode();
         assertEqualsResource(expected, kindExpected, expectedSelfLink, actual);
     }

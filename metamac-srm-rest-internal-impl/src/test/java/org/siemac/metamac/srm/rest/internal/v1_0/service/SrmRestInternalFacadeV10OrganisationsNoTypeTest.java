@@ -24,14 +24,14 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.Test;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agency;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisation;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnit;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisation;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnit;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisations;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
@@ -256,11 +256,11 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("OrganisationScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("OrganisationScheme " + resourceID + " not found in version " + version + " from Agency " + agencyID, exception.getMessage());
             assertEquals(3, exception.getParameters().getParameters().size());
-            assertEquals(agencyID, exception.getParameters().getParameters().get(0));
-            assertEquals(resourceID, exception.getParameters().getParameters().get(1));
-            assertEquals(version, exception.getParameters().getParameters().get(2));
+            assertEquals(resourceID, exception.getParameters().getParameters().get(0));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
+            assertEquals(agencyID, exception.getParameters().getParameters().get(2));
             assertNull(exception.getErrors());
         } catch (Exception e) {
             fail("Incorrect exception");
@@ -460,13 +460,12 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.ORGANISATION_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("Organisation not found with ID " + organisationID + " in OrganisationScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version,
-                    exception.getMessage());
+            assertEquals("Organisation " + organisationID + " not found in version " + version + " of OrganisationScheme " + resourceID + " from Agency " + agencyID, exception.getMessage());
             assertEquals(4, exception.getParameters().getParameters().size());
             assertEquals(organisationID, exception.getParameters().getParameters().get(0));
-            assertEquals(agencyID, exception.getParameters().getParameters().get(1));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
             assertEquals(resourceID, exception.getParameters().getParameters().get(2));
-            assertEquals(version, exception.getParameters().getParameters().get(3));
+            assertEquals(agencyID, exception.getParameters().getParameters().get(3));
             assertNull(exception.getErrors());
         } catch (Exception e) {
             fail("Incorrect exception");

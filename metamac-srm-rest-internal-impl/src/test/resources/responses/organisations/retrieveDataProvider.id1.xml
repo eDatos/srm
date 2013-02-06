@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:dataProvider xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#dataProvider" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/srm/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders/item1">
+<sr:dataProvider xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#dataProvider" id="item1" urn="urn:item1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders/item1">
     <common:Annotations>
         <common:Annotation id="code2">
             <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -20,10 +20,10 @@
     <common:Name xml:lang="en">name-item1 in English</common:Name>
     <common:Description xml:lang="es">description-item1 en Español</common:Description>
     <common:Description xml:lang="en">description-item1 in English</common:Description>
-    <cdomain:selfLink kind="srm#dataProvider" href="http://data.istac.es/apis/srm/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders/item1"/>
-    <cdomain:parentLink kind="srm#dataProviders" href="http://data.istac.es/apis/srm/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders"/>
-    <srm:comment>
+    <cdomain:selfLink kind="structuralResources#dataProvider" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders/item1"/>
+    <cdomain:parentLink kind="structuralResources#dataProviders" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/idAsMaintaineragency1/itemScheme1/01.000/dataproviders"/>
+    <sr:comment>
         <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
-    </srm:comment>
-</srm:dataProvider>
+    </sr:comment>
+</sr:dataProvider>

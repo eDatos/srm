@@ -23,12 +23,12 @@ public class CategoriesDo2JaxbCallbackImpl implements CategoriesDo2JaxbCallback 
 
     @Override
     public CategorySchemeType createCategorySchemeJaxb(com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion source) {
-        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme();
+        return new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryScheme();
     }
 
     @Override
     public void fillCategorySchemeJaxb(CategorySchemeVersion source, CategorySchemeType target) {
-        categoriesDo2RestMapperV10.toCategoryScheme((CategorySchemeVersionMetamac) source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme) target);
+        categoriesDo2RestMapperV10.toCategoryScheme((CategorySchemeVersionMetamac) source, (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryScheme) target);
     }
 
     @Override
@@ -55,11 +55,11 @@ public class CategoriesDo2JaxbCallbackImpl implements CategoriesDo2JaxbCallback 
 
     @Override
     public CategorisationType createCategorisationJaxb(Categorisation source) {
-        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation();
+        return new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation();
     }
 
     @Override
     public void fillCategorisationJaxb(Categorisation source, CategorisationType target) {
-        categoriesDo2RestMapperV10.toCategorisation(source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation) target);
+        categoriesDo2RestMapperV10.toCategorisation(source, (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation) target);
     }
 }

@@ -15,8 +15,8 @@ import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.constants.RestEndpointsConstants;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.LifeCycle;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.rest.utils.RestCommonUtil;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -76,7 +76,7 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     }
 
     @Override
-    public org.siemac.metamac.rest.srm_internal.v1_0.domain.LifeCycle toLifeCycle(org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata source) {
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle toLifeCycle(org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata source) {
         LifeCycle target = new LifeCycle();
         target.setProcStatus(toProcStatus(source.getProcStatus()));
         target.setProductionValidationDate(toDate(source.getProductionValidationDate()));
@@ -96,9 +96,9 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     public ProcStatus toProcStatus(ProcStatusEnum source) {
         switch (source) {
             case INTERNALLY_PUBLISHED:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus.INTERNALLY_PUBLISHED;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus.INTERNALLY_PUBLISHED;
             case EXTERNALLY_PUBLISHED:
-                return org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus.EXTERNALLY_PUBLISHED;
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus.EXTERNALLY_PUBLISHED;
             default:
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);

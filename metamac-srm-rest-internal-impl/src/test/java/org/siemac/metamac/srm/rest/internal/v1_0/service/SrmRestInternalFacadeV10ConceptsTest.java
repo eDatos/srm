@@ -42,11 +42,11 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -243,11 +243,11 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("ConceptScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("ConceptScheme " + resourceID + " not found in version " + version + " from Agency " + agencyID, exception.getMessage());
             assertEquals(3, exception.getParameters().getParameters().size());
-            assertEquals(agencyID, exception.getParameters().getParameters().get(0));
-            assertEquals(resourceID, exception.getParameters().getParameters().get(1));
-            assertEquals(version, exception.getParameters().getParameters().get(2));
+            assertEquals(resourceID, exception.getParameters().getParameters().get(0));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
+            assertEquals(agencyID, exception.getParameters().getParameters().get(2));
             assertNull(exception.getErrors());
         } catch (Exception e) {
             fail("Incorrect exception");
@@ -400,13 +400,12 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CONCEPT_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("Concept not found with ID " + conceptID + " in ConceptScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("Concept " + conceptID + " not found in version " + version + " of ConceptScheme " + resourceID + " from Agency " + agencyID, exception.getMessage());
             assertEquals(4, exception.getParameters().getParameters().size());
             assertEquals(conceptID, exception.getParameters().getParameters().get(0));
-            assertEquals(agencyID, exception.getParameters().getParameters().get(1));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
             assertEquals(resourceID, exception.getParameters().getParameters().get(2));
-            assertEquals(version, exception.getParameters().getParameters().get(3));
-            assertNull(exception.getErrors());
+            assertEquals(agencyID, exception.getParameters().getParameters().get(3));
         } catch (Exception e) {
             fail("Incorrect exception");
         }

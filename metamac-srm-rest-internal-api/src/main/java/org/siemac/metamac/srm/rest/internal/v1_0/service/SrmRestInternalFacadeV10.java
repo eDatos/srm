@@ -6,41 +6,41 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agencies;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Agency;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencyScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.AgencySchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categories;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Code;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptTypes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumer;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumerSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataConsumers;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProvider;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviders;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisation;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnit;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Organisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencySchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categories;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Category;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategorySchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumer;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumers;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProvider;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviders;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisation;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnit;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnits;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisations;
 
 @Path("v1.0")
 public interface SrmRestInternalFacadeV10 {
@@ -341,7 +341,7 @@ public interface SrmRestInternalFacadeV10 {
     @Path("dataconsumerschemes/{agencyID}/{resourceID}/{version}/dataconsumers/{organisationID}")
     DataConsumer retrieveDataConsumer(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version,
             @PathParam("organisationID") String organisationID);
-    
+
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // CODELISTS
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -32,11 +32,11 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnit;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnitSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.OrganisationUnits;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnit;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnits;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -82,7 +82,7 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/" + RestInternalConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy="
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + RestInternalConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy="
                 + orderBy;
 
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
@@ -112,12 +112,12 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, target.getKind());
         assertEquals("urn:resourceID1:01.000", target.getUrn());
-        String selfLink = "http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragencyID1/resourceID1/01.000";
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/idAsMaintaineragencyID1/resourceID1/01.000";
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, target.getParentLink().getKind());
-        assertEquals("http://data.istac.es/apis/srm/v1.0/organisationunitschemes", target.getParentLink().getHref());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes", target.getParentLink().getHref());
         assertEqualsInternationalString("es", "comment-resourceID1v01.000 en Español", "en", "comment-resourceID1v01.000 in English", target.getComment());
         assertEquals("replaceTo", target.getReplaceToVersion());
         assertEquals("replacedBy", target.getReplacedByVersion());
@@ -211,7 +211,7 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/organisationunitschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/organisationunits?query=" + query
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/organisationunits?query=" + query
                 + "&orderBy=" + orderBy;
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
@@ -245,7 +245,7 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, target.getKind());
         assertEquals("urn:organisation2", target.getUrn());
 
-        String parentLink = "http://data.istac.es/apis/srm/v1.0/organisationunitschemes/idAsMaintaineragencyID1/resourceID1/01.000/organisationunits";
+        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/idAsMaintaineragencyID1/resourceID1/01.000/organisationunits";
         String selfLink = parentLink + "/organisation2";
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());

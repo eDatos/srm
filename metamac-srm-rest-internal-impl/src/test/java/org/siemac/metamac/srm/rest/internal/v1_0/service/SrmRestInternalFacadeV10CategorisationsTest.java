@@ -32,8 +32,8 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisations;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
@@ -178,7 +178,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
-        
+
         // Verify with Mockito
         verifyRetrieveCategorisation(categoriesService, agencyID, resourceID, version);
     }
@@ -229,11 +229,11 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.CATEGORISATION_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("Categorisation not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("Categorisation " + resourceID + " not found in version " + version + " from Agency " + agencyID, exception.getMessage());
             assertEquals(3, exception.getParameters().getParameters().size());
-            assertEquals(agencyID, exception.getParameters().getParameters().get(0));
-            assertEquals(resourceID, exception.getParameters().getParameters().get(1));
-            assertEquals(version, exception.getParameters().getParameters().get(2));
+            assertEquals(resourceID, exception.getParameters().getParameters().get(0));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
+            assertEquals(agencyID, exception.getParameters().getParameters().get(2));
             assertNull(exception.getErrors());
         } catch (Exception e) {
             fail("Incorrect exception");
@@ -322,6 +322,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         when(categoriesService.findCategorisationsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
                 new Answer<PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation>>() {
 
+                    @Override
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> answer(InvocationOnMock invocation)
                             throws Throwable {
                         List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];

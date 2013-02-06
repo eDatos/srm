@@ -35,12 +35,12 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concept;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemeType;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Concepts;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeType;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -83,7 +83,7 @@ public class ConceptsDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
 
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
@@ -111,12 +111,12 @@ public class ConceptsDo2RestMapperTest {
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
         assertEquals("urn:resourceID1:01.123", target.getUrn());
-        String selfLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID1/01.123";
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
-        assertEquals("http://data.istac.es/apis/srm/v1.0/conceptschemes", target.getParentLink().getHref());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes", target.getParentLink().getHref());
         assertEquals(ConceptSchemeType.OPERATION, target.getType());
         assertEquals("urn:operation-resourceID1", target.getStatisticalOperation().getUrn());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
@@ -210,7 +210,7 @@ public class ConceptsDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/" + version + "/concepts?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/" + version + "/concepts?query=" + query + "&orderBy=" + orderBy;
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
@@ -239,7 +239,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
         assertEquals("urn:concept2", target.getUrn());
 
-        String parentLink = "http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID1/01.123/concepts";
+        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID1/01.123/concepts";
         String selfLink = parentLink + "/concept2";
         assertEquals(RestInternalConstants.KIND_CONCEPT, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());

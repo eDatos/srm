@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:agencies xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#agencies" total="40" limit="4" offset="4" firstLink="http://data.istac.es/apis/srm/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/srm/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/srm/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/srm/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=36">
-    <srm:agency kind="srm#agency">
+<sr:agencies xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#agencies" total="40" limit="4" offset="4" firstLink="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=36">
+    <sr:agency kind="structuralResources#agency">
         <cdomain:id>item1</cdomain:id>
         <cdomain:urn>urn:item1</cdomain:urn>
-        <cdomain:selfLink kind="srm#agency" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/item1"/>
+        <cdomain:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/item1"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
         </cdomain:title>
-    </srm:agency>
-    <srm:agency kind="srm#agency">
+    </sr:agency>
+    <sr:agency kind="structuralResources#agency">
         <cdomain:id>item2</cdomain:id>
         <cdomain:urn>urn:item2</cdomain:urn>
-        <cdomain:selfLink kind="srm#agency" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/item2"/>
+        <cdomain:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/item2"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-item2 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
         </cdomain:title>
-    </srm:agency>
-    <srm:agency kind="srm#agency">
+    </sr:agency>
+    <sr:agency kind="structuralResources#agency">
         <cdomain:id>item3</cdomain:id>
         <cdomain:urn>urn:item3</cdomain:urn>
-        <cdomain:selfLink kind="srm#agency" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/item3"/>
+        <cdomain:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/item3"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-item3 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item3 en Español</cdomain:text>
         </cdomain:title>
-    </srm:agency>
-    <srm:agency kind="srm#agency">
+    </sr:agency>
+    <sr:agency kind="structuralResources#agency">
         <cdomain:id>item1</cdomain:id>
         <cdomain:urn>urn:item1</cdomain:urn>
-        <cdomain:selfLink kind="srm#agency" href="http://data.istac.es/apis/srm/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme2/01.000/agencies/item1"/>
+        <cdomain:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme2/01.000/agencies/item1"/>
         <cdomain:title>
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:title>
-    </srm:agency>
-</srm:agencies>
+    </sr:agency>
+</sr:agencies>

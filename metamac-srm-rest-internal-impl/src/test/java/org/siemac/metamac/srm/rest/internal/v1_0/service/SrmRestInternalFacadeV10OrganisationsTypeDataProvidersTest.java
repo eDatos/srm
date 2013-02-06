@@ -24,10 +24,10 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.Test;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProvider;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviderSchemes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.DataProviders;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProvider;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderSchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviders;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
@@ -208,11 +208,11 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.DATA_PROVIDER_SCHEME_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("DataProviderScheme not found in agencyID " + agencyID + " with ID " + resourceID + " and version " + version, exception.getMessage());
+            assertEquals("DataProviderScheme " + resourceID + " not found in version " + version + " from Agency " + agencyID, exception.getMessage());
             assertEquals(3, exception.getParameters().getParameters().size());
-            assertEquals(agencyID, exception.getParameters().getParameters().get(0));
-            assertEquals(resourceID, exception.getParameters().getParameters().get(1));
-            assertEquals(version, exception.getParameters().getParameters().get(2));
+            assertEquals(resourceID, exception.getParameters().getParameters().get(0));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
+            assertEquals(agencyID, exception.getParameters().getParameters().get(2));
             assertNull(exception.getErrors());
         } catch (Exception e) {
             fail("Incorrect exception");
@@ -364,13 +364,12 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
             assertEquals(RestServiceExceptionType.DATA_PROVIDER_NOT_FOUND.getCode(), exception.getCode());
-            assertEquals("DataProvider not found with ID " + organisationID + " in DataProviderScheme in agencyID " + agencyID + " with ID " + resourceID + " and version " + version,
-                    exception.getMessage());
+            assertEquals("DataProvider " + organisationID + " not found in version " + version + " of DataProviderScheme " + resourceID + " from Agency " + agencyID, exception.getMessage());
             assertEquals(4, exception.getParameters().getParameters().size());
             assertEquals(organisationID, exception.getParameters().getParameters().get(0));
-            assertEquals(agencyID, exception.getParameters().getParameters().get(1));
+            assertEquals(version, exception.getParameters().getParameters().get(1));
             assertEquals(resourceID, exception.getParameters().getParameters().get(2));
-            assertEquals(version, exception.getParameters().getParameters().get(3));
+            assertEquals(agencyID, exception.getParameters().getParameters().get(3));
             assertNull(exception.getErrors());
         } catch (Exception e) {
             fail("Incorrect exception");

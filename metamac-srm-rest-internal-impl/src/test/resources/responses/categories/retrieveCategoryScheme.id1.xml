@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:categoryScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#categoryScheme" id="itemScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:itemScheme1:01.000" uri="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
+<sr:categoryScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#categoryScheme" id="itemScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:itemScheme1:01.000" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
     <common:Annotations>
         <common:Annotation id="code1">
             <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -20,7 +20,7 @@
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
     <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
-    <structure:Category id="category1" urn="urn:category1" uri="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/category1">
+    <structure:Category id="category1" urn="urn:category1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/category1">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -42,7 +42,7 @@
         <common:Description xml:lang="en">description-category1 in English</common:Description>
         <common:Description xml:lang="es">description-category1 en Español</common:Description>
     </structure:Category>
-    <structure:Category id="category2" urn="urn:category2" uri="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/category2">
+    <structure:Category id="category2" urn="urn:category2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/category2">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -63,7 +63,7 @@
         <common:Name xml:lang="es">name-category2 en Español</common:Name>
         <common:Description xml:lang="es">description-category2 en Español</common:Description>
         <common:Description xml:lang="en">description-category2 in English</common:Description>
-        <structure:Category id="category2A" urn="urn:category2A" uri="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/category2A">
+        <structure:Category id="category2A" urn="urn:category2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/category2A">
             <common:Annotations>
                 <common:Annotation id="code2">
                     <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -85,7 +85,7 @@
             <common:Description xml:lang="es">description-category2A en Español</common:Description>
             <common:Description xml:lang="en">description-category2A in English</common:Description>
         </structure:Category>
-        <structure:Category id="category2B" urn="urn:category2B" uri="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/category2B">
+        <structure:Category id="category2B" urn="urn:category2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories/category2B">
             <common:Annotations>
                 <common:Annotation id="code2">
                     <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -108,28 +108,28 @@
             <common:Description xml:lang="es">description-category2B en Español</common:Description>
         </structure:Category>
     </structure:Category>
-    <cdomain:selfLink kind="srm#categoryScheme" href="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
-    <cdomain:parentLink kind="srm#categorySchemes" href="http://data.istac.es/apis/srm/v1.0/categoryschemes"/>
+    <cdomain:selfLink kind="structuralResources#categoryScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:parentLink kind="structuralResources#categorySchemes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes"/>
     <cdomain:childLinks total="1">
-        <cdomain:childLink kind="srm#categories" href="http://data.istac.es/apis/srm/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories"/>
+        <cdomain:childLink kind="structuralResources#categories" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000/categories"/>
     </cdomain:childLinks>
-    <srm:lifeCycle>
-        <srm:procStatus>EXTERNALLY_PUBLISHED</srm:procStatus>
-        <srm:productionValidationDate>2009-09-01T01:01:01.001+01:00</srm:productionValidationDate>
-        <srm:productionValidationUser>production-user</srm:productionValidationUser>
-        <srm:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</srm:diffusionValidationDate>
-        <srm:diffusionValidationUser>diffusion-user</srm:diffusionValidationUser>
-        <srm:internalPublicationDate>2011-11-03T01:01:01.001Z</srm:internalPublicationDate>
-        <srm:internalPublicationUser>internal-publication-user</srm:internalPublicationUser>
-        <srm:externalPublicationDate>2012-12-04T01:01:01.001Z</srm:externalPublicationDate>
-        <srm:externalPublicationUser>external-publication-user</srm:externalPublicationUser>
-        <srm:isExternalPublicationFailed>false</srm:isExternalPublicationFailed>
-        <srm:externalPublicationFailedDate>2013-08-02T01:01:01.001+01:00</srm:externalPublicationFailedDate>
-    </srm:lifeCycle>
-    <srm:replacedByVersion>replacedBy</srm:replacedByVersion>
-    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
-    <srm:comment>
+    <sr:lifeCycle>
+        <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
+        <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>
+        <sr:productionValidationUser>production-user</sr:productionValidationUser>
+        <sr:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</sr:diffusionValidationDate>
+        <sr:diffusionValidationUser>diffusion-user</sr:diffusionValidationUser>
+        <sr:internalPublicationDate>2011-11-03T01:01:01.001Z</sr:internalPublicationDate>
+        <sr:internalPublicationUser>internal-publication-user</sr:internalPublicationUser>
+        <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
+        <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
+        <sr:isExternalPublicationFailed>false</sr:isExternalPublicationFailed>
+        <sr:externalPublicationFailedDate>2013-08-02T01:01:01.001+01:00</sr:externalPublicationFailedDate>
+    </sr:lifeCycle>
+    <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
+    <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
+    <sr:comment>
         <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
         <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
-    </srm:comment>
-</srm:categoryScheme>
+    </sr:comment>
+</sr:categoryScheme>

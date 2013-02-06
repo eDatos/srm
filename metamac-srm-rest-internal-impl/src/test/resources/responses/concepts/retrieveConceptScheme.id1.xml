@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<srm:conceptScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:srm="http://www.siemac.org/metamac/rest/srm-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="srm#conceptScheme" id="itemScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:itemScheme1:01.000" uri="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
+<sr:conceptScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#conceptScheme" id="itemScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:itemScheme1:01.000" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
     <common:Annotations>
         <common:Annotation id="code1">
             <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -20,7 +20,7 @@
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
     <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
     <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
-    <structure:Concept id="concept1" urn="urn:concept1" uri="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept1">
+    <structure:Concept id="concept1" urn="urn:concept1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept1">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -47,7 +47,7 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <structure:Concept id="concept2" urn="urn:concept2" uri="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2">
+    <structure:Concept id="concept2" urn="urn:concept2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -74,7 +74,7 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <structure:Concept id="concept2A" urn="urn:concept2A" uri="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2A">
+    <structure:Concept id="concept2A" urn="urn:concept2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2A">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -104,7 +104,7 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <structure:Concept id="concept2B" urn="urn:concept2B" uri="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2B">
+    <structure:Concept id="concept2B" urn="urn:concept2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2B">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -134,28 +134,28 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <cdomain:selfLink kind="srm#conceptScheme" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
-    <cdomain:parentLink kind="srm#conceptSchemes" href="http://data.istac.es/apis/srm/v1.0/conceptschemes"/>
+    <cdomain:selfLink kind="structuralResources#conceptScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:parentLink kind="structuralResources#conceptSchemes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes"/>
     <cdomain:childLinks total="1">
-        <cdomain:childLink kind="srm#concepts" href="http://data.istac.es/apis/srm/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
+        <cdomain:childLink kind="structuralResources#concepts" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
     </cdomain:childLinks>
-    <srm:lifeCycle>
-        <srm:procStatus>EXTERNALLY_PUBLISHED</srm:procStatus>
-        <srm:productionValidationDate>2009-09-01T01:01:01.001+01:00</srm:productionValidationDate>
-        <srm:productionValidationUser>production-user</srm:productionValidationUser>
-        <srm:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</srm:diffusionValidationDate>
-        <srm:diffusionValidationUser>diffusion-user</srm:diffusionValidationUser>
-        <srm:internalPublicationDate>2011-11-03T01:01:01.001Z</srm:internalPublicationDate>
-        <srm:internalPublicationUser>internal-publication-user</srm:internalPublicationUser>
-        <srm:externalPublicationDate>2012-12-04T01:01:01.001Z</srm:externalPublicationDate>
-        <srm:externalPublicationUser>external-publication-user</srm:externalPublicationUser>
-        <srm:isExternalPublicationFailed>false</srm:isExternalPublicationFailed>
-        <srm:externalPublicationFailedDate>2013-08-02T01:01:01.001+01:00</srm:externalPublicationFailedDate>
-    </srm:lifeCycle>
-    <srm:replacedByVersion>replacedBy</srm:replacedByVersion>
-    <srm:replaceToVersion>replaceTo</srm:replaceToVersion>
-    <srm:type>OPERATION</srm:type>
-    <srm:statisticalOperation kind="STATISTICAL_OPERATION">
+    <sr:lifeCycle>
+        <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
+        <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>
+        <sr:productionValidationUser>production-user</sr:productionValidationUser>
+        <sr:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</sr:diffusionValidationDate>
+        <sr:diffusionValidationUser>diffusion-user</sr:diffusionValidationUser>
+        <sr:internalPublicationDate>2011-11-03T01:01:01.001Z</sr:internalPublicationDate>
+        <sr:internalPublicationUser>internal-publication-user</sr:internalPublicationUser>
+        <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
+        <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
+        <sr:isExternalPublicationFailed>false</sr:isExternalPublicationFailed>
+        <sr:externalPublicationFailedDate>2013-08-02T01:01:01.001+01:00</sr:externalPublicationFailedDate>
+    </sr:lifeCycle>
+    <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
+    <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
+    <sr:type>OPERATION</sr:type>
+    <sr:statisticalOperation kind="STATISTICAL_OPERATION">
         <cdomain:id>operation-itemScheme1</cdomain:id>
         <cdomain:urn>urn:operation-itemScheme1</cdomain:urn>
         <cdomain:selfLink kind="STATISTICAL_OPERATION" href="http://data.istac.es/apis/operations-internal/operation-itemScheme1"/>
@@ -163,9 +163,9 @@
             <cdomain:text xml:lang="en">title-operation-itemScheme1 in English</cdomain:text>
             <cdomain:text xml:lang="es">title-operation-itemScheme1 en Español</cdomain:text>
         </cdomain:title>
-    </srm:statisticalOperation>
-    <srm:comment>
+    </sr:statisticalOperation>
+    <sr:comment>
         <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
-    </srm:comment>
-</srm:conceptScheme>
+    </sr:comment>
+</sr:conceptScheme>

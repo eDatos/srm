@@ -20,12 +20,12 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
 
     @Override
     public ConceptSchemeType createConceptSchemeJaxb(com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion source) {
-        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme();
+        return new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme();
     }
 
     @Override
     public void fillConceptSchemeJaxb(ConceptSchemeVersion source, ConceptSchemeType target) {
-        conceptsDo2RestMapperV10.toConceptScheme((ConceptSchemeVersionMetamac) source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.ConceptScheme) target);
+        conceptsDo2RestMapperV10.toConceptScheme((ConceptSchemeVersionMetamac) source, (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme) target);
     }
 
     @Override

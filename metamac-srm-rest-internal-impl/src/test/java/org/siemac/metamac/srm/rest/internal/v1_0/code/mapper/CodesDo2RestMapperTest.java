@@ -32,12 +32,12 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.AccessType;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Code;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelists;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Codes;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -80,7 +80,7 @@ public class CodesDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CODELISTS, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/codelists" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
 
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
@@ -108,12 +108,12 @@ public class CodesDo2RestMapperTest {
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CODELIST, target.getKind());
         assertEquals("urn:resourceID1:01.123", target.getUrn());
-        String selfLink = "http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragencyID1/resourceID1/01.123";
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CODELIST, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_CODELISTS, target.getParentLink().getKind());
-        assertEquals("http://data.istac.es/apis/srm/v1.0/codelists", target.getParentLink().getHref());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/codelists", target.getParentLink().getHref());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         assertEqualsInternationalString("es", "shortName-resourceID1v01.123 en Español", "en", "shortName-resourceID1v01.123 in English", target.getShortName());
         assertTrue(target.isIsRecommended());
@@ -213,7 +213,7 @@ public class CodesDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CODES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/srm/v1.0/codelists" + "/" + agencyID + "/" + codeSchemeID + "/" + version + "/codes?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists" + "/" + agencyID + "/" + codeSchemeID + "/" + version + "/codes?query=" + query + "&orderBy=" + orderBy;
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
@@ -242,7 +242,7 @@ public class CodesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CODE, target.getKind());
         assertEquals("urn:code2", target.getUrn());
 
-        String parentLink = "http://data.istac.es/apis/srm/v1.0/codelists/idAsMaintaineragencyID1/resourceID1/01.123/codes";
+        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragencyID1/resourceID1/01.123/codes";
         String selfLink = parentLink + "/code2";
         assertEquals(RestInternalConstants.KIND_CODE, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());

@@ -7,11 +7,11 @@ import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categories;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisations;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.Category;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategoryScheme;
-import org.siemac.metamac.rest.srm_internal.v1_0.domain.CategorySchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categories;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Category;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryScheme;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategorySchemes;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -148,16 +148,16 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
     }
 
     @Override
-    public org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation toCategorisation(Categorisation source) {
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation toCategorisation(Categorisation source) {
         if (source == null) {
             return null;
         }
         // following method will call toCategorisation(Categorisation source, Categorisation target) method, thank to callback
-        return (org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation) categoriesDo2JaxbSdmxMapper.categorisationDoToJaxb(source, categoriesDo2JaxbCallback);
+        return (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation) categoriesDo2JaxbSdmxMapper.categorisationDoToJaxb(source, categoriesDo2JaxbCallback);
     }
 
     @Override
-    public void toCategorisation(Categorisation source, org.siemac.metamac.rest.srm_internal.v1_0.domain.Categorisation target) {
+    public void toCategorisation(Categorisation source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation target) {
         if (source == null) {
             return;
         }

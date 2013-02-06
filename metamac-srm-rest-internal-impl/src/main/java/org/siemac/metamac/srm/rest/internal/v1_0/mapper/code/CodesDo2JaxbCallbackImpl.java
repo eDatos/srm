@@ -20,12 +20,12 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
 
     @Override
     public CodelistType createCodelistJaxb(com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion source) {
-        return new org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist();
+        return new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist();
     }
 
     @Override
     public void fillCodelistJaxb(CodelistVersion source, CodelistType target) {
-        codesDo2RestMapperV10.toCodelist((CodelistVersionMetamac) source, (org.siemac.metamac.rest.srm_internal.v1_0.domain.Codelist) target);
+        codesDo2RestMapperV10.toCodelist((CodelistVersionMetamac) source, (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist) target);
     }
 
     @Override
