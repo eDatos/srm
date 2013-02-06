@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.server.handlers;
 
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -13,6 +12,7 @@ import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -55,9 +55,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 }
                 case CONCEPT_WITH_DSD_PRIMARY_MEASURE: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
-                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    criteria.setRestriction(restriction);
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     result = srmCoreServiceFacade.findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 }
@@ -76,9 +74,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 }
                 case CONCEPT_WITH_DSD_DIMENSION: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
-                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    criteria.setRestriction(restriction);
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     result = srmCoreServiceFacade.findConceptsCanBeDsdDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 }
@@ -91,9 +87,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 }
                 case CONCEPT_WITH_DSD_MEASURE_DIMENSION: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
-                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    criteria.setRestriction(restriction);
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     result = srmCoreServiceFacade.findConceptsCanBeDsdMeasureDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 }
@@ -106,9 +100,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 }
                 case CONCEPT_WITH_DSD_TIME_DIMENSION: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
-                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    criteria.setRestriction(restriction);
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     result = srmCoreServiceFacade.findConceptsCanBeDsdTimeDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 }
@@ -133,9 +125,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 }
                 case CONCEPTS_WITH_DSD_ROLES: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
-                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    criteria.setRestriction(restriction);
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     result = srmCoreServiceFacade.findConceptsCanBeDsdRoleByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
@@ -148,9 +138,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 }
                 case CONCEPT_WITH_DSD_ATTRIBUTE: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
-                    MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-                    restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    criteria.setRestriction(restriction);
+                    criteria.setRestriction(MetamacCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
                     result = srmCoreServiceFacade.findConceptsCanBeDsdAttributeByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
                     break;
                 }
@@ -165,6 +153,11 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
                     result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConcept(ServiceContextHolder.getCurrentServiceContext(), criteria, codelistWebCriteria.getConceptUrn());
+                    break;
+                }
+                case VARIABLE_ELEMENT_WITH_CODE: {
+                    VariableElementWebCriteria variableElementWebCriteria = (VariableElementWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
                     break;
                 }
                 default:

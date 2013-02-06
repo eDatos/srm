@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
@@ -44,7 +45,8 @@ public class MetamacCriteriaUtils {
      * @param criteria
      * @return
      */
-    public static List<MetamacCriteriaRestriction> getConceptCriteriaRestriction(ConceptWebCriteria criteria) {
+    public static MetamacCriteriaConjunctionRestriction getConceptCriteriaRestriction(ConceptWebCriteria criteria) {
+        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
         List<MetamacCriteriaRestriction> restrictions = new ArrayList<MetamacCriteriaRestriction>();
         if (criteria != null) {
             if (StringUtils.isNotBlank(criteria.getCriteria())) {
@@ -60,7 +62,8 @@ public class MetamacCriteriaUtils {
                 restrictions.add(conceptSchemePropertyRestriction);
             }
         }
-        return restrictions;
+        restriction.getRestrictions().addAll(restrictions);
+        return restriction;
     }
 
     /**
@@ -83,12 +86,13 @@ public class MetamacCriteriaUtils {
     }
 
     /**
-     * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE and NAMEof the VariableElement
+     * Returns a {@link MetamacCriteriaConjunctionRestriction} that compares the criteria with the CODE and NAMEof the VariableElement
      * 
      * @param criteria
      * @return
      */
-    public static List<MetamacCriteriaRestriction> getVariableElementCriteriaRestriction(VariableElementWebCriteria criteria) {
+    public static MetamacCriteriaConjunctionRestriction getVariableElementCriteriaRestriction(VariableElementWebCriteria criteria) {
+        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
         List<MetamacCriteriaRestriction> restrictions = new ArrayList<MetamacCriteriaRestriction>();
         if (criteria != null) {
             if (StringUtils.isNotBlank(criteria.getCriteria())) {
@@ -105,6 +109,7 @@ public class MetamacCriteriaUtils {
                 restrictions.add(variableElementPropertyRestriction);
             }
         }
-        return restrictions;
+        restriction.getRestrictions().addAll(restrictions);
+        return restriction;
     }
 }

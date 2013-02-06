@@ -49,12 +49,14 @@ public class GetVariableElementsActionHandler extends SecurityActionHandler<GetV
 
         VariableElementWebCriteria variableElementWebCriteria = action.getCriteria();
 
+        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+
         // Variable element Criteria
         if (variableElementWebCriteria != null) {
-            MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-            restriction.getRestrictions().addAll(MetamacCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
-            criteria.setRestriction(restriction);
+            restriction.getRestrictions().add(MetamacCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
         }
+
+        criteria.setRestriction(restriction);
 
         // Pagination
         criteria.setPaginator(new MetamacCriteriaPaginator());

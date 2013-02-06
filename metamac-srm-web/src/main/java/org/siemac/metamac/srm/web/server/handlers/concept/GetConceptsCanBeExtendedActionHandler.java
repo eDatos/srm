@@ -46,12 +46,14 @@ public class GetConceptsCanBeExtendedActionHandler extends SecurityActionHandler
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
+        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+
         // Concept criteria
         if (action.getCriteria() != null) {
-            MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-            restriction.getRestrictions().addAll(MetamacCriteriaUtils.getConceptCriteriaRestriction(action.getCriteria()));
-            criteria.setRestriction(restriction);
+            restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptCriteriaRestriction(action.getCriteria()));
         }
+
+        criteria.setRestriction(restriction);
 
         // Pagination
         criteria.setPaginator(new MetamacCriteriaPaginator());
