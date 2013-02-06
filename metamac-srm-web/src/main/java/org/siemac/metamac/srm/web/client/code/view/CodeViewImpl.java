@@ -17,7 +17,7 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
-import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -231,10 +231,10 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     }
 
     @Override
-    public void setVariableElements(GetVariableElementsResult result) {
+    public void setVariableElements(GetRelatedResourcesResult result) {
         if (searchVariableElementWindow != null) {
-            searchVariableElementWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableElementDtos(result.getVariableElements()));
-            searchVariableElementWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
+            searchVariableElementWindow.setRelatedResources(result.getRelatedResourceDtos());
+            searchVariableElementWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
         }
     }
 
@@ -333,23 +333,25 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
 
+                final String codelistUrn = codeDto.getItemSchemeVersionUrn();
+
                 searchVariableElementWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableElementSelection(), MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariableElements(firstResult, maxResults, searchVariableElementWindow.getRelatedResourceCriteria());
+                        getUiHandlers().retrieveVariableElements(firstResult, maxResults, searchVariableElementWindow.getRelatedResourceCriteria(), codelistUrn);
                     }
                 });
 
                 // Load variables (to populate the selection window)
-                getUiHandlers().retrieveVariableElements(FIRST_RESULST, MAX_RESULTS, null);
+                getUiHandlers().retrieveVariableElements(FIRST_RESULST, MAX_RESULTS, null, codelistUrn);
 
                 searchVariableElementWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                 searchVariableElementWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariableElements(firstResult, maxResults, criteria);
+                        getUiHandlers().retrieveVariableElements(firstResult, maxResults, criteria, codelistUrn);
                     }
                 });
                 searchVariableElementWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {

@@ -5,6 +5,7 @@ public class VariableElementWebCriteria extends MetamacWebCriteria {
     private static final long serialVersionUID = 1L;
 
     private String            variableUrn;
+    private String            codelistUrn;
 
     public VariableElementWebCriteria() {
     }
@@ -19,5 +20,13 @@ public class VariableElementWebCriteria extends MetamacWebCriteria {
 
     public void setVariableUrn(String variableUrn) {
         this.variableUrn = variableUrn;
+    }
+
+    public String getCodelistUrn() {
+        return codelistUrn;
+    }
+
+    public void setCodelistUrn(String codelistUrn) {
+        this.codelistUrn = codelistUrn;
     }
 }

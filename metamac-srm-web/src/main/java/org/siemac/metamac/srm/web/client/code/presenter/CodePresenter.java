@@ -19,6 +19,9 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
@@ -27,8 +30,6 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistResult;
-import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
-import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
@@ -83,7 +84,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
         void setCode(CodeMetamacDto codeDto);
         void setCodes(CodelistMetamacDto codelistMetamacDto, List<ItemHierarchyDto> codes);
-        void setVariableElements(GetVariableElementsResult result);
+        void setVariableElements(GetRelatedResourcesResult result);
     }
 
     @ContentSlot
@@ -213,19 +214,21 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
-    public void retrieveVariableElements(int firstResult, int maxResults, String criteria) {
+    public void retrieveVariableElements(int firstResult, int maxResults, String criteria, String codelistUrn) {
         VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallback<GetVariableElementsResult>() {
+        variableElementWebCriteria.setCodelistUrn(codelistUrn);
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.VARIABLE_ELEMENT_WITH_CODE, firstResult, maxResults, variableElementWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetVariableElementsResult result) {
-                getView().setVariableElements(result);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setVariableElements(result);
+                    }
+                });
     }
 
     @Override

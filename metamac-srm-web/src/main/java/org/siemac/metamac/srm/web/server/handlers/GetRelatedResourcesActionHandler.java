@@ -62,7 +62,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CODELIST_WITH_DSD_PRIMARY_MEASURE_ENUMERATED_REPRESENTATION: {
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
-                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasure(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEMES_WITH_DSD_DIMENSION: {
@@ -107,13 +107,13 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CONCEPT_SCHEME_WITH_DSD_MEASURE_DIMENSION_ENUMERATED_REPRESENTATION: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimension(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CODELIST_WITH_DSD_DIMENSION_ENUMERATED_REPRESENTATION: {
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
-                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdDimension(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
                             codelistWebCriteria.getConceptUrn());
                     break;
                 }
@@ -145,19 +145,21 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CODELIST_WITH_DSD_ATTRIBUTE_ENUMERATED_REPRESENTATION: {
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
-                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttribute(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
                             codelistWebCriteria.getConceptUrn());
                     break;
                 }
                 case CODELIST_WITH_CONCEPT_ENUMERATED_REPRESENTATION: {
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
-                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConcept(ServiceContextHolder.getCurrentServiceContext(), criteria, codelistWebCriteria.getConceptUrn());
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            codelistWebCriteria.getConceptUrn());
                     break;
                 }
                 case VARIABLE_ELEMENT_WITH_CODE: {
                     VariableElementWebCriteria variableElementWebCriteria = (VariableElementWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
+                    result = srmCoreServiceFacade.findVariableElementsForCodesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, variableElementWebCriteria.getCodelistUrn());
                     break;
                 }
                 default:
