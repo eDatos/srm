@@ -19,7 +19,7 @@
         <!-- Metamac -->
 		<dependency>
 			<groupId>org.siemac.metamac.metamac-srm</groupId>
-			<artifactId>metamac-srm-rest-internal-api</artifactId>
+			<artifactId>metamac-srm-soap-external-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
         <dependency>
@@ -27,11 +27,6 @@
             <artifactId>metamac-srm-core</artifactId>
             <classifier>client</classifier>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.siemac.metamac</groupId>
-            <artifactId>metamac-rest-common</artifactId>
-            <version>${metamac-rest-common.version}</version>
         </dependency>
 
         <!-- Spring -->
@@ -67,44 +62,51 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <!-- Test -->
+        <!-- SOAP (spring - jaxws) -->
         <dependency>
-            <groupId>org.siemac.metamac</groupId>
-            <artifactId>metamac-common-test</artifactId>
-            <version>${metamac-common-test.version}</version>
-            <scope>test</scope>
+            <groupId>org.jvnet.jax-ws-commons.spring</groupId>
+            <artifactId>jaxws-spring</artifactId>
+            <version>${jaxws-spring.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>metamac-core-common</artifactId>
-                    <groupId>org.siemac.metamac</groupId>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+                <exclusion>
+                    <!-- must be version 2.2.2 -->
+                    <groupId>com.sun.xml.bind</groupId>
+                    <artifactId>jaxb-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>mimepull</artifactId>
+                    <groupId>org.jvnet</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>sjsxp</artifactId>
+                    <groupId>com.sun.xml.stream</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>resolver</artifactId>
+                    <groupId>com.sun.org.apache.xml.internal</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>   
         <dependency>
-            <groupId>org.siemac.metamac</groupId>
-            <artifactId>metamac-rest-common-test</artifactId>
-            <version>${metamac-rest-common-test.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.siemac.metamac.metamac-srm</groupId>
-            <artifactId>metamac-srm-core</artifactId>
-            <type>test-jar</type>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
-            <artifactId>statistic-sdmx-srm-core</artifactId>
-            <type>test-jar</type>
-            <version>${statistic-sdmx-srm.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-servlet_2.5_spec</artifactId>
-            <version>${geronimo-servlet_2.5_spec.version}</version>
-            <scope>test</scope>
-        </dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>           
     </dependencies>
 </project>

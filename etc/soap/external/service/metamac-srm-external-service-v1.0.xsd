@@ -15,7 +15,7 @@
 	</xs:complexType>
 	<xs:complexType name="FindVariableFamiliesResponse">
 		<xs:sequence>
-			<xs:element name="operations" type="domain_v1_0:FindVariableFamiliesResult" />
+			<xs:element name="operations" type="domain_v1_0:VariableFamilies" />
 		</xs:sequence>
 	</xs:complexType>
 

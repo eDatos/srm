@@ -32,6 +32,11 @@
             <artifactId>statistic-sdmx-srm-rest-external-impl</artifactId>
             <version>${statistic-sdmx-srm.version}</version>
         </dependency>        
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-srm</groupId>
+            <artifactId>metamac-srm-soap-external-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>org.springframework</groupId>
@@ -42,12 +47,6 @@
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
             <version>${icu4j.version}</version>
-        </dependency>
+        </dependency>      
     </dependencies>
-
-    <build>
-        <plugins>
-
-        </plugins>
-    </build>
 </project>

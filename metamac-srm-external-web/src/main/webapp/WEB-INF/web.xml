@@ -36,6 +36,17 @@
         <url-pattern>/apis/*</url-pattern>
     </servlet-mapping>
     
+    <!-- Soap -->
+    <servlet>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSSpringServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <url-pattern>/soap/*</url-pattern>
+    </servlet-mapping>
+        
     <servlet-mapping>
         <servlet-name>dispatch</servlet-name>
         <url-pattern>/dispatch/*</url-pattern>

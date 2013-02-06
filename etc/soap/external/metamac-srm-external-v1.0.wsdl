@@ -26,8 +26,8 @@
 	</wsdl:message>
 
     <!-- Exceptions -->
-    <wsdl:message name="metamacExceptionFault">
-        <wsdl:part name="body" element="exception_v1_0:metamacException" />
+    <wsdl:message name="exceptionFault">
+        <wsdl:part name="body" element="exception_v1_0:exception" />
     </wsdl:message>
 
     <wsdl:portType name="MetamacSrmInterface_v1.0">
@@ -35,7 +35,7 @@
 		<wsdl:operation name="findVariableFamilies">
 			<wsdl:input name="findVariableFamiliesInput" message="tns:findVariableFamiliesRequest" />
 			<wsdl:output name="findVariableFamiliesOutput" message="tns:findVariableFamiliesResponse" />
-			<wsdl:fault name="findVariableFamiliesFault" message="tns:metamacExceptionFault" />
+			<wsdl:fault name="findVariableFamiliesFault" message="tns:exceptionFault" />
 		</wsdl:operation>
     </wsdl:portType>
 

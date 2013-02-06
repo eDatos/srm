@@ -4,28 +4,39 @@
 	xmlns:tns="http://www.siemac.org/metamac/soap/srm/v1.0/exception"
 	targetNamespace="http://www.siemac.org/metamac/soap/srm/v1.0/exception">
 
-	<xs:element name="metamacException" type="tns:MetamacException" />
+	<xs:element name="exception" type="tns:Exception" />    
     
-    <xs:complexType name="MetamacException">
-        <xs:sequence>
-            <xs:element name="exceptionItems" type="tns:MetamacExceptionItemList" maxOccurs="1" />
-        </xs:sequence>
+    <xs:complexType name="Exception">
+        <xs:complexContent>
+            <xs:extension base="tns:Error">
+                <xs:sequence>
+                    <xs:element name="errors" type="tns:Errors" minOccurs="0" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
+    
+    <xs:complexType name="Errors">
+        <xs:sequence>
+            <xs:element name="error" type="tns:Error" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
+    </xs:complexType>    
 
-    <xs:complexType name="MetamacExceptionItemList">
+    <xs:complexType name="Error">
         <xs:sequence>
-            <xs:element name="metamacExceptionItem" type="tns:MetamacExceptionItem" minOccurs="1" maxOccurs="unbounded" />
-        </xs:sequence>
-        <xs:attribute name="total" type="xs:unsignedLong" use="optional" />
-    </xs:complexType>
-
-    <xs:complexType name="MetamacExceptionItem">
-        <xs:sequence>
-            <xs:element name="code" type="xs:string" minOccurs="1" />
-            <xs:element name="message" type="xs:string" minOccurs="1" />
-            <xs:element name="messageParameters" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <xs:element name="code" type="xs:string" minOccurs="1"/>
+            <xs:element name="message" type="xs:string" minOccurs="0"/>
+            <xs:element name="parameters" type="tns:ErrorParameters" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
+    
+    <xs:complexType name="ErrorParameters">
+        <xs:sequence>
+            <xs:element name="parameter" type="xs:string" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
+    </xs:complexType>          
 
     
 </xs:schema>

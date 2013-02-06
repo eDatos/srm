@@ -4,6 +4,8 @@
     xmlns:tns="http://www.siemac.org/metamac/soap/srm/v1.0/domain"
     targetNamespace="http://www.siemac.org/metamac/soap/srm/v1.0/domain">
 
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+
     <xs:complexType name="VariableFamily">
         <xs:sequence>
             <xs:element name="id" type="xs:string" />
@@ -11,47 +13,41 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="VariableFamilyList">
-        <xs:sequence>
-            <xs:element name="variableFamily" type="tns:VariableFamily" minOccurs="1" maxOccurs="unbounded" />
-        </xs:sequence>
-        <xs:attribute name="total" type="xs:unsignedLong" use="optional" />
-    </xs:complexType>
-
-    <xs:complexType name="FindVariableFamiliesResult">
+    <xs:complexType name="VariableFamilies">
         <xs:complexContent>
-            <xs:extension base="tns:MetamacCriteriaResult">
+            <xs:extension base="tns:ListBase">
                 <xs:sequence>
-                    <xs:element name="variableFamilies" type="tns:VariableFamilyList" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="variableFamily" type="tns:VariableFamily" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <!-- COMMON -->
+    <xs:complexType name="ListBase">
+        <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
+        <xs:attribute name="limit" type="xs:unsignedLong" use="optional" />
+        <xs:attribute name="offset" type="xs:unsignedLong" use="optional" />
+    </xs:complexType>      
 
     <xs:complexType name="InternationalString">
         <xs:sequence>
-            <xs:element name="localisedStrings" type="tns:LocalisedStringList" maxOccurs="1" />
+            <xs:element name="text" type="tns:LocalisedString" minOccurs="1" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
-
-    <xs:complexType name="LocalisedStringList">
-        <xs:sequence>
-            <xs:element name="localisedString" type="tns:LocalisedString" minOccurs="1" maxOccurs="unbounded" />
-        </xs:sequence>
-        <xs:attribute name="total" type="xs:unsignedLong" use="optional" />
-    </xs:complexType>
-
+        
     <xs:complexType name="LocalisedString">
-        <xs:sequence>
-            <xs:element name="lang" type="xs:string" minOccurs="1" />
-            <xs:element name="value" type="xs:string" minOccurs="1" />
-        </xs:sequence>
-    </xs:complexType>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="xml:lang" default="es" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>    
 
     <!-- CRITERIA -->
     <xs:complexType name="MetamacCriteria">
         <xs:sequence>
-            <xs:element name="ordersBy" type="tns:MetamacCriteriaOrderList" minOccurs="0" maxOccurs="1" />
+            <xs:element name="ordersBy" type="tns:MetamacCriteriaOrders" minOccurs="0" maxOccurs="1" />
             <xs:element name="restriction" type="tns:MetamacCriteriaRestriction" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
         <xs:attribute name="firstResult" type="xs:unsignedLong" use="optional" />
@@ -59,7 +55,7 @@
         <xs:attribute name="countTotalResults" type="xs:boolean" use="optional" default="true" />
     </xs:complexType>
 
-    <xs:complexType name="MetamacCriteriaOrderList">
+    <xs:complexType name="MetamacCriteriaOrders">
         <xs:sequence>
             <xs:element name="order" type="tns:MetamacCriteriaOrder" minOccurs="1" maxOccurs="unbounded" />
         </xs:sequence>
@@ -97,7 +93,7 @@
 
     <xs:complexType name="MetamacCriteriaRestriction" abstract="true" />
 
-    <xs:complexType name="MetamacCriteriaRestrictionList">
+    <xs:complexType name="MetamacCriteriaRestrictions">
         <xs:sequence>
             <xs:element name="restriction" type="tns:MetamacCriteriaRestriction" minOccurs="1" maxOccurs="unbounded" />
         </xs:sequence>
@@ -110,7 +106,7 @@
         <xs:complexContent>
             <xs:extension base="tns:MetamacCriteriaRestriction">
                 <xs:sequence>
-                    <xs:element name="restrictions" type="tns:MetamacCriteriaRestrictionList" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="restrictions" type="tns:MetamacCriteriaRestrictions" minOccurs="0" maxOccurs="1" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -123,7 +119,7 @@
         <xs:complexContent>
             <xs:extension base="tns:MetamacCriteriaRestriction">
                 <xs:sequence>
-                    <xs:element name="restrictions" type="tns:MetamacCriteriaRestrictionList" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="restrictions" type="tns:MetamacCriteriaRestrictions" minOccurs="0" maxOccurs="1" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -150,13 +146,14 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="MetamacCriteriaResult">
-        <xs:attribute name="firstResult" type="xs:unsignedLong" use="optional" />
-        <xs:attribute name="maximumResultSize" type="xs:unsignedLong" use="optional" />
-        <xs:attribute name="totalResults" type="xs:unsignedLong" use="optional" />
-    </xs:complexType>
-
     <xs:simpleType name="VariableFamilyCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="NAME" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="VariableFamilyCriteriaPropertyOrder">
         <xs:restriction base="xs:token">
             <xs:enumeration value="ID" />
         </xs:restriction>
