@@ -33,6 +33,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentResult;
+import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -213,7 +214,8 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void retrieveVariableElements(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariableElementsResult>() {
+        VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallback<GetVariableElementsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

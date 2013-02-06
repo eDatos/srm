@@ -41,6 +41,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
+import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -219,7 +220,9 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void retrieveVariableElementsByVariable(int firstResult, int maxResults, String criteria, String variableUrn) {
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria, variableUrn), new WaitingAsyncCallback<GetVariableElementsResult>() {
+        VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
+        variableElementWebCriteria.setVariableUrn(variableUrn);
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallback<GetVariableElementsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -234,7 +237,9 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void retrieveVariableElementsByVariableForFusionOperation(int firstResult, int maxResults, String criteria, String variableUrn) {
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria, variableUrn), new WaitingAsyncCallback<GetVariableElementsResult>() {
+        VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
+        variableElementWebCriteria.setVariableUrn(variableUrn);
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallback<GetVariableElementsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -249,7 +254,9 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void retrieveVariableElementsByVariableForSegregationOperation(int firstResult, int maxResults, String criteria, String variableUrn) {
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria, variableUrn), new WaitingAsyncCallback<GetVariableElementsResult>() {
+        VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
+        variableElementWebCriteria.setVariableUrn(variableUrn);
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallback<GetVariableElementsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
