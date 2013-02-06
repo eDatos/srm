@@ -11,9 +11,11 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaRestriction;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.VariableElementCriteriaPropertyEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 
 public class MetamacCriteriaUtils {
 
@@ -78,5 +80,31 @@ public class MetamacCriteriaUtils {
                     .add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
         }
         return codelistCriteriaDisjuction;
+    }
+
+    /**
+     * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE and NAMEof the VariableElement
+     * 
+     * @param criteria
+     * @return
+     */
+    public static List<MetamacCriteriaRestriction> getVariableElementCriteriaRestriction(VariableElementWebCriteria criteria) {
+        List<MetamacCriteriaRestriction> restrictions = new ArrayList<MetamacCriteriaRestriction>();
+        if (criteria != null) {
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                MetamacCriteriaDisjunctionRestriction variableElementCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
+                variableElementCriteriaDisjunction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                variableElementCriteriaDisjunction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                restrictions.add(variableElementCriteriaDisjunction);
+            }
+            if (StringUtils.isNotBlank(criteria.getVariableUrn())) {
+                MetamacCriteriaPropertyRestriction variableElementPropertyRestriction = new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.VARIABLE_URN.name(),
+                        criteria.getVariableUrn(), OperationType.EQ);
+                restrictions.add(variableElementPropertyRestriction);
+            }
+        }
+        return restrictions;
     }
 }

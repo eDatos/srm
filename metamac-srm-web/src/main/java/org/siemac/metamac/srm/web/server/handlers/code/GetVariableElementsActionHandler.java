@@ -3,21 +3,17 @@ package org.siemac.metamac.srm.web.server.handlers.code;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.criteria.VariableElementCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.VariableElementCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
@@ -53,26 +49,12 @@ public class GetVariableElementsActionHandler extends SecurityActionHandler<GetV
 
         VariableElementWebCriteria variableElementWebCriteria = action.getCriteria();
 
-        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-
         // Variable element Criteria
-        if (StringUtils.isNotBlank(variableElementWebCriteria.getCriteria())) {
-            MetamacCriteriaDisjunctionRestriction variableElementCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-            variableElementCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), variableElementWebCriteria.getCriteria(), OperationType.ILIKE));
-            variableElementCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), variableElementWebCriteria.getCriteria(), OperationType.ILIKE));
-            restriction.getRestrictions().add(variableElementCriteriaDisjuction);
+        if (variableElementWebCriteria != null) {
+            MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+            restriction.getRestrictions().addAll(MetamacCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
+            criteria.setRestriction(restriction);
         }
-
-        // Variable restriction
-        if (StringUtils.isNotBlank(variableElementWebCriteria.getVariableUrn())) {
-            MetamacCriteriaPropertyRestriction variableRestriction = new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.VARIABLE_URN.name(),
-                    variableElementWebCriteria.getVariableUrn(), OperationType.EQ);
-            restriction.getRestrictions().add(variableRestriction);
-        }
-
-        criteria.setRestriction(restriction);
 
         // Pagination
         criteria.setPaginator(new MetamacCriteriaPaginator());
