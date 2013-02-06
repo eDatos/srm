@@ -7,10 +7,10 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.aop.LoggingInterceptor;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.soap.srm.v1_0.ExceptionFault;
-import org.siemac.metamac.soap.srm.v1_0.MetamacSrmInterfaceV10;
-import org.siemac.metamac.soap.srm.v1_0.domain.MetamacCriteria;
-import org.siemac.metamac.soap.srm.v1_0.domain.VariableFamilies;
+import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
+import org.siemac.metamac.soap.structural_resources.v1_0.MetamacStructuralResourcesInterfaceV10;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.MetamacCriteria;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.soap.external.exception.SoapCommonServiceExceptionType;
@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@WebService(endpointInterface = "org.siemac.metamac.soap.srm.v1_0.MetamacSrmInterfaceV10", targetNamespace = "http://www.siemac.org/metamac/soap/srm/v1.0", serviceName = "MetamacSrmInterface_v1.0", portName = "MetamacSrmBindingSOAP_v1.0")
+@WebService(endpointInterface = "org.siemac.metamac.soap.structural_resources.v1_0.MetamacStructuralResourcesInterfaceV10", targetNamespace = "http://www.siemac.org/metamac/soap/structural-resources/v1.0", serviceName = "MetamacStructuralResourcesInterface_v1.0", portName = "MetamacStructuralResourcesBindingSOAP_v1.0")
 @Service("srmSoapExternalFacadeV10")
-public class SrmSoapExternalFacadeV10Impl implements MetamacSrmInterfaceV10 {
+public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesInterfaceV10 {
 
     @Autowired
     private CodesMetamacService  codesService;
@@ -68,7 +68,7 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacSrmInterfaceV10 {
             return (ExceptionFault) e;
         } else {
             // do not show information details about exception to user
-            org.siemac.metamac.soap.srm.v1_0.exception.Exception exception = SoapExceptionUtils.getException(SoapCommonServiceExceptionType.UNKNOWN);
+            org.siemac.metamac.soap.structural_resources.v1_0.exception.Exception exception = SoapExceptionUtils.getException(SoapCommonServiceExceptionType.UNKNOWN);
             return new ExceptionFault("EXCEPTION", exception);
         }
     }

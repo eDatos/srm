@@ -20,7 +20,7 @@
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
     <!-- Web services (spring - jaxws) -->
-    <wss:binding url="/soap/v1.0/metamacSrmInterface">
+    <wss:binding url="/soap/v1.0/structuralResources">
         <wss:service>
             <ws:service bean="#srmSoapExternalFacadeV10" impl="org.siemac.metamac.srm.soap.external.v1_0.service.SrmSoapExternalFacadeV10Impl" />
         </wss:service>

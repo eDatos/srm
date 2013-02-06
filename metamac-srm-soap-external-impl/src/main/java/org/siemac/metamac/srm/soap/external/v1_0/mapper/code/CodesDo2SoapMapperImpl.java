@@ -5,10 +5,10 @@ import java.math.BigInteger;
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.soap.srm.v1_0.domain.InternationalString;
-import org.siemac.metamac.soap.srm.v1_0.domain.LocalisedString;
-import org.siemac.metamac.soap.srm.v1_0.domain.VariableFamilies;
-import org.siemac.metamac.soap.srm.v1_0.domain.VariableFamily;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.InternationalString;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.LocalisedString;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily;
 import org.springframework.stereotype.Component;
 
 @Component

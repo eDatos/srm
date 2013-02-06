@@ -3,16 +3,16 @@
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:service_v1_0="http://www.siemac.org/metamac/soap/srm/v1.0/service"
-    xmlns:exception_v1_0="http://www.siemac.org/metamac/soap/srm/v1.0/exception"
-    xmlns:tns="http://www.siemac.org/metamac/soap/srm/v1.0"
-    targetNamespace="http://www.siemac.org/metamac/soap/srm/v1.0">
+    xmlns:service_v1_0="http://www.siemac.org/metamac/soap/structural-resources/v1.0/service"
+    xmlns:exception_v1_0="http://www.siemac.org/metamac/soap/structural-resources/v1.0/exception"
+    xmlns:tns="http://www.siemac.org/metamac/soap/structural-resources/v1.0"
+    targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0">
 
     <wsdl:types>
-        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/soap/srm/v1.0/service">
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/service">
             <xs:include schemaLocation="service/metamac-srm-external-service-v1.0.xsd" />
         </xs:schema>
-        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/soap/srm/v1.0/exception">
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/exception">
             <xs:include schemaLocation="exception/metamac-srm-external-exception-v1.0.xsd" />
         </xs:schema>
     </wsdl:types>
@@ -30,7 +30,7 @@
         <wsdl:part name="body" element="exception_v1_0:exception" />
     </wsdl:message>
 
-    <wsdl:portType name="MetamacSrmInterface_v1.0">
+    <wsdl:portType name="MetamacStructuralResourcesInterface_v1.0">
         <!-- VariableFamilies -->
 		<wsdl:operation name="findVariableFamilies">
 			<wsdl:input name="findVariableFamiliesInput" message="tns:findVariableFamiliesRequest" />
@@ -39,11 +39,11 @@
 		</wsdl:operation>
     </wsdl:portType>
 
-    <wsdl:binding name="MetamacSrmBindingSOAP_v1.0" type="tns:MetamacSrmInterface_v1.0">
+    <wsdl:binding name="MetamacStructuralResourcesBindingSOAP_v1.0" type="tns:MetamacStructuralResourcesInterface_v1.0">
 
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
             <wsdl:operation name="findVariableFamilies">
-                <soap:operation soapAction="http://www.siemac.org/metamac/soap/srm/v1.0/findVariableFamilies" />
+                <soap:operation soapAction="http://www.siemac.org/metamac/soap/structural-resources/v1.0/findVariableFamilies" />
                 <wsdl:input name="findVariableFamiliesInput">
                     <soap:body use="literal" />
                 </wsdl:input>
@@ -56,8 +56,8 @@
             </wsdl:operation>
     </wsdl:binding>
 
-    <wsdl:service name="MetamacSrm_v1.0">
-        <wsdl:port binding="tns:MetamacSrmBindingSOAP_v1.0" name="MetamacSrmSOAP_v1.0">
+    <wsdl:service name="MetamacStructuralResources_v1.0">
+        <wsdl:port binding="tns:MetamacStructuralResourcesBindingSOAP_v1.0" name="MetamacStructuralResourcesSOAP_v1.0">
             <soap:address location="http://WEB_SERVICE_LOCATION" />
         </wsdl:port>
     </wsdl:service>

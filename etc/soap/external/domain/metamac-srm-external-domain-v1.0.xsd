@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema version="1.0" elementFormDefault="qualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:tns="http://www.siemac.org/metamac/soap/srm/v1.0/domain"
-    targetNamespace="http://www.siemac.org/metamac/soap/srm/v1.0/domain">
+    xmlns:tns="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain"
+    targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain">
 
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
 
