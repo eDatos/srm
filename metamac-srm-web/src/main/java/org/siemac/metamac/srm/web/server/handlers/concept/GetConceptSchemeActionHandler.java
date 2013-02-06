@@ -32,5 +32,4 @@ public class GetConceptSchemeActionHandler extends SecurityActionHandler<GetConc
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

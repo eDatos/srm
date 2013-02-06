@@ -89,7 +89,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
 
         void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
-        void setConceptList(List<ItemHierarchyDto> itemHierarchyDtos);
+        void setConcepts(List<ItemHierarchyDto> itemHierarchyDtos);
         void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
         void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
     }
@@ -313,7 +313,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(GetConceptListBySchemeResult result) {
-                getView().setConceptList(result.getItemHierarchyDtos());
+                getView().setConcepts(result.getItemHierarchyDtos());
             }
         });
     }

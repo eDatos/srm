@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.InformationLabel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
@@ -90,6 +91,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private GroupDynamicForm                  commentsEditionForm;
     private AnnotationsPanel                  annotationsEditionPanel;
 
+    private InformationLabel                  conceptsNoVisibleInfoMessage;
     private ConceptsTreeGrid                  conceptsTreeGrid;
 
     private ConceptSchemeVersionsSectionStack versionsSectionStack;
@@ -133,11 +135,15 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         // CONCEPTS
         //
 
+        conceptsNoVisibleInfoMessage = new InformationLabel(getConstants().conceptSchemeConceptsNoVisibleInfoMessage());
+        conceptsNoVisibleInfoMessage.setMargin(10);
+
         conceptsTreeGrid = new ConceptsTreeGrid();
 
         VLayout conceptsListGridLayout = new VLayout();
         conceptsListGridLayout.setMargin(15);
         conceptsListGridLayout.addMember(new TitleLabel(getConstants().concepts()));
+        conceptsListGridLayout.addMember(conceptsNoVisibleInfoMessage);
         conceptsListGridLayout.addMember(conceptsTreeGrid);
 
         panel.addMember(versionsSectionStack);
@@ -296,10 +302,18 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
         // Update concept scheme in tree grid
         conceptsTreeGrid.updateItemScheme(conceptScheme);
+        // The concepts scheme type can be null (if have beean imported). Do not show concepts until the concept scheme type is specified.
+        if (conceptScheme.getType() == null) {
+            conceptsNoVisibleInfoMessage.show();
+            conceptsTreeGrid.hide();
+        } else {
+            conceptsNoVisibleInfoMessage.hide();
+            conceptsTreeGrid.show();
+        }
     }
 
     @Override
-    public void setConceptList(List<ItemHierarchyDto> itemHierarchyDtos) {
+    public void setConcepts(List<ItemHierarchyDto> itemHierarchyDtos) {
         conceptsTreeGrid.setItems(conceptSchemeDto, itemHierarchyDtos);
     }
 
@@ -599,7 +613,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Class descriptors
-        classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE, conceptSchemeDto.getType().name());
+        classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE, conceptSchemeDto.getType() != null ? conceptSchemeDto.getType().name() : null);
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE_VIEW, CommonUtils.getConceptSchemeTypeName(conceptSchemeDto.getType()));
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.RELATED_OPERATION, ExternalItemUtils.getExternalItemName(conceptSchemeDto.getRelatedOperation()));
         classDescriptorsEditionForm.markForRedraw();
