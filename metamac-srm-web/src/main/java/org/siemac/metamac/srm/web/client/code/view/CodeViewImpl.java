@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.client.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.client.code.presenter.CodePresenter;
 import org.siemac.metamac.srm.web.client.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.code.view.handlers.CodeUiHandlers;
+import org.siemac.metamac.srm.web.client.code.widgets.CodeMainFormLayout;
 import org.siemac.metamac.srm.web.client.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -26,7 +27,6 @@ import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -50,7 +50,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements CodePresenter.CodeView {
 
     private VLayout                              panel;
-    private InternationalMainFormLayout          mainFormLayout;
+    private CodeMainFormLayout                   mainFormLayout;
 
     private CodesTreeGrid                        codesTreeGrid;
 
@@ -91,7 +91,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // CODE
         //
 
-        mainFormLayout = new InternationalMainFormLayout();
+        mainFormLayout = new CodeMainFormLayout();
 
         // Translations
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
@@ -121,6 +121,23 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
                 if (validateEditionForms()) {
                     getUiHandlers().saveCode(getCodeDto());
                 }
+            }
+        });
+
+        // Update variable element
+        mainFormLayout.getUpdateVariableElement().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                showSearchVariableElementWindow(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        RelatedResourceDto selectedVariableElement = searchVariableElementWindow.getSelectedRelatedResource();
+                        searchVariableElementWindow.markForDestroy();
+                        getUiHandlers().updateVariableElement(codeDto.getUrn(), selectedVariableElement.getUrn());
+                    }
+                });
             }
         });
 
@@ -228,6 +245,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         // Security
         mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
+        mainFormLayout.updateButtonsVisibility(codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     @Override
@@ -325,36 +343,12 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     }
 
     private SearchViewTextItem createVariableElementItem(String name, String title) {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
         SearchViewTextItem variableElementItem = new SearchViewTextItem(name, title);
         variableElementItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
-
-                final String codelistUrn = codeDto.getItemSchemeVersionUrn();
-
-                searchVariableElementWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableElementSelection(), MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariableElements(firstResult, maxResults, searchVariableElementWindow.getRelatedResourceCriteria(), codelistUrn);
-                    }
-                });
-
-                // Load variables (to populate the selection window)
-                getUiHandlers().retrieveVariableElements(FIRST_RESULST, MAX_RESULTS, null, codelistUrn);
-
-                searchVariableElementWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                searchVariableElementWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariableElements(firstResult, maxResults, criteria, codelistUrn);
-                    }
-                });
-                searchVariableElementWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                showSearchVariableElementWindow(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
@@ -369,5 +363,33 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
             }
         });
         return variableElementItem;
+    }
+
+    private void showSearchVariableElementWindow(com.smartgwt.client.widgets.form.fields.events.ClickHandler acceptButtonClickHandler) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+
+        final String codelistUrn = codeDto.getItemSchemeVersionUrn();
+
+        searchVariableElementWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableElementSelection(), MAX_RESULTS, new PaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults) {
+                getUiHandlers().retrieveVariableElements(firstResult, maxResults, searchVariableElementWindow.getRelatedResourceCriteria(), codelistUrn);
+            }
+        });
+
+        // Load variables (to populate the selection window)
+        getUiHandlers().retrieveVariableElements(FIRST_RESULST, MAX_RESULTS, null, codelistUrn);
+
+        searchVariableElementWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+        searchVariableElementWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                getUiHandlers().retrieveVariableElements(firstResult, maxResults, criteria, codelistUrn);
+            }
+        });
+        searchVariableElementWindow.getSave().addClickHandler(acceptButtonClickHandler);
     }
 }

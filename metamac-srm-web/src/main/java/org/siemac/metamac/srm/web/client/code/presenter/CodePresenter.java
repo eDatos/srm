@@ -34,6 +34,8 @@ import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentResult;
+import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction;
+import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementResult;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -246,6 +248,22 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             }
             @Override
             public void onWaitSuccess(UpdateCodeParentResult result) {
+                retrieveCode(codeUrn);
+            }
+        });
+    }
+
+    @Override
+    public void updateVariableElement(final String codeUrn, String variableElementUrn) {
+        dispatcher.execute(new UpdateCodeVariableElementAction(codeUrn, variableElementUrn), new WaitingAsyncCallback<UpdateCodeVariableElementResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeVariableElementErrorUpdate()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateCodeVariableElementResult result) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getMessageList(getMessages().codeVariableElementUpdated()), MessageTypeEnum.SUCCESS);
                 retrieveCode(codeUrn);
             }
         });

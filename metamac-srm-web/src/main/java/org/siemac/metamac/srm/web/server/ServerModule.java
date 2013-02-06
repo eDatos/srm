@@ -59,6 +59,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.SaveVariableElementAction
 import org.siemac.metamac.srm.web.server.handlers.code.SaveVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeInOrderActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeParentActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeVariableElementActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodelistProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
@@ -186,6 +187,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
@@ -358,6 +360,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(CreateVariableElementOperationAction.class, CreateVariableElementOperationActionHandler.class);
         bindHandler(GetVariableElementOperationsByVariableAction.class, GetVariableElementOperationsByVariableActionHandler.class);
         bindHandler(GetVariableElementOperationsByVariableElementAction.class, GetVariableElementOperationsByVariableElementActionHandler.class);
+        bindHandler(UpdateCodeVariableElementAction.class, UpdateCodeVariableElementActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
