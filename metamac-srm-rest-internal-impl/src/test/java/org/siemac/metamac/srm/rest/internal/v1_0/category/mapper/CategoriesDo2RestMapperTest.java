@@ -84,6 +84,7 @@ public class CategoriesDo2RestMapperTest {
 
         String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
 
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
@@ -210,7 +211,9 @@ public class CategoriesDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes" + "/" + agencyID + "/" + categorySchemeID + "/" + version + "/categories?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes" + "/" + agencyID + "/" + categorySchemeID + "/" + version + "/categories?query=" + query
+                + "&orderBy=" + orderBy;
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
@@ -294,6 +297,7 @@ public class CategoriesDo2RestMapperTest {
 
         String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
 
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());

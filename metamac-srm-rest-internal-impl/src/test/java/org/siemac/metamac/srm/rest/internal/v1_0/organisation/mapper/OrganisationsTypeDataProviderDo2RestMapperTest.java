@@ -82,9 +82,10 @@ public class OrganisationsTypeDataProviderDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + RestInternalConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy="
-                + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + RestInternalConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES + "/" + agencyID + "/" + resourceID + "?query="
+                + query + "&orderBy=" + orderBy;
 
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
@@ -198,8 +199,10 @@ public class OrganisationsTypeDataProviderDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDERS, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/dataproviders?query=" + query + "&orderBy="
-                + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/dataproviders?query="
+                + query + "&orderBy=" + orderBy;
+
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());

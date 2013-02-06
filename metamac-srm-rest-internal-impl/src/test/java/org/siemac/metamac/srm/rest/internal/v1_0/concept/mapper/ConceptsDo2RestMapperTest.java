@@ -85,6 +85,7 @@ public class ConceptsDo2RestMapperTest {
 
         String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
 
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
@@ -210,7 +211,9 @@ public class ConceptsDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/" + version + "/concepts?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/" + version + "/concepts?query=" + query
+                + "&orderBy=" + orderBy;
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());

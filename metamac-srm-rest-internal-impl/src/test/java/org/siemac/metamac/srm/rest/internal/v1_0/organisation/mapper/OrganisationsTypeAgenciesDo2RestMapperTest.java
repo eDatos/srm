@@ -82,8 +82,10 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query
+                + "&orderBy=" + orderBy;
 
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
@@ -197,7 +199,10 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_AGENCIES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/agencies?query=" + query + "&orderBy=" + orderBy;
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/agencies?query=" + query
+                + "&orderBy=" + orderBy;
+
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
         assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
