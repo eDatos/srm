@@ -828,6 +828,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                     }
                 });
 
+                searchVariableWindow.setInfoMessage(getConstants().codelistVariableEditionInfoMessage());
+                searchVariableWindow.showInfoMessage();
+
                 // Load variables (to populate the selection window)
                 getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, null);
 

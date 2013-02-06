@@ -14,6 +14,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -62,6 +63,7 @@ public class SearchRelatedResourcePaginatedWindow extends BaseSearchWindow {
         infoMessageLabel.setOverflow(Overflow.VISIBLE);
         infoMessageLabel.setMargin(10);
         infoMessageLabel.setVisibility(Visibility.HIDDEN);
+        infoMessageLabel.setValign(VerticalAlignment.CENTER);
 
         getSearchWindowLayout().addMember(infoMessageLabel, 0);
     }
