@@ -79,7 +79,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
@@ -920,6 +919,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
+        codelistItem.setRequired(true);
         codelistItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -973,24 +973,12 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                             contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
                             contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW,
                                     selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                            contentDescriptorsEditionForm.validate(false);
                         }
                     });
                 }
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (codelistItem.getValue() != null) {
-                    String codelistValue = String.valueOf(codelistItem.getValue());
-                    return !StringUtils.isBlank(codelistValue);
-                }
-                return false;
-            }
-        };
-        codelistItem.setValidators(customValidator);
         return codelistItem;
     }
 }

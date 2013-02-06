@@ -59,7 +59,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -468,18 +467,6 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                 return ConceptSchemeTypeEnum.OPERATION.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE));
             }
         });
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (operation.getValue() != null) {
-                    String operationValue = String.valueOf(operation.getValue());
-                    return !StringUtils.isBlank(operationValue);
-                }
-                return true;
-            }
-        };
-        operation.setValidators(customValidator);
 
         classDescriptorsEditionForm.setFields(type, typeView, operation);
 

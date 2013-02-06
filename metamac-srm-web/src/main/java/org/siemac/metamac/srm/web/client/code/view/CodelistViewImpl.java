@@ -64,7 +64,6 @@ import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -850,23 +849,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                         contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
                         contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE_VIEW,
                                 selectedVariable != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariable) : null);
+                        contentDescriptorsEditionForm.validate(false);
                     }
                 });
             }
         });
-        // Set requited with a custom validator
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                if (variableItem.getValue() != null) {
-                    String conceptValue = String.valueOf(variableItem.getValue());
-                    return !StringUtils.isBlank(conceptValue);
-                }
-                return false;
-            }
-        };
-        variableItem.setValidators(customValidator);
         return variableItem;
     }
 
