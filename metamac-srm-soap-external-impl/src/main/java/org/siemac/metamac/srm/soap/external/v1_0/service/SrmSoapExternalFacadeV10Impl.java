@@ -7,9 +7,9 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.aop.LoggingInterceptor;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteria;
 import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
 import org.siemac.metamac.soap.structural_resources.v1_0.MetamacStructuralResourcesInterfaceV10;
-import org.siemac.metamac.soap.structural_resources.v1_0.domain.MetamacCriteria;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -68,7 +68,7 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
             return (ExceptionFault) e;
         } else {
             // do not show information details about exception to user
-            org.siemac.metamac.soap.structural_resources.v1_0.exception.Exception exception = SoapExceptionUtils.getException(SoapCommonServiceExceptionType.UNKNOWN);
+            org.siemac.metamac.soap.common.v1_0.domain.Exception exception = SoapExceptionUtils.getException(SoapCommonServiceExceptionType.UNKNOWN);
             return new ExceptionFault("EXCEPTION", exception);
         }
     }

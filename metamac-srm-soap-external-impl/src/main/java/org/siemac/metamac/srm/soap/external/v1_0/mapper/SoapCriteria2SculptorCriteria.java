@@ -12,14 +12,14 @@ import org.siemac.metamac.core.common.criteria.SculptorCriteria;
 import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.soap.structural_resources.v1_0.domain.MetamacCriteria;
-import org.siemac.metamac.soap.structural_resources.v1_0.domain.MetamacCriteriaConjunctionRestriction;
-import org.siemac.metamac.soap.structural_resources.v1_0.domain.MetamacCriteriaDisjunctionRestriction;
-import org.siemac.metamac.soap.structural_resources.v1_0.domain.MetamacCriteriaOrder;
-import org.siemac.metamac.soap.structural_resources.v1_0.domain.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.soap.structural_resources.v1_0.domain.MetamacCriteriaRestriction;
+import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteria;
+import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaConjunctionRestriction;
+import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaDisjunctionRestriction;
+import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaOrder;
+import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaPropertyRestriction;
+import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaRestriction;
 
-// TODO pasar a librería común? por si se hacen en un futuro más servicios web
+// // TODO put in common library if more soap services are created
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class SoapCriteria2SculptorCriteria<T> {
 

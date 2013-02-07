@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema version="1.0" elementFormDefault="qualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:common="http://www.siemac.org/metamac/soap/common/v1.0/domain"
 	xmlns:domain_v1_0="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain"
 	xmlns:tns="http://www.siemac.org/metamac/soap/structural-resources/v1.0/service"
 	targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/service">
 
 	<xs:import namespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain" schemaLocation="../domain/metamac-structural-resources-external-domain-v1.0.xsd" />
+    <xs:import namespace="http://www.siemac.org/metamac/soap/common/v1.0/domain" schemaLocation="../domain/metamac-soap-common-domain-v1.0.xsd" />
 
 	<!-- VariableFamilies -->
 	<xs:complexType name="FindVariableFamilies">
 		<xs:sequence>
-			<xs:element name="criteria" type="domain_v1_0:MetamacCriteria" minOccurs="0" />
+			<xs:element name="criteria" type="common:MetamacCriteria" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="FindVariableFamiliesResponse">
 		<xs:sequence>
-			<xs:element name="operations" type="domain_v1_0:VariableFamilies" />
+			<xs:element name="variableFamilies" type="domain_v1_0:VariableFamilies" />
 		</xs:sequence>
 	</xs:complexType>
 

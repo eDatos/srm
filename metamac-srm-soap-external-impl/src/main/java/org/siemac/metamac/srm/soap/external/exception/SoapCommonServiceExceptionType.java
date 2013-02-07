@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-// TODO librería común?
+// TODO put in common library if more soap services are created
 public class SoapCommonServiceExceptionType {
 
     // Map

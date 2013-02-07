@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    xmlns:tns="http://www.siemac.org/metamac/soap/common/v1.0/domain"
+    targetNamespace="http://www.siemac.org/metamac/soap/common/v1.0/domain">
+    
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+    
+    <xs:complexType name="ListBase">
+        <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
+        <xs:attribute name="limit" type="xs:unsignedLong" use="optional" />
+        <xs:attribute name="offset" type="xs:unsignedLong" use="optional" />
+    </xs:complexType>      
+
+    <xs:complexType name="InternationalString">
+        <xs:sequence>
+            <xs:element name="text" type="tns:LocalisedString" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+        
+    <xs:complexType name="LocalisedString">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="xml:lang" default="es" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>    
+
+    <xs:complexType name="Exception">
+        <xs:complexContent>
+            <xs:extension base="tns:Error">
+                <xs:sequence>
+                    <xs:element name="errors" type="tns:Errors" minOccurs="0" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="Errors">
+        <xs:sequence>
+            <xs:element name="error" type="tns:Error" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
+    </xs:complexType>    
+
+    <xs:complexType name="Error">
+        <xs:sequence>
+            <xs:element name="code" type="xs:string" minOccurs="1"/>
+            <xs:element name="message" type="xs:string" minOccurs="0"/>
+            <xs:element name="parameters" type="tns:ErrorParameters" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="ErrorParameters">
+        <xs:sequence>
+            <xs:element name="parameter" type="xs:string" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
+    </xs:complexType>          
+
+    <!-- CRITERIA -->
+    <xs:complexType name="MetamacCriteria">
+        <xs:sequence>
+            <xs:element name="ordersBy" type="tns:MetamacCriteriaOrders" minOccurs="0" maxOccurs="1" />
+            <xs:element name="restriction" type="tns:MetamacCriteriaRestriction" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="firstResult" type="xs:unsignedLong" use="optional" />
+        <xs:attribute name="maximumResultSize" type="xs:unsignedLong" use="optional" />
+        <xs:attribute name="countTotalResults" type="xs:boolean" use="optional" default="true" />
+    </xs:complexType>
+
+    <xs:complexType name="MetamacCriteriaOrders">
+        <xs:sequence>
+            <xs:element name="order" type="tns:MetamacCriteriaOrder" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MetamacCriteriaOrder">
+        <xs:sequence>
+            <xs:element name="propertyName" type="xs:token" />
+            <xs:element name="type" type="tns:OrderType" minOccurs="0" maxOccurs="1" default="ASC" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="OrderType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="DESC" />
+            <xs:enumeration value="ASC" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="OperationType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="EQ" />
+            <xs:enumeration value="IEQ" />
+            <xs:enumeration value="NE" />
+            <xs:enumeration value="GE" />
+            <xs:enumeration value="LE" />
+            <xs:enumeration value="GT" />
+            <xs:enumeration value="LT" />
+            <xs:enumeration value="IS_NULL" />
+            <xs:enumeration value="IS_NOT_NULL" />
+            <xs:enumeration value="LIKE" />
+            <xs:enumeration value="ILIKE" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="MetamacCriteriaRestriction" abstract="true" />
+
+    <xs:complexType name="MetamacCriteriaRestrictions">
+        <xs:sequence>
+            <xs:element name="restriction" type="tns:MetamacCriteriaRestriction" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MetamacCriteriaConjunctionRestriction">
+        <xs:annotation>
+            <xs:documentation>Restriction of the type "AND"</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:MetamacCriteriaRestriction">
+                <xs:sequence>
+                    <xs:element name="restrictions" type="tns:MetamacCriteriaRestrictions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MetamacCriteriaDisjunctionRestriction">
+        <xs:annotation>
+            <xs:documentation>Restriction of the type "OR"</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="tns:MetamacCriteriaRestriction">
+                <xs:sequence>
+                    <xs:element name="restrictions" type="tns:MetamacCriteriaRestrictions" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MetamacCriteriaPropertyRestriction">
+        <xs:complexContent>
+            <xs:extension base="tns:MetamacCriteriaRestriction">
+                <xs:sequence>
+                    <xs:element name="propertyName" type="xs:token" />
+                    <xs:element name="operation" type="tns:OperationType" default="EQ" />
+                    <xs:choice minOccurs="0" maxOccurs="1">
+                        <xs:element name="stringValue" type="xs:string" />
+                        <xs:element name="integerValue" type="xs:integer" />
+                        <xs:element name="longValue" type="xs:long" />
+                        <xs:element name="doubleValue" type="xs:double" />
+                        <xs:element name="decimalValue" type="xs:decimal" />
+                        <xs:element name="booleanValue" type="xs:boolean" />
+                        <xs:element name="dateValue" type="xs:date" />
+                        <xs:element name="dateTimeValue" type="xs:dateTime" />
+                    </xs:choice>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+</xs:schema>

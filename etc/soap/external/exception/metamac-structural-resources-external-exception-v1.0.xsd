@@ -1,42 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema version="1.0" elementFormDefault="qualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:common="http://www.siemac.org/metamac/soap/common/v1.0/domain"
 	xmlns:tns="http://www.siemac.org/metamac/soap/structural-resources/v1.0/exception"
 	targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/exception">
 
-	<xs:element name="exception" type="tns:Exception" />    
-    
-    <xs:complexType name="Exception">
-        <xs:complexContent>
-            <xs:extension base="tns:Error">
-                <xs:sequence>
-                    <xs:element name="errors" type="tns:Errors" minOccurs="0" />
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-    <xs:complexType name="Errors">
-        <xs:sequence>
-            <xs:element name="error" type="tns:Error" minOccurs="1" maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
-    </xs:complexType>    
+    <xs:import namespace="http://www.siemac.org/metamac/soap/common/v1.0/domain" schemaLocation="../domain/metamac-soap-common-domain-v1.0.xsd" />
 
-    <xs:complexType name="Error">
-        <xs:sequence>
-            <xs:element name="code" type="xs:string" minOccurs="1"/>
-            <xs:element name="message" type="xs:string" minOccurs="0"/>
-            <xs:element name="parameters" type="tns:ErrorParameters" minOccurs="0" />
-        </xs:sequence>
-    </xs:complexType>
-    
-    <xs:complexType name="ErrorParameters">
-        <xs:sequence>
-            <xs:element name="parameter" type="xs:string" maxOccurs="unbounded" />
-        </xs:sequence>
-        <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
-    </xs:complexType>          
-
-    
+	<xs:element name="exception" type="common:Exception" />    
 </xs:schema>
