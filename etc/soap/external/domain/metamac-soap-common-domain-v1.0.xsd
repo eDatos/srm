@@ -12,6 +12,13 @@
         <xs:attribute name="limit" type="xs:unsignedLong" use="optional" />
         <xs:attribute name="offset" type="xs:unsignedLong" use="optional" />
     </xs:complexType>      
+    
+    <xs:complexType name="Item">
+        <xs:sequence>
+            <xs:element name="name" type="tns:InternationalString" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>        
+    </xs:complexType>     
 
     <xs:complexType name="InternationalString">
         <xs:sequence>

@@ -11,6 +11,7 @@ import org.siemac.metamac.soap.exception.SoapCommonServiceExceptionType;
 import org.siemac.metamac.soap.exception.SoapExceptionUtils;
 import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
 import org.siemac.metamac.soap.structural_resources.v1_0.MetamacStructuralResourcesInterfaceV10;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variables;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -74,6 +75,27 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
             // Transform
             Variables variables = codesDo2SoapMapper.toVariables(result, sculptorCriteria.getPageSize());
             return variables;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public CodelistFamilies findCodelistFamilies(MetamacCriteria criteria) throws ExceptionFault {
+        try {
+            // Validation of parameters
+            InvocationValidator.validateFindCodelistFamilies(criteria);
+
+            // Transform
+            SculptorCriteria sculptorCriteria = codesSoap2DoMapper.getCodelistFamilyCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+            // Find
+            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> result = codesService.findCodelistFamiliesByCondition(ctx, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
+
+            // Transform
+            CodelistFamilies codelistFamilies = codesDo2SoapMapper.toCodelistFamilies(result, sculptorCriteria.getPageSize());
+            return codelistFamilies;
         } catch (Exception e) {
             throw manageException(e);
         }

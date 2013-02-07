@@ -7,10 +7,14 @@ import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaOrder;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.soap.criteria.mapper.SoapCriteria2SculptorCriteria;
 import org.siemac.metamac.soap.criteria.mapper.SoapCriteria2SculptorCriteria.CriteriaCallback;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilyCriteriaPropertyOrder;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilyCriteriaPropertyRestriction;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableCriteriaPropertyOrder;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableCriteriaPropertyRestriction;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilyCriteriaPropertyOrder;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilyCriteriaPropertyRestriction;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
@@ -23,12 +27,15 @@ public class CodesSoap2DoMapperImpl implements CodesSoap2DoMapper {
 
     private SoapCriteria2SculptorCriteria<VariableFamily> variableFamilyCriteriaMapper = null;
     private SoapCriteria2SculptorCriteria<Variable>       variableCriteriaMapper       = null;
+    private SoapCriteria2SculptorCriteria<CodelistFamily> codelistFamilyCriteriaMapper = null;
 
     public CodesSoap2DoMapperImpl() throws MetamacException {
         variableFamilyCriteriaMapper = new SoapCriteria2SculptorCriteria<VariableFamily>(VariableFamily.class, VariableFamilyCriteriaPropertyOrder.class,
                 VariableFamilyCriteriaPropertyRestriction.class, new VariableFamilyCriteriaCallback());
         variableCriteriaMapper = new SoapCriteria2SculptorCriteria<Variable>(Variable.class, VariableCriteriaPropertyOrder.class, VariableCriteriaPropertyRestriction.class,
                 new VariableCriteriaCallback());
+        codelistFamilyCriteriaMapper = new SoapCriteria2SculptorCriteria<CodelistFamily>(CodelistFamily.class, CodelistFamilyCriteriaPropertyOrder.class,
+                CodelistFamilyCriteriaPropertyRestriction.class, new CodelistFamilyCriteriaCallback());
     }
 
     @Override
@@ -39,6 +46,11 @@ public class CodesSoap2DoMapperImpl implements CodesSoap2DoMapper {
     @Override
     public SoapCriteria2SculptorCriteria<Variable> getVariableCriteriaMapper() {
         return variableCriteriaMapper;
+    }
+
+    @Override
+    public SoapCriteria2SculptorCriteria<CodelistFamily> getCodelistFamilyCriteriaMapper() {
+        return codelistFamilyCriteriaMapper;
     }
 
     private class VariableFamilyCriteriaCallback implements CriteriaCallback {
@@ -108,6 +120,38 @@ public class CodesSoap2DoMapperImpl implements CodesSoap2DoMapper {
         @Override
         public Property<Variable> retrievePropertyOrderDefault() throws MetamacException {
             return VariableProperties.nameableArtefact().code();
+        }
+    }
+
+    private class CodelistFamilyCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+            CodelistFamilyCriteriaPropertyRestriction propertyNameCriteria = CodelistFamilyCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<CodelistFamily> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
+            CodelistFamilyCriteriaPropertyOrder propertyNameCriteria = CodelistFamilyCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return CodelistFamilyProperties.nameableArtefact().code();
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<CodelistFamily> retrievePropertyOrderDefault() throws MetamacException {
+            return CodelistFamilyProperties.nameableArtefact().code();
         }
     }
 }

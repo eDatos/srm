@@ -12,4 +12,8 @@ public class InvocationValidator {
     public static void validateFindVariables(MetamacCriteria criteria) throws MetamacException {
         // nothing
     }
+
+    public static void validateFindCodelistFamilies(MetamacCriteria criteria) throws MetamacException {
+        // nothing
+    }
 }

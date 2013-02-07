@@ -31,6 +31,13 @@
         <wsdl:part name="body" element="service_v1_0:findVariablesResponse" />
     </wsdl:message>    
 
+    <wsdl:message name="findCodelistFamiliesRequest">
+        <wsdl:part name="body" element="service_v1_0:findCodelistFamilies" />
+    </wsdl:message>
+    <wsdl:message name="findCodelistFamiliesResponse">
+        <wsdl:part name="body" element="service_v1_0:findCodelistFamiliesResponse" />
+    </wsdl:message>
+    
     <!-- Exceptions -->
     <wsdl:message name="exceptionFault">
         <wsdl:part name="body" element="exception_v1_0:exception" />
@@ -47,35 +54,51 @@
             <wsdl:output name="findVariablesOutput" message="tns:findVariablesResponse" />
             <wsdl:fault name="findVariablesFault" message="tns:exceptionFault" />
         </wsdl:operation>
+        <wsdl:operation name="findCodelistFamilies">
+            <wsdl:input name="findCodelistFamiliesInput" message="tns:findCodelistFamiliesRequest" />
+            <wsdl:output name="findCodelistFamiliesOutput" message="tns:findCodelistFamiliesResponse" />
+            <wsdl:fault name="findCodelistFamiliesFault" message="tns:exceptionFault" />
+        </wsdl:operation>        
     </wsdl:portType>
 
     <wsdl:binding name="MetamacStructuralResourcesBindingSOAP_v1.0" type="tns:MetamacStructuralResourcesInterface_v1.0">
-
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
-            <wsdl:operation name="findVariableFamilies">
-                <soap:operation soapAction="http://www.siemac.org/metamac/soap/structural-resources/v1.0/findVariableFamilies" />
-                <wsdl:input name="findVariableFamiliesInput">
-                    <soap:body use="literal" />
-                </wsdl:input>
-                <wsdl:output name="findVariableFamiliesOutput">
-                    <soap:body use="literal" />
-                </wsdl:output>
-                <wsdl:fault name="findVariableFamiliesFault">
-                    <soap:fault use="literal" name="findVariableFamiliesFault" />
-                </wsdl:fault>
-            </wsdl:operation>
-            <wsdl:operation name="findVariables">
-                <soap:operation soapAction="http://www.siemac.org/metamac/soap/structural-resources/v1.0/findVariables" />
-                <wsdl:input name="findVariablesInput">
-                    <soap:body use="literal" />
-                </wsdl:input>
-                <wsdl:output name="findVariablesOutput">
-                    <soap:body use="literal" />
-                </wsdl:output>
-                <wsdl:fault name="findVariablesFault">
-                    <soap:fault use="literal" name="findVariablesFault" />
-                </wsdl:fault>
-            </wsdl:operation>
+        <wsdl:operation name="findVariableFamilies">
+            <soap:operation soapAction="http://www.siemac.org/metamac/soap/structural-resources/v1.0/findVariableFamilies" />
+            <wsdl:input name="findVariableFamiliesInput">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="findVariableFamiliesOutput">
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="findVariableFamiliesFault">
+                <soap:fault use="literal" name="findVariableFamiliesFault" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="findVariables">
+            <soap:operation soapAction="http://www.siemac.org/metamac/soap/structural-resources/v1.0/findVariables" />
+            <wsdl:input name="findVariablesInput">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="findVariablesOutput">
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="findVariablesFault">
+                <soap:fault use="literal" name="findVariablesFault" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="findCodelistFamilies">
+            <soap:operation soapAction="http://www.siemac.org/metamac/soap/structural-resources/v1.0/findCodelistFamilies" />
+            <wsdl:input name="findCodelistFamiliesInput">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="findCodelistFamiliesOutput">
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="findCodelistFamiliesFault">
+                <soap:fault use="literal" name="findCodelistFamiliesFault" />
+            </wsdl:fault>
+        </wsdl:operation>
     </wsdl:binding>
 
     <wsdl:service name="MetamacStructuralResources_v1.0">

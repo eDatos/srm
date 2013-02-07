@@ -9,9 +9,9 @@
 
     <xs:complexType name="VariableFamily">
         <xs:sequence>
-            <xs:element name="id" type="xs:string" />
             <xs:element name="name" type="common:InternationalString" />
         </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="VariableFamilies">
@@ -26,15 +26,15 @@
     
     <xs:complexType name="Variable">
         <xs:sequence>
-            <xs:element name="id" type="xs:string" />
             <xs:element name="name" type="common:InternationalString" />
             <xs:element name="shortName" type="common:InternationalString" />
             <xs:element name="validFrom" type="xs:dateTime" minOccurs="0" />
             <xs:element name="validTo" type="xs:dateTime" minOccurs="0" />
-            <xs:element name="replacedBy" type="xs:string" minOccurs="0" />
+            <xs:element name="replacedBy" type="common:Item" minOccurs="0" />
             <xs:element name="replaceTo" type="tns:ReplaceTo" minOccurs="0" />
             <xs:element name="family" type="tns:VariableFamilyCodes" minOccurs="1" />
         </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="Variables">
@@ -47,11 +47,28 @@
         </xs:complexContent>
     </xs:complexType>    
     
+    <xs:complexType name="CodelistFamily">
+        <xs:sequence>
+            <xs:element name="name" type="common:InternationalString" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="CodelistFamilies">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="codelistFamily" type="tns:CodelistFamily" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
     <xs:complexType name="ReplaceTo">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="replaceTo" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="replaceTo" type="common:Item" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -61,7 +78,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="family" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="family" type="common:Item" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -97,4 +114,16 @@
         </xs:restriction>
     </xs:simpleType>    
 
+    <xs:simpleType name="CodelistFamilyCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="NAME" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="CodelistFamilyCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
