@@ -49,6 +49,8 @@
     <source path='dsd' />
     <source path='concept' />
     <source path='organisation' />
+    <source path='code' />
+    <source path='category' />
     <source path='shared' />
 
     <stylesheet src="MetamacSrmWeb.css" />
