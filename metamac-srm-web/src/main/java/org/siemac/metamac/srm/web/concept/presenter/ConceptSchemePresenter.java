@@ -140,9 +140,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String urn = PlaceRequestUtils.getConceptSchemeParamFromUrl(placeManager);
-        if (urn != null) {
-            retrieveConceptScheme(urn);
+        String identifier = PlaceRequestUtils.getConceptSchemeParamFromUrl(placeManager);
+        if (identifier != null) {
+            retrieveConceptScheme(identifier);
         }
     }
 
@@ -174,8 +174,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void retrieveConceptScheme(String param) {
-        String schemeUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX, param);
-        retrieveConceptSchemeByUrn(schemeUrn);
+        String conceptSchemeUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CONCEPTSCHEME_PREFIX, param);
+        retrieveConceptSchemeByUrn(conceptSchemeUrn);
+        retrieveCategorisations(conceptSchemeUrn);
     }
 
     private void retrieveConceptSchemeByUrn(String urn) {
@@ -402,8 +403,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void retrieveCategorisations() {
-        dispatcher.execute(new GetCategorisationsByArtefactAction(conceptSchemeDto.getUrn()), new WaitingAsyncCallback<GetCategorisationsByArtefactResult>() {
+    public void retrieveCategorisations(String artefactCategorisedUrn) {
+        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallback<GetCategorisationsByArtefactResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -428,7 +429,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     @Override
                     public void onWaitSuccess(CreateCategorisationResult result) {
                         ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationCreated()), MessageTypeEnum.SUCCESS);
-                        retrieveCategorisations();
+                        retrieveCategorisations(conceptSchemeDto.getUrn());
                     }
                 });
     }
@@ -444,14 +445,16 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveCategorisations();
+                retrieveCategorisations(conceptSchemeDto.getUrn());
             }
         });
     }
 
     @Override
     public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
+        // The categories must be externally published
         CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria(criteria);
+        categorySchemeWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
         dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
 
             @Override
@@ -467,7 +470,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
+        // The categories must be externally published
         CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria(criteria, categorySchemeUrn);
+        categoryWebCriteria.setIsExternallyPublished(true);
         dispatcher.execute(new GetCategoriesAction(firstResult, maxResults, categoryWebCriteria), new WaitingAsyncCallback<GetCategoriesResult>() {
 
             @Override

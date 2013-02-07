@@ -25,7 +25,7 @@ public class GetCategorySchemes {
     List<CategorySchemeMetamacDto> categorySchemeList;
 
     @Out(2)
-    Integer                        pageNumber;
+    Integer                        firstResultOut;
 
     @Out(3)
     Integer                        totalResults;

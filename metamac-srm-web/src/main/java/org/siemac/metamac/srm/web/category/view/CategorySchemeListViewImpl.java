@@ -195,7 +195,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     @Override
     public void setCategorySchemePaginatedList(GetCategorySchemesResult categorySchemesPaginatedList) {
         setCategorySchemeList(categorySchemesPaginatedList.getCategorySchemeList());
-        categorySchemesList.refreshPaginationInfo(categorySchemesPaginatedList.getPageNumber(), categorySchemesPaginatedList.getCategorySchemeList().size(),
+        categorySchemesList.refreshPaginationInfo(categorySchemesPaginatedList.getFirstResultOut(), categorySchemesPaginatedList.getCategorySchemeList().size(),
                 categorySchemesPaginatedList.getTotalResults());
     }
 

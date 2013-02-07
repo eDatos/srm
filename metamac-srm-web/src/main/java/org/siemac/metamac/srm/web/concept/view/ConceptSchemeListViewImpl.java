@@ -194,7 +194,8 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
     @Override
     public void setConceptSchemePaginatedList(GetConceptSchemesResult conceptSchemesPaginatedList) {
         setConceptSchemeList(conceptSchemesPaginatedList.getConceptSchemeList());
-        conceptSchemesList.refreshPaginationInfo(conceptSchemesPaginatedList.getPageNumber(), conceptSchemesPaginatedList.getConceptSchemeList().size(), conceptSchemesPaginatedList.getTotalResults());
+        conceptSchemesList.refreshPaginationInfo(conceptSchemesPaginatedList.getFirstResultOut(), conceptSchemesPaginatedList.getConceptSchemeList().size(),
+                conceptSchemesPaginatedList.getTotalResults());
     }
 
     @Override

@@ -31,7 +31,7 @@ public class CategoryWebCriteria extends MetamacWebCriteria {
         return isExternallyPublished;
     }
 
-    public void setExternallyPublished(Boolean isExternallyPublished) {
+    public void setIsExternallyPublished(Boolean isExternallyPublished) {
         this.isExternallyPublished = isExternallyPublished;
     }
 }

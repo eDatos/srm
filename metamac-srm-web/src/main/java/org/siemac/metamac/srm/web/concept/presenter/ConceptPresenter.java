@@ -30,8 +30,6 @@ import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
@@ -39,6 +37,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCa
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
@@ -381,7 +381,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveCategorisations() {
+    public void retrieveCategorisations(String artefactCategorisedUrn) {
         throw new UnsupportedOperationException();
     }
 

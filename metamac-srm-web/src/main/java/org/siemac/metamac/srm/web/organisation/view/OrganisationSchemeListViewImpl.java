@@ -203,7 +203,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     @Override
     public void setOrganisationSchemesPaginatedList(GetOrganisationSchemesResult result) {
         setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
-        organisationSchemeList.refreshPaginationInfo(result.getPageNumber(), result.getOrganisationSchemeMetamacDtos().size(), result.getTotalResults());
+        organisationSchemeList.refreshPaginationInfo(result.getFirstResultOut(), result.getOrganisationSchemeMetamacDtos().size(), result.getTotalResults());
     }
 
     private void setOrganisationSchemeList(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos) {

@@ -25,7 +25,7 @@ public class GetOrganisationSchemes {
     List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos;
 
     @Out(2)
-    Integer                            pageNumber;
+    Integer                            firstResultOut;
 
     @Out(3)
     Integer                            totalResults;

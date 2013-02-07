@@ -6,7 +6,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface CategorisationUiHandlers extends UiHandlers {
 
-    void retrieveCategorisations();
+    void retrieveCategorisations(String artefactCategorisedUrn);
     void createCategorisations(List<String> categoryUrns);
     void deleteCategorisations(List<String> urns);
 

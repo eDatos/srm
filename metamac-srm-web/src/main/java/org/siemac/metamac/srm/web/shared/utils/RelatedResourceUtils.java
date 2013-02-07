@@ -7,6 +7,8 @@ import java.util.Set;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
@@ -23,7 +25,9 @@ public class RelatedResourceUtils {
 
     private static RelatedResourceDto maintainer = null;
 
+    // -------------------------------------------------------------------------------------------------------------
     // DSDs
+    // -------------------------------------------------------------------------------------------------------------
 
     public static RelatedResourceDto getRelatedResourceDtoFromDimensionComponentDto(DimensionComponentDto dimensionComponentDto) {
         RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
@@ -41,9 +45,9 @@ public class RelatedResourceUtils {
         return relatedResourceDtos;
     }
 
-    //
+    // -------------------------------------------------------------------------------------------------------------
     // ORGANISATIONS
-    //
+    // -------------------------------------------------------------------------------------------------------------
 
     public static RelatedResourceDto getDefaultMaintainerAsRelatedResourceDto() {
         if (maintainer == null) {
@@ -58,9 +62,9 @@ public class RelatedResourceUtils {
         return maintainer;
     }
 
-    //
+    // -------------------------------------------------------------------------------------------------------------
     // CONCEPTS
-    //
+    // -------------------------------------------------------------------------------------------------------------
 
     // Concepts
 
@@ -81,9 +85,51 @@ public class RelatedResourceUtils {
         return relatedResourceDtos;
     }
 
-    //
+    // -------------------------------------------------------------------------------------------------------------
+    // CATEGORIES
+    // -------------------------------------------------------------------------------------------------------------
+
+    // Category schemes
+
+    public static RelatedResourceDto getRelatedResourceDtoFromCategorySchemeMetamacDto(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(categorySchemeMetamacDto.getCode());
+        relatedResourceDto.setTitle(categorySchemeMetamacDto.getName());
+        relatedResourceDto.setType(TypeExternalArtefactsEnum.CATEGORY_SCHEME);
+        relatedResourceDto.setUrn(categorySchemeMetamacDto.getUrn());
+        return relatedResourceDto;
+    }
+
+    public static List<RelatedResourceDto> getRelatedResourceDtosFromCategorySchemeMetamacDtos(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(categorySchemeMetamacDtos.size());
+        for (CategorySchemeMetamacDto categoryScheme : categorySchemeMetamacDtos) {
+            relatedResourceDtos.add(getRelatedResourceDtoFromCategorySchemeMetamacDto(categoryScheme));
+        }
+        return relatedResourceDtos;
+    }
+
+    // Categories
+
+    public static RelatedResourceDto getRelatedResourceDtoFromCategoryMetamacDto(CategoryMetamacDto categoryMetamacDto) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(categoryMetamacDto.getCode());
+        relatedResourceDto.setTitle(categoryMetamacDto.getName());
+        relatedResourceDto.setType(TypeExternalArtefactsEnum.CATEGORY);
+        relatedResourceDto.setUrn(categoryMetamacDto.getUrn());
+        return relatedResourceDto;
+    }
+
+    public static List<RelatedResourceDto> getRelatedResourceDtosFromCategoryMetamacDtos(List<CategoryMetamacDto> categoryMetamacDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(categoryMetamacDtos.size());
+        for (CategoryMetamacDto category : categoryMetamacDtos) {
+            relatedResourceDtos.add(getRelatedResourceDtoFromCategoryMetamacDto(category));
+        }
+        return relatedResourceDtos;
+    }
+
+    // -------------------------------------------------------------------------------------------------------------
     // CODES
-    //
+    // -------------------------------------------------------------------------------------------------------------
 
     // Codelists
 
@@ -176,9 +222,9 @@ public class RelatedResourceUtils {
         return relatedResourceDtos;
     }
 
-    //
+    // -------------------------------------------------------------------------------------------------------------
     // GENERIC RELATED RESOURCES
-    //
+    // -------------------------------------------------------------------------------------------------------------
 
     public static RelatedResourceDto createRelatedResourceDto(TypeExternalArtefactsEnum type, String urn) {
         RelatedResourceDto relatedResourceDto = new RelatedResourceDto();

@@ -10,10 +10,12 @@ import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class GetCategorisationsByArtefactActionHandler extends SecurityActionHandler<GetCategorisationsByArtefactAction, GetCategorisationsByArtefactResult> {
 
     @Autowired
