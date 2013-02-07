@@ -9,11 +9,11 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.code.model.ds.CodelistOrderDS;
-import org.siemac.metamac.srm.web.client.code.model.record.CodelistOrderRecord;
-import org.siemac.metamac.srm.web.client.code.utils.CommonUtils;
-import org.siemac.metamac.srm.web.client.code.view.handlers.CodelistUiHandlers;
-import org.siemac.metamac.srm.web.client.code.widgets.EditCodelistOrderWindow;
+import org.siemac.metamac.srm.web.code.model.ds.CodelistOrderDS;
+import org.siemac.metamac.srm.web.code.model.record.CodelistOrderRecord;
+import org.siemac.metamac.srm.web.code.utils.CommonUtils;
+import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
+import org.siemac.metamac.srm.web.code.widgets.EditCodelistOrderWindow;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
@@ -204,7 +204,7 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
         CodelistOrderRecord[] records = new CodelistOrderRecord[codelistOrderVisualisationDtos.size()];
         int index = 0;
         for (CodelistOrderVisualisationDto order : codelistOrderVisualisationDtos) {
-            records[index++] = org.siemac.metamac.srm.web.client.code.utils.RecordUtils.getCodelistOrderRecord(order);
+            records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodelistOrderRecord(order);
         }
         listGrid.setData(records);
     }

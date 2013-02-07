@@ -9,7 +9,6 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
@@ -18,6 +17,7 @@ import org.siemac.metamac.srm.web.client.widgets.CodelistListGrid;
 import org.siemac.metamac.srm.web.client.widgets.ConceptSchemeListGrid;
 import org.siemac.metamac.srm.web.client.widgets.DsdListGrid;
 import org.siemac.metamac.srm.web.client.widgets.OrganisationSchemeListGrid;
+import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 

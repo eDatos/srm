@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.web.client.code.model.record.CodelistRecord;
-import org.siemac.metamac.srm.web.client.code.utils.RecordUtils;
+import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
+import org.siemac.metamac.srm.web.code.utils.RecordUtils;
 
 public class CodelistListGrid extends ItemSchemeListGrid {
 
