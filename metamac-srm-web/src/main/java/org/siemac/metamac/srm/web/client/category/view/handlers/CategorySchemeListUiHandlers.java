@@ -11,7 +11,7 @@ public interface CategorySchemeListUiHandlers extends UiHandlers {
     void goToCategoryScheme(String urn);
     void createCategoryScheme(CategorySchemeMetamacDto categorySchemeDto);
     void deleteCategorySchemes(List<String> urns);
-    void retrieveCategorySchemes(int firstResult, int maxResults, String categoryScheme);
+    void retrieveCategorySchemes(int firstResult, int maxResults, String criteria);
     void cancelValidity(List<String> urn);
 
 }

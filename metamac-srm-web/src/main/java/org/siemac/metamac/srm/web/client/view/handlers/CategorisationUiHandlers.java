@@ -9,4 +9,7 @@ public interface CategorisationUiHandlers extends UiHandlers {
     void retrieveCategorisations();
     void createCategorisations(List<String> categoryUrns);
     void deleteCategorisations(List<String> urns);
+
+    void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria);
+    void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn);
 }

@@ -394,4 +394,14 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     public void deleteCategorisations(List<String> urns) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
+        throw new UnsupportedOperationException();
+    }
 }
