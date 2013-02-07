@@ -9,6 +9,8 @@ import java.util.List;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
@@ -114,6 +116,18 @@ public class CategorisationsPanel extends VLayout {
 
     public void setCategorisations(List<CategorisationDto> categorisationDtos) {
         categorisationListGrid.setData(RecordUtils.getCategorisationRecords(categorisationDtos));
+    }
+
+    public void setCategorySchemes(GetCategorySchemesResult result) {
+        if (newCategorisationWindow != null) {
+            newCategorisationWindow.setCategorySchemes(result);
+        }
+    }
+
+    public void setCategories(GetCategoriesResult result) {
+        if (newCategorisationWindow != null) {
+            newCategorisationWindow.setCategories(result);
+        }
     }
 
     public void setUiHandlers(CategorisationUiHandlers uiHandlers) {

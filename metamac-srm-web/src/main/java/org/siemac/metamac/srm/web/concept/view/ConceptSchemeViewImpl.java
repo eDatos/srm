@@ -26,6 +26,8 @@ import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
@@ -97,7 +99,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private InformationLabel                  conceptsNoVisibleInfoMessage;
     private ConceptsTreeGrid                  conceptsTreeGrid;
     private ConceptSchemeVersionsSectionStack versionsSectionStack;
-    private CategorisationsPanel              categorisationsLayout;
+    private CategorisationsPanel              categorisationsPanel;
 
     private ConceptSchemeMetamacDto           conceptSchemeDto;
     private ExternalItemDto                   relatedOperation;
@@ -147,12 +149,12 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGridLayout.addMember(conceptsNoVisibleInfoMessage);
         conceptsListGridLayout.addMember(conceptsTreeGrid);
 
-        categorisationsLayout = new CategorisationsPanel();
+        categorisationsPanel = new CategorisationsPanel();
 
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
         panel.addMember(conceptsListGridLayout);
-        panel.addMember(categorisationsLayout);
+        panel.addMember(categorisationsPanel);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -287,7 +289,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     public void setUiHandlers(ConceptSchemeUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
         this.conceptsTreeGrid.setUiHandlers(uiHandlers);
-        this.categorisationsLayout.setUiHandlers(uiHandlers);
+        this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
     @Override
@@ -338,7 +340,17 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     @Override
     public void setCategorisations(List<CategorisationDto> categorisationDtos) {
-        categorisationsLayout.setCategorisations(categorisationDtos);
+        categorisationsPanel.setCategorisations(categorisationDtos);
+    }
+
+    @Override
+    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+        categorisationsPanel.setCategorySchemes(result);
+    }
+
+    @Override
+    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+        categorisationsPanel.setCategories(result);
     }
 
     private void createViewForm() {

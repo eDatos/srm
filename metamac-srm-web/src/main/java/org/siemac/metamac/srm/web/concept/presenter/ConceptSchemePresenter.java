@@ -25,6 +25,8 @@ import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
@@ -33,12 +35,12 @@ import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityActi
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
@@ -50,6 +52,7 @@ import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusRe
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -105,7 +108,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
 
         // Categorisations
+
         void setCategorisations(List<CategorisationDto> categorisationDtos);
+        void setCategorySchemesForCategorisations(GetCategorySchemesResult result);
+        void setCategoriesForCategorisations(GetCategoriesResult result);
     }
 
     @ContentSlot
@@ -454,15 +460,25 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
-                // TODO Auto-generated method stub
-
+                getView().setCategorySchemesForCategorisations(result);
             }
         });
     }
 
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
-        // TODO Auto-generated method stub
+        CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria(criteria, categorySchemeUrn);
+        dispatcher.execute(new GetCategoriesAction(firstResult, maxResults, categoryWebCriteria), new WaitingAsyncCallback<GetCategoriesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategoriesResult result) {
+                getView().setCategoriesForCategorisations(result);
+            }
+        });
     }
 
     @Override
@@ -476,5 +492,4 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn), -1);
         }
     }
-
 }
