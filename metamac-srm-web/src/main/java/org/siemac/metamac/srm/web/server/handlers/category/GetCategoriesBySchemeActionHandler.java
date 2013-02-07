@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriestBySchemeAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
@@ -16,17 +16,17 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetCategoriesBySchemeActionHandler extends SecurityActionHandler<GetCategoriestBySchemeAction, GetCategoriesBySchemeResult> {
+public class GetCategoriesBySchemeActionHandler extends SecurityActionHandler<GetCategoriesBySchemeAction, GetCategoriesBySchemeResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
     public GetCategoriesBySchemeActionHandler() {
-        super(GetCategoriestBySchemeAction.class);
+        super(GetCategoriesBySchemeAction.class);
     }
 
     @Override
-    public GetCategoriesBySchemeResult executeSecurityAction(GetCategoriestBySchemeAction action) throws ActionException {
+    public GetCategoriesBySchemeResult executeSecurityAction(GetCategoriesBySchemeAction action) throws ActionException {
         try {
             List<ItemHierarchyDto> categories = srmCoreServiceFacade.retrieveCategoriesByCategorySchemeUrn(ServiceContextHolder.getCurrentServiceContext(), action.getSchemeUrn());
             return new GetCategoriesBySchemeResult(categories);

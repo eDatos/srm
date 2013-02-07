@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListAction;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListResult;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -16,19 +16,19 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class DeleteDsdListActionHandler extends SecurityActionHandler<DeleteDsdListAction, DeleteDsdListResult> {
+public class DeleteDsdsActionHandler extends SecurityActionHandler<DeleteDsdsAction, DeleteDsdsResult> {
 
-    private static Logger        logger = Logger.getLogger(DeleteDsdListActionHandler.class.getName());
+    private static Logger        logger = Logger.getLogger(DeleteDsdsActionHandler.class.getName());
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public DeleteDsdListActionHandler() {
-        super(DeleteDsdListAction.class);
+    public DeleteDsdsActionHandler() {
+        super(DeleteDsdsAction.class);
     }
 
     @Override
-    public DeleteDsdListResult executeSecurityAction(DeleteDsdListAction action) throws ActionException {
+    public DeleteDsdsResult executeSecurityAction(DeleteDsdsAction action) throws ActionException {
         for (String urn : action.getUrns()) {
             try {
                 srmCoreServiceFacade.deleteDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), urn);
@@ -37,7 +37,6 @@ public class DeleteDsdListActionHandler extends SecurityActionHandler<DeleteDsdL
                 throw WebExceptionUtils.createMetamacWebException(e);
             }
         }
-        return new DeleteDsdListResult();
+        return new DeleteDsdsResult();
     }
-
 }

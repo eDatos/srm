@@ -19,8 +19,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
-import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListAction;
-import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListResult;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
@@ -192,14 +192,14 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     public void deleteOrganisation(final ItemDto itemDto) {
         List<String> urns = new ArrayList<String>();
         urns.add(itemDto.getUrn());
-        dispatcher.execute(new DeleteOrganisationListAction(urns), new WaitingAsyncCallback<DeleteOrganisationListResult>() {
+        dispatcher.execute(new DeleteOrganisationsAction(urns), new WaitingAsyncCallback<DeleteOrganisationsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(DeleteOrganisationListResult result) {
+            public void onWaitSuccess(DeleteOrganisationsResult result) {
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
                 // If deleted organisation had a organisation parent, go to this organisation parent. If not, go to the organisation scheme.
                 if (itemDto.getItemParentUrn() != null) {

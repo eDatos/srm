@@ -21,8 +21,8 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.criteria.DsdWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListAction;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListResult;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
@@ -218,7 +218,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @Override
     public void deleteDsds(List<String> urns) {
-        dispatcher.execute(new DeleteDsdListAction(urns), new WaitingAsyncCallback<DeleteDsdListResult>() {
+        dispatcher.execute(new DeleteDsdsAction(urns), new WaitingAsyncCallback<DeleteDsdsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -226,7 +226,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(DeleteDsdListResult result) {
+            public void onWaitSuccess(DeleteDsdsResult result) {
                 retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
             }

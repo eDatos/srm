@@ -1,9 +1,9 @@
-package org.siemac.metamac.srm.web.server.handlers.concept;
+package org.siemac.metamac.srm.web.server.handlers.organisation;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
-import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListResult;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -13,25 +13,24 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class DeleteConceptSchemeListActionHandler extends SecurityActionHandler<DeleteConceptSchemeListAction, DeleteConceptSchemeListResult> {
+public class DeleteOrganisationsActionHandler extends SecurityActionHandler<DeleteOrganisationsAction, DeleteOrganisationsResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public DeleteConceptSchemeListActionHandler() {
-        super(DeleteConceptSchemeListAction.class);
+    public DeleteOrganisationsActionHandler() {
+        super(DeleteOrganisationsAction.class);
     }
 
     @Override
-    public DeleteConceptSchemeListResult executeSecurityAction(DeleteConceptSchemeListAction action) throws ActionException {
+    public DeleteOrganisationsResult executeSecurityAction(DeleteOrganisationsAction action) throws ActionException {
         try {
             for (String urn : action.getUrns()) {
-                srmCoreServiceFacade.deleteConceptScheme(ServiceContextHolder.getCurrentServiceContext(), urn);
+                srmCoreServiceFacade.deleteOrganisation(ServiceContextHolder.getCurrentServiceContext(), urn);
             }
-            return new DeleteConceptSchemeListResult();
+            return new DeleteOrganisationsResult();
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

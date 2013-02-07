@@ -18,8 +18,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
-import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListAction;
-import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListResult;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
@@ -144,7 +144,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
     @Override
     public void deleteCategorySchemes(List<String> urns) {
-        dispatcher.execute(new DeleteCategorySchemeListAction(urns), new WaitingAsyncCallback<DeleteCategorySchemeListResult>() {
+        dispatcher.execute(new DeleteCategorySchemesAction(urns), new WaitingAsyncCallback<DeleteCategorySchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -152,7 +152,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
                 retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
             @Override
-            public void onWaitSuccess(DeleteCategorySchemeListResult result) {
+            public void onWaitSuccess(DeleteCategorySchemesResult result) {
                 ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }

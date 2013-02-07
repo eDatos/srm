@@ -24,8 +24,8 @@ import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
-import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListAction;
-import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListResult;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
@@ -384,14 +384,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void deleteOrganisations(List<String> urns) {
-        dispatcher.execute(new DeleteOrganisationListAction(urns), new WaitingAsyncCallback<DeleteOrganisationListResult>() {
+        dispatcher.execute(new DeleteOrganisationsAction(urns), new WaitingAsyncCallback<DeleteOrganisationsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(DeleteOrganisationListResult result) {
+            public void onWaitSuccess(DeleteOrganisationsResult result) {
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveOrganisationListByScheme(organisationSchemeMetamacDto.getUrn());
             }

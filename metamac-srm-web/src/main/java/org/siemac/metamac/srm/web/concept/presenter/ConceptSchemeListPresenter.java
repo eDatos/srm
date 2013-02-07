@@ -19,8 +19,8 @@ import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
-import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
-import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListResult;
+import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesAction;
+import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
@@ -145,7 +145,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void deleteConceptSchemes(List<String> urns) {
-        dispatcher.execute(new DeleteConceptSchemeListAction(urns), new WaitingAsyncCallback<DeleteConceptSchemeListResult>() {
+        dispatcher.execute(new DeleteConceptSchemesAction(urns), new WaitingAsyncCallback<DeleteConceptSchemesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -153,7 +153,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
                 retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
             @Override
-            public void onWaitSuccess(DeleteConceptSchemeListResult result) {
+            public void onWaitSuccess(DeleteConceptSchemesResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }

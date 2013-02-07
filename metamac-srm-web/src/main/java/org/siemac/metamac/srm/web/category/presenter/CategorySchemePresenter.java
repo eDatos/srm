@@ -25,7 +25,7 @@ import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAc
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriestBySchemeAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeResult;
@@ -153,7 +153,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void retrieveCategoryListByScheme(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategoriestBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
+        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
