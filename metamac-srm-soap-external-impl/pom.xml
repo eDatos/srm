@@ -27,6 +27,12 @@
             <artifactId>metamac-srm-core</artifactId>
             <classifier>client</classifier>
             <version>${project.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>metamac-rest-api</artifactId>
+            		<groupId>org.siemac.metamac</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Spring -->

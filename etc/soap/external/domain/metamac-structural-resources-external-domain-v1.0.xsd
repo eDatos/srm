@@ -24,6 +24,49 @@
         </xs:complexContent>
     </xs:complexType>
     
+    <xs:complexType name="Variable">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string" />
+            <xs:element name="name" type="common:InternationalString" />
+            <xs:element name="shortName" type="common:InternationalString" />
+            <xs:element name="validFrom" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="validTo" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="replacedBy" type="xs:string" minOccurs="0" />
+            <xs:element name="replaceTo" type="tns:ReplaceTo" minOccurs="0" />
+            <xs:element name="family" type="tns:VariableFamilyCodes" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Variables">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="variable" type="tns:Variable" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
+    <xs:complexType name="ReplaceTo">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="replaceTo" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>     
+    
+    <xs:complexType name="VariableFamilyCodes">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="family" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>            
+    
     <!-- Criteria -->
     <xs:simpleType name="VariableFamilyCriteriaPropertyRestriction">
         <xs:restriction base="xs:token">
@@ -37,5 +80,21 @@
             <xs:enumeration value="ID" />
         </xs:restriction>
     </xs:simpleType>
+    
+    <xs:simpleType name="VariableCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="NAME" />
+            <xs:enumeration value="SHORT_NAME" />
+            <xs:enumeration value="FAMILY" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="VariableCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="FAMILY" />
+        </xs:restriction>
+    </xs:simpleType>    
 
 </xs:schema>

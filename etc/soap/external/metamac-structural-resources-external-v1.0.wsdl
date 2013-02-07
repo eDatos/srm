@@ -17,7 +17,6 @@
         </xs:schema>
     </wsdl:types>
 
-    <!-- VariableFamilies -->
     <wsdl:message name="findVariableFamiliesRequest">
 		<wsdl:part name="body" element="service_v1_0:findVariableFamilies" />
 	</wsdl:message>
@@ -25,18 +24,29 @@
 		<wsdl:part name="body" element="service_v1_0:findVariableFamiliesResponse" />
 	</wsdl:message>
 
+    <wsdl:message name="findVariablesRequest">
+        <wsdl:part name="body" element="service_v1_0:findVariables" />
+    </wsdl:message>
+    <wsdl:message name="findVariablesResponse">
+        <wsdl:part name="body" element="service_v1_0:findVariablesResponse" />
+    </wsdl:message>    
+
     <!-- Exceptions -->
     <wsdl:message name="exceptionFault">
         <wsdl:part name="body" element="exception_v1_0:exception" />
     </wsdl:message>
 
     <wsdl:portType name="MetamacStructuralResourcesInterface_v1.0">
-        <!-- VariableFamilies -->
 		<wsdl:operation name="findVariableFamilies">
 			<wsdl:input name="findVariableFamiliesInput" message="tns:findVariableFamiliesRequest" />
 			<wsdl:output name="findVariableFamiliesOutput" message="tns:findVariableFamiliesResponse" />
 			<wsdl:fault name="findVariableFamiliesFault" message="tns:exceptionFault" />
 		</wsdl:operation>
+        <wsdl:operation name="findVariables">
+            <wsdl:input name="findVariablesInput" message="tns:findVariablesRequest" />
+            <wsdl:output name="findVariablesOutput" message="tns:findVariablesResponse" />
+            <wsdl:fault name="findVariablesFault" message="tns:exceptionFault" />
+        </wsdl:operation>
     </wsdl:portType>
 
     <wsdl:binding name="MetamacStructuralResourcesBindingSOAP_v1.0" type="tns:MetamacStructuralResourcesInterface_v1.0">
@@ -52,6 +62,18 @@
                 </wsdl:output>
                 <wsdl:fault name="findVariableFamiliesFault">
                     <soap:fault use="literal" name="findVariableFamiliesFault" />
+                </wsdl:fault>
+            </wsdl:operation>
+            <wsdl:operation name="findVariables">
+                <soap:operation soapAction="http://www.siemac.org/metamac/soap/structural-resources/v1.0/findVariables" />
+                <wsdl:input name="findVariablesInput">
+                    <soap:body use="literal" />
+                </wsdl:input>
+                <wsdl:output name="findVariablesOutput">
+                    <soap:body use="literal" />
+                </wsdl:output>
+                <wsdl:fault name="findVariablesFault">
+                    <soap:fault use="literal" name="findVariablesFault" />
                 </wsdl:fault>
             </wsdl:operation>
     </wsdl:binding>

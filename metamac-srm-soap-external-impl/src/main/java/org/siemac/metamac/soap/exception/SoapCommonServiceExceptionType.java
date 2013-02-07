@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.soap.external.exception;
+package org.siemac.metamac.soap.exception;
 
 import java.util.HashMap;
 import java.util.Locale;

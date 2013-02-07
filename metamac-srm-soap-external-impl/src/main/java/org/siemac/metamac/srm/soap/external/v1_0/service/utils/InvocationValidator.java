@@ -8,4 +8,8 @@ public class InvocationValidator {
     public static void validateFindVariableFamilies(MetamacCriteria criteria) throws MetamacException {
         // nothing
     }
+
+    public static void validateFindVariables(MetamacCriteria criteria) throws MetamacException {
+        // nothing
+    }
 }

@@ -9,7 +9,6 @@
 	<xs:import namespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain" schemaLocation="../domain/metamac-structural-resources-external-domain-v1.0.xsd" />
     <xs:import namespace="http://www.siemac.org/metamac/soap/common/v1.0/domain" schemaLocation="../domain/metamac-soap-common-domain-v1.0.xsd" />
 
-	<!-- VariableFamilies -->
 	<xs:complexType name="FindVariableFamilies">
 		<xs:sequence>
 			<xs:element name="criteria" type="common:MetamacCriteria" minOccurs="0" />
@@ -21,9 +20,20 @@
 		</xs:sequence>
 	</xs:complexType>
 
+    <xs:complexType name="FindVariables">
+        <xs:sequence>
+            <xs:element name="criteria" type="common:MetamacCriteria" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="FindVariablesResponse">
+        <xs:sequence>
+            <xs:element name="variables" type="domain_v1_0:Variables" />
+        </xs:sequence>
+    </xs:complexType>
 
 	<!-- ELEMENTS -->
-	<!-- VariableFamilies -->
 	<xs:element name="findVariableFamilies" type="tns:FindVariableFamilies" />
 	<xs:element name="findVariableFamiliesResponse" type="tns:FindVariableFamiliesResponse" />
+    <xs:element name="findVariables" type="tns:FindVariables" />
+    <xs:element name="findVariablesResponse" type="tns:FindVariablesResponse" />
 </xs:schema>
