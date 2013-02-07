@@ -227,7 +227,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
 
     @Override
     public void createFusion(List<String> variableElementUrn, String variableElementUrns) {
-        // Do nothing
+        throw new UnsupportedOperationException();
     }
 
     @Override
