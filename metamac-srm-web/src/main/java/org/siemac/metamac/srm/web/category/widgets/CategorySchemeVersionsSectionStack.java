@@ -1,10 +1,10 @@
-package org.siemac.metamac.srm.web.client.category.widgets;
+package org.siemac.metamac.srm.web.category.widgets;
 
 import java.util.List;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.category.model.ds.CategorySchemeDS;
-import org.siemac.metamac.srm.web.client.category.utils.RecordUtils;
+import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
+import org.siemac.metamac.srm.web.category.utils.RecordUtils;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 
 import com.smartgwt.client.data.Record;

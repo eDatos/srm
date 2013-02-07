@@ -1,6 +1,6 @@
-package org.siemac.metamac.srm.web.client.category.widgets;
+package org.siemac.metamac.srm.web.category.widgets;
 
-import org.siemac.metamac.srm.web.client.category.utils.CategoriesClientSecurityUtils;
+import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 
 import com.smartgwt.client.types.Visibility;

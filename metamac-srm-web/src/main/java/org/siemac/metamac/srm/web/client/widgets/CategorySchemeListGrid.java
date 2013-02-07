@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.category.model.record.CategorySchemeRecord;
-import org.siemac.metamac.srm.web.client.category.utils.RecordUtils;
+import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
+import org.siemac.metamac.srm.web.category.utils.RecordUtils;
 
 public class CategorySchemeListGrid extends ItemSchemeListGrid {
 

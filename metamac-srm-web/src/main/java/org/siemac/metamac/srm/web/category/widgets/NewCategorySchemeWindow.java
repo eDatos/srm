@@ -1,10 +1,10 @@
-package org.siemac.metamac.srm.web.client.category.widgets;
+package org.siemac.metamac.srm.web.category.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.category.model.ds.CategorySchemeDS;
+import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;

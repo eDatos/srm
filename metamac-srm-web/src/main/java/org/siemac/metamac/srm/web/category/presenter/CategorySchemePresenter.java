@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.client.category.presenter;
+package org.siemac.metamac.srm.web.category.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
@@ -12,10 +12,10 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeUiHandlers;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
-import org.siemac.metamac.srm.web.client.category.view.handlers.CategorySchemeUiHandlers;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;

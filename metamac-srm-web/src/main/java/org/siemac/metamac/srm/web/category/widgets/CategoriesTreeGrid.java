@@ -1,12 +1,12 @@
-package org.siemac.metamac.srm.web.client.category.widgets;
+package org.siemac.metamac.srm.web.category.widgets;
 
 import java.util.List;
 
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
+import org.siemac.metamac.srm.web.category.view.handlers.BaseCategoryUiHandlers;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.category.utils.CategoriesClientSecurityUtils;
-import org.siemac.metamac.srm.web.client.category.view.handlers.BaseCategoryUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.ItemsTreeGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 

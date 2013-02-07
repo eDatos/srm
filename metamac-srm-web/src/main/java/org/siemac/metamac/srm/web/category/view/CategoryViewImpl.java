@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.client.category.view;
+package org.siemac.metamac.srm.web.category.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
@@ -8,11 +8,11 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.category.model.ds.CategoryDS;
-import org.siemac.metamac.srm.web.client.category.presenter.CategoryPresenter;
-import org.siemac.metamac.srm.web.client.category.utils.CategoriesClientSecurityUtils;
-import org.siemac.metamac.srm.web.client.category.view.handlers.CategoryUiHandlers;
-import org.siemac.metamac.srm.web.client.category.widgets.CategoriesTreeGrid;
+import org.siemac.metamac.srm.web.category.model.ds.CategoryDS;
+import org.siemac.metamac.srm.web.category.presenter.CategoryPresenter;
+import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
+import org.siemac.metamac.srm.web.category.view.handlers.CategoryUiHandlers;
+import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;

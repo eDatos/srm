@@ -1,9 +1,9 @@
 package org.siemac.metamac.srm.web.client.gin;
 
+import org.siemac.metamac.srm.web.category.presenter.CategoryPresenter;
+import org.siemac.metamac.srm.web.category.presenter.CategorySchemeListPresenter;
+import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
-import org.siemac.metamac.srm.web.client.category.presenter.CategoryPresenter;
-import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemeListPresenter;
-import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemePresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodePresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistFamilyListPresenter;
 import org.siemac.metamac.srm.web.client.code.presenter.CodelistFamilyPresenter;

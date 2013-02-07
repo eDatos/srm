@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.client.category.utils;
+package org.siemac.metamac.srm.web.category.utils;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;

@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.client.category.view.handlers;
+package org.siemac.metamac.srm.web.category.view.handlers;
 
 public interface CategoryUiHandlers extends BaseCategoryUiHandlers {
 

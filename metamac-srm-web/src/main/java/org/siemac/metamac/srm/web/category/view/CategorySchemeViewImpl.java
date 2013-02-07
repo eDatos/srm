@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.client.category.view;
+package org.siemac.metamac.srm.web.category.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
@@ -10,14 +10,14 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.category.model.ds.CategorySchemeDS;
-import org.siemac.metamac.srm.web.client.category.model.record.CategorySchemeRecord;
-import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemePresenter;
-import org.siemac.metamac.srm.web.client.category.utils.CategoriesClientSecurityUtils;
-import org.siemac.metamac.srm.web.client.category.view.handlers.CategorySchemeUiHandlers;
-import org.siemac.metamac.srm.web.client.category.widgets.CategoriesTreeGrid;
-import org.siemac.metamac.srm.web.client.category.widgets.CategorySchemeMainFormLayout;
-import org.siemac.metamac.srm.web.client.category.widgets.CategorySchemeVersionsSectionStack;
+import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
+import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
+import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
+import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
+import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeUiHandlers;
+import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
+import org.siemac.metamac.srm.web.category.widgets.CategorySchemeMainFormLayout;
+import org.siemac.metamac.srm.web.category.widgets.CategorySchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;

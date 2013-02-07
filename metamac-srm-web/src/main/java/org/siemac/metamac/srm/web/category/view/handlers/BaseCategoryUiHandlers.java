@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.client.category.view.handlers;
+package org.siemac.metamac.srm.web.category.view.handlers;
 
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 

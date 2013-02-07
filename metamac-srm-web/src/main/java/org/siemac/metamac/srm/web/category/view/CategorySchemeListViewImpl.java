@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.client.category.view;
+package org.siemac.metamac.srm.web.category.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.category.model.ds.CategorySchemeDS;
-import org.siemac.metamac.srm.web.client.category.model.record.CategorySchemeRecord;
-import org.siemac.metamac.srm.web.client.category.presenter.CategorySchemeListPresenter;
-import org.siemac.metamac.srm.web.client.category.utils.CategoriesClientSecurityUtils;
-import org.siemac.metamac.srm.web.client.category.view.handlers.CategorySchemeListUiHandlers;
-import org.siemac.metamac.srm.web.client.category.widgets.NewCategorySchemeWindow;
+import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
+import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
+import org.siemac.metamac.srm.web.category.presenter.CategorySchemeListPresenter;
+import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
+import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeListUiHandlers;
+import org.siemac.metamac.srm.web.category.widgets.NewCategorySchemeWindow;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -203,7 +203,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         CategorySchemeRecord[] records = new CategorySchemeRecord[categorySchemesDtos.size()];
         int index = 0;
         for (CategorySchemeMetamacDto scheme : categorySchemesDtos) {
-            records[index++] = org.siemac.metamac.srm.web.client.category.utils.RecordUtils.getCategorySchemeRecord(scheme);
+            records[index++] = org.siemac.metamac.srm.web.category.utils.RecordUtils.getCategorySchemeRecord(scheme);
         }
         categorySchemesList.getListGrid().setData(records);
     }
