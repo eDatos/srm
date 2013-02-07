@@ -416,15 +416,13 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_VAR_ELEM_OP_SOURCES", Arrays.asList("SOURCE_FK", "OPERATION_FK"));
         return tablePrimaryKeys;
     }
-
-    @Override
-    protected ServiceContext getServiceContextWithoutPrincipal() {
-        return new ServiceContext("junit", "junit", "app");
-    }
-
     @Override
     protected DataBaseProvider getDatabaseProvider() {
         return DataBaseProvider.valueOf(databaseProvider);
+    }
+
+    protected ServiceContext getServiceContextWithoutPrincipal() {
+        return new ServiceContext("junit", "junit", "app");
     }
 
     protected MetamacCriteriaPaginator buildMetamacCriteriaPaginatorNoLimitsAndCountResults() {
