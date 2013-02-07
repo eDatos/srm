@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.web.common.client.resources.StyleUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
@@ -69,6 +70,7 @@ public abstract class ItemsTreeGrid extends TreeGrid {
         setSelectionType(SelectionStyle.SINGLE);
         setShowCellContextMenus(true);
         setLeaveScrollbarGap(Boolean.FALSE);
+        setRollUnderCanvasProperties(StyleUtils.getRollUnderCanvasProperties());
 
         TreeGridField codeField = new TreeGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
