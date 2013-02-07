@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.InformationLabel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -45,6 +46,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -91,15 +93,14 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private GroupDynamicForm                  commentsEditionForm;
     private AnnotationsPanel                  annotationsEditionPanel;
 
+    private SearchExternalItemWindow          searchOperationsWindow;
     private InformationLabel                  conceptsNoVisibleInfoMessage;
     private ConceptsTreeGrid                  conceptsTreeGrid;
-
     private ConceptSchemeVersionsSectionStack versionsSectionStack;
+    private CategorisationsPanel              categorisationsLayout;
 
     private ConceptSchemeMetamacDto           conceptSchemeDto;
     private ExternalItemDto                   relatedOperation;
-
-    private SearchExternalItemWindow          searchOperationsWindow;
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -146,9 +147,12 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGridLayout.addMember(conceptsNoVisibleInfoMessage);
         conceptsListGridLayout.addMember(conceptsTreeGrid);
 
+        categorisationsLayout = new CategorisationsPanel();
+
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
         panel.addMember(conceptsListGridLayout);
+        panel.addMember(categorisationsLayout);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -283,6 +287,13 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     public void setUiHandlers(ConceptSchemeUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
         this.conceptsTreeGrid.setUiHandlers(uiHandlers);
+        this.categorisationsLayout.setUiHandlers(uiHandlers);
+    }
+
+    @Override
+    public void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
+        versionsSectionStack.setConceptSchemes(conceptSchemeDtos);
+        versionsSectionStack.selectConceptScheme(conceptSchemeDto);
     }
 
     @Override
@@ -318,9 +329,16 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
     @Override
-    public void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
-        versionsSectionStack.setConceptSchemes(conceptSchemeDtos);
-        versionsSectionStack.selectConceptScheme(conceptSchemeDto);
+    public void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults) {
+        if (searchOperationsWindow != null) {
+            searchOperationsWindow.setExternalItems(operations);
+            searchOperationsWindow.refreshSourcePaginationInfo(firstResult, operations.size(), totalResults);
+        }
+    }
+
+    @Override
+    public void setCategorisations(List<CategorisationDto> categorisationDtos) {
+        categorisationsLayout.setCategorisations(categorisationDtos);
     }
 
     private void createViewForm() {
@@ -708,13 +726,4 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         });
         return operation;
     }
-
-    @Override
-    public void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults) {
-        if (searchOperationsWindow != null) {
-            searchOperationsWindow.setExternalItems(operations);
-            searchOperationsWindow.refreshSourcePaginationInfo(firstResult, operations.size(), totalResults);
-        }
-    }
-
 }

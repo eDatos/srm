@@ -48,7 +48,12 @@ public class RelatedResourceUtils {
     public static RelatedResourceDto getDefaultMaintainerAsRelatedResourceDto() {
         if (maintainer == null) {
             OrganisationMetamacDto organisationMetamacDto = MetamacSrmWeb.getDefaultMaintainer();
-            maintainer = new RelatedResourceDto(organisationMetamacDto.getCode(), organisationMetamacDto.getUrn(), TypeExternalArtefactsEnum.AGENCY);
+            maintainer = new RelatedResourceDto();
+            if (organisationMetamacDto != null) {
+                maintainer.setCode(organisationMetamacDto.getCode());
+                maintainer.setUrn(organisationMetamacDto.getUrn());
+                maintainer.setType(TypeExternalArtefactsEnum.AGENCY);
+            }
         }
         return maintainer;
     }

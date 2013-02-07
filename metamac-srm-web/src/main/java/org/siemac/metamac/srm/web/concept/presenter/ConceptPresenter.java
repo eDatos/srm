@@ -379,4 +379,19 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
         });
     }
+
+    @Override
+    public void retrieveCategorisations() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void createCategorisations(List<String> categoryUrns) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteCategorisations(List<String> urns) {
+        throw new UnsupportedOperationException();
+    }
 }

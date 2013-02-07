@@ -21,6 +21,12 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
+import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
+import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactResult;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
@@ -41,12 +47,14 @@ import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAc
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusResult;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeResult;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
@@ -92,6 +100,9 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         void setConcepts(List<ItemHierarchyDto> itemHierarchyDtos);
         void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
         void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
+
+        // Categorisations
+        void setCategorisations(List<CategorisationDto> categorisationDtos);
     }
 
     @ContentSlot
@@ -367,18 +378,6 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void goToConcept(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptPlaceRequest(urn));
-    }
-
-    @Override
-    public void goToConceptScheme(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn), -1);
-        }
-    }
-
-    @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String operation) {
         dispatcher.execute(new GetStatisticalOperationsPaginatedListAction(firstResult, maxResults, operation), new WaitingAsyncCallback<GetStatisticalOperationsPaginatedListResult>() {
 
@@ -391,5 +390,65 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 getView().setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
             }
         });
+    }
+
+    @Override
+    public void retrieveCategorisations() {
+        dispatcher.execute(new GetCategorisationsByArtefactAction(conceptSchemeDto.getUrn()), new WaitingAsyncCallback<GetCategorisationsByArtefactResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategorisationsByArtefactResult result) {
+                getView().setCategorisations(result.getCategorisationDtos());
+            }
+        });
+    }
+
+    @Override
+    public void createCategorisations(List<String> categoryUrns) {
+        dispatcher.execute(new CreateCategorisationAction(categoryUrns, conceptSchemeDto.getUrn(), RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto().getUrn()),
+                new WaitingAsyncCallback<CreateCategorisationResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCreate()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(CreateCategorisationResult result) {
+                        ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationCreated()), MessageTypeEnum.SUCCESS);
+                        retrieveCategorisations();
+                    }
+                });
+    }
+
+    @Override
+    public void deleteCategorisations(List<String> urns) {
+        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallback<DeleteCategorisationsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCategorisationsResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveCategorisations();
+            }
+        });
+    }
+
+    @Override
+    public void goToConcept(String urn) {
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptPlaceRequest(urn));
+    }
+
+    @Override
+    public void goToConceptScheme(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn), -1);
+        }
     }
 }
