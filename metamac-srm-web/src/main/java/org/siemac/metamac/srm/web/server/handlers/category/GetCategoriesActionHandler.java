@@ -13,14 +13,14 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
-import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.criteria.CategoryMetamacCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.CategoryMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
-import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -30,47 +30,40 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetCategorySchemesActionHandler extends SecurityActionHandler<GetCategorySchemesAction, GetCategorySchemesResult> {
+public class GetCategoriesActionHandler extends SecurityActionHandler<GetCategoriesAction, GetCategoriesResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetCategorySchemesActionHandler() {
-        super(GetCategorySchemesAction.class);
+    public GetCategoriesActionHandler() {
+        super(GetCategoriesAction.class);
     }
 
     @Override
-    public GetCategorySchemesResult executeSecurityAction(GetCategorySchemesAction action) throws ActionException {
+    public GetCategoriesResult executeSecurityAction(GetCategoriesAction action) throws ActionException {
         MetamacCriteria criteria = new MetamacCriteria();
 
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.DESC);
-        order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.LAST_UPDATED.name());
+        order.setPropertyName(CategoryMetamacCriteriaOrderEnum.CATEGORY_SCHEME_URN.name());
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
-        CategorySchemeWebCriteria categorySchemeWebCriteria = action.getCategorySchemeWebCriteria();
+        CategoryWebCriteria categoryWebCriteria = action.getCriteria();
 
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
-        // Only find last versions
-        if (categorySchemeWebCriteria.getIsLastVersion() != null) {
-            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
-                    categorySchemeWebCriteria.getIsLastVersion(), OperationType.EQ);
-            restriction.getRestrictions().add(lastVersionRestriction);
+        // Criteria
+        if (!StringUtils.isBlank(categoryWebCriteria.getCriteria())) {
+            restriction.getRestrictions().add(MetamacCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
         }
 
-        // Category scheme Criteria
-        if (!StringUtils.isBlank(categorySchemeWebCriteria.getCriteria())) {
-            restriction.getRestrictions().add(MetamacCriteriaUtils.getCategorySchemeCriteriaRestriction(categorySchemeWebCriteria));
-        }
-
-        // Proc status restriction
-        if (categorySchemeWebCriteria.getProcStatus() != null) {
-            MetamacCriteriaPropertyRestriction procStatusRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
-                    categorySchemeWebCriteria.getProcStatus(), OperationType.EQ);
+        // Is externally published
+        if (categoryWebCriteria.getIsExternallyPublished() != null) {
+            MetamacCriteriaPropertyRestriction procStatusRestriction = new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CATEGORY_SCHEME_EXTERNALLY_PUBLISHED.name(),
+                    categoryWebCriteria.getIsExternallyPublished(), OperationType.EQ);
             restriction.getRestrictions().add(procStatusRestriction);
         }
 
@@ -83,8 +76,8 @@ public class GetCategorySchemesActionHandler extends SecurityActionHandler<GetCa
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
-            return new GetCategorySchemesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
+            MetamacCriteriaResult<CategoryMetamacDto> result = srmCoreServiceFacade.findCategoriesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            return new GetCategoriesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

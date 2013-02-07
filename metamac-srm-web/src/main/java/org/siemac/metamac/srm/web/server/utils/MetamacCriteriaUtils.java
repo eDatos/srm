@@ -9,16 +9,24 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestric
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaRestriction;
+import org.siemac.metamac.srm.core.criteria.CategoryMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.VariableElementCriteriaPropertyEnum;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 
 public class MetamacCriteriaUtils {
+
+    // -------------------------------------------------------------------------------------------------------------
+    // CONCEPTS
+    // -------------------------------------------------------------------------------------------------------------
 
     /**
      * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE, NAME and URN of the ConceptScheme
@@ -66,6 +74,10 @@ public class MetamacCriteriaUtils {
         return restriction;
     }
 
+    // -------------------------------------------------------------------------------------------------------------
+    // CODES
+    // -------------------------------------------------------------------------------------------------------------
+
     /**
      * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE, NAME and URN of the Codelist
      * 
@@ -107,6 +119,56 @@ public class MetamacCriteriaUtils {
                 MetamacCriteriaPropertyRestriction variableElementPropertyRestriction = new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.VARIABLE_URN.name(),
                         criteria.getVariableUrn(), OperationType.EQ);
                 restrictions.add(variableElementPropertyRestriction);
+            }
+        }
+        restriction.getRestrictions().addAll(restrictions);
+        return restriction;
+    }
+
+    // -------------------------------------------------------------------------------------------------------------
+    // CATEGORIES
+    // -------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE, NAME and URN of the CategoryScheme
+     * 
+     * @param criteria
+     * @return
+     */
+    public static MetamacCriteriaRestriction getCategorySchemeCriteriaRestriction(CategorySchemeWebCriteria criteria) {
+        MetamacCriteriaDisjunctionRestriction categorySchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
+            categorySchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+            categorySchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+            categorySchemeCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+        }
+        return categorySchemeCriteriaDisjuction;
+    }
+
+    /**
+     * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE, NAME and URN of the Category
+     * 
+     * @param criteria
+     * @return
+     */
+    public static MetamacCriteriaConjunctionRestriction getCategoryCriteriaRestriction(CategoryWebCriteria criteria) {
+        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
+        List<MetamacCriteriaRestriction> restrictions = new ArrayList<MetamacCriteriaRestriction>();
+        if (criteria != null) {
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                MetamacCriteriaDisjunctionRestriction categoryCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
+                categoryCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                categoryCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                categoryCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+                restrictions.add(categoryCriteriaDisjunction);
+            }
+            if (StringUtils.isNotBlank(criteria.getCategorySchemeUrn())) {
+                MetamacCriteriaPropertyRestriction categorySchemePropertyRestriction = new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CATEGORY_SCHEME_URN.name(),
+                        criteria.getCategorySchemeUrn(), OperationType.EQ);
+                restrictions.add(categorySchemePropertyRestriction);
             }
         }
         restriction.getRestrictions().addAll(restrictions);

@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.server.handlers.category.CreateCategorisationA
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorySchemesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.GetCategoriesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategoriesBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorisationsByArtefactActionHandler;
@@ -117,6 +118,7 @@ import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactAction;
@@ -316,6 +318,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetCategorisationAction.class, GetCategorisationActionHandler.class);
         bindHandler(DeleteCategorisationsAction.class, DeleteCategorisationsActionHandler.class);
         bindHandler(GetCategorisationsByArtefactAction.class, GetCategorisationsByArtefactActionHandler.class);
+        bindHandler(GetCategoriesAction.class, GetCategoriesActionHandler.class);
 
         // Codes
         bindHandler(DeleteCodelistsAction.class, DeleteCodelistsActionHandler.class);
