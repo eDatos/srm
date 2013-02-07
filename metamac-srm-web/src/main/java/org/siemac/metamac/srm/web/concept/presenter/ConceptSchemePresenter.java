@@ -33,14 +33,14 @@ import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityActi
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsResult;
-import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
-import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListResult;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
@@ -319,14 +319,14 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void retrieveConceptListByScheme(String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptListBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptListBySchemeResult>() {
+        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingConceptList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetConceptListBySchemeResult result) {
+            public void onWaitSuccess(GetConceptsBySchemeResult result) {
                 getView().setConcepts(result.getItemHierarchyDtos());
             }
         });
@@ -382,14 +382,14 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String operation) {
-        dispatcher.execute(new GetStatisticalOperationsPaginatedListAction(firstResult, maxResults, operation), new WaitingAsyncCallback<GetStatisticalOperationsPaginatedListResult>() {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, operation), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetStatisticalOperationsPaginatedListResult result) {
+            public void onWaitSuccess(GetStatisticalOperationsResult result) {
                 getView().setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
             }
         });

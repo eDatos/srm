@@ -8,7 +8,7 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetConceptListByScheme {
+public class GetConceptsByScheme {
 
     @In(1)
     String                 conceptSchemeUrn;

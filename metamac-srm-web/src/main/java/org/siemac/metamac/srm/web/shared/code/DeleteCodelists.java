@@ -6,9 +6,8 @@ import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 
 @GenDispatch(isSecure = false)
-public class DeleteCodelistList {
+public class DeleteCodelists {
 
     @In(1)
     List<String> urns;
-
 }

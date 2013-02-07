@@ -28,8 +28,8 @@ import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributeListForDsdAction;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributeListForDsdResult;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.FindDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.FindDescriptorForDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
@@ -279,7 +279,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void deleteAttributes(List<DataAttributeDto> attributesToDelete) {
-        dispatcher.execute(new DeleteAttributeListForDsdAction(dataStructureDefinitionDto.getUrn(), attributesToDelete), new WaitingAsyncCallback<DeleteAttributeListForDsdResult>() {
+        dispatcher.execute(new DeleteAttributesForDsdAction(dataStructureDefinitionDto.getUrn(), attributesToDelete), new WaitingAsyncCallback<DeleteAttributesForDsdResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -287,7 +287,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                 ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(DeleteAttributeListForDsdResult result) {
+            public void onWaitSuccess(DeleteAttributesForDsdResult result) {
                 updateAttributeList(true);
                 ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeDeleted()), MessageTypeEnum.SUCCESS);
             }

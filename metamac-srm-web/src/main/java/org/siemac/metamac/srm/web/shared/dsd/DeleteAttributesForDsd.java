@@ -7,7 +7,7 @@ import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 
 @GenDispatch(isSecure = false)
-public class DeleteAttributeListForDsd {
+public class DeleteAttributesForDsd {
 
     @In(1)
     String                 dsdUrn;

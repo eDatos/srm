@@ -11,9 +11,9 @@ import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorySchemeL
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorisationsByArtefactActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryListBySchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.GetCategoriesBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeVersionListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategorySchemeActionHandler;
@@ -26,7 +26,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.CancelCodelistValidityAct
 import org.siemac.metamac.srm.web.server.handlers.code.CreateVariableElementOperationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistFamiliesActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistOrdersActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariableElementOperationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariableElementsActionHandler;
@@ -68,7 +68,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptActionHan
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptSchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.FindAllConceptTypesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptListBySchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesActionHandler;
@@ -76,13 +76,13 @@ import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesWithC
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesWithConceptsCanBeRoleActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsCanBeExtendedActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsCanBeRoleActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.concept.GetStatisticalOperationsPaginatedListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.GetStatisticalOperationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptSchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.VersionConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.CancelDsdValidityActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteAttributeListForDsdActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteAttributesForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDescriptorListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDimensionListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDsdListActionHandler;
@@ -102,9 +102,9 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisatio
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationSchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetDefaultMaintainerActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationListBySchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationsBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeVersionListActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationSchemeActionHandler;
@@ -120,9 +120,9 @@ import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemeListAction
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoryAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriestBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionListAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
@@ -135,7 +135,7 @@ import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistFamiliesAction;
-import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsAction;
@@ -176,7 +176,7 @@ import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
@@ -184,14 +184,14 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCa
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
-import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
-import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributeListForDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDescriptorListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdListAction;
@@ -211,9 +211,9 @@ import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListActi
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetDefaultMaintainerAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
@@ -255,7 +255,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(SaveDescriptorForDsdAction.class, SaveDescriptorForDsdActionHandler.class);
         bindHandler(DeleteDsdListAction.class, DeleteDsdListActionHandler.class);
         bindHandler(DeleteDimensionListForDsdAction.class, DeleteDimensionListForDsdActionHandler.class);
-        bindHandler(DeleteAttributeListForDsdAction.class, DeleteAttributeListForDsdActionHandler.class);
+        bindHandler(DeleteAttributesForDsdAction.class, DeleteAttributesForDsdActionHandler.class);
         bindHandler(DeleteDescriptorListForDsdAction.class, DeleteDescriptorListForDsdActionHandler.class);
         bindHandler(ExportDsdAction.class, ExportDsdActionHandler.class);
         bindHandler(UpdateDsdProcStatusAction.class, UpdateDsdProcStatusActionHandlder.class);
@@ -271,7 +271,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(SaveConceptSchemeAction.class, SaveConceptSchemeActionHandler.class);
         bindHandler(DeleteConceptSchemeListAction.class, DeleteConceptSchemeListActionHandler.class);
         bindHandler(VersionConceptSchemeAction.class, VersionConceptSchemeActionHandler.class);
-        bindHandler(GetConceptListBySchemeAction.class, GetConceptListBySchemeActionHandler.class);
+        bindHandler(GetConceptsBySchemeAction.class, GetConceptsBySchemeActionHandler.class);
         bindHandler(GetConceptAction.class, GetConceptActionHandler.class);
         bindHandler(SaveConceptAction.class, SaveConceptActionHandler.class);
         bindHandler(DeleteConceptAction.class, DeleteConceptActionHandler.class);
@@ -288,12 +288,12 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetOrganisationSchemesAction.class, GetOrganisationSchemesActionHandler.class);
         bindHandler(GetOrganisationSchemeAction.class, GetOrganisationSchemeActionHandler.class);
         bindHandler(UpdateOrganisationSchemeProcStatusAction.class, UpdateOrganisationSchemeProcStatusActionHandler.class);
-        bindHandler(GetOrganisationSchemeVersionListAction.class, GetOrganisationSchemeVersionListActionHandler.class);
+        bindHandler(GetOrganisationSchemeVersionsAction.class, GetOrganisationSchemeVersionsActionHandler.class);
         bindHandler(SaveOrganisationSchemeAction.class, SaveOrganisationSchemeActionHandler.class);
         bindHandler(CancelOrganisationSchemeValidityAction.class, CancelOrganisationSchemeValidityActionHandler.class);
         bindHandler(VersionOrganisationSchemeAction.class, VersionOrganisationSchemeActionHandler.class);
         bindHandler(DeleteOrganisationSchemeListAction.class, DeleteOrganisationSchemeListActionHandler.class);
-        bindHandler(GetOrganisationListBySchemeAction.class, GetOrganisationListBySchemeActionHandler.class);
+        bindHandler(GetOrganisationsBySchemeAction.class, GetOrganisationsBySchemeActionHandler.class);
         bindHandler(SaveOrganisationAction.class, SaveOrganisationActionHandler.class);
         bindHandler(DeleteOrganisationListAction.class, DeleteOrganisationListActionHandler.class);
         bindHandler(GetOrganisationAction.class, GetOrganisationActionHandler.class);
@@ -306,9 +306,9 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteCategorySchemeListAction.class, DeleteCategorySchemeListActionHandler.class);
         bindHandler(UpdateCategorySchemeProcStatusAction.class, UpdateCategorySchemeProcStatusActionHandler.class);
         bindHandler(VersionCategorySchemeAction.class, VersionCategorySchemeActionHandler.class);
-        bindHandler(GetCategorySchemeVersionListAction.class, GetCategorySchemeVersionListActionHandler.class);
+        bindHandler(GetCategorySchemeVersionsAction.class, GetCategorySchemeVersionsActionHandler.class);
         bindHandler(GetCategorySchemeAction.class, GetCategorySchemeActionHandler.class);
-        bindHandler(GetCategoryListBySchemeAction.class, GetCategoryListBySchemeActionHandler.class);
+        bindHandler(GetCategoriestBySchemeAction.class, GetCategoriesBySchemeActionHandler.class);
         bindHandler(DeleteCategoryAction.class, DeleteCategoryActionHandler.class);
         bindHandler(SaveCategoryAction.class, SaveCategoryActionHandler.class);
         bindHandler(GetCategoryAction.class, GetCategoryActionHandler.class);
@@ -318,7 +318,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetCategorisationsByArtefactAction.class, GetCategorisationsByArtefactActionHandler.class);
 
         // Codes
-        bindHandler(DeleteCodelistListAction.class, DeleteCodelistListActionHandler.class);
+        bindHandler(DeleteCodelistsAction.class, DeleteCodelistsActionHandler.class);
         bindHandler(GetCodelistAction.class, GetCodelistActionHandler.class);
         bindHandler(GetCodelistsAction.class, GetCodelistsActionHandler.class);
         bindHandler(GetCodelistVersionsAction.class, GetCodelistVersionsActionHandler.class);
@@ -372,7 +372,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetNavigationBarUrlAction.class, GetNavigationBarUrlActionHandler.class);
 
         // Rest
-        bindHandler(GetStatisticalOperationsPaginatedListAction.class, GetStatisticalOperationsPaginatedListActionHandler.class);
+        bindHandler(GetStatisticalOperationsAction.class, GetStatisticalOperationsActionHandler.class);
 
         bindHandler(LoadConfigurationPropertiesAction.class, LoadConfigurationPropertiesActionHandler.class);
 

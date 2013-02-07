@@ -19,8 +19,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
-import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
-import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
@@ -141,7 +141,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void deleteCodelists(List<String> urns) {
-        dispatcher.execute(new DeleteCodelistListAction(urns), new WaitingAsyncCallback<DeleteCodelistListResult>() {
+        dispatcher.execute(new DeleteCodelistsAction(urns), new WaitingAsyncCallback<DeleteCodelistsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -149,7 +149,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
                 retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
             @Override
-            public void onWaitSuccess(DeleteCodelistListResult result) {
+            public void onWaitSuccess(DeleteCodelistsResult result) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }

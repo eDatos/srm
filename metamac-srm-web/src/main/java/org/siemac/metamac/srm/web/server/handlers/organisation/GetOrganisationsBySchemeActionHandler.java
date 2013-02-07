@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -16,20 +16,20 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetOrganisationListBySchemeActionHandler extends SecurityActionHandler<GetOrganisationListBySchemeAction, GetOrganisationListBySchemeResult> {
+public class GetOrganisationsBySchemeActionHandler extends SecurityActionHandler<GetOrganisationsBySchemeAction, GetOrganisationsBySchemeResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetOrganisationListBySchemeActionHandler() {
-        super(GetOrganisationListBySchemeAction.class);
+    public GetOrganisationsBySchemeActionHandler() {
+        super(GetOrganisationsBySchemeAction.class);
     }
 
     @Override
-    public GetOrganisationListBySchemeResult executeSecurityAction(GetOrganisationListBySchemeAction action) throws ActionException {
+    public GetOrganisationsBySchemeResult executeSecurityAction(GetOrganisationsBySchemeAction action) throws ActionException {
         try {
             List<ItemHierarchyDto> organisations = srmCoreServiceFacade.retrieveOrganisationsByOrganisationSchemeUrn(ServiceContextHolder.getCurrentServiceContext(), action.getSchemeUrn());
-            return new GetOrganisationListBySchemeResult(organisations);
+            return new GetOrganisationsBySchemeResult(organisations);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

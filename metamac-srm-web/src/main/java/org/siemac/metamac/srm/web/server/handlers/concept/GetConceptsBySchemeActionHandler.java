@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -16,23 +16,22 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetConceptListBySchemeActionHandler extends SecurityActionHandler<GetConceptListBySchemeAction, GetConceptListBySchemeResult> {
+public class GetConceptsBySchemeActionHandler extends SecurityActionHandler<GetConceptsBySchemeAction, GetConceptsBySchemeResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public GetConceptListBySchemeActionHandler() {
-        super(GetConceptListBySchemeAction.class);
+    public GetConceptsBySchemeActionHandler() {
+        super(GetConceptsBySchemeAction.class);
     }
 
     @Override
-    public GetConceptListBySchemeResult executeSecurityAction(GetConceptListBySchemeAction action) throws ActionException {
+    public GetConceptsBySchemeResult executeSecurityAction(GetConceptsBySchemeAction action) throws ActionException {
         try {
             List<ItemHierarchyDto> itemHierarchyDtos = srmCoreServiceFacade.retrieveConceptsByConceptSchemeUrn(ServiceContextHolder.getCurrentServiceContext(), action.getConceptSchemeUrn());
-            return new GetConceptListBySchemeResult(itemHierarchyDtos);
+            return new GetConceptsBySchemeResult(itemHierarchyDtos);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

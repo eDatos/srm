@@ -20,8 +20,8 @@ import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategoryAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriestBySchemeAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategoryResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeResult;
@@ -175,14 +175,14 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void retrieveCategoryListByScheme(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategoryListBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoryListBySchemeResult>() {
+        dispatcher.execute(new GetCategoriestBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrievingCategoryList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetCategoryListBySchemeResult result) {
+            public void onWaitSuccess(GetCategoriesBySchemeResult result) {
                 final List<ItemHierarchyDto> itemHierarchyDtos = result.getCategories();
                 dispatcher.execute(new GetCategorySchemeAction(CategoryPresenter.this.categorySchemeUrn), new WaitingAsyncCallback<GetCategorySchemeResult>() {
 

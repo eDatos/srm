@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.shared.organisation;
+package org.siemac.metamac.srm.web.shared.category;
 
 import java.util.List;
 
@@ -8,12 +8,11 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetOrganisationListByScheme {
+public class GetCategoriesByScheme {
 
     @In(1)
     String                 schemeUrn;
 
     @Out(1)
-    List<ItemHierarchyDto> organisations;
-
+    List<ItemHierarchyDto> categories;
 }

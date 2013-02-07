@@ -9,12 +9,11 @@ import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
 
 @GenDispatch(isSecure = false)
-public class GetOrganisationSchemeVersionList {
+public class GetOrganisationSchemeVersions {
 
     @In(1)
     String                             urn;
 
     @Out(1)
     List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos;
-
 }

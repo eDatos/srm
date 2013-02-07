@@ -11,8 +11,8 @@ import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operations;
 import org.siemac.metamac.srm.web.server.rest.RestApiConstants;
 import org.siemac.metamac.srm.web.server.rest.StatisticalOperationsRestInternalFacade;
-import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
-import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListResult;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.DtoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class GetStatisticalOperationsPaginatedListActionHandler extends SecurityActionHandler<GetStatisticalOperationsPaginatedListAction, GetStatisticalOperationsPaginatedListResult> {
+public class GetStatisticalOperationsActionHandler extends SecurityActionHandler<GetStatisticalOperationsAction, GetStatisticalOperationsResult> {
 
     @Autowired
     private StatisticalOperationsRestInternalFacade statisticalOperationsRestInternalFacade;
@@ -29,12 +29,12 @@ public class GetStatisticalOperationsPaginatedListActionHandler extends Security
     @Autowired
     private ConfigurationService                    configurationService;
 
-    public GetStatisticalOperationsPaginatedListActionHandler() {
-        super(GetStatisticalOperationsPaginatedListAction.class);
+    public GetStatisticalOperationsActionHandler() {
+        super(GetStatisticalOperationsAction.class);
     }
 
     @Override
-    public GetStatisticalOperationsPaginatedListResult executeSecurityAction(GetStatisticalOperationsPaginatedListAction action) throws ActionException {
+    public GetStatisticalOperationsResult executeSecurityAction(GetStatisticalOperationsAction action) throws ActionException {
 
         String operationsApiEndpoint = configurationService.getProperty(RestApiConstants.STATISTICAL_OPERATIONS_REST_INTERNAL);
 
@@ -55,7 +55,7 @@ public class GetStatisticalOperationsPaginatedListActionHandler extends Security
 
             }
         }
-        return new GetStatisticalOperationsPaginatedListResult(externalItemDtos, firstResult, totalResults);
+        return new GetStatisticalOperationsResult(externalItemDtos, firstResult, totalResults);
     }
 
 }

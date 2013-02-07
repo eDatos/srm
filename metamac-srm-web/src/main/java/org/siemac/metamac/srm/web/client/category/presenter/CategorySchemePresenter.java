@@ -25,12 +25,12 @@ import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAc
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategoryListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriestBySchemeAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionListAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionListResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
@@ -153,14 +153,14 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void retrieveCategoryListByScheme(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategoryListBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoryListBySchemeResult>() {
+        dispatcher.execute(new GetCategoriestBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetCategoryListBySchemeResult result) {
+            public void onWaitSuccess(GetCategoriesBySchemeResult result) {
                 getView().setCategoryList(result.getCategories());
             }
         });
@@ -168,14 +168,14 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void retrieveCategorySchemeVersions(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategorySchemeVersionListAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategorySchemeVersionListResult>() {
+        dispatcher.execute(new GetCategorySchemeVersionsAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategorySchemeVersionsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrievingVersions()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetCategorySchemeVersionListResult result) {
+            public void onWaitSuccess(GetCategorySchemeVersionsResult result) {
                 getView().setCategorySchemeVersions(result.getCategorySchemeMetamacDtos());
             }
         });

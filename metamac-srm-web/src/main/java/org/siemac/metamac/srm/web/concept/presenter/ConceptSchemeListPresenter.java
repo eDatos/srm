@@ -23,8 +23,8 @@ import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemeListResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
-import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListAction;
-import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsPaginatedListResult;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
@@ -186,14 +186,14 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String operation) {
-        dispatcher.execute(new GetStatisticalOperationsPaginatedListAction(firstResult, maxResults, operation), new WaitingAsyncCallback<GetStatisticalOperationsPaginatedListResult>() {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, operation), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetStatisticalOperationsPaginatedListResult result) {
+            public void onWaitSuccess(GetStatisticalOperationsResult result) {
                 getView().setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
             }
         });

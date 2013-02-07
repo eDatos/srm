@@ -25,8 +25,8 @@ import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent.UpdateDsdHandler;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
@@ -370,14 +370,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(GetConceptSchemeResult result) {
                 final ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getConceptSchemeDto();
-                dispatcher.execute(new GetConceptListBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptListBySchemeResult>() {
+                dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
                         ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
                     }
                     @Override
-                    public void onWaitSuccess(GetConceptListBySchemeResult result) {
+                    public void onWaitSuccess(GetConceptsBySchemeResult result) {
                         getView().setConceptsForShowDecimalsPrecision(conceptSchemeMetamacDto, result.getItemHierarchyDtos());
                     }
                 });

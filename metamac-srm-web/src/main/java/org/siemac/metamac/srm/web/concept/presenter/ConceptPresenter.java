@@ -30,8 +30,8 @@ import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
@@ -172,14 +172,14 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void retrieveConceptsByScheme(String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptListBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptListBySchemeResult>() {
+        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingConceptList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetConceptListBySchemeResult result) {
+            public void onWaitSuccess(GetConceptsBySchemeResult result) {
                 final List<ItemHierarchyDto> itemHierarchyDtos = result.getItemHierarchyDtos();
                 dispatcher.execute(new GetConceptSchemeAction(ConceptPresenter.this.conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
 

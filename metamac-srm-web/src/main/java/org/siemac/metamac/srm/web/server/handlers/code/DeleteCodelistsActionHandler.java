@@ -2,8 +2,8 @@ package org.siemac.metamac.srm.web.server.handlers.code;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListAction;
-import org.siemac.metamac.srm.web.shared.code.DeleteCodelistListResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -13,22 +13,22 @@ import org.springframework.stereotype.Component;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
-public class DeleteCodelistListActionHandler extends SecurityActionHandler<DeleteCodelistListAction, DeleteCodelistListResult> {
+public class DeleteCodelistsActionHandler extends SecurityActionHandler<DeleteCodelistsAction, DeleteCodelistsResult> {
 
     @Autowired
     private SrmCoreServiceFacade srmCoreServiceFacade;
 
-    public DeleteCodelistListActionHandler() {
-        super(DeleteCodelistListAction.class);
+    public DeleteCodelistsActionHandler() {
+        super(DeleteCodelistsAction.class);
     }
 
     @Override
-    public DeleteCodelistListResult executeSecurityAction(DeleteCodelistListAction action) throws ActionException {
+    public DeleteCodelistsResult executeSecurityAction(DeleteCodelistsAction action) throws ActionException {
         try {
             for (String urn : action.getUrns()) {
                 srmCoreServiceFacade.deleteCodelist(ServiceContextHolder.getCurrentServiceContext(), urn);
             }
-            return new DeleteCodelistListResult();
+            return new DeleteCodelistsResult();
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

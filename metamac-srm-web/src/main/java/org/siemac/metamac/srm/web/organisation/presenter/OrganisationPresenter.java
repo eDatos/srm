@@ -22,8 +22,8 @@ import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandl
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
@@ -214,14 +214,14 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
     @Override
     public void retrieveOrganisationListByScheme(String organisationSchemeUrn) {
-        dispatcher.execute(new GetOrganisationListBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationListBySchemeResult>() {
+        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrievingOrganisationList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetOrganisationListBySchemeResult result) {
+            public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
                 final List<ItemHierarchyDto> itemHierarchyDtos = result.getOrganisations();
                 dispatcher.execute(new GetOrganisationSchemeAction(OrganisationPresenter.this.organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationSchemeResult>() {
 

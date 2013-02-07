@@ -26,12 +26,12 @@ import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeVa
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationListResult;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationListBySchemeResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionListResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsResult;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
@@ -179,14 +179,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void retrieveOrganisationListByScheme(String organisationSchemeUrn) {
-        dispatcher.execute(new GetOrganisationListBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationListBySchemeResult>() {
+        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorRetrieveList()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetOrganisationListBySchemeResult result) {
+            public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
                 getView().setOrganisationList(result.getOrganisations());
             }
         });
@@ -194,14 +194,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void retrieveOrganisationSchemeVersions(String organisationSchemeUrn) {
-        dispatcher.execute(new GetOrganisationSchemeVersionListAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationSchemeVersionListResult>() {
+        dispatcher.execute(new GetOrganisationSchemeVersionsAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationSchemeVersionsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrievingVersions()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(GetOrganisationSchemeVersionListResult result) {
+            public void onWaitSuccess(GetOrganisationSchemeVersionsResult result) {
                 getView().setOrganisationSchemeVersions(result.getOrganisationSchemeMetamacDtos());
             }
         });
