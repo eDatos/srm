@@ -46,7 +46,7 @@
                             <sourceRoot>${basedir}/src/generated/java</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/../etc/soap/external/metamac-srm-external-v1.0.wsdl</wsdl>
+                                    <wsdl>${basedir}/../etc/soap/external/metamac-structural-resources-external-v1.0.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-verbose</extraarg>
                                         <extraarg>-xjc-Xbg</extraarg>  <!-- getX to booleans instead of isX -->

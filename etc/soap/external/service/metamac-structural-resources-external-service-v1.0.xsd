@@ -5,7 +5,7 @@
 	xmlns:tns="http://www.siemac.org/metamac/soap/structural-resources/v1.0/service"
 	targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/service">
 
-	<xs:import namespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain" schemaLocation="../domain/metamac-srm-external-domain-v1.0.xsd" />
+	<xs:import namespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain" schemaLocation="../domain/metamac-structural-resources-external-domain-v1.0.xsd" />
 
 	<!-- VariableFamilies -->
 	<xs:complexType name="FindVariableFamilies">

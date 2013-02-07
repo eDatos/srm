@@ -10,10 +10,10 @@
 
     <wsdl:types>
         <xs:schema elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/service">
-            <xs:include schemaLocation="service/metamac-srm-external-service-v1.0.xsd" />
+            <xs:include schemaLocation="service/metamac-structural-resources-external-service-v1.0.xsd" />
         </xs:schema>
         <xs:schema elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/exception">
-            <xs:include schemaLocation="exception/metamac-srm-external-exception-v1.0.xsd" />
+            <xs:include schemaLocation="exception/metamac-structural-resources-external-exception-v1.0.xsd" />
         </xs:schema>
     </wsdl:types>
 
