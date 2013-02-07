@@ -10,7 +10,6 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -26,9 +25,10 @@ public class CreateCategorisationActionHandler extends SecurityActionHandler<Cre
     @Override
     public CreateCategorisationResult executeSecurityAction(CreateCategorisationAction action) throws ActionException {
         try {
-            CategorisationDto categorisationDto = srmCoreServiceFacade.createCategorisation(ServiceContextHolder.getCurrentServiceContext(), action.getCategoryUrn(),
-                    action.getArtefactCategorisedUrn(), action.getMaintainerUrn());
-            return new CreateCategorisationResult(categorisationDto);
+            for (String categoryUrn : action.getCategoryUrns()) {
+                srmCoreServiceFacade.createCategorisation(ServiceContextHolder.getCurrentServiceContext(), categoryUrn, action.getArtefactUrnToCategorise(), action.getMaintainerUrn());
+            }
+            return new CreateCategorisationResult();
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
