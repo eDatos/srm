@@ -1,28 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-       xmlns:cxf="http://cxf.apache.org/core"
-       xmlns:util="http://www.springframework.org/schema/util" 
-       xmlns:ws="http://jax-ws.dev.java.net/spring/core"
-       xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"       
-       xsi:schemaLocation="
-            http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-            http://www.springframework.org/schema/util   http://www.springframework.org/schema/util/spring-util-3.1.xsd
-            http://cxf.apache.org/jaxrs                  http://cxf.apache.org/schemas/jaxrs.xsd
-            http://cxf.apache.org/core                   http://cxf.apache.org/schemas/core.xsd
-            http://jax-ws.dev.java.net/spring/core 
-            http://jax-ws.dev.java.net/spring/core.xsd
-            http://jax-ws.dev.java.net/spring/servlet 
-            http://jax-ws.dev.java.net/spring/servlet.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xsi:schemaLocation="
+                        http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <import resource="classpath:META-INF/cxf/cxf.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-
-    <!-- Web services (spring - jaxws) -->
-    <wss:binding url="/soap/v1.0/structuralResources">
-        <wss:service>
-            <ws:service bean="#srmSoapExternalFacadeV10" impl="org.siemac.metamac.srm.soap.external.v1_0.service.SrmSoapExternalFacadeV10Impl" />
-        </wss:service>
-    </wss:binding> 
+    <jaxws:endpoint
+        id="StructuralResource10"
+        implementor="org.siemac.metamac.srm.soap.external.v1_0.service.SrmSoapExternalFacadeV10Impl"
+        endpointName="srm:MetamacStructuralResourcesBindingSOAP_v1.0"
+        serviceName="srm:MetamacStructuralResourcesInterface_v1.0"
+        address="/soap/v1.0/structuralResources"
+        xmlns:srm="http://www.siemac.org/metamac/soap/structural-resources/v1.0">
+   </jaxws:endpoint>        
 </beans>

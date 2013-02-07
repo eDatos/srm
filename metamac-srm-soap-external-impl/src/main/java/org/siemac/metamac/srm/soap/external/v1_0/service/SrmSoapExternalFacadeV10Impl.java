@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@WebService(endpointInterface = "org.siemac.metamac.soap.structural_resources.v1_0.MetamacStructuralResourcesInterfaceV10", targetNamespace = "http://www.siemac.org/metamac/soap/structural-resources/v1.0", serviceName = "MetamacStructuralResourcesInterface_v1.0", portName = "MetamacStructuralResourcesBindingSOAP_v1.0")
+@WebService
 @Service("srmSoapExternalFacadeV10")
 public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesInterfaceV10 {
 
@@ -92,7 +92,6 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
             org.siemac.metamac.soap.common.v1_0.domain.Exception exception = SoapExceptionUtils.getException(SoapCommonServiceExceptionType.UNKNOWN);
             fault = new ExceptionFault(exception.getCode(), exception);
         }
-        fault.setStackTrace(new StackTraceElement[]{}); // do not show details to user
         return fault;
     }
 }
