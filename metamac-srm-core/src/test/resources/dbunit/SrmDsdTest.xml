@@ -121,7 +121,7 @@
         VERSION_LOGIC="1.0"
         FINAL_LOGIC="0"
         FINAL_LOGIC_CLIENT="0"
-        LATEST_FINAL="1"
+        LATEST_FINAL="0"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
         VALID_FROM_TZ="Europe/London"
@@ -2971,7 +2971,7 @@
     
     <!-- ************************************************************************************** -->
     <!-- DATASTRUCTUREDEFINITION 6                                                              -->
-    <!--       - Version 1: final                                                            -->
+    <!--       - Version 1: no final                                                            -->
     <!-- *************************************************************************************  -->        
         
     <TB_STRUCTURES
@@ -3105,9 +3105,17 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
         
-        CONCEPT_IDENTITY_FK="1"
+        CONCEPT_IDENTITY_FK="10311"
         REPRESENTATION_FK="1"
     />
+    
+    <TB_MEASURE_DIMEN_EI_ROLES 
+    	TB_MEASURE_DIMENSIONS="612" 
+    	ROLE_FK="10312"/>
+    	
+    <TB_MEASURE_DIMEN_EI_ROLES 
+    	TB_MEASURE_DIMENSIONS="612" 
+    	ROLE_FK="103121"/>
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="613"
@@ -3163,8 +3171,8 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
-        FINAL_LOGIC_CLIENT="0"
         LATEST_FINAL="0"
+        FINAL_LOGIC_CLIENT="0"
         PUBLIC_LOGIC="0"
         LATEST_PUBLIC="0"
         VALID_FROM_TZ="[null]"
@@ -3186,9 +3194,17 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
         
-        CONCEPT_IDENTITY_FK="3"
+        CONCEPT_IDENTITY_FK="10311"
         REPRESENTATION_FK="2"
     />
+    
+    <TB_DIMENSIONS_EI_ROLES
+    	TB_DIMENSIONS="614"
+    	ROLE_FK="10312"/>
+    	
+    <TB_DIMENSIONS_EI_ROLES 
+    	TB_DIMENSIONS="614" 
+    	ROLE_FK="103121"/>
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="615"
@@ -3228,7 +3244,7 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
         
-        CONCEPT_IDENTITY_FK="5"
+        CONCEPT_IDENTITY_FK="10311"
         REPRESENTATION_FK="3"
     />
     
@@ -3311,9 +3327,17 @@
         
         RELATE_TO="61"
         
-        CONCEPT_IDENTITY_FK="6"
+        CONCEPT_IDENTITY_FK="10311"
         REPRESENTATION_FK="[NULL]"
     />
+ 
+    <TB_DATA_ATTRIBUTES_EI_ROLES
+    	TB_DATA_ATTRIBUTES="617"
+    	ROLE_FK="10312"/>
+    	
+    <TB_DATA_ATTRIBUTES_EI_ROLES 
+    	TB_DATA_ATTRIBUTES="617" 
+    	ROLE_FK="103121"/>
  
  	<TB_ANNOTABLE_ARTEFACTS 
         ID="618"
@@ -3392,7 +3416,7 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
         
-        CONCEPT_IDENTITY_FK="7"
+        CONCEPT_IDENTITY_FK="10311"
         REPRESENTATION_FK="4"
     />   
     
@@ -3435,8 +3459,7 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
     />
-    
-    
+      
     <TB_ATTR_RELATIONSHIPS  
         ID="61"
         UUID="dsd-06-v1-attr-rel-01"
@@ -3618,16 +3641,6 @@
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
     <!-- *************************************************************************************  -->    
-    <TB_EXTERNAL_ITEMS
-    	ID="1"
-    	CODE="ConceptMock"
-    	URI="lorem/ipsum/dolor/sit/amet"
-    	URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=MaintainerMock:ConceptSchemeMock(01.000).ConceptMock"
-    	MANAGEMENT_APP_URL="managementAppUrlD3mcZHMPR8"
-    	VERSION="0"
-    	TITLE_FK="105"
-    	TYPE="CONCEPT"
-    />
     
     <TB_EXTERNAL_ITEMS
     	ID="2"
@@ -3641,17 +3654,6 @@
     />
     
     <TB_EXTERNAL_ITEMS
-    	ID="3"
-    	CODE="ConceptMock"
-    	URI="lorem/ipsum/dolor/sit/amet"
-    	URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=MaintainerMock:ConceptSchemeMock(01.000).ConceptMock"
-    	MANAGEMENT_APP_URL="managementAppUrlD3mcZHMPR8"
-    	VERSION="0"
-    	TITLE_FK="107"
-    	TYPE="CONCEPT"
-    />
-    
-    <TB_EXTERNAL_ITEMS
     	ID="4"
     	CODE="CodelistMock"
     	URI="lorem/ipsum/dolor/sit/amet"
@@ -3662,38 +3664,7 @@
     	TYPE="CODELIST"
     />
     
-   <TB_EXTERNAL_ITEMS
-    	ID="5"
-    	CODE="ConceptMock"
-    	URI="lorem/ipsum/dolor/sit/amet"
-    	URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=MaintainerMock:ConceptSchemeMock(01.000).ConceptMock"
-    	MANAGEMENT_APP_URL="managementAppUrlD3mcZHMPR8"
-    	VERSION="0"
-    	TITLE_FK="109"
-    	TYPE="CONCEPT"
-    />
-    
-    <TB_EXTERNAL_ITEMS
-    	ID="6"
-    	CODE="ConceptMock"
-    	URI="lorem/ipsum/dolor/sit/amet"
-    	URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=MaintainerMock:ConceptSchemeMock(01.000).ConceptMock"
-    	MANAGEMENT_APP_URL="managementAppUrlD3mcZHMPR8"
-    	VERSION="0"
-    	TITLE_FK="110"
-    	TYPE="CONCEPT"
-    />
-    
-    <TB_EXTERNAL_ITEMS
-    	ID="7"
-    	CODE="ConceptMock"
-    	URI="lorem/ipsum/dolor/sit/amet"
-    	URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=MaintainerMock:ConceptSchemeMock(01.000).ConceptMock"
-    	MANAGEMENT_APP_URL="managementAppUrlD3mcZHMPR8"
-    	VERSION="0"
-    	TITLE_FK="111"
-    	TYPE="CONCEPT"
-    />
+
     
     <TB_EXTERNAL_ITEMS
     	ID="8"

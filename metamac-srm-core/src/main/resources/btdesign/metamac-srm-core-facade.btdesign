@@ -305,20 +305,7 @@ Application SrmFacadeCore {
        		
        		/**************************************************************************
 		     * CONCEPTS
-		     *************************************************************************/
-			"          
-			 @param ctx  
-			 @return     
-       		"       		
-       		List<@ExternalItemDto> findConceptSchemeRefs;
-       		
-       		"
-       		 @param ctx             
-			 @param uriConceptScheme
-			 @return 
-			"                
-       		List<@ExternalItemDto> findConcepts(String uriConceptScheme);
-       		
+		     *************************************************************************/     		
 	   		"Creates concept scheme"
 	   		@ConceptSchemeMetamacDto createConceptScheme(@ConceptSchemeMetamacDto conceptSchemeDto) throws MetamacException;
 	   		"Updates concept scheme"

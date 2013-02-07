@@ -1,10 +1,13 @@
 package org.siemac.metamac.srm.core.dsd.mapper;
 
+import java.util.Arrays;
+
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
@@ -22,6 +25,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
@@ -34,6 +39,9 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
 
     @Autowired
     private OrganisationMetamacRepository       organisationMetamacRepository;
+
+    @Autowired
+    private ConceptMetamacRepository            conceptMetamacRepository;
 
     @Autowired
     private ConceptsMetamacService              conceptsService;
@@ -50,10 +58,14 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
         dataStructureDefinitionVersionMetamac.setAutoOpen(true);
         dataStructureDefinitionVersionMetamac.setShowDecimals(2);
 
-        dataStructureDefinitionVersionMetamac.addHeadingDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(1, DataStructureDefinitionMetamacDoMocks.mockDimension()));
-        dataStructureDefinitionVersionMetamac.addHeadingDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(2, DataStructureDefinitionMetamacDoMocks.mockTimeDimension()));
+        Concept concept01 = conceptMetamacRepository.findByUrn(CONCEPT_URN_SDMX01_CS02_C01);
+        Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_URN_SDMX01_CS02_C02);
+        dataStructureDefinitionVersionMetamac.addHeadingDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(1,
+                DataStructureDefinitionMetamacDoMocks.mockDimension(concept01, Arrays.asList(concept01, concept02))));
+        dataStructureDefinitionVersionMetamac.addHeadingDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(2, DataStructureDefinitionMetamacDoMocks.mockTimeDimension(concept01)));
 
-        dataStructureDefinitionVersionMetamac.addStubDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(1, DataStructureDefinitionMetamacDoMocks.mockMeasureDimension()));
+        dataStructureDefinitionVersionMetamac.addStubDimension(DataStructureDefinitionMetamacDoMocks.mockDimensionOrder(1,
+                DataStructureDefinitionMetamacDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02))));
 
         ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
         dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(5, ConceptsMetamacDoMocks.mockConcept(conceptType)));

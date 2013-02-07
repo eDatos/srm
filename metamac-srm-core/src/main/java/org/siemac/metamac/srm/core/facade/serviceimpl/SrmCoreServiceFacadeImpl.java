@@ -1989,18 +1989,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // CONCEPT SCHEMES
     // ------------------------------------------------------------------------
 
-    // TODO REMOVE when DSDs were related to ConceptDtos (not to ExternalItemDtos)
-    @Override
-    public List<ExternalItemDto> findConceptSchemeRefs(ServiceContext ctx) {
-        return ServicesResolver.findAllConceptSchemes();
-    }
-
-    // TODO REMOVE when DSDs were related to ConceptDtos (not to ExternalItemDtos)
-    @Override
-    public List<ExternalItemDto> findConcepts(ServiceContext ctx, String uriConceptScheme) {
-        return ServicesResolver.retrieveConceptScheme(uriConceptScheme);
-    }
-
     @Override
     public ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security

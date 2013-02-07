@@ -12,7 +12,6 @@ import org.eclipse.xtext.util.StringInputStream;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ApplicationException;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
@@ -22,6 +21,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
+import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
@@ -120,21 +120,19 @@ public class SrmDtoMocks {
      */
     public static List<DimensionComponentDto> createDimensionDtos(SrmCoreServiceFacade srmCoreServiceFacade) {
 
-        List<ExternalItemDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
-
         DimensionComponentDto dimensionComponentDto1 = new DimensionComponentDto();
         // Required
         dimensionComponentDto1.setUriProvider(RandomStringUtils.random(50, true, true));
         dimensionComponentDto1.setTypeDimensionComponent(TypeDimensionComponent.DIMENSION);
         dimensionComponentDto1.setTypeComponent(TypeComponent.DIMENSION_COMPONENT);
         dimensionComponentDto1.setOrderLogic(1);
-        dimensionComponentDto1.setCptIdRef(conceptDtos.get(0));
+        dimensionComponentDto1.setCptIdRef(DataStructureDefinitionDtoMocks.mockExistingConceptIdentity());
 
         // Some Auditory
         dimensionComponentDto1.setCreatedBy("Junit");
         dimensionComponentDto1.setCreatedDate(new Date());
 
-        dimensionComponentDto1.getRole().add(conceptDtos.get(0));
+        dimensionComponentDto1.getRole().add(DataStructureDefinitionDtoMocks.mockExistingConceptRole());
 
         DimensionComponentDto dimensionComponentDto2 = new DimensionComponentDto();
         // Required
@@ -142,7 +140,7 @@ public class SrmDtoMocks {
         dimensionComponentDto2.setTypeDimensionComponent(TypeDimensionComponent.MEASUREDIMENSION);
         dimensionComponentDto2.setTypeComponent(TypeComponent.DIMENSION_COMPONENT);
         dimensionComponentDto2.setOrderLogic(2);
-        dimensionComponentDto2.setCptIdRef(conceptDtos.get(0));
+        dimensionComponentDto2.setCptIdRef(DataStructureDefinitionDtoMocks.mockExistingConceptIdentity());
         RepresentationDto repeRepresentationDto = new RepresentationDto();
         repeRepresentationDto.setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
         repeRepresentationDto.setEnumerated(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockConceptSchemeUrn(), TypeExternalArtefactsEnum.CONCEPT_SCHEME));
@@ -187,11 +185,11 @@ public class SrmDtoMocks {
      */
     public static List<DataAttributeDto> createDataAttribute(SrmCoreServiceFacade srmCoreServiceFacade, String urnDsd) throws MetamacException {
 
-        List<ExternalItemDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
+        // List<ExternalItemDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
 
         DataAttributeDto dataAttributeDto1 = new DataAttributeDto();
         // Required
-        dataAttributeDto1.setCptIdRef(conceptDtos.get(0));
+        dataAttributeDto1.setCptIdRef(DataStructureDefinitionDtoMocks.mockExistingConceptIdentity());
         dataAttributeDto1.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, urnDsd));
         dataAttributeDto1.setTypeComponent(TypeComponent.DATA_ATTRIBUTE);
         dataAttributeDto1.setTypeDataAttribute(TypeDataAttribute.DATA_ATTRIBUTE);
@@ -202,7 +200,7 @@ public class SrmDtoMocks {
 
         DataAttributeDto dataAttributeDto2 = new DataAttributeDto();
         // Required
-        dataAttributeDto2.setCptIdRef(conceptDtos.get(0));
+        dataAttributeDto2.setCptIdRef(DataStructureDefinitionDtoMocks.mockExistingConceptIdentity());
         dataAttributeDto2.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, urnDsd));
         dataAttributeDto2.setTypeComponent(TypeComponent.DATA_ATTRIBUTE);
         dataAttributeDto2.setTypeDataAttribute(TypeDataAttribute.REPORTING_YEAR_START_DAY);
@@ -213,7 +211,7 @@ public class SrmDtoMocks {
 
         DataAttributeDto dataAttributeDto3 = new DataAttributeDto();
         // Required
-        dataAttributeDto3.setCptIdRef(conceptDtos.get(0));
+        dataAttributeDto3.setCptIdRef(DataStructureDefinitionDtoMocks.mockExistingConceptIdentity());
         dataAttributeDto3.setRelateTo(createAttributeRelationship(srmCoreServiceFacade, urnDsd));
         dataAttributeDto3.setTypeComponent(TypeComponent.DATA_ATTRIBUTE);
         dataAttributeDto3.setTypeDataAttribute(TypeDataAttribute.DATA_ATTRIBUTE);
@@ -232,14 +230,11 @@ public class SrmDtoMocks {
 
     public static ComponentDto createPrimaryMeasureDto(SrmCoreServiceFacade srmCoreServiceFacade) {
 
-        List<ExternalItemDto> conceptDtos = srmCoreServiceFacade.findConcepts(getServiceContext(), null);
-
         ComponentDto primaryMeasure = new ComponentDto();
 
         // Required
-        primaryMeasure.setCptIdRef(conceptDtos.get(0));
+        primaryMeasure.setCptIdRef(DataStructureDefinitionDtoMocks.mockExistingConceptIdentity());
         primaryMeasure.setTypeComponent(TypeComponent.PRIMARY_MEASURE);
-        primaryMeasure.setCptIdRef(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockConceptUrn(), TypeExternalArtefactsEnum.CONCEPT));
 
         // Other
         primaryMeasure.setUriProvider(RandomStringUtils.random(50, true, true));
