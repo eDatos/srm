@@ -66,6 +66,7 @@ public class GetConceptSchemesActionHandler extends SecurityActionHandler<GetCon
         if (!StringUtils.isBlank(conceptSchemeWebCriteria.getCriteria())) {
             restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
         }
+
         criteria.setRestriction(restriction);
 
         // Pagination
