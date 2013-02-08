@@ -131,5 +131,4 @@ public class SearchRelatedResourcePaginatedDragAndDropItem extends BaseSearchPag
         }
         return false;
     }
-
 }

@@ -52,9 +52,7 @@ public class GetVariableElementsActionHandler extends SecurityActionHandler<GetV
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Variable element Criteria
-        if (variableElementWebCriteria != null) {
-            restriction.getRestrictions().add(MetamacCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
-        }
+        restriction.getRestrictions().add(MetamacCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
 
         criteria.setRestriction(restriction);
 

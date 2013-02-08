@@ -29,6 +29,8 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
+import com.smartgwt.client.widgets.grid.events.SelectionUpdatedEvent;
+import com.smartgwt.client.widgets.grid.events.SelectionUpdatedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -127,7 +129,9 @@ public class CategorisationsPanel extends VLayout {
 
     public void setCategorySchemes(GetCategorySchemesResult result) {
         if (searchCategoriesWindow != null) {
-            // TODO
+            List<RelatedResourceDto> categorySchemes = RelatedResourceUtils.geCategorySchemeMetamacDtosAsRelatedResourceDtos(result.getCategorySchemeList());
+            searchCategoriesWindow.setFilterRelatedResources(categorySchemes);
+            searchCategoriesWindow.refreshFilterListPaginationInfo(result.getFirstResultOut(), categorySchemes.size(), result.getTotalResults());
         }
     }
 
@@ -166,35 +170,45 @@ public class CategorisationsPanel extends VLayout {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                // TODO Auto-generated method stub
+                getUiHandlers().retrieveCategorySchemesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getFilterListCriteria());
             }
         };
         PaginatedAction selectionListAction = new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getSelectionListCriteria(), null); // TODO
+                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getSelectionListCriteria(),
+                        searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
             }
         };
-
         searchCategoriesWindow = new SearchCategoriesForCategorisation(MAX_RESULTS, filterListAction, selectionListAction);
 
         // Load the list of categories (to populate the selection window)
+        getUiHandlers().retrieveCategorySchemesForCategorisations(FIRST_RESULT, MAX_RESULTS, null);
         getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, null, null);
+
+        searchCategoriesWindow.getFilterListItem().getListGrid().addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
+
+            @Override
+            public void onSelectionUpdated(SelectionUpdatedEvent event) {
+                getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getSelectionListCriteria(),
+                        searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
+            }
+        });
 
         // Set the search actions
         searchCategoriesWindow.setSelectionListSearchAction(new SearchPaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, criteria, null); // TODO
+                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, criteria, searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
             }
         });
         searchCategoriesWindow.setFilterListSearchAction(new SearchPaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                // TODO Auto-generated method stub
+                getUiHandlers().retrieveCategorySchemesForCategorisations(firstResult, maxResults, criteria);
             }
         });
 
@@ -202,9 +216,11 @@ public class CategorisationsPanel extends VLayout {
 
             @Override
             public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                List<RelatedResourceDto> categories = searchCategoriesWindow.getSelectedRelatedResources();
-                searchCategoriesWindow.markForDestroy();
-                getUiHandlers().createCategorisations(RelatedResourceUtils.getUrnsFromRelatedResourceDtos(categories));
+                if (searchCategoriesWindow.validateSelectionListForm()) {
+                    List<RelatedResourceDto> categories = searchCategoriesWindow.getSelectedRelatedResources();
+                    searchCategoriesWindow.markForDestroy();
+                    getUiHandlers().createCategorisations(RelatedResourceUtils.getUrnsFromRelatedResourceDtos(categories));
+                }
             }
         });
     }

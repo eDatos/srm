@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.server.handlers.category;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
@@ -56,9 +55,7 @@ public class GetCategoriesActionHandler extends SecurityActionHandler<GetCategor
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Criteria
-        if (!StringUtils.isBlank(categoryWebCriteria.getCriteria())) {
-            restriction.getRestrictions().add(MetamacCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
-        }
+        restriction.getRestrictions().add(MetamacCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
 
         // Is externally published
         if (categoryWebCriteria.getIsExternallyPublished() != null) {

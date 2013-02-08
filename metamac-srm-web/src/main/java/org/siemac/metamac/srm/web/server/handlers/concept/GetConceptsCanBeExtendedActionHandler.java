@@ -49,9 +49,7 @@ public class GetConceptsCanBeExtendedActionHandler extends SecurityActionHandler
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Concept criteria
-        if (action.getCriteria() != null) {
-            restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptCriteriaRestriction(action.getCriteria()));
-        }
+        restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptCriteriaRestriction(action.getCriteria()));
 
         criteria.setRestriction(restriction);
 

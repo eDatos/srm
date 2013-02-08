@@ -117,7 +117,7 @@ public class RelatedResourceUtils {
         return relatedResourceDto;
     }
 
-    public static List<RelatedResourceDto> geCategorySchemeMetamacDtosAstRelatedResourceDtos(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos) {
+    public static List<RelatedResourceDto> geCategorySchemeMetamacDtosAsRelatedResourceDtos(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos) {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(categorySchemeMetamacDtos.size());
         for (CategorySchemeMetamacDto categoryScheme : categorySchemeMetamacDtos) {
             relatedResourceDtos.add(getCategorySchemeMetamacDtoAsRelatedResourceDto(categoryScheme));

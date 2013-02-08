@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -10,6 +11,7 @@ import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
@@ -18,15 +20,16 @@ import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
  */
 public class SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWindow extends CustomWindow {
 
-    private static final int                              FORM_ITEM_CUSTOM_WIDTH = 500;
+    protected static final int                              FORM_ITEM_CUSTOM_WIDTH = 500;
 
-    private static final String                           FIELD_SAVE             = "save-ex";
+    protected static final String                           FIELD_SAVE             = "save-ex";
 
-    private CustomDynamicForm                             filterForm;
-    private CustomDynamicForm                             form;
+    protected CustomDynamicForm                             filterForm;
+    protected CustomDynamicForm                             form;
 
-    private SearchRelatedResourcePaginatedItem            filterListItem;
-    private SearchRelatedResourcePaginatedDragAndDropItem selectionListItem;
+    protected SearchRelatedResourcePaginatedItem            filterListItem;
+
+    protected SearchRelatedResourcePaginatedDragAndDropItem selectionListItem;
 
     public SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWindow(String title, String filterTitle, String selectionListTitle, int maxResults, PaginatedAction filterListAction,
             PaginatedAction selectionListAction) {
@@ -36,6 +39,7 @@ public class SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWind
         // Filter section
 
         filterListItem = new SearchRelatedResourcePaginatedItem("filterList", filterTitle, FORM_ITEM_CUSTOM_WIDTH, maxResults, filterListAction);
+        filterListItem.getListGrid().setSelectionType(SelectionStyle.SINGLE);
 
         filterForm = new CustomDynamicForm();
         filterForm.setTitleOrientation(TitleOrientation.TOP);
@@ -47,7 +51,7 @@ public class SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWind
 
         selectionListItem = new SearchRelatedResourcePaginatedDragAndDropItem("list", selectionListTitle, maxResults, FORM_ITEM_CUSTOM_WIDTH, selectionListAction);
 
-        CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());
+        CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().accept());
 
         form = new CustomDynamicForm();
         form.setTitleOrientation(TitleOrientation.TOP);
@@ -84,6 +88,11 @@ public class SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWind
         return filterListItem.getSelectedRelatedResource();
     }
 
+    public String getSelectedRelatedResourceUrnAsFilter() {
+        return (filterListItem.getSelectedRelatedResource() != null && !StringUtils.isBlank(filterListItem.getSelectedRelatedResource().getUrn())) ? filterListItem.getSelectedRelatedResource()
+                .getUrn() : null;
+    }
+
     public List<RelatedResourceDto> getSelectedRelatedResources() {
         return selectionListItem.getSelectedRelatedResources();
     }
@@ -110,5 +119,21 @@ public class SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWind
 
     public String getSelectionListCriteria() {
         return selectionListItem.getRelatedResourceCriteria();
+    }
+
+    public CustomDynamicForm getFilterForm() {
+        return filterForm;
+    }
+
+    public CustomDynamicForm getForm() {
+        return form;
+    }
+
+    public SearchRelatedResourcePaginatedItem getFilterListItem() {
+        return filterListItem;
+    }
+
+    public SearchRelatedResourcePaginatedDragAndDropItem getSelectionListItem() {
+        return selectionListItem;
     }
 }
