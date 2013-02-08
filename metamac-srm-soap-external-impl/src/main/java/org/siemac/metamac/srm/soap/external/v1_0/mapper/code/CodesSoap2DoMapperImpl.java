@@ -182,7 +182,7 @@ public class CodesSoap2DoMapperImpl implements CodesSoap2DoMapper {
                 case VARIABLE_ID:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().nameableArtefact().code(), propertyRestriction.getStringValue());
                 case LAST_VERSION:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
                 default:
                     throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_PROPERTY_NAME);
             }
