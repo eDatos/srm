@@ -27,10 +27,10 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
-import com.smartgwt.client.widgets.grid.events.SelectionUpdatedEvent;
-import com.smartgwt.client.widgets.grid.events.SelectionUpdatedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -187,10 +187,19 @@ public class CategorisationsPanel extends VLayout {
         getUiHandlers().retrieveCategorySchemesForCategorisations(FIRST_RESULT, MAX_RESULTS, null);
         getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, null, null);
 
-        searchCategoriesWindow.getFilterListItem().getListGrid().addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
+        // Filter categories when the category scheme filter changes
+        searchCategoriesWindow.getFilterListItem().getListGrid().addRecordClickHandler(new RecordClickHandler() {
 
             @Override
-            public void onSelectionUpdated(SelectionUpdatedEvent event) {
+            public void onRecordClick(RecordClickEvent event) {
+                getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getSelectionListCriteria(),
+                        searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
+            }
+        });
+        searchCategoriesWindow.getClearButton().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                 getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getSelectionListCriteria(),
                         searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
             }
@@ -216,9 +225,9 @@ public class CategorisationsPanel extends VLayout {
 
             @Override
             public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                if (searchCategoriesWindow.validateSelectionListForm()) {
-                    List<RelatedResourceDto> categories = searchCategoriesWindow.getSelectedRelatedResources();
-                    searchCategoriesWindow.markForDestroy();
+                List<RelatedResourceDto> categories = searchCategoriesWindow.getSelectedRelatedResources();
+                searchCategoriesWindow.markForDestroy();
+                if (categories != null && !categories.isEmpty()) {
                     getUiHandlers().createCategorisations(RelatedResourceUtils.getUrnsFromRelatedResourceDtos(categories));
                 }
             }
