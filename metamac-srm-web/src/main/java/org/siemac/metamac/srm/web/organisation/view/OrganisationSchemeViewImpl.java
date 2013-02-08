@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
@@ -28,6 +29,8 @@ import org.siemac.metamac.srm.web.organisation.widgets.NewOrganisationWindow;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -44,6 +47,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
@@ -104,6 +108,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
     // OrganisationTree
     private OrganisationsTreeGrid                  organisationsTreeGrid;
+
+    // Categorisations
+    private CategorisationsPanel                   categorisationsPanel;
 
     @Inject
     public OrganisationSchemeViewImpl() {
@@ -233,15 +240,19 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         organisationsLayout.addMember(organisationListGrid);
         organisationsLayout.addMember(organisationsTreeGrid);
 
+        categorisationsPanel = new CategorisationsPanel();
+
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
         panel.addMember(organisationsLayout);
+        panel.addMember(categorisationsPanel);
     }
 
     @Override
     public void setUiHandlers(OrganisationSchemeUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         organisationsTreeGrid.setUiHandlers(getUiHandlers());
+        categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -597,6 +608,21 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         }
     }
 
+    @Override
+    public void setCategorisations(List<CategorisationDto> categorisationDtos) {
+        categorisationsPanel.setCategorisations(categorisationDtos);
+    }
+
+    @Override
+    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+        categorisationsPanel.setCategorySchemes(result);
+    }
+
+    @Override
+    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+        categorisationsPanel.setCategories(result);
+    }
+
     public void setOrganisationSchemeViewMode(OrganisationSchemeMetamacDto organisationSchemeDto) {
         // Identifiers
         identifiersForm.setValue(OrganisationSchemeDS.CODE, organisationSchemeDto.getCode());
@@ -673,7 +699,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         contentDescriptorsEditionForm.markForRedraw();
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.MAINTAINER,
+                org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
 

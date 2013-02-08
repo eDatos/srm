@@ -22,11 +22,11 @@ import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandl
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
-import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -250,4 +250,28 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
     }
 
+    @Override
+    public void retrieveCategorisations(String artefactCategorisedUrn) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void createCategorisations(List<String> categoryUrns) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteCategorisations(List<String> urns) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
+        throw new UnsupportedOperationException();
+    }
 }
