@@ -19,6 +19,14 @@
         </xs:sequence>
         <xs:attribute name="id" type="xs:string" use="required"/>        
     </xs:complexType>     
+    
+    <xs:complexType name="Resource">
+        <xs:sequence>
+            <xs:element name="urn" type="xs:string" />
+            <xs:element name="name" type="tns:InternationalString" minOccurs="0" />
+        </xs:sequence>        
+        <xs:attribute name="id" type="xs:string" use="required"/>
+    </xs:complexType>    
 
     <xs:complexType name="InternationalString">
         <xs:sequence>

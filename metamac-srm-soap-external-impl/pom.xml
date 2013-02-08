@@ -13,7 +13,7 @@
     <groupId>org.siemac.metamac.metamac-srm</groupId>
     <artifactId>metamac-srm-soap-external-impl</artifactId>
     <packaging>jar</packaging>
-    <name>SIEMAC :: METAMAC :: SRM :: WS SOAP :: EXTERNAL IMPL</name>
+    <name>SIEMAC :: METAMAC :: SRM :: SOAP :: EXTERNAL IMPL</name>
 
 	<dependencies>
         <!-- Metamac -->

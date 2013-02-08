@@ -30,7 +30,7 @@ public class SrmRestInternalUtils {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
         if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
-            conditionalCriteria.addAll(conditionalCriteriaQuery); // adds distinct root and order
+            conditionalCriteria.addAll(conditionalCriteriaQuery);
         } else {
             // init
             conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).distinctRoot().build());
@@ -49,7 +49,7 @@ public class SrmRestInternalUtils {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
         if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
-            conditionalCriteria.addAll(conditionalCriteriaQuery); // adds distinct root and order
+            conditionalCriteria.addAll(conditionalCriteriaQuery);
         } else {
             // init
             conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).distinctRoot().build());

@@ -64,6 +64,16 @@
         </xs:complexContent>
     </xs:complexType>    
     
+    <xs:complexType name="Codelists">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="codelist" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
     <xs:complexType name="ReplaceTo">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
@@ -103,14 +113,13 @@
             <xs:enumeration value="ID" />
             <xs:enumeration value="NAME" />
             <xs:enumeration value="SHORT_NAME" />
-            <xs:enumeration value="FAMILY" />
+            <xs:enumeration value="FAMILY_ID" />
         </xs:restriction>
     </xs:simpleType>
     
     <xs:simpleType name="VariableCriteriaPropertyOrder">
         <xs:restriction base="xs:token">
             <xs:enumeration value="ID" />
-            <xs:enumeration value="FAMILY" />
         </xs:restriction>
     </xs:simpleType>    
 
@@ -126,4 +135,20 @@
             <xs:enumeration value="ID" />
         </xs:restriction>
     </xs:simpleType>
+    
+    <xs:simpleType name="CodelistCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="NAME" />
+            <xs:enumeration value="FAMILY_ID" />
+            <xs:enumeration value="VARIABLE_ID" />
+            <xs:enumeration value="LAST_VERSION" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="CodelistCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>    
 </xs:schema>

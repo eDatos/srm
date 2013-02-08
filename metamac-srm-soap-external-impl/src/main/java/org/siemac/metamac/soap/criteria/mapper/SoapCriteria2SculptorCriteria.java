@@ -7,17 +7,19 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.ConditionRoot;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
 import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
-import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
-import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteria;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaOrder;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaRestriction;
+import org.siemac.metamac.soap.common.v1_0.domain.OrderType;
+import org.siemac.metamac.soap.exception.SoapCommonServiceExceptionType;
+import org.siemac.metamac.soap.exception.SoapExceptionUtils;
+import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
+import org.siemac.metamac.srm.soap.external.exception.SoapExceptionParameters;
 
 // // TODO put in common library if more soap services are created
 @SuppressWarnings({"unchecked", "rawtypes"})
@@ -34,7 +36,7 @@ public class SoapCriteria2SculptorCriteria<T> {
     private final Integer         MAXIMUM_RESULT_SIZE_ALLOWED  = Integer.valueOf(1000);
 
     public SoapCriteria2SculptorCriteria(Class<T> entityClass, Class<? extends Enum> propertyOrderEnumClass, Class<? extends Enum> propertyRestrictionEnumClass, CriteriaCallback callback)
-            throws MetamacException {
+            throws ExceptionFault {
 
         this.entityClass = entityClass;
         this.propertyOrderEnumClass = propertyOrderEnumClass;
@@ -42,7 +44,7 @@ public class SoapCriteria2SculptorCriteria<T> {
         this.callback = callback;
     }
 
-    public SculptorCriteria metamacCriteria2SculptorCriteria(MetamacCriteria metamacCriteria) throws MetamacException {
+    public SculptorCriteria metamacCriteria2SculptorCriteria(MetamacCriteria metamacCriteria) throws ExceptionFault {
 
         if (metamacCriteria == null) {
             metamacCriteria = new MetamacCriteria();
@@ -59,7 +61,7 @@ public class SoapCriteria2SculptorCriteria<T> {
         } else {
             for (MetamacCriteriaOrder order : metamacCriteria.getOrdersBy().getOrder()) {
                 checkPropertyOrder(order);
-                if (order.getType() == null || OrderTypeEnum.ASC.equals(order.getType())) {
+                if (order.getType() == null || OrderType.ASC.equals(order.getType())) {
                     criteria.orderBy(callback.retrievePropertyOrder(order)).ascending();
                 } else {
                     criteria.orderBy(callback.retrievePropertyOrder(order)).descending();
@@ -104,7 +106,7 @@ public class SoapCriteria2SculptorCriteria<T> {
         return new SculptorCriteria(conditions, pagingParameter, maximumResultSize);
     }
 
-    private void addRestriction(MetamacCriteriaRestriction metamacCriteriaRestriction, ConditionRoot criteria) throws MetamacException {
+    private void addRestriction(MetamacCriteriaRestriction metamacCriteriaRestriction, ConditionRoot criteria) throws ExceptionFault {
 
         if (metamacCriteriaRestriction instanceof MetamacCriteriaDisjunctionRestriction) {
             addRestriction((MetamacCriteriaDisjunctionRestriction) metamacCriteriaRestriction, criteria);
@@ -113,11 +115,11 @@ public class SoapCriteria2SculptorCriteria<T> {
         } else if (metamacCriteriaRestriction instanceof MetamacCriteriaPropertyRestriction) {
             addRestriction((MetamacCriteriaPropertyRestriction) metamacCriteriaRestriction, criteria);
         } else {
-            throw new MetamacException(CommonServiceExceptionType.PARAMETER_INCORRECT, "CRITERIA");
+            throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA);
         }
     }
 
-    private void addRestriction(MetamacCriteriaDisjunctionRestriction disjunction, ConditionRoot criteria) throws MetamacException {
+    private void addRestriction(MetamacCriteriaDisjunctionRestriction disjunction, ConditionRoot criteria) throws ExceptionFault {
         criteria.lbrace();
         for (int i = 0; i < disjunction.getRestrictions().getRestriction().size(); i++) {
             MetamacCriteriaRestriction metamacCriteriaSubrestriction = disjunction.getRestrictions().getRestriction().get(i);
@@ -129,7 +131,7 @@ public class SoapCriteria2SculptorCriteria<T> {
         criteria.rbrace();
     }
 
-    private void addRestriction(MetamacCriteriaConjunctionRestriction conjunction, ConditionRoot criteria) throws MetamacException {
+    private void addRestriction(MetamacCriteriaConjunctionRestriction conjunction, ConditionRoot criteria) throws ExceptionFault {
         criteria.lbrace();
         for (int i = 0; i < conjunction.getRestrictions().getRestriction().size(); i++) {
             MetamacCriteriaRestriction metamacCriteriaSubrestriction = conjunction.getRestrictions().getRestriction().get(i);
@@ -141,13 +143,13 @@ public class SoapCriteria2SculptorCriteria<T> {
         criteria.rbrace();
     }
 
-    private void addRestriction(MetamacCriteriaPropertyRestriction metamacCriteriaPropertyRestriction, ConditionRoot criteria) throws MetamacException {
+    private void addRestriction(MetamacCriteriaPropertyRestriction metamacCriteriaPropertyRestriction, ConditionRoot criteria) throws ExceptionFault {
         checkPropertyRestriction(metamacCriteriaPropertyRestriction);
 
         SculptorPropertyCriteria sculptorPropertyCriteria = callback.retrieveProperty(metamacCriteriaPropertyRestriction);
 
         if (sculptorPropertyCriteria.getProperty1() == null) {
-            throw new MetamacException(CommonServiceExceptionType.PARAMETER_INCORRECT, "CRITERIA");
+            throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA);
         } else if (sculptorPropertyCriteria.getProperty2() == null) {
             addRestrictionWithProperty(metamacCriteriaPropertyRestriction, criteria, sculptorPropertyCriteria.getProperty1(), sculptorPropertyCriteria.getValue());
         } else {
@@ -159,7 +161,7 @@ public class SoapCriteria2SculptorCriteria<T> {
         }
     }
 
-    private void addRestrictionWithProperty(MetamacCriteriaPropertyRestriction metamacCriteriaPropertyRestriction, ConditionRoot criteria, Property property, Object value) throws MetamacException {
+    private void addRestrictionWithProperty(MetamacCriteriaPropertyRestriction metamacCriteriaPropertyRestriction, ConditionRoot criteria, Property property, Object value) throws ExceptionFault {
         switch (metamacCriteriaPropertyRestriction.getOperation()) {
             case EQ:
                 criteria.withProperty(property).eq(value);
@@ -195,30 +197,30 @@ public class SoapCriteria2SculptorCriteria<T> {
                 criteria.withProperty(property).isNotNull();
                 break;
             default:
-                throw new MetamacException(CommonServiceExceptionType.PARAMETER_INCORRECT, "CRITERIA");
+                throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_OPERATION);
         }
     }
 
-    private void checkPropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
+    private void checkPropertyOrder(MetamacCriteriaOrder order) throws ExceptionFault {
         try {
             Enum.valueOf(propertyOrderEnumClass, order.getPropertyName());
         } catch (Throwable e) {
-            throw new MetamacException(CommonServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
+            throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_ORDER);
         }
     }
 
-    private void checkPropertyRestriction(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+    private void checkPropertyRestriction(MetamacCriteriaPropertyRestriction propertyRestriction) throws ExceptionFault {
         try {
             Enum.valueOf(propertyRestrictionEnumClass, propertyRestriction.getPropertyName());
         } catch (Throwable e) {
-            throw new MetamacException(CommonServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
+            throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_PROPERTY_NAME);
         }
     }
 
     public static interface CriteriaCallback {
 
-        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException;
-        public Property retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException;
-        public Property retrievePropertyOrderDefault() throws MetamacException;
+        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws ExceptionFault;
+        public Property retrievePropertyOrder(MetamacCriteriaOrder order) throws ExceptionFault;
+        public Property retrievePropertyOrderDefault() throws ExceptionFault;
     }
 }

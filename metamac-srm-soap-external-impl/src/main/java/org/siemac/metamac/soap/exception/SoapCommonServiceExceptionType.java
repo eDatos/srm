@@ -9,11 +9,12 @@ import java.util.ResourceBundle;
 public class SoapCommonServiceExceptionType {
 
     // Map
-    protected static final Map<String, SoapCommonServiceExceptionType> LOOKUP             = new HashMap<String, SoapCommonServiceExceptionType>();
+    protected static final Map<String, SoapCommonServiceExceptionType> LOOKUP              = new HashMap<String, SoapCommonServiceExceptionType>();
 
     // Error Codes
-    public static final SoapCommonServiceExceptionType                 PARAMETER_REQUIRED = create("exception.common.parameter.required");
-    public static final SoapCommonServiceExceptionType                 UNKNOWN            = create("exception.common.unknown");
+    public static final SoapCommonServiceExceptionType                 PARAMETER_REQUIRED  = create("exception.common.parameter.required");
+    public static final SoapCommonServiceExceptionType                 PARAMETER_INCORRECT = create("exception.common.parameter.incorrect");
+    public static final SoapCommonServiceExceptionType                 UNKNOWN             = create("exception.common.unknown");
 
     /**
      * Creates a new {@code CommonServiceExceptionType} or reuses an existing instance for a given

@@ -40,7 +40,18 @@
         <xs:sequence>
             <xs:element name="codelistFamilies" type="domain_v1_0:CodelistFamilies" />
         </xs:sequence>
-    </xs:complexType>    
+    </xs:complexType>   
+    
+    <xs:complexType name="FindCodelists">
+        <xs:sequence>
+            <xs:element name="criteria" type="common:MetamacCriteria" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="FindCodelistsResponse">
+        <xs:sequence>
+            <xs:element name="codelists" type="domain_v1_0:Codelists" />
+        </xs:sequence>
+    </xs:complexType>         
 
 	<!-- ELEMENTS -->
 	<xs:element name="findVariableFamilies" type="tns:FindVariableFamilies" />
@@ -49,4 +60,6 @@
     <xs:element name="findVariablesResponse" type="tns:FindVariablesResponse" />
     <xs:element name="findCodelistFamilies" type="tns:FindCodelistFamilies" />
     <xs:element name="findCodelistFamiliesResponse" type="tns:FindCodelistFamiliesResponse" />
+    <xs:element name="findCodelists" type="tns:FindCodelists" />
+    <xs:element name="findCodelistsResponse" type="tns:FindCodelistsResponse" />
 </xs:schema>

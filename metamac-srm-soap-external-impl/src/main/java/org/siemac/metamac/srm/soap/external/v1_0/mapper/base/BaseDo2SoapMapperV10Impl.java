@@ -41,6 +41,14 @@ public class BaseDo2SoapMapperV10Impl implements BaseDo2SoapMapperV10 {
         }
     }
 
+    protected String getUrn(NameableArtefact nameableArtefact) {
+        if (nameableArtefact.getUrnProvider() != null) {
+            return nameableArtefact.getUrnProvider();
+        } else {
+            return nameableArtefact.getUrn();
+        }
+    }
+
     private LocalisedString localisedStringToLocalisedStringWebService(org.siemac.metamac.core.common.ent.domain.LocalisedString source) {
         LocalisedString localisedString = new LocalisedString();
         localisedString.setLang(source.getLocale());

@@ -1,8 +1,14 @@
 package org.siemac.metamac.srm.soap.external.v1_0.service;
 
+import java.util.List;
+
 import javax.jws.WebService;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.aop.LoggingInterceptor;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
@@ -12,8 +18,12 @@ import org.siemac.metamac.soap.exception.SoapExceptionUtils;
 import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
 import org.siemac.metamac.soap.structural_resources.v1_0.MetamacStructuralResourcesInterfaceV10;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilies;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelists;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variables;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.soap.external.v1_0.mapper.code.CodesDo2SoapMapper;
 import org.siemac.metamac.srm.soap.external.v1_0.mapper.code.CodesSoap2DoMapper;
@@ -101,6 +111,49 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
         }
     }
 
+    @Override
+    public Codelists findCodelists(MetamacCriteria criteria) throws ExceptionFault {
+        try {
+            // Validation of parameters
+            InvocationValidator.validateFindCodelists(criteria);
+
+            // Transform
+            SculptorCriteria sculptorCriteria = codesSoap2DoMapper.getCodelistCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+            // Find
+            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac> result = findCodelistsCore(null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+            // Transform
+            Codelists codelists = codesDo2SoapMapper.toCodelists(result, sculptorCriteria.getPageSize());
+            return codelists;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    private PagedResult<CodelistVersionMetamac> findCodelistsCore(String urn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws ExceptionFault {
+        try {
+            if (CollectionUtils.isEmpty(conditions)) {
+                conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build();
+            }
+            // urn
+            if (urn != null) {
+                conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().urn()).eq(urn).buildSingle());
+            }
+            // externally published
+            conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE)
+                    .buildSingle());
+            // access public
+            conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
+
+            // Find
+            PagedResult<CodelistVersionMetamac> entitiesPagedResult = codesService.findCodelistsByCondition(ctx, conditions, pagingParameter);
+            return entitiesPagedResult;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
     /**
      * Throws response error, logging exception
      */
@@ -111,8 +164,7 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
             fault = (ExceptionFault) e;
         } else {
             // do not show information details about exception to user
-            org.siemac.metamac.soap.common.v1_0.domain.Exception exception = SoapExceptionUtils.getException(SoapCommonServiceExceptionType.UNKNOWN);
-            fault = new ExceptionFault(exception.getCode(), exception);
+            return SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.UNKNOWN);
         }
         return fault;
     }

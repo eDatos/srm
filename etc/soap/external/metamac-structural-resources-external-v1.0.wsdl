@@ -38,6 +38,13 @@
         <wsdl:part name="body" element="service_v1_0:findCodelistFamiliesResponse" />
     </wsdl:message>
     
+    <wsdl:message name="findCodelistsRequest">
+        <wsdl:part name="body" element="service_v1_0:findCodelists" />
+    </wsdl:message>
+    <wsdl:message name="findCodelistsResponse">
+        <wsdl:part name="body" element="service_v1_0:findCodelistsResponse" />
+    </wsdl:message>    
+    
     <!-- Exceptions -->
     <wsdl:message name="exceptionFault">
         <wsdl:part name="body" element="exception_v1_0:exception" />
@@ -59,6 +66,11 @@
             <wsdl:output name="findCodelistFamiliesOutput" message="tns:findCodelistFamiliesResponse" />
             <wsdl:fault name="findCodelistFamiliesFault" message="tns:exceptionFault" />
         </wsdl:operation>        
+        <wsdl:operation name="findCodelists">
+            <wsdl:input name="findCodelistsInput" message="tns:findCodelistsRequest" />
+            <wsdl:output name="findCodelistsOutput" message="tns:findCodelistsResponse" />
+            <wsdl:fault name="findCodelistsFault" message="tns:exceptionFault" />
+        </wsdl:operation>              
     </wsdl:portType>
 
     <wsdl:binding name="MetamacStructuralResourcesBindingSOAP_v1.0" type="tns:MetamacStructuralResourcesInterface_v1.0">
@@ -99,6 +111,18 @@
                 <soap:fault use="literal" name="findCodelistFamiliesFault" />
             </wsdl:fault>
         </wsdl:operation>
+        <wsdl:operation name="findCodelists">
+            <soap:operation soapAction="http://www.siemac.org/metamac/soap/structural-resources/v1.0/findCodelists" />
+            <wsdl:input name="findCodelistsInput">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="findCodelistsOutput">
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="findCodelistsFault">
+                <soap:fault use="literal" name="findCodelistsFault" />
+            </wsdl:fault>
+        </wsdl:operation>        
     </wsdl:binding>
 
     <wsdl:service name="MetamacStructuralResources_v1.0">

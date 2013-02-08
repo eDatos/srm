@@ -6,15 +6,18 @@ import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.soap.common.v1_0.domain.Item;
+import org.siemac.metamac.soap.common.v1_0.domain.Resource;
 import org.siemac.metamac.soap.criteria.mapper.SculptorCriteria2SoapCriteria;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamily;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelists;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.ReplaceTo;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variable;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilyCodes;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variables;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.soap.external.v1_0.mapper.base.BaseDo2SoapMapperV10Impl;
 import org.springframework.stereotype.Component;
 
@@ -104,6 +107,20 @@ public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements 
         return targets;
     }
 
+    @Override
+    public Codelists toCodelists(PagedResult<CodelistVersionMetamac> sources, Integer limit) {
+        Codelists targets = new Codelists();
+        // Values
+        if (!CollectionUtils.isEmpty(sources.getValues())) {
+            for (org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac source : sources.getValues()) {
+                targets.getCodelist().add(toResource(source));
+            }
+        }
+        // Pagination
+        SculptorCriteria2SoapCriteria.toPagedResult(sources, targets, limit);
+        return targets;
+    }
+
     private ReplaceTo toReplaceTo(org.siemac.metamac.srm.core.code.domain.Variable source) {
         if (CollectionUtils.isEmpty(source.getReplaceToVariables())) {
             return null;
@@ -145,6 +162,17 @@ public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements 
         Item target = new Item();
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
+        return target;
+    }
+
+    private Resource toResource(CodelistVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        Resource target = new Resource();
+        target.setId(getCode(source.getMaintainableArtefact()));
+        target.setUrn(getUrn(source.getMaintainableArtefact()));
+        target.setName(toInternationalString(source.getMaintainableArtefact().getName()));
         return target;
     }
 }
