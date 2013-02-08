@@ -392,7 +392,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     @Override
     public void setVariables(GetVariablesResult result) {
         if (searchVariableWindow != null) {
-            searchVariableWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableDtos(result.getVariables()));
+            searchVariableWindow.setRelatedResources(RelatedResourceUtils.getVariableDtosAsRelatedResourceDtos(result.getVariables()));
             searchVariableWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
         }
     }
@@ -600,20 +600,20 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 .no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.IS_RECOMMENDED, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsRecommended()));
         contentDescriptorsForm.setValue(CodelistDS.FAMILY_VIEW, codelistDto.getFamily() != null
-                ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getFamily())
+                ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getFamily())
                 : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.VARIABLE_VIEW,
-                codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
+                codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsForm.setValue(CodelistDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getMaintainer()));
+        productionDescriptorsForm.setValue(CodelistDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
         productionDescriptorsForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
-        diffusionDescriptorsForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
+        diffusionDescriptorsForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
         ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsForm.setValue(CodelistDS.ACCESS_TYPE, CommonUtils.getAccessTypeName(codelistDto.getAccessType()));
-        diffusionDescriptorsForm.setValue(CodelistDS.DEFAULT_ORDER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getDefaultOrderVisualisation()));
+        diffusionDescriptorsForm.setValue(CodelistDS.DEFAULT_ORDER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getDefaultOrderVisualisation()));
         diffusionDescriptorsForm.setValue(CodelistDS.REPLACED_BY_VERSION, codelistDto.getReplacedByVersion());
         diffusionDescriptorsForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
         diffusionDescriptorsForm.setValue(CodelistDS.VALID_FROM, codelistDto.getValidFrom());
@@ -660,19 +660,19 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 .getConstants().no()) : StringUtils.EMPTY);
         ((BooleanSelectItem) contentDescriptorsEditionForm.getItem(CodelistDS.IS_RECOMMENDED)).setBooleanValue(codelistDto.getIsRecommended());
         contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY_VIEW,
-                codelistDto.getFamily() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getFamily()) : StringUtils.EMPTY);
+                codelistDto.getFamily() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getFamily()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY, codelistDto.getFamily() != null ? codelistDto.getFamily().getUrn() : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE_VIEW,
-                codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
+                codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE, codelistDto.getVariable() != null ? codelistDto.getVariable().getUrn() : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(CodelistDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getMaintainer()));
+        productionDescriptorsEditionForm.setValue(CodelistDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
         productionDescriptorsEditionForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.markForRedraw();
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
+        diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.ACCESS_TYPE, codelistDto.getAccessType() != null ? codelistDto.getAccessType().name() : StringUtils.EMPTY);
         diffusionDescriptorsEditionForm
@@ -750,7 +750,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                         // Set selected family in form
                         contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY, selectedFamily != null ? selectedFamily.getUrn() : null);
                         contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY_VIEW,
-                                selectedFamily != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedFamily) : null);
+                                selectedFamily != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedFamily) : null);
                     }
                 });
             }
@@ -871,7 +871,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                         // Set selected variable in form
                         contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
                         contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE_VIEW,
-                                selectedVariable != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariable) : null);
+                                selectedVariable != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedVariable) : null);
                         contentDescriptorsEditionForm.validate(false);
                     }
                 });

@@ -77,7 +77,7 @@ public class NewCodelistWindow extends CustomWindow {
     }
 
     public void setVariables(GetVariablesResult result) {
-        List<RelatedResourceDto> variables = RelatedResourceUtils.getRelatedResourceDtosFromVariableDtos(result.getVariables());
+        List<RelatedResourceDto> variables = RelatedResourceUtils.getVariableDtosAsRelatedResourceDtos(result.getVariables());
         ((SearchRelatedResourcePaginatedItem) form.getItem(CodelistDS.VARIABLE)).setRelatedResources(variables);
         ((SearchRelatedResourcePaginatedItem) form.getItem(CodelistDS.VARIABLE)).refreshPaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
     }

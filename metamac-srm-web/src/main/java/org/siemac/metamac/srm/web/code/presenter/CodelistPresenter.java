@@ -403,7 +403,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(GetCodelistFamiliesResult result) {
-                List<RelatedResourceDto> families = RelatedResourceUtils.getRelatedResourceDtosFromCodelistFamilyDtos(result.getFamilies());
+                List<RelatedResourceDto> families = RelatedResourceUtils.getCodelistFamilyDtosAsRelatedResourceDtos(result.getFamilies());
                 getView().setFamilies(families, result.getFirstResultOut(), result.getTotalResults());
             }
         });
@@ -423,7 +423,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
-                List<RelatedResourceDto> codelists = RelatedResourceUtils.getRelatedResourceDtosFromCodelistDtos(result.getCodelists());
+                List<RelatedResourceDto> codelists = RelatedResourceUtils.getCodelistDtosAsRelatedResourceDtos(result.getCodelists());
                 getView().setCodelistsToReplace(codelists, result.getFirstResultOut(), result.getTotalResults());
             }
         });

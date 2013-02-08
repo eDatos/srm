@@ -11,7 +11,6 @@ import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
@@ -345,7 +344,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         diffusionDescriptorsForm.setValue(VariableDS.VALID_FROM, DateUtils.getFormattedDate(variableDto.getValidFrom()));
         diffusionDescriptorsForm.setValue(VariableDS.VALID_TO, DateUtils.getFormattedDate(variableDto.getValidTo()));
         ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
-        diffusionDescriptorsForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
+        diffusionDescriptorsForm.setValue(VariableDS.REPLACED_BY_VARIABLE, RelatedResourceUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
     }
 
     public void setVariableEditionMode(VariableDto variableDto) {
@@ -362,7 +361,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         diffusionDescriptorsEditionForm.setValue(VariableDS.VALID_FROM, variableDto.getValidFrom());
         diffusionDescriptorsEditionForm.setValue(VariableDS.VALID_TO, variableDto.getValidTo());
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(variableDto.getReplaceToVariables());
-        diffusionDescriptorsEditionForm.setValue(VariableDS.REPLACED_BY_VARIABLE, CommonUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
+        diffusionDescriptorsEditionForm.setValue(VariableDS.REPLACED_BY_VARIABLE, RelatedResourceUtils.getRelatedResourceName(variableDto.getReplacedByVariable()));
     }
 
     public VariableDto getVariableDto() {
@@ -387,7 +386,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableFamilies(GetVariableFamiliesResult result) {
         if (searchFamiliesWindow != null) {
-            searchFamiliesWindow.setSourceRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableFamilyDtos(result.getFamilies()));
+            searchFamiliesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableFamilyDtosAsRelatedResourceDtos(result.getFamilies()));
             searchFamiliesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getFamilies().size(), result.getTotalResults());
         }
     }
@@ -395,7 +394,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariables(GetVariablesResult result) {
         if (searchReplaceToVariablesWindow != null) {
-            searchReplaceToVariablesWindow.setSourceRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableDtos(result.getVariables()));
+            searchReplaceToVariablesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableDtosAsRelatedResourceDtos(result.getVariables()));
             searchReplaceToVariablesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
         }
     }
@@ -409,7 +408,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableElementsForFusion(GetVariableElementsResult result) {
         if (createFusionWindow != null) {
-            createFusionWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableElementDtos(result.getVariableElements()));
+            createFusionWindow.setRelatedResources(RelatedResourceUtils.getVariableElementDtosAsRelatedResourceDtos(result.getVariableElements()));
             createFusionWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
         }
     }
@@ -417,7 +416,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableElementsForSegregation(GetVariableElementsResult result) {
         if (createSegregationWindow != null) {
-            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableElementDtos(result.getVariableElements()));
+            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementDtosAsRelatedResourceDtos(result.getVariableElements()));
             createSegregationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
         }
     }

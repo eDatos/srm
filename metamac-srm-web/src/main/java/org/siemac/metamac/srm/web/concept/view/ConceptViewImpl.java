@@ -433,7 +433,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
         contentDescriptorsForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
-        contentDescriptorsForm.setValue(ConceptDS.VARIABLE_VIEW, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptDto.getVariable()));
+        contentDescriptorsForm.setValue(ConceptDS.VARIABLE_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getVariable()));
         contentDescriptorsForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTypeRepresentationEnum().name() : null);
         contentDescriptorsForm.setValue(
                 RepresentationDS.TYPE_VIEW,
@@ -464,7 +464,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         classDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
-        relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
+        relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
         ((ConceptsListItem) relationBetweenConceptsForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
         // Legal acts
@@ -492,7 +492,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
         contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
-        contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE_VIEW, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptDto.getVariable()));
+        contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getVariable()));
         contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE, conceptDto.getVariable() != null ? conceptDto.getVariable().getUrn() : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTypeRepresentationEnum().name() : null);
         contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumerated() != null
@@ -519,7 +519,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         classDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
-        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
+        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, conceptDto.getConceptExtends() != null ? conceptDto.getConceptExtends().getUrn() : StringUtils.EMPTY);
 
         ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
@@ -614,29 +614,29 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     @Override
     public void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes) {
         if (searchRolesWindow != null) {
-            searchRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(conceptSchemes));
+            searchRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(conceptSchemes));
         }
     }
 
     @Override
     public void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes) {
         if (searchExtendsWindow != null) {
-            searchExtendsWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(conceptSchemes));
+            searchExtendsWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(conceptSchemes));
         }
     }
 
     @Override
     public void setVariableFamilies(GetVariableFamiliesResult result) {
         if (searchVariableWindow != null) {
-            List<RelatedResourceDto> families = RelatedResourceUtils.getRelatedResourceDtosFromVariableFamilyDtos(result.getFamilies());
-            searchVariableWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(families));
+            List<RelatedResourceDto> families = RelatedResourceUtils.getVariableFamilyDtosAsRelatedResourceDtos(result.getFamilies());
+            searchVariableWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(families));
         }
     }
 
     @Override
     public void setVariables(GetVariablesResult result) {
         if (searchVariableWindow != null) {
-            searchVariableWindow.setRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableDtos(result.getVariables()));
+            searchVariableWindow.setRelatedResources(RelatedResourceUtils.getVariableDtosAsRelatedResourceDtos(result.getVariables()));
             searchVariableWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
         }
     }
@@ -753,7 +753,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         // Set selected concepts in form
                         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, selectedConcept != null ? selectedConcept.getUrn() : null);
                         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW,
-                                selectedConcept != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept) : null);
+                                selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
                     }
                 });
             }
@@ -903,7 +903,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         // Set selected family in form
                         contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
                         contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE_VIEW,
-                                selectedVariable != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariable) : null);
+                                selectedVariable != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedVariable) : null);
 
                         // Reset the codelist associated with the enumerated representation of the concept (the codelist depends on the variable selected)
                         contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, StringUtils.EMPTY);
@@ -972,7 +972,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                             // Set selected codelist in form
                             contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
                             contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW,
-                                    selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                                    selectedCodelist != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedCodelist) : null);
                             contentDescriptorsEditionForm.validate(false);
                         }
                     });

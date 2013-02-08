@@ -593,7 +593,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         classDescriptorsForm.setValue(ConceptSchemeDS.RELATED_OPERATION, ExternalItemUtils.getExternalItemName(conceptSchemeDto.getRelatedOperation()));
 
         // Production descriptors
-        productionDescriptorsForm.setValue(ConceptSchemeDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
+        productionDescriptorsForm.setValue(ConceptSchemeDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
         productionDescriptorsForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
@@ -649,7 +649,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         classDescriptorsEditionForm.markForRedraw();
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(ConceptSchemeDS.MAINTAINER, org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
+        productionDescriptorsEditionForm.setValue(ConceptSchemeDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors

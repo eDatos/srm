@@ -506,7 +506,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public void setConceptSchemes(GetRelatedResourcesResult result) {
         if (searchConceptWindow != null) {
-            searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
+            searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
         }
     }
 
@@ -521,7 +521,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public void setConceptSchemesForAttributeRole(GetRelatedResourcesResult result) {
         if (searchConceptsForRolesWindow != null) {
-            searchConceptsForRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
+            searchConceptsForRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
         }
     }
 
@@ -988,7 +988,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
                         editionForm.setValue(DataAttributeDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, selectedConcept != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept) : null);
+                        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
                         editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
@@ -1118,7 +1118,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                             // Set selected codelist in form
                             editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
                             editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW,
-                                    selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                                    selectedCodelist != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedCodelist) : null);
                             editionForm.validate(false);
                         }
                     });

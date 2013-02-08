@@ -78,7 +78,7 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
 
             }
             List<ConceptMetamacDto> roles = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
-            List<RelatedResourceDto> relatedResourceRoles = RelatedResourceUtils.getRelatedResourceDtosFromConceptMetamacDtos(roles);
+            List<RelatedResourceDto> relatedResourceRoles = RelatedResourceUtils.getConceptMetamacDtosAsRelatedResourceDtos(roles);
 
             //
             // Save related concepts

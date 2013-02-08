@@ -72,8 +72,8 @@ public class RecordUtils {
     public static VariableElementOperationRecord getVariableElementOperationRecord(VariableElementOperationDto variableElementOperationDto) {
         VariableElementOperationRecord record = new VariableElementOperationRecord(variableElementOperationDto.getId(), variableElementOperationDto.getCode(),
                 CommonUtils.getVariableElementOperationTypeName(variableElementOperationDto.getOperationType()),
-                org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourcesName(variableElementOperationDto.getSources()),
-                org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourcesName(variableElementOperationDto.getTargets()), variableElementOperationDto);
+                org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourcesName(variableElementOperationDto.getSources()),
+                org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourcesName(variableElementOperationDto.getTargets()), variableElementOperationDto);
         return record;
     }
 

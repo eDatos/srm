@@ -285,7 +285,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Content descriptors
         contentDescriptorsForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));
         contentDescriptorsForm.setValue(CodeDS.VARIABLE_ELEMENT_VIEW,
-                codeDto.getVariableElement() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codeDto.getVariableElement()) : StringUtils.EMPTY);
+                codeDto.getVariableElement() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codeDto.getVariableElement()) : StringUtils.EMPTY);
         contentDescriptorsForm.markForRedraw();
 
         // Comments
@@ -307,7 +307,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));
         contentDescriptorsEditionForm.setValue(CodeDS.VARIABLE_ELEMENT_VIEW,
-                codeDto.getVariableElement() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(codeDto.getVariableElement()) : StringUtils.EMPTY);
+                codeDto.getVariableElement() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codeDto.getVariableElement()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodeDS.VARIABLE_ELEMENT, codeDto.getVariableElement() != null ? codeDto.getVariableElement().getUrn() : StringUtils.EMPTY);
 
         // Comments
@@ -357,7 +357,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
                         // Set selected variable element in form
                         contentDescriptorsEditionForm.setValue(CodeDS.VARIABLE_ELEMENT, selectedVariableElement != null ? selectedVariableElement.getUrn() : null);
                         contentDescriptorsEditionForm.setValue(CodeDS.VARIABLE_ELEMENT_VIEW,
-                                selectedVariableElement != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedVariableElement) : null);
+                                selectedVariableElement != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedVariableElement) : null);
                     }
                 });
             }

@@ -430,7 +430,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General form
         generalForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
         generalForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
-        generalForm.setValue(DataStructureDefinitionDS.MAINTAINER, CommonUtils.getRelatedResourceName(dsd.getMaintainer()));
+        generalForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
 
         // Status form
         statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
@@ -480,7 +480,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General form
         generalEditionForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
         generalEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
-        generalEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, CommonUtils.getRelatedResourceName(dsd.getMaintainer()));
+        generalEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
 
         // Status form
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
@@ -569,7 +569,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     @Override
     public void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos) {
-        List<RelatedResourceDto> dimensions = RelatedResourceUtils.getRelatedResourceDtosFromDimensionComponentDtos(dimensionComponentDtos);
+        List<RelatedResourceDto> dimensions = RelatedResourceUtils.getDimensionComponentDtosAsRelatedResourceDtos(dimensionComponentDtos);
         ((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).setDimensions(dimensions);
     }
 

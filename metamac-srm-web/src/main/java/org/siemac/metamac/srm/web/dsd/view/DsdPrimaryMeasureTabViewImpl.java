@@ -179,7 +179,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     @Override
     public void setConceptSchemes(GetRelatedResourcesResult result) {
         if (searchConceptWindow != null) {
-            searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
+            searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
         }
     }
 
@@ -391,7 +391,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                         // Set selected concepts in form
                         editionForm.setValue(PrimaryMeasureDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
                         editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, selectedConcept != null
-                                ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedConcept)
+                                ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept)
                                 : null);
                         editionForm.validate(false);
                     }
@@ -446,7 +446,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                         // Set selected codelist in form
                         editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, selectedCodelist != null ? selectedCodelist.getUrn() : null);
                         editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW,
-                                selectedCodelist != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getRelatedResourceName(selectedCodelist) : null);
+                                selectedCodelist != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedCodelist) : null);
                         editionForm.validate(false);
                     }
                 });

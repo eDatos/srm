@@ -2,9 +2,7 @@ package org.siemac.metamac.srm.web.client.utils;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
@@ -13,10 +11,8 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.BooleanItemEnum;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 
 public class CommonUtils {
@@ -113,32 +109,5 @@ public class CommonUtils {
 
     public static boolean canCodeBeEdited(ProcStatusEnum procStatus, String versionLogic) {
         return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(versionLogic);
-    }
-
-    // RELATED RESOURCE UTILS
-
-    public static LinkedHashMap<String, String> getRelatedResourceHashMap(List<RelatedResourceDto> relatedResourceDtos) {
-        LinkedHashMap<String, String> hashMap = new LinkedHashMap<String, String>();
-        hashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
-            hashMap.put(relatedResourceDto.getUrn(), getRelatedResourceName(relatedResourceDto));
-        }
-        return hashMap;
-    }
-
-    public static String getRelatedResourceName(RelatedResourceDto relatedResourceDto) {
-        if (relatedResourceDto != null) {
-            return CommonWebUtils.getElementName(relatedResourceDto.getCode(), relatedResourceDto.getTitle());
-        } else {
-            return StringUtils.EMPTY;
-        }
-    }
-
-    public static String getRelatedResourcesName(List<RelatedResourceDto> relatedResourceDtos) {
-        List<String> names = new ArrayList<String>(relatedResourceDtos.size());
-        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
-            names.add(getRelatedResourceName(relatedResourceDto));
-        }
-        return CommonWebUtils.getStringListToString(names);
     }
 }

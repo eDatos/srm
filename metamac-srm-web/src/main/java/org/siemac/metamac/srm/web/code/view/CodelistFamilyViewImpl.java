@@ -269,7 +269,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
     @Override
     public void setCodelists(GetCodelistsResult result) {
         if (codelistsWindow != null) {
-            codelistsWindow.setSourceRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromCodelistDtos(result.getCodelists()));
+            codelistsWindow.setSourceRelatedResources(RelatedResourceUtils.getCodelistDtosAsRelatedResourceDtos(result.getCodelists()));
             codelistsWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getCodelists().size(), result.getTotalResults());
         }
     }

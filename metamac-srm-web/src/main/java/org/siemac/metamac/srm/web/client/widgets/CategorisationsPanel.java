@@ -146,7 +146,7 @@ public class CategorisationsPanel extends VLayout {
 
     public void setCategories(GetCategoriesResult result) {
         if (searchCategoriesWindow != null) {
-            List<RelatedResourceDto> categories = RelatedResourceUtils.getRelatedResourceDtosFromCategoryMetamacDtos(result.getCategoryMetamacDtos());
+            List<RelatedResourceDto> categories = RelatedResourceUtils.getCategoryMetamacDtosAsRelatedResourceDtos(result.getCategoryMetamacDtos());
             searchCategoriesWindow.setSourceRelatedResources(categories);
             searchCategoriesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), categories.size(), result.getTotalResults());
         }

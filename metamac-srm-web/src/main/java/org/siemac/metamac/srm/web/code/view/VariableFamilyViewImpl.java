@@ -270,7 +270,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     @Override
     public void setVariables(GetVariablesResult result) {
         if (variablesWindow != null) {
-            variablesWindow.setSourceRelatedResources(RelatedResourceUtils.getRelatedResourceDtosFromVariableDtos(result.getVariables()));
+            variablesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableDtosAsRelatedResourceDtos(result.getVariables()));
             variablesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
         }
     }
