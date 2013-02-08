@@ -536,19 +536,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         dimensionComponentDto.setTypeDimensionComponent(TypeDimensionComponent.valueOf(editionForm.getValueAsString(DimensionDS.TYPE)));
 
         // Concept
-        // TODO RelatedResourceDto instead of ExternalItemDto
-        // dimensionComponentDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.CONCEPT)) ? null :
-        // RelatedResourceUtils.createRelatedResourceDto(TypeExternalArtefactsEnum.CONCEPT,
-        // editionForm.getValueAsString(DimensionDS.CONCEPT)));
-        dimensionComponentDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.CONCEPT)) ? null : RelatedResourceUtils.createExternalItemDto(TypeExternalArtefactsEnum.CONCEPT,
-                editionForm.getValueAsString(DimensionDS.CONCEPT)));
+        dimensionComponentDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(
+                TypeExternalArtefactsEnum.CONCEPT, editionForm.getValueAsString(DimensionDS.CONCEPT)));
 
         // Role
-        // TODO RelatedResourceDto instead of ExternalItemDto
         dimensionComponentDto.getRole().clear();
         if (!TypeDimensionComponent.TIMEDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
             List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).getSelectedRelatedResources();
-            dimensionComponentDto.getRole().addAll(RelatedResourceUtils.createExternalItemDtosFromRelatedResourceDtos(selectedRoles));
+            dimensionComponentDto.getRole().addAll(selectedRoles);
         }
 
         // Representation
@@ -626,14 +621,13 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Type
         form.setValue(DimensionDS.TYPE_VIEW, CommonUtils.getTypeDimensionComponentName(dimensionComponentDto.getTypeDimensionComponent()));
         // Concept
-        form.setValue(DimensionDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
+        form.setValue(DimensionDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
 
         // Role
         form.getItem(DimensionDS.ROLE).hide();
         form.getItem(DimensionDS.ROLE).clearValue();
         if (!TypeDimensionComponent.TIMEDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-            // TODO RelatedResourceDto instead of ExternalItemDto
-            ((RelatedResourceListItem) form.getItem(DimensionDS.ROLE)).setRelatedResources(RelatedResourceUtils.createRelatedResourceDtosFromExternalItemDtos(dimensionComponentDto.getRole()));
+            ((RelatedResourceListItem) form.getItem(DimensionDS.ROLE)).setRelatedResources(dimensionComponentDto.getRole());
             form.getItem(DimensionDS.ROLE).show();
         }
 
@@ -703,11 +697,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Concept
         editionForm.setValue(DimensionDS.CONCEPT, dimensionComponentDto.getCptIdRef() != null ? dimensionComponentDto.getCptIdRef().getUrn() : null);
-        editionForm.setValue(DimensionDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
+        editionForm.setValue(DimensionDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
 
         // Role
-        // TODO RelatedResourceDto instead of ExternalItemDto
-        ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(RelatedResourceUtils.createRelatedResourceDtosFromExternalItemDtos(dimensionComponentDto.getRole()));
+        ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(dimensionComponentDto.getRole());
 
         // Representation
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
@@ -963,7 +956,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
                         editionForm.setValue(DimensionDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(DimensionDS.CONCEPT_VIEW, selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
+                        editionForm.setValue(DimensionDS.CONCEPT_VIEW, selectedConcept != null
+                                ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept)
+                                : null);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);

@@ -218,7 +218,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         form.setValue(PrimaryMeasureDS.URN_PROVIDER, componentDto.getUrnProvider());
 
         // Concept
-        form.setValue(PrimaryMeasureDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(componentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
+        form.setValue(PrimaryMeasureDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(componentDto.getCptIdRef()));
 
         // Representation
         staticFacetForm.hide();
@@ -254,7 +254,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // Concept
         editionForm.setValue(PrimaryMeasureDS.CONCEPT, componentDto.getCptIdRef() != null ? componentDto.getCptIdRef().getUrn() : null);
-        editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(componentDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
+        editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(componentDto.getCptIdRef()));
 
         // Representation
         editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
@@ -292,12 +292,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     public ComponentDto getDsdPrimaryMeasure() {
         // Concept
-        // TODO RelatedResourceDto instead of ExternalItemDto
-        // primaryMeasure.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)) ? null :
-        // RelatedResourceUtils.createRelatedResourceDto(TypeExternalArtefactsEnum.CONCEPT,
-        // editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
-        primaryMeasure.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)) ? null : RelatedResourceUtils.createExternalItemDto(TypeExternalArtefactsEnum.CONCEPT,
-                editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
+        primaryMeasure.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(
+                TypeExternalArtefactsEnum.CONCEPT, editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
 
         // Representation
         if (editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue() != null && !editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue().toString().isEmpty()) {
@@ -390,9 +386,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
                         editionForm.setValue(PrimaryMeasureDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, selectedConcept != null
-                                ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept)
-                                : null);
+                        editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW,
+                                selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
                         editionForm.validate(false);
                     }
                 });

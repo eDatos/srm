@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.siemac.metamac.srm.web.client.model.ds.RelatedResourceDS;
 import org.siemac.metamac.srm.web.client.model.record.RelatedResourceRecord;
@@ -58,6 +59,10 @@ public class RelatedResourceListItem extends BaseListItem {
             RelatedResourceRecord record = org.siemac.metamac.srm.web.client.utils.RecordUtils.getRelatedResourceRecord(relatedResourceDto);
             listGrid.addData(record);
         }
+    }
+
+    public void setRelatedResources(Set<RelatedResourceDto> relatedResourceDtos) {
+        setRelatedResources(new ArrayList<RelatedResourceDto>(relatedResourceDtos));
     }
 
     public List<RelatedResourceDto> getRelatedResourceDtos() {

@@ -563,13 +563,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
-        form.setValue(DataAttributeDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(dataAttributeDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
+        form.setValue(DataAttributeDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
 
         // Role
         form.getItem(DataAttributeDS.ROLE).hide();
         form.getItem(DataAttributeDS.ROLE).clearValue();
-        // TODO RelatedResourceDto instead of ExternalItemDto
-        ((RelatedResourceListItem) form.getItem(DataAttributeDS.ROLE)).setRelatedResources(RelatedResourceUtils.createRelatedResourceDtosFromExternalItemDtos(dataAttributeDto.getRole()));
+        ((RelatedResourceListItem) form.getItem(DataAttributeDS.ROLE)).setRelatedResources(dataAttributeDto.getRole());
         form.getItem(DataAttributeDS.ROLE).show();
 
         // Assignment Status
@@ -664,7 +663,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Concept
         editionForm.setValue(DataAttributeDS.CONCEPT, dataAttributeDto.getCptIdRef() != null ? dataAttributeDto.getCptIdRef().getUrn() : null);
-        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, ExternalItemUtils.getExternalItemName(dataAttributeDto.getCptIdRef())); // TODO RelatedResourceDto instead of ExternalItemDto
+        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
 
         // RelateTo
         relationType.setValue(new String());
@@ -698,8 +697,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         }
 
         // Role
-        // TODO RelatedResourceDto instead of ExternalItemDto
-        ((RelatedResourceListItem) editionForm.getItem(DataAttributeDS.ROLE)).setRelatedResources(RelatedResourceUtils.createRelatedResourceDtosFromExternalItemDtos(dataAttributeDto.getRole()));
+        ((RelatedResourceListItem) editionForm.getItem(DataAttributeDS.ROLE)).setRelatedResources(dataAttributeDto.getRole());
 
         // Assignment Status
         assignmentStatusItem.setValue((dataAttributeDto.getUsageStatus() == null) ? null : dataAttributeDto.getUsageStatus().toString());
@@ -753,18 +751,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         dataAttributeDto.setCode(editionForm.getValueAsString(DataAttributeDS.CODE));
 
         // Role
-        // TODO RelatedResourceDto instead of ExternalItemDto
         dataAttributeDto.getRole().clear();
         List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) editionForm.getItem(DataAttributeDS.ROLE)).getSelectedRelatedResources();
-        dataAttributeDto.getRole().addAll(RelatedResourceUtils.createExternalItemDtosFromRelatedResourceDtos(selectedRoles));
+        dataAttributeDto.getRole().addAll(selectedRoles);
 
         // Concept
-        // TODO RelatedResourceDto instead of ExternalItemDto
-        // dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null :
-        // RelatedResourceUtils.createRelatedResourceDto(TypeExternalArtefactsEnum.CONCEPT,
-        // editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
-        dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null : RelatedResourceUtils.createExternalItemDto(TypeExternalArtefactsEnum.CONCEPT,
-                editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
+        dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(
+                TypeExternalArtefactsEnum.CONCEPT, editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
 
         // Assignment Status
         dataAttributeDto.setUsageStatus((assignmentStatusItem.getValueAsString() == null || assignmentStatusItem.getValueAsString().isEmpty()) ? null : UsageStatus.valueOf(assignmentStatusItem
@@ -988,7 +981,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
                         editionForm.setValue(DataAttributeDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
+                        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW,
+                                selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
                         editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
