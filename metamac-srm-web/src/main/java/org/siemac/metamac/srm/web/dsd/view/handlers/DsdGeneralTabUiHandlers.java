@@ -3,10 +3,9 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 
-import com.gwtplatform.mvp.client.UiHandlers;
-
-public interface DsdGeneralTabUiHandlers extends UiHandlers {
+public interface DsdGeneralTabUiHandlers extends CategorisationUiHandlers {
 
     void retrieveCompleteDsd(String urn);
     void retrieveDsdVersions(String dsdUrn);

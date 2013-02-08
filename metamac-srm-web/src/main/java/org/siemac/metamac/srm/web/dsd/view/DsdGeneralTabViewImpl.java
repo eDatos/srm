@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
+import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.DimensionsVisualisationItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -25,6 +26,8 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -36,6 +39,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
@@ -81,6 +85,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  commentsEditionForm;
     private AnnotationsPanel                  annotationsEditionPanel;
 
+    private CategorisationsPanel              categorisationsPanel;
+
     private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
 
     @Inject
@@ -107,8 +113,17 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         createViewForm();
         createEditionForm();
 
+        categorisationsPanel = new CategorisationsPanel();
+
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
+        panel.addMember(categorisationsPanel);
+    }
+
+    @Override
+    public void setUiHandlers(DsdGeneralTabUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -417,6 +432,21 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Clear errors
         identifiersEditionForm.clearErrors(true);
         generalEditionForm.clearErrors(true);
+    }
+
+    @Override
+    public void setCategorisations(List<CategorisationDto> categorisationDtos) {
+        categorisationsPanel.setCategorisations(categorisationDtos);
+    }
+
+    @Override
+    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+        categorisationsPanel.setCategorySchemes(result);
+    }
+
+    @Override
+    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+        categorisationsPanel.setCategories(result);
     }
 
     private void setDsdViewMode(DataStructureDefinitionMetamacDto dsd) {
