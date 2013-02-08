@@ -223,6 +223,7 @@ public class RelatedResourceUtils {
 
     public static RelatedResourceDto createRelatedResourceDto(TypeExternalArtefactsEnum type, String urn) {
         RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setType(type);
         relatedResourceDto.setUrn(urn);
         return relatedResourceDto;
     }
