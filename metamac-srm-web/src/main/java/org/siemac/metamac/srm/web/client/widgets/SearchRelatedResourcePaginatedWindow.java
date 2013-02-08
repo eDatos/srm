@@ -15,7 +15,11 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
+import com.smartgwt.client.widgets.grid.ListGrid;
 
+/**
+ * Window with a {@link SearchRelatedResourcePaginatedItem}. The source {@link ListGrid} is paginated.
+ */
 public class SearchRelatedResourcePaginatedWindow extends BaseSearchWindow {
 
     private InformationLabel                   infoMessageLabel;

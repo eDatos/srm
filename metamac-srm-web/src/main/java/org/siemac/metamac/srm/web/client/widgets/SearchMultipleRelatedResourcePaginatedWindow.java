@@ -12,7 +12,12 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
+import com.smartgwt.client.widgets.grid.ListGrid;
 
+/**
+ * Window with a {@link SearchRelatedResourcePaginatedDragAndDropItem}. The source {@link ListGrid} is paginated. An extra simple item can be added in order to filter the
+ * results showed in the source {@link ListGrid}.
+ */
 public class SearchMultipleRelatedResourcePaginatedWindow extends BaseSearchWindow {
 
     private SearchRelatedResourcePaginatedDragAndDropItem relatedResourcesDragAndDropItem;

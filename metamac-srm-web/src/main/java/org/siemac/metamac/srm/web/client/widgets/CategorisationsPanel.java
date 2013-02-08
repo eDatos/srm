@@ -6,7 +6,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.client.model.ds.CategorisationDS;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
@@ -19,7 +18,6 @@ import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -37,17 +35,17 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CategorisationsPanel extends VLayout {
 
-    private static final int                             FIRST_RESULT = 0;
-    private static final int                             MAX_RESULTS  = 8;
+    private static final int                  FIRST_RESULT = 0;
+    private static final int                  MAX_RESULTS  = 8;
 
-    private ToolStripButton                              newCategorisationButton;
-    private ToolStripButton                              deleteCategorisationButton;
-    private CustomListGrid                               categorisationListGrid;
+    private ToolStripButton                   newCategorisationButton;
+    private ToolStripButton                   deleteCategorisationButton;
+    private CustomListGrid                    categorisationListGrid;
 
-    private SearchMultipleRelatedResourcePaginatedWindow searchCategoriesWindow;
-    private DeleteConfirmationWindow                     deleteConfirmationWindow;
+    private SearchCategoriesForCategorisation searchCategoriesWindow;
+    private DeleteConfirmationWindow          deleteConfirmationWindow;
 
-    private CategorisationUiHandlers                     uiHandlers;
+    private CategorisationUiHandlers          uiHandlers;
 
     public CategorisationsPanel() {
         setMargin(15);
@@ -63,17 +61,6 @@ public class CategorisationsPanel extends VLayout {
             @Override
             public void onClick(ClickEvent event) {
                 showSearchCategoriesWindow();
-                // searchCategoriesWindow = new NewCategorisationWindow(getConstants().categorisationCreate());
-                // newCategorisationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-                //
-                // @Override
-                // public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                // if (newCategorisationWindow.validateForm()) {
-                // getUiHandlers().createCategorisations(newCategorisationWindow.getSelectedCategoryUrns());
-                // newCategorisationWindow.destroy();
-                // }
-                // }
-                // });
             }
         });
 
@@ -175,25 +162,42 @@ public class CategorisationsPanel extends VLayout {
     }
 
     private void showSearchCategoriesWindow() {
-        SearchViewTextItem categorySchemeItem = new SearchViewTextItem(CategorySchemeDS.URN, getConstants().categorySchemeFilter());
-        searchCategoriesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().categorisationCreate(), MAX_RESULTS, categorySchemeItem, new PaginatedAction() {
+        PaginatedAction filterListAction = new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getRelatedResourceCriteria(), searchCategoriesWindow.getInitialSelectionValue());
+                // TODO Auto-generated method stub
             }
-        });
+        };
+        PaginatedAction selectionListAction = new PaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults) {
+                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getSelectionListCriteria(), null); // TODO
+            }
+        };
+
+        searchCategoriesWindow = new SearchCategoriesForCategorisation(MAX_RESULTS, filterListAction, selectionListAction);
 
         // Load the list of categories (to populate the selection window)
         getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, null, null);
 
-        searchCategoriesWindow.setSearchAction(new SearchPaginatedAction() {
+        // Set the search actions
+        searchCategoriesWindow.setSelectionListSearchAction(new SearchPaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, criteria, searchCategoriesWindow.getInitialSelectionValue());
+                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, criteria, null); // TODO
             }
         });
+        searchCategoriesWindow.setFilterListSearchAction(new SearchPaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                // TODO Auto-generated method stub
+            }
+        });
+
         searchCategoriesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
