@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
+import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CodelistOrdersSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
@@ -30,6 +31,8 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.code.widgets.VersionCodelistWindow;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -50,6 +53,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
@@ -104,6 +108,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private TitleLabel                                   codesLayoutTitle;
     private CodelistOrdersSectionStack                   codelistOrdersSectionStack;
     private CodesTreeGrid                                codesTreeGrid;
+    private CategorisationsPanel                         categorisationsPanel;
 
     private CodelistMetamacDto                           codelistDto;
 
@@ -156,9 +161,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codesLayout.addMember(codesLayoutTitle);
         codesLayout.addMember(codesHLayout);
 
+        categorisationsPanel = new CategorisationsPanel();
+
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
         panel.addMember(codesLayout);
+        panel.addMember(categorisationsPanel);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -335,6 +343,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         super.setUiHandlers(uiHandlers);
         this.codesTreeGrid.setUiHandlers(uiHandlers);
         this.codelistOrdersSectionStack.setUiHandlers(uiHandlers);
+        this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
     @Override
@@ -374,6 +383,21 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Populate the form with the order list (to fill the default order)
         diffusionDescriptorsEditionForm.getItem(CodelistDS.DEFAULT_ORDER).setValueMap(CommonUtils.getCodelistOrdersHashMap(orders));
+    }
+
+    @Override
+    public void setCategorisations(List<CategorisationDto> categorisationDtos) {
+        categorisationsPanel.setCategorisations(categorisationDtos);
+    }
+
+    @Override
+    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+        categorisationsPanel.setCategorySchemes(result);
+    }
+
+    @Override
+    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+        categorisationsPanel.setCategories(result);
     }
 
     @Override
@@ -599,9 +623,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
                 .no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.IS_RECOMMENDED, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsRecommended()));
-        contentDescriptorsForm.setValue(CodelistDS.FAMILY_VIEW, codelistDto.getFamily() != null
-                ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getFamily())
-                : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CodelistDS.FAMILY_VIEW,
+                codelistDto.getFamily() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getFamily()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.VARIABLE_VIEW,
                 codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
 
@@ -672,7 +695,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         productionDescriptorsEditionForm.markForRedraw();
 
         // Diffusion descriptors
-        diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
+        diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_CODELIST,
+                org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.ACCESS_TYPE, codelistDto.getAccessType() != null ? codelistDto.getAccessType().name() : StringUtils.EMPTY);
         diffusionDescriptorsEditionForm

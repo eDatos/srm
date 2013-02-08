@@ -235,7 +235,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void updateCodeInOrder(String codeUrn, final String codelistOrderIdentifier, Long newCodeIndex) {
-        // This method should not be called
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -276,5 +276,30 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     private void goToCodelist(String urn) {
         placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -2);
+    }
+
+    @Override
+    public void retrieveCategorisations(String artefactCategorisedUrn) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void createCategorisations(List<String> categoryUrns) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteCategorisations(List<String> urns) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
+        throw new UnsupportedOperationException();
     }
 }

@@ -1,11 +1,11 @@
 package org.siemac.metamac.srm.web.code.view.handlers;
 
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.gwtplatform.mvp.client.UiHandlers;
 
-public interface BaseCodeUiHandlers extends UiHandlers {
+public interface BaseCodeUiHandlers extends CategorisationUiHandlers {
 
     void saveCode(CodeMetamacDto codeDto);
     void deleteCode(ItemDto itemDto);
