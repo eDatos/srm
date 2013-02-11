@@ -8,7 +8,7 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 
 public interface CodesDo2RestMapperV10 {
 

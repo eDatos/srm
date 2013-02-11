@@ -35,8 +35,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AgencyType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationUnitType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 
 public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInternalFacadeV10OrganisationsTest {
 

@@ -33,7 +33,7 @@ import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataProviderType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends SrmRestInternalFacadeV10OrganisationsTest {
 

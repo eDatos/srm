@@ -2,6 +2,11 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.category;
 
 import java.util.List;
 
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorisationType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorisationsType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemesType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,13 +14,8 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorisationType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorisationsType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorySchemeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorySchemesType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
 
-@org.springframework.stereotype.Component("categoriesDo2JaxbCallbackMetamac")
+@org.springframework.stereotype.Component("categoriesDo2JaxbRestInternalCallbackMetamac")
 public class CategoriesDo2JaxbCallbackImpl implements CategoriesDo2JaxbCallback {
 
     @Autowired

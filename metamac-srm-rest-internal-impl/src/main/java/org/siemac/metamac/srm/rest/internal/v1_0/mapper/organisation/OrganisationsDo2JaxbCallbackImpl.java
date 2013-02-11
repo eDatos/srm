@@ -2,23 +2,23 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation;
 
 import java.util.List;
 
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencySchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationSchemesType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2JaxbCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AgencySchemeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AgencyType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataConsumerSchemeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataConsumerType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataProviderSchemeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataProviderType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationSchemesType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationUnitSchemeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationUnitType;
 
-@org.springframework.stereotype.Component("organisationsDo2JaxbCallbackMetamac")
+@org.springframework.stereotype.Component("organisationsDo2JaxbRestInternalCallbackMetamac")
 public class OrganisationsDo2JaxbCallbackImpl implements OrganisationsDo2JaxbCallback {
 
     @Autowired

@@ -2,17 +2,17 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept;
 
 import java.util.List;
 
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptsType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptSchemeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptsType;
 
-@org.springframework.stereotype.Component("conceptsDo2JaxbCallbackMetamac")
+@org.springframework.stereotype.Component("conceptsDo2JaxbRestInternalCallbackMetamac")
 public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
 
     @Autowired

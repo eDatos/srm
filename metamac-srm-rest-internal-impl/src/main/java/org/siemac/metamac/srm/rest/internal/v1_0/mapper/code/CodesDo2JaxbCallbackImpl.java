@@ -2,17 +2,17 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 
 import java.util.List;
 
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodelistType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodelistsType;
 
-@org.springframework.stereotype.Component("codesDo2JaxbCallbackMetamac")
+@org.springframework.stereotype.Component("codesDo2JaxbRestInternalCallbackMetamac")
 public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
 
     @Autowired

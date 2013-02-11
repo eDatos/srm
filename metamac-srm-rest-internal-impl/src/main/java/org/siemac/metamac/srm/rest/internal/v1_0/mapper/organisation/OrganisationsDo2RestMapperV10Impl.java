@@ -3,6 +3,10 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation;
 import java.math.BigInteger;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -40,10 +44,6 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVe
 import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2JaxbCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AgencyType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataConsumerType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataProviderType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationUnitType;
 
 @Component
 public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements OrganisationsDo2RestMapperV10 {
@@ -52,7 +52,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     private com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2JaxbMapper organisationsDo2JaxbSdmxMapper;
 
     @Autowired
-    @Qualifier("organisationsDo2JaxbCallbackMetamac")
+    @Qualifier("organisationsDo2JaxbRestInternalCallbackMetamac")
     private OrganisationsDo2JaxbCallback                                                    organisationsDo2JaxbCallback;
 
     @Override

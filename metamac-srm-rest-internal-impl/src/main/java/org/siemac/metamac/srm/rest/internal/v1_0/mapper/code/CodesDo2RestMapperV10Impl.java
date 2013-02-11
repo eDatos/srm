@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import javax.ws.rs.core.Response.Status;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
@@ -33,7 +34,6 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodeType;
 
 @Component
 public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
@@ -42,7 +42,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
     private com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbMapper codesDo2JaxbSdmxMapper;
 
     @Autowired
-    @Qualifier("codesDo2JaxbCallbackMetamac")
+    @Qualifier("codesDo2JaxbRestInternalCallbackMetamac")
     private CodesDo2JaxbCallback                                            codesDo2JaxbCallback;
 
     @Override

@@ -7,7 +7,7 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 
 public interface CategoriesDo2RestMapperV10 {
 

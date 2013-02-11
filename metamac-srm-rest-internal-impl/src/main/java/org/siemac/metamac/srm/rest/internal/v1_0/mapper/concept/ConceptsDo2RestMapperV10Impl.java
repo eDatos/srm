@@ -44,7 +44,7 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
     private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbMapper conceptsDo2JaxbSdmxMapper;
 
     @Autowired
-    @Qualifier("conceptsDo2JaxbCallbackMetamac")
+    @Qualifier("conceptsDo2JaxbRestInternalCallbackMetamac")
     private ConceptsDo2JaxbCallback                                               conceptsDo2JaxbCallback;
 
     @Autowired
@@ -147,7 +147,7 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
         return target;
     }
     @Override
-    public void toConcept(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source, com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType target) {
+    public void toConcept(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source, org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType target) {
         if (source == null) {
             return;
         }

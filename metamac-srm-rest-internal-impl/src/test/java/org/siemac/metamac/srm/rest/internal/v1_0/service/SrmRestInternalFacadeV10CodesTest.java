@@ -55,7 +55,7 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks;
 
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 
 public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10BaseTest {
 

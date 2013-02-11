@@ -55,7 +55,7 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks;
 
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 
 public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacadeV10BaseTest {
 

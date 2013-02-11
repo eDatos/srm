@@ -14,10 +14,10 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AgencyType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataConsumerType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataProviderType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.OrganisationUnitType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 
 public interface OrganisationsDo2RestMapperV10 {
 

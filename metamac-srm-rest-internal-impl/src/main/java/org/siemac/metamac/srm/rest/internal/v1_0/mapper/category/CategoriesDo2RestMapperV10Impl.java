@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.category;
 import java.math.BigInteger;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
 
 @Component
 public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements CategoriesDo2RestMapperV10 {
@@ -33,7 +33,7 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
     private com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbMapper categoriesDo2JaxbSdmxMapper;
 
     @Autowired
-    @Qualifier("categoriesDo2JaxbCallbackMetamac")
+    @Qualifier("categoriesDo2JaxbRestInternalCallbackMetamac")
     private CategoriesDo2JaxbCallback                                                categoriesDo2JaxbCallback;
 
     @Override
