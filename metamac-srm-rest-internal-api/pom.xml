@@ -197,11 +197,11 @@
                     <schemaDirectory>${project.build.directory}/classes/META-INF/rest/internal</schemaDirectory>
                     <schemaListFileName>${basedir}/../etc/rest/internal/schemas.txt</schemaListFileName>
                     <bindingDirectory>${basedir}</bindingDirectory>
-                    <bindingFiles>../etc/rest/internal/binding.xjb,target/classes/META-INF/rest/internal/sdmx-v2_1/sun-jaxb.episode,,target/classes/META-INF/rest/internal/rest-api/sun-jaxb.episode</bindingFiles>
+                    <bindingFiles>../etc/rest/internal/binding.xjb,target/classes/META-INF/rest/internal/sdmx-v2_1/sun-jaxb.episode,target/classes/META-INF/rest/internal/rest-api/sun-jaxb.episode</bindingFiles>
                     <npa>true</npa>
                     <detail>true</detail>
                     <outputDirectory>${basedir}/src/generated/java</outputDirectory>
-                    <includeSchemasOutputPath>META-INF</includeSchemasOutputPath>
+                    <includeSchemasOutputPath>META-INF/rest/internal</includeSchemasOutputPath>
                     <verbose>false</verbose>
                 </configuration>
                 <dependencies>
