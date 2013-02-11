@@ -16,11 +16,11 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesJaxb2DoCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorisationType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorisationsType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorySchemeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategorySchemesType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CategoryType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorisationType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorisationsType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemesType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 
 @Component("categoriesMetamacJaxb2DoCallback")
 public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements CategoriesJaxb2DoCallback {

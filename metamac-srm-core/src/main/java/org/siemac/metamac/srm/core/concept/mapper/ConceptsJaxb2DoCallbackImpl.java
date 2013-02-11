@@ -15,9 +15,9 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCop
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsJaxb2DoCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptSchemeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ConceptsType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptsType;
 
 @org.springframework.stereotype.Component("conceptsMetamacJaxb2DoCallback")
 public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements ConceptsJaxb2DoCallback {

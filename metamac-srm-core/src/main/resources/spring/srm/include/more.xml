@@ -38,7 +38,7 @@
 	<bean id="jaxb2MarshallerWithValidation" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<property name="classesToBeBound">
 			<list>
-				<value>com.arte.statistic.sdmx.v2_1.domain.jaxb.message.Structure</value>
+				<value>org.sdmx.resources.sdmxml.schemas.v2_1.message.Structure</value>
 <!-- 				<value>org.siemac.metamac.trans.v2_1.message.GenericDataType</value> -->
 <!-- 				<value>org.siemac.metamac.trans.v2_1.message.GenericTimeSeriesData</value> -->
 <!-- 				<value>org.siemac.metamac.trans.v2_1.message.StructureSpecificDataType</value> -->
@@ -67,7 +67,7 @@
 			<list>
 <!-- 				<value>org.siemac.metamac.trans.v2_1.message.GenericData</value> -->
 <!-- 				<value>org.siemac.metamac.trans.v2_1.message.GenericTimeSeriesData</value> -->
-				<value>com.arte.statistic.sdmx.v2_1.domain.jaxb.message.ObjectFactory</value>
+				<value>org.sdmx.resources.sdmxml.schemas.v2_1.message.ObjectFactory</value>
 <!-- 				<value>org.siemac.metamac.trans.v2_1.message.footer.Footer</value> -->
 <!-- 				<value>org.siemac.metamac.trans.v2_1.message.StructureSpecificTimeSeriesData</value> -->
 			</list>

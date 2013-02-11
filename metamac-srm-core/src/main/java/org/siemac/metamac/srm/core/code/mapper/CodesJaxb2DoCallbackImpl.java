@@ -15,9 +15,9 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCop
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesJaxb2DoCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodelistType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.CodelistsType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 
 @org.springframework.stereotype.Component("codesMetamacJaxb2DoCallback")
 public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements CodesJaxb2DoCallback {

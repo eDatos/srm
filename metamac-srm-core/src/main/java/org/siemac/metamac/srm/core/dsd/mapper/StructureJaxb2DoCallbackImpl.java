@@ -23,18 +23,18 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
 import com.arte.statistic.sdmx.srm.core.structure.domain.ReportingYearStartDay;
 import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureJaxb2DoCallback;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AttributeListType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.AttributeType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataStructureType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DataStructuresType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DimensionListType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.DimensionType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.GroupType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.MeasureDimensionType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.MeasureListType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.PrimaryMeasureType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.ReportingYearStartDayType;
-import com.arte.statistic.sdmx.v2_1.domain.jaxb.structure.TimeDimensionType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AttributeListType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AttributeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataStructureType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataStructuresType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DimensionListType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DimensionType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.GroupType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureDimensionType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureListType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.PrimaryMeasureType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ReportingYearStartDayType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.TimeDimensionType;
 
 @Component("structureMetamacJaxb2DoCallback")
 public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements StructureJaxb2DoCallback {
