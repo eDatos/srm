@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.client.utils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,20 +53,15 @@ public class ErrorUtils extends CommonErrorUtils {
         throw new MetamacWebException("NULL_MESSAGE", "Message with null code");
     }
 
-    private static String[] getTranslatedParameters(Serializable[] messageParameters) {
+    private static String[] getTranslatedParameters(List<String[]> messageParameters) {
         if (messageParameters != null) {
-            String[] translatedParameters = new String[messageParameters.length];
-            for (int i = 0; i < messageParameters.length; i++) {
-                String translatedParameter = null;
-                if (messageParameters[i] instanceof String) {
-                    translatedParameter = getTranslatedParameter(String.valueOf(messageParameters[i]));
-                } else if (messageParameters[i] instanceof String[]) {
-                    List<String> params = new ArrayList<String>();
-                    for (String param : (String[]) messageParameters[i]) {
-                        params.add(getTranslatedParameter(param));
-                    }
-                    translatedParameter = CommonWebUtils.getStringListToString(params);
+            String[] translatedParameters = new String[messageParameters.size()];
+            for (int i = 0; i < messageParameters.size(); i++) {
+                List<String> params = new ArrayList<String>();
+                for (String param : messageParameters.get(i)) {
+                    params.add(getTranslatedParameter(param));
                 }
+                String translatedParameter = CommonWebUtils.getStringListToString(params);
                 translatedParameters[i] = translatedParameter;
             }
             return translatedParameters;
