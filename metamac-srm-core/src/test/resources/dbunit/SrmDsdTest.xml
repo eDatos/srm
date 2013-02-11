@@ -3559,7 +3559,8 @@
     	UUID="tb_representations-1"
     	VERSION="0"
     	REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
-    	ENUMERATED_FK="2"
+    	CONCEPTSCHEME_FK="1021"
+    	CODELIST_FK="[null]"
     	FACET_FK="[null]"
     />
     
@@ -3568,7 +3569,8 @@
     	UUID="tb_representations-2"
     	VERSION="0"
     	REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
-    	ENUMERATED_FK="4"
+    	CONCEPTSCHEME_FK="[null]"
+    	CODELIST_FK="2011"
     	FACET_FK="[null]"
     />
     
@@ -3577,7 +3579,8 @@
     	UUID="tb_representations-3"
     	VERSION="0"
     	REPRESENTATION_TYPE="TEXT_FORMAT_REPRESENTATION"
-    	ENUMERATED_FK="[null]"
+    	CONCEPTSCHEME_FK="[null]"
+    	CODELIST_FK="[null]"
     	FACET_FK="1"
     />
     
@@ -3586,7 +3589,8 @@
     	UUID="tb_representations-4"
     	VERSION="0"
     	REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
-    	ENUMERATED_FK="8"
+    	CONCEPTSCHEME_FK="[null]"
+    	CODELIST_FK="2011"
     	FACET_FK="[null]"
     />    
     
@@ -3641,42 +3645,6 @@
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
     <!-- *************************************************************************************  -->    
-    
-    <TB_EXTERNAL_ITEMS
-    	ID="2"
-    	CODE="ConceptSchemeMock"
-    	URI="lorem/ipsum/dolor/sit/amet"
-    	URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=MaintainerMock:ConceptSchemeMock(01.000)"
-    	MANAGEMENT_APP_URL="managementAppUrlD3mcZHMPR8"
-    	VERSION="0"
-    	TITLE_FK="106"
-    	TYPE="CONCEPT_SCHEME"
-    />
-    
-    <TB_EXTERNAL_ITEMS
-    	ID="4"
-    	CODE="CodelistMock"
-    	URI="lorem/ipsum/dolor/sit/amet"
-    	URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=MaintainerMock:CodelistMock(01.000)"
-    	MANAGEMENT_APP_URL="managementAppUrlD3mcZHMPR8"
-    	VERSION="0"
-    	TITLE_FK="108"
-    	TYPE="CODELIST"
-    />
-    
-
-    
-    <TB_EXTERNAL_ITEMS
-    	ID="8"
-    	CODE="CodelistMock"
-    	URI="lorem/ipsum/dolor/sit/amet"
-    	URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=MaintainerMock:CodelistMock(01.000)"
-    	MANAGEMENT_APP_URL="managementAppUrlD3mcZHMPR8"
-    	VERSION="0"
-    	TITLE_FK="112"
-    	TYPE="CODELIST"
-    />
-    
     <TB_EXTERNAL_ITEMS 
         ID="13"
         CODE="op1"

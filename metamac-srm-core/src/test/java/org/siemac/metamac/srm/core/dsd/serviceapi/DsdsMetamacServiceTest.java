@@ -217,8 +217,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             ComponentList componentList = DataStructureDefinitionDoMocks.mockDimensionDescriptor();
             dsdsMetamacService.saveDescriptorForDataStructureDefinition(ctx, urn, componentList);
 
-            Concept concept01 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_1_V2_CONCEPT_2);
-            Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_1_V2_CONCEPT_3);
+            Concept concept01 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_2_V1_CONCEPT_1);
+            Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_2_V1_CONCEPT_2);
             ConceptSchemeVersion conceptScheme = conceptSchemeVersionMetamacRepository.findByUrn(CONCEPT_SCHEME_3_V1);
             Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02), conceptScheme);
             ((MeasureDimension) measureDim).setIsRepresentationUpdated(Boolean.TRUE);

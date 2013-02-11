@@ -580,7 +580,8 @@
             <TB_REPRESENTATIONS
                 ID="121"
                 REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
-                ENUMERATED_FK="121"
+                CODELIST_FK="2011"
+                CONCEPTSCHEME_FK="[null]"
                 FACET_FK="[null]"
                 
                 UUID="representation-121"
@@ -3845,17 +3846,6 @@
         TITLE_FK="[null]"
         TYPE="STATISTICAL_OPERATION"
     />
-    
-    <TB_EXTERNAL_ITEMS 
-        ID="121"
-        CODE="CODE_LIST_1"
-        URI="http://data.siemac.org/srm/v1/codeLists/1"
-        URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(01.000)"
-        MANAGEMENT_APP_URL="http://managementCodeList1"
-        VERSION="1"
-        TITLE_FK="36"
-        TYPE="CODELIST"
-    />               
 
     <!-- ************************************************************************************** -->
     <!-- CONCEPT TYPES                                                                          -->
@@ -4037,7 +4027,7 @@
         REPLACED_BY_VERSION="02.000"
         REPLACE_TO_VERSION="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="2011"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -5087,6 +5077,28 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="51"
-    />                                              
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="2011"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="20111"
+        LABEL="Comentario codelist-7-v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="2011"
+    />                    
+
+    <TB_LOCALISED_STRINGS
+        ID="20112"
+        LABEL="Comment codelist-7-v1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="2011"
+    />                     
+                                                               
                     
 </dataset>
