@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.soap.external.v1_0.mapper.base;
 
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
@@ -22,15 +22,15 @@ public class BaseDo2SoapMapperV10Impl implements BaseDo2SoapMapperV10 {
         InternationalString internationalString = new InternationalString();
         for (org.siemac.metamac.core.common.ent.domain.LocalisedString item : source.getTexts()) {
             LocalisedString localisedString = localisedStringToLocalisedStringWebService(item);
-            internationalString.getText().add(localisedString);
+            internationalString.getTexts().add(localisedString);
         }
 
         return internationalString;
     }
 
     @Override
-    public XMLGregorianCalendar toDate(DateTime source) {
-        return CoreCommonUtil.transformDateToXmlGregorianCalendar(source);
+    public Date toDate(DateTime source) {
+        return CoreCommonUtil.transformDateTimeToDate(source);
     }
 
     protected String getCode(NameableArtefact nameableArtefact) {

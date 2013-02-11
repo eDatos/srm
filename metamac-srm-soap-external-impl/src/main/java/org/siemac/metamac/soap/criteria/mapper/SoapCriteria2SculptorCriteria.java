@@ -59,7 +59,7 @@ public class SoapCriteria2SculptorCriteria<T> {
                 criteria.orderBy(defaultOrder).ascending();
             }
         } else {
-            for (MetamacCriteriaOrder order : metamacCriteria.getOrdersBy().getOrder()) {
+            for (MetamacCriteriaOrder order : metamacCriteria.getOrdersBy().getOrders()) {
                 checkPropertyOrder(order);
                 if (order.getType() == null || OrderType.ASC.equals(order.getType())) {
                     criteria.orderBy(callback.retrievePropertyOrder(order)).ascending();
@@ -121,10 +121,10 @@ public class SoapCriteria2SculptorCriteria<T> {
 
     private void addRestriction(MetamacCriteriaDisjunctionRestriction disjunction, ConditionRoot criteria) throws ExceptionFault {
         criteria.lbrace();
-        for (int i = 0; i < disjunction.getRestrictions().getRestriction().size(); i++) {
-            MetamacCriteriaRestriction metamacCriteriaSubrestriction = disjunction.getRestrictions().getRestriction().get(i);
+        for (int i = 0; i < disjunction.getRestrictions().getRestrictions().size(); i++) {
+            MetamacCriteriaRestriction metamacCriteriaSubrestriction = disjunction.getRestrictions().getRestrictions().get(i);
             addRestriction(metamacCriteriaSubrestriction, criteria);
-            if (i < disjunction.getRestrictions().getRestriction().size() - 1) {
+            if (i < disjunction.getRestrictions().getRestrictions().size() - 1) {
                 criteria.or();
             }
         }
@@ -133,10 +133,10 @@ public class SoapCriteria2SculptorCriteria<T> {
 
     private void addRestriction(MetamacCriteriaConjunctionRestriction conjunction, ConditionRoot criteria) throws ExceptionFault {
         criteria.lbrace();
-        for (int i = 0; i < conjunction.getRestrictions().getRestriction().size(); i++) {
-            MetamacCriteriaRestriction metamacCriteriaSubrestriction = conjunction.getRestrictions().getRestriction().get(i);
+        for (int i = 0; i < conjunction.getRestrictions().getRestrictions().size(); i++) {
+            MetamacCriteriaRestriction metamacCriteriaSubrestriction = conjunction.getRestrictions().getRestrictions().get(i);
             addRestriction(metamacCriteriaSubrestriction, criteria);
-            if (i < conjunction.getRestrictions().getRestriction().size() - 1) {
+            if (i < conjunction.getRestrictions().getRestrictions().size() - 1) {
                 criteria.and();
             }
         }

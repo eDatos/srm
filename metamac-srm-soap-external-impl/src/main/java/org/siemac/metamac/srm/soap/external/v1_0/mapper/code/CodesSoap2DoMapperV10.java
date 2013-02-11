@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 
-public interface CodesSoap2DoMapper {
+public interface CodesSoap2DoMapperV10 {
 
     public SoapCriteria2SculptorCriteria<VariableFamily> getVariableFamilyCriteriaMapper();
     public SoapCriteria2SculptorCriteria<Variable> getVariableCriteriaMapper();

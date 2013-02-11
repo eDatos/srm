@@ -17,7 +17,7 @@ public class SoapExceptionUtils {
             exception.getParameters().setTotal(BigInteger.valueOf(parameters.length));
             for (int i = 0; i < parameters.length; i++) {
                 String parameter = parameters[i];
-                exception.getParameters().getParameter().add(parameter);
+                exception.getParameters().getParameters().add(parameter);
             }
         }
         return exception;

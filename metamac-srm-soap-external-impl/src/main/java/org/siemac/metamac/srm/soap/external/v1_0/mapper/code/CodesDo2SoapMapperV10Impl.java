@@ -8,6 +8,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.soap.common.v1_0.domain.Item;
 import org.siemac.metamac.soap.common.v1_0.domain.Resource;
 import org.siemac.metamac.soap.criteria.mapper.SculptorCriteria2SoapCriteria;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.Code;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelist;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelists;
@@ -17,12 +19,24 @@ import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilyCodes;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variables;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.soap.external.v1_0.mapper.base.BaseDo2SoapMapperV10Impl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
+
 @Component
-public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements CodesDo2SoapMapper {
+public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implements CodesDo2SoapMapperV10 {
+
+    @Autowired
+    private com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbMapper codesDo2JaxbSdmxMapper;
+
+    @Autowired
+    @Qualifier("codesDo2JaxbSoapCallbackMetamac")
+    private CodesDo2JaxbCallback                                            codesDo2JaxbCallback;
 
     @Override
     public VariableFamily toVariableFamily(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
@@ -42,7 +56,7 @@ public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements 
         // Values
         if (!CollectionUtils.isEmpty(sources.getValues())) {
             for (org.siemac.metamac.srm.core.code.domain.VariableFamily source : sources.getValues()) {
-                targets.getVariableFamily().add(toVariableFamily(source));
+                targets.getVariableFamilies().add(toVariableFamily(source));
             }
         }
         // Pagination
@@ -73,7 +87,7 @@ public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements 
         // Values
         if (!CollectionUtils.isEmpty(sources.getValues())) {
             for (org.siemac.metamac.srm.core.code.domain.Variable source : sources.getValues()) {
-                targets.getVariable().add(toVariable(source));
+                targets.getVariables().add(toVariable(source));
             }
         }
         // Pagination
@@ -99,7 +113,7 @@ public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements 
         // Values
         if (!CollectionUtils.isEmpty(sources.getValues())) {
             for (org.siemac.metamac.srm.core.code.domain.CodelistFamily source : sources.getValues()) {
-                targets.getCodelistFamily().add(toCodelistFamily(source));
+                targets.getCodelistFamilies().add(toCodelistFamily(source));
             }
         }
         // Pagination
@@ -113,12 +127,44 @@ public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements 
         // Values
         if (!CollectionUtils.isEmpty(sources.getValues())) {
             for (org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac source : sources.getValues()) {
-                targets.getCodelist().add(toResource(source));
+                targets.getCodelists().add(toResource(source));
             }
         }
         // Pagination
         SculptorCriteria2SoapCriteria.toPagedResult(sources, targets, limit);
         return targets;
+    }
+
+    @Override
+    public Codelist toCodelist(CodelistVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        // following method will call toCodelist(CodelistVersionMetamac source, Codelist target) method, thank to callback
+        return (Codelist) codesDo2JaxbSdmxMapper.codeListDoToJaxb(source, codesDo2JaxbCallback);
+    }
+
+    @Override
+    public void toCodelist(CodelistVersionMetamac source, Codelist target) {
+        if (source == null) {
+            return;
+        }
+        target.setShortName(toInternationalString(source.getShortName()));
+        target.setIsRecommended(source.getIsRecommended());
+        target.setFamily(toItem(source.getFamily()));
+        target.setVariable(toItem(source.getVariable()));
+    }
+
+    @Override
+    public void toCode(CodeMetamac source, Code target) {
+        if (source == null) {
+            return;
+        }
+        if (source.getVariableElement() == null) {
+            target.setShortName(toInternationalString(source.getShortName()));
+        } else {
+            target.setShortName(toInternationalString(source.getVariableElement().getShortName()));
+        }
     }
 
     private ReplaceTo toReplaceTo(org.siemac.metamac.srm.core.code.domain.Variable source) {
@@ -128,7 +174,7 @@ public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements 
         ReplaceTo target = new ReplaceTo();
         target.setTotal(BigInteger.valueOf(source.getReplaceToVariables().size()));
         for (org.siemac.metamac.srm.core.code.domain.Variable replaceToSource : source.getReplaceToVariables()) {
-            target.getReplaceTo().add(toItem(replaceToSource));
+            target.getReplaceTos().add(toItem(replaceToSource));
         }
         return target;
     }
@@ -140,8 +186,18 @@ public class CodesDo2SoapMapperImpl extends BaseDo2SoapMapperV10Impl implements 
         VariableFamilyCodes target = new VariableFamilyCodes();
         target.setTotal(BigInteger.valueOf(source.getFamilies().size()));
         for (org.siemac.metamac.srm.core.code.domain.VariableFamily variableFamily : source.getFamilies()) {
-            target.getFamily().add(toItem(variableFamily));
+            target.getFamilies().add(toItem(variableFamily));
         }
+        return target;
+    }
+
+    private Item toItem(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
+        if (source == null) {
+            return null;
+        }
+        Item target = new Item();
+        target.setId(getCode(source.getNameableArtefact()));
+        target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
 

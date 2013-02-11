@@ -29,14 +29,14 @@ import org.siemac.metamac.srm.soap.external.exception.SoapExceptionParameters;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CodesSoap2DoMapperImpl implements CodesSoap2DoMapper {
+public class CodesSoap2DoMapperV10Impl implements CodesSoap2DoMapperV10 {
 
     private SoapCriteria2SculptorCriteria<VariableFamily>         variableFamilyCriteriaMapper = null;
     private SoapCriteria2SculptorCriteria<Variable>               variableCriteriaMapper       = null;
     private SoapCriteria2SculptorCriteria<CodelistFamily>         codelistFamilyCriteriaMapper = null;
     private SoapCriteria2SculptorCriteria<CodelistVersionMetamac> codelistCriteriaMapper       = null;
 
-    public CodesSoap2DoMapperImpl() throws ExceptionFault {
+    public CodesSoap2DoMapperV10Impl() throws ExceptionFault {
         variableFamilyCriteriaMapper = new SoapCriteria2SculptorCriteria<VariableFamily>(VariableFamily.class, VariableFamilyCriteriaPropertyOrder.class,
                 VariableFamilyCriteriaPropertyRestriction.class, new VariableFamilyCriteriaCallback());
         variableCriteriaMapper = new SoapCriteria2SculptorCriteria<Variable>(Variable.class, VariableCriteriaPropertyOrder.class, VariableCriteriaPropertyRestriction.class,

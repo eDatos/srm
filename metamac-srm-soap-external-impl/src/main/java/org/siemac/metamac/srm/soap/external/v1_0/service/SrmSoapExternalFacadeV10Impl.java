@@ -13,10 +13,10 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.aop.LoggingInterceptor;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteria;
-import org.siemac.metamac.soap.exception.SoapCommonServiceExceptionType;
 import org.siemac.metamac.soap.exception.SoapExceptionUtils;
 import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
 import org.siemac.metamac.soap.structural_resources.v1_0.MetamacStructuralResourcesInterfaceV10;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelist;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelists;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies;
@@ -25,8 +25,9 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
-import org.siemac.metamac.srm.soap.external.v1_0.mapper.code.CodesDo2SoapMapper;
-import org.siemac.metamac.srm.soap.external.v1_0.mapper.code.CodesSoap2DoMapper;
+import org.siemac.metamac.srm.soap.external.exception.SoapServiceExceptionType;
+import org.siemac.metamac.srm.soap.external.v1_0.mapper.code.CodesDo2SoapMapperV10;
+import org.siemac.metamac.srm.soap.external.v1_0.mapper.code.CodesSoap2DoMapperV10;
 import org.siemac.metamac.srm.soap.external.v1_0.service.utils.InvocationValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,16 +39,16 @@ import org.springframework.stereotype.Service;
 public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesInterfaceV10 {
 
     @Autowired
-    private CodesMetamacService  codesService;
+    private CodesMetamacService   codesService;
 
     @Autowired
-    private CodesSoap2DoMapper   codesSoap2DoMapper;
+    private CodesSoap2DoMapperV10 codesSoap2DoMapper;
 
     @Autowired
-    private CodesDo2SoapMapper   codesDo2SoapMapper;
+    private CodesDo2SoapMapperV10 codesDo2SoapMapper;
 
-    private final ServiceContext ctx    = new ServiceContext("soapExternal", "soapExternal", "soapExternal");
-    private final Logger         logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private final ServiceContext  ctx    = new ServiceContext("soapExternal", "soapExternal", "soapExternal");
+    private final Logger          logger = LoggerFactory.getLogger(LoggingInterceptor.class);
 
     @Override
     public VariableFamilies findVariableFamilies(MetamacCriteria criteria) throws ExceptionFault {
@@ -121,7 +122,8 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
             SculptorCriteria sculptorCriteria = codesSoap2DoMapper.getCodelistCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
             // Find
-            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac> result = findCodelistsCore(null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac> result = findCodelistsExternallyPublished(null, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
 
             // Transform
             Codelists codelists = codesDo2SoapMapper.toCodelists(result, sculptorCriteria.getPageSize());
@@ -131,7 +133,27 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
         }
     }
 
-    private PagedResult<CodelistVersionMetamac> findCodelistsCore(String urn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws ExceptionFault {
+    @Override
+    public Codelist retrieveCodelist(String urn) throws ExceptionFault {
+        try {
+            // Validation of parameters
+            InvocationValidator.validateRetrieveCodelist(urn);
+
+            // Find
+            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac> result = findCodelistsExternallyPublished(urn, null, PagingParameter.pageAccess(1, 1, false));
+            if (result.getValues().size() != 1) {
+                throw SoapExceptionUtils.buildExceptionFault(SoapServiceExceptionType.CODELIST_NOT_FOUND, urn);
+            }
+
+            // Transform
+            Codelist codelist = codesDo2SoapMapper.toCodelist(result.getValues().get(0));
+            return codelist;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    private PagedResult<CodelistVersionMetamac> findCodelistsExternallyPublished(String urn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws ExceptionFault {
         try {
             if (CollectionUtils.isEmpty(conditions)) {
                 conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build();
@@ -164,7 +186,7 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
             fault = (ExceptionFault) e;
         } else {
             // do not show information details about exception to user
-            return SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.UNKNOWN);
+            return SoapExceptionUtils.buildExceptionFault(SoapServiceExceptionType.UNKNOWN);
         }
         return fault;
     }

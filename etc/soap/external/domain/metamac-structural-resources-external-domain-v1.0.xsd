@@ -2,10 +2,12 @@
 <xs:schema version="1.0" elementFormDefault="qualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:common="http://www.siemac.org/metamac/soap/common/v1.0/domain" 
+    xmlns:sdmx="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"
     xmlns:tns="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain"
     targetNamespace="http://www.siemac.org/metamac/soap/structural-resources/v1.0/domain">
 
     <xs:import namespace="http://www.siemac.org/metamac/soap/common/v1.0/domain" schemaLocation="metamac-soap-common-domain-v1.0.xsd" />
+    <xs:import namespace="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" schemaLocation="statistic-sdmx-v2_1-domain:SDMXStructure.xsd" />
 
     <xs:complexType name="VariableFamily">
         <xs:sequence>
@@ -73,6 +75,30 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>    
+    
+    <xs:complexType name="Codelist">
+        <xs:complexContent>
+            <xs:extension base="sdmx:CodelistType">
+                <xs:sequence>
+                    <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
+                    <xs:element name="isRecommended" type="xs:boolean" minOccurs="0" />
+                    <xs:element name="family" type="common:Item" minOccurs="0" />
+                    <xs:element name="variable" type="common:Item" minOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Code">
+        <xs:complexContent>
+            <xs:extension base="sdmx:CodeType">
+                <xs:sequence>
+                    <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
     
     <xs:complexType name="ReplaceTo">
         <xs:complexContent>

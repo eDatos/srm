@@ -53,6 +53,17 @@
         </xs:sequence>
     </xs:complexType>         
 
+    <xs:complexType name="RetrieveCodelist">
+        <xs:sequence>
+            <xs:element name="urn" type="xs:string" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RetrieveCodelistResponse">
+        <xs:sequence>
+            <xs:element name="codelist" type="domain_v1_0:Codelist" />
+        </xs:sequence>
+    </xs:complexType>         
+
 	<!-- ELEMENTS -->
 	<xs:element name="findVariableFamilies" type="tns:FindVariableFamilies" />
 	<xs:element name="findVariableFamiliesResponse" type="tns:FindVariableFamiliesResponse" />
@@ -62,4 +73,6 @@
     <xs:element name="findCodelistFamiliesResponse" type="tns:FindCodelistFamiliesResponse" />
     <xs:element name="findCodelists" type="tns:FindCodelists" />
     <xs:element name="findCodelistsResponse" type="tns:FindCodelistsResponse" />
+    <xs:element name="retrieveCodelist" type="tns:RetrieveCodelist" />
+    <xs:element name="retrieveCodelistResponse" type="tns:RetrieveCodelistResponse" />
 </xs:schema>

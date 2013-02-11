@@ -163,10 +163,7 @@
                     <xs:element name="operation" type="tns:OperationType" default="EQ" />
                     <xs:choice minOccurs="0" maxOccurs="1">
                         <xs:element name="stringValue" type="xs:string" />
-                        <xs:element name="integerValue" type="xs:integer" />
                         <xs:element name="longValue" type="xs:long" />
-                        <xs:element name="doubleValue" type="xs:double" />
-                        <xs:element name="decimalValue" type="xs:decimal" />
                         <xs:element name="booleanValue" type="xs:boolean" />
                         <xs:element name="dateValue" type="xs:date" />
                         <xs:element name="dateTimeValue" type="xs:dateTime" />
