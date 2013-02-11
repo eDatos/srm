@@ -168,6 +168,8 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
                 defaultMainatainer = result.getOrganisationMetamacDto();
 
                 // Load the application
+                setUncaughtExceptionHandler();
+                // MetamacSrmWeb.this.set
                 LoginAuthenticatedEvent.fire(ginjector.getEventBus(), MetamacSrmWeb.principal);
                 // This is required for GWT-Platform proxy's generator.
                 DelayedBindRegistry.bind(ginjector);
