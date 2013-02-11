@@ -1019,11 +1019,9 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         // Core representation
         assertEquals(TypeRepresentationEnum.ENUMERATED, conceptMetamacDto.getCoreRepresentation().getTypeRepresentationEnum());
         assertEquals("CODE_LIST_1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getCode());
-        assertEquals("http://managementCodeList1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getManagementAppUrl());
         assertEqualsInternationalStringDto(conceptMetamacDto.getCoreRepresentation().getEnumerated().getTitle(), "es", "CodeList1", null, null);
         assertEquals(TypeExternalArtefactsEnum.CODELIST, conceptMetamacDto.getCoreRepresentation().getEnumerated().getType());
         assertEquals(CODELIST_7_V1, conceptMetamacDto.getCoreRepresentation().getEnumerated().getUrn());
-        assertEquals("http://data.siemac.org/srm/v1/codeLists/1", conceptMetamacDto.getCoreRepresentation().getEnumerated().getUri());
     }
 
     @Test

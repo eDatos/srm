@@ -11,7 +11,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.eclipse.xtext.util.StringInputStream;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ApplicationException;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
@@ -20,7 +19,7 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 
-import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDtoMocks;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
@@ -143,7 +142,9 @@ public class SrmDtoMocks {
         dimensionComponentDto2.setCptIdRef(DataStructureDefinitionDtoMocks.mockExistingConceptIdentity());
         RepresentationDto repeRepresentationDto = new RepresentationDto();
         repeRepresentationDto.setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-        repeRepresentationDto.setEnumerated(MetamacMocks.mockExternalItemDto(BaseDoMocks.mockConceptSchemeUrn(), TypeExternalArtefactsEnum.CONCEPT_SCHEME));
+
+        repeRepresentationDto.setEnumerated(BaseDtoMocks.mockRelatedResourceToCodelistDto());
+
         dimensionComponentDto2.setLocalRepresentation(repeRepresentationDto);
 
         // Some Auditory

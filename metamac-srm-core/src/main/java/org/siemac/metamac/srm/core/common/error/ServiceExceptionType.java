@@ -13,7 +13,6 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     // Concepts
     public static final CommonServiceExceptionType CONCEPT_SCHEME_WRONG_TYPE                                     = create("exception.srm.concepts.concept_scheme.wrong_type");
     public static final CommonServiceExceptionType CONCEPT_TYPE_NOT_FOUND                                        = create("exception.srm.concepts.concept_type.not_found");
-    public static final CommonServiceExceptionType CONCEPT_REPRESENTATION_ENUMERATED_MUST_BE_CODELIST            = create("exception.srm.concepts.concept.enumerated_representation.must_be_codelist");
     public static final CommonServiceExceptionType CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE = create("exception.srm.concepts.concept.enumerated_representation.codelist_different_variable");
 
     // Organisations

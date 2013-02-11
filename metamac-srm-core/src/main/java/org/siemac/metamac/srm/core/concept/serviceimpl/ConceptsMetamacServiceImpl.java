@@ -10,7 +10,6 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -737,11 +736,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (BooleanUtils.isFalse(conceptSchemeVersion.getMaintainableArtefact().getIsImported())) {
             if (concept.getCoreRepresentation() != null && concept.getCoreRepresentation() instanceof EnumeratedRepresentation) {
                 EnumeratedRepresentation enumeratedRepresentation = (EnumeratedRepresentation) concept.getCoreRepresentation();
-                // check it is a codelist
-                if (!TypeExternalArtefactsEnum.CODELIST.equals(enumeratedRepresentation.getEnumerated().getType())) {
-                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_MUST_BE_CODELIST).build();
-                }
-                String codelistUrn = enumeratedRepresentation.getEnumerated().getUrn();
+                String codelistUrn = enumeratedRepresentation.getEnumeratedCodeList().getMaintainableArtefact().getUrn();
                 // check codelist belongs to same variable of concept
                 if (concept.getVariable() == null) {
                     throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE).withMessageParameters(codelistUrn)

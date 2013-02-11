@@ -20,6 +20,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -27,6 +28,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
@@ -45,7 +47,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
@@ -59,15 +63,21 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructure
 public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacServiceTestBase {
 
     @Autowired
-    protected DsdsMetamacService          dsdsMetamacService;
+    protected DsdsMetamacService                  dsdsMetamacService;
 
     @Autowired
-    private OrganisationMetamacRepository organisationMetamacRepository;
+    private OrganisationMetamacRepository         organisationMetamacRepository;
 
     @Autowired
-    private ConceptMetamacRepository      conceptMetamacRepository;
+    private ConceptMetamacRepository              conceptMetamacRepository;
 
-    private final ServiceContext          serviceContext = new ServiceContext("system", "123456", "junit");
+    @Autowired
+    private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
+
+    @Autowired
+    private CodelistVersionMetamacRepository      codelistVersionMetamacRepository;
+
+    private final ServiceContext                  serviceContext = new ServiceContext("system", "123456", "junit");
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
@@ -207,9 +217,10 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             ComponentList componentList = DataStructureDefinitionDoMocks.mockDimensionDescriptor();
             dsdsMetamacService.saveDescriptorForDataStructureDefinition(ctx, urn, componentList);
 
-            Concept concept01 = conceptMetamacRepository.findByUrn(CONCEPT_URN_SDMX01_CS02_C01);
-            Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_URN_SDMX01_CS02_C02);
-            Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02));
+            Concept concept01 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_1_V2_CONCEPT_2);
+            Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_1_V2_CONCEPT_3);
+            ConceptSchemeVersion conceptScheme = conceptSchemeVersionMetamacRepository.findByUrn(CONCEPT_SCHEME_3_V1);
+            Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02), conceptScheme);
             ((MeasureDimension) measureDim).setIsRepresentationUpdated(Boolean.TRUE);
             dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), urn, measureDim);
             assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() == 0);
@@ -708,13 +719,15 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         dataStructureDefinitionVersionMetamac.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
         // Create Dimension Descriptor and components
-        Concept concept01 = conceptMetamacRepository.findByUrn(CONCEPT_URN_SDMX01_CS02_C01);
-        Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_URN_SDMX01_CS02_C02);
-        Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02));
+        Concept concept01 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        ConceptSchemeVersion conceptScheme = conceptSchemeVersionMetamacRepository.findByUrn(CONCEPT_SCHEME_3_V1);
+        Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02), conceptScheme);
         Component measureDimCreated = dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
                 measureDim);
 
-        Component dim = DataStructureDefinitionDoMocks.mockDimension(concept01, Arrays.asList(concept01, concept02));
+        CodelistVersion codelist = codelistVersionMetamacRepository.findByUrn(CODELIST_7_V1);
+        Component dim = DataStructureDefinitionDoMocks.mockDimension(concept01, Arrays.asList(concept01, concept02), codelist);
         Component dimCreated = dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), dim);
 
         Component timeDim = DataStructureDefinitionDoMocks.mockTimeDimension(concept01);
@@ -728,12 +741,12 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
         // Create Attribute Descriptor and components
         Component dataAttribute = DataStructureDefinitionDoMocks.mockDataAttribute((GroupDimensionDescriptor) groupDescriptorCreated, (DimensionComponent) dimCreated, concept01,
-                Arrays.asList(concept01, concept02));
+                Arrays.asList(concept01, concept02), codelist);
         /* Component dataAttributeCreated = */dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
                 dataAttribute);
 
         // Create Measure Descriptor and component
-        Component primaryMeasure = DataStructureDefinitionDoMocks.mockPrimaryMeasure(concept01);
+        Component primaryMeasure = DataStructureDefinitionDoMocks.mockPrimaryMeasure(concept01, codelist);
         /* Component componentCreated = */dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(),
                 primaryMeasure);
 
