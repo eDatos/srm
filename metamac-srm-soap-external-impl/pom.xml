@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.siemac.metamac.metamac-srm</groupId>
@@ -15,23 +15,23 @@
     <packaging>jar</packaging>
     <name>SIEMAC :: METAMAC :: SRM :: SOAP :: EXTERNAL IMPL</name>
 
-	<dependencies>
+    <dependencies>
         <!-- Metamac -->
-		<dependency>
-			<groupId>org.siemac.metamac.metamac-srm</groupId>
-			<artifactId>metamac-srm-soap-external-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-srm</groupId>
+            <artifactId>metamac-srm-soap-external-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-srm</groupId>
             <artifactId>metamac-srm-core</artifactId>
             <classifier>client</classifier>
             <version>${project.version}</version>
             <exclusions>
-            	<exclusion>
-            		<artifactId>metamac-rest-api</artifactId>
-            		<groupId>org.siemac.metamac</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>metamac-rest-api</artifactId>
+                    <groupId>org.siemac.metamac</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -69,15 +69,49 @@
         </dependency>
 
         <!-- SOAP -->
-    <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-frontend-jaxws</artifactId>
-        <version>${cxf.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-transports-http</artifactId>
-        <version>${cxf.version}</version>
-    </dependency>          
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        
+        <!-- Test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>    
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>            
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
+            <artifactId>statistic-sdmx-srm-core</artifactId>
+            <type>test-jar</type>
+            <version>${statistic-sdmx-srm.version}</version>
+            <scope>test</scope>
+        </dependency>        
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-srm</groupId>
+            <artifactId>metamac-srm-core</artifactId>
+            <type>test-jar</type>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>        
     </dependencies>
 </project>

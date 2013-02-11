@@ -4,7 +4,6 @@ import java.math.BigInteger;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
-import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.soap.common.v1_0.domain.Item;
 import org.siemac.metamac.soap.common.v1_0.domain.Resource;
 import org.siemac.metamac.soap.criteria.mapper.SculptorCriteria2SoapCriteria;
@@ -51,7 +50,7 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
     }
 
     @Override
-    public VariableFamilies toVariableFamilies(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> sources, Integer limit) throws MetamacException {
+    public VariableFamilies toVariableFamilies(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> sources, Integer limit) {
         VariableFamilies targets = new VariableFamilies();
         // Values
         if (!CollectionUtils.isEmpty(sources.getValues())) {
@@ -82,7 +81,7 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
     }
 
     @Override
-    public Variables toVariables(PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> sources, Integer limit) throws MetamacException {
+    public Variables toVariables(PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> sources, Integer limit) {
         Variables targets = new Variables();
         // Values
         if (!CollectionUtils.isEmpty(sources.getValues())) {
@@ -156,6 +155,15 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
     }
 
     @Override
+    public Code toCode(CodeMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        // following method will call toCode(CodeMetamac source, Code target) method, thank to callback
+        return (Code) codesDo2JaxbSdmxMapper.codeDoToJaxb(source, codesDo2JaxbCallback);
+    }
+
+    @Override
     public void toCode(CodeMetamac source, Code target) {
         if (source == null) {
             return;
@@ -197,7 +205,7 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
         }
         Item target = new Item();
         target.setId(getCode(source.getNameableArtefact()));
-        target.setName(toInternationalString(source.getNameableArtefact().getName()));
+        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
 
@@ -207,7 +215,7 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
         }
         Item target = new Item();
         target.setId(getCode(source.getNameableArtefact()));
-        target.setName(toInternationalString(source.getNameableArtefact().getName()));
+        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
 
@@ -217,7 +225,7 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
         }
         Item target = new Item();
         target.setId(getCode(source.getNameableArtefact()));
-        target.setName(toInternationalString(source.getNameableArtefact().getName()));
+        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
 
@@ -228,7 +236,7 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
         Resource target = new Resource();
         target.setId(getCode(source.getMaintainableArtefact()));
         target.setUrn(getUrn(source.getMaintainableArtefact()));
-        target.setName(toInternationalString(source.getMaintainableArtefact().getName()));
+        target.setTitle(toInternationalString(source.getMaintainableArtefact().getName()));
         return target;
     }
 }
