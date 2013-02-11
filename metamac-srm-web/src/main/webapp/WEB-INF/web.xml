@@ -65,7 +65,7 @@
         <servlet-name>remoteLogging</servlet-name>
         <url-pattern>/MetamacSrmWeb/remote_logging</url-pattern>
     </servlet-mapping>
-    
+
     <!-- Rest -->
     <servlet>
         <servlet-name>CXFServlet</servlet-name>
@@ -75,7 +75,7 @@
     <servlet-mapping>
         <servlet-name>CXFServlet</servlet-name>
         <url-pattern>/apis/*</url-pattern>
-    </servlet-mapping>        
+    </servlet-mapping>
 
     <!-- Logout filter -->
     <filter>
