@@ -23,14 +23,24 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
+import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
+import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
@@ -39,12 +49,16 @@ import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatus
 import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatusResult;
 import org.siemac.metamac.srm.web.shared.category.VersionCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.VersionCategorySchemeResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
@@ -89,6 +103,12 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto);
         void setCategorySchemeVersions(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos);
         void setCategoryList(List<ItemHierarchyDto> categoryDtos);
+
+        // Categorisations
+
+        void setCategorisations(List<CategorisationDto> categorisationDtos);
+        void setCategorySchemesForCategorisations(GetCategorySchemesResult result);
+        void setCategoriesForCategorisations(GetCategoriesResult result);
     }
 
     @ContentSlot
@@ -354,6 +374,90 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             public void onWaitSuccess(DeleteCategoryResult result) {
                 ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveCategoryListByScheme(categorySchemeMetamacDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCategorisations(String artefactCategorisedUrn) {
+        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallback<GetCategorisationsByArtefactResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategorisationsByArtefactResult result) {
+                getView().setCategorisations(result.getCategorisationDtos());
+            }
+        });
+    }
+
+    @Override
+    public void createCategorisations(List<String> categoryUrns) {
+        dispatcher.execute(new CreateCategorisationAction(categoryUrns, categorySchemeMetamacDto.getUrn(), RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto().getUrn()),
+                new WaitingAsyncCallback<CreateCategorisationResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCreate()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(CreateCategorisationResult result) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationCreated()), MessageTypeEnum.SUCCESS);
+                        retrieveCategorisations(categorySchemeMetamacDto.getUrn());
+                    }
+                });
+    }
+
+    @Override
+    public void deleteCategorisations(List<String> urns) {
+        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallback<DeleteCategorisationsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCategorisationsResult result) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveCategorisations(categorySchemeMetamacDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
+        // The categories must be externally published
+        CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria(criteria);
+        categorySchemeWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategorySchemesResult result) {
+                getView().setCategorySchemesForCategorisations(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
+        // The categories must be externally published
+        CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria(criteria, categorySchemeUrn);
+        categoryWebCriteria.setIsExternallyPublished(true);
+        dispatcher.execute(new GetCategoriesAction(firstResult, maxResults, categoryWebCriteria), new WaitingAsyncCallback<GetCategoriesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategoriesResult result) {
+                getView().setCategoriesForCategorisations(result);
             }
         });
     }

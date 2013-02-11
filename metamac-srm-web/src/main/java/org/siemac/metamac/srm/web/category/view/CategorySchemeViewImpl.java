@@ -21,7 +21,10 @@ import org.siemac.metamac.srm.web.category.widgets.CategorySchemeVersionsSection
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -35,6 +38,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -78,6 +82,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     // CategoriesTree
     private CategoriesTreeGrid                 categoriesTreeGrid;
 
+    // Categorisations
+    private CategorisationsPanel               categorisationsPanel;
+
     private CategorySchemeMetamacDto           categorySchemeDto;
 
     @Inject
@@ -119,9 +126,18 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         categoriesListGridLayout.addMember(new TitleLabel(getConstants().categories()));
         categoriesListGridLayout.addMember(categoriesTreeGrid);
 
+        categorisationsPanel = new CategorisationsPanel();
+
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
         panel.addMember(categoriesListGridLayout);
+        panel.addMember(categorisationsPanel);
+    }
+
+    @Override
+    public void setUiHandlers(CategorySchemeUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -419,6 +435,21 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Update category scheme in tree grid
         categoriesTreeGrid.updateItemScheme(categorySchemeDto);
+    }
+
+    @Override
+    public void setCategorisations(List<CategorisationDto> categorisationDtos) {
+        categorisationsPanel.setCategorisations(categorisationDtos);
+    }
+
+    @Override
+    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+        categorisationsPanel.setCategorySchemes(result);
+    }
+
+    @Override
+    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+        categorisationsPanel.setCategories(result);
     }
 
     public void setCategorySchemeViewMode(CategorySchemeMetamacDto categorySchemeDto) {
