@@ -2,12 +2,12 @@ package org.siemac.metamac.srm.soap.external.v1_0.code.mapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocksFixedValues.mockCode;
-import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocksFixedValues.mockCodelist;
-import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocksFixedValues.mockCodelistFamily;
-import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocksFixedValues.mockCodelistWithCodes;
-import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocksFixedValues.mockVariable;
-import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocksFixedValues.mockVariableFamily;
+import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCode;
+import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelist;
+import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelistFamily;
+import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelistWithCodes;
+import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariable;
+import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
 import static org.siemac.metamac.srm.soap.external.v1_0.utils.Asserts.assertEqualsInternationalString;
 
 import java.util.ArrayList;
