@@ -30,6 +30,8 @@ Application DtosMetamacDsdDomain {
 			"Visualisation metadata Stub, dimensions list ordered"
 			- List<@MeasureDimensionPrecisionDto> showDecimalsPrecisions nullable;
 			
+			"Statistical operation"
+			- @ExternalItemDto statisticalOperation nullable;
 		}
 		
 		DataTransferObject MeasureDimensionPrecisionDto extends @RelatedResourceDto {

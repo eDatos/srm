@@ -20,6 +20,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.sdmx.resources.sdmxml.schemas.v2_1.message.Structure;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
@@ -36,7 +37,7 @@ import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.facade.serviceapi.utils.SrmDtoMocks;
+import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionMetamacDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -49,7 +50,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import org.sdmx.resources.sdmxml.schemas.v2_1.message.Structure;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -92,11 +92,11 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     public void testFindDataStructureDefinitionsByCondition() throws Exception {
         MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = null;
 
-        srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(), SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+        srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(), DataStructureDefinitionMetamacDtoMocks.mockDataStructureDefinitionMetamacDto());
 
         // By Name
         MetamacCriteria metamacCriteria = new MetamacCriteria();
-        metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "NAME ES DSD", OperationType.EQ));
+        metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), "DSD_01", OperationType.EQ));
 
         result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
         assertEquals(1, result.getResults().size());
@@ -148,7 +148,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         // Create ****************
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(),
-                SrmDtoMocks.createDataStructureDefinitionMetamacDtoMock());
+                DataStructureDefinitionMetamacDtoMocks.mockDataStructureDefinitionMetamacDto());
 
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
 

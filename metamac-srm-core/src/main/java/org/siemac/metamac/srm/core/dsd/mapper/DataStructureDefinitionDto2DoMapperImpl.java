@@ -54,14 +54,6 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
     @Override
     public DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinition(DataStructureDefinitionMetamacDto source) throws MetamacException {
-        return dataStructureDefinitionDtoToDataStructureDefinitionPrivate(source);
-    }
-
-    /**************************************************************************
-     * PRIVATE
-     **************************************************************************/
-
-    private DataStructureDefinitionVersionMetamac dataStructureDefinitionDtoToDataStructureDefinitionPrivate(DataStructureDefinitionMetamacDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -82,6 +74,8 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         // Modifiable attributes
         target.setAutoOpen(source.getAutoOpen());
         target.setShowDecimals(source.getShowDecimals());
+        target.setStatisticalOperation(dto2DoMapperSdmxSrm.externalItemDtoToExternalItem(source.getStatisticalOperation(), target.getStatisticalOperation(),
+                ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
         headingProcess(source.getHeadingDimensions(), target);
         stubProcess(source.getStubDimensions(), target);
         showDecimalsPrecisionsProcess(source.getShowDecimalsPrecisions(), target);
@@ -90,6 +84,10 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
         return target;
     }
+
+    /**************************************************************************
+     * PRIVATE
+     **************************************************************************/
 
     private DataStructureDefinitionVersionMetamac headingProcess(List<RelatedResourceDto> sourceList, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac)
             throws MetamacException {

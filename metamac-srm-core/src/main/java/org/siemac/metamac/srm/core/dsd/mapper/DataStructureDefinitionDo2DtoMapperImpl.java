@@ -80,6 +80,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         // Metamac
         target.setAutoOpen(source.getAutoOpen());
         target.setShowDecimals(source.getShowDecimals());
+        target.setStatisticalOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getStatisticalOperation()));
         // Heading
         for (DimensionOrder dimensionOrderSource : source.getHeadingDimensions()) {
             target.addHeadingDimension(dimensionOrderDoToRelatedResourceDto(dimensionOrderSource));
