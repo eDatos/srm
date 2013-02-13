@@ -8,7 +8,6 @@ import org.siemac.metamac.rest.common.v1_0.domain.LogicalOperator;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operation;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.OperationCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operations;
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.siemac.metamac.web.common.shared.constants.CommonSharedConstants;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
@@ -30,7 +29,7 @@ public class StatisticalOperationsRestInternalFacadeImpl implements StatisticalO
                     org.siemac.metamac.rest.common.v1_0.domain.Exception.class);
             throw WebExceptionUtils.createMetamacWebException(exception);
         } catch (Exception e) {
-            throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, MetamacSrmWeb.getCoreMessages().exception_common_unknown());
+            throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, "Error retrieving statistical operation");
         }
     }
 
@@ -54,8 +53,7 @@ public class StatisticalOperationsRestInternalFacadeImpl implements StatisticalO
                     org.siemac.metamac.rest.common.v1_0.domain.Exception.class);
             throw WebExceptionUtils.createMetamacWebException(exception);
         } catch (Exception e) {
-            throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, MetamacSrmWeb.getCoreMessages().exception_common_unknown());
+            throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, "Error finding statistical operations");
         }
     }
-
 }

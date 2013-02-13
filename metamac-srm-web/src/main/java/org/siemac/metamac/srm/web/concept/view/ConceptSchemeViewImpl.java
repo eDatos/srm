@@ -223,35 +223,35 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToProductionValidation(conceptSchemeDto.getUrn(), conceptSchemeDto.getLifeCycle().getProcStatus());
+                uiHandlers.sendToProductionValidation(conceptSchemeDto);
             }
         });
         mainFormLayout.getSendToDiffusionValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToDiffusionValidation(conceptSchemeDto.getUrn(), conceptSchemeDto.getLifeCycle().getProcStatus());
+                uiHandlers.sendToDiffusionValidation(conceptSchemeDto);
             }
         });
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.rejectValidation(conceptSchemeDto.getUrn(), conceptSchemeDto.getLifeCycle().getProcStatus());
+                uiHandlers.rejectValidation(conceptSchemeDto);
             }
         });
         mainFormLayout.getPublishInternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.publishInternally(conceptSchemeDto.getUrn(), conceptSchemeDto.getLifeCycle().getProcStatus());
+                uiHandlers.publishInternally(conceptSchemeDto);
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.publishExternally(conceptSchemeDto.getUrn(), conceptSchemeDto.getLifeCycle().getProcStatus());
+                uiHandlers.publishExternally(conceptSchemeDto);
             }
         });
         mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {

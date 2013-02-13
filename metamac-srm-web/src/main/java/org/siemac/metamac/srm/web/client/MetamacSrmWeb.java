@@ -225,5 +225,4 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
     public static void showErrorPage() {
         ginjector.getPlaceManager().revealErrorPlace(null);
     }
-
 }

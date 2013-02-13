@@ -57,5 +57,4 @@ public class GetStatisticalOperationsActionHandler extends SecurityActionHandler
         }
         return new GetStatisticalOperationsResult(externalItemDtos, firstResult, totalResults);
     }
-
 }

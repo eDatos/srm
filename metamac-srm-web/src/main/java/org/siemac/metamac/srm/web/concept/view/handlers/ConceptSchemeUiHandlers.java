@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
 public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
 
@@ -18,10 +17,10 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
 
     // Life cycle
 
-    void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);
-    void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus);
-    void rejectValidation(String urn, ProcStatusEnum currentProcStatus);
-    void publishInternally(String urn, ProcStatusEnum currentProcStatus);
-    void publishExternally(String urn, ProcStatusEnum currentProcStatus);
+    void sendToProductionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
+    void sendToDiffusionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
+    void rejectValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
+    void publishInternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
+    void publishExternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
     void versioning(String urn, VersionTypeEnum versionType);
 }

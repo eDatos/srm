@@ -197,8 +197,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void sendToProductionValidation(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+    public void sendToProductionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.PRODUCTION_VALIDATION), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -214,8 +214,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void sendToDiffusionValidation(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+    public void sendToDiffusionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.DIFFUSION_VALIDATION), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -231,8 +231,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void rejectValidation(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+    public void rejectValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.VALIDATION_REJECTED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -248,8 +248,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void publishInternally(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+    public void publishInternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -265,8 +265,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void publishExternally(String urn, ProcStatusEnum procStatus) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, procStatus), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+    public void publishExternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.EXTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
