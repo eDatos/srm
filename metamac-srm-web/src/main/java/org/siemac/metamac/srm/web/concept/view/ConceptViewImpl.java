@@ -37,7 +37,6 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
-import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -440,8 +439,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 conceptDto.getCoreRepresentation() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation()
                         .getTypeRepresentationEnum()) : null);
         contentDescriptorsForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW,
-                conceptDto.getCoreRepresentation() != null ? ExternalItemUtils.getExternalItemName(conceptDto.getCoreRepresentation().getEnumerated()) : null); // TODO RelatedResourceDto instead of
-                                                                                                                                                                // ExternalItemDto
+                conceptDto.getCoreRepresentation() != null ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumerated()) : null);
         contentDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
         contentDescriptorsForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null
                 ? CommonWebUtils.getElementName(conceptDto.getType().getIdentifier(), conceptDto.getType().getDescription())
@@ -499,8 +497,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 ? conceptDto.getCoreRepresentation().getEnumerated().getUrn()
                 : null);
         contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumerated() != null
-                ? ExternalItemUtils.getExternalItemName(conceptDto.getCoreRepresentation().getEnumerated())
-                : null); // TODO RelatedResourceDto instead of ExternalItemDto
+                ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumerated())
+                : null);
         contentDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? conceptDto.getType().getIdentifier() : null);
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
@@ -556,9 +554,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                             .getValueAsString(RepresentationDS.TYPE)) : null);
             if (TypeRepresentationEnum.ENUMERATED.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
                 conceptDto.getCoreRepresentation().setNonEnumerated(null);
-                // TODO RelatedResourceDto instead of ExternalItemDto
                 conceptDto.getCoreRepresentation().setEnumerated(
-                        StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)) ? null : RelatedResourceUtils.createExternalItemDto(
+                        StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                 TypeExternalArtefactsEnum.CODELIST, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)));
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
                 conceptDto.getCoreRepresentation().setEnumerated(null);

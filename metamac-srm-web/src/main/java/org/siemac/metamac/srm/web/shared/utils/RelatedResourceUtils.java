@@ -3,9 +3,7 @@ package org.siemac.metamac.srm.web.shared.utils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
@@ -269,34 +267,6 @@ public class RelatedResourceUtils {
             }
         }
         return result;
-    }
-
-    // TODO REMOVE THIS METHOD: RelatedResourceDto instead of ExternalItemDto
-    public static ExternalItemDto createExternalItemDto(TypeExternalArtefactsEnum type, String urn) {
-        ExternalItemDto externalItemDto = new ExternalItemDto();
-        externalItemDto.setCode(urn);
-        externalItemDto.setUri("dummy");
-        externalItemDto.setType(type);
-        externalItemDto.setUrn(urn);
-        return externalItemDto;
-    }
-
-    // TODO REMOVE THIS METHOD: RelatedResourceDto instead of ExternalItemDto
-    public static List<ExternalItemDto> createExternalItemDtosFromRelatedResourceDtos(List<RelatedResourceDto> relatedResourceDtos) {
-        List<ExternalItemDto> externalItemDtos = new ArrayList<ExternalItemDto>();
-        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
-            externalItemDtos.add(createExternalItemDto(relatedResourceDto.getType(), relatedResourceDto.getUrn()));
-        }
-        return externalItemDtos;
-    }
-
-    // TODO REMOVE THIS METHOD: RelatedResourceDto instead of ExternalItemDto
-    public static List<RelatedResourceDto> createRelatedResourceDtosFromExternalItemDtos(Set<ExternalItemDto> externalItemDtos) {
-        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
-        for (ExternalItemDto externalItemDto : externalItemDtos) {
-            relatedResourceDtos.add(createRelatedResourceDto(externalItemDto.getType(), externalItemDto.getUrn()));
-        }
-        return relatedResourceDtos;
     }
 
     public static LinkedHashMap<String, String> getRelatedResourceHashMap(List<RelatedResourceDto> relatedResourceDtos) {

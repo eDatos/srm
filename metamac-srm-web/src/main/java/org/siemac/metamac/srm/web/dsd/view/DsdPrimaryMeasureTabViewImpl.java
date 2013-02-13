@@ -20,7 +20,6 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandle
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -228,10 +227,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         staticFacetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
             if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(ExternalItemUtils.getExternalItemName(componentDto.getLocalRepresentation().getEnumerated())); // TODO
-                                                                                                                                                                                      // RelatedResourceDto
-                                                                                                                                                                                      // instead of
-                                                                                                                                                                                      // ExternalItemDto
+                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumerated()));
                 form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                 form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).show();
                 // Facet
@@ -266,11 +262,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumerated().getUrn());
-                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(ExternalItemUtils.getExternalItemName(componentDto.getLocalRepresentation().getEnumerated())); // TODO
-                                                                                                                                                                                             // RelatedResourceDto
-                                                                                                                                                                                             // instead
-                                                                                                                                                                                             // of
-                                                                                                                                                                                             // ExternalItemDto
+                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumerated()));
                 editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(TypeRepresentationEnum.ENUMERATED.toString());
                 // Facet
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
@@ -306,9 +298,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 primaryMeasure.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                // TODO RelatedResourceDto instead of ExternalItemDto
                 primaryMeasure.getLocalRepresentation().setEnumerated(
-                        StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)) ? null : RelatedResourceUtils.createExternalItemDto(
+                        StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                 TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)));
                 primaryMeasure.getLocalRepresentation().setNonEnumerated(null);
                 // Facet

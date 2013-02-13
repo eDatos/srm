@@ -29,7 +29,6 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
@@ -632,10 +631,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             if (TypeRepresentationEnum.ENUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 // Codelist
                 staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
-                form.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, ExternalItemUtils.getExternalItemName(dataAttributeDto.getLocalRepresentation().getEnumerated())); // TODO
-                                                                                                                                                                                          // RelatedResourceDto
-                                                                                                                                                                                          // instead of
-                                                                                                                                                                                          // ExternalItemDto
+                form.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumerated()));
                 form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).show();
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 // Facet
@@ -711,11 +707,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             if (TypeRepresentationEnum.ENUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 representationTypeItem.setValue(TypeRepresentationEnum.ENUMERATED.toString());
                 editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, dataAttributeDto.getLocalRepresentation().getEnumerated().getUrn());
-                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, ExternalItemUtils.getExternalItemName(dataAttributeDto.getLocalRepresentation().getEnumerated())); // TODO
-                                                                                                                                                                                                 // RelatedResourceDto
-                                                                                                                                                                                                 // instead
-                                                                                                                                                                                                 // of
-                                                                                                                                                                                                 // ExternalItemDto
+                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumerated()));
             } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
                 // Facet
                 representationTypeItem.setValue(TypeRepresentationEnum.TEXT_FORMAT.toString());
@@ -799,9 +791,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             // Code List
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 dataAttributeDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                // TODO RelatedResourceDto instead of ExternalItemDto
                 dataAttributeDto.getLocalRepresentation().setEnumerated(
-                        StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createExternalItemDto(
+                        StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                 TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)));
                 dataAttributeDto.getLocalRepresentation().setNonEnumerated(null);
                 // Facet

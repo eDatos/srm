@@ -29,7 +29,6 @@ import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
@@ -558,14 +557,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
                 dimensionComponentDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
                 if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                    // TODO RelatedResourceDto instead of ExternalItemDto
                     dimensionComponentDto.getLocalRepresentation().setEnumerated(
-                            StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)) ? null : RelatedResourceUtils.createExternalItemDto(
+                            StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                     TypeExternalArtefactsEnum.CONCEPT_SCHEME, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)));
                 } else {
-                    // TODO RelatedResourceDto instead of ExternalItemDto
                     dimensionComponentDto.getLocalRepresentation().setEnumerated(
-                            StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createExternalItemDto(
+                            StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                     TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)));
                 }
                 dimensionComponentDto.getLocalRepresentation().setNonEnumerated(null);
@@ -647,11 +644,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     // Code List
                     staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated())); // TODO
-                                                                                                                                                                                                   // RelatedResourceDto
-                                                                                                                                                                                                   // instead
-                                                                                                                                                                                                   // of
-                                                                                                                                                                                                   // ExternalItemDto
+                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumerated()));
                         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).show();
                     }
 
@@ -660,11 +653,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     // ConceptScheme
                     staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated())); // TODO
-                                                                                                                                                                                                         // RelatedResourceDto
-                                                                                                                                                                                                         // instead
-                                                                                                                                                                                                         // of
-                                                                                                                                                                                                         // ExternalItemDto
+                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW,
+                                RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumerated()));
                         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).show();
                     }
                 }
@@ -716,19 +706,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 if (TypeExternalArtefactsEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, dimensionComponentDto.getLocalRepresentation().getEnumerated().getUrn());
-                        editionForm
-                                .setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated())); // TODO
-                                                                                                                                                                                                       // RelatedResourceDto
-                                                                                                                                                                                                       // instead
-                                                                                                                                                                                                       // of
-                                                                                                                                                                                                       // ExternalItemDto
+                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW,
+                                RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumerated()));
                     }
                     // ConceptScheme
                 } else if (TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumerated().getType())) {
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, dimensionComponentDto.getLocalRepresentation().getEnumerated().getUrn());
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW,
-                                ExternalItemUtils.getExternalItemName(dimensionComponentDto.getLocalRepresentation().getEnumerated())); // TODO RelatedResourceDto instead of ExternalItemDto
+                                RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumerated()));
                     }
                 }
                 // Facet
