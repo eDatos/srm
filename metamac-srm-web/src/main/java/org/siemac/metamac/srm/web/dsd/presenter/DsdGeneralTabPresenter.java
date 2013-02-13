@@ -230,8 +230,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void sendToProductionValidation(final String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void sendToProductionValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.PRODUCTION_VALIDATION), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -240,14 +240,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSentToProductionValidation()), MessageTypeEnum.SUCCESS);
-                retrieveCompleteDsd(urn);
+                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
             }
         });
     }
 
     @Override
-    public void sendToDiffusionValidation(final String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void sendToDiffusionValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.DIFFUSION_VALIDATION), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -256,14 +256,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
-                retrieveCompleteDsd(urn);
+                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
             }
         });
     }
 
     @Override
-    public void rejectValidation(final String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void rejectValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.VALIDATION_REJECTED), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -272,14 +272,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdRejected()), MessageTypeEnum.SUCCESS);
-                retrieveCompleteDsd(urn);
+                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
             }
         });
     }
 
     @Override
-    public void publishInternally(final String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void publishInternally(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -288,14 +288,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPublishedInternally()), MessageTypeEnum.SUCCESS);
-                retrieveCompleteDsd(urn);
+                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
             }
         });
     }
 
     @Override
-    public void publishExternally(final String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void publishExternally(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.EXTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -304,7 +304,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPublishedExternally()), MessageTypeEnum.SUCCESS);
-                retrieveCompleteDsd(urn);
+                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
             }
         });
     }

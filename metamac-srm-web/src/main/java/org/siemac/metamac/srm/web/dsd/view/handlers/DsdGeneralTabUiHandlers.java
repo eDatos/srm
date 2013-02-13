@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 
 public interface DsdGeneralTabUiHandlers extends CategorisationUiHandlers {
@@ -14,11 +13,11 @@ public interface DsdGeneralTabUiHandlers extends CategorisationUiHandlers {
 
     // Life cycle
 
-    void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);
-    void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus);
-    void rejectValidation(String urn, ProcStatusEnum currentProcStatus);
-    void publishInternally(String urn, ProcStatusEnum currentProcStatus);
-    void publishExternally(String urn, ProcStatusEnum currentProcStatus);
+    void sendToProductionValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
+    void sendToDiffusionValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
+    void rejectValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
+    void publishInternally(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
+    void publishExternally(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
     void versioning(String urn, VersionTypeEnum versionType);
     void cancelValidity(String urn);
 }

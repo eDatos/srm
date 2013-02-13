@@ -14,6 +14,8 @@ public class DataStructureDefinitionDS {
     public static final String DESCRIPTION                      = "dsd-desc";
     public static final String MAINTAINER                       = "dsd-main";
 
+    public static final String RELATED_OPERATION                = "dsd-op";
+
     // LIFE CYCLE
     public static final String PROC_STATUS                      = "dsd-status";
     public static final String FINAL                            = "dsd-final";

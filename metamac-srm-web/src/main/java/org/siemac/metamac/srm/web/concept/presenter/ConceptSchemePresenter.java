@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
@@ -105,7 +104,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
         void setConcepts(List<ItemHierarchyDto> itemHierarchyDtos);
         void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
-        void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
+        void setOperations(GetStatisticalOperationsResult result);
 
         // Categorisations
 
@@ -388,8 +387,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void retrieveStatisticalOperations(int firstResult, int maxResults, String operation) {
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, operation), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+    public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -397,7 +396,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
-                getView().setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
+                getView().setOperations(result);
             }
         });
     }

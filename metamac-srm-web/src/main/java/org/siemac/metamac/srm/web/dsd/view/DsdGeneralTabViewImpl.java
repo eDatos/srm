@@ -189,35 +189,35 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().sendToProductionValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().sendToProductionValidation(dataStructureDefinitionMetamacDto);
             }
         });
         mainFormLayout.getSendToDiffusionValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().sendToDiffusionValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().sendToDiffusionValidation(dataStructureDefinitionMetamacDto);
             }
         });
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().rejectValidation(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().rejectValidation(dataStructureDefinitionMetamacDto);
             }
         });
         mainFormLayout.getPublishInternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto);
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishExternally(dataStructureDefinitionMetamacDto.getUrn(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+                getUiHandlers().publishExternally(dataStructureDefinitionMetamacDto);
             }
         });
         mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {

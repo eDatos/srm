@@ -11,15 +11,11 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class UpdateDsdProcStatus {
 
     @In(1)
-    String                            urn;
+    DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDtoToUpdateStatus;
 
     @In(2)
     ProcStatusEnum                    nextProcStatus;
 
-    @In(3)
-    ProcStatusEnum                    currentProcStatus;
-
     @Out(1)
     DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
-
 }

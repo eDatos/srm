@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDsdWindow;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -84,8 +85,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
             @Override
             public void onClick(ClickEvent event) {
-                newDsdWindow = new NewDsdWindow();
-                newDsdWindow.setUiHandlers(getUiHandlers());
+                newDsdWindow = new NewDsdWindow(getUiHandlers());
                 newDsdWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
@@ -286,6 +286,13 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public void clearSearchSection() {
         searchSectionStack.reset();
+    }
+
+    @Override
+    public void setOperations(GetStatisticalOperationsResult result) {
+        if (newDsdWindow != null) {
+            newDsdWindow.setOperations(result);
+        }
     }
 
     private void showDeleteToolStripButton() {

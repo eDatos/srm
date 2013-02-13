@@ -28,6 +28,7 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionSt
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
@@ -331,10 +332,10 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     }
 
     @Override
-    public void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults) {
+    public void setOperations(GetStatisticalOperationsResult result) {
         if (searchOperationsWindow != null) {
-            searchOperationsWindow.setExternalItems(operations);
-            searchOperationsWindow.refreshSourcePaginationInfo(firstResult, operations.size(), totalResults);
+            searchOperationsWindow.setExternalItems(result.getOperations());
+            searchOperationsWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getOperations().size(), result.getTotalResults());
         }
     }
 

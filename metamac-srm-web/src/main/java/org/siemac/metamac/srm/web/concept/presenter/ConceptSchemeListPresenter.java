@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -77,7 +76,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
         void setConceptSchemePaginatedList(GetConceptSchemesResult conceptSchemesPaginatedList);
         void goToConceptSchemeListLastPageAfterCreate();
-        void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults);
+        void setOperations(GetStatisticalOperationsResult result);
         void clearSearchSection();
     }
 
@@ -185,8 +184,8 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Override
-    public void retrieveStatisticalOperations(int firstResult, int maxResults, String operation) {
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, operation), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+    public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -194,9 +193,8 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
-                getView().setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
+                getView().setOperations(result);
             }
         });
     }
-
 }

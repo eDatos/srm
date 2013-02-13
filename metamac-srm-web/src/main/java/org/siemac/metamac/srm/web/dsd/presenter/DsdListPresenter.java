@@ -18,6 +18,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.criteria.DsdWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
@@ -92,8 +94,9 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         HasRecordClickHandlers getSelectedDsd();
         List<String> getSelectedDsdUrns();
         void onNewDsdCreated();
-
         void clearSearchSection();
+
+        void setOperations(GetStatisticalOperationsResult result);
 
         com.smartgwt.client.widgets.events.HasClickHandlers getDelete();
     }
@@ -281,4 +284,18 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         });
     }
 
+    @Override
+    public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetStatisticalOperationsResult result) {
+                getView().setOperations(result);
+            }
+        });
+    }
 }

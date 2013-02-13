@@ -2,9 +2,6 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import java.util.List;
-
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -12,6 +9,7 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -31,7 +29,6 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
-import com.smartgwt.client.widgets.form.validator.CustomValidator;
 
 public class NewConceptSchemeWindow extends CustomWindow {
 
@@ -79,6 +76,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
                         uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, searchOperationItem.getSearchCriteria());
                     }
                 });
+        searchOperationItem.setRequired(true);
         searchOperationItem.getListGrid().setSelectionType(SelectionStyle.SINGLE);
         searchOperationItem.setSearchAction(new SearchPaginatedAction() {
 
@@ -95,14 +93,6 @@ public class NewConceptSchemeWindow extends CustomWindow {
                 return ConceptSchemeTypeEnum.OPERATION.getName().equals(form.getValueAsString(ConceptSchemeDS.TYPE));
             }
         });
-        CustomValidator customValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                return searchOperationItem.isVisible() ? !(searchOperationItem.getSelectedExternalItem() == null) : true;
-            }
-        };
-        searchOperationItem.setValidators(customValidator);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().conceptSchemeCreate());
 
@@ -118,12 +108,9 @@ public class NewConceptSchemeWindow extends CustomWindow {
         return form.getItem(FIELD_SAVE);
     }
 
-    public void setOperations(List<ExternalItemDto> externalItemsDtos) {
-        ((SearchExternalPaginatedItem) form.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItems(externalItemsDtos);
-    }
-
-    public void refreshOperationsPaginationInfo(int firstResult, int elementsInPage, int totalResults) {
-        ((SearchExternalPaginatedItem) form.getItem(ConceptSchemeDS.RELATED_OPERATION)).refreshPaginationInfo(firstResult, elementsInPage, totalResults);
+    public void setOperations(GetStatisticalOperationsResult result) {
+        ((SearchExternalPaginatedItem) form.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItems(result.getOperations());
+        ((SearchExternalPaginatedItem) form.getItem(ConceptSchemeDS.RELATED_OPERATION)).refreshPaginationInfo(result.getFirstResultOut(), result.getOperations().size(), result.getTotalResults());
     }
 
     public ConceptSchemeMetamacDto getNewConceptSchemeDto() {

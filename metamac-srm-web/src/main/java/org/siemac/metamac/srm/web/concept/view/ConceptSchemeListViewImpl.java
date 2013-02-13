@@ -6,7 +6,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -18,6 +17,7 @@ import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
@@ -237,10 +237,9 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
     }
 
     @Override
-    public void setOperations(List<ExternalItemDto> operations, int firstResult, int totalResults) {
+    public void setOperations(GetStatisticalOperationsResult result) {
         if (newConceptSchemeWindow != null) {
-            newConceptSchemeWindow.setOperations(operations);
-            newConceptSchemeWindow.refreshOperationsPaginationInfo(firstResult, operations.size(), totalResults);
+            newConceptSchemeWindow.setOperations(result);
         }
     }
 

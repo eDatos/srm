@@ -27,26 +27,35 @@ public class UpdateDsdProcStatusActionHandlder extends SecurityActionHandler<Upd
     @Override
     public UpdateDsdProcStatusResult executeSecurityAction(UpdateDsdProcStatusAction action) throws ActionException {
         try {
+            DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDtoToUpdateStatus = action.getDataStructureDefinitionMetamacDtoToUpdateStatus();
+
             DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
             if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getNextProcStatus())) {
-                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.sendDataStructureDefinitionToProductionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.sendDataStructureDefinitionToProductionValidation(ServiceContextHolder.getCurrentServiceContext(),
+                        dataStructureDefinitionMetamacDtoToUpdateStatus.getUrn());
             } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getNextProcStatus())) {
-                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.sendDataStructureDefinitionToDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.sendDataStructureDefinitionToDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(),
+                        dataStructureDefinitionMetamacDtoToUpdateStatus.getUrn());
             } else if (ProcStatusEnum.VALIDATION_REJECTED.equals(action.getNextProcStatus())) {
-                if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getCurrentProcStatus())) {
-                    dataStructureDefinitionMetamacDto = srmCoreServiceFacade.rejectDataStructureDefinitionProductionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-                } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getCurrentProcStatus())) {
-                    dataStructureDefinitionMetamacDto = srmCoreServiceFacade.rejectDataStructureDefinitionDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(dataStructureDefinitionMetamacDtoToUpdateStatus.getLifeCycle().getProcStatus())) {
+                    dataStructureDefinitionMetamacDto = srmCoreServiceFacade.rejectDataStructureDefinitionProductionValidation(ServiceContextHolder.getCurrentServiceContext(),
+                            dataStructureDefinitionMetamacDtoToUpdateStatus.getUrn());
+                } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(dataStructureDefinitionMetamacDtoToUpdateStatus.getLifeCycle().getProcStatus())) {
+                    dataStructureDefinitionMetamacDto = srmCoreServiceFacade.rejectDataStructureDefinitionDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(),
+                            dataStructureDefinitionMetamacDtoToUpdateStatus.getUrn());
                 }
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.publishDataStructureDefinitionInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.publishDataStructureDefinitionInternally(ServiceContextHolder.getCurrentServiceContext(),
+                        dataStructureDefinitionMetamacDtoToUpdateStatus.getUrn());
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.publishDataStructureDefinitionExternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                // Check that the associated statistical operation is externally published
+                // TODO
+                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.publishDataStructureDefinitionExternally(ServiceContextHolder.getCurrentServiceContext(),
+                        dataStructureDefinitionMetamacDtoToUpdateStatus.getUrn());
             }
             return new UpdateDsdProcStatusResult(dataStructureDefinitionMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }
