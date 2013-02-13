@@ -5,43 +5,31 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
+import org.siemac.metamac.srm.web.dsd.widgets.NewDsdWindow;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.Visibility;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.CloseClickEvent;
-import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -58,18 +46,13 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
     private DsdPaginatedListGrid     dsdListGrid;
 
-    private Window                   winModal;
-    private CustomDynamicForm        newDsdForm;
-    private RequiredTextItem         nameItem;
-    private RequiredTextItem         codeItem;
-    private ButtonItem               createDsdButton;
-
     private ToolStripButton          newToolStripButton;
     private ToolStripButton          deleteToolStripButton;
     private ToolStripButton          importToolStripButton;
     private ToolStripButton          exportToolStripButton;
     private ToolStripButton          cancelValidityButton;
 
+    private NewDsdWindow             newDsdWindow;
     private DeleteConfirmationWindow deleteConfirmationWindow;
     private ImportDsdWindow          importDsdWindow;
 
@@ -94,26 +77,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         // List of DSDs
         // ············
 
-        // Modal Form
-
-        nameItem = new RequiredTextItem("name-new-dsd", MetamacSrmWeb.getConstants().nameableArtefactName());
-        nameItem.setWidth(230);
-        codeItem = new RequiredTextItem("id-logic-new-dsd", MetamacSrmWeb.getConstants().identifiableArtefactCode());
-        codeItem.setWidth(230);
-        codeItem.setValidators(SemanticIdentifiersUtils.getDsdIdentifierCustomValidator());
-        createDsdButton = new ButtonItem("create-new-dsd", MetamacSrmWeb.getConstants().dsdCreate());
-        createDsdButton.setColSpan(2);
-        createDsdButton.setAlign(Alignment.CENTER);
-        createDsdButton.setWidth(100);
-
-        newDsdForm = new CustomDynamicForm();
-        newDsdForm.setValidateOnChange(true);
-        newDsdForm.setHeight100();
-        newDsdForm.setWidth100();
-        newDsdForm.setPadding(5);
-        newDsdForm.setLayoutAlign(VerticalAlignment.BOTTOM);
-        newDsdForm.setFields(codeItem, nameItem, createDsdButton);
-
         // ToolStrip
 
         newToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionNew(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.newListGrid().getURL());
@@ -121,24 +84,18 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
             @Override
             public void onClick(ClickEvent event) {
-                winModal = new Window();
-                winModal.setWidth(370);
-                winModal.setHeight(120);
-                winModal.setTitle(MetamacSrmWeb.getConstants().dsdNew());
-                winModal.setShowMinimizeButton(false);
-                winModal.setIsModal(true);
-                winModal.setShowModalMask(true);
-                winModal.setAutoCenter(true);
-                winModal.addCloseClickHandler(new CloseClickHandler() {
+                newDsdWindow = new NewDsdWindow();
+                newDsdWindow.setUiHandlers(getUiHandlers());
+                newDsdWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
-                    public void onCloseClick(CloseClickEvent event) {
-                        winModal.destroy();
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        if (newDsdWindow.validateForm()) {
+                            getUiHandlers().saveDsd(newDsdWindow.getNewDsd());
+                            newDsdWindow.destroy();
+                        }
                     }
                 });
-
-                winModal.addItem(newDsdForm);
-                winModal.show();
             }
         });
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateDsd() ? Visibility.VISIBLE : Visibility.HIDDEN);
@@ -275,32 +232,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public HasRecordClickHandlers getSelectedDsd() {
         return dsdListGrid.getListGrid();
-    }
-
-    @Override
-    public HasClickHandlers getCreateDsd() {
-        return createDsdButton;
-    }
-
-    @Override
-    public boolean validate() {
-        return newDsdForm.validate();
-    }
-
-    @Override
-    public DataStructureDefinitionMetamacDto getNewDsd() {
-        DataStructureDefinitionMetamacDto dsd = new DataStructureDefinitionMetamacDto();
-        dsd.setCode(codeItem.getValueAsString());
-        dsd.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), nameItem.getValueAsString()));
-        dsd.setMaintainer(RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto());
-        dsd.setFinalLogic(false);
-        dsd.setIsExternalReference(false);
-        return dsd;
-    }
-
-    @Override
-    public void closeDsdWindow() {
-        winModal.destroy();
     }
 
     @Override

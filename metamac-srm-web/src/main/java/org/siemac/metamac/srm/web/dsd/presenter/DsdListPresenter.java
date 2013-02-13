@@ -57,9 +57,6 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
-import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 import com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -94,16 +91,11 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionDtos, int firstResult, int totalResults);
         HasRecordClickHandlers getSelectedDsd();
         List<String> getSelectedDsdUrns();
-        DataStructureDefinitionMetamacDto getNewDsd();
         void onNewDsdCreated();
 
         void clearSearchSection();
 
-        HasClickHandlers getCreateDsd();
         com.smartgwt.client.widgets.events.HasClickHandlers getDelete();
-
-        boolean validate();
-        void closeDsdWindow();
     }
 
     @Inject
@@ -137,18 +129,6 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
                 if (event.getFieldNum() != 0) {
                     DsdRecord record = (DsdRecord) event.getRecord();
                     goToDsd(record.getDsd().getUrn());
-                }
-            }
-        }));
-
-        // Save DSD
-        registerHandler(getView().getCreateDsd().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                if (getView().validate()) {
-                    DataStructureDefinitionMetamacDto dsd = getView().getNewDsd();
-                    saveDsd(dsd);
                 }
             }
         }));
@@ -204,12 +184,10 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                getView().closeDsdWindow();
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorSave()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(SaveDsdResult result) {
-                getView().closeDsdWindow();
                 retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSaved()), MessageTypeEnum.SUCCESS);
             }
