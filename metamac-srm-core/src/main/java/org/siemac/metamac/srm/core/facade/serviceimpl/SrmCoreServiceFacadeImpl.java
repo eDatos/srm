@@ -11,12 +11,10 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
-import org.siemac.metamac.core.common.ws.ServicesResolver;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
@@ -821,12 +819,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // ------------------------------------------------------------------------
     // CODELISTS
     // ------------------------------------------------------------------------
-
-    // TODO Remove this method when the relation between structural resources were finished!
-    @Override
-    public List<ExternalItemDto> findCodelists(ServiceContext ctx, String uriConcept) throws MetamacException {
-        return ServicesResolver.findAllCodelists();
-    }
 
     @Override
     public CodelistMetamacDto retrieveCodelistByUrn(ServiceContext ctx, String urn) throws MetamacException {
