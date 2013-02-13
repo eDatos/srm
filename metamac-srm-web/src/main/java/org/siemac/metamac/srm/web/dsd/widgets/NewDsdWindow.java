@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -44,7 +45,7 @@ public class NewDsdWindow extends CustomWindow {
         RequiredTextItem nameItem = new RequiredTextItem(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        searchOperationItem = new SearchExternalPaginatedItem(DataStructureDefinitionDS.RELATED_OPERATION, getConstants().dsdOperation(), FORM_ITEM_CUSTOM_WIDTH + 100, OPERATION_LIST_MAX_RESULTS,
+        searchOperationItem = new SearchExternalPaginatedItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation(), FORM_ITEM_CUSTOM_WIDTH + 100, OPERATION_LIST_MAX_RESULTS,
                 new PaginatedAction() {
 
                     @Override
@@ -82,8 +83,8 @@ public class NewDsdWindow extends CustomWindow {
     }
 
     public void setOperations(GetStatisticalOperationsResult result) {
-        ((SearchExternalPaginatedItem) form.getItem(DataStructureDefinitionDS.RELATED_OPERATION)).setExternalItems(result.getOperations());
-        ((SearchExternalPaginatedItem) form.getItem(DataStructureDefinitionDS.RELATED_OPERATION)).refreshPaginationInfo(result.getFirstResultOut(), result.getOperations().size(),
+        ((SearchExternalPaginatedItem) form.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItems(result.getOperations());
+        ((SearchExternalPaginatedItem) form.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).refreshPaginationInfo(result.getFirstResultOut(), result.getOperations().size(),
                 result.getTotalResults());
     }
 
@@ -94,8 +95,7 @@ public class NewDsdWindow extends CustomWindow {
         dsd.setMaintainer(RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto());
         dsd.setFinalLogic(false);
         dsd.setIsExternalReference(false);
-        // TODO Restore the the related operation is in the DataStructureDefinitionDto
-        // dsd.setRelatedOperation(ExternalItemUtils.removeTitle(((SearchExternalPaginatedItem) form.getItem(DataStructureDefinitionDS.RELATED_OPERATION)).getSelectedExternalItem()));
+        dsd.setStatisticalOperation(ExternalItemUtils.removeTitle(((SearchExternalPaginatedItem) form.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).getSelectedExternalItem()));
         return dsd;
     }
 

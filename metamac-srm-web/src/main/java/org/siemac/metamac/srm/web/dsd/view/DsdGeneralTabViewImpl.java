@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -28,14 +29,20 @@ import org.siemac.metamac.srm.web.dsd.widgets.DsdVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
+import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -46,6 +53,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
@@ -53,6 +61,8 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -86,8 +96,10 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private AnnotationsPanel                  annotationsEditionPanel;
 
     private CategorisationsPanel              categorisationsPanel;
+    private SearchExternalItemWindow          searchOperationWindow;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
+    private ExternalItemDto                   statisticalOperation;
 
     @Inject
     public DsdGeneralTabViewImpl() {
@@ -254,27 +266,28 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().formIdentifiers());
-        ViewTextItem staticIdLogic = new ViewTextItem(DataStructureDefinitionDS.CODE, MetamacSrmWeb.getConstants().dsdIdentifier());
-        ViewTextItem staticUriItem = new ViewTextItem(DataStructureDefinitionDS.URI, MetamacSrmWeb.getConstants().identifiableArtefactUri());
-        ViewTextItem staticUrnItem = new ViewTextItem(DataStructureDefinitionDS.URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());
-        ViewTextItem staticUrnProviderItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, MetamacSrmWeb.getConstants().identifiableArtefactUrnProvider());
-        ViewTextItem staticVersion = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, MetamacSrmWeb.getConstants().maintainableArtefactVersionLogic());
+        ViewTextItem staticIdLogic = new ViewTextItem(DataStructureDefinitionDS.CODE, getConstants().dsdIdentifier());
+        ViewTextItem staticUriItem = new ViewTextItem(DataStructureDefinitionDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem staticUrnItem = new ViewTextItem(DataStructureDefinitionDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem staticUrnProviderItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        ViewTextItem staticVersion = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         identifiersForm.setFields(staticIdLogic, staticUriItem, staticUrnItem, staticUrnProviderItem, staticVersion);
 
         // General Form
-        generalForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDetails());
-        ViewMultiLanguageTextItem staticNameItem = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
-        ViewMultiLanguageTextItem staticDescriptionItem = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.DESCRIPTION, MetamacSrmWeb.getConstants().nameableArtefactDescription());
-        ViewTextItem staticAgency = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, MetamacSrmWeb.getConstants().maintainableArtefactMaintainer());
-        generalForm.setFields(staticNameItem, staticDescriptionItem, staticAgency);
+        generalForm = new GroupDynamicForm(getConstants().dsdDetails());
+        ViewMultiLanguageTextItem staticNameItem = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.NAME, getConstants().nameableArtefactName());
+        ViewMultiLanguageTextItem staticDescriptionItem = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        ViewTextItem staticAgency = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        ViewTextItem relatedOperation = new ViewTextItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        generalForm.setFields(staticNameItem, staticDescriptionItem, staticAgency, relatedOperation);
 
         // Status Form
-        statusForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdStatus());
+        statusForm = new GroupDynamicForm(getConstants().dsdStatus());
         ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
-        ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, MetamacSrmWeb.getConstants().maintainableArtefactValidFrom());
-        ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().maintainableArtefactValidTo());
-        ViewTextItem staticFinalItem = new ViewTextItem(DataStructureDefinitionDS.FINAL, MetamacSrmWeb.getConstants().maintainableArtefactFinalLogic());
+        ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
+        ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, getConstants().maintainableArtefactValidTo());
+        ViewTextItem staticFinalItem = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         statusForm.setFields(replacedBy, replaceTo, validFrom, validTo, staticFinalItem, isExternalReference);
 
@@ -324,7 +337,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
      */
     private void createEditionForm() {
         // Identifiers Form
-        identifiersEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().formIdentifiers());
+        identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
 
         RequiredTextItem code = new RequiredTextItem(DataStructureDefinitionDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getDsdIdentifierCustomValidator());
@@ -347,28 +360,29 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             }
         });
 
-        ViewTextItem staticUriItemEdit = new ViewTextItem(DataStructureDefinitionDS.URI, MetamacSrmWeb.getConstants().identifiableArtefactUri());
-        ViewTextItem staticUrnItemEdit = new ViewTextItem(DataStructureDefinitionDS.URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());
-        ViewTextItem staticUrnProviderEditItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, MetamacSrmWeb.getConstants().identifiableArtefactUrnProvider());
-        ViewTextItem staticVersionEdit = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, MetamacSrmWeb.getConstants().maintainableArtefactVersionLogic());
+        ViewTextItem staticUriItemEdit = new ViewTextItem(DataStructureDefinitionDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem staticUrnItemEdit = new ViewTextItem(DataStructureDefinitionDS.URN, getConstants().identifiableArtefactUrn());
+        ViewTextItem staticUrnProviderEditItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
+        ViewTextItem staticVersionEdit = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         identifiersEditionForm.setFields(code, staticCode, staticUriItemEdit, staticUrnItemEdit, staticUrnProviderEditItem, staticVersionEdit);
 
         // General Form
-        generalEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDetails());
-        MultiLanguageTextItem nameItem = new MultiLanguageTextItem(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
+        generalEditionForm = new GroupDynamicForm(getConstants().dsdDetails());
+        MultiLanguageTextItem nameItem = new MultiLanguageTextItem(DataStructureDefinitionDS.NAME, getConstants().nameableArtefactName());
         nameItem.setRequired(true);
-        MultiLanguageTextAreaItem descriptionItem = new MultiLanguageTextAreaItem(DataStructureDefinitionDS.DESCRIPTION, MetamacSrmWeb.getConstants().nameableArtefactDescription());
-        ViewTextItem staticAgencyEdit = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, MetamacSrmWeb.getConstants().maintainableArtefactMaintainer());
-        generalEditionForm.setFields(nameItem, descriptionItem, staticAgencyEdit);
+        MultiLanguageTextAreaItem descriptionItem = new MultiLanguageTextAreaItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        ViewTextItem staticAgencyEdit = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        SearchViewTextItem operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        generalEditionForm.setFields(nameItem, descriptionItem, staticAgencyEdit, operationItem);
 
         // Status Form
-        statusEditionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdStatus());
+        statusEditionForm = new GroupDynamicForm(getConstants().dsdStatus());
         ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
-        ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, MetamacSrmWeb.getConstants().maintainableArtefactValidFrom());
-        ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, MetamacSrmWeb.getConstants().maintainableArtefactValidTo());
-        ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, MetamacSrmWeb.getConstants().maintainableArtefactFinalLogic());
-        ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, MetamacSrmWeb.getConstants().maintainableArtefactIsExternalReference());
+        ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
+        ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, getConstants().maintainableArtefactValidTo());
+        ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
+        ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         statusEditionForm.setFields(replacedBy, replaceTo, validFrom, validTo, staticFinalItemEdit, isExternalReference);
 
         // Version responsibility
@@ -419,6 +433,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     @Override
     public void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
         this.dataStructureDefinitionMetamacDto = dataStructureDefinitionMetamacDto;
+        this.statisticalOperation = dataStructureDefinitionMetamacDto.getStatisticalOperation();
 
         // Security
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDsd(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus()));
@@ -432,6 +447,14 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Clear errors
         identifiersEditionForm.clearErrors(true);
         generalEditionForm.clearErrors(true);
+    }
+
+    @Override
+    public void setOperations(GetStatisticalOperationsResult result) {
+        if (searchOperationWindow != null) {
+            searchOperationWindow.setExternalItems(result.getOperations());
+            searchOperationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getOperations().size(), result.getTotalResults());
+        }
     }
 
     @Override
@@ -461,6 +484,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         generalForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
         generalForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
         generalForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
+        generalForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Status form
         statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
@@ -511,6 +535,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         generalEditionForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
         generalEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
         generalEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
+        generalEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Status form
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
@@ -559,6 +584,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General form
         dataStructureDefinitionMetamacDto.setName((InternationalStringDto) generalEditionForm.getValue(DataStructureDefinitionDS.NAME));
         dataStructureDefinitionMetamacDto.setDescription((InternationalStringDto) generalEditionForm.getValue(DataStructureDefinitionDS.DESCRIPTION));
+        dataStructureDefinitionMetamacDto.setStatisticalOperation(ExternalItemUtils.removeTitle(statisticalOperation));
 
         // Visualisation metadata
         dataStructureDefinitionMetamacDto.setAutoOpen(((BooleanSelectItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.AUTO_OPEN)).getBooleanValue());
@@ -611,5 +637,45 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     private void setEditionMode() {
         mainFormLayout.setEditionMode();
+    }
+
+    private SearchViewTextItem createStatisticalOperationItem(String name, String title) {
+        SearchViewTextItem operationItem = new SearchViewTextItem(name, title);
+        operationItem.setRequired(true);
+        operationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                final int OPERATION_FIRST_RESULT = 0;
+                final int OPERATION_MAX_RESULTS = 16;
+                searchOperationWindow = new SearchExternalItemWindow(getConstants().dsdSearchOperations(), OPERATION_MAX_RESULTS, new PaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, searchOperationWindow.getSearchCriteria());
+                    }
+                });
+                getUiHandlers().retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
+                searchOperationWindow.getListGrid().setSelectionType(SelectionStyle.SINGLE); // Only one statistical operation can be selected
+                searchOperationWindow.getExternalListGridItem().setSearchAction(new SearchPaginatedAction() {
+
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String code) {
+                        getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, code);
+                    }
+                });
+                searchOperationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        statisticalOperation = searchOperationWindow.getSelectedExternalItem();
+                        searchOperationWindow.destroy();
+                        generalEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(statisticalOperation));
+                        generalEditionForm.validate(false);
+                    }
+                });
+            }
+        });
+        return operationItem;
     }
 }

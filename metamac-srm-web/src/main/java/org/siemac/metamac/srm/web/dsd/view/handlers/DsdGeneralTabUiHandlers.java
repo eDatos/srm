@@ -11,6 +11,8 @@ public interface DsdGeneralTabUiHandlers extends CategorisationUiHandlers {
     void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
     void goToDsd(String urn);
 
+    void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
+
     // Life cycle
 
     void sendToProductionValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);

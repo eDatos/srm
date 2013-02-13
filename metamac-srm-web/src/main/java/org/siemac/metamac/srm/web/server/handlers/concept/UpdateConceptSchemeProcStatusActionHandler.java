@@ -1,8 +1,5 @@
 package org.siemac.metamac.srm.web.server.handlers.concept;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operation;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.ProcStatus;
@@ -18,7 +15,6 @@ import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
-import org.siemac.metamac.web.common.shared.exception.MetamacWebExceptionItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,12 +57,8 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
                     if (conceptSchemeToUpdateStatus.getRelatedOperation() != null) {
                         Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(conceptSchemeToUpdateStatus.getRelatedOperation().getCode());
                         if (!ProcStatus.PUBLISH_EXTERNALLY.equals(operation.getProcStatus())) {
-                            MetamacWebExceptionItem metamacWebExceptionItem = new MetamacWebExceptionItem(
-                                    WebMessageExceptionsConstants.CONCEPT_SCHEME_ERROR_RELATED_OPERATION_NOT_EXTERNALLY_PUBLISHED,
+                            throw new MetamacWebException(WebMessageExceptionsConstants.MAINTAINABLE_ARTEFACT_ERROR_RELATED_OPERATION_NOT_EXTERNALLY_PUBLISHED,
                                     "Concept scheme cannot be externally published because the related operation is not externally published");
-                            List<MetamacWebExceptionItem> metamacExceptionItems = new ArrayList<MetamacWebExceptionItem>();
-                            metamacExceptionItems.add(metamacWebExceptionItem);
-                            throw new MetamacWebException(metamacExceptionItems);
                         }
                     }
                 }
