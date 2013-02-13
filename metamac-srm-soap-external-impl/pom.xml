@@ -100,6 +100,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.siemac.metamac</groupId>
+            <artifactId>metamac-common-test</artifactId>
+            <version>${metamac-common-test.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>metamac-core-common</artifactId>
+                    <groupId>org.siemac.metamac</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>        
+        <dependency>
             <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
             <artifactId>statistic-sdmx-srm-core</artifactId>
             <type>test-jar</type>
