@@ -2,19 +2,19 @@ package org.siemac.metamac.srm.rest.internal.v1_0.category.utils;
 
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.DoMocks;
+import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDoMocks;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 
-public class CategoriesDoMocks extends DoMocks {
+public class CategoriesDoMocks {
 
     public static CategorySchemeVersionMetamac mockCategoryScheme(String agencyID, String resourceID, String version) {
-        CategorySchemeVersionMetamac target = new CategorySchemeVersionMetamac();
-        target.setLifeCycleMetadata(mockLifecycleExternallyPublished());
-        mockItemSchemeVersion(target, resourceID, version, agencyID);
-        return target;
+        return CategoriesMetamacDoMocks.mockCategorySchemeFixedValues(agencyID, resourceID, version);
+    }
+
+    public static CategoryMetamac mockCategory(String resourceID, CategorySchemeVersionMetamac categoryScheme, CategoryMetamac parent) {
+        return CategoriesMetamacDoMocks.mockCategoryFixedValues(resourceID, categoryScheme, parent);
     }
 
     public static CategorySchemeVersionMetamac mockCategorySchemeWithCategories(String agencyID, String resourceID, String version) {
@@ -40,16 +40,10 @@ public class CategoriesDoMocks extends DoMocks {
         return categorySchemeVersion;
     }
 
-    public static CategoryMetamac mockCategory(String resourceID, ItemSchemeVersion itemSchemeVersion, CategoryMetamac parent) {
-        CategoryMetamac target = new CategoryMetamac();
-        mockItem(target, resourceID, itemSchemeVersion, parent);
-        return target;
-    }
-
     public static Categorisation mockCategorisation(String agencyID, String resourceID, String version) {
         Categorisation target = new Categorisation();
         target.setMaintainableArtefact(new MaintainableArtefact());
-        mockMaintainableArtefact(target.getMaintainableArtefact(), resourceID, version, agencyID);
+        CategoriesMetamacDoMocks.mockMaintainableArtefactFixedValues(target.getMaintainableArtefact(), agencyID, resourceID, version);
 
         CategorySchemeVersionMetamac categorySchemeVersionMetamac = mockCategoryScheme(agencyID, "categoryScheme-" + resourceID, version);
         target.setArtefactCategorised(categorySchemeVersionMetamac.getMaintainableArtefact());

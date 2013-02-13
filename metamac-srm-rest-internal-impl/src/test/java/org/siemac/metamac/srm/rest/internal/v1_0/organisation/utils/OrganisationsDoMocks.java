@@ -4,20 +4,23 @@ import static org.junit.Assert.fail;
 
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.DoMocks;
+import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDoMocks;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
-public class OrganisationsDoMocks extends DoMocks {
+public class OrganisationsDoMocks {
 
     public static OrganisationSchemeVersionMetamac mockOrganisationScheme(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
-        OrganisationSchemeVersionMetamac target = new OrganisationSchemeVersionMetamac();
-        target.setOrganisationSchemeType(type);
-        target.setLifeCycleMetadata(mockLifecycleExternallyPublished());
-        mockItemSchemeVersion(target, resourceID, version, agencyID);
-        return target;
+        return OrganisationsMetamacDoMocks.mockOrganisationSchemeFixedValues(agencyID, resourceID, version, type);
+    }
+
+    public static OrganisationMetamac mockOrganisation(String resourceID, OrganisationSchemeVersionMetamac organisationScheme, OrganisationMetamac parent, OrganisationTypeEnum type) {
+        Boolean organisationsCanHaveChildren = OrganisationTypeEnum.ORGANISATION_UNIT.equals(type);
+        if (!organisationsCanHaveChildren && parent != null) {
+            fail("parent must be null because this organisation type can not have children");
+        }
+        return OrganisationsMetamacDoMocks.mockOrganisationFixedValues(resourceID, organisationScheme, parent, type);
     }
 
     public static OrganisationSchemeVersionMetamac mockOrganisationSchemeWithOrganisations(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
@@ -47,19 +50,6 @@ public class OrganisationsDoMocks extends DoMocks {
         }
 
         return organisationSchemeVersion;
-    }
-
-    public static OrganisationMetamac mockOrganisation(String resourceID, ItemSchemeVersion itemSchemeVersion, OrganisationMetamac parent, OrganisationTypeEnum type) {
-
-        Boolean organisationsCanHaveChildren = OrganisationTypeEnum.ORGANISATION_UNIT.equals(type);
-        if (!organisationsCanHaveChildren && parent != null) {
-            fail("parent must be null because this organisation type can not have children");
-        }
-
-        OrganisationMetamac target = new OrganisationMetamac();
-        target.setOrganisationType(type);
-        mockItem(target, resourceID, itemSchemeVersion, parent);
-        return target;
     }
 
     private static OrganisationTypeEnum guessOrganisationTypeEnum(OrganisationSchemeTypeEnum schemeType) {

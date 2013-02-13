@@ -3,33 +3,19 @@ package org.siemac.metamac.srm.rest.internal.v1_0.concept.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.ent.domain.ExternalItem;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks;
-import org.siemac.metamac.srm.rest.internal.v1_0.utils.DoMocks;
+import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
-import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
-import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
-import com.arte.statistic.sdmx.srm.core.base.domain.TextFormatRepresentation;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
-
-public class ConceptsDoMocks extends DoMocks {
+public class ConceptsDoMocks {
 
     public static ConceptSchemeVersionMetamac mockConceptScheme(String agencyID, String resourceID, String version) {
-        ConceptSchemeVersionMetamac target = new ConceptSchemeVersionMetamac();
-        target.setType(ConceptSchemeTypeEnum.OPERATION);
-        target.setRelatedOperation(mockOperationExternalItem("operation-" + resourceID));
-        target.setLifeCycleMetadata(mockLifecycleExternallyPublished());
-        mockItemSchemeVersion(target, resourceID, version, agencyID);
-        return target;
+        return ConceptsMetamacDoMocks.mockConceptSchemeFixedValues(agencyID, resourceID, version);
+    }
+
+    public static ConceptMetamac mockConcept(String resourceID, ConceptSchemeVersionMetamac conceptScheme, ConceptMetamac parent) {
+        return ConceptsMetamacDoMocks.mockConceptFixedValues(resourceID, conceptScheme, parent);
     }
 
     public static ConceptSchemeVersionMetamac mockConceptSchemeWithConcepts(String agencyID, String resourceID, String version) {
@@ -74,24 +60,7 @@ public class ConceptsDoMocks extends DoMocks {
         return target;
     }
 
-    public static ConceptMetamac mockConcept(String resourceID, ItemSchemeVersion itemSchemeVersion, ConceptMetamac parent) {
-        ConceptMetamac target = new ConceptMetamac();
-        target.setPluralName(mockInternationalString("pluralName", resourceID));
-        target.setAcronym(mockInternationalString("acronym", resourceID));
-        target.setDescriptionSource(mockInternationalString("descriptionSource", resourceID));
-        target.setContext(mockInternationalString("context", resourceID));
-        target.setDocMethod(mockInternationalString("docMethod", resourceID));
-        target.setDerivation(mockInternationalString("derivation", resourceID));
-        target.setLegalActs(mockInternationalString("legalActs", resourceID));
-        target.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
-        target.setType(mockConceptType("conceptType1"));
-        target.setVariable(CodesDoMocks.mockVariable("variable1"));
-        target.setCoreRepresentation(mockRepresentation(TypeRepresentationEnum.ENUMERATED));
-        mockItem(target, resourceID, itemSchemeVersion, parent);
-        return target;
-    }
-
-    public static ConceptMetamac mockConceptWithConceptRelations(String resourceID, ItemSchemeVersion itemSchemeVersion, ConceptMetamac parent) {
+    public static ConceptMetamac mockConceptWithConceptRelations(String resourceID, ConceptSchemeVersionMetamac itemSchemeVersion, ConceptMetamac parent) {
         ConceptMetamac target = mockConcept(resourceID, itemSchemeVersion, parent);
         target.setConceptExtends(mockConcept("1_conceptExtends1", mockConceptScheme("agencyID1", "resourceID11", "01.000"), null));
         target.addRoleConcept(mockConcept("1_conceptRole1", mockConceptScheme("agencyID1", "resourceID22", "02.000"), null));
@@ -102,53 +71,15 @@ public class ConceptsDoMocks extends DoMocks {
         return target;
     }
 
+    public static ConceptType mockConceptType(String identifier) {
+        return ConceptsMetamacDoMocks.mockConceptTypeFixedValues(identifier);
+    }
+
     public static List<ConceptType> mockConceptTypes() {
         List<ConceptType> targets = new ArrayList<ConceptType>();
         targets.add(mockConceptType("conceptType1"));
         targets.add(mockConceptType("conceptType2"));
         targets.add(mockConceptType("conceptType3"));
         return targets;
-    }
-
-    private static ConceptType mockConceptType(String identifier) {
-        ConceptType target = new ConceptType();
-        target.setIdentifier(identifier);
-        target.setDescription(mockInternationalString("description", identifier));
-        return target;
-    }
-
-    private static ExternalItem mockOperationExternalItem(String code) {
-        ExternalItem target = new ExternalItem();
-        target.setCode(code);
-        target.setUri(code);
-        target.setUrn("urn:" + code);
-        target.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
-        target.setManagementAppUrl("managementAppUrl" + code);
-        target.setTitle(mockInternationalString("title", code));
-        return target;
-    }
-
-    private static Representation mockRepresentation(TypeRepresentationEnum type) {
-        if (TypeRepresentationEnum.TEXT_FORMAT.equals(type)) {
-            return mockTextFormatRepresentation();
-        } else if (TypeRepresentationEnum.ENUMERATED.equals(type)) {
-            return mockRepresentationEnumerated();
-        } else {
-            return null;
-        }
-    }
-
-    private static EnumeratedRepresentation mockRepresentationEnumerated() {
-        EnumeratedRepresentation enumeratedRepresentation = new EnumeratedRepresentation();
-        enumeratedRepresentation.setEnumeratedCodeList(CodesDoMocks.mockCodelist("SDMX", "CodelistMock", "1.0"));
-        return enumeratedRepresentation;
-    }
-
-    private static TextFormatRepresentation mockTextFormatRepresentation() {
-        TextFormatRepresentation textFormatRepresentation = new TextFormatRepresentation();
-        Facet notEnumerated = new Facet(FacetValueTypeEnum.STRING_FVT);
-        notEnumerated.setPatternFT("yyyy");
-        textFormatRepresentation.setNonEnumerated(notEnumerated);
-        return textFormatRepresentation;
     }
 }

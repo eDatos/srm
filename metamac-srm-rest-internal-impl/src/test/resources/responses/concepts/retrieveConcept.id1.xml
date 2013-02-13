@@ -25,7 +25,7 @@
     </structure:Parent>
     <structure:CoreRepresentation>
         <structure:Enumeration>
-            <URN>urn:CodelistMock:1.0</URN>
+            <URN>urn:codelist01:01.000</URN>
         </structure:Enumeration>
     </structure:CoreRepresentation>
     <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/item1"/>
