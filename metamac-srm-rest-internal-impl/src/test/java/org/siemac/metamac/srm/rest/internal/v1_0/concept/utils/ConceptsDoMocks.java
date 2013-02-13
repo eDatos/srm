@@ -140,11 +140,7 @@ public class ConceptsDoMocks extends DoMocks {
 
     private static EnumeratedRepresentation mockRepresentationEnumerated() {
         EnumeratedRepresentation enumeratedRepresentation = new EnumeratedRepresentation();
-        enumeratedRepresentation.setEnumerated(new ExternalItem());
-        enumeratedRepresentation.getEnumerated().setCode("enumeratedRepresentation");
-        enumeratedRepresentation.getEnumerated().setUri("uriEnumerated");
-        enumeratedRepresentation.getEnumerated().setUrn("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX:CodelistMock(1.0)");
-        enumeratedRepresentation.getEnumerated().setType(TypeExternalArtefactsEnum.CODELIST);
+        enumeratedRepresentation.setEnumeratedCodeList(CodesDoMocks.mockCodelist("SDMX", "CodelistMock", "1.0"));
         return enumeratedRepresentation;
     }
 
