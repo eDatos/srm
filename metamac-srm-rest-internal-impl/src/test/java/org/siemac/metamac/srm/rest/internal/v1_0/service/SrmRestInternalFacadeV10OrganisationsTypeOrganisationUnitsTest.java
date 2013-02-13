@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.Test;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnit;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
@@ -33,7 +34,6 @@ import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest extends SrmRestInternalFacadeV10OrganisationsTest {
 
@@ -82,12 +82,14 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     }
 
     @Test
-    public void testFindOrganisationUnitSchemesByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest.class.getResourceAsStream("/responses/organisations/findOrganisationUnitSchemes.byAgency.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindOrganisationUnitSchemesByAgencyTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        OrganisationUnitSchemes organisationUnitSchemes = getSrmRestInternalFacadeClientXml().findOrganisationUnitSchemes(agencyID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/organisationunitschemes/" + agencyID + "?limit=4&offset=4", organisationUnitSchemes.getSelfLink());
+        assertEquals(getApiEndpoint() + "/organisationunitschemes/" + agencyID + "?limit=4&offset=0", organisationUnitSchemes.getFirstLink());
+        assertEquals(getApiEndpoint() + "/organisationunitschemes/" + agencyID + "?limit=4&offset=0", organisationUnitSchemes.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/organisationunitschemes/" + agencyID + "?limit=4&offset=36", organisationUnitSchemes.getLastLink());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, organisationUnitSchemes.getKind());
     }
 
     @Test
@@ -123,13 +125,15 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     }
 
     @Test
-    public void testFindOrganisationUnitSchemesByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest.class
-                .getResourceAsStream("/responses/organisations/findOrganisationUnitSchemes.byAgencyResource.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindOrganisationUnitSchemesByAgencyAndResourceTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        OrganisationUnitSchemes organisationUnitSchemes = getSrmRestInternalFacadeClientXml().findOrganisationUnitSchemes(agencyID, resourceID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/organisationunitschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=4", organisationUnitSchemes.getSelfLink());
+        assertEquals(getApiEndpoint() + "/organisationunitschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", organisationUnitSchemes.getFirstLink());
+        assertEquals(getApiEndpoint() + "/organisationunitschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", organisationUnitSchemes.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/organisationunitschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=36", organisationUnitSchemes.getLastLink());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, organisationUnitSchemes.getKind());
     }
 
     @Test

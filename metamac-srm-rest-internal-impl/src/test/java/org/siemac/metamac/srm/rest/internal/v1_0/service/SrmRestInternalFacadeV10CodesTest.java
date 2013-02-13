@@ -41,6 +41,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
@@ -54,8 +55,6 @@ import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks;
-
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 
 public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10BaseTest {
 
@@ -97,21 +96,14 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     }
 
     @Test
-    public void testFindCodelistsByAgency() throws Exception {
-        testFindCodelists(AGENCY_1, null, null, null, null, null, null);
-        testFindCodelists(AGENCY_1, null, null, null, "0", null, null);
-        testFindCodelists(AGENCY_1, null, null, "2", "0", null, null);
-        testFindCodelists(AGENCY_1, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindCodelists(AGENCY_1, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
-    }
-
-    @Test
-    public void testFindCodelistsByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodelists.byAgency.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindCodelistsByAgencyTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        Codelists codelists = getSrmRestInternalFacadeClientXml().findCodelists(agencyID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "?limit=4&offset=4", codelists.getSelfLink());
+        assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "?limit=4&offset=0", codelists.getFirstLink());
+        assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "?limit=4&offset=0", codelists.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "?limit=4&offset=36", codelists.getLastLink());
+        assertEquals(RestInternalConstants.KIND_CODELISTS, codelists.getKind());
     }
 
     @Test
@@ -146,12 +138,15 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     }
 
     @Test
-    public void testFindCodelistsByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodelists.byAgencyResource.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindCodelistsByAgencyAndResourceTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        Codelists codelists = getSrmRestInternalFacadeClientXml().findCodelists(agencyID, resourceID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "/" + resourceID + "?limit=4&offset=4", codelists.getSelfLink());
+        assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "/" + resourceID + "?limit=4&offset=0", codelists.getFirstLink());
+        assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "/" + resourceID + "?limit=4&offset=0", codelists.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "/" + resourceID + "?limit=4&offset=36", codelists.getLastLink());
+        assertEquals(RestInternalConstants.KIND_CODELISTS, codelists.getKind());
     }
 
     @Test

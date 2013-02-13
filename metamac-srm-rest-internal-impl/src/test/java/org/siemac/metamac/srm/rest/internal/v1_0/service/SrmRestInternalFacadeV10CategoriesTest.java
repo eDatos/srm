@@ -41,6 +41,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categories;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Category;
@@ -54,8 +55,6 @@ import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks;
-
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 
 public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacadeV10BaseTest {
 
@@ -106,14 +105,15 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     }
 
     @Test
-    public void testFindCategorySchemesByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategorySchemes.byAgency.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindCategorySchemesByAgencyTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        CategorySchemes categorySchemes = getSrmRestInternalFacadeClientXml().findCategorySchemes(agencyID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/categoryschemes/" + agencyID + "?limit=4&offset=4", categorySchemes.getSelfLink());
+        assertEquals(getApiEndpoint() + "/categoryschemes/" + agencyID + "?limit=4&offset=0", categorySchemes.getFirstLink());
+        assertEquals(getApiEndpoint() + "/categoryschemes/" + agencyID + "?limit=4&offset=0", categorySchemes.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/categoryschemes/" + agencyID + "?limit=4&offset=36", categorySchemes.getLastLink());
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categorySchemes.getKind());
     }
-
     @Test
     public void testFindCategorySchemesByAgencyErrorWildcard() throws Exception {
         try {
@@ -146,12 +146,15 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     }
 
     @Test
-    public void testFindCategorySchemesByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategorySchemes.byAgencyResource.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindCategorySchemesByAgencyAndResourceTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        CategorySchemes categorySchemes = getSrmRestInternalFacadeClientXml().findCategorySchemes(agencyID, resourceID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/categoryschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=4", categorySchemes.getSelfLink());
+        assertEquals(getApiEndpoint() + "/categoryschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", categorySchemes.getFirstLink());
+        assertEquals(getApiEndpoint() + "/categoryschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", categorySchemes.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/categoryschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=36", categorySchemes.getLastLink());
+        assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categorySchemes.getKind());
     }
 
     @Test

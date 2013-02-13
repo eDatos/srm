@@ -97,12 +97,14 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
     }
 
     @Test
-    public void testFindCategorisationsByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10CategorisationsTest.class.getResourceAsStream("/responses/categories/findCategorisations.byAgency.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindCategorisationsByAgencyTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        Categorisations categorisations = getSrmRestInternalFacadeClientXml().findCategorisations(agencyID, null, null, "3", "3");
+        assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "?limit=3&offset=3", categorisations.getSelfLink());
+        assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "?limit=3&offset=0", categorisations.getFirstLink());
+        assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "?limit=3&offset=0", categorisations.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "?limit=3&offset=27", categorisations.getLastLink());
+        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisations.getKind());
     }
 
     @Test
@@ -137,12 +139,15 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
     }
 
     @Test
-    public void testFindCategorisationsByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, CATEGORISATION_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10CategorisationsTest.class.getResourceAsStream("/responses/categories/findCategorisations.byAgencyResource.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindCategorisationsByAgencyAndResourceTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = CATEGORISATION_1_CODE;
+        Categorisations categorisations = getSrmRestInternalFacadeClientXml().findCategorisations(agencyID, resourceID, null, null, "3", "3");
+        assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "/" + resourceID + "?limit=3&offset=3", categorisations.getSelfLink());
+        assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "/" + resourceID + "?limit=3&offset=0", categorisations.getFirstLink());
+        assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "/" + resourceID + "?limit=3&offset=0", categorisations.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "/" + resourceID + "?limit=3&offset=27", categorisations.getLastLink());
+        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisations.getKind());
     }
 
     @Test

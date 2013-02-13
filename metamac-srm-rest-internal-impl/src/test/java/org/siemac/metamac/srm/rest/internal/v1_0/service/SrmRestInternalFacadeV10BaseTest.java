@@ -15,11 +15,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.siemac.metamac.common.test.utils.ConditionalCriteriaUtils;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
 import org.siemac.metamac.rest.constants.RestConstants;
+import org.siemac.metamac.rest.constants.RestEndpointsConstants;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.springframework.context.ApplicationContext;
 
@@ -32,6 +34,7 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
     protected String                        baseApi            = jaxrsServerAddress + "/v1.0";
     protected static ApplicationContext     applicationContext = null;
     private static SrmRestInternalFacadeV10 srmRestInternalFacadeClientXml;
+    private static String                   apiEndpointv10;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @BeforeClass
@@ -54,6 +57,9 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
 
     @Before
     public void setUp() throws MetamacException {
+        ConfigurationService configurationService = applicationContext.getBean(ConfigurationService.class);
+        apiEndpointv10 = configurationService.getProperty(RestEndpointsConstants.SRM_INTERNAL_API) + "/v1.0";
+
         resetMocks();
     }
 
@@ -131,6 +137,10 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
     protected String getItemIdFromConditionalCriteria(List<ConditionalCriteria> conditions, NameableArtefactProperty nameableArtefactProperty) {
         ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Or, nameableArtefactProperty.code());
         return conditionalCriteria != null ? (String) conditionalCriteria.getFirstOperant() : null;
+    }
+
+    protected String getApiEndpoint() {
+        return apiEndpointv10;
     }
 
     protected abstract void resetMocks() throws MetamacException;

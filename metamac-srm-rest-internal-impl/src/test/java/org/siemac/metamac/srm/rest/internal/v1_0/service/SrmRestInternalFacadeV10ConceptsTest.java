@@ -41,6 +41,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme;
@@ -55,8 +56,6 @@ import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
-
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
 
 public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10BaseTest {
 
@@ -107,12 +106,14 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testFindConceptSchemesByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.byAgency.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindConceptSchemesByAgencyTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "?limit=4&offset=4", conceptSchemes.getSelfLink());
+        assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "?limit=4&offset=0", conceptSchemes.getFirstLink());
+        assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "?limit=4&offset=0", conceptSchemes.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "?limit=4&offset=36", conceptSchemes.getLastLink());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
     }
 
     @Test
@@ -147,12 +148,15 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     @Test
-    public void testFindConceptSchemesByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptSchemes.byAgencyResource.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindConceptSchemesByAgencyAndResourceTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        ConceptSchemes conceptSchemes = getSrmRestInternalFacadeClientXml().findConceptSchemes(agencyID, resourceID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=4", conceptSchemes.getSelfLink());
+        assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", conceptSchemes.getFirstLink());
+        assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", conceptSchemes.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=36", conceptSchemes.getLastLink());
+        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
     }
 
     @Test

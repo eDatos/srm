@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.Test;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProvider;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderSchemes;
@@ -33,7 +34,6 @@ import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends SrmRestInternalFacadeV10OrganisationsTest {
 
@@ -82,12 +82,14 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     }
 
     @Test
-    public void testFindDataProviderSchemesByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest.class.getResourceAsStream("/responses/organisations/findDataProviderSchemes.byAgency.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindDataProvidersByAgencyTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        DataProviderSchemes dataProvidersSchemes = getSrmRestInternalFacadeClientXml().findDataProviderSchemes(agencyID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/dataproviderschemes/" + agencyID + "?limit=4&offset=4", dataProvidersSchemes.getSelfLink());
+        assertEquals(getApiEndpoint() + "/dataproviderschemes/" + agencyID + "?limit=4&offset=0", dataProvidersSchemes.getFirstLink());
+        assertEquals(getApiEndpoint() + "/dataproviderschemes/" + agencyID + "?limit=4&offset=0", dataProvidersSchemes.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/dataproviderschemes/" + agencyID + "?limit=4&offset=36", dataProvidersSchemes.getLastLink());
+        assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, dataProvidersSchemes.getKind());
     }
 
     @Test
@@ -123,12 +125,12 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     }
 
     @Test
-    public void testFindDataProviderSchemesByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest.class.getResourceAsStream("/responses/organisations/findDataProviderSchemes.byAgencyResource.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindDataProvidersByAgencyAndResourceTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        DataProviderSchemes dataProvidersSchemes = getSrmRestInternalFacadeClientXml().findDataProviderSchemes(agencyID, resourceID, null, null, "4", "0");
+        assertEquals(getApiEndpoint() + "/dataproviderschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", dataProvidersSchemes.getSelfLink());
+        assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, dataProvidersSchemes.getKind());
     }
 
     @Test

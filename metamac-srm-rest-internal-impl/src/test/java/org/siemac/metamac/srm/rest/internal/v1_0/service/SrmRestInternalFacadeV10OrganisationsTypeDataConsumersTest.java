@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.Test;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumer;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerSchemes;
@@ -33,7 +34,6 @@ import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends SrmRestInternalFacadeV10OrganisationsTest {
 
@@ -82,12 +82,14 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     }
 
     @Test
-    public void testFindDataConsumerSchemesByAgencyXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, null, null, null, "4", "4");
-        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest.class.getResourceAsStream("/responses/organisations/findDataConsumerSchemes.byAgency.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindDataConsumersByAgencyTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        DataConsumerSchemes dataConsumersSchemes = getSrmRestInternalFacadeClientXml().findDataConsumerSchemes(agencyID, null, null, "4", "4");
+        assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "?limit=4&offset=4", dataConsumersSchemes.getSelfLink());
+        assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "?limit=4&offset=0", dataConsumersSchemes.getFirstLink());
+        assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "?limit=4&offset=0", dataConsumersSchemes.getPreviousLink());
+        assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "?limit=4&offset=36", dataConsumersSchemes.getLastLink());
+        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumersSchemes.getKind());
     }
 
     @Test
@@ -123,12 +125,12 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     }
 
     @Test
-    public void testFindDataConsumerSchemesByAgencyAndResourceXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "4", null);
-        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest.class.getResourceAsStream("/responses/organisations/findDataConsumerSchemes.byAgencyResource.xml");
-
-        // Request and validate
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    public void testFindDataConsumersByAgencyAndResourceTestLinks() throws Exception {
+        String agencyID = AGENCY_1;
+        String resourceID = ITEM_SCHEME_1_CODE;
+        DataConsumerSchemes dataConsumersSchemes = getSrmRestInternalFacadeClientXml().findDataConsumerSchemes(agencyID, resourceID, null, null, "4", "0");
+        assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", dataConsumersSchemes.getSelfLink());
+        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumersSchemes.getKind());
     }
 
     @Test
