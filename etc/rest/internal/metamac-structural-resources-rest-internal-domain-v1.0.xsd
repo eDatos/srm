@@ -108,6 +108,17 @@
         </xs:complexContent>
     </xs:complexType>
     
+    <xs:complexType name="DataStructure">
+        <xs:complexContent>
+            <xs:extension base="sdmx:DataStructureType">
+                <xs:sequence>
+                    <xs:group ref="tns:StructuralResourcesMaintainableArtefactGroup" />
+                </xs:sequence>
+                <xs:attribute name="kind" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
     <!-- Lists -->
     <xs:complexType name="ConceptSchemes">
         <xs:complexContent>
@@ -396,6 +407,16 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>     
+    
+    <xs:complexType name="DataStructures">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="dataStructures" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
 
     <xs:complexType name="RelatedConcepts">
         <xs:complexContent>
@@ -638,6 +659,29 @@
         </xs:restriction>
     </xs:simpleType>    
 
+    <xs:simpleType name="DataStructureCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="NAME" />
+            <xs:enumeration value="DESCRIPTION" />
+            <xs:enumeration value="PROC_STATUS" />
+            <xs:enumeration value="VALID_FROM" />
+            <xs:enumeration value="VALID_TO" />
+            <xs:enumeration value="INTERNAL_PUBLICATION_DATE" />
+            <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
+            <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LATEST" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DataStructureCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
+    
     <xs:group name="StructuralResourcesMaintainableArtefactGroup">
         <xs:sequence>
             <xs:group ref="common:ResourceGroup" />
@@ -714,5 +758,8 @@
     <xs:element name="codelist" type="tns:Codelist" />
     <xs:element name="codes" type="tns:Codes" />
     <xs:element name="code" type="tns:Code" />
+
+    <xs:element name="dataStructures" type="tns:DataStructures" />
+    <xs:element name="dataStructure" type="tns:DataStructure" />
 
 </xs:schema>

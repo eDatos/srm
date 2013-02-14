@@ -33,6 +33,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataPro
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviders;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructure;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructures;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemes;
@@ -378,4 +380,31 @@ public interface SrmRestInternalFacadeV10 {
     @Produces("application/xml")
     @Path("codelists/{agencyID}/{resourceID}/{version}/codes/{codeID}")
     Code retrieveCode(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version, @PathParam("codeID") String codeID);
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // DATASTRUCTURES
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    @GET
+    @Produces("application/xml")
+    @Path("datastructures")
+    DataStructures findDataStructures(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("datastructures/{agencyID}")
+    DataStructures findDataStructures(@PathParam("agencyID") String agencyID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("datastructures/{agencyID}/{resourceID}")
+    DataStructures findDataStructures(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy,
+            @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("datastructures/{agencyID}/{resourceID}/{version}")
+    DataStructure retrieveDataStructure(@PathParam("agencyID") String agencyID, @PathParam("resourceID") String resourceID, @PathParam("version") String version);
+
 }

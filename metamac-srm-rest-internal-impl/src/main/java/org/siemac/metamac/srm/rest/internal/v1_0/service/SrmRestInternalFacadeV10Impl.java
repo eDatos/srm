@@ -43,6 +43,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataPro
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviders;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructure;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructures;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemes;
@@ -64,6 +66,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -102,6 +105,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
     private CodesMetamacService           codesService;
+
+    @Autowired
+    private DsdsMetamacService            dsdService;
 
     @Autowired
     private ConceptsRest2DoMapper         conceptsRest2DoMapper;
@@ -796,6 +802,45 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
+    @Override
+    public DataStructures findDataStructures(String query, String orderBy, String limit, String offset) {
+        return findDataStructures(null, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataStructures findDataStructures(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
+        return findDataStructures(agencyID, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataStructures findDataStructures(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
+        return findDataStructures(agencyID, resourceID, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public DataStructure retrieveDataStructure(String agencyID, String resourceID, String version) {
+        // try {
+        // checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+        //
+        // // Find one
+        // PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = findDataStructuresCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
+        // if (entitiesPagedResult.getValues().size() != 1) {
+        // org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_NOT_FOUND, resourceID, version, agencyID);
+        // throw new RestException(exception, Status.NOT_FOUND);
+        // }
+        //
+        // // Transform
+        // DataStructure dataStructure = dataStructureDefinitionDo2RestMapper.toDataStructure(entitiesPagedResult.getValues().get(0));
+        // return dataStructure;
+        // } catch (Exception e) {
+        // throw manageException(e);
+        // }
+        // TODO datastructures
+        return null;
+    }
+
     private ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
             SculptorCriteria sculptorCriteria = conceptsRest2DoMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
@@ -1054,6 +1099,37 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         PagedResult<CodeMetamac> entitiesPagedResult = codesService.findCodesByCondition(ctx, conditionalCriteria, pagingParameter);
         return entitiesPagedResult;
     }
+
+    private DataStructures findDataStructures(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        // TODO datastructures
+        return null;
+        // try {
+        // SculptorCriteria sculptorCriteria = dataStructureDefinitionRest2DoMapper.getDataStructureCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+        //
+        // // Find
+        // PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = findDataStructuresCore(agencyID, resourceID, version, sculptorCriteria.getConditions(),
+        // sculptorCriteria.getPagingParameter());
+        //
+        // // Transform
+        // DataStructures dataStructures = dataStructureDefinitionDo2RestMapper.toDataStructures(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
+        // return dataStructures;
+        // } catch (Exception e) {
+        // throw manageException(e);
+        // }
+    }
+
+    // TODO datastructures
+    // private PagedResult<DataStructureDefinitionVersionMetamac> findDataStructuresCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
+    // PagingParameter pagingParameter) throws MetamacException {
+    //
+    // // Criteria to find by criteria
+    // List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaStructures(agencyID, resourceID, version, conditionalCriteriaQuery,
+    // DataStructureDefinitionVersionMetamac.class);
+    //
+    // // Find
+    // PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = dsdService.findDataStructureDefinitionsByCondition(ctx, conditionalCriteria, pagingParameter);
+    // return entitiesPagedResult;
+    // }
 
     /**
      * Throws response error, logging exception
