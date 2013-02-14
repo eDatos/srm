@@ -83,6 +83,12 @@ public class SharedSecurityUtils {
         if (isAdministrador(metamacPrincipal)) {
             return true;
         }
+
+        // In an artifact imported (conceptScheme or dataStructureDefinition), the operation is empty until they are updated
+        if (StringUtils.isEmpty(operationCode)) {
+            return true;
+        }
+
         // Checks if the statistical operation is in any role
         if (roles != null) {
             for (int i = 0; i < roles.length; i++) {
@@ -183,4 +189,5 @@ public class SharedSecurityUtils {
     protected static boolean isNonOperationConceptSchemeType(ConceptSchemeTypeEnum type) {
         return !isOperationConceptSchemeType(type);
     }
+
 }

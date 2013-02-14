@@ -66,6 +66,7 @@ import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper
 import org.siemac.metamac.srm.core.security.CodesSecurityUtils;
 import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
+import org.siemac.metamac.srm.core.security.ImportSecurityUtils;
 import org.siemac.metamac.srm.core.security.ItemsSecurityUtils;
 import org.siemac.metamac.srm.core.security.OrganisationsSecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,7 +174,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security and transform
         // DTOs to Entities
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionMetamacDto);
-        DataStructureDefinitionSecurityUtils.canCreateDataStructureDefinition(ctx);
+        DataStructureDefinitionSecurityUtils.canCreateDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
 
         // Create
         dataStructureDefinitionVersionMetamac = getDsdsMetamacService().createDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
@@ -186,7 +187,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public DataStructureDefinitionMetamacDto updateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) throws MetamacException {
         // Security and transform
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, dataStructureDefinitionMetamacDto.getUrn());
-        DataStructureDefinitionSecurityUtils.canUpdateDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
+        String operationNew = dataStructureDefinitionMetamacDto.getStatisticalOperation() != null ? dataStructureDefinitionMetamacDto.getStatisticalOperation().getCode() : null;
+        DataStructureDefinitionSecurityUtils.canUpdateDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld, operationNew);
 
         // DTOs to Entities
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionMetamacDto);
@@ -482,12 +484,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void importSDMXStructureMsg(ServiceContext ctx, ContentInputDto contentDto) throws MetamacException {
         // Security
-        DataStructureDefinitionSecurityUtils.canImportDataStructureDefinition(ctx);
+        ImportSecurityUtils.canImportStructure(ctx);
 
         // Import
         getImportationService().importSDMXStructure(ctx, contentDto.getInput(), contentDto.getName(), importationJaxb2DoCallback);
     }
-
     @Override
     public String exportSDMXStructureMsg(ServiceContext ctx, StructureMsgDto structureMsgDto) throws MetamacException {
         // TODO cambiar la interfaz de este método para que sean los que sean los elementos que se le pasan, sean URNs en vez de objetos

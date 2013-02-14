@@ -5,41 +5,14 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 
 public class SharedDsdSecurityUtils extends SharedSecurityUtils {
 
-    /**
-     * DSD
-     */
-
-    public static boolean canCreateDataStructureDefinition(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-    }
-
-    public static boolean canUpdateDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
-            return isAnyDsdRole(metamacPrincipal);
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
-    }
-
-    public static boolean canDeleteDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
-    }
-
-    public static boolean canFindDataStructureDefinitionByCondition(MetamacPrincipal metamacPrincipal) {
-        return canRetrieveOrFindResource(metamacPrincipal);
-    }
+    //
+    // DSD
+    //
 
     public static boolean canRetrieveDataStructureDefinitionByUrn(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
@@ -49,148 +22,127 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 
-    public static boolean canImportDsd(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    public static boolean canCreateDataStructureDefinition(MetamacPrincipal metamacPrincipal, String operationCode) {
+        SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+        return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+    }
+
+    public static boolean canUpdateDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCodeOld, String operationCodeNew) {
+        return canUpdateDataStructureDefinition(metamacPrincipal, procStatus, operationCodeOld) && canUpdateDataStructureDefinition(metamacPrincipal, procStatus, operationCodeNew);
+    }
+
+    public static boolean canDeleteDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+            SrmRoleEnum roles[] = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+            SrmRoleEnum roles[] = {JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        }
+        return false;
+    }
+
+    public static boolean canFindDataStructureDefinitionByCondition(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
     }
 
     /**
      * LIFECYCLE
      */
 
-    public static boolean canSendDsdToProductionValidation(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_PRODUCCION, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    public static boolean canSendDsdToProductionValidation(MetamacPrincipal metamacPrincipal, String operationCode) {
+        SrmRoleEnum[] roles = {TECNICO_APOYO_PRODUCCION, TECNICO_PRODUCCION, JEFE_PRODUCCION};
+        return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
     }
 
-    public static boolean canSendDsdToDiffusionValidation(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    public static boolean canSendDsdToDiffusionValidation(MetamacPrincipal metamacPrincipal, String operationCode) {
+        SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+        return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
     }
 
-    public static boolean canRejectDsdValidation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+    public static boolean canRejectDsdValidation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
         if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
         } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
+            SrmRoleEnum[] roles = {JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
         }
         return false;
     }
 
-    public static boolean canPublishDsdInternally(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
+    public static boolean canPublishDsdInternally(MetamacPrincipal metamacPrincipal, String operationCode) {
+        SrmRoleEnum[] roles = {JEFE_PRODUCCION};
+        return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
     }
 
-    public static boolean canPublishDsdExternally(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    public static boolean canPublishDsdExternally(MetamacPrincipal metamacPrincipal, String operationCode) {
+        SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+        return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
     }
 
-    public static boolean canVersioningDsd(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    public static boolean canVersioningDsd(MetamacPrincipal metamacPrincipal, String operationCode) {
+        SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+        return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
     }
 
-    public static boolean canAnnounceDsd(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
+    public static boolean canAnnounceDsd(MetamacPrincipal metamacPrincipal, String operationCode) {
+        SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+        return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
     }
 
-    public static boolean canEndDsdValidity(MetamacPrincipal metamacPrincipal) {
-        return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
+    public static boolean canEndDsdValidity(MetamacPrincipal metamacPrincipal, String operationCode) {
+        SrmRoleEnum[] roles = {JEFE_PRODUCCION};
+        return isSrmRoleAllowed(metamacPrincipal, roles);
     }
 
-    /**
-     * ARTEFACTS IN DSD
-     */
+    //
+    // ARTEFACTS IN DSD
+    //
 
-    public static boolean canUpdatePrimaryMeasure(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
-            return isAnyDsdRole(metamacPrincipal);
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
+    public static boolean canUpdatePrimaryMeasure(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        return canModifyComponentFromDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
     }
 
-    public static boolean canUpdateDimensions(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
-            return isAnyDsdRole(metamacPrincipal);
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
+    public static boolean canUpdateDimensions(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        return canModifyComponentFromDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
     }
 
-    public static boolean canUpdateAttributes(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
-            return isAnyDsdRole(metamacPrincipal);
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
+    public static boolean canUpdateAttributes(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        return canModifyComponentFromDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
     }
 
-    public static boolean canUpdateGroupKeys(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
-            return isAnyDsdRole(metamacPrincipal);
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
+    public static boolean canUpdateGroupKeys(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        return canModifyComponentFromDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
     }
 
     public static boolean canFindDescriptorsForDataStructureDefinition(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 
-    public static boolean canSaveDescriptorForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
-            return isAnyDsdRole(metamacPrincipal);
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
+    public static boolean canSaveDescriptorForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        return canModifyComponentFromDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
     }
 
-    public static boolean canDeleteDescriptorForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
+    public static boolean canDeleteDescriptorForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        return canModifyComponentFromDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
     }
 
-    public static boolean canSaveComponentForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
-            return isAnyDsdRole(metamacPrincipal);
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
+    public static boolean canSaveComponentForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        return canModifyComponentFromDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
     }
 
-    public static boolean canDeleteComponentForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            return isSrmRoleAllowed(metamacPrincipal, JEFE_PRODUCCION);
-        }
-        return false;
+    public static boolean canDeleteComponentForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        return canModifyComponentFromDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
     }
 
-    public static boolean canModifyCategorisationForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+    // Categorisations
+
+    public static boolean canModifyCategorisationForDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
         if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
-            return canPublishDsdExternally(metamacPrincipal);
+            return canPublishDsdExternally(metamacPrincipal, operationCode);
         } else {
-            return canUpdateDsd(metamacPrincipal, procStatus);
+            return canUpdateDataStructureDefinition(metamacPrincipal, procStatus, operationCode);
         }
     }
 
@@ -202,5 +154,34 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
      */
     private static boolean isAnyDsdRole(MetamacPrincipal metamacPrincipal) {
         return isAdministrador(metamacPrincipal) || isTecnicoApoyoProduccion(metamacPrincipal) || isTecnicoProduccion(metamacPrincipal) || isJefeProduccion(metamacPrincipal);
+    }
+
+    private static boolean canUpdateDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_APOYO_PRODUCCION, JEFE_PRODUCCION};
+            return isAnyDsdRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+            SrmRoleEnum[] roles = {JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        }
+        return false;
+    }
+
+    private static boolean canModifyComponentFromDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_APOYO_PRODUCCION, JEFE_PRODUCCION};
+            return isAnyDsdRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+            SrmRoleEnum[] roles = {JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        }
+        return false;
     }
 }
