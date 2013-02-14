@@ -80,6 +80,11 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         stubProcess(source.getStubDimensions(), target);
         showDecimalsPrecisionsProcess(source.getShowDecimalsPrecisions(), target);
 
+        // External Item of statistical operation never has title
+        if (target.getStatisticalOperation() != null) {
+            target.getStatisticalOperation().setTitle(null);
+        }
+
         dto2DoMapperSdmxSrm.dataStructureDefinitionDtoToDataStructureDefinition(source, target);
 
         return target;
