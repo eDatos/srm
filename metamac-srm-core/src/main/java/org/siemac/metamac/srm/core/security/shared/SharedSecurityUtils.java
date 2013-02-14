@@ -9,6 +9,10 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
@@ -25,6 +29,23 @@ public class SharedSecurityUtils {
      */
     public static boolean canRetrieveOrFindResource(MetamacPrincipal metamacPrincipal) {
         return isAnySrmRole(metamacPrincipal);
+    }
+
+    /**
+     * Returns the statistical operation codes that the user has in this application (in any role)
+     * 
+     * @return
+     */
+    public static List<String> getOperationCodesFromMetamacPrincipalInApplication(MetamacPrincipal metamacPrincipal) {
+        List<String> operationCodes = new ArrayList<String>();
+        for (MetamacPrincipalAccess metamacPrincipalAccess : metamacPrincipal.getAccesses()) {
+            if (SrmConstants.SECURITY_APPLICATION_ID.equals(metamacPrincipalAccess.getApplication())) {
+                if (!StringUtils.isBlank(metamacPrincipalAccess.getOperation())) {
+                    operationCodes.add(metamacPrincipalAccess.getOperation());
+                }
+            }
+        }
+        return operationCodes;
     }
 
     /**
@@ -162,5 +183,4 @@ public class SharedSecurityUtils {
     protected static boolean isNonOperationConceptSchemeType(ConceptSchemeTypeEnum type) {
         return !isOperationConceptSchemeType(type);
     }
-    
 }
