@@ -31,6 +31,28 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return canUpdateDataStructureDefinition(metamacPrincipal, procStatus, operationCodeOld) && canUpdateDataStructureDefinition(metamacPrincipal, procStatus, operationCodeNew);
     }
 
+    /**
+     * Do not call this method from DataStructureDefinitionSecurityUtils or to validate the security in the facade (for application web use only).
+     * 
+     * @param metamacPrincipal
+     * @param procStatus
+     * @param operationCode
+     * @return
+     */
+    public static boolean canUpdateDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_APOYO_PRODUCCION, JEFE_PRODUCCION};
+            return isAnyDsdRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
+            SrmRoleEnum[] roles = {JEFE_PRODUCCION};
+            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
+        }
+        return false;
+    }
+
     public static boolean canDeleteDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
         if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             SrmRoleEnum roles[] = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
@@ -154,21 +176,6 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
      */
     private static boolean isAnyDsdRole(MetamacPrincipal metamacPrincipal) {
         return isAdministrador(metamacPrincipal) || isTecnicoApoyoProduccion(metamacPrincipal) || isTecnicoProduccion(metamacPrincipal) || isJefeProduccion(metamacPrincipal);
-    }
-
-    private static boolean canUpdateDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
-
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
-            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_APOYO_PRODUCCION, JEFE_PRODUCCION};
-            return isAnyDsdRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
-            SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
-            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
-            SrmRoleEnum[] roles = {JEFE_PRODUCCION};
-            return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
-        }
-        return false;
     }
 
     private static boolean canModifyComponentFromDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
