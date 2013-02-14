@@ -171,6 +171,10 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             } else {
                 ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
             }
+            if (conceptSchemeVersion.getRelatedOperation() != null) {
+                // title of operation can change and it can not be saved
+                ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation().getTitle(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION_TITLE, exceptions);
+            }
         }
 
         if (conceptSchemeVersion.getId() != null) {

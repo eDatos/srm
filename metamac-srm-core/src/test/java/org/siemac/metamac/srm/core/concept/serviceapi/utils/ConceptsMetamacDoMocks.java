@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.core.concept.serviceapi.utils;
 
 import java.util.UUID;
 
-import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
@@ -74,8 +73,8 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setUri("http://" + code);
         target.setUrn("urn:" + code);
         target.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
-        target.setManagementAppUrl("managementAppUrl" + MetamacMocks.mockString(10));
-        target.setTitle(mockInternationalString("title"));
+        target.setManagementAppUrl("managementAppUrl" + code);
+        target.setTitle(null);
         return target;
     }
 

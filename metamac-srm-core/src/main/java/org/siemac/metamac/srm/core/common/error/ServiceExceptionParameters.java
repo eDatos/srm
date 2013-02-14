@@ -11,6 +11,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CONCEPT_SCHEME_CODE                                                = CONCEPT_SCHEME + ".code";
     public static final String CONCEPT_SCHEME_TYPE                                                = CONCEPT_SCHEME + ".type";
     public static final String CONCEPT_SCHEME_RELATED_OPERATION                                   = CONCEPT_SCHEME + ".related_operation";
+    public static final String CONCEPT_SCHEME_RELATED_OPERATION_TITLE                             = CONCEPT_SCHEME + ".related_operation.title";
     // TYPES
     public static final String CONCEPT_SCHEME_IS_TYPE_UPDATED                                     = CONCEPT_SCHEME + ".is_type_updated";
     public static final String CONCEPT_SCHEME_TYPE_GLOSSARY                                       = ConceptSchemeTypeEnum.GLOSSARY.name();

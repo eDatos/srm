@@ -163,9 +163,5 @@
         <cdomain:id>operation-itemScheme1</cdomain:id>
         <cdomain:urn>urn:operation-itemScheme1</cdomain:urn>
         <cdomain:selfLink kind="STATISTICAL_OPERATION" href="http://data.istac.es/apis/operations-internal/http://operation-itemScheme1"/>
-        <cdomain:title>
-            <cdomain:text xml:lang="es">title-wZbXJDBuzF en Español</cdomain:text>
-            <cdomain:text xml:lang="en">title-SqqhmHNTFw in English</cdomain:text>
-        </cdomain:title>
     </sr:statisticalOperation>
 </sr:conceptScheme>
