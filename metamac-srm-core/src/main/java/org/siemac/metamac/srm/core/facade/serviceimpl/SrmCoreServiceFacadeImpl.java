@@ -1962,8 +1962,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Override
     public OrganisationMetamacDto retrieveMaintainerDefault(ServiceContext ctx) throws MetamacException {
-        // Security
-        OrganisationsSecurityUtils.canRetrieveOrganisationByUrn(ctx);
+        // DO NOT CHECK SECURITY! The application should always call this method
 
         // Retrieve
         OrganisationMetamac organisationMetamac = getOrganisationsMetamacService().retrieveMaintainerDefault(ctx);
