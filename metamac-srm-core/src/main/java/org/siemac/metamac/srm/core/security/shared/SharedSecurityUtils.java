@@ -9,8 +9,8 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -37,7 +37,7 @@ public class SharedSecurityUtils {
      * @return
      */
     public static Set<String> getOperationCodesFromMetamacPrincipalInApplication(MetamacPrincipal metamacPrincipal) {
-        Set<String> operationCodes = new HashSet<String>();
+        Set<String> operationCodes = new TreeSet<String>(); // TreeSet to avoid duplicate values and to keep the list ordered
         for (MetamacPrincipalAccess metamacPrincipalAccess : metamacPrincipal.getAccesses()) {
             if (SrmConstants.SECURITY_APPLICATION_ID.equals(metamacPrincipalAccess.getApplication())) {
                 if (!StringUtils.isBlank(metamacPrincipalAccess.getOperation())) {
