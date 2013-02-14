@@ -2,19 +2,29 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operations;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
+import org.siemac.metamac.srm.core.security.shared.SharedSecurityUtils;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.server.rest.RestApiConstants;
 import org.siemac.metamac.srm.web.server.rest.StatisticalOperationsRestInternalFacade;
+import org.siemac.metamac.srm.web.server.utils.ExternalItemUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
+import org.siemac.metamac.sso.client.MetamacPrincipal;
+import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
+import org.siemac.metamac.sso.utils.SecurityUtils;
+import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
-import org.siemac.metamac.web.common.server.utils.DtoUtils;
+import org.siemac.metamac.web.common.shared.constants.CommonSharedConstants;
+import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,25 +46,114 @@ public class GetStatisticalOperationsActionHandler extends SecurityActionHandler
     @Override
     public GetStatisticalOperationsResult executeSecurityAction(GetStatisticalOperationsAction action) throws ActionException {
 
-        String operationsApiEndpoint = configurationService.getProperty(RestApiConstants.STATISTICAL_OPERATIONS_REST_INTERNAL);
+        // SEARCH PARAMETERS
 
-        int firstResult = 0;
+        // Operation that the user can access to. If this list is empty, the user can access to all operations.
+        Set<String> userOperationCodes = getUserOperations();
+        // The operations to show (only one page)
+        String[] paginatedUserOperationCodes = getPaginatedUserOperations(userOperationCodes, action.getFirstResult(), action.getMaxResults());
+
+        // If the user only has access to some operations, find these operations without pagination parameters.
+        // The method getPaginatedUserOperations already returns the paginated results to show.
+        // In this situation, it is necessary to call the API to get the operation names. This call won't have pagination parameters (firstResult = 0 and maxResults with no limit)
+        int firstResult = ArrayUtils.isEmpty(paginatedUserOperationCodes) ? action.getFirstResult() : 0;
+        int maxResults = ArrayUtils.isEmpty(paginatedUserOperationCodes) ? action.getMaxResults() : SrmWebConstants.NO_LIMIT_IN_PAGINATION;
+
+        String criteria = action.getCriteria();
+
+        // FIND OPERATIONS
+
+        int firstResultOut = 0;
         int totalResults = 0;
         List<ExternalItemDto> externalItemDtos = new ArrayList<ExternalItemDto>();
-        Operations result = statisticalOperationsRestInternalFacade.findOperations(action.getFirstResult(), action.getMaxResults(), action.getOperation());
+        Operations result = statisticalOperationsRestInternalFacade.findOperations(firstResult, maxResults, paginatedUserOperationCodes, criteria);
         if (result != null && result.getOperations() != null) {
-            firstResult = result.getOffset().intValue();
-            totalResults = result.getTotal().intValue();
-            for (Resource resource : result.getOperations()) {
-                // Do not store rest api endpoint
-                String uri = StringUtils.removeStart(resource.getSelfLink().getHref(), operationsApiEndpoint);
+            String operationsApiEndpoint = configurationService.getProperty(RestApiConstants.STATISTICAL_OPERATIONS_REST_INTERNAL);
 
-                ExternalItemDto externalItemDto = new ExternalItemDto(resource.getId(), uri, resource.getUrn(), TypeExternalArtefactsEnum.STATISTICAL_OPERATION,
-                        DtoUtils.getInternationalStringDtoFromInternationalString(resource.getTitle()));
-                externalItemDtos.add(externalItemDto);
-
-            }
+            firstResultOut = ArrayUtils.isEmpty(paginatedUserOperationCodes) ? result.getOffset().intValue() : action.getFirstResult();
+            totalResults = ArrayUtils.isEmpty(paginatedUserOperationCodes) ? result.getTotal().intValue() : userOperationCodes.size();
+            externalItemDtos = ExternalItemUtils.getOperationsAsExternalItemDtos(result.getOperations(), operationsApiEndpoint);
         }
-        return new GetStatisticalOperationsResult(externalItemDtos, firstResult, totalResults);
+        return new GetStatisticalOperationsResult(externalItemDtos, firstResultOut, totalResults);
+    }
+
+    /**
+     * Returns the operations that the user can access to
+     * 
+     * @param firstResult
+     * @param maxResults
+     * @return
+     * @throws MetamacWebException
+     */
+    private String[] getPaginatedUserOperations(Set<String> operationCodes, int firstResult, int maxResults) throws MetamacWebException {
+        if (operationCodes != null && !operationCodes.isEmpty()) {
+            // The user only has access to some statistical operations
+            String[] operationCodesArray = operationCodes.toArray(new String[operationCodes.size()]);
+            int startIndexInclusive = firstResult;
+            int endIndexExclusive = firstResult + maxResults;
+            return (String[]) ArrayUtils.subarray(operationCodesArray, startIndexInclusive, endIndexExclusive);
+
+        } else {
+            // The user has access to all statistical operations
+            return null;
+        }
+    }
+
+    private Set<String> getUserOperations() throws MetamacWebException {
+        try {
+            MetamacPrincipal metamacPrincipal = SecurityUtils.getMetamacPrincipal(ServiceContextHolder.getCurrentServiceContext());
+            addAccessToMetamacPrincipal(metamacPrincipal); // TODO Remove this method!
+            return SharedSecurityUtils.getOperationCodesFromMetamacPrincipalInApplication(metamacPrincipal);
+        } catch (MetamacException e) {
+            throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, "Error getting MetamacPrincipal from ServiceContext");
+        }
+    }
+
+    // TODO REMOVE THIS METHOD!
+    private void addAccessToMetamacPrincipal(MetamacPrincipal metamacPrincipal) {
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.ADMINISTRADOR.toString(), SrmConstants.SECURITY_APPLICATION_ID, "r");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.JEFE_NORMALIZACION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_interna");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.TECNICO_APOYO_NORMALIZACION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_1");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.TECNICO_PRODUCCION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_2");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.JEFE_NORMALIZACION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_3");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.JEFE_NORMALIZACION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_4");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.JEFE_NORMALIZACION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_5");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.JEFE_NORMALIZACION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_6");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.TECNICO_APOYO_NORMALIZACION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_4");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.TECNICO_PRODUCCION.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_5");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
+        {
+            MetamacPrincipalAccess metamacPrincipalAccess = new MetamacPrincipalAccess(SrmRoleEnum.ADMINISTRADOR.toString(), SrmConstants.SECURITY_APPLICATION_ID, "op_ex_6");
+            metamacPrincipal.getAccesses().add(metamacPrincipalAccess);
+        }
     }
 }

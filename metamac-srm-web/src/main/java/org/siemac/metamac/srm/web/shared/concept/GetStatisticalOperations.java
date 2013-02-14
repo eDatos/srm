@@ -18,7 +18,7 @@ public class GetStatisticalOperations {
     int                   maxResults;
 
     @In(3)
-    String                operation;
+    String                criteria;
 
     @Out(1)
     List<ExternalItemDto> operations;

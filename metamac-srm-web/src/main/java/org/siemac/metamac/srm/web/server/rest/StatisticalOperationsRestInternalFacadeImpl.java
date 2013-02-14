@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.server.rest;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
@@ -34,17 +35,11 @@ public class StatisticalOperationsRestInternalFacadeImpl implements StatisticalO
     }
 
     @Override
-    public Operations findOperations(int firstResult, int maxResult, String operation) throws MetamacWebException {
+    public Operations findOperations(int firstResult, int maxResult, String[] operationCodes, String criteria) throws MetamacWebException {
         try {
-            String query = null;
-            if (!StringUtils.isBlank(operation)) {
-                query = OperationCriteriaPropertyRestriction.TITLE + " " + ComparisonOperator.ILIKE.name() + " \"" + operation + "\"";
-                query += " " + LogicalOperator.OR.name() + " " + OperationCriteriaPropertyRestriction.ID + " " + ComparisonOperator.ILIKE.name() + " \"" + operation + "\"";
-            }
-
-            // Pagination
             String limit = String.valueOf(maxResult);
             String offset = String.valueOf(firstResult);
+            String query = buildQuery(operationCodes, criteria);
 
             Operations findOperationsResult = restApiLocator.getStatisticalOperationsRestFacadeV10().findOperations(query, null, limit, offset);
             return findOperationsResult;
@@ -55,5 +50,28 @@ public class StatisticalOperationsRestInternalFacadeImpl implements StatisticalO
         } catch (Exception e) {
             throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, "Error finding statistical operations");
         }
+    }
+
+    private String buildQuery(String[] operationCodes, String criteria) {
+        StringBuilder queryBuilder = new StringBuilder();
+        if (StringUtils.isNotBlank(criteria)) {
+            queryBuilder.append("(").append(OperationCriteriaPropertyRestriction.TITLE).append(" ").append(ComparisonOperator.ILIKE.name()).append(" \"").append(criteria).append("\"");
+            queryBuilder.append(" ").append(LogicalOperator.OR.name()).append(" ");
+            queryBuilder.append(OperationCriteriaPropertyRestriction.ID).append(" ").append(ComparisonOperator.ILIKE.name()).append(" \"").append(criteria).append("\"").append(")");
+        }
+        if (ArrayUtils.isNotEmpty(operationCodes)) {
+            if (StringUtils.isNotBlank(queryBuilder.toString())) {
+                queryBuilder.append(" ").append(LogicalOperator.AND).append(" ");
+            }
+            queryBuilder.append("(");
+            for (int i = 0; i < operationCodes.length; i++) {
+                if (i != 0) {
+                    queryBuilder.append(" ").append(LogicalOperator.OR).append(" ");
+                }
+                queryBuilder.append(OperationCriteriaPropertyRestriction.ID).append(" ").append(ComparisonOperator.EQ.name()).append(" \"").append(operationCodes[i]).append("\"");
+            }
+            queryBuilder.append(")");
+        }
+        return queryBuilder.toString();
     }
 }

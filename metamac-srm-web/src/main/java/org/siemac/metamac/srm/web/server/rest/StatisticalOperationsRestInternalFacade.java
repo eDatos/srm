@@ -8,6 +8,5 @@ public interface StatisticalOperationsRestInternalFacade {
 
     public Operation retrieveOperation(String operationCode) throws MetamacWebException;
 
-    public Operations findOperations(int firstResult, int maxResult, String operation) throws MetamacWebException;
-
+    public Operations findOperations(int firstResult, int maxResult, String[] operationCodes, String criteria) throws MetamacWebException;
 }
