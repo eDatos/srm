@@ -73,19 +73,19 @@ public class CodesClientSecurityUtils {
 
     // ORDERS
 
-    public static boolean canModifiyCodelistOrderVisualisation(ProcStatusEnum procStatus) {
+    public static boolean canCrudCodelistOrderVisualisation(ProcStatusEnum procStatus) {
         return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
     // CODELIST FAMILY
 
-    public static boolean canModifyCodelistFamily() {
+    public static boolean canCrudCodelistFamily() {
         return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
     }
 
     // VARIABLE FAMILY
 
-    public static boolean canModifyVariableFamily() {
+    public static boolean canCrudVariableFamily() {
         return SharedCodesSecurityUtils.canCrudVariableFamily(MetamacSrmWeb.getCurrentUser());
     }
 
@@ -99,7 +99,7 @@ public class CodesClientSecurityUtils {
 
     // VARIABLE
 
-    public static boolean canModifyVariable() {
+    public static boolean canCrudVariable() {
         return SharedCodesSecurityUtils.canCrudVariable(MetamacSrmWeb.getCurrentUser());
     }
 

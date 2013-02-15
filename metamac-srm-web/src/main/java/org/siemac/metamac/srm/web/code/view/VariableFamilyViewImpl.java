@@ -84,7 +84,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         // VARIABLE FAMILY
         //
 
-        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canModifyVariableFamily());
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canCrudVariableFamily());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();

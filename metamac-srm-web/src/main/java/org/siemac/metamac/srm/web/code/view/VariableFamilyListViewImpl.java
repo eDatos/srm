@@ -81,7 +81,7 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
                 });
             }
         });
-        newVariableFamilyButton.setVisibility(CodesClientSecurityUtils.canModifyVariableFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newVariableFamilyButton.setVisibility(CodesClientSecurityUtils.canCrudVariableFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         deleteVariableFamilyButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteVariableFamilyButton.setVisibility(Visibility.HIDDEN);
@@ -219,7 +219,7 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {
-        if (CodesClientSecurityUtils.canModifyVariableFamily()) {
+        if (CodesClientSecurityUtils.canCrudVariableFamily()) {
             deleteVariableFamilyButton.show();
         }
     }

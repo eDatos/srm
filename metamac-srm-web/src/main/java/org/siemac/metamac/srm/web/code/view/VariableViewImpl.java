@@ -115,7 +115,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // VARIABLE
         //
 
-        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canModifyVariable());
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canCrudVariable());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();

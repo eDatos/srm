@@ -81,7 +81,7 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
                 });
             }
         });
-        newCodelistFamilyButton.setVisibility(CodesClientSecurityUtils.canModifyCodelistFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newCodelistFamilyButton.setVisibility(CodesClientSecurityUtils.canCrudCodelistFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         deleteCodelistFamilyButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteCodelistFamilyButton.setVisibility(Visibility.HIDDEN);
@@ -219,7 +219,7 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {
-        if (CodesClientSecurityUtils.canModifyCodelistFamily()) {
+        if (CodesClientSecurityUtils.canCrudCodelistFamily()) {
             deleteCodelistFamilyButton.show();
         }
     }
