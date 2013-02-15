@@ -285,11 +285,12 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewMultiLanguageTextItem staticDescriptionItem = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem staticFinalItem = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem staticAgency = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        ViewTextItem relatedOperation = new ViewTextItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
-        contentDescriptorsForm.setFields(staticDescriptionItem, staticFinalItem, staticAgency, relatedOperation);
+        contentDescriptorsForm.setFields(staticDescriptionItem, staticFinalItem, staticAgency);
 
         // Class Descriptors Form
         classDescriptorsForm = new GroupDynamicForm(getConstants().formClassDescriptors());
+        ViewTextItem relatedOperation = new ViewTextItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        classDescriptorsForm.setFields(relatedOperation);
 
         // Status Form
         statusForm = new GroupDynamicForm(getConstants().dsdStatus());
@@ -383,11 +384,12 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         MultiLanguageTextAreaItem descriptionItem = new MultiLanguageTextAreaItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem staticAgencyEdit = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        SearchViewTextItem operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
-        contentDescriptorsEditionForm.setFields(descriptionItem, staticFinalItemEdit, staticAgencyEdit, operationItem);
+        contentDescriptorsEditionForm.setFields(descriptionItem, staticFinalItemEdit, staticAgencyEdit);
 
         // Class descriptors form
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
+        SearchViewTextItem operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        classDescriptorsEditionForm.setFields(operationItem);
 
         // Status Form
         statusEditionForm = new GroupDynamicForm(getConstants().dsdStatus());
@@ -503,9 +505,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
                 .no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
-        contentDescriptorsForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Class descriptors form
+        classDescriptorsForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Status form
         statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
@@ -555,9 +557,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                 .getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
-        contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Class descriptors form
+        classDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Status form
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
@@ -603,9 +605,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Content Descriptors form
         dataStructureDefinitionMetamacDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(DataStructureDefinitionDS.DESCRIPTION));
-        dataStructureDefinitionMetamacDto.setStatisticalOperation(ExternalItemUtils.removeTitle(statisticalOperation));
 
         // Class descriptors form
+        dataStructureDefinitionMetamacDto.setStatisticalOperation(ExternalItemUtils.removeTitle(statisticalOperation));
 
         // Visualisation metadata
         dataStructureDefinitionMetamacDto.setAutoOpen(((BooleanSelectItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.AUTO_OPEN)).getBooleanValue());
@@ -691,8 +693,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         statisticalOperation = searchOperationWindow.getSelectedExternalItem();
                         searchOperationWindow.destroy();
-                        contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(statisticalOperation));
-                        contentDescriptorsEditionForm.validate(false);
+                        classDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(statisticalOperation));
+                        classDescriptorsEditionForm.validate(false);
                     }
                 });
             }
