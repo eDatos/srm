@@ -33,6 +33,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categories;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisations;
@@ -47,8 +48,6 @@ import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesDo2Re
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-rest-internal/applicationContext-test.xml"})
@@ -117,7 +116,7 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes", target.getParentLink().getHref());
-        // assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment()); // TODO
+        assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         assertEquals("replaceTo", target.getReplaceToVersion());
         assertEquals("replacedBy", target.getReplacedByVersion());
         assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
