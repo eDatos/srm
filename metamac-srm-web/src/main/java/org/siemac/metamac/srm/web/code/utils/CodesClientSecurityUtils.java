@@ -79,6 +79,10 @@ public class CodesClientSecurityUtils {
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
+    public static boolean canUpdateCodeVariableElement(ProcStatusEnum procStatus) {
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
     // ORDERS
 
     public static boolean canCreateCodelistOrderVisualisation(ProcStatusEnum procStatus) {

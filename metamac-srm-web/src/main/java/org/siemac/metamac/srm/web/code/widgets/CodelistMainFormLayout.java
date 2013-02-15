@@ -38,13 +38,14 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     protected void updateVisibility() {
         super.updateVisibility();
         if (CommonUtils.isItemSchemePublished(status)) {
-            addCodelistToFamilyButton.show();
+            showAddCodelistToFamilyButton();
         }
     }
 
     protected void showAddCodelistToFamilyButton() {
-        // TODO Security
-        addCodelistToFamilyButton.show();
+        if (CodesClientSecurityUtils.canAddCodelistToCodelistFamily()) {
+            addCodelistToFamilyButton.show();
+        }
     }
 
     @Override

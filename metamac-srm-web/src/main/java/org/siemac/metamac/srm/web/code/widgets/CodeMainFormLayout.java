@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
@@ -35,14 +36,15 @@ public class CodeMainFormLayout extends InternationalMainFormLayout {
 
     public void updateButtonsVisibility(ProcStatusEnum procStatusEnum) {
         if (CommonUtils.isItemSchemePublished(procStatusEnum)) {
-            showUpdateVariableElementButton();
+            showUpdateVariableElementButton(procStatusEnum);
         } else {
             updateVariableElementButton.hide();
         }
     }
 
-    protected void showUpdateVariableElementButton() {
-        // TODO Security
-        updateVariableElementButton.show();
+    protected void showUpdateVariableElementButton(ProcStatusEnum procStatusEnum) {
+        if (CodesClientSecurityUtils.canUpdateCodeVariableElement(procStatusEnum)) {
+            updateVariableElementButton.show();
+        }
     }
 }

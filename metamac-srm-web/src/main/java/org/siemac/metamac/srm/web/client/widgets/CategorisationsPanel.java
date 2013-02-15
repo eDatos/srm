@@ -69,9 +69,6 @@ public abstract class CategorisationsPanel extends VLayout {
             }
         });
 
-        // TODO Security
-        // newCategorisationButton.setVisibility(CategoriesClientSecurityUtils.canCreateCategorisation() ? Visibility.VISIBLE : Visibility.HIDDEN);
-
         deleteCategorisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteCategorisationButton.setVisibility(Visibility.HIDDEN);
         deleteCategorisationButton.addClickHandler(new ClickHandler() {
