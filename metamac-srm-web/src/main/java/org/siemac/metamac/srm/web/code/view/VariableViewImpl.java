@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariablePresenter;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableElementWindow;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
@@ -114,7 +115,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // VARIABLE
         //
 
-        mainFormLayout = new InternationalMainFormLayout(); // TODO Security
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canModifyVariable());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -612,8 +613,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
                         RelatedResourceDto selectedVariableElement = createFusionWindow.getSelectedRelatedResource();
                         createFusionWindow.markForDestroy();
                         // Fusion the selected variable elements
-                        List<String> sourceUrns = org.siemac.metamac.srm.web.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid()
-                                .getSelectedRecords());
+                        List<String> sourceUrns = org.siemac.metamac.srm.web.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid().getSelectedRecords());
                         String targetUrn = selectedVariableElement.getUrn();
                         getUiHandlers().createFusion(sourceUrns, targetUrn);
                     }
@@ -659,8 +659,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
                         List<RelatedResourceDto> selectedVariableElements = createSegregationWindow.getSelectedRelatedResources();
                         createSegregationWindow.markForDestroy();
                         // Segregate the selected variable elements
-                        String sourceUrn = org.siemac.metamac.srm.web.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid().getSelectedRecords())
-                                .get(0);
+                        String sourceUrn = org.siemac.metamac.srm.web.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid().getSelectedRecords()).get(0);
                         List<String> targetUrns = RelatedResourceUtils.getUrnsFromRelatedResourceDtos(selectedVariableElements);
                         getUiHandlers().createSegregation(sourceUrn, targetUrns);
                     }
