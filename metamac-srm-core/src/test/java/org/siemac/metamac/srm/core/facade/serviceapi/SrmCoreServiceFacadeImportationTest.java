@@ -98,6 +98,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         return "dbunit/SrmDsdTest.xml";
     }
 
+    @Ignore
     @Test
     @DirtyDatabase
     public void testImport_EXAMPLE_ORGANISATIONS() throws Exception {
