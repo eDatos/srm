@@ -164,4 +164,8 @@ public class CodesClientSecurityUtils {
     public static boolean canSegregateVariableElement() {
         return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
     }
+
+    public static boolean canDeleteVariableElementOperation() {
+        return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
+    }
 }

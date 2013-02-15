@@ -567,7 +567,6 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private CustomToolStripButton createDeleteVariableElementButton() {
         CustomToolStripButton deleteButton = new CustomToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteButton.setVisibility(CodesClientSecurityUtils.canDeleteVariableElement() ? Visibility.VISIBLE : Visibility.HIDDEN);
         deleteButton.setVisibility(Visibility.HIDDEN);
         deleteButton.addClickHandler(new ClickHandler() {
 
@@ -583,7 +582,6 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         CustomToolStripButton fusionButton = new CustomToolStripButton(getConstants().actionFusion(), GlobalResources.RESOURCE.fusion().getURL());
-        fusionButton.setVisibility(CodesClientSecurityUtils.canFusionVariableElements() ? Visibility.VISIBLE : Visibility.HIDDEN);
         fusionButton.setVisibility(Visibility.HIDDEN);
         fusionButton.addClickHandler(new ClickHandler() {
 
@@ -631,7 +629,6 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         CustomToolStripButton segregateButton = new CustomToolStripButton(getConstants().actionSegregate(), GlobalResources.RESOURCE.segregate().getURL());
-        segregateButton.setVisibility(CodesClientSecurityUtils.canSegregateVariableElement() ? Visibility.VISIBLE : Visibility.HIDDEN);
         segregateButton.setValign(VerticalAlignment.CENTER);
         segregateButton.setVisibility(Visibility.HIDDEN);
         segregateButton.addClickHandler(new ClickHandler() {
@@ -675,7 +672,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private void updateListGridDeleteButtonVisibility(int selectedRecords) {
         if (selectedRecords > 0) {
-            deleteVariableElementButton.show();
+            showListGridDeleteButton();
         } else {
             deleteVariableElementButton.hide();
         }
@@ -683,7 +680,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private void updateListGridFusionButtonVisibility(int selectedRecords) {
         if (selectedRecords > 1) {
-            fusionVariableElementButton.show();
+            showListGridFusionButton();
         } else {
             fusionVariableElementButton.hide();
         }
@@ -691,9 +688,27 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private void updateListGridSegregateButtonVisibility(int selectedRecords) {
         if (selectedRecords == 1) {
-            segregateVariableElementButton.show();
+            showListGridSegregateButton();
         } else {
             segregateVariableElementButton.hide();
+        }
+    }
+
+    private void showListGridDeleteButton() {
+        if (CodesClientSecurityUtils.canDeleteVariableElementOperation()) {
+            deleteVariableElementButton.show();
+        }
+    }
+
+    private void showListGridFusionButton() {
+        if (CodesClientSecurityUtils.canFusionVariableElements()) {
+            fusionVariableElementButton.show();
+        }
+    }
+
+    private void showListGridSegregateButton() {
+        if (CodesClientSecurityUtils.canSegregateVariableElement()) {
+            segregateVariableElementButton.show();
         }
     }
 }
