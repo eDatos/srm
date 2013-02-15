@@ -81,7 +81,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  contentDescriptorsForm;
     private GroupDynamicForm                  classDescriptorsForm;
     private GroupDynamicForm                  productionDescriptorsForm;
-    private GroupDynamicForm                  statusForm;
+    private GroupDynamicForm                  diffusionDescriptorsForm;
     private GroupDynamicForm                  versionResponsibilityForm;
     private GroupDynamicForm                  visualisationMetadataForm;
     private GroupDynamicForm                  commentsForm;
@@ -93,7 +93,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  contentDescriptorsEditionForm;
     private GroupDynamicForm                  classDescriptorsEditionForm;
     private GroupDynamicForm                  productionDescriptorsEditionForm;
-    private GroupDynamicForm                  statusEditionForm;
+    private GroupDynamicForm                  diffusionDescriptorsEditionForm;
     private GroupDynamicForm                  versionResponsibilityEditionForm;
     private GroupDynamicForm                  visualisationMetadataEditionForm;
     private GroupDynamicForm                  commentsEditionForm;
@@ -161,8 +161,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 productionDescriptorsForm.setTranslationsShowed(translationsShowed);
                 productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
-                statusForm.setTranslationsShowed(translationsShowed);
-                statusEditionForm.setTranslationsShowed(translationsShowed);
+                diffusionDescriptorsForm.setTranslationsShowed(translationsShowed);
+                diffusionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
                 versionResponsibilityForm.setTranslationsShowed(translationsShowed);
                 versionResponsibilityEditionForm.setTranslationsShowed(translationsShowed);
@@ -200,8 +200,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false) && statusEditionForm.validate(false)
-                        && visualisationMetadataEditionForm.validate(false)) {
+                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false)
+                        && diffusionDescriptorsEditionForm.validate(false) && visualisationMetadataEditionForm.validate(false)) {
                     getUiHandlers().saveDsd(getDataStructureDefinitionDto());
                 }
             }
@@ -302,15 +302,14 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem procStatus = new ViewTextItem(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsForm.setFields(maintainer, procStatus);
 
-        // Status Form
-        statusForm = new GroupDynamicForm(getConstants().dsdStatus());
+        // Diffusion descriptors Form
+        diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, getConstants().maintainableArtefactValidTo());
-
         ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
-        statusForm.setFields(replacedBy, replaceTo, validFrom, validTo, isExternalReference);
+        diffusionDescriptorsForm.setFields(replacedBy, replaceTo, validFrom, validTo, isExternalReference);
 
         // Version responsibility
         versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -346,7 +345,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(productionDescriptorsForm);
-        mainFormLayout.addViewCanvas(statusForm);
+        mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
         mainFormLayout.addViewCanvas(visualisationMetadataForm);
         mainFormLayout.addViewCanvas(commentsForm);
@@ -407,15 +406,14 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem procStatus = new ViewTextItem(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsEditionForm.setFields(maintainer, procStatus);
 
-        // Status Form
-        statusEditionForm = new GroupDynamicForm(getConstants().dsdStatus());
+        // Diffusion descriptors Form
+        diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
         ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, getConstants().maintainableArtefactValidTo());
-
         ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
-        statusEditionForm.setFields(replacedBy, replaceTo, validFrom, validTo, isExternalReference);
+        diffusionDescriptorsEditionForm.setFields(replacedBy, replaceTo, validFrom, validTo, isExternalReference);
 
         // Version responsibility
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -452,7 +450,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
-        mainFormLayout.addEditionCanvas(statusEditionForm);
+        mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
         mainFormLayout.addEditionCanvas(visualisationMetadataEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
@@ -530,11 +528,11 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         productionDescriptorsForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
 
         // Status form
-        statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
-        statusForm.setValue(DataStructureDefinitionDS.REPLACE_TO_VERSION, dsd.getReplaceToVersion());
-        statusForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
-        statusForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
-        statusForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference()
+        diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
+        diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.REPLACE_TO_VERSION, dsd.getReplaceToVersion());
+        diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
+        diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
+        diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
@@ -585,11 +583,10 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
 
         // Status form
-        statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
-        statusEditionForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
-        statusEditionForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
+        diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
+        diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference() ? MetamacWebCommon
+                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Version responsibility
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.PRODUCTION_VALIDATION_USER, dsd.getLifeCycle().getProductionValidationUser());
