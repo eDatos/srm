@@ -49,6 +49,16 @@ public class SharedSecurityUtils {
     }
 
     /**
+     * Returns <code>true</code> if he user has the role ADMINISTRADOR in any access of this application
+     * 
+     * @param metamacPrincipal
+     * @return
+     */
+    public static boolean isAdministrador(MetamacPrincipal metamacPrincipal) {
+        return isRoleInAccesses(metamacPrincipal, ADMINISTRADOR);
+    }
+
+    /**
      * Checks if logged user has one of the allowed roles
      * 
      * @param roles
@@ -125,10 +135,6 @@ public class SharedSecurityUtils {
             }
         }
         return false;
-    }
-
-    protected static boolean isAdministrador(MetamacPrincipal metamacPrincipal) {
-        return isRoleInAccesses(metamacPrincipal, ADMINISTRADOR);
     }
 
     /**
