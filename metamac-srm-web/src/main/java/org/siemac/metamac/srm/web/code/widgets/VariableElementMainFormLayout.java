@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.code.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
@@ -25,7 +26,7 @@ public class VariableElementMainFormLayout extends InternationalMainFormLayout {
 
     private void common() {
         segregateButton = new MainFormLayoutButton(getConstants().actionSegregate(), GlobalResources.RESOURCE.segregate().getURL());
-        segregateButton.setVisibility(Visibility.VISIBLE);
+        segregateButton.setVisibility(CodesClientSecurityUtils.canCrudVariableElement() ? Visibility.VISIBLE : Visibility.HIDDEN);
         toolStrip.addButton(segregateButton);
     }
 
