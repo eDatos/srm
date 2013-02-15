@@ -923,7 +923,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canUpdateAttributes(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
+        if (DsdClientSecurityUtils.canUpdateAttributes(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(),
+                CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
             deleteToolStripButton.show();
         }
     }

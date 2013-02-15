@@ -37,8 +37,8 @@ public class GetConceptActionHandler extends SecurityActionHandler<GetConceptAct
             List<ConceptMetamacDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
 
             // Retrieve roles
-            List<RelatedResourceDto> roles = RelatedResourceUtils.getConceptMetamacDtosAsRelatedResourceDtos(srmCoreServiceFacade.retrieveRoleConcepts(
-                    ServiceContextHolder.getCurrentServiceContext(), action.getUrn()));
+            List<RelatedResourceDto> roles = RelatedResourceUtils.getConceptMetamacDtosAsRelatedResourceDtos(srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(),
+                    action.getUrn()));
 
             return new GetConceptResult(conceptMetamacDto, roles, relatedConcepts);
         } catch (MetamacException e) {

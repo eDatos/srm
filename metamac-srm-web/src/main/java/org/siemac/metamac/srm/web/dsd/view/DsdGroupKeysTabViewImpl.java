@@ -454,7 +454,8 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canUpdateGroupKeys(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
+        if (DsdClientSecurityUtils.canUpdateGroupKeys(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(),
+                CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
             deleteToolStripButton.show();
         }
     }
