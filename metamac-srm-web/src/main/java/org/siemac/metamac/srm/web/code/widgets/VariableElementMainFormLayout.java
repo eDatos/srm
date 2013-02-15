@@ -7,7 +7,6 @@ import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
-import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class VariableElementMainFormLayout extends InternationalMainFormLayout {
@@ -26,14 +25,13 @@ public class VariableElementMainFormLayout extends InternationalMainFormLayout {
 
     private void common() {
         segregateButton = new MainFormLayoutButton(getConstants().actionSegregate(), GlobalResources.RESOURCE.segregate().getURL());
-        segregateButton.setVisibility(CodesClientSecurityUtils.canSegregateVariableElement() ? Visibility.VISIBLE : Visibility.HIDDEN);
         toolStrip.addButton(segregateButton);
     }
 
     @Override
     public void setViewMode() {
         super.setViewMode();
-        segregateButton.show();
+        showSegregateButton();
     }
 
     @Override
@@ -44,5 +42,11 @@ public class VariableElementMainFormLayout extends InternationalMainFormLayout {
 
     public HasClickHandlers getSegregate() {
         return segregateButton;
+    }
+
+    private void showSegregateButton() {
+        if (CodesClientSecurityUtils.canSegregateVariableElement()) {
+            segregateButton.show();
+        }
     }
 }
