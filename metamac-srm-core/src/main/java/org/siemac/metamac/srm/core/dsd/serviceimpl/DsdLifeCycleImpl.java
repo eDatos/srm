@@ -30,9 +30,13 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 
 @Service("dsdLifeCycle")
 public class DsdLifeCycleImpl extends LifeCycleImpl {
@@ -96,6 +100,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                 }
             }
 
+            boolean isDsdWithMeasureDimension = false;
             // Check all dimensions must be appears in stub or heading
             for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                 if (componentList instanceof DimensionDescriptor) {
@@ -103,12 +108,33 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                         if (!stubDimensionSet.contains(component) && !headingDimensionSet.contains(component)) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_INCOMPLETE));
                         }
+                        if (component instanceof MeasureDimension) {
+                            isDsdWithMeasureDimension = true;
+                        }
                     }
                     break;
                 }
             }
 
-            // TODO grouping validation tiene que hacerse aquí???
+            // Check: If the DSD not contain a measure-dimension, then it must have a special attribute type
+            boolean foundSpecialAttributeOfMeasure = false;
+            if (!isDsdWithMeasureDimension) {
+                for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
+                    if (componentList instanceof AttributeDescriptor) {
+                        for (Component component : componentList.getComponents()) {
+                            if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(((DataAttribute) component).getSpecialAttributeType())) {
+                                foundSpecialAttributeOfMeasure = true;
+                            }
+                        }
+                        break;
+                    }
+                }
+                if (!foundSpecialAttributeOfMeasure) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_INCOMPLETE));
+                }
+            }
+
+            // TODO grouping validation tiene que hacerse aquí--> SIII
         }
 
         @Override

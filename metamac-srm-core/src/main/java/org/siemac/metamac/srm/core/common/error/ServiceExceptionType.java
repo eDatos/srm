@@ -36,6 +36,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_INCOMPLETE         = create("exception.srm.dsd.validation.stubheading.incomplete");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_SHOWDECIMALS                        = create("exception.srm.dsd.validation.showdecimals");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_SHOWDECIMALS_PRECISION              = create("exception.srm.dsd.validation.showdecimals_precision");
+    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WITHOUT_MEASUREDIM_SPECIAL_ATTR     = create("exception.srm.dsd.validation.measure_dimension.special_attr.not_found");
 
     // Codes miscellaneous
     public static final CommonServiceExceptionType ARTEFACT_CAN_NOT_REPLACE_ITSELF                               = create("exception.srm.codelists.artefact.cannot_replace_itself");

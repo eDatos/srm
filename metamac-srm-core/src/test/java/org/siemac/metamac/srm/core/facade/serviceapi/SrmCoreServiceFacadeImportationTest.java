@@ -166,34 +166,25 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         CodelistVersionMetamac codelistVersion = null;
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_DECIMALS_V1);
         assertEquals(10, codelistVersion.getItems().size());
         assertFalse(codelistVersion.getMaintainableArtefact().getIsLastVersion());
-
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_DECIMALS_V2);
         assertEquals(11, codelistVersion.getItems().size());
         assertTrue(codelistVersion.getMaintainableArtefact().getIsLastVersion());
         assertEquals(2, codelistVersion.getItemScheme().getVersions().size());
-
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_FREQ_V1);
         assertEquals(8, codelistVersion.getItems().size());
-
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_CONF_STATUS_V1);
         assertEquals(5, codelistVersion.getItems().size());
-
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_OBS_STATUS_V1);
         assertEquals(8, codelistVersion.getItems().size());
-
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_UNIT_MULT_V1);
         assertEquals(9, codelistVersion.getItems().size());
-
         // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
-
     @Test
     @DirtyDatabase
     public void testImport_DEMOGRAPHY_CONCEPTS() throws Exception {
@@ -214,29 +205,20 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         ConceptSchemeVersionMetamac conceptSchemeVersion = null;
-
         conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_CROSS_DOMAIN_CONCEPTS_V1);
         assertEquals(12, conceptSchemeVersion.getItems().size());
-
         conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V1);
         assertEquals(3, conceptSchemeVersion.getItems().size());
         assertFalse(conceptSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-
         conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V2);
         assertEquals(4, conceptSchemeVersion.getItems().size());
         assertTrue(conceptSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-
         assertEquals(2, conceptSchemeVersion.getItemScheme().getVersions().size());
-
         conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1);
         assertEquals(14, conceptSchemeVersion.getItems().size());
-
     }
-
     @Test
     @DirtyDatabase
     public void testImport_DSD_ECB_EXR_NG_FULL() throws Exception {
@@ -257,15 +239,12 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_NG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_NG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
     @Test
     @DirtyDatabase
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {
@@ -286,15 +265,12 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_SG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_SG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
     @Test
     @DirtyDatabase
     public void testImport_DSD_ECB_EXR_RG_FULL() throws Exception {
@@ -315,15 +291,12 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_RG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_RG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
     @Ignore
     @Test
     @DirtyDatabase
@@ -345,15 +318,12 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_DPOP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_DPOP_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
     @Ignore
     @Test
     @DirtyDatabase
@@ -375,15 +345,12 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_EPOP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_EPOP_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
     @Ignore
     @Test
     @DirtyDatabase
@@ -405,15 +372,12 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IDB_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IDB_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
     @Ignore
     @Test
     @DirtyDatabase
@@ -435,15 +399,12 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IPC_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IPC_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
     @Ignore
     @Test
     @DirtyDatabase
@@ -465,15 +426,12 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IPCA_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IPCA_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
     @Ignore
     @Test
     @DirtyDatabase
@@ -495,9 +453,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-
         WaitUntilJobFinished();
-
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_MNP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());

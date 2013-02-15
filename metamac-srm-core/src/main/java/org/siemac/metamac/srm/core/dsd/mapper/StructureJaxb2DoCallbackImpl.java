@@ -4,6 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AttributeListType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AttributeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataStructureType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataStructuresType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DimensionListType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DimensionType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.GroupType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureDimensionType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureListType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.PrimaryMeasureType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ReportingYearStartDayType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.TimeDimensionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
@@ -23,18 +35,6 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
 import com.arte.statistic.sdmx.srm.core.structure.domain.ReportingYearStartDay;
 import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureJaxb2DoCallback;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AttributeListType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AttributeType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataStructureType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataStructuresType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DimensionListType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DimensionType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.GroupType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureDimensionType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureListType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.PrimaryMeasureType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ReportingYearStartDayType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.TimeDimensionType;
 
 @Component("structureMetamacJaxb2DoCallback")
 public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements StructureJaxb2DoCallback {
@@ -133,7 +133,9 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
      * FILLS
      **************************************************************************/
     @Override
-    public void dataStructureDefinitionJaxbToDoExtension(ServiceContext ctx, DataStructureType source, DataStructureDefinitionVersion target) throws MetamacException {
+    public void dataStructureDefinitionJaxbToDoExtension(ServiceContext ctx, DataStructureType source, DataStructureDefinitionVersion previous, DataStructureDefinitionVersion target)
+            throws MetamacException {
+        DataStructureDefinitionVersionMetamac previousMetamac = (DataStructureDefinitionVersionMetamac) previous;
         DataStructureDefinitionVersionMetamac targetMetamac = (DataStructureDefinitionVersionMetamac) target;
 
         // Fill Meta-data
@@ -167,18 +169,18 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     }
 
     @Override
-    public void dimensionJaxbToDoExtension(ServiceContext ctx, DimensionType source, Dimension target) throws MetamacException {
-        // Meta-data in previous version -> Nothing to extends
+    public void dimensionJaxbToDoExtension(ServiceContext ctx, DimensionType source, Dimension previous, Dimension target) throws MetamacException {
+        target.setSpecialDimensionType(previous.getSpecialDimensionType());
     }
 
     @Override
-    public void measureDimensionJaxbToDoExtension(ServiceContext ctx, MeasureDimensionType source, MeasureDimension target) throws MetamacException {
-        // Meta-data in previous version -> Nothing to extends
+    public void measureDimensionJaxbToDoExtension(ServiceContext ctx, MeasureDimensionType source, MeasureDimension previous, MeasureDimension target) throws MetamacException {
+        target.setSpecialDimensionType(previous.getSpecialDimensionType());
     }
 
     @Override
-    public void timeDimensionJaxbToDoExtension(ServiceContext ctx, TimeDimensionType source, TimeDimension target) throws MetamacException {
-        // Meta-data in previous version -> Nothing to extends
+    public void timeDimensionJaxbToDoExtension(ServiceContext ctx, TimeDimensionType source, TimeDimension previous, TimeDimension target) throws MetamacException {
+        target.setSpecialDimensionType(previous.getSpecialDimensionType());
     }
 
     @Override
@@ -187,12 +189,13 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     }
 
     @Override
-    public void dataAttributeJaxbToDoExtension(ServiceContext ctx, AttributeType source, DataAttribute target) throws MetamacException {
-        // Meta-data in previous version -> Nothing to extends
+    public void dataAttributeJaxbToDoExtension(ServiceContext ctx, AttributeType source, DataAttribute previous, DataAttribute target) throws MetamacException {
+        target.setSpecialAttributeType(previous.getSpecialAttributeType());
     }
 
     @Override
-    public void reportingYearStartDayJaxbToDoExtension(ServiceContext ctx, ReportingYearStartDayType source, ReportingYearStartDay target) throws MetamacException {
+    public void reportingYearStartDayJaxbToDoExtension(ServiceContext ctx, ReportingYearStartDayType source, ReportingYearStartDay previous, ReportingYearStartDay target) throws MetamacException {
+        target.setSpecialAttributeType(previous.getSpecialAttributeType());
         // Meta-data in previous version -> Nothing to extends
     }
 
