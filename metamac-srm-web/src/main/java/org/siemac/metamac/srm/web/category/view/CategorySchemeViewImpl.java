@@ -426,9 +426,12 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
-        mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategoryScheme(categorySchemeDto.getLifeCycle().getProcStatus()));
-        mainFormLayout.updatePublishSection(categorySchemeDto.getLifeCycle().getProcStatus(), categorySchemeDto.getValidTo());
+        // Security
+        ProcStatusEnum procStatus = categorySchemeDto.getLifeCycle().getProcStatus();
+        mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategoryScheme(procStatus));
+        mainFormLayout.updatePublishSection(procStatus, categorySchemeDto.getValidTo());
         mainFormLayout.setViewMode();
+        categorisationsPanel.updateVisibility(procStatus);
 
         setCategorySchemeViewMode(categorySchemeDto);
         setCategorySchemeEditionMode(categorySchemeDto);

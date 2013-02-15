@@ -355,8 +355,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
-        mainFormLayout.updatePublishSection(codelist.getLifeCycle().getProcStatus(), codelist.getValidTo());
+        // Security
+        ProcStatusEnum procStatus = codelist.getLifeCycle().getProcStatus();
+        mainFormLayout.updatePublishSection(procStatus, codelist.getValidTo());
         mainFormLayout.setViewMode();
+        categorisationsPanel.updateVisibility(procStatus);
 
         setCodelistViewMode(codelist);
         setCodelistEditionMode(codelist);

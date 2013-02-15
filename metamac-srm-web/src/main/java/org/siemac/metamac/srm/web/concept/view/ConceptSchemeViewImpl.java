@@ -308,8 +308,10 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
+        // Security
         mainFormLayout.updatePublishSection(conceptScheme);
         mainFormLayout.setViewMode();
+        categorisationsPanel.updateVisibility(conceptScheme);
 
         setConceptSchemeViewMode(conceptScheme);
         setConceptSchemeEditionMode(conceptScheme);

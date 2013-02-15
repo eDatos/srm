@@ -564,9 +564,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
-        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
-        mainFormLayout.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo(), organisationSchemeMetamacDto.getType());
+        // Security
+        ProcStatusEnum procStatus = organisationSchemeMetamacDto.getLifeCycle().getProcStatus();
+        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(procStatus, organisationSchemeMetamacDto.getType()));
+        mainFormLayout.updatePublishSection(procStatus, organisationSchemeMetamacDto.getValidTo(), organisationSchemeMetamacDto.getType());
         mainFormLayout.setViewMode();
+        categorisationsPanel.updateVisibility(organisationSchemeMetamacDto);
 
         setOrganisationSchemeViewMode(organisationSchemeMetamacDto);
         setOrganisationSchemeEditionMode(organisationSchemeMetamacDto);

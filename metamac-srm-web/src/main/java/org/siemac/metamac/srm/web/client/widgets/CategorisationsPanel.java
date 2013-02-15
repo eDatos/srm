@@ -6,6 +6,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.model.ds.CategorisationDS;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
@@ -48,6 +49,8 @@ public abstract class CategorisationsPanel extends VLayout {
     private DeleteConfirmationWindow          deleteConfirmationWindow;
 
     private CategorisationUiHandlers          uiHandlers;
+
+    protected ProcStatusEnum                  procStatus;
 
     public CategorisationsPanel() {
         setMargin(15);
@@ -151,6 +154,14 @@ public abstract class CategorisationsPanel extends VLayout {
         return uiHandlers;
     }
 
+    public ProcStatusEnum getProcStatus() {
+        return procStatus;
+    }
+
+    public void setProcStatus(ProcStatusEnum procStatus) {
+        this.procStatus = procStatus;
+    }
+
     private List<String> getSelectedCategorisationUrns() {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : categorisationListGrid.getSelectedRecords()) {
@@ -229,6 +240,7 @@ public abstract class CategorisationsPanel extends VLayout {
         });
     }
 
+    public abstract void updateNewButtonVisibility();
     public abstract void showDeleteCategorisationButton();
 
 }
