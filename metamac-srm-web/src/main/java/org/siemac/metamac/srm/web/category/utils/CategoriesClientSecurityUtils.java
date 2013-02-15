@@ -52,6 +52,10 @@ public class CategoriesClientSecurityUtils {
         return SharedItemsSecurityUtils.canEndItemSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canModifyCategorisation(ProcStatusEnum procStatus) {
+        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
     // CATEGORIES
 
     public static boolean canCreateCategory(ProcStatusEnum procStatus) {

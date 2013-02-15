@@ -52,6 +52,10 @@ public class CodesClientSecurityUtils {
         return SharedItemsSecurityUtils.canEndItemSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canModifyCategorisation(ProcStatusEnum procStatus) {
+        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
     // CODES
 
     public static boolean canCreateCode(ProcStatusEnum procStatus) {

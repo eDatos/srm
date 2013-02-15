@@ -66,4 +66,8 @@ public class DsdClientSecurityUtils {
     public static boolean canPublishDsdExternally(String operationCode) {
         return SharedDsdSecurityUtils.canPublishDsdExternally(MetamacSrmWeb.getCurrentUser(), operationCode);
     }
+
+    public static boolean canModifyCategorisationForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode) {
+        return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
+    }
 }

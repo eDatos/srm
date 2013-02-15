@@ -54,6 +54,10 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canEndOrganisationSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canModifyCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
+        return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
+    }
+
     // ORGANISATIONS
 
     public static boolean canCreateOrganisation(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
@@ -67,5 +71,4 @@ public class OrganisationsClientSecurityUtils {
     public static boolean canDeleteOrganisation(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
         return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
     }
-
 }

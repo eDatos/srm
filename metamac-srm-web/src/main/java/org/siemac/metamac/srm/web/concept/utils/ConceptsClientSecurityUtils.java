@@ -55,6 +55,10 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
+    public static boolean canModifyCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
+    }
+
     // Concepts
 
     public static boolean canCreateConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
@@ -68,5 +72,4 @@ public class ConceptsClientSecurityUtils {
     public static boolean canDeleteConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return SharedConceptsSecurityUtils.canDeleteConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
-
 }
