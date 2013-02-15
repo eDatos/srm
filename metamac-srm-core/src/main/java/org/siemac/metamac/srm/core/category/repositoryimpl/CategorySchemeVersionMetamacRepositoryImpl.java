@@ -30,7 +30,7 @@ public class CategorySchemeVersionMetamacRepositoryImpl extends CategorySchemeVe
         }
         return null;
     }
-    
+
     @Override
     public CategorySchemeVersionMetamac findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();

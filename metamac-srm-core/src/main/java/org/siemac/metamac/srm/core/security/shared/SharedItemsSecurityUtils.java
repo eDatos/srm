@@ -86,7 +86,7 @@ public class SharedItemsSecurityUtils extends SharedSecurityUtils {
         }
         return false;
     }
-    
+
     // OTHER
 
     public static boolean canModifyCategorisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {

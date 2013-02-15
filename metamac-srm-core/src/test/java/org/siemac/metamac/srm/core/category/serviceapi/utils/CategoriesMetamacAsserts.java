@@ -57,7 +57,7 @@ public class CategoriesMetamacAsserts extends CategoriesAsserts {
     public static void assertEqualsCategory(CategoryMetamac expected, CategoryMetamacDto actual) {
         assertEqualsCategory(expected, actual, MapperEnum.DO2DTO);
     }
-    
+
     public static void assertEqualsCategory(CategoryMetamacDto expected, CategoryMetamac actual) {
         assertEqualsCategory(actual, expected, MapperEnum.DTO2DO);
     }
@@ -74,13 +74,11 @@ public class CategoriesMetamacAsserts extends CategoriesAsserts {
         // Sdmx
         CategoriesAsserts.assertEqualsCategoryScheme(entity, dto, mapperEnum);
     }
-    
 
-    
     private static void assertEqualsCategory(CategoryMetamac entity, CategoryMetamacDto dto, MapperEnum mapperEnum) {
 
         // Metamac
-        
+
         // Sdmx
         CategoriesAsserts.assertEqualsCategory(entity, dto, mapperEnum);
     }
