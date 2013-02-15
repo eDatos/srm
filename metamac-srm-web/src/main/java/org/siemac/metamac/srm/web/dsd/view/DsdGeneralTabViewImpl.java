@@ -79,6 +79,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     private GroupDynamicForm                  identifiersForm;
     private GroupDynamicForm                  contentDescriptorsForm;
+    private GroupDynamicForm                  classDescriptorsForm;
     private GroupDynamicForm                  statusForm;
     private GroupDynamicForm                  versionResponsibilityForm;
     private GroupDynamicForm                  visualisationMetadataForm;
@@ -89,6 +90,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     private GroupDynamicForm                  identifiersEditionForm;
     private GroupDynamicForm                  contentDescriptorsEditionForm;
+    private GroupDynamicForm                  classDescriptorsEditionForm;
     private GroupDynamicForm                  statusEditionForm;
     private GroupDynamicForm                  versionResponsibilityEditionForm;
     private GroupDynamicForm                  visualisationMetadataEditionForm;
@@ -151,6 +153,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
+                classDescriptorsForm.setTranslationsShowed(translationsShowed);
+                classDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
+
                 statusForm.setTranslationsShowed(translationsShowed);
                 statusEditionForm.setTranslationsShowed(translationsShowed);
 
@@ -190,7 +195,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && statusEditionForm.validate(false) && visualisationMetadataEditionForm.validate(false)) {
+                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false) && statusEditionForm.validate(false)
+                        && visualisationMetadataEditionForm.validate(false)) {
                     getUiHandlers().saveDsd(getDataStructureDefinitionDto());
                 }
             }
@@ -282,6 +288,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem relatedOperation = new ViewTextItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
         contentDescriptorsForm.setFields(staticDescriptionItem, staticFinalItem, staticAgency, relatedOperation);
 
+        // Class Descriptors Form
+        classDescriptorsForm = new GroupDynamicForm(getConstants().formClassDescriptors());
+
         // Status Form
         statusForm = new GroupDynamicForm(getConstants().dsdStatus());
         ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
@@ -324,6 +333,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
+        mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(statusForm);
         mainFormLayout.addViewCanvas(versionResponsibilityForm);
         mainFormLayout.addViewCanvas(visualisationMetadataForm);
@@ -376,6 +386,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         SearchViewTextItem operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
         contentDescriptorsEditionForm.setFields(descriptionItem, staticFinalItemEdit, staticAgencyEdit, operationItem);
 
+        // Class descriptors form
+        classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
+
         // Status Form
         statusEditionForm = new GroupDynamicForm(getConstants().dsdStatus());
         ViewTextItem replacedBy = new ViewTextItem(DataStructureDefinitionDS.REPLACED_BY_VERSION, getConstants().maintainableArtefactReplacedByVersion());
@@ -419,6 +432,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(statusEditionForm);
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
         mainFormLayout.addEditionCanvas(visualisationMetadataEditionForm);
@@ -491,6 +505,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
+        // Class descriptors form
+
         // Status form
         statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
         statusForm.setValue(DataStructureDefinitionDS.REPLACE_TO_VERSION, dsd.getReplaceToVersion());
@@ -541,6 +557,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
+        // Class descriptors form
+
         // Status form
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
@@ -586,6 +604,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Content Descriptors form
         dataStructureDefinitionMetamacDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(DataStructureDefinitionDS.DESCRIPTION));
         dataStructureDefinitionMetamacDto.setStatisticalOperation(ExternalItemUtils.removeTitle(statisticalOperation));
+
+        // Class descriptors form
 
         // Visualisation metadata
         dataStructureDefinitionMetamacDto.setAutoOpen(((BooleanSelectItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.AUTO_OPEN)).getBooleanValue());
