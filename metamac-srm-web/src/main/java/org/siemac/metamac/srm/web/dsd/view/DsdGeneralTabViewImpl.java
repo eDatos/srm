@@ -277,9 +277,10 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General Form
         generalForm = new GroupDynamicForm(getConstants().dsdDetails());
         ViewMultiLanguageTextItem staticDescriptionItem = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        ViewTextItem staticFinalItem = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem staticAgency = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem relatedOperation = new ViewTextItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
-        generalForm.setFields(staticDescriptionItem, staticAgency, relatedOperation);
+        generalForm.setFields(staticDescriptionItem, staticFinalItem, staticAgency, relatedOperation);
 
         // Status Form
         statusForm = new GroupDynamicForm(getConstants().dsdStatus());
@@ -287,9 +288,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, getConstants().maintainableArtefactValidTo());
-        ViewTextItem staticFinalItem = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
+
         ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
-        statusForm.setFields(replacedBy, replaceTo, validFrom, validTo, staticFinalItem, isExternalReference);
+        statusForm.setFields(replacedBy, replaceTo, validFrom, validTo, isExternalReference);
 
         // Version responsibility
         versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -370,9 +371,10 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // General Form
         generalEditionForm = new GroupDynamicForm(getConstants().dsdDetails());
         MultiLanguageTextAreaItem descriptionItem = new MultiLanguageTextAreaItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem staticAgencyEdit = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         SearchViewTextItem operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
-        generalEditionForm.setFields(descriptionItem, staticAgencyEdit, operationItem);
+        generalEditionForm.setFields(descriptionItem, staticFinalItemEdit, staticAgencyEdit, operationItem);
 
         // Status Form
         statusEditionForm = new GroupDynamicForm(getConstants().dsdStatus());
@@ -380,9 +382,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ViewTextItem replaceTo = new ViewTextItem(DataStructureDefinitionDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(DataStructureDefinitionDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(DataStructureDefinitionDS.VALID_TO, getConstants().maintainableArtefactValidTo());
-        ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
+
         ViewTextItem isExternalReference = new ViewTextItem(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
-        statusEditionForm.setFields(replacedBy, replaceTo, validFrom, validTo, staticFinalItemEdit, isExternalReference);
+        statusEditionForm.setFields(replacedBy, replaceTo, validFrom, validTo, isExternalReference);
 
         // Version responsibility
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -484,6 +486,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // General form
         generalForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
+        generalForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null
+                ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
+                : StringUtils.EMPTY);
         generalForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
         generalForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
@@ -492,9 +497,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         statusForm.setValue(DataStructureDefinitionDS.REPLACE_TO_VERSION, dsd.getReplaceToVersion());
         statusForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         statusForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
-        statusForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null
-                ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
-                : StringUtils.EMPTY);
         statusForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -535,15 +537,15 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // General form
         generalEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
+        generalEditionForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null
+                ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
+                : StringUtils.EMPTY);
         generalEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
         generalEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Status form
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
-        statusEditionForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null
-                ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
-                : StringUtils.EMPTY);
         statusEditionForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
