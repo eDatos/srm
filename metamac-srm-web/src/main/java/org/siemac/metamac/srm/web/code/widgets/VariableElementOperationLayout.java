@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementOperationDS;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.RecordUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.BaseVariableUiHandlers;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
@@ -160,9 +161,15 @@ public class VariableElementOperationLayout extends VLayout {
 
     private void updateListGridDeleteButtonVisibility(int selectedRecords) {
         if (selectedRecords > 0) {
-            deleteOperationButton.show();
+            showDeleteOperationButton();
         } else {
             deleteOperationButton.hide();
+        }
+    }
+
+    private void showDeleteOperationButton() {
+        if (CodesClientSecurityUtils.canCrudVariableElement()) {
+            deleteOperationButton.show();
         }
     }
 
