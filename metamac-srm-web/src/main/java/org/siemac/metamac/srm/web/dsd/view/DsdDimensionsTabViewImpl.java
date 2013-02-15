@@ -456,7 +456,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Security
         ProcStatusEnum procStatus = dsd.getLifeCycle().getProcStatus();
-        String operationCode = CommonUtils.getOperationCodeFromDsd(dsd);
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dsd);
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateDimensions(procStatus, operationCode) ? Visibility.VISIBLE : Visibility.HIDDEN);
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimensions(procStatus, operationCode));
 
@@ -825,7 +825,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canUpdateDimensions(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), CommonUtils.getOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
+        if (DsdClientSecurityUtils.canUpdateDimensions(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
             deleteToolStripButton.show();
         }
     }

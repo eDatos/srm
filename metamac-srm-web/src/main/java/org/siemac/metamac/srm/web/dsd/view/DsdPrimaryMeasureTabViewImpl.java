@@ -205,7 +205,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         mainFormLayout.setViewMode();
 
         // Security
-        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdatePrimaryMeasure(dsd.getLifeCycle().getProcStatus(), CommonUtils.getOperationCodeFromDsd(dsd)));
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdatePrimaryMeasure(dsd.getLifeCycle().getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dsd)));
 
         setPrimaryMeasureViewMode(componentDto);
         setPrimaryMeasureEditionMode(componentDto);

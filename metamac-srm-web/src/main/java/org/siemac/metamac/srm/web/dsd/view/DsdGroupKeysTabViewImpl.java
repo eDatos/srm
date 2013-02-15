@@ -269,7 +269,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
         // Security
         ProcStatusEnum procStatus = dsd.getLifeCycle().getProcStatus();
-        String operationCode = CommonUtils.getOperationCodeFromDsd(dsd);
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dsd);
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateGroupKeys(procStatus, operationCode) ? Visibility.VISIBLE : Visibility.HIDDEN);
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateGroupKeys(procStatus, operationCode));
 
@@ -454,7 +454,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canUpdateGroupKeys(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), CommonUtils.getOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
+        if (DsdClientSecurityUtils.canUpdateGroupKeys(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
             deleteToolStripButton.show();
         }
     }

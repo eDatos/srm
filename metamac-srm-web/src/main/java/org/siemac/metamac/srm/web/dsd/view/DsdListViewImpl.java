@@ -301,7 +301,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         List<DataStructureDefinitionMetamacDto> dsds = getSelectedDsds();
         boolean actionAllowed = true;
         for (DataStructureDefinitionMetamacDto dsd : dsds) {
-            if (!DsdClientSecurityUtils.canDeleteDsd(dsd.getLifeCycle().getProcStatus(), CommonUtils.getOperationCodeFromDsd(dsd))) {
+            if (!DsdClientSecurityUtils.canDeleteDsd(dsd.getLifeCycle().getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dsd))) {
                 actionAllowed = false;
                 break;
             }
@@ -345,7 +345,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             DataStructureDefinitionMetamacDto dsd = ((DsdRecord) record).getDsd();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
             if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsd.getLifeCycle().getProcStatus()) || dsd.getValidTo() != null
-                    || !DsdClientSecurityUtils.canCancelDsdValidity(CommonUtils.getOperationCodeFromDsd(dsd))) {
+                    || !DsdClientSecurityUtils.canCancelDsdValidity(CommonUtils.getStatisticalOperationCodeFromDsd(dsd))) {
                 allSelectedDsdsExternallyPublished = false;
             }
         }
