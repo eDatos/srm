@@ -57,6 +57,14 @@ public class CodesClientSecurityUtils {
         return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
+    public static boolean canAddCodelistToCodelistFamily() {
+        return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canRemoveCodelistFromCodelistFamily() {
+        return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
     // CODES
 
     public static boolean canCreateCode(ProcStatusEnum procStatus) {
