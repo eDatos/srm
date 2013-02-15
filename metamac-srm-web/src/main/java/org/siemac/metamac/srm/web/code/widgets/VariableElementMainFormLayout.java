@@ -26,7 +26,7 @@ public class VariableElementMainFormLayout extends InternationalMainFormLayout {
 
     private void common() {
         segregateButton = new MainFormLayoutButton(getConstants().actionSegregate(), GlobalResources.RESOURCE.segregate().getURL());
-        segregateButton.setVisibility(CodesClientSecurityUtils.canCrudVariableElement() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        segregateButton.setVisibility(CodesClientSecurityUtils.canSegregateVariableElement() ? Visibility.VISIBLE : Visibility.HIDDEN);
         toolStrip.addButton(segregateButton);
     }
 

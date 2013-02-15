@@ -76,7 +76,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // VARIABLE ELEMENT
         //
 
-        mainFormLayout = new VariableElementMainFormLayout(CodesClientSecurityUtils.canCrudVariableElement());
+        mainFormLayout = new VariableElementMainFormLayout(CodesClientSecurityUtils.canUpdateVariableElement());
         mainFormLayout.getSegregate().addClickHandler(new ClickHandler() {
 
             @Override

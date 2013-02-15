@@ -84,7 +84,7 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
                 });
             }
         });
-        newVariableButton.setVisibility(CodesClientSecurityUtils.canCrudVariable() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newVariableButton.setVisibility(CodesClientSecurityUtils.canCreateVariable() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         deleteVariableButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteVariableButton.setVisibility(Visibility.HIDDEN);
@@ -217,7 +217,7 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {
-        if (CodesClientSecurityUtils.canCrudVariable()) {
+        if (CodesClientSecurityUtils.canDeleteVariable()) {
             deleteVariableButton.show();
         }
     }

@@ -226,7 +226,7 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
     }
 
     private void updateListGridNewButtonVisibility() {
-        if (CodesClientSecurityUtils.canCrudCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canCreateCodelistOrderVisualisation(codelistProcStatus)) {
             newCodelistOrderButton.show();
         } else {
             newCodelistOrderButton.hide();
@@ -234,13 +234,13 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
     }
 
     private void showListGridEditButton() {
-        if (CodesClientSecurityUtils.canCrudCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistProcStatus)) {
             editCodelistOrderButton.show();
         }
     }
 
     private void showListGridDeleteButton() {
-        if (CodesClientSecurityUtils.canCrudCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canDeleteCodelistOrderVisualisation(codelistProcStatus)) {
             deleteCodelistOrderButton.show();
         }
     }

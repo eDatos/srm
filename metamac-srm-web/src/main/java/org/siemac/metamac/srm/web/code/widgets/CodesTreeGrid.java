@@ -86,7 +86,7 @@ public class CodesTreeGrid extends ItemsTreeGrid {
                         }
                     } else {
                         // Update order
-                        if (CodesClientSecurityUtils.canCrudCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+                        if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
                             // Only update order if there is order selected
                             if (codelistOrderVisualisationDto != null) {
                                 uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), order);

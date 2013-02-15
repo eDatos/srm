@@ -73,19 +73,43 @@ public class CodesClientSecurityUtils {
 
     // ORDERS
 
-    public static boolean canCrudCodelistOrderVisualisation(ProcStatusEnum procStatus) {
+    public static boolean canCreateCodelistOrderVisualisation(ProcStatusEnum procStatus) {
+        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
+    public static boolean canUpdateCodelistOrderVisualisation(ProcStatusEnum procStatus) {
+        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
+    public static boolean canDeleteCodelistOrderVisualisation(ProcStatusEnum procStatus) {
         return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
     // CODELIST FAMILY
 
-    public static boolean canCrudCodelistFamily() {
+    public static boolean canCreateCodelistFamily() {
+        return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canUpdateCodelistFamily() {
+        return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canDeleteCodelistFamily() {
         return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
     }
 
     // VARIABLE FAMILY
 
-    public static boolean canCrudVariableFamily() {
+    public static boolean canCreateVariableFamily() {
+        return SharedCodesSecurityUtils.canCrudVariableFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canUpdateVariableFamily() {
+        return SharedCodesSecurityUtils.canCrudVariableFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canDeleteVariableFamily() {
         return SharedCodesSecurityUtils.canCrudVariableFamily(MetamacSrmWeb.getCurrentUser());
     }
 
@@ -99,13 +123,37 @@ public class CodesClientSecurityUtils {
 
     // VARIABLE
 
-    public static boolean canCrudVariable() {
+    public static boolean canCreateVariable() {
+        return SharedCodesSecurityUtils.canCrudVariable(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canUpdateVariable() {
+        return SharedCodesSecurityUtils.canCrudVariable(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canDeleteVariable() {
         return SharedCodesSecurityUtils.canCrudVariable(MetamacSrmWeb.getCurrentUser());
     }
 
     // VARIABLE ELEMENT
 
-    public static boolean canCrudVariableElement() {
+    public static boolean canCreateVariableElement() {
+        return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canUpdateVariableElement() {
+        return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canDeleteVariableElement() {
+        return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canFusionVariableElements() {
+        return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canSegregateVariableElement() {
         return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
     }
 }

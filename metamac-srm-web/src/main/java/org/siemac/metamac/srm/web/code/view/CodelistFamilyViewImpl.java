@@ -84,7 +84,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         // CODELIST FAMILY
         //
 
-        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canCrudCodelistFamily());
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canUpdateCodelistFamily());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
