@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistFamilyRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistFamilyListPresenter;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewCodelistFamilyWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
@@ -80,8 +81,7 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
                 });
             }
         });
-        // TODO Security
-        // newCodelistFamilyButton.setVisibility(CodesClientSecurityUtils.canCreateCodelist() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newCodelistFamilyButton.setVisibility(CodesClientSecurityUtils.canModifyCodelistFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         deleteCodelistFamilyButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteCodelistFamilyButton.setVisibility(Visibility.HIDDEN);
@@ -219,12 +219,8 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {
-        boolean allSelectedFamiliesCanBeDeleted = true;
-        // TODO Security
-        if (allSelectedFamiliesCanBeDeleted) {
+        if (CodesClientSecurityUtils.canModifyCodelistFamily()) {
             deleteCodelistFamilyButton.show();
-        } else {
-            deleteCodelistFamilyButton.hide();
         }
     }
 }

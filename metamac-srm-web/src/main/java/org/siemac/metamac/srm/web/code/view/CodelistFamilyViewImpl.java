@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistFamilyPresenter;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
@@ -83,7 +84,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         // CODELIST FAMILY
         //
 
-        mainFormLayout = new InternationalMainFormLayout(); // TODO Security
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canModifyCodelistFamily());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();

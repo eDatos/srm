@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistOrderDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistOrderRecord;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.EditCodelistOrderWindow;
@@ -105,8 +106,6 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
                 });
             }
         });
-        // TODO Security
-        // newCodelistOrderButton.setVisibility(CodesClientSecurityUtils.canCreateCodelist() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         editCodelistOrderButton = new ToolStripButton(getConstants().actionEdit(), RESOURCE.editListGrid().getURL());
         editCodelistOrderButton.setVisibility(Visibility.HIDDEN);
@@ -223,16 +222,27 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
 
     public void setCodelistProcStatus(ProcStatusEnum procStatusEnum) {
         this.codelistProcStatus = procStatusEnum;
+        updateListGridNewButtonVisibility();
     }
 
-    private void showListGridDeleteButton() {
-        // TODO Security
-        deleteCodelistOrderButton.show();
+    private void updateListGridNewButtonVisibility() {
+        if (CodesClientSecurityUtils.canModifiyCodelistOrderVisualisation(codelistProcStatus)) {
+            newCodelistOrderButton.show();
+        } else {
+            newCodelistOrderButton.hide();
+        }
     }
 
     private void showListGridEditButton() {
-        // TODO Security
-        editCodelistOrderButton.show();
+        if (CodesClientSecurityUtils.canModifiyCodelistOrderVisualisation(codelistProcStatus)) {
+            editCodelistOrderButton.show();
+        }
+    }
+
+    private void showListGridDeleteButton() {
+        if (CodesClientSecurityUtils.canModifiyCodelistOrderVisualisation(codelistProcStatus)) {
+            deleteCodelistOrderButton.show();
+        }
     }
 
     private CodelistOrderVisualisationDto getSelectedCodelistOrder() {

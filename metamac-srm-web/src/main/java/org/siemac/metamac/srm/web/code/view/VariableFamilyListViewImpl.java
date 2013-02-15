@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableFamilyListPresenter;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableFamilyWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
@@ -80,8 +81,7 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
                 });
             }
         });
-        // TODO Security
-        // newVariableFamilyButton.setVisibility(CodesClientSecurityUtils.canCreateCodelist() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newVariableFamilyButton.setVisibility(CodesClientSecurityUtils.canModifyVariableFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         deleteVariableFamilyButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteVariableFamilyButton.setVisibility(Visibility.HIDDEN);
@@ -219,12 +219,8 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {
-        boolean allSelectedFamiliesCanBeDeleted = true;
-        // TODO Security
-        if (allSelectedFamiliesCanBeDeleted) {
+        if (CodesClientSecurityUtils.canModifyVariableFamily()) {
             deleteVariableFamilyButton.show();
-        } else {
-            deleteVariableFamilyButton.hide();
         }
     }
 }

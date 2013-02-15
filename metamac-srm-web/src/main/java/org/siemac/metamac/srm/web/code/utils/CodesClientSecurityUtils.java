@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.code.utils;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
 import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
@@ -68,5 +69,43 @@ public class CodesClientSecurityUtils {
 
     public static boolean canDeleteCode(ProcStatusEnum procStatus) {
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
+    // ORDERS
+
+    public static boolean canModifiyCodelistOrderVisualisation(ProcStatusEnum procStatus) {
+        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
+    // CODELIST FAMILY
+
+    public static boolean canModifyCodelistFamily() {
+        return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    // VARIABLE FAMILY
+
+    public static boolean canModifyVariableFamily() {
+        return SharedCodesSecurityUtils.canCrudVariableFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canAddVariablesToVariableFamily() {
+        return SharedCodesSecurityUtils.canAddVariablesToVariableFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canRemoveVariablesFromVariableFamily() {
+        return SharedCodesSecurityUtils.canRemoveVariableFromVariableFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    // VARIABLE
+
+    public static boolean canModifyVariable() {
+        return SharedCodesSecurityUtils.canCrudVariable(MetamacSrmWeb.getCurrentUser());
+    }
+
+    // VARIABLE ELEMENT
+
+    public static boolean canCrudVariableElement() {
+        return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
     }
 }

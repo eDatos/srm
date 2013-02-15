@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistPresenter;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodelistCategorisationsPanel;
@@ -137,7 +138,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // CODELIST
         //
 
-        mainFormLayout = new CodelistMainFormLayout(); // TODO Security
+        mainFormLayout = new CodelistMainFormLayout();
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -357,6 +358,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Security
         ProcStatusEnum procStatus = codelist.getLifeCycle().getProcStatus();
+        mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCodelist(procStatus));
         mainFormLayout.updatePublishSection(procStatus, codelist.getValidTo());
         mainFormLayout.setViewMode();
         categorisationsPanel.updateVisibility(procStatus);

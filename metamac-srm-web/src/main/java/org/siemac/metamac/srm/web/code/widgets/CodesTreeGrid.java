@@ -78,12 +78,19 @@ public class CodesTreeGrid extends ItemsTreeGrid {
                     String newItemParent = SCHEME_NODE_NAME.equals(dropFolder.getName()) ? null : dropFolder.getAttribute(CodeDS.URN);
 
                     if (!StringUtils.equals(oldItemParent, newItemParent)) {
-                        uiHandlers.updateCodeParent(droppedNode.getAttribute(CodeDS.URN), dropFolder.getAttribute(CodeDS.URN),
-                                codelistOrderVisualisationDto != null ? codelistOrderVisualisationDto.getUrn() : null);
+                        // Update code parent
+                        if (CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+                            uiHandlers.updateCodeParent(droppedNode.getAttribute(CodeDS.URN), dropFolder.getAttribute(CodeDS.URN), codelistOrderVisualisationDto != null
+                                    ? codelistOrderVisualisationDto.getUrn()
+                                    : null);
+                        }
                     } else {
-                        // Only update order if there is order selected
-                        if (codelistOrderVisualisationDto != null) {
-                            uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), order);
+                        // Update order
+                        if (CodesClientSecurityUtils.canModifiyCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+                            // Only update order if there is order selected
+                            if (codelistOrderVisualisationDto != null) {
+                                uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), order);
+                            }
                         }
                     }
                 }
@@ -172,8 +179,6 @@ public class CodesTreeGrid extends ItemsTreeGrid {
     }
 
     private boolean isDroppable(TreeNode dropFolder) {
-        // TODO Security
-        // Replacing false root is not allowed
         return !("/".equals(getDropFolder().getName()));
     }
 }

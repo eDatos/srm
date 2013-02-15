@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableFamilyPresenter;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -83,7 +84,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         // VARIABLE FAMILY
         //
 
-        mainFormLayout = new InternationalMainFormLayout(); // TODO Security
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canModifyVariableFamily());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -330,6 +331,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
                 });
             }
         });
+        button.setVisibility(CodesClientSecurityUtils.canAddVariablesToVariableFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
         return button;
     }
 
@@ -347,6 +349,8 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     }
 
     private void showListGridRemoveButton() {
-        removeVariableToFamilyButton.show();
+        if (CodesClientSecurityUtils.canRemoveVariablesFromVariableFamily()) {
+            removeVariableToFamilyButton.show();
+        }
     }
 }
