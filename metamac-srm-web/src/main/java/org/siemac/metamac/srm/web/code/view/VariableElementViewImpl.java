@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.presenter.VariableElementPresenter;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
@@ -75,7 +76,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // VARIABLE ELEMENT
         //
 
-        mainFormLayout = new VariableElementMainFormLayout(); // TODO Security
+        mainFormLayout = new VariableElementMainFormLayout(CodesClientSecurityUtils.canCrudVariableElement());
         mainFormLayout.getSegregate().addClickHandler(new ClickHandler() {
 
             @Override
