@@ -72,4 +72,21 @@ public class CodesSecurityUtils extends SecurityUtils {
         }
     }
 
+    public static void canAddVariablesToVariableFamily(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canAddVariablesToVariableFamily(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
+    public static void canRemoveVariableFromVariableFamily(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canRemoveVariableFromVariableFamily(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
+    public static void canAddVariableElementsToVariable(ServiceContext ctx) throws MetamacException {
+        if (SharedCodesSecurityUtils.canAddVariableElementsToVariable(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
 }

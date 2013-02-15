@@ -52,4 +52,16 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     public static boolean canCrudVariableElement(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
     }
+
+    public static boolean canAddVariablesToVariableFamily(MetamacPrincipal metamacPrincipal) {
+        return canCrudVariableFamily(metamacPrincipal) && canCrudVariable(metamacPrincipal);
+    }
+
+    public static boolean canRemoveVariableFromVariableFamily(MetamacPrincipal metamacPrincipal) {
+        return canCrudVariableFamily(metamacPrincipal) && canCrudVariable(metamacPrincipal);
+    }
+
+    public static boolean canAddVariableElementsToVariable(MetamacPrincipal metamacPrincipal) {
+        return canCrudVariable(metamacPrincipal) && canCrudVariableElement(metamacPrincipal);
+    }
 }

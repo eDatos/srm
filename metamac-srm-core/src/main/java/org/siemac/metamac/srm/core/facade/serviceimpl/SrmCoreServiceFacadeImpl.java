@@ -1472,8 +1472,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void addVariablesToVariableFamily(ServiceContext ctx, List<String> variableUrns, String variableFamilyUrn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableFamily(ctx);
-        CodesSecurityUtils.canCrudVariable(ctx);
+        CodesSecurityUtils.canAddVariablesToVariableFamily(ctx);
 
         // Add
         getCodesMetamacService().addVariablesToVariableFamily(ctx, variableUrns, variableFamilyUrn);
@@ -1482,8 +1481,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void removeVariableFromVariableFamily(ServiceContext ctx, String variableUrn, String variableFamilyUrn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableFamily(ctx);
-        CodesSecurityUtils.canCrudVariable(ctx);
+        CodesSecurityUtils.canRemoveVariableFromVariableFamily(ctx);
 
         // Delete
         getCodesMetamacService().removeVariableFromVariableFamily(ctx, variableUrn, variableFamilyUrn);
@@ -1587,8 +1585,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void addVariableElementsToVariable(ServiceContext ctx, List<String> variableElementUrns, String variableUrn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariable(ctx);
-        CodesSecurityUtils.canCrudVariableElement(ctx);
+        CodesSecurityUtils.canAddVariableElementsToVariable(ctx);
 
         // Add
         getCodesMetamacService().addVariableElementsToVariable(ctx, variableElementUrns, variableUrn);
