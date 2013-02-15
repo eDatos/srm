@@ -14,7 +14,6 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
-import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.InformationLabel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -23,6 +22,7 @@ import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeCategorisationsPanel;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
@@ -100,7 +100,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
     private InformationLabel                  conceptsNoVisibleInfoMessage;
     private ConceptsTreeGrid                  conceptsTreeGrid;
     private ConceptSchemeVersionsSectionStack versionsSectionStack;
-    private CategorisationsPanel              categorisationsPanel;
+    private ConceptSchemeCategorisationsPanel categorisationsPanel;
 
     private ConceptSchemeMetamacDto           conceptSchemeDto;
     private ExternalItemDto                   relatedOperation;
@@ -150,7 +150,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGridLayout.addMember(conceptsNoVisibleInfoMessage);
         conceptsListGridLayout.addMember(conceptsTreeGrid);
 
-        categorisationsPanel = new CategorisationsPanel();
+        categorisationsPanel = new ConceptSchemeCategorisationsPanel();
 
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);

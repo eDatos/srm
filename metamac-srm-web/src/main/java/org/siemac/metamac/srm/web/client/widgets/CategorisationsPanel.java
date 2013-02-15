@@ -35,13 +35,13 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class CategorisationsPanel extends VLayout {
+public abstract class CategorisationsPanel extends VLayout {
 
     private static final int                  FIRST_RESULT = 0;
     private static final int                  MAX_RESULTS  = 8;
 
-    private ToolStripButton                   newCategorisationButton;
-    private ToolStripButton                   deleteCategorisationButton;
+    protected ToolStripButton                 newCategorisationButton;
+    protected ToolStripButton                 deleteCategorisationButton;
     private CustomListGrid                    categorisationListGrid;
 
     private SearchCategoriesForCategorisation searchCategoriesWindow;
@@ -160,11 +160,6 @@ public class CategorisationsPanel extends VLayout {
         return urns;
     }
 
-    private void showDeleteCategorisationButton() {
-        // TODO Security
-        deleteCategorisationButton.show();
-    }
-
     private void showSearchCategoriesWindow() {
         PaginatedAction filterListAction = new PaginatedAction() {
 
@@ -233,4 +228,7 @@ public class CategorisationsPanel extends VLayout {
             }
         });
     }
+
+    public abstract void showDeleteCategorisationButton();
+
 }

@@ -16,12 +16,12 @@ import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
+import org.siemac.metamac.srm.web.category.widgets.CategorySchemeCategorisationsPanel;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeMainFormLayout;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
-import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
@@ -83,7 +83,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     private CategoriesTreeGrid                 categoriesTreeGrid;
 
     // Categorisations
-    private CategorisationsPanel               categorisationsPanel;
+    private CategorySchemeCategorisationsPanel categorisationsPanel;
 
     private CategorySchemeMetamacDto           categorySchemeDto;
 
@@ -126,7 +126,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         categoriesListGridLayout.addMember(new TitleLabel(getConstants().categories()));
         categoriesListGridLayout.addMember(categoriesTreeGrid);
 
-        categorisationsPanel = new CategorisationsPanel();
+        categorisationsPanel = new CategorySchemeCategorisationsPanel();
 
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);

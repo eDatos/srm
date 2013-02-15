@@ -16,7 +16,6 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
-import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CodelistOrdersSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
@@ -27,6 +26,7 @@ import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistPresenter;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
+import org.siemac.metamac.srm.web.code.widgets.CodelistCategorisationsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.code.widgets.CodesTreeGrid;
@@ -108,7 +108,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private TitleLabel                                   codesLayoutTitle;
     private CodelistOrdersSectionStack                   codelistOrdersSectionStack;
     private CodesTreeGrid                                codesTreeGrid;
-    private CategorisationsPanel                         categorisationsPanel;
+    private CodelistCategorisationsPanel                 categorisationsPanel;
 
     private CodelistMetamacDto                           codelistDto;
 
@@ -161,7 +161,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codesLayout.addMember(codesLayoutTitle);
         codesLayout.addMember(codesHLayout);
 
-        categorisationsPanel = new CategorisationsPanel();
+        categorisationsPanel = new CodelistCategorisationsPanel();
 
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);

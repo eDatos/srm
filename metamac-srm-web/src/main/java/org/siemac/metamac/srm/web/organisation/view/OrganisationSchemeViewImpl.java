@@ -15,7 +15,6 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
-import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
@@ -26,6 +25,7 @@ import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.NewOrganisationWindow;
+import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeCategorisationsPanel;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
@@ -110,7 +110,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private OrganisationsTreeGrid                  organisationsTreeGrid;
 
     // Categorisations
-    private CategorisationsPanel                   categorisationsPanel;
+    private OrganisationSchemeCategorisationsPanel categorisationsPanel;
 
     @Inject
     public OrganisationSchemeViewImpl() {
@@ -240,7 +240,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         organisationsLayout.addMember(organisationListGrid);
         organisationsLayout.addMember(organisationsTreeGrid);
 
-        categorisationsPanel = new CategorisationsPanel();
+        categorisationsPanel = new OrganisationSchemeCategorisationsPanel();
 
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);

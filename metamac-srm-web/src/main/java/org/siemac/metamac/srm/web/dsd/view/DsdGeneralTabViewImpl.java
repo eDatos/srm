@@ -17,13 +17,13 @@ import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
-import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.DimensionsVisualisationItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdCategorisationsPanel;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
@@ -95,7 +95,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  commentsEditionForm;
     private AnnotationsPanel                  annotationsEditionPanel;
 
-    private CategorisationsPanel              categorisationsPanel;
+    private DsdCategorisationsPanel           categorisationsPanel;
     private SearchExternalItemWindow          searchOperationWindow;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
@@ -125,7 +125,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         createViewForm();
         createEditionForm();
 
-        categorisationsPanel = new CategorisationsPanel();
+        categorisationsPanel = new DsdCategorisationsPanel();
 
         panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
@@ -438,7 +438,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Security
         String operationCode = org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDsd(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode));
-
         mainFormLayout.updatePublishSection(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacDto.getValidTo(), operationCode);
         mainFormLayout.setViewMode();
 
