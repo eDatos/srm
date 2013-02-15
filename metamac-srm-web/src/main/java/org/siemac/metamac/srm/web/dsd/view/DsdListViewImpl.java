@@ -10,9 +10,11 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
+import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
@@ -108,7 +110,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 importDsdWindow.show();
             }
         });
-        importToolStripButton.setVisibility(DsdClientSecurityUtils.canImportDsd() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        importToolStripButton.setVisibility(ImportationClientSecurityUtils.canImportStructure() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         importDsdWindow = new ImportDsdWindow();
         importDsdWindow.setVisibility(Visibility.HIDDEN);
@@ -296,10 +298,10 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showDeleteToolStripButton() {
-        List<ProcStatusEnum> statusList = getSelectedDsdsProcStatus();
+        List<DataStructureDefinitionMetamacDto> dsds = getSelectedDsds();
         boolean actionAllowed = true;
-        for (ProcStatusEnum procStatus : statusList) {
-            if (!DsdClientSecurityUtils.canDeleteDsd(procStatus)) {
+        for (DataStructureDefinitionMetamacDto dsd : dsds) {
+            if (!DsdClientSecurityUtils.canDeleteDsd(dsd.getLifeCycle().getProcStatus(), CommonUtils.getOperationCodeFromDsd(dsd))) {
                 actionAllowed = false;
                 break;
             }
@@ -313,16 +315,16 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         exportToolStripButton.show();
     }
 
-    private List<ProcStatusEnum> getSelectedDsdsProcStatus() {
-        List<ProcStatusEnum> status = new ArrayList<ProcStatusEnum>();
+    private List<DataStructureDefinitionMetamacDto> getSelectedDsds() {
+        List<DataStructureDefinitionMetamacDto> dsds = new ArrayList<DataStructureDefinitionMetamacDto>();
         if (dsdListGrid.getListGrid().getSelectedRecords() != null) {
             ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
             for (int i = 0; i < records.length; i++) {
                 DsdRecord record = (DsdRecord) records[i];
-                status.add(record.getDsd().getLifeCycle().getProcStatus());
+                dsds.add(record.getDsd());
             }
         }
-        return status;
+        return dsds;
     }
 
     private List<String> getSelectedDsdsUrns() {
@@ -340,13 +342,14 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private void showCancelValidityDeleteButton(ListGridRecord[] records) {
         boolean allSelectedDsdsExternallyPublished = true;
         for (ListGridRecord record : records) {
-            DsdRecord dsdRecord = (DsdRecord) record;
+            DataStructureDefinitionMetamacDto dsd = ((DsdRecord) record).getDsd();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsdRecord.getDsd().getLifeCycle().getProcStatus()) || dsdRecord.getDsd().getValidTo() != null) {
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsd.getLifeCycle().getProcStatus()) || dsd.getValidTo() != null
+                    || !DsdClientSecurityUtils.canCancelDsdValidity(CommonUtils.getOperationCodeFromDsd(dsd))) {
                 allSelectedDsdsExternallyPublished = false;
             }
         }
-        if (allSelectedDsdsExternallyPublished && DsdClientSecurityUtils.canCancelDsdValidity()) {
+        if (allSelectedDsdsExternallyPublished) {
             cancelValidityButton.show();
         } else {
             cancelValidityButton.hide();

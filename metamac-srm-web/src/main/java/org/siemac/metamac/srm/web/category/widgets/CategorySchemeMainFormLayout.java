@@ -3,20 +3,12 @@ package org.siemac.metamac.srm.web.category.widgets;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 
-import com.smartgwt.client.types.Visibility;
-
 public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     public CategorySchemeMainFormLayout() {
-        common();
     }
 
     public CategorySchemeMainFormLayout(boolean canEdit) {
-        common();
-    }
-
-    private void common() {
-        announce.setVisibility(CategoriesClientSecurityUtils.canAnnounceCategoryScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
 
     @Override
@@ -68,4 +60,10 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showAnnounceButton() {
+        if (CategoriesClientSecurityUtils.canAnnounceCategoryScheme()) {
+            announce.show();
+        }
+    }
 }

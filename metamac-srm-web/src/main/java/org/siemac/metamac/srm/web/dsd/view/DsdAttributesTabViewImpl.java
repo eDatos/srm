@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
@@ -87,7 +88,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTabUiHandlers> implements DsdAttributesTabPresenter.DsdAttributesTabView {
 
-    private ProcStatusEnum                               procStatus;
+    private DataStructureDefinitionMetamacDto            dataStructureDefinitionMetamacDto;
 
     private DataAttributeDto                             dataAttributeDto;
     private List<DimensionComponentDto>                  dimensionComponentDtos;
@@ -485,12 +486,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     }
 
     @Override
-    public void setDsdAttributes(ProcStatusEnum procStatus, List<DataAttributeDto> dataAttributeDtos) {
-        this.procStatus = procStatus;
+    public void setDsdAttributes(DataStructureDefinitionMetamacDto dsd, List<DataAttributeDto> dataAttributeDtos) {
+        this.dataStructureDefinitionMetamacDto = dsd;
 
         // Security
-        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateAttributes(procStatus) ? Visibility.VISIBLE : Visibility.HIDDEN);
-        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateAttributes(procStatus));
+        ProcStatusEnum procStatus = dsd.getLifeCycle().getProcStatus();
+        String operationCode = CommonUtils.getOperationCodeFromDsd(dsd);
+        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateAttributes(procStatus, operationCode) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateAttributes(procStatus, operationCode));
 
         deselectAttribute();
         attributesGrid.selectAllRecords();
@@ -920,7 +923,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canUpdateAttributes(procStatus)) {
+        if (DsdClientSecurityUtils.canUpdateAttributes(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), CommonUtils.getOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
             deleteToolStripButton.show();
         }
     }

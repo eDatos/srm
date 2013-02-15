@@ -436,7 +436,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         this.statisticalOperation = dataStructureDefinitionMetamacDto.getStatisticalOperation();
 
         // Security
-        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDsd(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus()));
+        String operationCode = org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDsd(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode));
 
         mainFormLayout.updatePublishSection(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacDto.getValidTo());
         mainFormLayout.setViewMode();

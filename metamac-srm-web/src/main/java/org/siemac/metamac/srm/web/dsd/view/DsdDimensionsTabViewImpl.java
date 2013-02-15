@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
@@ -83,7 +84,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTabUiHandlers> implements DsdDimensionsTabPresenter.DsdDimensionsTabView {
 
-    private ProcStatusEnum                               procStatus;
+    private DataStructureDefinitionMetamacDto            dataStructureDefinitionMetamacDto;
 
     private DimensionComponentDto                        dimensionComponentDto;
 
@@ -449,13 +450,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
-    public void setDsdDimensions(ProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos) {
-        this.procStatus = procStatus;
+    public void setDsdDimensions(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos) {
+        this.dataStructureDefinitionMetamacDto = dsd;
         deselectDimension();
 
         // Security
-        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateDimensions(procStatus) ? Visibility.VISIBLE : Visibility.HIDDEN);
-        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimensions(procStatus));
+        ProcStatusEnum procStatus = dsd.getLifeCycle().getProcStatus();
+        String operationCode = CommonUtils.getOperationCodeFromDsd(dsd);
+        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateDimensions(procStatus, operationCode) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimensions(procStatus, operationCode));
 
         dimensionsGrid.selectAllRecords();
         dimensionsGrid.removeSelectedData();
@@ -822,7 +825,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canUpdateDimensions(procStatus)) {
+        if (DsdClientSecurityUtils.canUpdateDimensions(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), CommonUtils.getOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
             deleteToolStripButton.show();
         }
     }

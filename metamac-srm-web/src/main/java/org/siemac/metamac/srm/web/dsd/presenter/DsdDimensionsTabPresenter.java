@@ -6,7 +6,6 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -101,7 +100,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         void setConceptSchemesForMeasureDimensionEnumeratedRepresentation(GetRelatedResourcesResult result);
         void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
 
-        void setDsdDimensions(ProcStatusEnum procStatus, List<DimensionComponentDto> dimensionComponentDtos);
+        void setDsdDimensions(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos);
         DimensionComponentDto getDsdDimension();
         List<DimensionComponentDto> getSelectedDimensions();
         void onDimensionSaved(DimensionComponentDto dimensionComponentDto);
@@ -379,7 +378,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     }
 
     private void setDsdDimensions(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
-        getView().setDsdDimensions(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dimensionComponentDtos);
+        getView().setDsdDimensions(dataStructureDefinitionMetamacDto, dimensionComponentDtos);
     }
 
     private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(TypeDimensionComponent dimensionType) {

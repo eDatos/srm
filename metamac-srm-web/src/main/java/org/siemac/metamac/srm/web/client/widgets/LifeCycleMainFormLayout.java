@@ -144,6 +144,8 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
                 showCancelValidityButton();
             }
         }
+        // Announce button (does not depends on the procStatus)
+        showAnnounceButton();
     }
 
     protected abstract void showSendToProductionValidation();
@@ -160,4 +162,5 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
 
     protected abstract void showCancelValidityButton();
 
+    protected abstract void showAnnounceButton();
 }

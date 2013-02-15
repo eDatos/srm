@@ -25,9 +25,9 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         this.relatedOperationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
     }
 
+    @Override
     protected void updateVisibility() {
         super.updateVisibility();
-        showAnnounceButton();
     }
 
     @Override
@@ -79,10 +79,10 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
-    private void showAnnounceButton() {
+    @Override
+    protected void showAnnounceButton() {
         if (ConceptsClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {
             announce.show();
         }
     }
-
 }

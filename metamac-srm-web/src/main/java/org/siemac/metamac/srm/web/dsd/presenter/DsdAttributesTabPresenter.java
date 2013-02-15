@@ -6,7 +6,6 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -107,7 +106,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         void setDimensions(List<DimensionComponentDto> dimensionComponentDtos);
         void setGroupKeys(List<DescriptorDto> descriptorDtos);
 
-        void setDsdAttributes(ProcStatusEnum procStatus, List<DataAttributeDto> dataAttributeDtos);
+        void setDsdAttributes(DataStructureDefinitionMetamacDto dsd, List<DataAttributeDto> dataAttributeDtos);
         DataAttributeDto getDsdAttribute();
         List<DataAttributeDto> getSelectedAttributes();
         void onAttributeSaved(DataAttributeDto dataAttributeDto);
@@ -144,7 +143,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         isNewDescriptor = attributesDescriptor.getId() == null;
         dataAttributeDtos = CommonUtils.getAttributeComponents(attributesDescriptor);
         getView().setDimensions(CommonUtils.getDimensionComponents(event.getDimensions()));
-        getView().setDsdAttributes(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), CommonUtils.getAttributeComponents(event.getAttributes()));
+        getView().setDsdAttributes(dataStructureDefinitionDto, CommonUtils.getAttributeComponents(event.getAttributes()));
         getView().setGroupKeys(event.getGroupKeys());
     }
 
@@ -172,7 +171,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                             }
                         }
                     }
-                    getView().setDsdAttributes(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), dataAttributeDtos);
+                    getView().setDsdAttributes(dataStructureDefinitionDto, dataAttributeDtos);
                 }
                 // Update Dimensions
                 getView().setDimensions(event.getDimensionComponentDtos());
@@ -204,7 +203,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                             }
                         }
                     }
-                    getView().setDsdAttributes(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), dataAttributeDtos);
+                    getView().setDsdAttributes(dataStructureDefinitionDto, dataAttributeDtos);
                 }
                 // Update Group Keys
                 getView().setGroupKeys(event.getGroupKeys());
@@ -413,7 +412,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                         }
                     }
                     if (updateView) {
-                        getView().setDsdAttributes(dataStructureDefinitionDto.getLifeCycle().getProcStatus(), dataAttributeDtos);
+                        getView().setDsdAttributes(dataStructureDefinitionDto, dataAttributeDtos);
                     }
                 }
             }

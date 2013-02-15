@@ -8,22 +8,15 @@ import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.smartgwt.client.types.Visibility;
 
 public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private OrganisationSchemeTypeEnum organisationSchemeType;
 
     public OrganisationSchemeMainFormLayout() {
-        common();
     }
 
     public OrganisationSchemeMainFormLayout(boolean canEdit) {
-        common();
-    }
-
-    private void common() {
-        announce.setVisibility(OrganisationsClientSecurityUtils.canAnnounceOrganisationScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
 
     public void updatePublishSection(ProcStatusEnum status, Date validTo, OrganisationSchemeTypeEnum type) {
@@ -68,7 +61,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        // Agency schemes, data consumer schemes and data provider schemes can not be versioned
+        // Agency schemes, data consumer schemes and data provider schemes can not be version
         if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
             if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {
                 versioning.show();
@@ -83,6 +76,13 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
             if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity()) {
                 cancelValidity.show();
             }
+        }
+    }
+
+    @Override
+    protected void showAnnounceButton() {
+        if (OrganisationsClientSecurityUtils.canAnnounceOrganisationScheme()) {
+            announce.show();
         }
     }
 }

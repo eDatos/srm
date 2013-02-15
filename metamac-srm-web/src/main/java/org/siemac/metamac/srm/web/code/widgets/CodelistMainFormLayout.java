@@ -8,7 +8,6 @@ import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 
-import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
@@ -24,8 +23,6 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     private void common() {
-        announce.setVisibility(CodesClientSecurityUtils.canAnnounceCodelist() ? Visibility.VISIBLE : Visibility.HIDDEN);
-
         // Add button to add the codelist to a family (when is published)
         addCodelistToFamilyButton = new MainFormLayoutButton(getConstants().codelistModifyCodelistFamily(), GlobalResources.RESOURCE.editListGrid().getURL());
         toolStrip.addButton(addCodelistToFamilyButton, 1);
@@ -96,6 +93,13 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     protected void showCancelValidityButton() {
         if (CodesClientSecurityUtils.canCancelCodelistValidity()) {
             cancelValidity.show();
+        }
+    }
+
+    @Override
+    protected void showAnnounceButton() {
+        if (CodesClientSecurityUtils.canAnnounceCodelist()) {
+            announce.show();
         }
     }
 
