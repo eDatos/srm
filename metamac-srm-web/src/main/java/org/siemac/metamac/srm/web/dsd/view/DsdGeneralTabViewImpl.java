@@ -289,8 +289,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem staticDescriptionItem = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem staticFinalItem = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
-        ViewTextItem staticAgency = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        contentDescriptorsForm.setFields(staticDescriptionItem, staticFinalItem, staticAgency);
+        contentDescriptorsForm.setFields(staticDescriptionItem, staticFinalItem);
 
         // Class Descriptors Form
         classDescriptorsForm = new GroupDynamicForm(getConstants().formClassDescriptors());
@@ -299,6 +298,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Production descriptors form
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem maintainer = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        ViewTextItem procStatus = new ViewTextItem(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
+        productionDescriptorsForm.setFields(maintainer, procStatus);
 
         // Status Form
         statusForm = new GroupDynamicForm(getConstants().dsdStatus());
@@ -392,8 +394,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem descriptionItem = new MultiLanguageTextAreaItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
-        ViewTextItem staticAgencyEdit = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        contentDescriptorsEditionForm.setFields(descriptionItem, staticFinalItemEdit, staticAgencyEdit);
+        contentDescriptorsEditionForm.setFields(descriptionItem, staticFinalItemEdit);
 
         // Class descriptors form
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
@@ -402,6 +403,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Production descriptors form
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem maintainer = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        ViewTextItem procStatus = new ViewTextItem(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
+        productionDescriptorsEditionForm.setFields(maintainer, procStatus);
 
         // Status Form
         statusEditionForm = new GroupDynamicForm(getConstants().dsdStatus());
@@ -517,12 +521,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
                 .no()) : StringUtils.EMPTY);
-        contentDescriptorsForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
 
         // Class descriptors form
         classDescriptorsForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Production descriptors form
+        productionDescriptorsForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
+        productionDescriptorsForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
 
         // Status form
         statusForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
@@ -571,12 +576,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                 .getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
 
         // Class descriptors form
         classDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
 
         // Production descriptors form
+        productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
+        productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
 
         // Status form
         statusEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
