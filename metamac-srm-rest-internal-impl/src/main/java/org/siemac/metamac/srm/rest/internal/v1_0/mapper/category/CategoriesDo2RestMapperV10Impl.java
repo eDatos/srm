@@ -232,7 +232,7 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
     }
 
     private String toCategorySchemesLink(String agencyID, String resourceID, String version) {
-        return toItemSchemesLink(toSubpathItemSchemes(), agencyID, resourceID, version);
+        return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
     private String toCategorySchemeLink(ItemSchemeVersion itemSchemeVersion) {
         return toItemSchemeLink(toSubpathItemSchemes(), itemSchemeVersion);
@@ -247,10 +247,10 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
     }
     private String toCategorisationsLink(String agencyID, String resourceID, String version) {
-        return toItemSchemesLink(toSubpathCategorisations(), agencyID, resourceID, version);
+        return toMaintainableArtefactLink(toSubpathCategorisations(), agencyID, resourceID, version);
     }
     private String toCategorisationLink(Categorisation categorisation) {
-        return toItemSchemeLink(toSubpathCategorisations(), categorisation.getMaintainableArtefact());
+        return toMaintainableArtefactLink(toSubpathCategorisations(), categorisation.getMaintainableArtefact());
     }
 
     private String toSubpathItemSchemes() {

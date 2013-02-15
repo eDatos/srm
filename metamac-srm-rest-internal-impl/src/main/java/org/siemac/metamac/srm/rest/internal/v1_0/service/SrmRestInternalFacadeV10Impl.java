@@ -66,6 +66,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
+import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
@@ -80,6 +81,8 @@ import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesDo2RestMapperV
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesRest2DoMapper;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsRest2DoMapper;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.dsd.DataStructuresDo2RestMapperV10;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.dsd.DataStructuresRest2DoMapper;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation.OrganisationsDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation.OrganisationsRest2DoMapper;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
@@ -95,46 +98,52 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
-    private ConceptsMetamacService        conceptsService;
+    private ConceptsMetamacService         conceptsService;
 
     @Autowired
-    private CategoriesMetamacService      categoriesService;
+    private CategoriesMetamacService       categoriesService;
 
     @Autowired
-    private OrganisationsMetamacService   organisationsService;
+    private OrganisationsMetamacService    organisationsService;
 
     @Autowired
-    private CodesMetamacService           codesService;
+    private CodesMetamacService            codesService;
 
     @Autowired
-    private DsdsMetamacService            dsdService;
+    private DsdsMetamacService             dsdService;
 
     @Autowired
-    private ConceptsRest2DoMapper         conceptsRest2DoMapper;
+    private ConceptsRest2DoMapper          conceptsRest2DoMapper;
 
     @Autowired
-    private CategoriesRest2DoMapper       categoriesRest2DoMapper;
+    private CategoriesRest2DoMapper        categoriesRest2DoMapper;
 
     @Autowired
-    private OrganisationsRest2DoMapper    organisationsRest2DoMapper;
+    private OrganisationsRest2DoMapper     organisationsRest2DoMapper;
 
     @Autowired
-    private CodesRest2DoMapper            codesRest2DoMapper;
+    private CodesRest2DoMapper             codesRest2DoMapper;
 
     @Autowired
-    private ConceptsDo2RestMapperV10      conceptsDo2RestMapper;
+    private DataStructuresRest2DoMapper    dataStructuresRest2DoMapper;
 
     @Autowired
-    private CategoriesDo2RestMapperV10    categoriesDo2RestMapper;
+    private ConceptsDo2RestMapperV10       conceptsDo2RestMapper;
 
     @Autowired
-    private OrganisationsDo2RestMapperV10 organisationsDo2RestMapper;
+    private CategoriesDo2RestMapperV10     categoriesDo2RestMapper;
 
     @Autowired
-    private CodesDo2RestMapperV10         codesDo2RestMapper;
+    private OrganisationsDo2RestMapperV10  organisationsDo2RestMapper;
 
-    private final ServiceContext          ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
-    private final Logger                  logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    @Autowired
+    private CodesDo2RestMapperV10          codesDo2RestMapper;
+
+    @Autowired
+    private DataStructuresDo2RestMapperV10 dataStructuresDo2RestMapperV10;
+
+    private final ServiceContext           ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
+    private final Logger                   logger = LoggerFactory.getLogger(LoggingInterceptor.class);
 
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
@@ -821,24 +830,22 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public DataStructure retrieveDataStructure(String agencyID, String resourceID, String version) {
-        // try {
-        // checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
-        //
-        // // Find one
-        // PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = findDataStructuresCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
-        // if (entitiesPagedResult.getValues().size() != 1) {
-        // org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_NOT_FOUND, resourceID, version, agencyID);
-        // throw new RestException(exception, Status.NOT_FOUND);
-        // }
-        //
-        // // Transform
-        // DataStructure dataStructure = dataStructureDefinitionDo2RestMapper.toDataStructure(entitiesPagedResult.getValues().get(0));
-        // return dataStructure;
-        // } catch (Exception e) {
-        // throw manageException(e);
-        // }
-        // TODO datastructures
-        return null;
+        try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
+            // Find one
+            PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = findDataStructuresCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_NOT_FOUND, resourceID, version, agencyID);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            DataStructure dataStructure = dataStructuresDo2RestMapperV10.toDataStructure(entitiesPagedResult.getValues().get(0));
+            return dataStructure;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
     }
 
     private ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
@@ -1101,35 +1108,32 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private DataStructures findDataStructures(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
-        // TODO datastructures
-        return null;
-        // try {
-        // SculptorCriteria sculptorCriteria = dataStructureDefinitionRest2DoMapper.getDataStructureCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-        //
-        // // Find
-        // PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = findDataStructuresCore(agencyID, resourceID, version, sculptorCriteria.getConditions(),
-        // sculptorCriteria.getPagingParameter());
-        //
-        // // Transform
-        // DataStructures dataStructures = dataStructureDefinitionDo2RestMapper.toDataStructures(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
-        // return dataStructures;
-        // } catch (Exception e) {
-        // throw manageException(e);
-        // }
+        try {
+            SculptorCriteria sculptorCriteria = dataStructuresRest2DoMapper.getDataStructureDefinitionCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Find
+            PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = findDataStructuresCore(agencyID, resourceID, version, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
+
+            // Transform
+            DataStructures dataStructures = dataStructuresDo2RestMapperV10.toDataStructures(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
+            return dataStructures;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
     }
 
-    // TODO datastructures
-    // private PagedResult<DataStructureDefinitionVersionMetamac> findDataStructuresCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
-    // PagingParameter pagingParameter) throws MetamacException {
-    //
-    // // Criteria to find by criteria
-    // List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaStructures(agencyID, resourceID, version, conditionalCriteriaQuery,
-    // DataStructureDefinitionVersionMetamac.class);
-    //
-    // // Find
-    // PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = dsdService.findDataStructureDefinitionsByCondition(ctx, conditionalCriteria, pagingParameter);
-    // return entitiesPagedResult;
-    // }
+    private PagedResult<DataStructureDefinitionVersionMetamac> findDataStructuresCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
+            PagingParameter pagingParameter) throws MetamacException {
+
+        // Criteria to find by criteria
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaStructures(agencyID, resourceID, version, conditionalCriteriaQuery,
+                DataStructureDefinitionVersionMetamac.class);
+
+        // Find
+        PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = dsdService.findDataStructureDefinitionsByCondition(ctx, conditionalCriteria, pagingParameter);
+        return entitiesPagedResult;
+    }
 
     /**
      * Throws response error, logging exception

@@ -150,11 +150,11 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         return target;
     }
 
-    // API/[SCHEMES]
-    // API/[SCHEMES]/{agencyID}
-    // API/[SCHEMES]/{agencyID}/{resourceID}
-    // API/[SCHEMES]/{agencyID}/{resourceID}/{version}
-    protected String toItemSchemesLink(String schemesSubPath, String agencyID, String resourceID, String version) {
+    // API/[ARTEFACT_TYPE]
+    // API/[ARTEFACT_TYPE]/{agencyID}
+    // API/[ARTEFACT_TYPE]/{agencyID}/{resourceID}
+    // API/[ARTEFACT_TYPE]/{agencyID}/{resourceID}/{version}
+    protected String toMaintainableArtefactLink(String schemesSubPath, String agencyID, String resourceID, String version) {
         String link = RestUtils.createLink(getSrmApiInternalEndpointV10(), schemesSubPath);
         if (agencyID != null) {
             link = RestUtils.createLink(link, agencyID);
@@ -169,15 +169,16 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     }
     protected String toItemSchemeLink(String schemesSubPath, ItemSchemeVersion itemSchemeVersion) {
         MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
-        return toItemSchemeLink(schemesSubPath, maintainableArtefact);
-    }
-    protected String toItemSchemeLink(String schemesSubPath, MaintainableArtefact maintainableArtefact) {
-        return toItemSchemesLink(schemesSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), getCode(maintainableArtefact), maintainableArtefact.getVersionLogic());
+        return toMaintainableArtefactLink(schemesSubPath, maintainableArtefact);
     }
 
-    // API/[SCHEMES]/{agencyID}/{resourceID}/{version}/[ITEMS]
+    protected String toMaintainableArtefactLink(String subPath, MaintainableArtefact maintainableArtefact) {
+        return toMaintainableArtefactLink(subPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), getCode(maintainableArtefact), maintainableArtefact.getVersionLogic());
+    }
+
+    // API/[ARTEFACT_TYPE]/{agencyID}/{resourceID}/{version}/[SUBARTEFACT_TYPES]
     protected String toItemsLink(String schemesSubPath, String itemsSubPath, String agencyID, String resourceID, String version) {
-        String link = toItemSchemesLink(schemesSubPath, agencyID, resourceID, version);
+        String link = toMaintainableArtefactLink(schemesSubPath, agencyID, resourceID, version);
         link = RestUtils.createLink(link, itemsSubPath);
         return link;
     }
@@ -186,7 +187,7 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         return toItemsLink(schemesSubPath, itemsSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), getCode(maintainableArtefact), maintainableArtefact.getVersionLogic());
     }
 
-    // API/[SCHEMES]/{agencyID}/{resourceID}/{version}/[ITEMS]/{itemID}
+    // API/[ARTEFACT_TYPE]/{agencyID}/{resourceID}/{version}/[SUBARTEFACT_TYPES]/{itemID}
     protected String toItemLink(String schemesSubPath, String itemsSubPath, Item item) {
         String link = toItemsLink(schemesSubPath, itemsSubPath, item.getItemSchemeVersion());
         link = RestUtils.createLink(link, getCode(item.getNameableArtefact()));

@@ -40,6 +40,8 @@ public class RestInternalConstants {
     public static String LINK_SUBPATH_CODELISTS                 = "codelists";
     public static String LINK_SUBPATH_CODES                     = "codes";
 
+    public static String LINK_SUBPATH_DATA_STRUCTURES           = "datastructures";
+
     public static String KIND_CONCEPT_SCHEMES                   = API_NAME + RestConstants.KIND_SEPARATOR + "conceptSchemes";
     public static String KIND_CONCEPT_SCHEME                    = API_NAME + RestConstants.KIND_SEPARATOR + "conceptScheme";
     public static String KIND_CONCEPTS                          = API_NAME + RestConstants.KIND_SEPARATOR + "concepts";
@@ -81,4 +83,7 @@ public class RestInternalConstants {
     public static String KIND_CODELIST                          = API_NAME + RestConstants.KIND_SEPARATOR + "codelist";
     public static String KIND_CODES                             = API_NAME + RestConstants.KIND_SEPARATOR + "codes";
     public static String KIND_CODE                              = API_NAME + RestConstants.KIND_SEPARATOR + "code";
+
+    public static String KIND_DATA_STRUCTURES                   = API_NAME + RestConstants.KIND_SEPARATOR + "dataStructures";
+    public static String KIND_DATA_STRUCTURE                    = API_NAME + RestConstants.KIND_SEPARATOR + "dataStructure";
 }

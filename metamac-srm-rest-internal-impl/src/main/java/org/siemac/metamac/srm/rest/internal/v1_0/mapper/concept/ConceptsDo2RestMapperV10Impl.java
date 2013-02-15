@@ -277,7 +277,7 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
     }
 
     private String toConceptSchemesLink(String agencyID, String resourceID, String version) {
-        return toItemSchemesLink(toSubpathItemSchemes(), agencyID, resourceID, version);
+        return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
     private String toConceptSchemeLink(ItemSchemeVersion itemSchemeVersion) {
         return toItemSchemeLink(toSubpathItemSchemes(), itemSchemeVersion);

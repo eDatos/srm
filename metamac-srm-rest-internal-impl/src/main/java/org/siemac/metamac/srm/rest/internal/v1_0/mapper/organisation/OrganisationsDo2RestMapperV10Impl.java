@@ -580,7 +580,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
     }
 
     private String toOrganisationSchemesLink(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
-        return toItemSchemesLink(toSupathItemSchemes(type), agencyID, resourceID, version);
+        return toMaintainableArtefactLink(toSupathItemSchemes(type), agencyID, resourceID, version);
     }
     private String toOrganisationSchemeLink(OrganisationSchemeVersion itemSchemeVersion) {
         return toItemSchemeLink(toSupathItemSchemes(itemSchemeVersion.getOrganisationSchemeType()), itemSchemeVersion);

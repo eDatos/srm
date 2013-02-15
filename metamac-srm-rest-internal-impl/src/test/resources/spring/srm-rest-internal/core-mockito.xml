@@ -32,4 +32,11 @@
         <constructor-arg value="org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService" />
     </bean>
     
+    <bean id="dataStructureDefinitionService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService" />
+    </bean>
+    <bean id="dataStructureDefinitionMetamacService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService" />
+    </bean>    
+    
 </beans>

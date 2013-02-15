@@ -91,7 +91,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         target.setFamily(toItem(source.getFamily()));
         target.setVariable(toItem(source.getVariable()));
         target.setAccessType(toAccessType(source.getAccessType()));
-        target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode());
+        target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode()); // TODO rest DefaultOrderVisualisation
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
@@ -226,7 +226,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
     }
 
     private String toCodelistsLink(String agencyID, String resourceID, String version) {
-        return toItemSchemesLink(toSubpathItemSchemes(), agencyID, resourceID, version);
+        return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
     private String toCodelistLink(ItemSchemeVersion itemSchemeVersion) {
         return toItemSchemeLink(toSubpathItemSchemes(), itemSchemeVersion);
