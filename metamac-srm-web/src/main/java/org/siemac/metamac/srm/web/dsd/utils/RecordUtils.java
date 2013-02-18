@@ -41,8 +41,7 @@ public class RecordUtils {
     public static DimensionRecord getDimensionRecord(DimensionComponentDto dimensionComponentDto) {
         DimensionRecord dimensionRecord = new DimensionRecord(dimensionComponentDto.getId(), dimensionComponentDto.getCode(), dimensionComponentDto.getCptIdRef() == null
                 ? null
-                : dimensionComponentDto.getCptIdRef().getCode(), MetamacSrmWeb.getCoreMessages().getString(
-                MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + dimensionComponentDto.getTypeDimensionComponent().getName()), dimensionComponentDto);
+                : dimensionComponentDto.getCptIdRef().getCode(), org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getDimensionTypeName(dimensionComponentDto), dimensionComponentDto);
         return dimensionRecord;
     }
 

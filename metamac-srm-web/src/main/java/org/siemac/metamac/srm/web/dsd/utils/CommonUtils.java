@@ -15,6 +15,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
@@ -63,15 +64,51 @@ public class CommonUtils {
             typeDimensionComponentHashMap = new LinkedHashMap<String, String>();
             typeDimensionComponentHashMap.put(new String(), new String());
             for (TypeDimensionComponent t : TypeDimensionComponent.values()) {
-                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + t.getName());
-                typeDimensionComponentHashMap.put(t.name(), value);
+                typeDimensionComponentHashMap.put(t.name(), getTypeDimensionComponentName(t));
             }
+            // Add special dimension type: SPATIAL
+            typeDimensionComponentHashMap.put(SpecialDimensionTypeEnum.SPATIAL.name(), getSpecialDimensionTypeName(SpecialDimensionTypeEnum.SPATIAL));
         }
         return typeDimensionComponentHashMap;
     }
 
     public static String getTypeDimensionComponentName(TypeDimensionComponent typeDimensionComponentEnum) {
         return typeDimensionComponentEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeDimensionComponent() + typeDimensionComponentEnum.name()) : null;
+    }
+
+    public static String getSpecialDimensionTypeName(SpecialDimensionTypeEnum specialDimensionTypeEnum) {
+        return specialDimensionTypeEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().specialDimensionTypeEnum() + specialDimensionTypeEnum.name()) : null;
+    }
+
+    public static String getDimensionTypeName(DimensionComponentDto dimensionComponentDto) {
+        if (dimensionComponentDto.getSpecialDimensionType() != null) {
+            return getSpecialDimensionTypeName(dimensionComponentDto.getSpecialDimensionType());
+        } else {
+            return getTypeDimensionComponentName(dimensionComponentDto.getTypeDimensionComponent());
+        }
+    }
+
+    public static TypeDimensionComponent getTypeDimensionComponent(String type) {
+        if (SpecialDimensionTypeEnum.SPATIAL.name().equals(type)) {
+            return TypeDimensionComponent.DIMENSION;
+        } else {
+            return TypeDimensionComponent.valueOf(type);
+        }
+    }
+
+    public static SpecialDimensionTypeEnum getSpecialDimensionType(String type) {
+        if (SpecialDimensionTypeEnum.SPATIAL.name().equals(type)) {
+            return SpecialDimensionTypeEnum.SPATIAL;
+        }
+        return null;
+    }
+
+    public static String getDimensionTypeAsString(DimensionComponentDto dimensionComponentDto) {
+        if (dimensionComponentDto.getSpecialDimensionType() != null) {
+            return dimensionComponentDto.getSpecialDimensionType().name();
+        } else {
+            return dimensionComponentDto.getTypeDimensionComponent().name();
+        }
     }
 
     // FACET VALUE TYPE

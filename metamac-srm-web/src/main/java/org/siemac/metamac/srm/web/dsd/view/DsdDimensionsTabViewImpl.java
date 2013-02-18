@@ -535,7 +535,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         dimensionComponentDto.setCode(editionForm.getItem(DimensionDS.CODE).getVisible() ? editionForm.getValueAsString(DimensionDS.CODE) : null);
 
         // Type
-        dimensionComponentDto.setTypeDimensionComponent(TypeDimensionComponent.valueOf(editionForm.getValueAsString(DimensionDS.TYPE)));
+        dimensionComponentDto.setTypeDimensionComponent(CommonUtils.getTypeDimensionComponent(editionForm.getValueAsString(DimensionDS.TYPE)));
+        dimensionComponentDto.setSpecialDimensionType(CommonUtils.getSpecialDimensionType(editionForm.getValueAsString(DimensionDS.TYPE)));
 
         // Concept
         dimensionComponentDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(
@@ -619,7 +620,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         form.setValue(DimensionDS.URN, dimensionComponentDto.getUrn());
         form.setValue(DimensionDS.URN_PROVIDER, dimensionComponentDto.getUrnProvider());
         // Type
-        form.setValue(DimensionDS.TYPE_VIEW, CommonUtils.getTypeDimensionComponentName(dimensionComponentDto.getTypeDimensionComponent()));
+        form.setValue(DimensionDS.TYPE_VIEW, CommonUtils.getDimensionTypeName(dimensionComponentDto));
         // Concept
         form.setValue(DimensionDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
 
@@ -685,8 +686,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         editionForm.setValue(DimensionDS.URN, dimensionComponentDto.getUrn());
         editionForm.setValue(DimensionDS.URN_PROVIDER, dimensionComponentDto.getUrnProvider());
         // Type
-        editionForm.setValue(DimensionDS.TYPE, dimensionComponentDto.getTypeDimensionComponent().name());
-        editionForm.setValue(DimensionDS.TYPE_VIEW, CommonUtils.getTypeDimensionComponentName(dimensionComponentDto.getTypeDimensionComponent()));
+        editionForm.setValue(DimensionDS.TYPE, CommonUtils.getDimensionTypeAsString(dimensionComponentDto));
+        editionForm.setValue(DimensionDS.TYPE_VIEW, CommonUtils.getDimensionTypeName(dimensionComponentDto));
 
         // Concept
         editionForm.setValue(DimensionDS.CONCEPT, dimensionComponentDto.getCptIdRef() != null ? dimensionComponentDto.getCptIdRef().getUrn() : null);
@@ -776,8 +777,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 @Override
                 public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                     if (newDimensionWindow.validateForm()) {
-                        TypeDimensionComponent dimensionType = newDimensionWindow.getDimensionType();
-                        dimensionSelected.setTypeDimensionComponent(dimensionType);
+                        dimensionSelected.setTypeDimensionComponent(newDimensionWindow.getDimensionType());
+                        dimensionSelected.setSpecialDimensionType(newDimensionWindow.getSpecialDimensionType());
 
                         // Set dimension in form
                         mainFormLayout.setTitleLabelContents(StringUtils.EMPTY);

@@ -10,6 +10,7 @@ import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
@@ -44,7 +45,20 @@ public class NewDimensionWindow extends CustomWindow {
     }
 
     public TypeDimensionComponent getDimensionType() {
-        return TypeDimensionComponent.valueOf(form.getValueAsString(DimensionDS.TYPE_VIEW));
+        String dimensionType = form.getValueAsString(DimensionDS.TYPE_VIEW);
+        if (SpecialDimensionTypeEnum.SPATIAL.name().equals(dimensionType)) {
+            return TypeDimensionComponent.DIMENSION;
+        } else {
+            return TypeDimensionComponent.valueOf(dimensionType);
+        }
+    }
+
+    public SpecialDimensionTypeEnum getSpecialDimensionType() {
+        String dimensionType = form.getValueAsString(DimensionDS.TYPE_VIEW);
+        if (SpecialDimensionTypeEnum.SPATIAL.name().equals(dimensionType)) {
+            return SpecialDimensionTypeEnum.SPATIAL;
+        }
+        return null;
     }
 
     public boolean validateForm() {
