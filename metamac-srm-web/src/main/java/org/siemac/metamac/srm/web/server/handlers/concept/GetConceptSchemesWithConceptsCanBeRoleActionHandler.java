@@ -12,7 +12,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
+import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -49,7 +49,7 @@ public class GetConceptSchemesWithConceptsCanBeRoleActionHandler extends Securit
         // Criteria
         if (action.getCriteria() != null) {
             MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-            restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(action.getCriteria()));
+            restriction.getRestrictions().add(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(action.getCriteria()));
             criteria.setRestriction(restriction);
         }
 

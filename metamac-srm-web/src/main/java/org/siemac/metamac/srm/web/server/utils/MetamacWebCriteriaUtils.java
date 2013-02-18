@@ -22,7 +22,7 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 
-public class MetamacCriteriaUtils {
+public class MetamacWebCriteriaUtils {
 
     // -------------------------------------------------------------------------------------------------------------
     // CONCEPTS

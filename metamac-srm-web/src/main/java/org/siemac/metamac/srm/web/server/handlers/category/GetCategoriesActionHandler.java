@@ -16,7 +16,7 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.criteria.CategoryMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CategoryMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
+import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
@@ -55,7 +55,7 @@ public class GetCategoriesActionHandler extends SecurityActionHandler<GetCategor
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Criteria
-        restriction.getRestrictions().add(MetamacCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
+        restriction.getRestrictions().add(MetamacWebCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
 
         // Is externally published
         if (categoryWebCriteria.getIsExternallyPublished() != null) {

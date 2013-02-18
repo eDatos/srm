@@ -13,7 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
+import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
@@ -52,7 +52,7 @@ public class GetCategorySchemesActionHandler extends SecurityActionHandler<GetCa
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Category scheme Criteria
-        restriction.getRestrictions().add(MetamacCriteriaUtils.getCategorySchemeCriteriaRestriction(categorySchemeWebCriteria));
+        restriction.getRestrictions().add(MetamacWebCriteriaUtils.getCategorySchemeCriteriaRestriction(categorySchemeWebCriteria));
         criteria.setRestriction(restriction);
 
         // Pagination

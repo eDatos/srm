@@ -13,7 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.criteria.VariableElementCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
+import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
@@ -52,7 +52,7 @@ public class GetVariableElementsActionHandler extends SecurityActionHandler<GetV
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Variable element Criteria
-        restriction.getRestrictions().add(MetamacCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
+        restriction.getRestrictions().add(MetamacWebCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
 
         criteria.setRestriction(restriction);
 
