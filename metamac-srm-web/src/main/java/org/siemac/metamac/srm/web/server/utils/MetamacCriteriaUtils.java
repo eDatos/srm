@@ -60,14 +60,20 @@ public class MetamacCriteriaUtils {
         if (StringUtils.isNotBlank(criteria.getDescription())) {
             // TODO
         }
-        if (criteria.getProcStatusEnum() != null) {
+        if (criteria.getProcStatus() != null) {
             conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatusEnum(), OperationType.EQ));
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
         }
         if (criteria.getInternalPublicationDate() != null) {
             // TODO
         }
         if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+            // TODO
+        }
+        if (criteria.getExternalPublicationDate() != null) {
+            // TODO
+        }
+        if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
             // TODO
         }
         if (criteria.getIsLastVersion() != null) {
@@ -166,6 +172,8 @@ public class MetamacCriteriaUtils {
      * @return
      */
     public static MetamacCriteriaRestriction getCategorySchemeCriteriaRestriction(CategorySchemeWebCriteria criteria) {
+        MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+        // General criteria
         MetamacCriteriaDisjunctionRestriction categorySchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
         if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
             categorySchemeCriteriaDisjuction.getRestrictions().add(
@@ -175,7 +183,41 @@ public class MetamacCriteriaUtils {
             categorySchemeCriteriaDisjuction.getRestrictions().add(
                     new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
         }
-        return categorySchemeCriteriaDisjuction;
+        conjunctionRestriction.getRestrictions().add(categorySchemeCriteriaDisjuction);
+        // Specific criteria
+        if (StringUtils.isNotBlank(criteria.getCode())) {
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getName())) {
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getUrn())) {
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getDescription())) {
+            // TODO
+        }
+        if (criteria.getProcStatus() != null) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
+        }
+        if (criteria.getInternalPublicationDate() != null) {
+            // TODO
+        }
+        if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+            // TODO
+        }
+        if (criteria.getExternalPublicationDate() != null) {
+            // TODO
+        }
+        if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
+            // TODO
+        }
+        if (criteria.getIsLastVersion() != null) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+        }
+        return conjunctionRestriction;
     }
 
     /**

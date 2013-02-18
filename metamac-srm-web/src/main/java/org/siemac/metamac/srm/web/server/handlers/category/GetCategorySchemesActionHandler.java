@@ -3,19 +3,15 @@ package org.siemac.metamac.srm.web.server.handlers.category;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
@@ -55,25 +51,8 @@ public class GetCategorySchemesActionHandler extends SecurityActionHandler<GetCa
 
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
-        // Only find last versions
-        if (categorySchemeWebCriteria.getIsLastVersion() != null) {
-            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
-                    categorySchemeWebCriteria.getIsLastVersion(), OperationType.EQ);
-            restriction.getRestrictions().add(lastVersionRestriction);
-        }
-
         // Category scheme Criteria
-        if (!StringUtils.isBlank(categorySchemeWebCriteria.getCriteria())) {
-            restriction.getRestrictions().add(MetamacCriteriaUtils.getCategorySchemeCriteriaRestriction(categorySchemeWebCriteria));
-        }
-
-        // Proc status restriction
-        if (categorySchemeWebCriteria.getProcStatus() != null) {
-            MetamacCriteriaPropertyRestriction procStatusRestriction = new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
-                    categorySchemeWebCriteria.getProcStatus(), OperationType.EQ);
-            restriction.getRestrictions().add(procStatusRestriction);
-        }
-
+        restriction.getRestrictions().add(MetamacCriteriaUtils.getCategorySchemeCriteriaRestriction(categorySchemeWebCriteria));
         criteria.setRestriction(restriction);
 
         // Pagination
