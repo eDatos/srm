@@ -73,7 +73,7 @@ Application CodesMetamac {
 			"Creates code"
 			@CodeMetamac createCode(String codelistUrn, @CodeMetamac code) throws MetamacException;
 			"Precreate code"
-    		@CodeMetamac preCreateCode(String codelistUrn, @CodeMetamac code) throws MetamacException; 
+    		@CodeMetamac preCreateCode(@CodelistVersionMetamac codelistVersion, @CodeMetamac code) throws MetamacException; 
 			"Updates code"
 			@CodeMetamac updateCode(@CodeMetamac code) throws MetamacException;
 			"Change variable element to code"

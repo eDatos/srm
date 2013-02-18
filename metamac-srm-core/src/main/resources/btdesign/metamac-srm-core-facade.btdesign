@@ -576,6 +576,9 @@ Application SrmFacadeCore {
 	    	"
 	    	importSDMXStructureMsg(@ContentInputDto contentDto) throws MetamacException;
 	   		
+	   		"Find information about importations jobs"
+    		MetamacCriteriaResult<@ImportDataDto> findImportDataByCondition(MetamacCriteria criteria) throws MetamacException;
+    		
 	    	"
 	    	 @param ctx                                                                         
 			 @param structureMsgDto                                                             
