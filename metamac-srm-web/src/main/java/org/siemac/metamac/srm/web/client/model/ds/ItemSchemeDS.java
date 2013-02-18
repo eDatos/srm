@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.model.ds;
 
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
 
-public class ItemSchemeDS extends LifeCycleDS {
+public class ItemSchemeDS extends VersionableResourceDS {
 
     public static final String IS_PARTIAL      = "sch-is-partial";
     public static final String IS_LAST_VERSION = "sch-last-version"; // For advanced search

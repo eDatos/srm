@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.model.ds;
 
 import com.smartgwt.client.data.DataSource;
 
-public class LifeCycleDS extends DataSource {
+public class VersionableResourceDS extends DataSource {
 
     // IDENTIFIERS
     public static final String ID                               = "lc-id";

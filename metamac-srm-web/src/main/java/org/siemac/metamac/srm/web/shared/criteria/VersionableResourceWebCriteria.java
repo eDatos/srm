@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
-public class LifeCycleWebCriteria extends MetamacWebCriteria {
+public class VersionableResourceWebCriteria extends MetamacWebCriteria {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,10 +19,10 @@ public class LifeCycleWebCriteria extends MetamacWebCriteria {
     private String            externalPublicationUser;
     private Boolean           isLastVersion;
 
-    public LifeCycleWebCriteria() {
+    public VersionableResourceWebCriteria() {
     }
 
-    public LifeCycleWebCriteria(String criteria) {
+    public VersionableResourceWebCriteria(String criteria) {
         super(criteria);
     }
 

@@ -1,8 +1,8 @@
 package org.siemac.metamac.srm.web.dsd.model.ds;
 
-import org.siemac.metamac.srm.web.client.model.ds.LifeCycleDS;
+import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
 
-public class DataStructureDefinitionDS extends LifeCycleDS {
+public class DataStructureDefinitionDS extends VersionableResourceDS {
 
     public static final String STATISTICAL_OPERATION     = "dsd-op";
 
