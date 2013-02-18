@@ -38,4 +38,6 @@ public class VersionableResourceDS extends DataSource {
     public static final String EXTERNAL_PUBLICATION_FAILED_DATE = "lc-ext-pub-fail-date";
     // COMMENTS
     public static final String COMMENTS                         = "lc-comments";
+
+    public static final String IS_LAST_VERSION                  = "sch-last-version";    // For advanced search
 }

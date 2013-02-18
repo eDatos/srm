@@ -4,10 +4,9 @@ import com.smartgwt.client.data.fields.DataSourceIntegerField;
 
 public class ItemSchemeDS extends VersionableResourceDS {
 
-    public static final String IS_PARTIAL      = "sch-is-partial";
-    public static final String IS_LAST_VERSION = "sch-last-version"; // For advanced search
+    public static final String IS_PARTIAL = "sch-is-partial";
 
-    public static String       DTO             = "sch-dto";
+    public static String       DTO        = "sch-dto";
 
     public ItemSchemeDS() {
         DataSourceIntegerField identifier = new DataSourceIntegerField(ID, "identifier");
