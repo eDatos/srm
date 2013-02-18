@@ -3,19 +3,15 @@ package org.siemac.metamac.srm.web.server.handlers.concept;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
@@ -55,17 +51,8 @@ public class GetConceptSchemesActionHandler extends SecurityActionHandler<GetCon
 
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
-        // Only find last versions
-        if (conceptSchemeWebCriteria.getIsLastVersion() != null) {
-            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
-                    conceptSchemeWebCriteria.getIsLastVersion(), OperationType.EQ);
-            restriction.getRestrictions().add(lastVersionRestriction);
-        }
-
         // Concept scheme Criteria
-        if (!StringUtils.isBlank(conceptSchemeWebCriteria.getCriteria())) {
-            restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-        }
+        restriction.getRestrictions().add(MetamacCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
 
         criteria.setRestriction(restriction);
 

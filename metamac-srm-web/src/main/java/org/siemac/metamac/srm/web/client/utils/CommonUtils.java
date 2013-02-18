@@ -17,9 +17,23 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEn
 
 public class CommonUtils {
 
+    private static LinkedHashMap<String, String> procStatusHashMap         = null;
     private static LinkedHashMap<String, String> versionTypeHashMap        = null;
     private static LinkedHashMap<String, String> typeRepresentationHashMap = null;
     private static LinkedHashMap<String, String> booleanItemHashMap        = null;
+
+    // LIFE CYCLE
+
+    public static LinkedHashMap<String, String> getProcStatusHashMap() {
+        if (procStatusHashMap == null) {
+            procStatusHashMap = new LinkedHashMap<String, String>();
+            procStatusHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+            for (ProcStatusEnum p : ProcStatusEnum.values()) {
+                procStatusHashMap.put(p.name(), getProcStatusName(p));
+            }
+        }
+        return procStatusHashMap;
+    }
 
     public static String getProcStatusName(ProcStatusEnum procStatus) {
         return procStatus != null ? getCoreMessages().getString(getCoreMessages().procStatusEnum() + procStatus.getName()) : null;
@@ -36,6 +50,8 @@ public class CommonUtils {
         }
         return versionTypeHashMap;
     }
+
+    // REPRESENTATION
 
     public static LinkedHashMap<String, String> getTypeRepresentationEnumHashMap() {
         if (typeRepresentationHashMap == null) {

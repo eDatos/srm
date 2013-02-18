@@ -41,6 +41,8 @@ public class ItemSchemeDS extends DataSource {
     // COMMENTS
     public static final String COMMENTS                         = "sch-comments";
 
+    public static final String IS_LAST_VERSION                  = "sch-last-version";     // For advanced search
+
     public static String       DTO                              = "sch-dto";
 
     public ItemSchemeDS() {

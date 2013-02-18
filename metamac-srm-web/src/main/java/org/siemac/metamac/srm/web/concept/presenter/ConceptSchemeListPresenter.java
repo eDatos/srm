@@ -46,6 +46,7 @@ import com.gwtplatform.mvp.client.annotations.TitleFunction;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -94,9 +95,14 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Override
-    protected void onReset() {
-        super.onReset();
-        retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
+    public void prepareFromRequest(PlaceRequest request) {
+        super.prepareFromRequest(request);
+        // Load concept schemes
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+        conceptSchemeWebCriteria.setIsLastVersion(true);
+        retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, conceptSchemeWebCriteria);
+        // Clear search section
+        getView().clearSearchSection();
     }
 
     @Override
@@ -107,9 +113,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Override
-    public void retrieveConceptSchemes(int firstResult, int maxResults, final String criteria) {
-        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
-        conceptSchemeWebCriteria.setIsLastVersion(true);
+    public void retrieveConceptSchemes(int firstResult, int maxResults, final ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetConceptSchemesAction(firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetConceptSchemesResult>() {
 
             @Override
@@ -119,9 +123,6 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitSuccess(GetConceptSchemesResult result) {
                 getView().setConceptSchemePaginatedList(result);
-                if (StringUtils.isBlank(criteria)) {
-                    getView().clearSearchSection();
-                }
             }
         });
     }

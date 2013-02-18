@@ -35,6 +35,8 @@ public class MetamacCriteriaUtils {
      * @return
      */
     public static MetamacCriteriaRestriction getConceptSchemeCriteriaRestriction(ConceptSchemeWebCriteria criteria) {
+        MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+        // General criteria
         MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
         if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
             conceptSchemeCriteriaDisjuction.getRestrictions().add(
@@ -44,7 +46,35 @@ public class MetamacCriteriaUtils {
             conceptSchemeCriteriaDisjuction.getRestrictions().add(
                     new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
         }
-        return conceptSchemeCriteriaDisjuction;
+        conjunctionRestriction.getRestrictions().add(conceptSchemeCriteriaDisjuction);
+        // Specific criteria
+        if (StringUtils.isNotBlank(criteria.getCode())) {
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getName())) {
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getUrn())) {
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getDescription())) {
+            // TODO
+        }
+        if (criteria.getProcStatusEnum() != null) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatusEnum(), OperationType.EQ));
+        }
+        if (criteria.getInternalPublicationDate() != null) {
+            // TODO
+        }
+        if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+            // TODO
+        }
+        if (criteria.getIsLastVersion() != null) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+        }
+        return conjunctionRestriction;
     }
 
     /**

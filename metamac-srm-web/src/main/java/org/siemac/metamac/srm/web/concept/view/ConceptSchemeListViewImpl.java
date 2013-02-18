@@ -15,26 +15,24 @@ import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
-import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.ViewImpl;
+import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -45,21 +43,20 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptSchemeListPresenter.ConceptSchemeListView {
+public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeListUiHandlers> implements ConceptSchemeListPresenter.ConceptSchemeListView {
 
-    private ConceptSchemeListUiHandlers uiHandlers;
-    private VLayout                     panel;
+    private VLayout                         panel;
 
-    private ToolStripButton             newConceptSchemeButton;
-    private ToolStripButton             deleteConceptSchemeButton;
-    private ToolStripButton             cancelConceptSchemeValidityButton;
+    private ToolStripButton                 newConceptSchemeButton;
+    private ToolStripButton                 deleteConceptSchemeButton;
+    private ToolStripButton                 cancelConceptSchemeValidityButton;
 
-    private SearchSectionStack          searchSectionStack;
+    private ConceptSchemeSearchSectionStack searchSectionStack;
 
-    private PaginatedCheckListGrid      conceptSchemesList;
+    private PaginatedCheckListGrid          conceptSchemesList;
 
-    private NewConceptSchemeWindow      newConceptSchemeWindow;
-    private DeleteConfirmationWindow    deleteConfirmationWindow;
+    private NewConceptSchemeWindow          newConceptSchemeWindow;
+    private DeleteConfirmationWindow        deleteConfirmationWindow;
 
     @Inject
     public ConceptSchemeListViewImpl() {
@@ -76,13 +73,13 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             @Override
             public void onClick(ClickEvent event) {
                 newConceptSchemeWindow = new NewConceptSchemeWindow(getConstants().conceptSchemeCreate());
-                newConceptSchemeWindow.setUiHandlers(uiHandlers);
+                newConceptSchemeWindow.setUiHandlers(getUiHandlers());
                 newConceptSchemeWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         if (newConceptSchemeWindow.validateForm()) {
-                            uiHandlers.createConceptScheme(newConceptSchemeWindow.getNewConceptSchemeDto());
+                            getUiHandlers().createConceptScheme(newConceptSchemeWindow.getNewConceptSchemeDto());
                             newConceptSchemeWindow.destroy();
                         }
                     }
@@ -107,7 +104,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.cancelValidity(getUrnsFromSelectedConceptSchemes());
+                getUiHandlers().cancelValidity(getUrnsFromSelectedConceptSchemes());
             }
         });
 
@@ -117,14 +114,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
         // Search
 
-        searchSectionStack = new SearchSectionStack();
-        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-
-            @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                uiHandlers.retrieveConceptSchemes(ConceptSchemeListPresenter.SCHEME_LIST_FIRST_RESULT, ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
-            }
-        });
+        searchSectionStack = new ConceptSchemeSearchSectionStack();
 
         // Concepts scheme list
 
@@ -132,7 +122,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                uiHandlers.retrieveConceptSchemes(firstResult, maxResults, searchSectionStack.getSearchCriteria());
+                getUiHandlers().retrieveConceptSchemes(firstResult, maxResults, searchSectionStack.getConceptSchemeWebCriteria());
             }
         });
         conceptSchemesList.getListGrid().setAutoFitMaxRecords(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS);
@@ -161,7 +151,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
                     String urn = ((ConceptSchemeRecord) event.getRecord()).getAttribute(ConceptSchemeDS.URN);
-                    uiHandlers.goToConceptScheme(urn);
+                    getUiHandlers().goToConceptScheme(urn);
                 }
             }
         });
@@ -185,7 +175,7 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.deleteConceptSchemes(getUrnsFromSelectedConceptSchemes());
+                getUiHandlers().deleteConceptSchemes(getUrnsFromSelectedConceptSchemes());
                 deleteConfirmationWindow.hide();
             }
         });
@@ -228,12 +218,13 @@ public class ConceptSchemeListViewImpl extends ViewImpl implements ConceptScheme
 
     @Override
     public void setUiHandlers(ConceptSchemeListUiHandlers uiHandlers) {
-        this.uiHandlers = uiHandlers;
+        super.setUiHandlers(uiHandlers);
+        searchSectionStack.setUiHandlers(uiHandlers);
     }
 
     @Override
     public void clearSearchSection() {
-        searchSectionStack.reset();
+        searchSectionStack.clearSearchSection();
     }
 
     @Override
