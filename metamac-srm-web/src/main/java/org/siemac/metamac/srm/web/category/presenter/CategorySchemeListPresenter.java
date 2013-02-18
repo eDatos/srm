@@ -44,6 +44,7 @@ import com.gwtplatform.mvp.client.annotations.TitleFunction;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -94,9 +95,14 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     }
 
     @Override
-    protected void onReset() {
-        super.onReset();
-        retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
+    public void prepareFromRequest(PlaceRequest request) {
+        super.prepareFromRequest(request);
+        // Load concept schemes
+        CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria();
+        categorySchemeWebCriteria.setIsLastVersion(true);
+        retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, categorySchemeWebCriteria);
+        // Clear search section
+        getView().clearSearchSection();
     }
 
     @Override
@@ -107,9 +113,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     }
 
     @Override
-    public void retrieveCategorySchemes(int firstResult, int maxResults, final String criteria) {
-        CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria(criteria);
-        categorySchemeWebCriteria.setIsLastVersion(true);
+    public void retrieveCategorySchemes(int firstResult, int maxResults, CategorySchemeWebCriteria categorySchemeWebCriteria) {
         dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
 
             @Override
@@ -119,9 +123,6 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
                 getView().setCategorySchemePaginatedList(result);
-                if (StringUtils.isBlank(criteria)) {
-                    getView().clearSearchSection();
-                }
             }
         });
     }

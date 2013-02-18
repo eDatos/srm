@@ -13,12 +13,12 @@ import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemeListPresenter;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeListUiHandlers;
+import org.siemac.metamac.srm.web.category.widgets.CategorySchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.category.widgets.NewCategorySchemeWindow;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
-import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -30,8 +30,6 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -44,18 +42,18 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchemeListUiHandlers> implements CategorySchemeListPresenter.CategorySchemeListView {
 
-    private VLayout                  panel;
+    private VLayout                          panel;
 
-    private ToolStripButton          newCategorySchemeButton;
-    private ToolStripButton          deleteCategorySchemeButton;
-    private ToolStripButton          cancelCategorySchemeValidityButton;
+    private ToolStripButton                  newCategorySchemeButton;
+    private ToolStripButton                  deleteCategorySchemeButton;
+    private ToolStripButton                  cancelCategorySchemeValidityButton;
 
-    private SearchSectionStack       searchSectionStack;
+    private CategorySchemeSearchSectionStack searchSectionStack;
 
-    private PaginatedCheckListGrid   categorySchemesList;
+    private PaginatedCheckListGrid           categorySchemesList;
 
-    private NewCategorySchemeWindow  newCategorySchemeWindow;
-    private DeleteConfirmationWindow deleteConfirmationWindow;
+    private NewCategorySchemeWindow          newCategorySchemeWindow;
+    private DeleteConfirmationWindow         deleteConfirmationWindow;
 
     @Inject
     public CategorySchemeListViewImpl() {
@@ -112,15 +110,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
 
         // Search
 
-        searchSectionStack = new SearchSectionStack();
-        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-
-            @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                getUiHandlers().retrieveCategorySchemes(CategorySchemeListPresenter.SCHEME_LIST_FIRST_RESULT, CategorySchemeListPresenter.SCHEME_LIST_MAX_RESULTS,
-                        searchSectionStack.getSearchCriteria());
-            }
-        });
+        searchSectionStack = new CategorySchemeSearchSectionStack();
 
         // Categories scheme list
 
@@ -128,7 +118,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCategorySchemes(firstResult, maxResults, searchSectionStack.getSearchCriteria());
+                getUiHandlers().retrieveCategorySchemes(firstResult, maxResults, searchSectionStack.getCategorySchemeWebCriteria());
             }
         });
         categorySchemesList.getListGrid().setAutoFitMaxRecords(CategorySchemeListPresenter.SCHEME_LIST_MAX_RESULTS);
@@ -193,6 +183,12 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     }
 
     @Override
+    public void setUiHandlers(CategorySchemeListUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        searchSectionStack.setUiHandlers(uiHandlers);
+    }
+
+    @Override
     public void setCategorySchemePaginatedList(GetCategorySchemesResult categorySchemesPaginatedList) {
         setCategorySchemeList(categorySchemesPaginatedList.getCategorySchemeList());
         categorySchemesList.refreshPaginationInfo(categorySchemesPaginatedList.getFirstResultOut(), categorySchemesPaginatedList.getCategorySchemeList().size(),
@@ -215,7 +211,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
 
     @Override
     public void clearSearchSection() {
-        searchSectionStack.reset();
+        searchSectionStack.clearSearchSection();
     }
 
     private List<String> getUrnsFromSelectedCategorySchemes() {
