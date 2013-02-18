@@ -12,7 +12,7 @@ public class VersionableResourceWebCriteria extends MetamacWebCriteria {
     private String            name;
     private String            urn;
     private String            description;
-    private ProcStatusEnum    procStatusEnum;
+    private ProcStatusEnum    procStatus;
     private Date              internalPublicationDate;
     private String            internalPublicationUser;
     private Date              externalPublicationDate;
@@ -42,8 +42,8 @@ public class VersionableResourceWebCriteria extends MetamacWebCriteria {
         return description;
     }
 
-    public ProcStatusEnum getProcStatusEnum() {
-        return procStatusEnum;
+    public ProcStatusEnum getProcStatus() {
+        return procStatus;
     }
 
     public Date getInternalPublicationDate() {
@@ -82,8 +82,8 @@ public class VersionableResourceWebCriteria extends MetamacWebCriteria {
         this.description = description;
     }
 
-    public void setProcStatusEnum(ProcStatusEnum procStatusEnum) {
-        this.procStatusEnum = procStatusEnum;
+    public void setProcStatus(ProcStatusEnum procStatus) {
+        this.procStatus = procStatus;
     }
 
     public void setInternalPublicationDate(Date internalPublicationDate) {

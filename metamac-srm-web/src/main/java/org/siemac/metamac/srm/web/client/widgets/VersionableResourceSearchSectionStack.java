@@ -84,7 +84,7 @@ public abstract class VersionableResourceSearchSectionStack extends BaseSearchSe
         versionableResourceWebCriteria.setName(advancedSearchForm.getValueAsString(VersionableResourceDS.NAME));
         versionableResourceWebCriteria.setUrn(advancedSearchForm.getValueAsString(VersionableResourceDS.URN));
         versionableResourceWebCriteria.setDescription(advancedSearchForm.getValueAsString(VersionableResourceDS.DESCRIPTION));
-        versionableResourceWebCriteria.setProcStatusEnum(!StringUtils.isBlank(advancedSearchForm.getValueAsString(VersionableResourceDS.PROC_STATUS)) ? ProcStatusEnum.valueOf(advancedSearchForm
+        versionableResourceWebCriteria.setProcStatus(!StringUtils.isBlank(advancedSearchForm.getValueAsString(VersionableResourceDS.PROC_STATUS)) ? ProcStatusEnum.valueOf(advancedSearchForm
                 .getValueAsString(VersionableResourceDS.PROC_STATUS)) : null);
         versionableResourceWebCriteria.setInternalPublicationDate(advancedSearchForm.getValue(VersionableResourceDS.INTERNAL_PUBLICATION_DATE) != null ? (Date) advancedSearchForm
                 .getValue(VersionableResourceDS.INTERNAL_PUBLICATION_DATE) : null);
