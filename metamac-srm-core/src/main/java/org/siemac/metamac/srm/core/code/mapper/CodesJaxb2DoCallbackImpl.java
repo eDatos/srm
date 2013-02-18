@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -15,9 +18,6 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCop
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesJaxb2DoCallback;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 
 @org.springframework.stereotype.Component("codesMetamacJaxb2DoCallback")
 public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements CodesJaxb2DoCallback {
@@ -95,6 +95,7 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
     public void codeJaxb2DoExtensionPreCreate(ServiceContext ctx, CodeType source, CodelistVersion codelistVersion, Code previous, Code target) throws MetamacException {
         CodeMetamac previousMetamac = (CodeMetamac) previous;
         CodeMetamac targetMetamac = (CodeMetamac) target;
+        CodelistVersionMetamac codelistVersionMetamac = (CodelistVersionMetamac) codelistVersion;
 
         // Fill metadata heritable
         if (previousMetamac != null) {
@@ -106,8 +107,9 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
         }
 
         // Fill metadata
-        codesMetamacService.preCreateCode(ctx, codelistVersion.getMaintainableArtefact().getUrn(), targetMetamac);
+        codesMetamacService.preCreateCode(ctx, codelistVersionMetamac, targetMetamac);
     }
+
     /**************************************************************************
      * VALIDATE
      **************************************************************************/

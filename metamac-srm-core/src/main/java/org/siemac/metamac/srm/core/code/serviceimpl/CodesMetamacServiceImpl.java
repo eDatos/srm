@@ -284,12 +284,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac createCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
-        preCreateCode(ctx, codelistUrn, code);
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+
+        preCreateCode(ctx, codelistVersion, code);
 
         // Save code
         code = (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
-
-        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
 
         // Add to all visualisations of codelist, at the end of level
         updateOneCodeOrderInLevelPuttingAtTheEnd(codelistVersion.getOrderVisualisations(), code);
@@ -298,8 +298,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public CodeMetamac preCreateCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
-        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+    public CodeMetamac preCreateCode(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodeMetamac code) throws MetamacException {
+        // CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
 
         // Validation
         CodesMetamacInvocationValidator.checkCreateCode(codelistVersion, code, null);
@@ -307,7 +307,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return code;
     }
-
     @Override
     public CodeMetamac updateCode(ServiceContext ctx, CodeMetamac code) throws MetamacException {
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, code.getNameableArtefact().getUrn());

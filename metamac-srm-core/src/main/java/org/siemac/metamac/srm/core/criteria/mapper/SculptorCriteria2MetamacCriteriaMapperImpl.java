@@ -40,13 +40,19 @@ import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
+import com.arte.statistic.sdmx.srm.core.importation.mapper.ImportationDo2DtoMapper;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportDataDto;
 
 @Component
 public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCriteria2MetamacCriteriaMapper {
 
     @Autowired
     private DataStructureDefinitionDo2DtoMapper dataStructureDefinitionDo2DtoMapper;
+
+    @Autowired
+    private ImportationDo2DtoMapper             importationDo2DtoMapper;
 
     @Autowired
     private ConceptsDo2DtoMapper                conceptsDo2DtoMapper;
@@ -314,4 +320,19 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         return target;
     }
 
+    //
+    // IMPORTATION
+    //
+    @Override
+    public MetamacCriteriaResult<ImportDataDto> pageResultToMetamacCriteriaResultImportData(PagedResult<ImportData> source, Integer pageSize) {
+        MetamacCriteriaResult<ImportDataDto> target = new MetamacCriteriaResult<ImportDataDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<ImportDataDto>(source.getValues().size()));
+            for (ImportData importData : source.getValues()) {
+                target.getResults().add(importationDo2DtoMapper.importDataToDto(importData));
+            }
+        }
+        return target;
+    }
 }
