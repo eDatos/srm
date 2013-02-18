@@ -15,6 +15,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
@@ -26,6 +27,7 @@ public class CommonUtils {
     private static LinkedHashMap<String, String> usageStatusHashMap            = null;
     private static LinkedHashMap<String, String> typeRelationShipHashMap       = null;
     private static LinkedHashMap<String, String> typeDimensionComponentHashMap = null;
+    private static LinkedHashMap<String, String> dataAttributeTypeHasMap       = null;
     private static LinkedHashMap<String, String> facetValueTypeHashMap         = null;
     private static LinkedHashMap<String, String> dsdShowDecimalsHashMap        = null;
 
@@ -109,6 +111,23 @@ public class CommonUtils {
         } else {
             return dimensionComponentDto.getTypeDimensionComponent().name();
         }
+    }
+
+    // DATA ATTRIBUTE TYPE
+
+    public static LinkedHashMap<String, String> getDataAttributeTypeHashMap() {
+        if (dataAttributeTypeHasMap == null) {
+            dataAttributeTypeHasMap = new LinkedHashMap<String, String>();
+            dataAttributeTypeHasMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+            for (SpecialAttributeTypeEnum type : SpecialAttributeTypeEnum.values()) {
+                dataAttributeTypeHasMap.put(type.name(), getSpecialAttributeTypeName(type));
+            }
+        }
+        return dataAttributeTypeHasMap;
+    }
+
+    public static String getSpecialAttributeTypeName(SpecialAttributeTypeEnum specialAttributeTypeEnum) {
+        return specialAttributeTypeEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().specialAttributeTypeEnum() + specialAttributeTypeEnum.name()) : null;
     }
 
     // FACET VALUE TYPE

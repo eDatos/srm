@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.dsd.model.ds;
 public class DataAttributeDS {
 
     public static final String ID                                      = "attr-id";
+    public static final String SPECIAL_ATTRIBUTE_TYPE                  = "attr-type";
     public static final String CODE                                    = "attr-code";
     public static final String URN                                     = "attr-urn";
     public static final String URN_PROVIDER                            = "attr-urn-provider";

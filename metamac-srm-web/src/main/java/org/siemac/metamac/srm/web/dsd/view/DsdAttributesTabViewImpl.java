@@ -50,6 +50,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDataAttribute;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
@@ -294,22 +295,21 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
      * @return
      */
     private void createViewForm() {
-        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
-        ViewTextItem staticCode = new ViewTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
-        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
-        RelatedResourceListItem roleItem = new RelatedResourceListItem(DataAttributeDS.ROLE, MetamacSrmWeb.getConstants().dsdAttributeRole(), false);
-        staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
-        staticRelationType = new ViewTextItem(DataAttributeDS.RELATED_WITH, MetamacSrmWeb.getConstants().dsdAttributeRelatedWith());
-        staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, MetamacSrmWeb.getConstants()
-                .dsdAttributeGroupKeysForDimensionRelationship());
-        staticDimensionsForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, MetamacSrmWeb.getConstants()
-                .dsdAttributeDimensionsForDimensionRelationship());
-        staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
-        staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
+        form = new GroupDynamicForm(getConstants().dsdAttributeDetails());
+        ViewTextItem code = new ViewTextItem(DataAttributeDS.CODE, getConstants().dsdAttributeId());
+        ViewTextItem type = new ViewTextItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
+        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept());
+        RelatedResourceListItem roleItem = new RelatedResourceListItem(DataAttributeDS.ROLE, getConstants().dsdAttributeRole(), false);
+        staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, getConstants().dsdAttributeAssignmentStatus());
+        staticRelationType = new ViewTextItem(DataAttributeDS.RELATED_WITH, getConstants().dsdAttributeRelatedWith());
+        staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeGroupKeysForDimensionRelationship());
+        staticDimensionsForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeDimensionsForDimensionRelationship());
+        staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyFormGroupRelationship());
+        staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
         ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        form.setFields(staticCode, staticAssignmentStatusItem, concept, roleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
+        form.setFields(code, type, staticAssignmentStatusItem, concept, roleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
                 staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, codelist, urn, urnProvider);
 
         staticFacetForm = new StaticFacetForm();
@@ -332,23 +332,28 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // ····
         // Form
         // ····
-        editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdAttributeDetails());
+        editionForm = new GroupDynamicForm(getConstants().dsdAttributeDetails());
 
         // Id
 
-        RequiredTextItem code = new RequiredTextItem(DataAttributeDS.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
+        RequiredTextItem code = new RequiredTextItem(DataAttributeDS.CODE, getConstants().dsdAttributeId());
         code.setValidators(SemanticIdentifiersUtils.getAttributeIdentifierCustomValidator());
+
+        // Type
+
+        CustomSelectItem type = new CustomSelectItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
+        type.setValueMap(CommonUtils.getDataAttributeTypeHashMap());
 
         // Assignment Status
 
-        assignmentStatusItem = new RequiredSelectItem(DataAttributeDS.ASSIGMENT_STATUS, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
+        assignmentStatusItem = new RequiredSelectItem(DataAttributeDS.ASSIGMENT_STATUS, getConstants().dsdAttributeAssignmentStatus());
         assignmentStatusItem.setValueMap(CommonUtils.getUsageStatusHashMap());
 
         // Concept
 
-        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
+        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, getConstants().concept());
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem conceptView = createConceptItem(DataAttributeDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
+        SearchViewTextItem conceptView = createConceptItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept());
 
         // Role
 
@@ -356,13 +361,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation
 
-        relationType = new RequiredSelectItem(DataAttributeDS.RELATED_WITH, MetamacSrmWeb.getConstants().dsdAttributeRelatedWith());
+        relationType = new RequiredSelectItem(DataAttributeDS.RELATED_WITH, getConstants().dsdAttributeRelatedWith());
         relationType.setValueMap(CommonUtils.getTypeRelathionshipHashMap());
         relationType.setRedrawOnChange(true);
 
         // Relation: Group keys for dimension relationship
 
-        groupKeysForDimensionRelationshipItem = new CustomSelectItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, MetamacSrmWeb.getConstants().dsdAttributeGroupKeysForDimensionRelationship());
+        groupKeysForDimensionRelationshipItem = new CustomSelectItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         groupKeysForDimensionRelationshipItem.setMultiple(true);
         groupKeysForDimensionRelationshipItem.setPickListWidth(350);
         // Show GroupKeyForDimensionRelationship if TypeRelathionship = DIMENSION_RELATIONSHIP
@@ -382,8 +387,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Dimensions for dimension relationship
 
-        dimensionsForDimensionRelationshipItem = new RequiredSelectItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, MetamacSrmWeb.getConstants()
-                .dsdAttributeDimensionsForDimensionRelationship());
+        dimensionsForDimensionRelationshipItem = new RequiredSelectItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeDimensionsForDimensionRelationship());
         dimensionsForDimensionRelationshipItem.setMultiple(true);
         dimensionsForDimensionRelationshipItem.setPickListWidth(350);
         // Show DimensionsForDimensionRelationship if TypeRelathionship = DIMENSION_RELATIONSHIP
@@ -403,7 +407,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Group Keys for group relationship
 
-        groupKeyFormForGroupRelationship = new RequiredSelectItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, MetamacSrmWeb.getConstants().dsdAttributeGroupKeyFormGroupRelationship());
+        groupKeyFormForGroupRelationship = new RequiredSelectItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyFormGroupRelationship());
         groupKeyFormForGroupRelationship.setPickListWidth(350);
         // Show GroupKeyForGroupRelationship if TypeRelathionship = GROUP_RELATIONSHIP
         groupKeyFormForGroupRelationship.setShowIfCondition(new FormItemIfFunction() {
@@ -431,7 +435,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
 
-        representationTypeItem = new CustomSelectItem(DataAttributeDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
+        representationTypeItem = new CustomSelectItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
@@ -443,14 +447,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, MetamacSrmWeb.getConstants().codelist());
+        ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
         codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem codelistView = createEnumeratedRepresentationItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist());
+        SearchViewTextItem codelistView = createEnumeratedRepresentationItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
 
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, assignmentStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
+        editionForm.setFields(code, type, assignmentStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
                 groupKeyFormForGroupRelationship, representationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
@@ -560,6 +564,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Id
         form.setValue(DataAttributeDS.CODE, dataAttributeDto.getCode());
 
+        // Type
+        form.setValue(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, CommonUtils.getSpecialAttributeTypeName(dataAttributeDto.getSpecialAttributeType()));
+
         // URNs
         form.setValue(DataAttributeDS.URN, dataAttributeDto.getUrn());
         form.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
@@ -656,6 +663,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Id
         editionForm.setValue(DataAttributeDS.CODE, dataAttributeDto.getCode());
 
+        // Type
+        editionForm.setValue(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, dataAttributeDto.getSpecialAttributeType() != null ? dataAttributeDto.getSpecialAttributeType().name() : null);
+
         // URNs
         editionForm.setValue(DataAttributeDS.URN, dataAttributeDto.getUrn());
         editionForm.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
@@ -744,6 +754,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     public DataAttributeDto getDsdAttribute() {
         // Id
         dataAttributeDto.setCode(editionForm.getValueAsString(DataAttributeDS.CODE));
+
+        // Type
+        dataAttributeDto.setSpecialAttributeType(!StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE)) ? SpecialAttributeTypeEnum.valueOf(editionForm
+                .getValueAsString(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE)) : null);
 
         // Role
         dataAttributeDto.getRole().clear();
