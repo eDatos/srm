@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
@@ -431,9 +432,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     @Override
     public void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria) {
         // The codelists that can be replaced should be externally published
-        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
-        codelistWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
-
+        CodelistWebCriteria codelistWebCriteria = MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForCodelistsThatCanBeReplaced();
+        codelistWebCriteria.setCriteria(criteria);
         dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
