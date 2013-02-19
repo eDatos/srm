@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
@@ -99,7 +100,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load organisation schemes
-        retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
+        retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getOrganisationSchemeWebCriteriaForLastVersion());
         // Clear search section
         getView().clearSearchSection();
     }
@@ -129,7 +130,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitSuccess(SaveOrganisationSchemeResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getOrganisationSchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -141,12 +142,12 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorDelete()), MessageTypeEnum.ERROR);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getOrganisationSchemeWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getOrganisationSchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -177,14 +178,8 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getOrganisationSchemeWebCriteriaForLastVersion());
             }
         });
-    }
-
-    private OrganisationSchemeWebCriteria getOrganisationSchemeWebCriteriaForLastVersion() {
-        OrganisationSchemeWebCriteria organisationSchemeWebCriteria = new OrganisationSchemeWebCriteria();
-        organisationSchemeWebCriteria.setIsLastVersion(true);
-        return organisationSchemeWebCriteria;
     }
 }

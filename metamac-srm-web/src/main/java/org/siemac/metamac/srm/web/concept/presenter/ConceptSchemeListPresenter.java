@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
@@ -98,7 +99,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load concept schemes
-        retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getConceptSchemeWebCriteriaForLastVersion());
+        retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getConceptSchemeWebCriteriaForLastVersion());
         // Clear search section
         getView().clearSearchSection();
     }
@@ -136,7 +137,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getConceptSchemeWebCriteriaForLastVersion());
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getConceptSchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -148,12 +149,12 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorDelete()), MessageTypeEnum.ERROR);
-                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getConceptSchemeWebCriteriaForLastVersion());
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getConceptSchemeWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(DeleteConceptSchemesResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getConceptSchemeWebCriteriaForLastVersion());
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getConceptSchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -165,12 +166,12 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
-                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getConceptSchemeWebCriteriaForLastVersion());
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getConceptSchemeWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getConceptSchemeWebCriteriaForLastVersion());
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getConceptSchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -195,11 +196,5 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
                 getView().setOperations(result);
             }
         });
-    }
-
-    private ConceptSchemeWebCriteria getConceptSchemeWebCriteriaForLastVersion() {
-        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
-        conceptSchemeWebCriteria.setIsLastVersion(true);
-        return conceptSchemeWebCriteria;
     }
 }

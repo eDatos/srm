@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
@@ -118,7 +119,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load DSDs
-        retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, getDataStructureDefinitionWebCriteriaForLastVersion());
+        retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getDataStructureDefinitionWebCriteriaForLastVersion());
         // Clear search section
         getView().clearSearchSection();
     }
@@ -194,7 +195,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             }
             @Override
             public void onWaitSuccess(SaveDsdResult result) {
-                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, getDataStructureDefinitionWebCriteriaForLastVersion());
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getDataStructureDefinitionWebCriteriaForLastVersion());
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSaved()), MessageTypeEnum.SUCCESS);
             }
         });
@@ -206,12 +207,12 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, getDataStructureDefinitionWebCriteriaForLastVersion());
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getDataStructureDefinitionWebCriteriaForLastVersion());
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(DeleteDsdsResult result) {
-                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, getDataStructureDefinitionWebCriteriaForLastVersion());
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getDataStructureDefinitionWebCriteriaForLastVersion());
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
             }
         });
@@ -272,12 +273,12 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().dsdErrorCancelValidity()), MessageTypeEnum.ERROR);
-                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, getDataStructureDefinitionWebCriteriaForLastVersion());
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getDataStructureDefinitionWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(CancelDsdValidityResult result) {
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(getMessages().dsdCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, getDataStructureDefinitionWebCriteriaForLastVersion());
+                retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getDataStructureDefinitionWebCriteriaForLastVersion());
             }
         });
     }
@@ -295,11 +296,5 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
                 getView().setOperations(result);
             }
         });
-    }
-
-    private DataStructureDefinitionWebCriteria getDataStructureDefinitionWebCriteriaForLastVersion() {
-        DataStructureDefinitionWebCriteria dataStructureDefinitionWebCriteria = new DataStructureDefinitionWebCriteria();
-        dataStructureDefinitionWebCriteria.setIsLastVersion(true);
-        return dataStructureDefinitionWebCriteria;
     }
 }

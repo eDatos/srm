@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
@@ -98,7 +99,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load concept schemes
-        retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCategorySchemeWebCriteriaForLastVersion());
+        retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCategorySchemeWebCriteriaForLastVersion());
         // Clear search section
         getView().clearSearchSection();
     }
@@ -136,7 +137,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             @Override
             public void onWaitSuccess(SaveCategorySchemeResult result) {
                 ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCategorySchemeWebCriteriaForLastVersion());
+                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCategorySchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -148,12 +149,12 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorDelete()), MessageTypeEnum.ERROR);
-                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCategorySchemeWebCriteriaForLastVersion());
+                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCategorySchemeWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(DeleteCategorySchemesResult result) {
                 ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCategorySchemeWebCriteriaForLastVersion());
+                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCategorySchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -165,12 +166,12 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
-                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCategorySchemeWebCriteriaForLastVersion());
+                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCategorySchemeWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(CancelCategorySchemeValidityResult result) {
                 ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCategorySchemeWebCriteriaForLastVersion());
+                retrieveCategorySchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCategorySchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -180,11 +181,5 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
         if (!StringUtils.isBlank(urn)) {
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn));
         }
-    }
-
-    private CategorySchemeWebCriteria getCategorySchemeWebCriteriaForLastVersion() {
-        CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria();
-        categorySchemeWebCriteria.setIsLastVersion(true);
-        return categorySchemeWebCriteria;
     }
 }
