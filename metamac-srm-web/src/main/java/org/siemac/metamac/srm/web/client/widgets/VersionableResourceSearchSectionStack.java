@@ -40,8 +40,9 @@ public abstract class VersionableResourceSearchSectionStack extends BaseSearchSe
     protected static String     HIDE_ADVANCED_SEARCH_ITEM_NAME = "hide-adv-search-item";
 
     protected CustomDynamicForm searchForm;
-    protected GroupDynamicForm  advancedSearchForm;
     protected FormItemIcon      searchIcon;
+
+    protected GroupDynamicForm  advancedSearchForm;
 
     public VersionableResourceSearchSectionStack() {
         setHeight(26);
@@ -184,7 +185,13 @@ public abstract class VersionableResourceSearchSectionStack extends BaseSearchSe
                 retrieveResources();
             }
         });
-        advancedSearchForm.setFields(code, internalPublicationDate, name, internalPublicationUser, urn, externalPublicationDate, description, externalPublicationUser, procStatus, isLastVersion,
-                searchItem);
+
+        FormItem[] advancedSearchFormItems = new FormItem[]{code, internalPublicationDate, name, internalPublicationUser, urn, externalPublicationDate, description, externalPublicationUser,
+                procStatus, isLastVersion, searchItem};
+        setFormItemsInAdvancedSearchForm(advancedSearchFormItems);
+    }
+
+    protected void setFormItemsInAdvancedSearchForm(FormItem[] advancedSearchFormItems) {
+        advancedSearchForm.setFields(advancedSearchFormItems);
     }
 }

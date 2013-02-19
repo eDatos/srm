@@ -45,6 +45,7 @@ import com.gwtplatform.mvp.client.annotations.TitleFunction;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -95,9 +96,14 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     }
 
     @Override
-    protected void onReset() {
-        super.onReset();
-        retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
+    public void prepareFromRequest(PlaceRequest request) {
+        super.prepareFromRequest(request);
+        // Load organisation schemes
+        OrganisationSchemeWebCriteria organisationSchemeWebCriteria = new OrganisationSchemeWebCriteria();
+        organisationSchemeWebCriteria.setIsLastVersion(true);
+        retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, organisationSchemeWebCriteria);
+        // Clear search section
+        getView().clearSearchSection();
     }
 
     @Override
@@ -153,9 +159,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     }
 
     @Override
-    public void retrieveOrganisationSchemes(int firstResult, int maxResults, final String criteria) {
-        OrganisationSchemeWebCriteria organisationSchemeWebCriteria = new OrganisationSchemeWebCriteria(criteria);
-        organisationSchemeWebCriteria.setIsLastVersion(true);
+    public void retrieveOrganisationSchemes(int firstResult, int maxResults, OrganisationSchemeWebCriteria organisationSchemeWebCriteria) {
         dispatcher.execute(new GetOrganisationSchemesAction(firstResult, maxResults, organisationSchemeWebCriteria), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
 
             @Override
@@ -165,9 +169,6 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitSuccess(GetOrganisationSchemesResult result) {
                 getView().setOrganisationSchemesPaginatedList(result);
-                if (StringUtils.isBlank(criteria)) {
-                    getView().clearSearchSection();
-                }
             }
         });
     }
@@ -187,5 +188,4 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             }
         });
     }
-
 }

@@ -1,10 +1,12 @@
 package org.siemac.metamac.srm.web.shared.criteria;
 
-public class OrganisationSchemeWebCriteria extends MetamacWebCriteria {
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
-    private static final long serialVersionUID = 1L;
+public class OrganisationSchemeWebCriteria extends VersionableResourceWebCriteria {
 
-    private Boolean           isLastVersion;
+    private static final long          serialVersionUID = 1L;
+
+    private OrganisationSchemeTypeEnum type;
 
     public OrganisationSchemeWebCriteria() {
     }
@@ -13,11 +15,11 @@ public class OrganisationSchemeWebCriteria extends MetamacWebCriteria {
         super(criteria);
     }
 
-    public Boolean getIsLastVersion() {
-        return isLastVersion;
+    public OrganisationSchemeTypeEnum getType() {
+        return type;
     }
 
-    public void setIsLastVersion(Boolean isLastVersion) {
-        this.isLastVersion = isLastVersion;
+    public void setType(OrganisationSchemeTypeEnum type) {
+        this.type = type;
     }
 }
