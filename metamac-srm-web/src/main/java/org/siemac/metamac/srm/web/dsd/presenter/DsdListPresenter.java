@@ -20,7 +20,7 @@ import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
-import org.siemac.metamac.srm.web.shared.criteria.DsdWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
@@ -117,7 +117,12 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, null);
+        // Load DSDs
+        DataStructureDefinitionWebCriteria dataStructureDefinitionWebCriteria = new DataStructureDefinitionWebCriteria();
+        dataStructureDefinitionWebCriteria.setIsLastVersion(true);
+        retrieveDsdList(DSD_LIST_FIRST_RESULT, DSD_LIST_MAX_RESULTS, dataStructureDefinitionWebCriteria);
+        // Clear search section
+        getView().clearSearchSection();
     }
 
     @Override
@@ -218,10 +223,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
      * AsyncCallback to fetch DSDs
      */
     @Override
-    public void retrieveDsdList(int firstResult, int maxResults, final String criteria) {
-        DsdWebCriteria dsdWebCriteria = new DsdWebCriteria(criteria);
-        dsdWebCriteria.setIsLastVersion(true);
-        dispatcher.execute(new GetDsdsAction(firstResult, maxResults, dsdWebCriteria), new WaitingAsyncCallback<GetDsdsResult>() {
+    public void retrieveDsdList(int firstResult, int maxResults, DataStructureDefinitionWebCriteria dataStructureDefinitionWebCriteria) {
+        dispatcher.execute(new GetDsdsAction(firstResult, maxResults, dataStructureDefinitionWebCriteria), new WaitingAsyncCallback<GetDsdsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -230,9 +233,6 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitSuccess(GetDsdsResult result) {
                 getView().setDsds(result.getDsdDtos(), result.getFirstResultOut(), result.getTotalResults());
-                if (StringUtils.isBlank(criteria)) {
-                    getView().clearSearchSection();
-                }
             }
         });
     }

@@ -3,21 +3,17 @@ package org.siemac.metamac.srm.web.server.handlers.dsd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.shared.criteria.DsdWebCriteria;
+import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
+import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -51,29 +47,12 @@ public class GetDsdsActionHandler extends SecurityActionHandler<GetDsdsAction, G
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
 
-        DsdWebCriteria dsdWebCriteria = action.getCriteria();
+        DataStructureDefinitionWebCriteria dsdWebCriteria = action.getCriteria();
 
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
-        // Only find last versions
-        if (dsdWebCriteria.getIsLastVersion() != null) {
-            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
-                    dsdWebCriteria.getIsLastVersion(), OperationType.EQ);
-            restriction.getRestrictions().add(lastVersionRestriction);
-        }
-
-        // DSD Criteria
-        MetamacCriteriaDisjunctionRestriction dsdCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (!StringUtils.isBlank(dsdWebCriteria.getCriteria())) {
-            dsdCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), dsdWebCriteria.getCriteria(), OperationType.ILIKE));
-            dsdCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), dsdWebCriteria.getCriteria(), OperationType.ILIKE));
-            dsdCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.URN.name(), dsdWebCriteria.getCriteria(), OperationType.ILIKE));
-            restriction.getRestrictions().add(dsdCriteriaDisjuction);
-        }
-
+        // DSD criteria
+        restriction.getRestrictions().add(MetamacWebCriteriaUtils.getDataStructureDefinitionCriteriaRestriction(dsdWebCriteria));
         criteria.setRestriction(restriction);
 
         // Pagination
@@ -89,5 +68,4 @@ public class GetDsdsActionHandler extends SecurityActionHandler<GetDsdsAction, G
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

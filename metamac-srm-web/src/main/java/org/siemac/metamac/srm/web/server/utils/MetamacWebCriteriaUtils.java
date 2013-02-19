@@ -14,12 +14,14 @@ import org.siemac.metamac.srm.core.criteria.CategorySchemeVersionMetamacCriteria
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.VariableElementCriteriaPropertyEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 
 public class MetamacWebCriteriaUtils {
@@ -28,12 +30,6 @@ public class MetamacWebCriteriaUtils {
     // CONCEPTS
     // -------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE, NAME and URN of the ConceptScheme
-     * 
-     * @param criteria
-     * @return
-     */
     public static MetamacCriteriaRestriction getConceptSchemeCriteriaRestriction(ConceptSchemeWebCriteria criteria) {
         MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
         // General criteria
@@ -165,12 +161,6 @@ public class MetamacWebCriteriaUtils {
     // CATEGORIES
     // -------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE, NAME and URN of the CategoryScheme
-     * 
-     * @param criteria
-     * @return
-     */
     public static MetamacCriteriaRestriction getCategorySchemeCriteriaRestriction(CategorySchemeWebCriteria criteria) {
         MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
         // General criteria
@@ -245,5 +235,61 @@ public class MetamacWebCriteriaUtils {
         }
         restriction.getRestrictions().addAll(restrictions);
         return restriction;
+    }
+
+    // -------------------------------------------------------------------------------------------------------------
+    // DSDs
+    // -------------------------------------------------------------------------------------------------------------
+
+    public static MetamacCriteriaRestriction getDataStructureDefinitionCriteriaRestriction(DataStructureDefinitionWebCriteria criteria) {
+        MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+        // General criteria
+        MetamacCriteriaDisjunctionRestriction dsdCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
+            dsdCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+            dsdCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+            dsdCriteriaDisjuction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+        }
+        conjunctionRestriction.getRestrictions().add(dsdCriteriaDisjuction);
+        // Specific criteria
+        if (StringUtils.isNotBlank(criteria.getCode())) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getName())) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getUrn())) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+        }
+        if (StringUtils.isNotBlank(criteria.getDescription())) {
+            // TODO
+        }
+        if (criteria.getProcStatus() != null) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
+        }
+        if (criteria.getInternalPublicationDate() != null) {
+            // TODO
+        }
+        if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+            // TODO
+        }
+        if (criteria.getExternalPublicationDate() != null) {
+            // TODO
+        }
+        if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
+            // TODO
+        }
+        if (criteria.getIsLastVersion() != null) {
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+        }
+        return conjunctionRestriction;
     }
 }

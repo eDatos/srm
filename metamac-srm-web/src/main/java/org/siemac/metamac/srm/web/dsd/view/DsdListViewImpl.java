@@ -17,11 +17,11 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdSearchSectionStack;
 import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDsdWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -31,8 +31,6 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -59,7 +57,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private DeleteConfirmationWindow deleteConfirmationWindow;
     private ImportDsdWindow          importDsdWindow;
 
-    private SearchSectionStack       searchSectionStack;
+    private DsdSearchSectionStack    searchSectionStack;
 
     @Inject
     public DsdListViewImpl() {
@@ -72,7 +70,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveDsdList(firstResult, maxResults, searchSectionStack.getSearchCriteria());
+                getUiHandlers().retrieveDsdList(firstResult, maxResults, searchSectionStack.getDataStructureDefinitionWebCriteria());
             }
         });
 
@@ -173,14 +171,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
         // Search
 
-        searchSectionStack = new SearchSectionStack();
-        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-
-            @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                getUiHandlers().retrieveDsdList(DsdListPresenter.DSD_LIST_FIRST_RESULT, DsdListPresenter.DSD_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
-            }
-        });
+        searchSectionStack = new DsdSearchSectionStack();
 
         // DSD ListGrid
 
@@ -224,6 +215,12 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public Widget asWidget() {
         return panel;
+    }
+
+    @Override
+    public void setUiHandlers(DsdListUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        searchSectionStack.setUiHandlers(uiHandlers);
     }
 
     @Override
@@ -287,7 +284,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
     @Override
     public void clearSearchSection() {
-        searchSectionStack.reset();
+        searchSectionStack.clearSearchSection();
     }
 
     @Override

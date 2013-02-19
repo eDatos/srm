@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.shared.dsd;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.web.shared.criteria.DsdWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -19,7 +19,7 @@ public class GetDsds {
     int                                     maxResults;
 
     @In(3)
-    DsdWebCriteria                          criteria;
+    DataStructureDefinitionWebCriteria      criteria;
 
     @Out(1)
     List<DataStructureDefinitionMetamacDto> dsdDtos;
