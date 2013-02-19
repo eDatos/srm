@@ -3,21 +3,17 @@ package org.siemac.metamac.srm.web.server.handlers.code;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
@@ -55,39 +51,8 @@ public class GetCodelistsActionHandler extends SecurityActionHandler<GetCodelist
 
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
-        // Only find last versions
-        if (codelistWebCriteria.getIsLastVersion() != null) {
-            MetamacCriteriaPropertyRestriction lastVersionRestriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(),
-                    codelistWebCriteria.getIsLastVersion(), OperationType.EQ);
-            restriction.getRestrictions().add(lastVersionRestriction);
-        }
-
-        // Codelist Criteria
-        if (StringUtils.isNotBlank(codelistWebCriteria.getCriteria())) {
-            MetamacCriteriaDisjunctionRestriction codelistCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-            codelistCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), codelistWebCriteria.getCriteria(), OperationType.ILIKE));
-            codelistCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), codelistWebCriteria.getCriteria(), OperationType.ILIKE));
-            codelistCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), codelistWebCriteria.getCriteria(), OperationType.ILIKE));
-            restriction.getRestrictions().add(codelistCriteriaDisjuction);
-        }
-
-        // Proc status restriction
-        if (codelistWebCriteria.getProcStatus() != null) {
-            MetamacCriteriaPropertyRestriction procStatusRestriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(),
-                    codelistWebCriteria.getProcStatus(), OperationType.EQ);
-            restriction.getRestrictions().add(procStatusRestriction);
-        }
-
-        // Codelist family restriction
-        if (StringUtils.isNotBlank(codelistWebCriteria.getCodelistFamilyUrn())) {
-            MetamacCriteriaPropertyRestriction familyRestriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODELIST_FAMILY_URN.name(),
-                    codelistWebCriteria.getCodelistFamilyUrn(), OperationType.EQ);
-            restriction.getRestrictions().add(familyRestriction);
-        }
-
+        // Codelist criteria
+        restriction.getRestrictions().add(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
         criteria.setRestriction(restriction);
 
         // Pagination

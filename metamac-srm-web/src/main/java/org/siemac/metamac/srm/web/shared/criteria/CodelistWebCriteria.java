@@ -1,15 +1,17 @@
 package org.siemac.metamac.srm.web.shared.criteria;
 
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import java.util.List;
 
-public class CodelistWebCriteria extends MetamacWebCriteria {
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+
+public class CodelistWebCriteria extends VersionableResourceWebCriteria {
 
     private static final long serialVersionUID = 1L;
 
     private String            conceptUrn;
-    private ProcStatusEnum    procStatus;
     private String            codelistFamilyUrn;
-    private Boolean           isLastVersion;
+    private AccessTypeEnum    accessType;
+    private List<String>      replaceToCodelistUrns;
 
     public CodelistWebCriteria() {
     }
@@ -31,14 +33,6 @@ public class CodelistWebCriteria extends MetamacWebCriteria {
         this.conceptUrn = conceptUrn;
     }
 
-    public ProcStatusEnum getProcStatus() {
-        return procStatus;
-    }
-
-    public void setProcStatus(ProcStatusEnum procStatus) {
-        this.procStatus = procStatus;
-    }
-
     public String getCodelistFamilyUrn() {
         return codelistFamilyUrn;
     }
@@ -47,11 +41,19 @@ public class CodelistWebCriteria extends MetamacWebCriteria {
         this.codelistFamilyUrn = codelistFamilyUrn;
     }
 
-    public Boolean getIsLastVersion() {
-        return isLastVersion;
+    public AccessTypeEnum getAccessType() {
+        return accessType;
     }
 
-    public void setIsLastVersion(Boolean isLastVersion) {
-        this.isLastVersion = isLastVersion;
+    public List<String> getReplaceToCodelistUrns() {
+        return replaceToCodelistUrns;
+    }
+
+    public void setAccessType(AccessTypeEnum accessType) {
+        this.accessType = accessType;
+    }
+
+    public void setReplaceToCodelistUrns(List<String> replaceToCodelistUrns) {
+        this.replaceToCodelistUrns = replaceToCodelistUrns;
     }
 }

@@ -13,13 +13,13 @@ import org.siemac.metamac.srm.web.code.presenter.CodelistListPresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistListUiHandlers;
+import org.siemac.metamac.srm.web.code.widgets.CodelistSearchSectionStack;
 import org.siemac.metamac.srm.web.code.widgets.NewCodelistWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
-import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -31,8 +31,6 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -45,18 +43,18 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandlers> implements CodelistListPresenter.CodelistListView {
 
-    private VLayout                  panel;
+    private VLayout                    panel;
 
-    private ToolStripButton          newCodelistButton;
-    private ToolStripButton          deleteCodelistButton;
-    private ToolStripButton          cancelCodelistValidityButton;
+    private ToolStripButton            newCodelistButton;
+    private ToolStripButton            deleteCodelistButton;
+    private ToolStripButton            cancelCodelistValidityButton;
 
-    private SearchSectionStack       searchSectionStack;
+    private CodelistSearchSectionStack searchSectionStack;
 
-    private PaginatedCheckListGrid   codelistsList;
+    private PaginatedCheckListGrid     codelistsList;
 
-    private NewCodelistWindow        newCodelistWindow;
-    private DeleteConfirmationWindow deleteConfirmationWindow;
+    private NewCodelistWindow          newCodelistWindow;
+    private DeleteConfirmationWindow   deleteConfirmationWindow;
 
     @Inject
     public CodelistListViewImpl() {
@@ -113,14 +111,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
         // Search
 
-        searchSectionStack = new SearchSectionStack();
-        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-
-            @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                getUiHandlers().retrieveCodelists(CodelistListPresenter.SCHEME_LIST_FIRST_RESULT, CodelistListPresenter.SCHEME_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
-            }
-        });
+        searchSectionStack = new CodelistSearchSectionStack();
 
         // Codelist list
 
@@ -128,7 +119,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCodelists(firstResult, maxResults, searchSectionStack.getSearchCriteria());
+                getUiHandlers().retrieveCodelists(firstResult, maxResults, searchSectionStack.getCodelistWebCriteria());
             }
         });
         codelistsList.getListGrid().setAutoFitMaxRecords(CodelistListPresenter.SCHEME_LIST_MAX_RESULTS);
@@ -193,6 +184,12 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     }
 
     @Override
+    public void setUiHandlers(CodelistListUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        searchSectionStack.setUiHandlers(uiHandlers);
+    }
+
+    @Override
     public void setInSlot(Object slot, Widget content) {
         if (slot == CodelistListPresenter.TYPE_SetContextAreaContentCodesToolBar) {
             if (content != null) {
@@ -229,7 +226,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
     @Override
     public void clearSearchSection() {
-        searchSectionStack.reset();
+        searchSectionStack.clearSearchSection();
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {

@@ -101,4 +101,8 @@ public class RelatedResourceListItem extends BaseListItem {
         }
         return relatedResources;
     }
+
+    public void clearRelatedResourceList() {
+        listGrid.removeAllData();
+    }
 }

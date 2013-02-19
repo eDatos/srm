@@ -47,6 +47,7 @@ import com.gwtplatform.mvp.client.annotations.TitleFunction;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -101,9 +102,14 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     }
 
     @Override
-    protected void onReset() {
-        super.onReset();
-        retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
+    public void prepareFromRequest(PlaceRequest request) {
+        super.prepareFromRequest(request);
+        // Load concept schemes
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setIsLastVersion(true);
+        retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, codelistWebCriteria);
+        // Clear search section
+        getView().clearSearchSection();
     }
 
     @Override
@@ -157,9 +163,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     }
 
     @Override
-    public void retrieveCodelists(int firstResult, int maxResults, final String criteria) {
-        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
-        codelistWebCriteria.setIsLastVersion(true);
+    public void retrieveCodelists(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
         dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override
@@ -169,9 +173,6 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
                 getView().setCodelistPaginatedList(result);
-                if (StringUtils.isBlank(criteria)) {
-                    getView().clearSearchSection();
-                }
             }
         });
     }
