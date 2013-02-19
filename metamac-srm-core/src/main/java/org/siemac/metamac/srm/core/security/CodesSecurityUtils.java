@@ -85,7 +85,7 @@ public class CodesSecurityUtils extends SecurityUtils {
     }
 
     public static void canAddVariableElementsToVariable(ServiceContext ctx) throws MetamacException {
-        if (SharedCodesSecurityUtils.canAddVariableElementsToVariable(getMetamacPrincipal(ctx))) {
+        if (!SharedCodesSecurityUtils.canAddVariableElementsToVariable(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
