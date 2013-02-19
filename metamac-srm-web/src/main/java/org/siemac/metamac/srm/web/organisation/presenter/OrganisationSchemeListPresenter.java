@@ -99,9 +99,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load organisation schemes
-        OrganisationSchemeWebCriteria organisationSchemeWebCriteria = new OrganisationSchemeWebCriteria();
-        organisationSchemeWebCriteria.setIsLastVersion(true);
-        retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, organisationSchemeWebCriteria);
+        retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
         // Clear search section
         getView().clearSearchSection();
     }
@@ -131,7 +129,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitSuccess(SaveOrganisationSchemeResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS);
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
             }
         });
     }
@@ -143,19 +141,14 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorDelete()), MessageTypeEnum.ERROR);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS);
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS);
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
             }
         });
-    }
-
-    @Override
-    public void retrieveOrganisationSchemes(int firstResult, int maxResults) {
-        retrieveOrganisationSchemes(firstResult, maxResults, null);
     }
 
     @Override
@@ -184,8 +177,14 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS);
+                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteriaForLastVersion());
             }
         });
+    }
+
+    private OrganisationSchemeWebCriteria getOrganisationSchemeWebCriteriaForLastVersion() {
+        OrganisationSchemeWebCriteria organisationSchemeWebCriteria = new OrganisationSchemeWebCriteria();
+        organisationSchemeWebCriteria.setIsLastVersion(true);
+        return organisationSchemeWebCriteria;
     }
 }
