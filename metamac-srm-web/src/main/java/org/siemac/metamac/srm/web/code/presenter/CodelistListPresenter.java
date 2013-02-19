@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodesToolStripPresenterWidget;
@@ -80,7 +81,8 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     public interface CodelistListView extends View, HasUiHandlers<CodelistListUiHandlers> {
 
-        void setCodelistPaginatedList(GetCodelistsResult codelistsPaginatedList);
+        void setCodelists(GetCodelistsResult codelistsPaginatedList);
+        void setCodelistsForReplaceToInAdvancedSearch(GetCodelistsResult codelistsPaginatedList);
         void clearSearchSection();
 
         void setVariables(GetVariablesResult result);
@@ -105,7 +107,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load concept schemes
-        retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCodelistWebCriteriaForLastVersion());
+        retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForLastVersion());
         // Clear search section
         getView().clearSearchSection();
     }
@@ -138,7 +140,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             @Override
             public void onWaitSuccess(SaveCodelistResult result) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistSaved()), MessageTypeEnum.SUCCESS);
-                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCodelistWebCriteriaForLastVersion());
+                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForLastVersion());
             }
         });
     }
@@ -150,12 +152,12 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorDelete()), MessageTypeEnum.ERROR);
-                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCodelistWebCriteriaForLastVersion());
+                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(DeleteCodelistsResult result) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCodelistWebCriteriaForLastVersion());
+                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForLastVersion());
             }
         });
     }
@@ -170,7 +172,22 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
-                getView().setCodelistPaginatedList(result);
+                getView().setCodelists(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCodelistsForReplaceToInAdvancedSearch(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistsResult result) {
+                getView().setCodelistsForReplaceToInAdvancedSearch(result);
             }
         });
     }
@@ -182,12 +199,12 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorCancelValidity()), MessageTypeEnum.ERROR);
-                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCodelistWebCriteriaForLastVersion());
+                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForLastVersion());
             }
             @Override
             public void onWaitSuccess(CancelCodelistValidityResult result) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, getCodelistWebCriteriaForLastVersion());
+                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForLastVersion());
             }
         });
     }
@@ -205,11 +222,5 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
                 getView().setVariables(result);
             }
         });
-    }
-
-    private CodelistWebCriteria getCodelistWebCriteriaForLastVersion() {
-        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
-        codelistWebCriteria.setIsLastVersion(true);
-        return codelistWebCriteria;
     }
 }
