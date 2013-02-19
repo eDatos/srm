@@ -11,7 +11,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 
 public interface DataStructureDefinitionDto2DoMapper {
 
-    // TODO Cambiar a tipos de METAMAC
     public <U extends Component> U componentDtoToComponent(ComponentDto source) throws MetamacException;
     public <U extends ComponentList> U componentListDtoToComponentList(ComponentListDto source) throws MetamacException;
 

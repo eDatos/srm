@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +99,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         return "dbunit/SrmDsdTest.xml";
     }
 
-    @Ignore
     @Test
     @DirtyDatabase
     public void testImport_EXAMPLE_ORGANISATIONS() throws Exception {
@@ -110,8 +110,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(),
-                            ImportationsDtoMocks.createContentInput(new File("H:/proyectos/Istac/05-Metamac/04-resources/Codelist_total_35545_codes.xml")));
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.EXAMPLE_ORGANISATIONS)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -123,26 +122,26 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
 
         WaitUntilJobFinished();
 
-        // OrganisationSchemeVersionMetamac organisationSchemeVersion = null;
-        //
-        // organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_AGENCIES_V1);
-        // assertEquals(1, organisationSchemeVersion.getItems().size());
-        //
-        // organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_DATA_CONSUMERS_V1);
-        // assertEquals(1, organisationSchemeVersion.getItems().size());
-        //
-        // organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_DATA_PROVIDERS_V1);
-        // assertEquals(1, organisationSchemeVersion.getItems().size());
-        //
-        // organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V1);
-        // assertEquals(2, organisationSchemeVersion.getItems().size());
-        // assertFalse(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-        //
-        // organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V2);
-        // assertEquals(1, organisationSchemeVersion.getItems().size());
-        // assertTrue(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-        //
-        // assertEquals(2, organisationSchemeVersion.getItemScheme().getVersions().size());
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = null;
+
+        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_AGENCIES_V1);
+        assertEquals(1, organisationSchemeVersion.getItems().size());
+
+        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_DATA_CONSUMERS_V1);
+        assertEquals(1, organisationSchemeVersion.getItems().size());
+
+        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_DATA_PROVIDERS_V1);
+        assertEquals(1, organisationSchemeVersion.getItems().size());
+
+        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V1);
+        assertEquals(2, organisationSchemeVersion.getItems().size());
+        assertFalse(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
+
+        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V2);
+        assertEquals(1, organisationSchemeVersion.getItems().size());
+        assertTrue(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
+
+        assertEquals(2, organisationSchemeVersion.getItemScheme().getVersions().size());
 
         // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
@@ -186,6 +185,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertEquals(9, codelistVersion.getItems().size());
         // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
+
     @Test
     @DirtyDatabase
     public void testImport_DEMOGRAPHY_CONCEPTS() throws Exception {
@@ -220,6 +220,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1);
         assertEquals(14, conceptSchemeVersion.getItems().size());
     }
+
     @Test
     @DirtyDatabase
     public void testImport_DSD_ECB_EXR_NG_FULL() throws Exception {
@@ -246,6 +247,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_NG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
+
     @Test
     @DirtyDatabase
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {
@@ -272,6 +274,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_SG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
+
     @Test
     @DirtyDatabase
     public void testImport_DSD_ECB_EXR_RG_FULL() throws Exception {
@@ -298,6 +301,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_RG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
+
     @Ignore
     @Test
     @DirtyDatabase
@@ -325,6 +329,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_DPOP_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
+
     @Ignore
     @Test
     @DirtyDatabase
@@ -352,6 +357,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_EPOP_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
+
     @Ignore
     @Test
     @DirtyDatabase
@@ -379,6 +385,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IDB_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
+
     @Ignore
     @Test
     @DirtyDatabase
@@ -406,6 +413,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IPC_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
+
     @Ignore
     @Test
     @DirtyDatabase
@@ -433,6 +441,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_IPCA_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
+
     @Ignore
     @Test
     @DirtyDatabase

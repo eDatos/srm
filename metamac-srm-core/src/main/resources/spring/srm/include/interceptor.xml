@@ -25,25 +25,40 @@
             <tx:method name="*" read-only="false" rollback-for="org.siemac.metamac.core.common.exception.MetamacException,org.fornax.cartridges.sculptor.framework.errorhandling.ApplicationException" />
         </tx:attributes>
     </tx:advice>
+    
+    <tx:advice id="requiresNewTxAdvice" transaction-manager="txManagerCore">
+		<tx:attributes>
+	    	<tx:method name="import*" propagation="REQUIRES_NEW"/>
+	    </tx:attributes>
+	</tx:advice>
 
     <aop:config>
+    
+    	<!-- Pointcut for the advice of force flush -->
         <aop:pointcut id="updateServicePointCut"
-                    expression="(execution(public * org.siemac.metamac.srm..serviceapi.*Service.*(..)) and not (execution(public * org.siemac.metamac.srm..serviceapi.*Service.retrieve*(..)) or execution(public * org.siemac.metamac.srm..serviceapi.*Service.find*(..)))) or
+                    expression="(execution(public * org.siemac.metamac.srm..serviceapi.*Service.*(..)) and not (execution(public * org.siemac.metamac.srm..serviceapi.*Service.retrieve*(..)) or execution(public * org.siemac.metamac.srm..serviceapi.*Service.find*(..)) or execution(public * org.siemac.metamac.srm..serviceapi.*Service.pre*(..)))) or
                                 (execution(public * com.arte.statistic.sdmx.srm..serviceapi.*Service.*(..)) and not (execution(public * com.arte.statistic.sdmx.srm..serviceapi.*Service.retrieve*(..)) or execution(public * com.arte.statistic.sdmx.srm..serviceapi.*Service.find*(..))))" />
+        
+        <!-- Pointcut for transactional -->
         <aop:pointcut id="serviceFacadePointCut" expression="execution(public * org.siemac.metamac.srm..*Facade.*(..)) or execution(public * com.arte.statistic.sdmx.srm..*Facade.*(..))" />
-        <aop:pointcut id="doMapperPointCut" expression="execution(public * org.siemac.metamac.srm..mapper.*2DoMapper.*(..)) or execution(public * com.arte.statistic.sdmx.srm..mapper.*2DoMapper.*(..))" />
-
-        <!-- Repeating the expression, since I can't find a way to refer to the other pointcuts. -->
+        
+        <!-- Pointcut for disable flushing -->
+        <aop:pointcut id="doMapperPointCut" expression="execution(public * org.siemac.metamac.srm..mapper.*2DoMapper.*(..)) or execution(public * com.arte.statistic.sdmx.srm..mapper.*2DoMapper.*(..)) or execution(public * com.arte.statistic.sdmx.srm..*Repository.findIfExistAPreviousVersion(..))" />
+ 
+        <!-- Pointcut for the advice of jpa eager flush -->
         <aop:pointcut id="updatingServiceFacade"
             expression="(execution(public * org.siemac.metamac.srm..*Facade.*(..)) and not (execution(public * org.siemac.metamac.srm..*Facade.retrieve*(..)) or execution(public * org.siemac.metamac.srm..*Facade.find*(..)))) or
                         (execution(public * com.arte.statistic.sdmx.srm..service.*Facade.*(..)) and not (execution(public * com.arte.statistic.sdmx.srm..service.*Facade.retrieve*(..)) or execution(public * com.arte.statistic.sdmx.srm..service.*Facade.find*(..))))" />
 
+		<!-- Pointcut for requires new transaction -->
+        <aop:pointcut id="serviceImportPointCut" expression="execution(public * com.arte.statistic.sdmx.srm..serviceapi.*Service.import*(..)) and not execution(public * com.arte.statistic.sdmx.srm..serviceapi.ImportationService.*(..))" />
+        
         <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="txAdviceCore" order="1" />
         <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="serviceContextStoreAdvice" order="2" />
         <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="errorHandlingAdvice" order="3" />
         <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="hibernateErrorHandlingAdvice" order="4" />
         <aop:advisor pointcut-ref="updatingServiceFacade" advice-ref="jpaInterceptorFlushEagerCore" order="5" />
-
+        <aop:advisor pointcut-ref="serviceImportPointCut" advice-ref="requiresNewTxAdvice" order="6" />
 
         <!-- Flushing interceptor -->
         <aop:aspect id="flushing" ref="flushingHandlingAdvice">

@@ -170,17 +170,23 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
 
     @Override
     public void dimensionJaxbToDoExtension(ServiceContext ctx, DimensionType source, Dimension previous, Dimension target) throws MetamacException {
-        target.setSpecialDimensionType(previous.getSpecialDimensionType());
+        if (previous != null) {
+            target.setSpecialDimensionType(previous.getSpecialDimensionType());
+        }
     }
 
     @Override
     public void measureDimensionJaxbToDoExtension(ServiceContext ctx, MeasureDimensionType source, MeasureDimension previous, MeasureDimension target) throws MetamacException {
-        target.setSpecialDimensionType(previous.getSpecialDimensionType());
+        if (previous != null) {
+            target.setSpecialDimensionType(previous.getSpecialDimensionType());
+        }
     }
 
     @Override
     public void timeDimensionJaxbToDoExtension(ServiceContext ctx, TimeDimensionType source, TimeDimension previous, TimeDimension target) throws MetamacException {
-        target.setSpecialDimensionType(previous.getSpecialDimensionType());
+        if (previous != null) {
+            target.setSpecialDimensionType(previous.getSpecialDimensionType());
+        }
     }
 
     @Override
@@ -190,13 +196,16 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
 
     @Override
     public void dataAttributeJaxbToDoExtension(ServiceContext ctx, AttributeType source, DataAttribute previous, DataAttribute target) throws MetamacException {
-        target.setSpecialAttributeType(previous.getSpecialAttributeType());
+        if (previous != null) {
+            target.setSpecialAttributeType(previous.getSpecialAttributeType());
+        }
     }
 
     @Override
     public void reportingYearStartDayJaxbToDoExtension(ServiceContext ctx, ReportingYearStartDayType source, ReportingYearStartDay previous, ReportingYearStartDay target) throws MetamacException {
-        target.setSpecialAttributeType(previous.getSpecialAttributeType());
-        // Meta-data in previous version -> Nothing to extends
+        if (previous != null) {
+            target.setSpecialAttributeType(previous.getSpecialAttributeType());
+        }
     }
 
     /**************************************************************************
