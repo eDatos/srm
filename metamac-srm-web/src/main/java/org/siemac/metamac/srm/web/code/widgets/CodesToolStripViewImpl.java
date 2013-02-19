@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.code.widgets;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.code.utils.CodesToolStripButtonEnum;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
-import org.siemac.metamac.web.common.client.widgets.RadioToolStripButton;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -22,6 +21,7 @@ public class CodesToolStripViewImpl implements CodesToolStripPresenterWidget.Cod
 
     private CustomToolStripButton codelistFamiliesButton;
     private CustomToolStripButton codelistsButton;
+    private CustomToolStripButton codesButton;
     private CustomToolStripButton variableFamiliesButton;
     private CustomToolStripButton variablesButton;
 
@@ -33,28 +33,34 @@ public class CodesToolStripViewImpl implements CodesToolStripPresenterWidget.Cod
         toolStrip.setHeight(25);
         toolStrip.setAlign(Alignment.LEFT);
 
-        codelistFamiliesButton = new RadioToolStripButton(MetamacSrmWeb.getConstants().codelistFamilies());
+        codelistFamiliesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().codelistFamilies());
         codelistFamiliesButton.setID(CodesToolStripButtonEnum.CODELIST_FAMILIES.getValue());
         codelistFamiliesButton.setActionType(SelectionType.RADIO);
         codelistFamiliesButton.setRadioGroup(RADIO_GROUP);
 
-        codelistsButton = new RadioToolStripButton(MetamacSrmWeb.getConstants().codelists());
+        codelistsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().codelists());
         codelistsButton.setID(CodesToolStripButtonEnum.CODELISTS.getValue());
         codelistsButton.setActionType(SelectionType.RADIO);
         codelistsButton.setRadioGroup(RADIO_GROUP);
 
-        variableFamiliesButton = new RadioToolStripButton(MetamacSrmWeb.getConstants().variableFamilies());
+        codesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().codes());
+        codesButton.setID(CodesToolStripButtonEnum.CODES.getValue());
+        codesButton.setActionType(SelectionType.RADIO);
+        codesButton.setRadioGroup(RADIO_GROUP);
+
+        variableFamiliesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().variableFamilies());
         variableFamiliesButton.setID(CodesToolStripButtonEnum.VARIABLE_FAMILIES.getValue());
         variableFamiliesButton.setActionType(SelectionType.RADIO);
         variableFamiliesButton.setRadioGroup(RADIO_GROUP);
 
-        variablesButton = new RadioToolStripButton(MetamacSrmWeb.getConstants().variables());
+        variablesButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().variables());
         variablesButton.setID(CodesToolStripButtonEnum.VARIABLES.getValue());
         variablesButton.setActionType(SelectionType.RADIO);
         variablesButton.setRadioGroup(RADIO_GROUP);
 
         toolStrip.addButton(codelistFamiliesButton);
         toolStrip.addButton(codelistsButton);
+        toolStrip.addButton(codesButton);
         toolStrip.addButton(variableFamiliesButton);
         toolStrip.addButton(variablesButton);
     }
@@ -98,6 +104,11 @@ public class CodesToolStripViewImpl implements CodesToolStripPresenterWidget.Cod
     @Override
     public HasClickHandlers getCodelistsButton() {
         return codelistsButton;
+    }
+
+    @Override
+    public HasClickHandlers getCodesButton() {
+        return codesButton;
     }
 
     @Override

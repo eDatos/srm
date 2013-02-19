@@ -20,6 +20,7 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
 
         HasClickHandlers getCodelistFamiliesButton();
         HasClickHandlers getCodelistsButton();
+        HasClickHandlers getCodesButton();
         HasClickHandlers getVariableFamiliesButton();
         HasClickHandlers getVariablesButton();
 
@@ -49,6 +50,14 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
             @Override
             public void onClick(ClickEvent event) {
                 placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistListPlaceRequest());
+            }
+        }));
+
+        registerHandler(getView().getCodesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
             }
         }));
 
