@@ -98,7 +98,9 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load concept schemes
-        retrieveConceptSchemesLastVersion();
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+        conceptSchemeWebCriteria.setIsLastVersion(true);
+        retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, conceptSchemeWebCriteria);
         // Clear search section
         getView().clearSearchSection();
     }
@@ -136,7 +138,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveConceptSchemesLastVersion();
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
         });
     }
@@ -148,12 +150,12 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorDelete()), MessageTypeEnum.ERROR);
-                retrieveConceptSchemesLastVersion();
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
             @Override
             public void onWaitSuccess(DeleteConceptSchemesResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveConceptSchemesLastVersion();
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
         });
     }
@@ -165,12 +167,12 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
-                retrieveConceptSchemesLastVersion();
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
             @Override
             public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
                 ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveConceptSchemesLastVersion();
+                retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, null);
             }
         });
     }
@@ -195,11 +197,5 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
                 getView().setOperations(result);
             }
         });
-    }
-
-    private void retrieveConceptSchemesLastVersion() {
-        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
-        conceptSchemeWebCriteria.setIsLastVersion(true);
-        retrieveConceptSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, conceptSchemeWebCriteria);
     }
 }
