@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction;
@@ -105,6 +106,7 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
         SetTitleEvent.fire(this, getConstants().codelistFamily());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
+        codesToolStripPresenterWidget.selectCodesMenuButton(CodesToolStripButtonEnum.CODELIST_FAMILIES);
     }
 
     @Override

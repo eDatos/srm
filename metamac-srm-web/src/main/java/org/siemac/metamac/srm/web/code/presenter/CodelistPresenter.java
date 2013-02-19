@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodesToolStripPresenterWidget;
@@ -166,6 +167,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
         SetTitleEvent.fire(this, getConstants().codelist());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
+        codesToolStripPresenterWidget.selectCodesMenuButton(CodesToolStripButtonEnum.CODELISTS);
     }
 
     @Override

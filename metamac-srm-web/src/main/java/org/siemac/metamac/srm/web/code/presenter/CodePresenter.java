@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodesToolStripPresenterWidget;
@@ -116,6 +117,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
         SetTitleEvent.fire(this, MetamacSrmWeb.getConstants().code());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
+        codesToolStripPresenterWidget.selectCodesMenuButton(CodesToolStripButtonEnum.CODES);
     }
 
     @Override
