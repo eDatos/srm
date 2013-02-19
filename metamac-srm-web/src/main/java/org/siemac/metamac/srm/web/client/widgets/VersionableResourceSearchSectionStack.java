@@ -15,7 +15,6 @@ import org.siemac.metamac.web.common.client.widgets.BaseSearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 
@@ -64,6 +63,8 @@ public abstract class VersionableResourceSearchSectionStack extends BaseSearchSe
 
     protected void clearAdvancedSearchSection() {
         advancedSearchForm.clearValues();
+        // Search last versions by default
+        ((BooleanSelectItem) advancedSearchForm.getItem(VersionableResourceDS.IS_LAST_VERSION)).setBooleanValue(true);
         advancedSearchForm.hide();
     }
 
@@ -93,8 +94,7 @@ public abstract class VersionableResourceSearchSectionStack extends BaseSearchSe
         versionableResourceWebCriteria.setExternalPublicationDate(advancedSearchForm.getValue(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE) != null ? (Date) advancedSearchForm
                 .getValue(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE) : null);
         versionableResourceWebCriteria.setExternalPublicationUser(advancedSearchForm.getValueAsString(VersionableResourceDS.EXTERNAL_PUBLICATION_USER));
-        versionableResourceWebCriteria.setIsLastVersion(advancedSearchForm.getValue(VersionableResourceDS.IS_LAST_VERSION) != null ? (Boolean) advancedSearchForm
-                .getValue(VersionableResourceDS.IS_LAST_VERSION) : null);
+        versionableResourceWebCriteria.setIsLastVersion(((BooleanSelectItem) advancedSearchForm.getItem(VersionableResourceDS.IS_LAST_VERSION)).getBooleanValue());
         return versionableResourceWebCriteria;
     }
 
@@ -175,7 +175,8 @@ public abstract class VersionableResourceSearchSectionStack extends BaseSearchSe
         TextItem internalPublicationUser = new TextItem(VersionableResourceDS.INTERNAL_PUBLICATION_USER, getConstants().lifeCycleInternalPublicationUser());
         CustomDateItem externalPublicationDate = new CustomDateItem(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
         TextItem externalPublicationUser = new TextItem(VersionableResourceDS.EXTERNAL_PUBLICATION_USER, getConstants().lifeCycleExternalPublicationUser());
-        CustomCheckboxItem isLastVersion = new CustomCheckboxItem(VersionableResourceDS.IS_LAST_VERSION, getConstants().maintainableArtefactIsLastVersion());
+        BooleanSelectItem isLastVersion = new BooleanSelectItem(VersionableResourceDS.IS_LAST_VERSION, getConstants().maintainableArtefactIsLastVersion());
+        isLastVersion.setBooleanValue(true);
         CustomButtonItem searchItem = new CustomButtonItem(ADVANCED_SEARCH_ITEM_NAME, MetamacWebCommon.getConstants().search());
         searchItem.setColSpan(4);
         searchItem.addClickHandler(new ClickHandler() {
