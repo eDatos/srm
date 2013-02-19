@@ -87,7 +87,7 @@
         <common:Name xml:lang="es">name-organisation2 en Español</common:Name>
         <common:Description xml:lang="es">description-organisation2 en Español</common:Description>
         <common:Description xml:lang="en">description-organisation2 in English</common:Description>
-        <structure:Contact id="code-vgb">
+        <structure:Contact id="code-contact01">
             <common:Name xml:lang="en">name-contact01 in English</common:Name>
             <common:Name xml:lang="es">name-contact01 en Español</common:Name>
             <structure:Department xml:lang="es">organisationUnit-contact01 en Español</structure:Department>
@@ -99,7 +99,7 @@
             <structure:Telephone>telephone-contact01</structure:Telephone>
             <structure:Fax>fax-contact01</structure:Fax>
         </structure:Contact>
-        <structure:Contact id="code-6sb">
+        <structure:Contact id="code-contact02">
             <common:Name xml:lang="es">name-contact02 en Español</common:Name>
             <common:Name xml:lang="en">name-contact02 in English</common:Name>
             <structure:Department xml:lang="en">organisationUnit-contact02 in English</structure:Department>
