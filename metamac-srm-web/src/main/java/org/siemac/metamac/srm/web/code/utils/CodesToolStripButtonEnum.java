@@ -1,0 +1,19 @@
+package org.siemac.metamac.srm.web.code.utils;
+
+import com.smartgwt.client.types.ValueEnum;
+
+public enum CodesToolStripButtonEnum implements ValueEnum {
+
+    CODELIST_FAMILIES("cl_fam_button"), CODELISTS("cl_button"), CODES("codes-button"), VARIABLE_FAMILIES("var_fam_button"), VARIABLES("var_button");
+
+    private String value;
+
+    CodesToolStripButtonEnum(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String getValue() {
+        return this.value;
+    }
+}

@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableFamiliesAction;
@@ -109,6 +110,7 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
 
         SetTitleEvent.fire(this, getConstants().variableFamilies());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CODELISTS);
+        codesToolStripPresenterWidget.selectCodesMenuButton(CodesToolStripButtonEnum.VARIABLE_FAMILIES);
     }
 
     @Override

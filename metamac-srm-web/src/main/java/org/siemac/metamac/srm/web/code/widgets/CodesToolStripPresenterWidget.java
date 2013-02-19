@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesToolStripButtonEnum;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
@@ -21,6 +22,8 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
         HasClickHandlers getCodelistsButton();
         HasClickHandlers getVariableFamiliesButton();
         HasClickHandlers getVariablesButton();
+
+        void selectButton(CodesToolStripButtonEnum button);
     }
 
     @Inject
@@ -64,5 +67,9 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
                 placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariableListPlaceRequest());
             }
         }));
+    }
+
+    public void selectCodesMenuButton(CodesToolStripButtonEnum codesToolStripButton) {
+        getView().selectButton(codesToolStripButton);
     }
 }
