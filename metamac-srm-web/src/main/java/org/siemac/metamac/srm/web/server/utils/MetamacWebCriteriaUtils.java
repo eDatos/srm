@@ -35,52 +35,59 @@ public class MetamacWebCriteriaUtils {
     public static MetamacCriteriaRestriction getConceptSchemeCriteriaRestriction(ConceptSchemeWebCriteria criteria) {
         MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
 
-        // General criteria
+        if (criteria != null) {
 
-        MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
-            conceptSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
-        }
-        conjunctionRestriction.getRestrictions().add(conceptSchemeCriteriaDisjuction);
+            // General criteria
 
-        // Specific criteria
+            MetamacCriteriaDisjunctionRestriction conceptSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                conceptSchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+            }
+            conjunctionRestriction.getRestrictions().add(conceptSchemeCriteriaDisjuction);
 
-        if (StringUtils.isNotBlank(criteria.getCode())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getName())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getUrn())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getDescription())) {
-            // TODO
-        }
-        if (criteria.getProcStatus() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
-        }
-        if (criteria.getInternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getExternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getIsLastVersion() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            // Specific criteria
+
+            if (StringUtils.isNotBlank(criteria.getCode())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getUrn())) {
+                conjunctionRestriction.getRestrictions()
+                        .add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getDescription())) {
+                // TODO
+            }
+            if (criteria.getProcStatus() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
+            }
+            if (criteria.getInternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getExternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getIsLastVersion() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            }
+
         }
         return conjunctionRestriction;
     }
@@ -119,62 +126,66 @@ public class MetamacWebCriteriaUtils {
     public static MetamacCriteriaRestriction getCodelistCriteriaRestriction(CodelistWebCriteria criteria) {
         MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
 
-        // General criteria
+        if (criteria != null) {
 
-        MetamacCriteriaDisjunctionRestriction codelistCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
-            codelistCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
-            codelistCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
-            codelistCriteriaDisjuction.getRestrictions()
-                    .add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
-        }
-        conjunctionRestriction.getRestrictions().add(codelistCriteriaDisjuction);
+            // General criteria
 
-        // Specific criteria
+            MetamacCriteriaDisjunctionRestriction codelistCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                codelistCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                codelistCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                codelistCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+            }
+            conjunctionRestriction.getRestrictions().add(codelistCriteriaDisjuction);
 
-        if (StringUtils.isNotBlank(criteria.getCodelistFamilyUrn())) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODELIST_FAMILY_URN.name(), criteria.getCodelistFamilyUrn(), OperationType.EQ));
-        }
-        if (criteria.getAccessType() != null) {
-            // TODO
-        }
-        if (criteria.getReplaceToCodelistUrns() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getCode())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getName())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getUrn())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getDescription())) {
-            // TODO
-        }
-        if (criteria.getProcStatus() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
-        }
-        if (criteria.getInternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getExternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getIsLastVersion() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            // Specific criteria
+
+            if (StringUtils.isNotBlank(criteria.getCodelistFamilyUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODELIST_FAMILY_URN.name(), criteria.getCodelistFamilyUrn(), OperationType.EQ));
+            }
+            if (criteria.getAccessType() != null) {
+                // TODO
+            }
+            if (criteria.getReplaceToCodelistUrns() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getCode())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getUrn())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getDescription())) {
+                // TODO
+            }
+            if (criteria.getProcStatus() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
+            }
+            if (criteria.getInternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getExternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getIsLastVersion() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            }
+
         }
         return conjunctionRestriction;
     }
@@ -214,52 +225,59 @@ public class MetamacWebCriteriaUtils {
     public static MetamacCriteriaRestriction getCategorySchemeCriteriaRestriction(CategorySchemeWebCriteria criteria) {
         MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
 
-        // General criteria
+        if (criteria != null) {
 
-        MetamacCriteriaDisjunctionRestriction categorySchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
-            categorySchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
-            categorySchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
-            categorySchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
-        }
-        conjunctionRestriction.getRestrictions().add(categorySchemeCriteriaDisjuction);
+            // General criteria
 
-        // Specific criteria
+            MetamacCriteriaDisjunctionRestriction categorySchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                categorySchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                categorySchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                categorySchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+            }
+            conjunctionRestriction.getRestrictions().add(categorySchemeCriteriaDisjuction);
 
-        if (StringUtils.isNotBlank(criteria.getCode())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getName())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getUrn())) {
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getDescription())) {
-            // TODO
-        }
-        if (criteria.getProcStatus() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
-        }
-        if (criteria.getInternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getExternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getIsLastVersion() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            // Specific criteria
+
+            if (StringUtils.isNotBlank(criteria.getCode())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getDescription())) {
+                // TODO
+            }
+            if (criteria.getProcStatus() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
+            }
+            if (criteria.getInternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getExternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getIsLastVersion() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            }
+
         }
         return conjunctionRestriction;
     }
@@ -298,55 +316,59 @@ public class MetamacWebCriteriaUtils {
     public static MetamacCriteriaRestriction getDataStructureDefinitionCriteriaRestriction(DataStructureDefinitionWebCriteria criteria) {
         MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
 
-        // General criteria
+        if (criteria != null) {
 
-        MetamacCriteriaDisjunctionRestriction dsdCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
-            dsdCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
-            dsdCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
-            dsdCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
-        }
-        conjunctionRestriction.getRestrictions().add(dsdCriteriaDisjuction);
+            // General criteria
 
-        // Specific criteria
+            MetamacCriteriaDisjunctionRestriction dsdCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                dsdCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                dsdCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                dsdCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+            }
+            conjunctionRestriction.getRestrictions().add(dsdCriteriaDisjuction);
 
-        if (StringUtils.isNotBlank(criteria.getCode())) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getName())) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getUrn())) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getDescription())) {
-            // TODO
-        }
-        if (criteria.getProcStatus() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
-        }
-        if (criteria.getInternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getExternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getIsLastVersion() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            // Specific criteria
+
+            if (StringUtils.isNotBlank(criteria.getCode())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getDescription())) {
+                // TODO
+            }
+            if (criteria.getProcStatus() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
+            }
+            if (criteria.getInternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getExternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getIsLastVersion() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            }
+
         }
         return conjunctionRestriction;
     }
@@ -358,59 +380,63 @@ public class MetamacWebCriteriaUtils {
     public static MetamacCriteriaRestriction getOrganisationSchemeCriteriaRestriction(OrganisationSchemeWebCriteria criteria) {
         MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
 
-        // General criteria
+        if (criteria != null) {
 
-        MetamacCriteriaDisjunctionRestriction organisationSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-        if (criteria != null && StringUtils.isNotBlank(criteria.getCriteria())) {
-            organisationSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
-            organisationSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
-            organisationSchemeCriteriaDisjuction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
-        }
-        conjunctionRestriction.getRestrictions().add(organisationSchemeCriteriaDisjuction);
+            // General criteria
 
-        // Specific criteria
+            MetamacCriteriaDisjunctionRestriction organisationSchemeCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                organisationSchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                organisationSchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                organisationSchemeCriteriaDisjuction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+            }
+            conjunctionRestriction.getRestrictions().add(organisationSchemeCriteriaDisjuction);
 
-        if (criteria.getType() != null) {
-            conjunctionRestriction.getRestrictions()
-                    .add(new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.TYPE.name(), criteria.getType(), OperationType.EQ));
-        }
-        if (StringUtils.isNotBlank(criteria.getCode())) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getName())) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getUrn())) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
-        }
-        if (StringUtils.isNotBlank(criteria.getDescription())) {
-            // TODO
-        }
-        if (criteria.getProcStatus() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
-        }
-        if (criteria.getInternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getExternalPublicationDate() != null) {
-            // TODO
-        }
-        if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
-            // TODO
-        }
-        if (criteria.getIsLastVersion() != null) {
-            conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            // Specific criteria
+
+            if (criteria.getType() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.TYPE.name(), criteria.getType(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getCode())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getDescription())) {
+                // TODO
+            }
+            if (criteria.getProcStatus() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
+            }
+            if (criteria.getInternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getExternalPublicationDate() != null) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
+                // TODO
+            }
+            if (criteria.getIsLastVersion() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            }
+
         }
         return conjunctionRestriction;
     }
