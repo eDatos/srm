@@ -60,7 +60,6 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         super();
         panel = new VLayout();
         panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
 
         //
         // CATEGORIES HIERARCHY
@@ -82,8 +81,12 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         createViewForm();
         createEditionForm();
 
-        panel.addMember(categoriesListGridLayout);
-        panel.addMember(mainFormLayout);
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(categoriesListGridLayout);
+        subPanel.addMember(mainFormLayout);
+
+        panel.addMember(subPanel);
     }
 
     @Override
@@ -95,6 +98,19 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     @Override
     public Widget asWidget() {
         return panel;
+    }
+
+    @Override
+    public void setInSlot(Object slot, Widget content) {
+        if (slot == CategoryPresenter.TYPE_SetContextAreaContentCategoriesToolBar) {
+            if (content != null) {
+                panel.addMember(content, 0);
+            }
+        } else {
+            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
+            // Who knows, maybe the parent class knows what to do with this slot.
+            super.setInSlot(slot, content);
+        }
     }
 
     @Override

@@ -8,7 +8,9 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.web.category.enums.CategoriesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.category.view.handlers.CategoryUiHandlers;
+import org.siemac.metamac.srm.web.category.widgets.presenter.CategoriesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -56,11 +58,13 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView, CategoryPresenter.CategoryProxy> implements CategoryUiHandlers {
 
-    private final DispatchAsync dispatcher;
-    private final PlaceManager  placeManager;
+    private final DispatchAsync                dispatcher;
+    private final PlaceManager                 placeManager;
 
-    private String              categorySchemeUrn;
-    private CategoryMetamacDto  categoryMetamacDto;
+    private String                             categorySchemeUrn;
+    private CategoryMetamacDto                 categoryMetamacDto;
+
+    private CategoriesToolStripPresenterWidget categoriesToolStripPresenterWidget;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -80,13 +84,17 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentcategory = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentcategory          = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentCategoriesToolBar = new Object();
 
     @Inject
-    public CategoryPresenter(EventBus eventBus, CategoryView view, CategoryProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+    public CategoryPresenter(EventBus eventBus, CategoryView view, CategoryProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager,
+            CategoriesToolStripPresenterWidget categoriesToolStripPresenterWidget) {
         super(eventBus, view, proxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
+        this.categoriesToolStripPresenterWidget = categoriesToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -98,8 +106,12 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentCategoriesToolBar, categoriesToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, MetamacSrmWeb.getConstants().category());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CATEGORIES);
+        categoriesToolStripPresenterWidget.selectCategoriesMenuButton(CategoriesToolStripButtonEnum.CATEGORIES);
     }
 
     @Override
