@@ -470,7 +470,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
         // The categories must be externally published
-        CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria(criteria, categorySchemeUrn);
+        CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria(criteria);
+        categoryWebCriteria.setItemSchemeUrn(categorySchemeUrn);
         categoryWebCriteria.setIsExternallyPublished(true);
         dispatcher.execute(new GetCategoriesAction(firstResult, maxResults, categoryWebCriteria), new WaitingAsyncCallback<GetCategoriesResult>() {
 
