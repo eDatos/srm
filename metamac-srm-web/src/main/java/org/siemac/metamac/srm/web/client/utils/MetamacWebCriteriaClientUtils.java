@@ -43,8 +43,8 @@ public class MetamacWebCriteriaClientUtils {
 
     // CODES
 
-    public static CodelistWebCriteria getCodelistWebCriteriaForLastVersion() {
-        return (CodelistWebCriteria) getVersionableResourceWebCriteriaForLastVersion(new CodelistWebCriteria());
+    public static CodelistWebCriteria addLastVersionConditionToCodelistWebCriteria(CodelistWebCriteria codelistWebCriteria) {
+        return (CodelistWebCriteria) getVersionableResourceWebCriteriaForLastVersion(codelistWebCriteria);
     }
 
     public static CodelistWebCriteria getCodelistWebCriteriaForCodelistsThatCanBeReplaced() {
@@ -53,8 +53,8 @@ public class MetamacWebCriteriaClientUtils {
         return codelistWebCriteria;
     }
 
-    public static CodeWebCriteria getCodeWebCriteriaForLastVersion() {
-        return (CodeWebCriteria) getItemWebCriteriaForLastVersion(new CodeWebCriteria());
+    public static CodeWebCriteria addLastVersionConditionToCodeWebCriteria(CodeWebCriteria codeWebCriteria) {
+        return (CodeWebCriteria) getItemWebCriteriaForLastVersion(codeWebCriteria);
     }
 
     // ORGANISATIONS

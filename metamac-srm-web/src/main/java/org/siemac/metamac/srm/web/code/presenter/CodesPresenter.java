@@ -94,7 +94,7 @@ public class CodesPresenter extends Presenter<CodesPresenter.CodesView, CodesPre
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load concept schemes
-        retrieveCodes(ITEM_LIST_FIRST_RESULT, ITEM_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.getCodeWebCriteriaForLastVersion());
+        retrieveCodes(ITEM_LIST_FIRST_RESULT, ITEM_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.addLastVersionConditionToCodeWebCriteria(new CodeWebCriteria()));
         // Clear search section
         getView().clearSearchSection();
     }
