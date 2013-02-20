@@ -1,8 +1,10 @@
 package org.siemac.metamac.srm.web.client.gin;
 
+import org.siemac.metamac.srm.web.category.presenter.CategoriesPresenter;
 import org.siemac.metamac.srm.web.category.presenter.CategoryPresenter;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemeListPresenter;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
+import org.siemac.metamac.srm.web.category.view.CategoriesViewImpl;
 import org.siemac.metamac.srm.web.category.view.CategorySchemeListViewImpl;
 import org.siemac.metamac.srm.web.category.view.CategorySchemeViewImpl;
 import org.siemac.metamac.srm.web.category.view.CategoryViewImpl;
@@ -138,6 +140,7 @@ public class ClientModule extends AbstractPresenterModule {
                 CategorySchemeListPresenter.CategorySchemeListProxy.class);
         bindPresenter(CategorySchemePresenter.class, CategorySchemePresenter.CategorySchemeView.class, CategorySchemeViewImpl.class, CategorySchemePresenter.CategorySchemeProxy.class);
         bindPresenter(CategoryPresenter.class, CategoryPresenter.CategoryView.class, CategoryViewImpl.class, CategoryPresenter.CategoryProxy.class);
+        bindPresenter(CategoriesPresenter.class, CategoriesPresenter.CategoriesView.class, CategoriesViewImpl.class, CategoriesPresenter.CategoriesProxy.class);
 
         // Codes
         bindPresenter(CodelistListPresenter.class, CodelistListPresenter.CodelistListView.class, CodelistListViewImpl.class, CodelistListPresenter.CodelistListProxy.class);

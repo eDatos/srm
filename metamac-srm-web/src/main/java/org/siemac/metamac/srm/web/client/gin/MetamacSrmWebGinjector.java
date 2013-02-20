@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client.gin;
 
+import org.siemac.metamac.srm.web.category.presenter.CategoriesPresenter;
 import org.siemac.metamac.srm.web.category.presenter.CategoryPresenter;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemeListPresenter;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
@@ -80,6 +81,7 @@ public interface MetamacSrmWebGinjector extends Ginjector {
     AsyncProvider<CategorySchemeListPresenter> getCategorySchemeListPresenter();
     AsyncProvider<CategorySchemePresenter> getCategorySchemePresenter();
     AsyncProvider<CategoryPresenter> getCategoryPresenter();
+    AsyncProvider<CategoriesPresenter> getCategoriesPresenter();
 
     // Codes
     AsyncProvider<CodelistListPresenter> getCodelistListPresenter();

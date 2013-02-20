@@ -170,6 +170,13 @@ public class PlaceRequestUtils {
         return getParamFromUrl(placeManager, NameTokens.categoryPage, PlaceRequestParams.categoryParamId);
     }
 
+    public static List<PlaceRequest> buildAbsoluteCategoriesPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.categoriesPage));
+        return placeRequestHierarchy;
+    }
+
     public static PlaceRequest buildRelativeCategoryPlaceRequest(String categoryUrn) {
         String identifier = UrnUtils.removePrefix(categoryUrn);
         String[] splitIdentifier = identifier.split(CATEGORY_IDENTIFIER_SPLITTER_BY_VERSION_REG_EXP);

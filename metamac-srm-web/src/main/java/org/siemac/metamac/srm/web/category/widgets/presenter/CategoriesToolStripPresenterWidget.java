@@ -46,7 +46,7 @@ public class CategoriesToolStripPresenterWidget extends PresenterWidget<Categori
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCategoriesPlaceRequest());
             }
         }));
     }
