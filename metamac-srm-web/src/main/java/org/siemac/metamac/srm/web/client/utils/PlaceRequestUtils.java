@@ -208,6 +208,13 @@ public class PlaceRequestUtils {
 
     // Codes
 
+    public static List<PlaceRequest> buildAbsoluteCodesPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.codesPage));
+        return placeRequestHierarchy;
+    }
+
     public static String getCodeParamFromUrl(PlaceManager placeManager) {
         return getParamFromUrl(placeManager, NameTokens.codePage, PlaceRequestParams.codeParamId);
     }
@@ -216,6 +223,15 @@ public class PlaceRequestUtils {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(codeUrn));
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.codePage).with(PlaceRequestParams.codeParamId, splitUrn[splitUrn.length - 1]);
         return placeRequest;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteCodePlaceRequest(String codelistUrn, String codeUrn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteCodelistListPlaceRequest();
+        PlaceRequest codelistPlace = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistUrn);
+        PlaceRequest codePlace = buildRelativeCodePlaceRequest(codeUrn);
+        placeRequests.add(codelistPlace);
+        placeRequests.add(codePlace);
+        return placeRequests;
     }
 
     // Codelist families
