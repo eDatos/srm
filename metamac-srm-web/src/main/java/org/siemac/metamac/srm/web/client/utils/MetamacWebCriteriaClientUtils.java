@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.utils;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
@@ -28,6 +29,10 @@ public class MetamacWebCriteriaClientUtils {
 
     public static CategorySchemeWebCriteria getCategorySchemeWebCriteriaForLastVersion() {
         return (CategorySchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(new CategorySchemeWebCriteria());
+    }
+
+    public static CategoryWebCriteria getCategoryWebCriteriaForLastVersion() {
+        return (CategoryWebCriteria) getItemWebCriteriaFormLastVersion(new CategoryWebCriteria());
     }
 
     public static CodelistWebCriteria getCodelistWebCriteriaForLastVersion() {
