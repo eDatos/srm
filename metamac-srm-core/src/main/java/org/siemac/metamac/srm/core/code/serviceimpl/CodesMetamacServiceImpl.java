@@ -463,12 +463,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public List<CodeMetamac> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn) throws MetamacException {
-        // Retrieve
-        List<Code> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn);
-
-        // Typecast
-        List<CodeMetamac> codesMetamac = codesToCodeMetamac(codes);
-        return codesMetamac;
+        // TODO pendiente consulta eficiente
+        return null;
+        // // Retrieve
+        // List<Code> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn);
+        //
+        // // Typecast
+        // List<CodeMetamac> codesMetamac = codesToCodeMetamac(codes);
+        // return codesMetamac;
     }
 
     // ------------------------------------------------------------------------------------
