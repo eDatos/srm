@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
@@ -442,7 +443,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
         // The categories must be externally published
         CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria(criteria);
-        categorySchemeWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        categorySchemeWebCriteria = MetamacWebCriteriaClientUtils.addCategorisationConditionToCategorySchemeWebCriteria(categorySchemeWebCriteria);
         dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
 
             @Override
@@ -461,7 +462,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         // The categories must be externally published
         CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria(criteria);
         categoryWebCriteria.setItemSchemeUrn(categorySchemeUrn);
-        categoryWebCriteria.setIsExternallyPublished(true);
+        categoryWebCriteria = MetamacWebCriteriaClientUtils.addCategorisationConditionToCategoryWebCriteria(categoryWebCriteria);
         dispatcher.execute(new GetCategoriesAction(firstResult, maxResults, categoryWebCriteria), new WaitingAsyncCallback<GetCategoriesResult>() {
 
             @Override

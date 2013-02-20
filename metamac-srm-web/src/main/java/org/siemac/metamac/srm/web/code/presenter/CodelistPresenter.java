@@ -652,7 +652,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
         // The categories must be externally published
         CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria(criteria);
-        categorySchemeWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        categorySchemeWebCriteria = MetamacWebCriteriaClientUtils.addCategorisationConditionToCategorySchemeWebCriteria(categorySchemeWebCriteria);
         dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
 
             @Override
@@ -671,7 +671,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         // The categories must be externally published
         CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria(criteria);
         categoryWebCriteria.setItemSchemeUrn(categorySchemeUrn);
-        categoryWebCriteria.setIsExternallyPublished(true);
+        categoryWebCriteria = MetamacWebCriteriaClientUtils.addCategorisationConditionToCategoryWebCriteria(categoryWebCriteria);
         dispatcher.execute(new GetCategoriesAction(firstResult, maxResults, categoryWebCriteria), new WaitingAsyncCallback<GetCategoriesResult>() {
 
             @Override
