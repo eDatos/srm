@@ -18,6 +18,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @Component
 public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
@@ -69,7 +71,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
             return null;
         }
         // following method will call toCodelist(CodelistVersionMetamac source, Codelist target) method, thank to callback
-        return (Codelist) codesDo2JaxbSdmxMapper.codeListDoToJaxb(source, codesDo2JaxbCallback);
+        return (Codelist) codesDo2JaxbSdmxMapper.codelistDoToJaxb(source, codesDo2JaxbCallback);
     }
 
     @Override
@@ -91,7 +93,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         target.setFamily(toItem(source.getFamily()));
         target.setVariable(toItem(source.getVariable()));
         target.setAccessType(toAccessType(source.getAccessType()));
-        target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode()); // TODO rest DefaultOrderVisualisation
+        // target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode()); // TODO rest DefaultOrderVisualisation
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
@@ -149,6 +151,16 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         }
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(toCodeSelfLink(source).getHref());
+        }
+    }
+
+    @Override
+    public void toCode(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target) {
+        if (source == null) {
+            return;
+        }
+        if (SrmRestInternalUtils.uriMustBeSelfLink(itemSchemeVersion.getMaintainableArtefact())) {
+            target.setUri(toCodeLink(itemSchemeVersion, source));
         }
     }
 
@@ -239,6 +251,11 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
     }
     private String toCodeLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
+    }
+    private String toCodeLink(ItemSchemeVersion itemSchemeVersion, ItemResult item) {
+        String link = toItemsLink(toSubpathItemSchemes(), toSubpathItems(), itemSchemeVersion);
+        link = RestUtils.createLink(link, item.getCode());
+        return link;
     }
 
     private String toSubpathItemSchemes() {

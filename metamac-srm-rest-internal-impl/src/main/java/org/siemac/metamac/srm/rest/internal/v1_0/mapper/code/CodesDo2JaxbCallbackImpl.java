@@ -8,9 +8,11 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @org.springframework.stereotype.Component("codesDo2JaxbRestInternalCallbackMetamac")
 public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
@@ -29,10 +31,20 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
     }
 
     @Override
-    public CodeType createCodeJaxb(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
+    public CodeType createCodeJaxb(ItemResult source) {
         // when retrieve Codelist, only return SDMX metadata
         CodeType target = new CodeType();
         return target;
+    }
+
+    @Override
+    public CodeType createCodeJaxb(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
+        throw new IllegalArgumentException("createCodelistsJaxb not supported");
+    }
+
+    @Override
+    public void fillCodeJaxb(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target) {
+        codesDo2RestMapperV10.toCode(source, itemSchemeVersion, target);
     }
 
     @Override

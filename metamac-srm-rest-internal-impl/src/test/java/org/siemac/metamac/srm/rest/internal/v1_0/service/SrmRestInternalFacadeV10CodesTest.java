@@ -27,6 +27,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -56,9 +57,13 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+
 public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10BaseTest {
 
     private CodesMetamacService codesService;
+    private CodeRepository      codeRepository;
 
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
@@ -595,12 +600,30 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         });
     }
 
+    private void mockFindCodesByNativeSqlQuery() throws MetamacException {
+        when(codeRepository.findCodesByCodelistByNativeSqlQuery(any(Long.class), any(Boolean.class))).thenAnswer(new Answer<List<ItemResult>>() {
+
+            @Override
+            public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
+                // any
+                ItemResult code1 = CodesDoMocks.mockCodeResult("code1", null);
+                ItemResult code2 = CodesDoMocks.mockCodeResult("code2", null);
+                ItemResult code2A = CodesDoMocks.mockCodeResult("code2A", code2);
+                ItemResult code2B = CodesDoMocks.mockCodeResult("code2B", code2);
+                return Arrays.asList(code1, code2, code2A, code2B);
+            };
+        });
+    }
+
     @Override
     protected void resetMocks() throws MetamacException {
         codesService = applicationContext.getBean(CodesMetamacService.class);
+        codeRepository = applicationContext.getBean(CodeRepository.class);
         reset(codesService);
+        reset(codeRepository);
         mockFindCodelistsByCondition();
         mockFindCodesByCondition();
+        mockFindCodesByNativeSqlQuery();
     }
 
     @Override

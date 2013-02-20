@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.code.mapper;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
@@ -45,8 +44,6 @@ import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesDo2RestMapperV
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-rest-internal/applicationContext-test.xml"})
@@ -119,7 +116,7 @@ public class CodesDo2RestMapperTest {
         assertEqualsInternationalString("es", "shortName-resourceID1v01.123 en Español", "en", "shortName-resourceID1v01.123 in English", target.getShortName());
         assertTrue(target.isIsRecommended());
         assertEquals(AccessType.PUBLIC, target.getAccessType());
-        assertEquals("defaultOrderVisualisation1", target.getDefaultOrderVisualisation());
+        // assertEquals("defaultOrderVisualisation1", target.getDefaultOrderVisualisation()); // TODO order visualisation
         assertEquals("family1", target.getFamily().getId());
         assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getTitle());
         assertEquals("variable1", target.getVariable().getId());
@@ -141,35 +138,6 @@ public class CodesDo2RestMapperTest {
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CODES, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/codes", target.getChildLinks().getChildLinks().get(0).getHref());
-
-        // Codes (SDMX type)
-        assertEquals(4, target.getCodes().size());
-        int i = 0;
-        {
-            CodeType code = target.getCodes().get(i++);
-            assertTrue(code instanceof CodeType);
-            assertFalse(code instanceof Code);
-            assertEquals("urn:code1", code.getUrn());
-        }
-        {
-            CodeType code = target.getCodes().get(i++);
-            assertTrue(code instanceof CodeType);
-            assertFalse(code instanceof Code);
-            assertEquals("urn:code2", code.getUrn());
-        }
-        {
-            CodeType code = target.getCodes().get(i++);
-            assertTrue(code instanceof CodeType);
-            assertFalse(code instanceof Code);
-            assertEquals("urn:code2A", code.getUrn());
-        }
-        {
-            CodeType code = target.getCodes().get(i++);
-            assertTrue(code instanceof CodeType);
-            assertFalse(code instanceof Code);
-            assertEquals("urn:code2B", code.getUrn());
-        }
-        assertEquals(i, target.getCodes().size());
     }
 
     @Test

@@ -39,4 +39,8 @@
         <constructor-arg value="org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService" />
     </bean>    
     
+    <bean id="codeRepository" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository" />
+    </bean>     
+    
 </beans>
