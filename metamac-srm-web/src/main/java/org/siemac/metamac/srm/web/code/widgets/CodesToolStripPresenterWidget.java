@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.code.utils.CodesToolStripButtonEnum;
+import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;

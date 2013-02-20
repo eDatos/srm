@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.code.utils;
+package org.siemac.metamac.srm.web.code.enums;
 
 import com.smartgwt.client.types.ValueEnum;
 
