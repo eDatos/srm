@@ -17,7 +17,7 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableListUiHandlers;
-import org.siemac.metamac.srm.web.code.widgets.CodesToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;

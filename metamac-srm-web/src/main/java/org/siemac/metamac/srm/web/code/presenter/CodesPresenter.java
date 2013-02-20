@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.CodesUiHandlers;
-import org.siemac.metamac.srm.web.code.widgets.CodesToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.GetCodesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;

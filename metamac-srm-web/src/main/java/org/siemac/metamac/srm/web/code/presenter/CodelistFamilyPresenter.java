@@ -18,7 +18,7 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyUiHandlers;
-import org.siemac.metamac.srm.web.code.widgets.CodesToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyAction;

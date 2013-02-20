@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.code.widgets;
+package org.siemac.metamac.srm.web.code.widgets.presenter;
 
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;

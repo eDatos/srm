@@ -1,7 +1,8 @@
-package org.siemac.metamac.srm.web.code.widgets;
+package org.siemac.metamac.srm.web.code.widgets.view;
 
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
+import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 
 import com.google.gwt.user.client.ui.Widget;
