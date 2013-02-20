@@ -11,7 +11,7 @@ import org.siemac.metamac.srm.web.code.presenter.CodesPresenter;
 import org.siemac.metamac.srm.web.code.view.handlers.CodesUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodeSearchSectionStack;
 import org.siemac.metamac.srm.web.shared.code.GetCodesResult;
-import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
+import org.siemac.metamac.web.common.client.widgets.PaginatedListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -31,7 +31,7 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
 
     private CodeSearchSectionStack searchSectionStack;
 
-    private PaginatedCheckListGrid codesListGrid;
+    private PaginatedListGrid      codesListGrid;
 
     @Inject
     public CodesViewImpl() {
@@ -42,7 +42,7 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
 
         // Codes
 
-        codesListGrid = new PaginatedCheckListGrid(CodesPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        codesListGrid = new PaginatedListGrid(CodesPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -58,11 +58,9 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
-                if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String codelistUrn = ((CodeRecord) event.getRecord()).getCodelistUrn();
-                    String codeUrn = ((CodeRecord) event.getRecord()).getUrn();
-                    getUiHandlers().goToCode(codelistUrn, codeUrn);
-                }
+                String codelistUrn = ((CodeRecord) event.getRecord()).getCodelistUrn();
+                String codeUrn = ((CodeRecord) event.getRecord()).getUrn();
+                getUiHandlers().goToCode(codelistUrn, codeUrn);
             }
         });
 
