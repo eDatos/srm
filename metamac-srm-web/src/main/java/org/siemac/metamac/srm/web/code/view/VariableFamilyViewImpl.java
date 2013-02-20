@@ -78,7 +78,6 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         super();
         panel = new VLayout();
         panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
 
         //
         // VARIABLE FAMILY
@@ -158,8 +157,12 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         variablesLayout.addMember(toolStrip);
         variablesLayout.addMember(variableListGrid);
 
-        panel.addMember(mainFormLayout);
-        panel.addMember(variablesLayout);
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(mainFormLayout);
+        subPanel.addMember(variablesLayout);
+
+        panel.addMember(subPanel);
 
     }
 

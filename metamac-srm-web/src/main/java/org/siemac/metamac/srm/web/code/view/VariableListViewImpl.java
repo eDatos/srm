@@ -152,13 +152,6 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
         ListGridField fieldName = new ListGridField(VariableDS.NAME, getConstants().nameableArtefactName());
         variablesList.getListGrid().setFields(fieldCode, fieldName);
 
-        panel = new VLayout();
-        panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
-        panel.addMember(toolStrip);
-        panel.addMember(searchSectionStack);
-        panel.addMember(variablesList);
-
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().variableDeleteConfirmationTitle(), getConstants().variableDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
@@ -169,6 +162,17 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
                 deleteConfirmationWindow.hide();
             }
         });
+
+        panel = new VLayout();
+        panel.setHeight100();
+
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(toolStrip);
+        subPanel.addMember(searchSectionStack);
+        subPanel.addMember(variablesList);
+
+        panel.addMember(subPanel);
     }
 
     @Override

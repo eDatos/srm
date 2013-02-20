@@ -151,13 +151,6 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
         ListGridField urn = new ListGridField(CodelistFamilyDS.URN, getConstants().identifiableArtefactUrn());
         codelistFamilyList.getListGrid().setFields(fieldCode, fieldName, urn);
 
-        panel = new VLayout();
-        panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
-        panel.addMember(toolStrip);
-        panel.addMember(searchSectionStack);
-        panel.addMember(codelistFamilyList);
-
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistFamilyDeleteConfirmationTitle(), getConstants().codelistFamilyDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
@@ -168,6 +161,16 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
                 deleteConfirmationWindow.hide();
             }
         });
+
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(toolStrip);
+        subPanel.addMember(searchSectionStack);
+        subPanel.addMember(codelistFamilyList);
+
+        panel = new VLayout();
+        panel.setHeight100();
+        panel.addMember(subPanel);
     }
 
     @Override

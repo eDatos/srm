@@ -70,7 +70,6 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         super();
         panel = new VLayout();
         panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
 
         //
         // VARIABLE ELEMENT
@@ -93,8 +92,12 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         variableElementOperationsLayout = new VariableElementOperationLayout(getConstants().variableElementOperations());
         variableElementOperationsLayout.setMargin(15);
 
-        panel.addMember(mainFormLayout);
-        panel.addMember(variableElementOperationsLayout);
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(mainFormLayout);
+        subPanel.addMember(variableElementOperationsLayout);
+
+        panel.addMember(subPanel);
     }
 
     @Override

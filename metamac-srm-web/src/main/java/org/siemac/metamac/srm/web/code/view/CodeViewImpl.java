@@ -75,7 +75,6 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         super();
         panel = new VLayout();
         panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
 
         //
         // CODES HIERARCHY
@@ -144,8 +143,12 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         createViewForm();
         createEditionForm();
 
-        panel.addMember(codesListGridLayout);
-        panel.addMember(mainFormLayout);
+        VLayout subpanel = new VLayout();
+        subpanel.setOverflow(Overflow.SCROLL);
+        subpanel.addMember(codesListGridLayout);
+        subpanel.addMember(mainFormLayout);
+
+        panel.addMember(subpanel);
     }
 
     @Override

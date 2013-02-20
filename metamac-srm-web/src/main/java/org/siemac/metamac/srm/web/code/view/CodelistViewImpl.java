@@ -118,7 +118,6 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         super();
         panel = new VLayout();
         panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
 
         //
         // CODELIST VERSIONS
@@ -164,10 +163,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         categorisationsPanel = new CodelistCategorisationsPanel();
 
-        panel.addMember(versionsSectionStack);
-        panel.addMember(mainFormLayout);
-        panel.addMember(codesLayout);
-        panel.addMember(categorisationsPanel);
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(versionsSectionStack);
+        subPanel.addMember(mainFormLayout);
+        subPanel.addMember(codesLayout);
+        subPanel.addMember(categorisationsPanel);
+
+        panel.addMember(subPanel);
     }
 
     private void bindMainFormLayoutEvents() {

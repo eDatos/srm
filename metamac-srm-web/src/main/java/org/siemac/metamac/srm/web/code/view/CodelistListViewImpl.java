@@ -159,13 +159,6 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         ListGridField status = new ListGridField(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         codelistsList.getListGrid().setFields(fieldCode, fieldName, status);
 
-        panel = new VLayout();
-        panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
-        panel.addMember(toolStrip);
-        panel.addMember(searchSectionStack);
-        panel.addMember(codelistsList);
-
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistDeleteConfirmationTitle(), getConstants().codelistDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
@@ -176,6 +169,17 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
                 deleteConfirmationWindow.hide();
             }
         });
+
+        panel = new VLayout();
+        panel.setHeight100();
+
+        VLayout subpanel = new VLayout();
+        subpanel.setOverflow(Overflow.SCROLL);
+        subpanel.addMember(toolStrip);
+        subpanel.addMember(searchSectionStack);
+        subpanel.addMember(codelistsList);
+
+        panel.addMember(subpanel);
     }
 
     @Override

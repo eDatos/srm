@@ -72,11 +72,14 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
         ListGridField urn = new ListGridField(CodeDS.URN, getConstants().identifiableArtefactUrn());
         codesListGrid.getListGrid().setFields(fieldCode, fieldName, urn);
 
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(searchSectionStack);
+        subPanel.addMember(codesListGrid);
+
         panel = new VLayout();
         panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
-        panel.addMember(searchSectionStack);
-        panel.addMember(codesListGrid);
+        panel.addMember(subPanel);
     }
 
     @Override

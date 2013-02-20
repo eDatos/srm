@@ -151,13 +151,6 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
         ListGridField urn = new ListGridField(VariableFamilyDS.URN, getConstants().identifiableArtefactUrn());
         variableFamilyList.getListGrid().setFields(fieldCode, fieldName, urn);
 
-        panel = new VLayout();
-        panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
-        panel.addMember(toolStrip);
-        panel.addMember(searchSectionStack);
-        panel.addMember(variableFamilyList);
-
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().variableFamilyDeleteConfirmationTitle(), getConstants().variableFamilyDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
@@ -168,6 +161,17 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
                 deleteConfirmationWindow.hide();
             }
         });
+
+        panel = new VLayout();
+        panel.setHeight100();
+
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(toolStrip);
+        subPanel.addMember(searchSectionStack);
+        subPanel.addMember(variableFamilyList);
+
+        panel.addMember(subPanel);
     }
 
     @Override

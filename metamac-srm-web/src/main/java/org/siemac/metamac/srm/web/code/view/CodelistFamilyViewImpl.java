@@ -78,7 +78,6 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         super();
         panel = new VLayout();
         panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
 
         //
         // CODELIST FAMILY
@@ -158,8 +157,12 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         codelistsLayout.addMember(toolStrip);
         codelistsLayout.addMember(codelistListGrid);
 
-        panel.addMember(mainFormLayout);
-        panel.addMember(codelistsLayout);
+        VLayout subpanel = new VLayout();
+        subpanel.setOverflow(Overflow.SCROLL);
+        subpanel.addMember(mainFormLayout);
+        subpanel.addMember(codelistsLayout);
+
+        panel.addMember(subpanel);
     }
 
     private void bindMainFormLayoutEvents() {

@@ -109,7 +109,6 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         super();
         panel = new VLayout();
         panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
 
         //
         // VARIABLE
@@ -199,8 +198,12 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         layout.addMember(variableElementListGrid);
         layout.addMember(variableElementOperationsLayout);
 
-        panel.addMember(mainFormLayout);
-        panel.addMember(layout);
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(mainFormLayout);
+        subPanel.addMember(layout);
+
+        panel.addMember(subPanel);
     }
 
     @Override
