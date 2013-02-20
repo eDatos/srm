@@ -222,7 +222,7 @@ public class MetamacWebCriteriaUtils {
                 // TODO
             }
             if (StringUtils.isNotBlank(criteria.getShortName())) {
-                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getName(), OperationType.ILIKE));
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getShortName(), OperationType.ILIKE));
             }
             if (criteria.getIsLastVersion() != null) {
                 conjunctionRestriction.getRestrictions().add(
