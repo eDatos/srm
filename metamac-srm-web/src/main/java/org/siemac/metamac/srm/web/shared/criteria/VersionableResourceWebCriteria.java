@@ -4,14 +4,10 @@ import java.util.Date;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
-public class VersionableResourceWebCriteria extends MetamacWebCriteria {
+public class VersionableResourceWebCriteria extends NameableArtefactWebCriteria {
 
     private static final long serialVersionUID = 1L;
 
-    private String            code;
-    private String            name;
-    private String            urn;
-    private String            description;
     private ProcStatusEnum    procStatus;
     private Date              internalPublicationDate;
     private String            internalPublicationUser;
@@ -24,22 +20,6 @@ public class VersionableResourceWebCriteria extends MetamacWebCriteria {
 
     public VersionableResourceWebCriteria(String criteria) {
         super(criteria);
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getUrn() {
-        return urn;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public ProcStatusEnum getProcStatus() {
@@ -64,22 +44,6 @@ public class VersionableResourceWebCriteria extends MetamacWebCriteria {
 
     public Boolean getIsLastVersion() {
         return isLastVersion;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setUrn(String urn) {
-        this.urn = urn;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public void setProcStatus(ProcStatusEnum procStatus) {
