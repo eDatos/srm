@@ -134,8 +134,8 @@ public class CodelistSearchSectionStack extends VersionableResourceSearchSection
     }
 
     private CodelistWebCriteria getCodelistWebCriteriaForReplaceTo(String criteria) {
-        CodelistWebCriteria codelistWebCriteria = MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForCodelistsThatCanBeReplaced();
-        codelistWebCriteria.setCriteria(criteria);
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+        codelistWebCriteria = MetamacWebCriteriaClientUtils.addCanBeReplacedConditionToCodelistWebCriteria(codelistWebCriteria);
         return codelistWebCriteria;
     }
 }

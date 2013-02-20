@@ -434,8 +434,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     @Override
     public void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria) {
         // The codelists that can be replaced should be externally published
-        CodelistWebCriteria codelistWebCriteria = MetamacWebCriteriaClientUtils.getCodelistWebCriteriaForCodelistsThatCanBeReplaced();
-        codelistWebCriteria.setCriteria(criteria);
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+        codelistWebCriteria = MetamacWebCriteriaClientUtils.addCanBeReplacedConditionToCodelistWebCriteria(codelistWebCriteria);
         dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
 
             @Override

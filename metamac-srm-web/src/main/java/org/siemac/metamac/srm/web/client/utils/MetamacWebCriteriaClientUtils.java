@@ -47,8 +47,7 @@ public class MetamacWebCriteriaClientUtils {
         return (CodelistWebCriteria) getVersionableResourceWebCriteriaForLastVersion(codelistWebCriteria);
     }
 
-    public static CodelistWebCriteria getCodelistWebCriteriaForCodelistsThatCanBeReplaced() {
-        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+    public static CodelistWebCriteria addCanBeReplacedConditionToCodelistWebCriteria(CodelistWebCriteria codelistWebCriteria) {
         codelistWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
         return codelistWebCriteria;
     }
