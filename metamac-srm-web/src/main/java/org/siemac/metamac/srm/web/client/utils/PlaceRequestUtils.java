@@ -35,7 +35,7 @@ public class PlaceRequestUtils {
 
     public static List<PlaceRequest> buildAbsoluteDsdPlaceRequest(String urn) {
         List<PlaceRequest> placeRequests = buildAbsoluteDsdListPlaceRequest();
-        PlaceRequest dsdPlace = PlaceRequestUtils.buildRelativeDsdPlaceRequest(urn);
+        PlaceRequest dsdPlace = buildRelativeDsdPlaceRequest(urn);
         placeRequests.add(dsdPlace);
         return placeRequests;
     }
@@ -64,7 +64,7 @@ public class PlaceRequestUtils {
 
     public static List<PlaceRequest> buildAbsoluteConceptSchemePlaceRequest(String urn) {
         List<PlaceRequest> placeRequests = buildAbsoluteConceptSchemeListPlaceRequest();
-        PlaceRequest conceptSchemePlace = PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn);
+        PlaceRequest conceptSchemePlace = buildRelativeConceptSchemePlaceRequest(urn);
         placeRequests.add(conceptSchemePlace);
         return placeRequests;
     }
@@ -110,7 +110,7 @@ public class PlaceRequestUtils {
 
     public static List<PlaceRequest> buildAbsoluteOrganisationSchemePlaceRequest(String urn, OrganisationSchemeTypeEnum type) {
         List<PlaceRequest> placeRequests = buildAbsoluteOrganisationSchemeListPlaceRequest();
-        PlaceRequest organisationSchemePlace = PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(urn, type);
+        PlaceRequest organisationSchemePlace = buildRelativeOrganisationSchemePlaceRequest(urn, type);
         placeRequests.add(organisationSchemePlace);
         return placeRequests;
     }
@@ -151,7 +151,7 @@ public class PlaceRequestUtils {
 
     public static List<PlaceRequest> buildAbsoluteCategorySchemePlaceRequest(String urn) {
         List<PlaceRequest> placeRequests = buildAbsoluteCategorySchemeListPlaceRequest();
-        PlaceRequest categorySchemePlace = PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn);
+        PlaceRequest categorySchemePlace = buildRelativeCategorySchemePlaceRequest(urn);
         placeRequests.add(categorySchemePlace);
         return placeRequests;
     }
@@ -201,7 +201,7 @@ public class PlaceRequestUtils {
 
     public static List<PlaceRequest> buildAbsoluteCodelistPlaceRequest(String urn) {
         List<PlaceRequest> placeRequests = buildAbsoluteCodelistListPlaceRequest();
-        PlaceRequest codelistPlace = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn);
+        PlaceRequest codelistPlace = buildRelativeCodelistPlaceRequest(urn);
         placeRequests.add(codelistPlace);
         return placeRequests;
     }
@@ -227,7 +227,7 @@ public class PlaceRequestUtils {
 
     public static List<PlaceRequest> buildAbsoluteCodePlaceRequest(String codelistUrn, String codeUrn) {
         List<PlaceRequest> placeRequests = buildAbsoluteCodelistListPlaceRequest();
-        PlaceRequest codelistPlace = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistUrn);
+        PlaceRequest codelistPlace = buildRelativeCodelistPlaceRequest(codelistUrn);
         PlaceRequest codePlace = buildRelativeCodePlaceRequest(codeUrn);
         placeRequests.add(codelistPlace);
         placeRequests.add(codePlace);
@@ -290,7 +290,7 @@ public class PlaceRequestUtils {
 
     public static List<PlaceRequest> buildAbsoluteVariablePlaceRequest(String code) {
         List<PlaceRequest> placeRequests = buildAbsoluteVariableListPlaceRequest();
-        PlaceRequest variablePlace = PlaceRequestUtils.buildRelativeVariablePlaceRequest(code);
+        PlaceRequest variablePlace = buildRelativeVariablePlaceRequest(code);
         placeRequests.add(variablePlace);
         return placeRequests;
     }
