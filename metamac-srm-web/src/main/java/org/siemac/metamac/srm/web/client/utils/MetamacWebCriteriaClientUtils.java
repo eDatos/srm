@@ -58,14 +58,14 @@ public class MetamacWebCriteriaClientUtils {
 
     // ORGANISATIONS
 
-    public static OrganisationSchemeWebCriteria getOrganisationSchemeWebCriteriaForLastVersion() {
-        return (OrganisationSchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(new OrganisationSchemeWebCriteria());
+    public static OrganisationSchemeWebCriteria addLastVersionConditionToOrganisationSchemeWebCriteria(OrganisationSchemeWebCriteria organisationSchemeWebCriteria) {
+        return (OrganisationSchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(organisationSchemeWebCriteria);
     }
 
     // DSD
 
-    public static DataStructureDefinitionWebCriteria getDataStructureDefinitionWebCriteriaForLastVersion() {
-        return (DataStructureDefinitionWebCriteria) getVersionableResourceWebCriteriaForLastVersion(new DataStructureDefinitionWebCriteria());
+    public static DataStructureDefinitionWebCriteria addLastVersionConditionToDataStructureDefinitionWebCriteria(DataStructureDefinitionWebCriteria dataStructureDefinitionWebCriteria) {
+        return (DataStructureDefinitionWebCriteria) getVersionableResourceWebCriteriaForLastVersion(dataStructureDefinitionWebCriteria);
     }
 
     // GENERAL
