@@ -7,11 +7,12 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CodeRecord extends ListGridRecord {
 
-    public CodeRecord(Long id, String code, String name, String urn, String description, CodeMetamacDto codeDto) {
+    public CodeRecord(Long id, String code, String name, String urn, String codelistUrn, String description, CodeMetamacDto codeDto) {
         setId(id);
         setCode(code);
         setName(name);
         setUrn(urn);
+        setCodelistUrn(codelistUrn);
         setDescription(description);
         setCodeDto(codeDto);
     }
@@ -26,6 +27,10 @@ public class CodeRecord extends ListGridRecord {
 
     public void setUrn(String value) {
         setAttribute(CodeDS.URN, value);
+    }
+
+    public void setCodelistUrn(String value) {
+        setAttribute(CodeDS.ITEM_SCHEME_URN, value);
     }
 
     public void setDescription(String desc) {
@@ -54,6 +59,10 @@ public class CodeRecord extends ListGridRecord {
 
     public String getUrn() {
         return getAttribute(CodeDS.URN);
+    }
+
+    public String getCodelistUrn() {
+        return getAttribute(CodeDS.ITEM_SCHEME_URN);
     }
 
     public String getDescription() {

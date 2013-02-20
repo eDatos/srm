@@ -34,7 +34,8 @@ public class RecordUtils {
     // CODES
 
     public static CodeRecord getCodeRecord(CodeMetamacDto codeDto) {
-        CodeRecord record = new CodeRecord(codeDto.getId(), codeDto.getCode(), getLocalisedString(codeDto.getName()), codeDto.getUrn(), getLocalisedString(codeDto.getDescription()), codeDto);
+        CodeRecord record = new CodeRecord(codeDto.getId(), codeDto.getCode(), getLocalisedString(codeDto.getName()), codeDto.getUrn(), codeDto.getItemSchemeVersionUrn(),
+                getLocalisedString(codeDto.getDescription()), codeDto);
         return record;
     }
 

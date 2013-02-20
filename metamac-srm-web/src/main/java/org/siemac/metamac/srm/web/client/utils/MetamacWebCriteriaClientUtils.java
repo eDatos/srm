@@ -2,9 +2,11 @@ package org.siemac.metamac.srm.web.client.utils;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ItemWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VersionableResourceWebCriteria;
 
@@ -32,6 +34,10 @@ public class MetamacWebCriteriaClientUtils {
         return (CodelistWebCriteria) getVersionableResourceWebCriteriaForLastVersion(new CodelistWebCriteria());
     }
 
+    public static CodeWebCriteria getCodeWebCriteriaForLastVersion() {
+        return (CodeWebCriteria) getItemWebCriteriaFormLastVersion(new CodeWebCriteria());
+    }
+
     public static OrganisationSchemeWebCriteria getOrganisationSchemeWebCriteriaForLastVersion() {
         return (OrganisationSchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(new OrganisationSchemeWebCriteria());
     }
@@ -43,5 +49,10 @@ public class MetamacWebCriteriaClientUtils {
     public static VersionableResourceWebCriteria getVersionableResourceWebCriteriaForLastVersion(VersionableResourceWebCriteria versionableResourceWebCriteria) {
         versionableResourceWebCriteria.setIsLastVersion(true);
         return versionableResourceWebCriteria;
+    }
+
+    public static ItemWebCriteria getItemWebCriteriaFormLastVersion(ItemWebCriteria itemWebCriteria) {
+        itemWebCriteria.setIsLastVersion(true);
+        return itemWebCriteria;
     }
 }

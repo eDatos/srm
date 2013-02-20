@@ -36,6 +36,7 @@ public class NameTokens {
     // Codes
     public static final String codelistListPage           = "codelists";
     public static final String codelistPage               = "codelist";
+    public static final String codesPage                  = "codes";
     public static final String codePage                   = "code";
     public static final String codelistFamilyListPage     = "codelistFamilies";
     public static final String codelistFamilyPage         = "codelistFamily";

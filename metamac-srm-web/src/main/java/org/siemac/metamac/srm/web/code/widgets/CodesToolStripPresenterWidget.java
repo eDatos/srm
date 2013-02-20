@@ -57,7 +57,7 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodesPlaceRequest());
             }
         }));
 
