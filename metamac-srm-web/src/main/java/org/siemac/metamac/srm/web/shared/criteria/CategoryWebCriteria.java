@@ -1,10 +1,9 @@
 package org.siemac.metamac.srm.web.shared.criteria;
 
-public class CategoryWebCriteria extends MetamacWebCriteria {
+public class CategoryWebCriteria extends ItemWebCriteria {
 
     private static final long serialVersionUID = 1L;
 
-    private String            categorySchemeUrn;
     private Boolean           isExternallyPublished;
 
     public CategoryWebCriteria() {
@@ -12,19 +11,6 @@ public class CategoryWebCriteria extends MetamacWebCriteria {
 
     public CategoryWebCriteria(String criteria) {
         super(criteria);
-    }
-
-    public CategoryWebCriteria(String criteria, String categorySchemeUrn) {
-        super(criteria);
-        this.categorySchemeUrn = categorySchemeUrn;
-    }
-
-    public String getCategorySchemeUrn() {
-        return categorySchemeUrn;
-    }
-
-    public void setCategorySchemeUrn(String categorySchemeUrn) {
-        this.categorySchemeUrn = categorySchemeUrn;
     }
 
     public Boolean getIsExternallyPublished() {

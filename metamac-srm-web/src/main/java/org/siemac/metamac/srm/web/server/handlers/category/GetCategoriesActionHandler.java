@@ -8,13 +8,10 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestric
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.criteria.CategoryMetamacCriteriaOrderEnum;
-import org.siemac.metamac.srm.core.criteria.CategoryMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
@@ -56,14 +53,6 @@ public class GetCategoriesActionHandler extends SecurityActionHandler<GetCategor
 
         // Criteria
         restriction.getRestrictions().add(MetamacWebCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
-
-        // Is externally published
-        if (categoryWebCriteria.getIsExternallyPublished() != null) {
-            MetamacCriteriaPropertyRestriction procStatusRestriction = new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CATEGORY_SCHEME_EXTERNALLY_PUBLISHED.name(),
-                    categoryWebCriteria.getIsExternallyPublished(), OperationType.EQ);
-            restriction.getRestrictions().add(procStatusRestriction);
-        }
-
         criteria.setRestriction(restriction);
 
         // Pagination

@@ -221,12 +221,12 @@ public class MetamacWebCriteriaUtils {
             if (StringUtils.isNotBlank(criteria.getDescription())) {
                 // TODO
             }
-            if (StringUtils.isNotBlank(criteria.getShortName())) {
-                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getShortName(), OperationType.ILIKE));
-            }
             if (criteria.getIsLastVersion() != null) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getShortName())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getShortName(), OperationType.ILIKE));
             }
 
         }
@@ -322,34 +322,56 @@ public class MetamacWebCriteriaUtils {
             }
 
         }
+
         return conjunctionRestriction;
     }
 
-    /**
-     * Returns a {@link MetamacCriteriaDisjunctionRestriction} that compares the criteria with the CODE, NAME and URN of the Category
-     * 
-     * @param criteria
-     * @return
-     */
     public static MetamacCriteriaConjunctionRestriction getCategoryCriteriaRestriction(CategoryWebCriteria criteria) {
-        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-        List<MetamacCriteriaRestriction> restrictions = new ArrayList<MetamacCriteriaRestriction>();
+        MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+
         if (criteria != null) {
+
+            // General criteria
+
             if (StringUtils.isNotBlank(criteria.getCriteria())) {
                 MetamacCriteriaDisjunctionRestriction categoryCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
                 categoryCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
                 categoryCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
                 categoryCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
-                restrictions.add(categoryCriteriaDisjunction);
+                conjunctionRestriction.getRestrictions().add(categoryCriteriaDisjunction);
             }
-            if (StringUtils.isNotBlank(criteria.getCategorySchemeUrn())) {
+
+            // Specific criteria
+
+            if (StringUtils.isNotBlank(criteria.getCode())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getUrn())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getDescription())) {
+                // TODO
+            }
+            if (criteria.getIsLastVersion() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CATEGORY_SCHEME_IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getItemSchemeUrn())) {
                 MetamacCriteriaPropertyRestriction categorySchemePropertyRestriction = new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CATEGORY_SCHEME_URN.name(),
-                        criteria.getCategorySchemeUrn(), OperationType.EQ);
-                restrictions.add(categorySchemePropertyRestriction);
+                        criteria.getItemSchemeUrn(), OperationType.EQ);
+                conjunctionRestriction.getRestrictions().add(categorySchemePropertyRestriction);
+            }
+            if (criteria.getIsExternallyPublished() != null) {
+                MetamacCriteriaPropertyRestriction publishedRestriction = new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CATEGORY_SCHEME_EXTERNALLY_PUBLISHED.name(),
+                        criteria.getIsExternallyPublished(), OperationType.EQ);
+                conjunctionRestriction.getRestrictions().add(publishedRestriction);
             }
         }
-        restriction.getRestrictions().addAll(restrictions);
-        return restriction;
+
+        return conjunctionRestriction;
     }
 
     // -------------------------------------------------------------------------------------------------------------
