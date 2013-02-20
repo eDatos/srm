@@ -13,23 +13,13 @@ import org.siemac.metamac.srm.web.shared.criteria.VersionableResourceWebCriteria
 
 public class MetamacWebCriteriaClientUtils {
 
-    // CODELISTS THAT CAN BE REPLACED
-
-    public static CodelistWebCriteria getCodelistWebCriteriaForCodelistsThatCanBeReplaced() {
-        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
-        codelistWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        return codelistWebCriteria;
-    }
-
-    // CRITERIA TO FIND LAST VERSION RESOURCES
-
-    // Concepts
+    // CONCEPTS
 
     public static ConceptSchemeWebCriteria addLastVersionConditionToConceptSchemeWebCriteria(ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         return (ConceptSchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(conceptSchemeWebCriteria);
     }
 
-    // Categories
+    // CATEGORIES
 
     public static CategorySchemeWebCriteria addLastVersionConditionToCategorySchemeWebCriteria(CategorySchemeWebCriteria categorySchemeWebCriteria) {
         return (CategorySchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(categorySchemeWebCriteria);
@@ -39,22 +29,35 @@ public class MetamacWebCriteriaClientUtils {
         return (CategoryWebCriteria) getItemWebCriteriaForLastVersion(categoryWebCriteria);
     }
 
+    // To create a categorisation, the category must be externally published
     public static CategorySchemeWebCriteria addCategorisationConditionToCategorySchemeWebCriteria(CategorySchemeWebCriteria categorySchemeWebCriteria) {
         categorySchemeWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
         return categorySchemeWebCriteria;
     }
 
-    // Codes
+    // To create a categorisation, the category must be externally published
+    public static CategoryWebCriteria addCategorisationConditionToCategoryWebCriteria(CategoryWebCriteria categoryWebCriteria) {
+        categoryWebCriteria.setIsExternallyPublished(true);
+        return categoryWebCriteria;
+    }
+
+    // CODES
 
     public static CodelistWebCriteria getCodelistWebCriteriaForLastVersion() {
         return (CodelistWebCriteria) getVersionableResourceWebCriteriaForLastVersion(new CodelistWebCriteria());
+    }
+
+    public static CodelistWebCriteria getCodelistWebCriteriaForCodelistsThatCanBeReplaced() {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        return codelistWebCriteria;
     }
 
     public static CodeWebCriteria getCodeWebCriteriaForLastVersion() {
         return (CodeWebCriteria) getItemWebCriteriaForLastVersion(new CodeWebCriteria());
     }
 
-    // Organisations
+    // ORGANISATIONS
 
     public static OrganisationSchemeWebCriteria getOrganisationSchemeWebCriteriaForLastVersion() {
         return (OrganisationSchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(new OrganisationSchemeWebCriteria());
