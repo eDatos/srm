@@ -177,6 +177,15 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    public static List<PlaceRequest> buildAbsoluteCategoryPlaceRequest(String categorySchemeUrn, String categoryUrn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteCategorySchemeListPlaceRequest();
+        PlaceRequest categorySchemePlace = buildRelativeCategorySchemePlaceRequest(categorySchemeUrn);
+        PlaceRequest categoryPlace = buildRelativeCategoryPlaceRequest(categoryUrn);
+        placeRequests.add(categorySchemePlace);
+        placeRequests.add(categoryPlace);
+        return placeRequests;
+    }
+
     // ---------------------------------------------------------------------------
     // CODES
     // ---------------------------------------------------------------------------

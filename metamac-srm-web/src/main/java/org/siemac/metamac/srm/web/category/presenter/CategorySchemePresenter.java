@@ -12,7 +12,9 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.category.enums.CategoriesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeUiHandlers;
+import org.siemac.metamac.srm.web.category.widgets.presenter.CategoriesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -82,10 +84,12 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.CategorySchemeView, CategorySchemePresenter.CategorySchemeProxy> implements CategorySchemeUiHandlers {
 
-    private final DispatchAsync      dispatcher;
-    private final PlaceManager       placeManager;
+    private final DispatchAsync                dispatcher;
+    private final PlaceManager                 placeManager;
 
-    private CategorySchemeMetamacDto categorySchemeMetamacDto;
+    private CategorySchemeMetamacDto           categorySchemeMetamacDto;
+
+    private CategoriesToolStripPresenterWidget categoriesToolStripPresenterWidget;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -112,21 +116,29 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCategoryScheme = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentCategoryScheme    = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentCategoriesToolBar = new Object();
 
     @Inject
-    public CategorySchemePresenter(EventBus eventBus, CategorySchemeView view, CategorySchemeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+    public CategorySchemePresenter(EventBus eventBus, CategorySchemeView view, CategorySchemeProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager,
+            CategoriesToolStripPresenterWidget categoriesToolStripPresenterWidget) {
         super(eventBus, view, proxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
+        this.categoriesToolStripPresenterWidget = categoriesToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentCategoriesToolBar, categoriesToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, getConstants().categoryScheme());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CATEGORIES);
+        categoriesToolStripPresenterWidget.selectCategoriesMenuButton(CategoriesToolStripButtonEnum.CATEGORY_SCHEMES);
     }
 
     @Override

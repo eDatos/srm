@@ -7,7 +7,9 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.web.category.enums.CategoriesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeListUiHandlers;
+import org.siemac.metamac.srm.web.category.widgets.presenter.CategoriesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -54,14 +56,18 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
         implements
             CategorySchemeListUiHandlers {
 
-    public final static int                           SCHEME_LIST_FIRST_RESULT           = 0;
-    public final static int                           SCHEME_LIST_MAX_RESULTS            = 30;
+    public final static int                           SCHEME_LIST_FIRST_RESULT                    = 0;
+    public final static int                           SCHEME_LIST_MAX_RESULTS                     = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
 
+    private CategoriesToolStripPresenterWidget        categoriesToolStripPresenterWidget;
+
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar          = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentCategoriesToolBar = new Object();
 
     @ProxyCodeSplit
     @NameToken(NameTokens.categorySchemeListPage)
@@ -83,10 +89,11 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
     @Inject
     public CategorySchemeListPresenter(EventBus eventBus, CategorySchemeListView categorySchemeListView, CategorySchemeListProxy categorySchemeListProxy, DispatchAsync dispatcher,
-            PlaceManager placeManager) {
+            PlaceManager placeManager, CategoriesToolStripPresenterWidget categoriesToolStripPresenterWidget) {
         super(eventBus, categorySchemeListView, categorySchemeListProxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
+        this.categoriesToolStripPresenterWidget = categoriesToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -107,8 +114,12 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentCategoriesToolBar, categoriesToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, getConstants().categorySchemes());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CATEGORIES);
+        categoriesToolStripPresenterWidget.selectCategoriesMenuButton(CategoriesToolStripButtonEnum.CATEGORY_SCHEMES);
     }
 
     @Override

@@ -158,13 +158,6 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         ListGridField status = new ListGridField(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         categorySchemesList.getListGrid().setFields(fieldCode, fieldName, status);
 
-        panel = new VLayout();
-        panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
-        panel.addMember(toolStrip);
-        panel.addMember(searchSectionStack);
-        panel.addMember(categorySchemesList);
-
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().categorySchemeDeleteConfirmationTitle(), getConstants().categorySchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
@@ -175,11 +168,35 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                 deleteConfirmationWindow.hide();
             }
         });
+
+        panel = new VLayout();
+        panel.setHeight100();
+
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(toolStrip);
+        subPanel.addMember(searchSectionStack);
+        subPanel.addMember(categorySchemesList);
+
+        panel.addMember(subPanel);
     }
 
     @Override
     public Widget asWidget() {
         return panel;
+    }
+
+    @Override
+    public void setInSlot(Object slot, Widget content) {
+        if (slot == CategorySchemeListPresenter.TYPE_SetContextAreaContentCategoriesToolBar) {
+            if (content != null) {
+                panel.addMember(content, 0);
+            }
+        } else {
+            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
+            // Who knows, maybe the parent class knows what to do with this slot.
+            super.setInSlot(slot, content);
+        }
     }
 
     @Override

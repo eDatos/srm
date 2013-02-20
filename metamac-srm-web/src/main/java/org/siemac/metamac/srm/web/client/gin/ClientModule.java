@@ -6,6 +6,8 @@ import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
 import org.siemac.metamac.srm.web.category.view.CategorySchemeListViewImpl;
 import org.siemac.metamac.srm.web.category.view.CategorySchemeViewImpl;
 import org.siemac.metamac.srm.web.category.view.CategoryViewImpl;
+import org.siemac.metamac.srm.web.category.widgets.presenter.CategoriesToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.category.widgets.view.CategoriesToolStripViewImpl;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacPlaceManager;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -94,6 +96,7 @@ public class ClientModule extends AbstractPresenterModule {
 
         // PresenterWidgets
         bindSingletonPresenterWidget(CodesToolStripPresenterWidget.class, CodesToolStripPresenterWidget.CodesToolStripView.class, CodesToolStripViewImpl.class);
+        bindSingletonPresenterWidget(CategoriesToolStripPresenterWidget.class, CategoriesToolStripPresenterWidget.CategoriesToolStripView.class, CategoriesToolStripViewImpl.class);
 
         // Gate keeper
         bind(LoggedInGatekeeper.class).in(Singleton.class);
