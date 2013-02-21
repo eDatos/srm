@@ -468,8 +468,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrn(codelistUrn, locale, orderVisualisationUrn, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-
-        // TODO hacer así?
         Long idOrderVisualisation = null;
         if (orderVisualisationUrn != null) {
             CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);

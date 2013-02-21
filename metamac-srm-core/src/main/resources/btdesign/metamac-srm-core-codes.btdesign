@@ -190,15 +190,15 @@ Application CodesMetamac {
 			hint="idSequence=M_CODELISTS_VERSIONS"
 			
 			"Short name"
-			- @InternationalString shortName nullable cascade="all" databaseColumn="SHORT_NAME_FK";
+			- @InternationalString shortName nullable fetch="lazy" cascade="all" databaseColumn="SHORT_NAME_FK";
 			"Is recommended"
 			Boolean isRecommended nullable;
 			"Access type"
 			- @AccessTypeEnum accessType nullable;
 			"Family"
-			- @CodelistFamily family cascade="none" nullable databaseColumn="CODELIST_FAMILY_FK" <-> codelists;
+			- @CodelistFamily family nullable cascade="none" fetch="lazy" databaseColumn="CODELIST_FAMILY_FK" <-> codelists;
 			"Variable"
-			- @Variable variable cascade="none" nullable databaseColumn="VARIABLE_FK" <-> codelists;
+			- @Variable variable nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> codelists;
 			"TRUE if variable has been updated. As a consequence, variable elements in codes must be removed"
 			Boolean isVariableUpdated nullable transient;
 
@@ -206,13 +206,13 @@ Application CodesMetamac {
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
 
 			"Codelist that replaces this one. Update in this metadata is ignored. Must be updated by replacedToCodelists metadata"
-			- @CodelistVersionMetamac replacedByCodelist nullable cascade="none" databaseColumn="REPLACED_BY_CODELIST_FK"  <-> replaceToCodelists;
+			- @CodelistVersionMetamac replacedByCodelist nullable cascade="none" fetch="lazy" databaseColumn="REPLACED_BY_CODELIST_FK"  <-> replaceToCodelists;
 			"Codelists that are replaced by this one"
 			- Bag<@CodelistVersionMetamac> replaceToCodelists cascade="none" fetch="lazy" <-> replacedByCodelist;
 			"Order visualisations of codelist"
 			- Bag<@CodelistOrderVisualisation> orderVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> codelistVersion;
 			"Default order visualisation"
-			- @CodelistOrderVisualisation defaultOrderVisualisation nullable cascade="none" databaseColumn="DEFAULT_ORDER_VISUALISATION_FK";
+			- @CodelistOrderVisualisation defaultOrderVisualisation nullable cascade="none" fetch="lazy" databaseColumn="DEFAULT_ORDER_VISUALISATION_FK";
 			
 			Repository CodelistVersionMetamacRepository {
 				save;
@@ -229,7 +229,7 @@ Application CodesMetamac {
 			hint="idSequence=M_CODES"
 			
 			"Short name. Only filled if code has not related variable element"
-			- @InternationalString shortName nullable cascade="all" databaseColumn="SHORT_NAME_FK";
+			- @InternationalString shortName nullable cascade="all" fetch="lazy" databaseColumn="SHORT_NAME_FK";
 			"Variable element"
 			- @VariableElement variableElement nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_ELEMENT_FK"  <-> codes;
 			"Order visualisations of code"
@@ -250,7 +250,7 @@ Application CodesMetamac {
 			hint="idSequence=M_CODELIST_ORDER_VISUAL"
 			
 			"Nameable artefact"
-			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
+			- @NameableArtefact nameableArtefact not nullable cascade="all" fetch="lazy" databaseColumn="NAMEABLE_ARTEFACT_FK";
 			"Last update to optimistic locking"
 			DateTimeTZ updateDate nullable;
 			"Codes"
@@ -332,13 +332,13 @@ Application CodesMetamac {
 			"Nameable artefact"
 			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Short name"
-			- @InternationalString shortName not nullable cascade="all" databaseColumn="SHORT_NAME_FK";
+			- @InternationalString shortName not nullable cascade="all" fetch="lazy" databaseColumn="SHORT_NAME_FK";
 			"Date from which the variable is valid"
 			DateTimeTZ validFrom nullable;
 			"Date from which variable is superceded"
 			DateTimeTZ validTo nullable;
 			"Variable that replaces this one. Update in this metadata is ignored. Must be updated by replacedToVariables metadata"
-			- @Variable replacedByVariable nullable cascade="none" databaseColumn="REPLACED_BY_VARIABLE_FK"  <-> replaceToVariables;
+			- @Variable replacedByVariable nullable cascade="none" fetch="lazy" databaseColumn="REPLACED_BY_VARIABLE_FK"  <-> replaceToVariables;
 			"Variables that are replaced by this one"
 			- Bag<@Variable> replaceToVariables cascade="none" fetch="lazy" <-> replacedByVariable;
 			
@@ -372,18 +372,18 @@ Application CodesMetamac {
 			"Nameable artefact"
 			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Short name"
-			- @InternationalString shortName not nullable cascade="all" databaseColumn="SHORT_NAME_FK";
+			- @InternationalString shortName not nullable cascade="all" fetch="lazy" databaseColumn="SHORT_NAME_FK";
 			"Date from which the variable element is valid"
 			DateTimeTZ validFrom nullable;
 			"Date from which variable element is superceded"
 			DateTimeTZ validTo nullable;
 			"Variable element that replaces this one. Update in this metadata is ignored. Must be updated by replacedToVariableElements metadata"
-			- @VariableElement replacedByVariableElement nullable cascade="none" databaseColumn="REPLACED_BY_VAR_ELEMENT_FK"  <-> replaceToVariableElements;
+			- @VariableElement replacedByVariableElement nullable cascade="none" fetch="lazy" databaseColumn="REPLACED_BY_VAR_ELEMENT_FK"  <-> replaceToVariableElements;
 			"Variable elements that are replaced by this one"
 			- Bag<@VariableElement> replaceToVariableElements cascade="none" fetch="lazy" <-> replacedByVariableElement;
 			
 			"Variable"
-			- @Variable variable not nullable cascade="none" databaseColumn="VARIABLE_FK"  <-> variableElements;
+			- @Variable variable not nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK"  <-> variableElements;
 			"Concepts"
 			- Bag<@CodeMetamac> codes cascade="none" fetch="lazy" <-> variableElement;
 			"Last update to optimistic locking"
@@ -407,11 +407,11 @@ Application CodesMetamac {
 			"Operation type"
 			- @VariableElementOperationTypeEnum operationType not nullable;
 			"Sources"
-			- Bag<@VariableElement> sources cascade="none" databaseJoinTable="TB_M_VAR_ELEM_OP_SOURCES" databaseColumn="SOURCE_FK" databaseJoinColumn="OPERATION_FK";
+			- Bag<@VariableElement> sources cascade="none" fetch="lazy" databaseJoinTable="TB_M_VAR_ELEM_OP_SOURCES" databaseColumn="SOURCE_FK" databaseJoinColumn="OPERATION_FK";
 			"Targets"
-			- Bag<@VariableElement> targets cascade="none" databaseJoinTable="TB_M_VAR_ELEM_OP_TARGETS" databaseColumn="TARGET_FK" databaseJoinColumn="OPERATION_FK";
+			- Bag<@VariableElement> targets cascade="none" fetch="lazy" databaseJoinTable="TB_M_VAR_ELEM_OP_TARGETS" databaseColumn="TARGET_FK" databaseJoinColumn="OPERATION_FK";
 			"Variable"
-			- @Variable variable not nullable cascade="none" databaseColumn="VARIABLE_FK" <-> variableElementsOperations;
+			- @Variable variable not nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> variableElementsOperations;
 			
 			Repository VariableElementOperationRepository {
 				save;
