@@ -10,12 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @org.springframework.stereotype.Component("codesDo2JaxbRestInternalCallbackMetamac")
 public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
+
+    @Autowired
+    private CodeRepository        codeRepository;
 
     @Autowired
     private CodesDo2RestMapperV10 codesDo2RestMapperV10;
@@ -55,5 +59,10 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
     @Override
     public CodelistsType createCodelistsJaxb(List<CodelistVersion> source) {
         throw new IllegalArgumentException("createCodelistsJaxb not supported");
+    }
+
+    @Override
+    public List<ItemResult> findCodesByCodelistEfficiently(Long idCodelist) {
+        return codeRepository.findCodesByCodelistByNativeSqlQuery(idCodelist, Boolean.TRUE);
     }
 }

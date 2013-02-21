@@ -227,28 +227,6 @@ public class CodesDo2SoapMapperTest {
         assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getTitle());
         assertEquals("variable1", target.getVariable().getId());
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
-
-        // Codes (Metamac type)
-        assertEquals(4, target.getCodes().size());
-        int i = 0;
-        {
-            Code code = (Code) target.getCodes().get(i++);
-            assertEquals("urn:code1", code.getUrn());
-            assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", code.getShortName());
-        }
-        {
-            Code code = (Code) target.getCodes().get(i++);
-            assertEquals("urn:code2", code.getUrn());
-        }
-        {
-            Code code = (Code) target.getCodes().get(i++);
-            assertEquals("urn:code2A", code.getUrn());
-        }
-        {
-            Code code = (Code) target.getCodes().get(i++);
-            assertEquals("urn:code2B", code.getUrn());
-        }
-        assertEquals(i, target.getCodes().size());
     }
 
     @Test

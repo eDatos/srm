@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.soap.external.v1_0.mapper.base;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
@@ -25,6 +26,21 @@ public class BaseDo2SoapMapperV10Impl implements BaseDo2SoapMapperV10 {
             internationalString.getTexts().add(localisedString);
         }
 
+        return internationalString;
+    }
+
+    @Override
+    public InternationalString toInternationalString(Map<String, String> sources) {
+        if (sources == null || sources.size() == 0) {
+            return null;
+        }
+        InternationalString internationalString = new InternationalString();
+        for (String locale : sources.keySet()) {
+            LocalisedString localisedString = new LocalisedString();
+            localisedString.setLang(locale);
+            localisedString.setValue(sources.get(locale));
+            internationalString.getTexts().add(localisedString);
+        }
         return internationalString;
     }
 

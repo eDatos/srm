@@ -640,6 +640,31 @@
                 LAST_UPDATED_TZ="Europe/London"
             />   
             
+            <TB_ANNOTATIONS
+                ID="991211"
+                CODE="ANNOTATION211"
+                TITLE="title-annotation211"
+                TYPE="type-annotation211"    
+                URL="http://annotation211"
+                UUID="annotation-991211"
+                VERSION="1"
+                TEXT_FK="97"
+                ANNOTABLE_ARTEFACT_FK="99121"
+            />
+            
+            <TB_ANNOTATIONS
+                ID="991212"
+                CODE="ANNOTATION212"
+                TITLE="title-annotation212"
+                TYPE="type-annotation212"    
+                URL="http://annotation212"
+                UUID="annotation-991212"
+                VERSION="1"
+                TEXT_FK="98"
+                ANNOTABLE_ARTEFACT_FK="99121"
+            />
+            
+            
             <!-- CODE02 -->
             <TB_CODES
                 TB_ITEMS="122"
@@ -6402,7 +6427,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="711"
-        LABEL="Nombre corto 2-1"
+        LABEL="Nombre corto variableElement 2-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="71"
@@ -6410,7 +6435,7 @@
 
     <TB_LOCALISED_STRINGS
         ID="712"
-        LABEL="short name 1 2-1"
+        LABEL="short name variableElement 2-1"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="71"
@@ -6444,7 +6469,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="731"
-        LABEL="Nombre corto 2-2"
+        LABEL="Nombre corto variableElement 2-2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="73"
@@ -6452,7 +6477,7 @@
 
     <TB_LOCALISED_STRINGS
         ID="732"
-        LABEL="Short name 2-2"
+        LABEL="Short name variableElement 2-2"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="73"
@@ -6536,7 +6561,7 @@
 
     <TB_LOCALISED_STRINGS
         ID="772"
-        LABEL="short name 1 code2"
+        LABEL="short name code2"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="77"
@@ -6655,7 +6680,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="831"
-        LABEL="nombre corto"
+        LABEL="Nombre corto variableElement 2-3"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="83"
@@ -6798,7 +6823,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="941"
-        LABEL="nombre corto"
+        LABEL="nombre corto 2-1-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="94"
@@ -6836,5 +6861,40 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="96"
-    />                                                                                                  
+    />    
+    
+     <TB_INTERNATIONAL_STRINGS
+        ID="97"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="971"
+        LABEL="Anotación 1 code01"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="97"
+    />                    
+
+    <TB_LOCALISED_STRINGS
+        ID="972"
+        LABEL="Annotation 1 code01"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="97"
+    /> 
+    
+     <TB_INTERNATIONAL_STRINGS
+        ID="98"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="981"
+        LABEL="Anotación 2 code01"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="98"
+    />              
+                                                                                                  
 </dataset>

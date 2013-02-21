@@ -19,13 +19,16 @@ import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilyCodes;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variables;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.soap.external.v1_0.mapper.base.BaseDo2SoapMapperV10Impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @Component
 public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implements CodesDo2SoapMapperV10 {
@@ -152,6 +155,12 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
         target.setIsRecommended(source.getIsRecommended());
         target.setFamily(toItem(source.getFamily()));
         target.setVariable(toItem(source.getVariable()));
+    }
+
+    @Override
+    public void toCode(ItemResult source, ItemSchemeVersion itemSchemeVersion, Code target) {
+        CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) source.getExtensionPoint();
+        target.setShortName(toInternationalString(extensionPoint.getShortName()));
     }
 
     @Override

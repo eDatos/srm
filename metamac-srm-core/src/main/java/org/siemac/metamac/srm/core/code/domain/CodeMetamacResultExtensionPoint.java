@@ -1,11 +1,9 @@
-package org.siemac.metamac.srm.core.code.domain.shared;
+package org.siemac.metamac.srm.core.code.domain;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
-
-public class CodeMetamacResult extends ItemResult {
+public class CodeMetamacResultExtensionPoint {
 
     private final Map<String, String> shortName = new HashMap<String, String>();
 

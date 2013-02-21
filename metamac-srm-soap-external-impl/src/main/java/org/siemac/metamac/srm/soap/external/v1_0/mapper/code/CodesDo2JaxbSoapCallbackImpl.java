@@ -6,6 +6,7 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +21,9 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
 
     @Autowired
     private CodesDo2SoapMapperV10 codesDo2SoapMapperV10;
+
+    @Autowired
+    private CodeMetamacRepository codeRepository;
 
     @Override
     public CodelistType createCodelistJaxb(com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion source) {
@@ -38,7 +42,7 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
 
     @Override
     public CodeType createCodeJaxb(ItemResult source) {
-        return null; // TODO
+        return new org.siemac.metamac.soap.structural_resources.v1_0.domain.Code();
     }
 
     @Override
@@ -48,11 +52,16 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
 
     @Override
     public void fillCodeJaxb(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target) {
-        // TODO
+        codesDo2SoapMapperV10.toCode(source, itemSchemeVersion, (org.siemac.metamac.soap.structural_resources.v1_0.domain.Code) target);
     }
 
     @Override
     public CodelistsType createCodelistsJaxb(List<CodelistVersion> source) {
-        throw new IllegalArgumentException("createCodelistsJaxb not supported");
+        throw new IllegalArgumentException("createCodelistsJaxb unsupported");
+    }
+
+    @Override
+    public List<ItemResult> findCodesByCodelistEfficiently(Long idCodelist) {
+        return codeRepository.findCodesByCodelistByNativeSqlQuery(idCodelist);
     }
 }

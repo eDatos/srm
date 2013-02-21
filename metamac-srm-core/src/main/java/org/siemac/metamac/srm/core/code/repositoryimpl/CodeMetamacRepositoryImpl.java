@@ -8,10 +8,13 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacResult;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 /**
  * Repository implementation for CodeMetamac
@@ -20,13 +23,13 @@ import org.springframework.stereotype.Repository;
 public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Autowired
-    // private CodeRepository codeRepository;
-    // note: this query return null label if locale not exits for a code
-    private final static String NATIVE_SQL_QUERY_CODES_BY_CODELIST_ORDERED = "SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, o.CODE_INDEX as CODE_ORDER FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale LEFT OUTER JOIN TB_M_CODE_ORDER_VISUAL o on o.CODE_FK = i.ID WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND o.CODELIST_VISUALISATION_FK = :codelistVisualisation";
-    private final static String NATIVE_SQL_QUERY_CODES_BY_CODELIST         = "SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
+    private CodeRepository      codeRepository;
 
-    // private final static String NATIVE_SQL_QUERY_CODES_DESCRIPTIONS_BY_CODELIST =
-    // "SELECT a.ID as ANNOTABLE_ARTEFACT_ID, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_ANNOTABLE_ARTEFACTS a left outer join TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.DESCRIPTION_FK WHERE a.ID in (select i.NAMEABLE_ARTEFACT_FK FROM TB_ITEMS i where i.ITEM_SCHEME_VERSION_FK = :codelistVersion)";
+    private final static String NATIVE_SQL_QUERY_CODES_BY_CODELIST_ORDERED                     = "SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, o.CODE_INDEX as CODE_ORDER FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale LEFT OUTER JOIN TB_M_CODE_ORDER_VISUAL o on o.CODE_FK = i.ID WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND o.CODELIST_VISUALISATION_FK = :codelistVisualisation";
+    private final static String NATIVE_SQL_QUERY_CODES_BY_CODELIST                             = "SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
+
+    private final static String NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c LEFT OUTER JOIN TB_ITEMS i on i.ID = c.TB_CODES INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK where c.VARIABLE_ELEMENT_FK is not null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
+    private final static String NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST                  = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c LEFT OUTER JOIN TB_ITEMS i on i.ID = c.TB_CODES LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK where c.VARIABLE_ELEMENT_FK is null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion and c.SHORT_NAME_FK is not null";
 
     public CodeMetamacRepositoryImpl() {
     }
@@ -76,26 +79,42 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    // @SuppressWarnings("rawtypes")
-    public List<CodeMetamacResult> findCodesByCodelistByNativeSqlQuery(Long idCodelist) {
-        // TODO
+    public List<ItemResult> findCodesByCodelistByNativeSqlQuery(Long idCodelist) {
         // Find codes
-        // List<ItemResult> codes = codeRepository.findCodesByCodelistByNativeSqlQuery(idCodelist, Boolean.TRUE);
+        List<ItemResult> codes = codeRepository.findCodesByCodelistByNativeSqlQuery(idCodelist, Boolean.TRUE);
 
+        // Init extension point and index by id
+        Map<Long, ItemResult> mapCodeByItemId = new HashMap<Long, ItemResult>(codes.size());
+        for (ItemResult itemResult : codes) {
+            itemResult.setExtensionPoint(new CodeMetamacResultExtensionPoint());
+            mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
+
+        }
         // Fill short name
-        // List descriptionsResultSql = executeNativeQuerySql(NATIVE_SQL_QUERY_CODES_DESCRIPTIONS_BY_CODELIST, idCodelist);
-        // for (Object shortNameResultSql : descriptionsResultSql) {
-        // Object[] descriptionResultSqlArray = (Object[]) shortNameResultSql;
-        // Long actualAnnotableArtefactId = getLong(descriptionResultSqlArray[0]);
-        // ItemResult target = mapCodeByAnnotableArtefactId.get(actualAnnotableArtefactId);
-        // internationalStringResultSqltoInternationalStringResult(descriptionResultSqlArray, target.getDescription());
-        // }
-        return null;
+        // Try fill from variable element
+        executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
+        // If code has not variable element, try fill with short name in code
+        executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
 
+        return codes;
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void executeQueryCodeShortNameAndUpdateCodeMetamacResult(Long idCodelist, String sqlQuery, Map<Long, ItemResult> mapCodeByItemId) {
+        Query query = getEntityManager().createNativeQuery(sqlQuery);
+        query.setParameter("codelistVersion", idCodelist);
+        List shortNameResultsSql = query.getResultList();
+        for (Object shortNameResultSql : shortNameResultsSql) {
+            Object[] shortNameResultSqlArray = (Object[]) shortNameResultSql;
+            Long actualItemId = getLong(shortNameResultSqlArray[0]);
+            ItemResult target = mapCodeByItemId.get(actualItemId);
+            internationalStringResultSqltoInternationalStringResult(shortNameResultSqlArray, ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).getShortName());
+        }
     }
 
     @SuppressWarnings("rawtypes")
     private List executeQueryFindCodesByCodelistByNativeSqlQuery(Long idCodelist, String locale, Long idCodelistOrderVisualisation) {
+        // note: this query return null label if locale not exits for a code
         String sqlQuery = idCodelistOrderVisualisation != null ? NATIVE_SQL_QUERY_CODES_BY_CODELIST_ORDERED : NATIVE_SQL_QUERY_CODES_BY_CODELIST;
         Query query = getEntityManager().createNativeQuery(sqlQuery);
         query.setParameter("codelistVersion", idCodelist);
@@ -129,6 +148,16 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     private Long getLong(Object source) {
         return source != null ? Long.valueOf(source.toString()) : null;
+    }
+
+    private void internationalStringResultSqltoInternationalStringResult(Object[] source, Map<String, String> target) {
+        int i = 1; // 0 is itemId
+        String locale = getString(source[i++]);
+        if (locale == null) {
+            return;
+        }
+        String label = getString(source[i++]);
+        target.put(locale, label);
     }
 
 }

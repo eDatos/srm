@@ -13,6 +13,9 @@ import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variables;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+
 public interface CodesDo2SoapMapperV10 {
 
     public VariableFamily toVariableFamily(org.siemac.metamac.srm.core.code.domain.VariableFamily source);
@@ -29,4 +32,5 @@ public interface CodesDo2SoapMapperV10 {
     public void toCodelist(CodelistVersionMetamac source, Codelist target);
     public Code toCode(CodeMetamac source);
     public void toCode(CodeMetamac source, Code target);
+    public void toCode(ItemResult source, ItemSchemeVersion itemSchemeVersion, Code target);
 }

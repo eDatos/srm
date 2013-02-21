@@ -242,7 +242,7 @@ Application CodesMetamac {
 				@CodeMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 				List<CodeMetamacVisualisationResult> findCodesVisualisationByCodelistByNativeSqlQuery(Long idCodelist, String locale, Long idCodelistOrderVisualisation);
-				List<CodeMetamacResult> findCodesByCodelistByNativeSqlQuery(Long idCodelist);
+				List<ItemResult> findCodesByCodelistByNativeSqlQuery(Long idCodelist);
 			}
 		}
 		

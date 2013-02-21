@@ -2109,6 +2109,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1);
                 assertEquals(CODELIST_1_V2_CODE_1, code.getUrn());
                 assertEquals("CODE01", code.getCode());
+
                 assertEquals("Nombre codelist-1-v2-code-1", code.getName());
                 assertEquals(Long.valueOf(121), code.getItemIdDatabase());
                 assertEquals(null, code.getParent());
