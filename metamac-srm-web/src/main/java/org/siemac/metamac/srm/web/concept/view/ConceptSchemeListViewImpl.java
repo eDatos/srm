@@ -162,13 +162,6 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         ListGridField status = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         conceptSchemesList.getListGrid().setFields(fieldCode, fieldName, status);
 
-        panel = new VLayout();
-        panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
-        panel.addMember(toolStrip);
-        panel.addMember(searchSectionStack);
-        panel.addMember(conceptSchemesList);
-
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().conceptSchemeDeleteConfirmationTitle(), getConstants().conceptSchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
@@ -179,6 +172,17 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
                 deleteConfirmationWindow.hide();
             }
         });
+
+        panel = new VLayout();
+        panel.setHeight100();
+
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(toolStrip);
+        subPanel.addMember(searchSectionStack);
+        subPanel.addMember(conceptSchemesList);
+
+        panel.addMember(subPanel);
     }
 
     @Override

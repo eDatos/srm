@@ -17,7 +17,9 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.concept.enums.ConceptsToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
+import org.siemac.metamac.srm.web.concept.widgets.presenter.ConceptsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
@@ -77,12 +79,14 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, ConceptPresenter.ConceptProxy> implements ConceptUiHandlers {
 
-    private final DispatchAsync  dispatcher;
-    private final PlaceManager   placeManager;
+    private final DispatchAsync              dispatcher;
+    private final PlaceManager               placeManager;
 
-    private String               conceptSchemeUrn;
+    private String                           conceptSchemeUrn;
 
-    private List<ConceptTypeDto> conceptTypeDtos = null;
+    private ConceptsToolStripPresenterWidget conceptsToolStripPresenterWidget;
+
+    private List<ConceptTypeDto>             conceptTypeDtos = null;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -114,13 +118,17 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentConcept = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentConcept         = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentConceptsToolBar = new Object();
 
     @Inject
-    public ConceptPresenter(EventBus eventBus, ConceptView view, ConceptProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+    public ConceptPresenter(EventBus eventBus, ConceptView view, ConceptProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager,
+            ConceptsToolStripPresenterWidget conceptsToolStripPresenterWidget) {
         super(eventBus, view, proxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
+        this.conceptsToolStripPresenterWidget = conceptsToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -137,8 +145,12 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentConceptsToolBar, conceptsToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, MetamacSrmWeb.getConstants().concept());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CONCEPTS);
+        conceptsToolStripPresenterWidget.selectConceptsMenuButton(ConceptsToolStripButtonEnum.CONCEPTS);
     }
 
     @Override
