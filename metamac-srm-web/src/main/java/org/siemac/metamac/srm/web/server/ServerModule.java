@@ -75,6 +75,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeVersio
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesWithConceptsCanBeExtendedActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesWithConceptsCanBeRoleActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsCanBeExtendedActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsCanBeRoleActionHandler;
@@ -185,6 +186,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
@@ -271,6 +273,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
         bindHandler(GetConceptSchemesAction.class, GetConceptSchemesActionHandler.class);
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
+        bindHandler(GetConceptsAction.class, GetConceptsActionHandler.class);
         bindHandler(GetConceptSchemeVersionsAction.class, GetConceptSchemeVersionsActionHandler.class);
         bindHandler(SaveConceptSchemeAction.class, SaveConceptSchemeActionHandler.class);
         bindHandler(DeleteConceptSchemesAction.class, DeleteConceptSchemesActionHandler.class);

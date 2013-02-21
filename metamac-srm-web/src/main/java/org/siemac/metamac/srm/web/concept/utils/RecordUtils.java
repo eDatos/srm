@@ -24,13 +24,13 @@ public class RecordUtils {
     // CONCEPTS
 
     public static ConceptRecord getConceptRecord(ConceptMetamacDto conceptDto) {
-        ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), conceptDto.getUrn(),
+        ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), conceptDto.getUrn(), conceptDto.getItemSchemeVersionUrn(),
                 getLocalisedString(conceptDto.getDescription()), conceptDto);
         return record;
     }
 
     public static ConceptRecord getConceptRecord(ItemDto itemDto) {
-        ConceptRecord record = new ConceptRecord(itemDto.getId(), itemDto.getCode(), getLocalisedString(itemDto.getName()), itemDto.getUrn(), null, null);
+        ConceptRecord record = new ConceptRecord(itemDto.getId(), itemDto.getCode(), getLocalisedString(itemDto.getName()), itemDto.getUrn(), itemDto.getItemSchemeVersionUrn(), null, null);
         return record;
     }
 

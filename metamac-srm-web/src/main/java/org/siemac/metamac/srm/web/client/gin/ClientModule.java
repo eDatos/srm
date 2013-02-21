@@ -48,9 +48,11 @@ import org.siemac.metamac.srm.web.code.widgets.view.CodesToolStripViewImpl;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
+import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
 import org.siemac.metamac.srm.web.concept.view.ConceptSchemeListViewImpl;
 import org.siemac.metamac.srm.web.concept.view.ConceptSchemeViewImpl;
 import org.siemac.metamac.srm.web.concept.view.ConceptViewImpl;
+import org.siemac.metamac.srm.web.concept.view.ConceptsViewImpl;
 import org.siemac.metamac.srm.web.concept.widgets.presenter.ConceptsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.concept.widgets.view.ConceptsToolStripViewImpl;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
@@ -129,6 +131,7 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(ConceptSchemeListPresenter.class, ConceptSchemeListPresenter.ConceptSchemeListView.class, ConceptSchemeListViewImpl.class,
                 ConceptSchemeListPresenter.ConceptSchemeListProxy.class);
         bindPresenter(ConceptSchemePresenter.class, ConceptSchemePresenter.ConceptSchemeView.class, ConceptSchemeViewImpl.class, ConceptSchemePresenter.ConceptSchemeProxy.class);
+        bindPresenter(ConceptsPresenter.class, ConceptsPresenter.ConceptsView.class, ConceptsViewImpl.class, ConceptsPresenter.ConceptsProxy.class);
         bindPresenter(ConceptPresenter.class, ConceptPresenter.ConceptView.class, ConceptViewImpl.class, ConceptPresenter.ConceptProxy.class);
 
         // Organisations

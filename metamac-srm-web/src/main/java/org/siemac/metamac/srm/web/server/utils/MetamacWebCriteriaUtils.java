@@ -101,24 +101,51 @@ public class MetamacWebCriteriaUtils {
      * @return
      */
     public static MetamacCriteriaConjunctionRestriction getConceptCriteriaRestriction(ConceptWebCriteria criteria) {
-        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-        List<MetamacCriteriaRestriction> restrictions = new ArrayList<MetamacCriteriaRestriction>();
+        MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+
         if (criteria != null) {
+
+            // General criteria
+
             if (StringUtils.isNotBlank(criteria.getCriteria())) {
                 MetamacCriteriaDisjunctionRestriction conceptCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
                 conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
                 conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
                 conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
-                restrictions.add(conceptCriteriaDisjunction);
+                // TODO ACRONYM
+                conjunctionRestriction.getRestrictions().add(conceptCriteriaDisjunction);
+            }
+
+            // Specific criteria
+
+            if (StringUtils.isNotBlank(criteria.getCode())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getUrn())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getDescription())) {
+                // TODO
+            }
+            if (criteria.getIsLastVersion() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
             }
             if (StringUtils.isNotBlank(criteria.getItemSchemeUrn())) {
-                MetamacCriteriaPropertyRestriction conceptSchemePropertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(),
-                        criteria.getItemSchemeUrn(), OperationType.EQ);
-                restrictions.add(conceptSchemePropertyRestriction);
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(), criteria.getItemSchemeUrn(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getAcronym())) {
+                // TODO
+            }
+            if (StringUtils.isNotBlank(criteria.getDescriptionSource())) {
+                // TODO
             }
         }
-        restriction.getRestrictions().addAll(restrictions);
-        return restriction;
+        return conjunctionRestriction;
     }
 
     // -------------------------------------------------------------------------------------------------------------
@@ -204,6 +231,7 @@ public class MetamacWebCriteriaUtils {
                 codeCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
                 codeCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
                 codeCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+                codeCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
             }
             conjunctionRestriction.getRestrictions().add(codeCriteriaDisjuction);
 

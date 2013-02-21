@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ItemWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
@@ -19,6 +20,10 @@ public class MetamacWebCriteriaClientUtils {
         return (ConceptSchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(conceptSchemeWebCriteria);
     }
 
+    public static ConceptWebCriteria addLastVersionConditionToConceptWebCriteria(ConceptWebCriteria conceptWebCriteria) {
+        return (ConceptWebCriteria) addLastVersionConditionToItemWebCriteria(conceptWebCriteria);
+    }
+
     // CATEGORIES
 
     public static CategorySchemeWebCriteria addLastVersionConditionToCategorySchemeWebCriteria(CategorySchemeWebCriteria categorySchemeWebCriteria) {
@@ -26,7 +31,7 @@ public class MetamacWebCriteriaClientUtils {
     }
 
     public static CategoryWebCriteria addLastVersionConditionToCategoryWebCriteria(CategoryWebCriteria categoryWebCriteria) {
-        return (CategoryWebCriteria) getItemWebCriteriaForLastVersion(categoryWebCriteria);
+        return (CategoryWebCriteria) addLastVersionConditionToItemWebCriteria(categoryWebCriteria);
     }
 
     // To create a categorisation, the category must be externally published
@@ -53,7 +58,7 @@ public class MetamacWebCriteriaClientUtils {
     }
 
     public static CodeWebCriteria addLastVersionConditionToCodeWebCriteria(CodeWebCriteria codeWebCriteria) {
-        return (CodeWebCriteria) getItemWebCriteriaForLastVersion(codeWebCriteria);
+        return (CodeWebCriteria) addLastVersionConditionToItemWebCriteria(codeWebCriteria);
     }
 
     // ORGANISATIONS
@@ -75,7 +80,7 @@ public class MetamacWebCriteriaClientUtils {
         return versionableResourceWebCriteria;
     }
 
-    public static ItemWebCriteria getItemWebCriteriaForLastVersion(ItemWebCriteria itemWebCriteria) {
+    public static ItemWebCriteria addLastVersionConditionToItemWebCriteria(ItemWebCriteria itemWebCriteria) {
         itemWebCriteria.setIsLastVersion(true);
         return itemWebCriteria;
     }
