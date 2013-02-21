@@ -403,7 +403,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
         this.itemHierarchyDtos = itemHierarchyDtos;
         conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
-        conceptsTreeGrid.selectItem(conceptDto);
+        conceptsTreeGrid.selectItem(conceptDto.getUrn());
 
         // Security
         mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),

@@ -394,7 +394,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
             organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
-            organisationsTreeGrid.selectItem(organisationDto);
+            organisationsTreeGrid.selectItem(organisationDto.getUrn());
             organisationsTreeGridLayout.show();
         } else {
             organisationsTreeGridLayout.hide();
