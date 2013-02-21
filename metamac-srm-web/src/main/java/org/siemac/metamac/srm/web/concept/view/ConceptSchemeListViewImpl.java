@@ -217,6 +217,19 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
     }
 
     @Override
+    public void setInSlot(Object slot, Widget content) {
+        if (slot == ConceptSchemeListPresenter.TYPE_SetContextAreaContentConceptsToolBar) {
+            if (content != null) {
+                panel.addMember(content, 0);
+            }
+        } else {
+            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
+            // Who knows, maybe the parent class knows what to do with this slot.
+            super.setInSlot(slot, content);
+        }
+    }
+
+    @Override
     public void setUiHandlers(ConceptSchemeListUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);

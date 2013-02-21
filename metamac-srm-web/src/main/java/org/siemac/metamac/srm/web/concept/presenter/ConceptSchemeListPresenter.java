@@ -16,7 +16,9 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.concept.enums.ConceptsToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.concept.widgets.presenter.ConceptsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesAction;
@@ -54,14 +56,18 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPresenter.ConceptSchemeListView, ConceptSchemeListPresenter.ConceptSchemeListProxy> implements ConceptSchemeListUiHandlers {
 
-    public final static int                           SCHEME_LIST_FIRST_RESULT           = 0;
-    public final static int                           SCHEME_LIST_MAX_RESULTS            = 30;
+    public final static int                           SCHEME_LIST_FIRST_RESULT                  = 0;
+    public final static int                           SCHEME_LIST_MAX_RESULTS                   = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
 
+    private ConceptsToolStripPresenterWidget          conceptsToolStripPresenterWidget;
+
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar        = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentConceptsToolBar = new Object();
 
     @ProxyCodeSplit
     @NameToken(NameTokens.conceptSchemeListPage)
@@ -83,10 +89,12 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Inject
-    public ConceptSchemeListPresenter(EventBus eventBus, ConceptSchemeListView conceptSchemeListView, ConceptSchemeListProxy conceptSchemeListProxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+    public ConceptSchemeListPresenter(EventBus eventBus, ConceptSchemeListView conceptSchemeListView, ConceptSchemeListProxy conceptSchemeListProxy, DispatchAsync dispatcher,
+            PlaceManager placeManager, ConceptsToolStripPresenterWidget conceptsToolStripPresenterWidget) {
         super(eventBus, conceptSchemeListView, conceptSchemeListProxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
+        this.conceptsToolStripPresenterWidget = conceptsToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -107,8 +115,12 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentConceptsToolBar, conceptsToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, getConstants().conceptSchemes());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.CONCEPTS);
+        conceptsToolStripPresenterWidget.selectConceptsMenuButton(ConceptsToolStripButtonEnum.CONCEPT_SCHEMES);
     }
 
     @Override

@@ -22,6 +22,7 @@ public class NameTokens {
     public static final String conceptSchemeListPage      = "conceptSchemes";
     public static final String conceptSchemePage          = "conceptScheme";
     public static final String conceptPage                = "concept";
+    public static final String conceptsPage               = "concepts";
 
     // Organisations
     public static final String organisationSchemeListPage = "organisationSchemes";

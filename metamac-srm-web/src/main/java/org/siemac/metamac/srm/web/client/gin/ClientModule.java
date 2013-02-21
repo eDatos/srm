@@ -51,6 +51,8 @@ import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.view.ConceptSchemeListViewImpl;
 import org.siemac.metamac.srm.web.concept.view.ConceptSchemeViewImpl;
 import org.siemac.metamac.srm.web.concept.view.ConceptViewImpl;
+import org.siemac.metamac.srm.web.concept.widgets.presenter.ConceptsToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.concept.widgets.view.ConceptsToolStripViewImpl;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
@@ -99,6 +101,7 @@ public class ClientModule extends AbstractPresenterModule {
         // PresenterWidgets
         bindSingletonPresenterWidget(CodesToolStripPresenterWidget.class, CodesToolStripPresenterWidget.CodesToolStripView.class, CodesToolStripViewImpl.class);
         bindSingletonPresenterWidget(CategoriesToolStripPresenterWidget.class, CategoriesToolStripPresenterWidget.CategoriesToolStripView.class, CategoriesToolStripViewImpl.class);
+        bindSingletonPresenterWidget(ConceptsToolStripPresenterWidget.class, ConceptsToolStripPresenterWidget.ConceptsToolStripView.class, ConceptsToolStripViewImpl.class);
 
         // Gate keeper
         bind(LoggedInGatekeeper.class).in(Singleton.class);

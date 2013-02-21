@@ -75,6 +75,13 @@ public class PlaceRequestUtils {
         return getParamFromUrl(placeManager, NameTokens.conceptPage, PlaceRequestParams.conceptParamId);
     }
 
+    public static List<PlaceRequest> buildAbsoluteConceptsPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.conceptsPage));
+        return placeRequestHierarchy;
+    }
+
     public static PlaceRequest buildRelativeConceptPlaceRequest(String conceptUrn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(conceptUrn));
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParamId, splitUrn[splitUrn.length - 1]);
