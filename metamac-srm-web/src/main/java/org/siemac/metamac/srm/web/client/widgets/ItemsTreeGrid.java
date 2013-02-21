@@ -195,9 +195,9 @@ public abstract class ItemsTreeGrid extends TreeGrid {
         }
     }
 
-    public void selectItem(ItemDto itemDto) {
+    public void selectItem(String urn) {
         RecordList nodes = getDataAsRecordList();
-        Record record = nodes.find(ItemDS.URN, itemDto.getUrn());
+        Record record = nodes.find(ItemDS.URN, urn);
         selectRecord(record);
     }
 

@@ -132,7 +132,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     @Override
     public void setCategoryList(CategorySchemeMetamacDto categorySchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
         categoriesTreeGrid.setItems(categorySchemeMetamacDto, itemHierarchyDtos);
-        categoriesTreeGrid.selectItem(categoryDto);
+        categoriesTreeGrid.selectItem(categoryDto.getUrn());
 
         // Security
         mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategory(categorySchemeMetamacDto.getLifeCycle().getProcStatus()));
