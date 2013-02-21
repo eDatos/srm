@@ -93,7 +93,7 @@ public class CategoriesPresenter extends Presenter<CategoriesPresenter.Categorie
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        // Load concept schemes
+        // Load categories
         retrieveCategories(ITEM_LIST_FIRST_RESULT, ITEM_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.addLastVersionConditionToCategoryWebCriteria(new CategoryWebCriteria()));
         // Clear search section
         getView().clearSearchSection();
