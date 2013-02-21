@@ -140,7 +140,7 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
             return null;
         }
         // following method will call toCodelist(CodelistVersionMetamac source, Codelist target) method, thank to callback
-        return (Codelist) codesDo2JaxbSdmxMapper.codeListDoToJaxb(source, codesDo2JaxbCallback);
+        return (Codelist) codesDo2JaxbSdmxMapper.codelistDoToJaxb(source, codesDo2JaxbCallback);
     }
 
     @Override

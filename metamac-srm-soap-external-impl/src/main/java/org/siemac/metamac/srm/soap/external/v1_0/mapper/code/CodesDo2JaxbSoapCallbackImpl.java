@@ -9,9 +9,11 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @org.springframework.stereotype.Component("codesDo2JaxbSoapCallbackMetamac")
 public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
@@ -35,8 +37,18 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
     }
 
     @Override
+    public CodeType createCodeJaxb(ItemResult source) {
+        return null; // TODO
+    }
+
+    @Override
     public void fillCodeJaxb(Code source, CodeType target) {
         codesDo2SoapMapperV10.toCode((CodeMetamac) source, (org.siemac.metamac.soap.structural_resources.v1_0.domain.Code) target);
+    }
+
+    @Override
+    public void fillCodeJaxb(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target) {
+        // TODO
     }
 
     @Override
