@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.core.code.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1001,8 +1003,37 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Create order visualisation
         codelistOrderVisualisation.setCodelistVersion(codelistVersion);
-        // Add all codes, without hierarchy, but with default order by level
-        addAllCodesOrderVisualisationOfLevel(codelistOrderVisualisation, codelistVersion.getItemsFirstLevel());
+
+        // Add all codes with default order by level
+        List<Item> codesOrderedByParent = new ArrayList<Item>(codelistVersion.getItems());
+        Collections.sort(codesOrderedByParent, new Comparator<Item>() {
+
+            @Override
+            public int compare(Item i1, Item i2) {
+                if (i1.getParent() == null || i2.getParent() == null) {
+                    return -1;
+                } else {
+                    return i1.getParent().getId().compareTo(i2.getParent().getId());
+                }
+            }
+        });
+
+        int order = 0;
+        String previousParentUrn = null;
+        for (Item item : codesOrderedByParent) {
+            CodeMetamac code = (CodeMetamac) item;
+            String actualParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
+            if (!StringUtils.equals(previousParentUrn, actualParentUrn)) {
+                order = 0; // another level
+                previousParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
+            }
+            CodeOrderVisualisation codeOrderVisualisation = new CodeOrderVisualisation();
+            codeOrderVisualisation.setCode(code);
+            codeOrderVisualisation.setCodelistVisualisation(codelistOrderVisualisation);
+            codeOrderVisualisation.setCodeIndex(Long.valueOf(order));
+            codelistOrderVisualisation.addCode(codeOrderVisualisation);
+            order++;
+        }
 
         // Create
         setCodelistOrderVisualisationUrnUnique(codelistOrderVisualisation);
@@ -1336,25 +1367,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         codelistOrderVisualisation.getNameableArtefact().setUrn(urn);
         codelistOrderVisualisation.getNameableArtefact().setUrnProvider(urn);
-    }
-
-    /**
-     * Add all codes to codelist visualisation, without hierarchy, but with default order by level
-     */
-    private void addAllCodesOrderVisualisationOfLevel(CodelistOrderVisualisation codelistOrderVisualisation, List<Item> codesInLevel) {
-        int i = 0;
-        for (Item item : codesInLevel) {
-            CodeMetamac code = (CodeMetamac) item;
-            CodeOrderVisualisation codeOrderVisualisation = new CodeOrderVisualisation();
-            codeOrderVisualisation.setCode(code);
-            codeOrderVisualisation.setCodelistVisualisation(codelistOrderVisualisation);
-            codeOrderVisualisation.setCodeIndex(Long.valueOf(i));
-            codelistOrderVisualisation.addCode(codeOrderVisualisation);
-            i++;
-
-            // Children
-            addAllCodesOrderVisualisationOfLevel(codelistOrderVisualisation, code.getChildren());
-        }
     }
 
     private void updateAllCodesOrdersInLevelRemovingCode(ServiceContext ctx, List<Item> codesInLevel, Long codeIndexOfCodeToRemove,
