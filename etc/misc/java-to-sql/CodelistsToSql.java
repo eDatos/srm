@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.apache.commons.lang.mutable.MutableLong;
 
+/**
+ * Utilities to generate SQL scripts to create artefacts
+ */
 public class CodelistsToSql {
 
     // TODO setear al máximo actual de ids
@@ -485,5 +488,4 @@ public class CodelistsToSql {
         }
         out.close();
     }
-
 }
