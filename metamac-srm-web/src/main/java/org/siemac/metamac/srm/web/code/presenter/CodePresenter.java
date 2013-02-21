@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -17,7 +18,6 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
-import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
@@ -41,11 +41,10 @@ import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -86,7 +85,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     public interface CodeView extends View, HasUiHandlers<CodeUiHandlers> {
 
         void setCode(CodeMetamacDto codeDto);
-        void setCodes(CodelistMetamacDto codelistMetamacDto, List<ItemHierarchyDto> codes);
+        void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes);
         void setVariableElements(GetRelatedResourcesResult result);
     }
 
@@ -161,7 +160,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             public void onWaitSuccess(GetCodelistResult result) {
                 final CodelistMetamacDto codelistMetamacDto = result.getCodelistMetamacDto();
                 String defaultOrder = codelistMetamacDto.getDefaultOrderVisualisation() != null ? codelistMetamacDto.getDefaultOrderVisualisation().getUrn() : null;
-                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, defaultOrder), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, defaultOrder, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -169,8 +168,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
                     }
                     @Override
                     public void onWaitSuccess(GetCodesByCodelistResult result) {
-                        List<ItemHierarchyDto> itemHierarchyDtos = CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos());
-                        getView().setCodes(codelistMetamacDto, itemHierarchyDtos);
+                        getView().setCodes(codelistMetamacDto, result.getCodes());
                     }
                 });
             }
@@ -198,8 +196,8 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
-    public void deleteCode(final ItemDto itemDto) {
-        dispatcher.execute(new DeleteCodeAction(itemDto.getUrn()), new WaitingAsyncCallback<DeleteCodeResult>() {
+    public void deleteCode(final String codelistUrn, final CodeMetamacVisualisationResult code) {
+        dispatcher.execute(new DeleteCodeAction(code.getUrn()), new WaitingAsyncCallback<DeleteCodeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -208,10 +206,10 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             @Override
             public void onWaitSuccess(DeleteCodeResult result) {
                 // If deleted code had a code parent, go to this code parent. If not, go to the codelist.
-                if (itemDto.getItemParentUrn() != null) {
-                    goToCode(itemDto.getItemParentUrn());
+                if (code.getParent() != null) {
+                    goToCode(code.getParent().getUrn());
                 } else {
-                    goToCodelist(itemDto.getItemSchemeVersionUrn());
+                    goToCodelist(codelistUrn);
                 }
             }
         });

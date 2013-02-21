@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
@@ -17,7 +16,6 @@ import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CommonUtils {
@@ -92,14 +90,6 @@ public class CommonUtils {
             urns.add(codelistRecord.getCode());
         }
         return urns;
-    }
-
-    public static List<ItemHierarchyDto> getItemHierarchyDtosFromCodeHierarchyDtos(List<CodeHierarchyDto> codeHierarchyDtos) {
-        List<ItemHierarchyDto> itemHierarchyDtos = new ArrayList<ItemHierarchyDto>();
-        for (CodeHierarchyDto codeHierarchyDto : codeHierarchyDtos) {
-            itemHierarchyDtos.add(codeHierarchyDto);
-        }
-        return itemHierarchyDtos;
     }
 
     public static String getCodelistOrderVisualisationName(CodelistOrderVisualisationDto codelistOrderVisualisationDto) {

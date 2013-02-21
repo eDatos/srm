@@ -9,6 +9,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
@@ -23,7 +24,6 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
-import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
@@ -79,13 +79,12 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -130,7 +129,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
         void setCodelist(CodelistMetamacDto codelistMetamacDto);
         void setCodelistVersions(List<CodelistMetamacDto> codelistMetamacDtos);
-        void setCodes(List<ItemHierarchyDto> codeDtos, CodelistOrderVisualisationDto codelistOrder);
+        void setCodes(List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrder);
         void setCodelistOrders(List<CodelistOrderVisualisationDto> orders);
         void selectCodelistOrder(String codelistOrderUrn);
 
@@ -224,8 +223,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void deleteCode(ItemDto itemDto) {
-        dispatcher.execute(new DeleteCodeAction(itemDto.getUrn()), new WaitingAsyncCallback<DeleteCodeResult>() {
+    public void deleteCode(String codelistUrn, CodeMetamacVisualisationResult code) {
+        dispatcher.execute(new DeleteCodeAction(code.getUrn()), new WaitingAsyncCallback<DeleteCodeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -294,7 +293,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void retrieveCodesByCodelist(final String orderUrn) {
-        dispatcher.execute(new GetCodesByCodelistAction(codelistMetamacDto.getUrn(), orderUrn), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+        dispatcher.execute(new GetCodesByCodelistAction(codelistMetamacDto.getUrn(), orderUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -303,7 +302,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(GetCodesByCodelistResult result) {
                 codelistOrderVisualisationUrn = result.getCodelistOrderVisualisationDto() != null ? result.getCodelistOrderVisualisationDto().getUrn() : null;
-                getView().setCodes(CommonUtils.getItemHierarchyDtosFromCodeHierarchyDtos(result.getCodeHierarchyDtos()), result.getCodelistOrderVisualisationDto());
+                getView().setCodes(result.getCodes(), result.getCodelistOrderVisualisationDto());
                 getView().selectCodelistOrder(orderUrn);
             }
         });

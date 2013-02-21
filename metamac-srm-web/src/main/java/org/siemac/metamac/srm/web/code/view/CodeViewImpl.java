@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
@@ -35,7 +36,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguag
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -242,9 +242,9 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     }
 
     @Override
-    public void setCodes(CodelistMetamacDto codelistMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        codesTreeGrid.setItems(codelistMetamacDto, itemHierarchyDtos);
-        codesTreeGrid.selectItem(codeDto);
+    public void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
+        codesTreeGrid.setItems(codelistMetamacDto, codes);
+        codesTreeGrid.selectItem(codeDto.getUrn());
 
         // Security
         mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));

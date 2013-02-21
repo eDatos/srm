@@ -3,18 +3,16 @@ package org.siemac.metamac.srm.web.code.widgets;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.widgets.ItemsTreeGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.BaseCodeUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -25,20 +23,20 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 import com.smartgwt.client.widgets.tree.events.FolderDropEvent;
 import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 
-public class CodesTreeGrid extends ItemsTreeGrid {
+public class CodesTreeGrid extends BaseCodesTreeGrid {
 
-    private NewCodeWindow                 newCodeWindow;
-    private DeleteConfirmationWindow      deleteConfirmationWindow;
+    private NewCodeWindow                  newCodeWindow;
+    private DeleteConfirmationWindow       deleteConfirmationWindow;
 
-    private MenuItem                      createCodeMenuItem;
-    private MenuItem                      deleteCodeMenuItem;
+    private MenuItem                       createCodeMenuItem;
+    private MenuItem                       deleteCodeMenuItem;
 
-    private CodelistMetamacDto            codelistMetamacDto;
-    private ItemDto                       selectedCode;
+    private CodelistMetamacDto             codelistMetamacDto;
+    private CodeMetamacVisualisationResult selectedCode;
 
-    private CodelistOrderVisualisationDto codelistOrderVisualisationDto;
+    private CodelistOrderVisualisationDto  codelistOrderVisualisationDto;
 
-    private BaseCodeUiHandlers            uiHandlers;
+    private BaseCodeUiHandlers             uiHandlers;
 
     public CodesTreeGrid() {
         super();
@@ -128,7 +126,7 @@ public class CodesTreeGrid extends ItemsTreeGrid {
 
             @Override
             public void onClick(ClickEvent event) {
-                CodesTreeGrid.this.uiHandlers.deleteCode(selectedCode);
+                CodesTreeGrid.this.uiHandlers.deleteCode(codelistMetamacDto.getUrn(), selectedCode);
             }
         });
         deleteCodeMenuItem.addClickHandler(new ClickHandler() {
@@ -142,15 +140,15 @@ public class CodesTreeGrid extends ItemsTreeGrid {
         addItemsToContextMenu(createCodeMenuItem, deleteCodeMenuItem);
     }
 
-    public void setItems(ItemSchemeDto codelistMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+    public void setItems(ItemSchemeDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
         this.codelistOrderVisualisationDto = codelistOrderVisualisationDto;
-        setItems(codelistMetamacDto, itemHierarchyDtos);
+        setItems(codelistMetamacDto, codes);
     }
 
     @Override
-    public void setItems(ItemSchemeDto codelistMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+    public void setItems(ItemSchemeDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
         this.codelistMetamacDto = (CodelistMetamacDto) codelistMetamacDto;
-        super.setItems(codelistMetamacDto, itemHierarchyDtos);
+        super.setItems(codelistMetamacDto, codes);
     }
 
     @Override
@@ -171,7 +169,7 @@ public class CodesTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    protected void onNodeContextClick(String nodeName, ItemDto code) {
+    protected void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult code) {
         selectedCode = code;
         createCodeMenuItem.setEnabled(CodesClientSecurityUtils.canCreateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
         deleteCodeMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName) && CodesClientSecurityUtils.canDeleteCode(codelistMetamacDto.getLifeCycle().getProcStatus()));

@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers.code;
 import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
@@ -29,8 +29,9 @@ public class GetCodesByCodelistActionHandler extends SecurityActionHandler<GetCo
     @Override
     public GetCodesByCodelistResult executeSecurityAction(GetCodesByCodelistAction action) throws ActionException {
         try {
+
             // Codes
-            List<CodeHierarchyDto> itemHierarchyDtos = srmCoreServiceFacade.retrieveCodesByCodelistUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(),
+            List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(), action.getLocale(),
                     action.getCodelistOrderUrn());
 
             // Order
@@ -39,7 +40,7 @@ public class GetCodesByCodelistActionHandler extends SecurityActionHandler<GetCo
                 codelistOrderVisualisationDto = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistOrderUrn());
             }
 
-            return new GetCodesByCodelistResult(itemHierarchyDtos, codelistOrderVisualisationDto);
+            return new GetCodesByCodelistResult(codes, codelistOrderVisualisationDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

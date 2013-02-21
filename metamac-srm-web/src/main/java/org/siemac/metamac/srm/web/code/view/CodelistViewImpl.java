@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -56,7 +57,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -374,9 +374,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
-    public void setCodes(List<ItemHierarchyDto> itemHierarchyDtos, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+    public void setCodes(List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
         updateCodesTitle(codelistOrderVisualisationDto != null ? getMessages().codesWithOrder(CommonUtils.getCodelistOrderVisualisationName(codelistOrderVisualisationDto)) : getConstants().codes());
-        codesTreeGrid.setItems(codelistDto, itemHierarchyDtos, codelistOrderVisualisationDto);
+        codesTreeGrid.setItems(codelistDto, codes, codelistOrderVisualisationDto);
     }
 
     @Override
