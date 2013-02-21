@@ -65,5 +65,4 @@ public class ImportationJaxb2DoCallbackImpl implements ImportationJaxb2DoCallbac
     public String getBeanName() {
         return BEAN_ID;
     }
-
 }
