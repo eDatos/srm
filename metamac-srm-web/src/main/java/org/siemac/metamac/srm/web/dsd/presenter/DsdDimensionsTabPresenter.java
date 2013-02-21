@@ -296,19 +296,21 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
+        conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
+        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
         StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(dimensionType);
-        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, new ConceptWebCriteria(criteria, dataStructureDefinitionDto.getUrn(), conceptSchemeUrn)),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        getView().setConcepts(result);
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConcepts(result);
+            }
+        });
     }
 
     @Override
@@ -361,9 +363,11 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void retrieveConceptsForDimensionRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        dispatcher.execute(
-                new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, new ConceptWebCriteria(criteria, dataStructureDefinitionDto.getUrn(),
-                        conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
+        conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
+        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, conceptWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {

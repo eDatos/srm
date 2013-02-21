@@ -14,17 +14,6 @@ public class ConceptWebCriteria extends MetamacWebCriteria {
         super(criteria);
     }
 
-    public ConceptWebCriteria(String criteria, String conceptSchemeUrn) {
-        super(criteria);
-        this.conceptSchemeUrn = conceptSchemeUrn;
-    }
-
-    public ConceptWebCriteria(String criteria, String dsdUrn, String conceptSchemeUrn) {
-        super(criteria);
-        this.dsdUrn = dsdUrn;
-        this.conceptSchemeUrn = conceptSchemeUrn;
-    }
-
     public String getConceptSchemeUrn() {
         return conceptSchemeUrn;
     }

@@ -304,7 +304,9 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, new ConceptWebCriteria(criteria, conceptSchemeUrn)), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
+        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
+        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -319,7 +321,9 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, new ConceptWebCriteria(criteria, conceptSchemeUrn)), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
+        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
+        dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

@@ -326,18 +326,21 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_ATTRIBUTE, firstResult, maxResults, new ConceptWebCriteria(criteria,
-                dataStructureDefinitionDto.getUrn(), conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
+        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_ATTRIBUTE, firstResult, maxResults, conceptWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setConcepts(result);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConcepts(result);
+                    }
+                });
     }
 
     @Override
@@ -358,9 +361,11 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void retrieveConceptsForAttributeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        dispatcher.execute(
-                new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, new ConceptWebCriteria(criteria, dataStructureDefinitionDto.getUrn(),
-                        conceptSchemeUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
+        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, conceptWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
