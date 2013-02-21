@@ -29,6 +29,7 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -51,7 +52,6 @@ import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.mapper.ConceptsDto2DoMapper;
 import org.siemac.metamac.srm.core.criteria.mapper.MetamacCriteria2SculptorCriteriaMapper;
 import org.siemac.metamac.srm.core.criteria.mapper.SculptorCriteria2MetamacCriteriaMapper;
-import org.siemac.metamac.srm.core.domain.shared.ItemMetamacResult;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMapper;
@@ -1146,7 +1146,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<ItemMetamacResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException {
+    public List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 

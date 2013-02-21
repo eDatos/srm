@@ -1,20 +1,20 @@
-package org.siemac.metamac.srm.core.domain.shared;
+package org.siemac.metamac.srm.core.code.domain.shared;
 
 import java.io.Serializable;
 
-public class ItemMetamacResult implements Serializable {
+public class CodeMetamacVisualisationResult implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long              serialVersionUID = 1L;
 
-    private Long              itemIdDatabase;
-    private String            code;
-    private String            urn;
-    private Long              parentIdDatabase;
-    private ItemMetamacResult parent;
-    private String            name;
-    private Long              order;
+    private Long                           itemIdDatabase;
+    private String                         code;
+    private String                         urn;
+    private Long                           parentIdDatabase;
+    private CodeMetamacVisualisationResult parent;
+    private String                         name;
+    private Long                           order;
 
-    public ItemMetamacResult() {
+    public CodeMetamacVisualisationResult() {
     }
 
     public Long getItemIdDatabase() {
@@ -33,11 +33,11 @@ public class ItemMetamacResult implements Serializable {
         this.parentIdDatabase = parentIdDatabase;
     }
 
-    public ItemMetamacResult getParent() {
+    public CodeMetamacVisualisationResult getParent() {
         return parent;
     }
 
-    public void setParent(ItemMetamacResult parent) {
+    public void setParent(CodeMetamacVisualisationResult parent) {
         this.parent = parent;
     }
 
@@ -72,4 +72,5 @@ public class ItemMetamacResult implements Serializable {
     public void setOrder(Long order) {
         this.order = order;
     }
+
 }

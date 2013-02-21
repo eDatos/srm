@@ -11,8 +11,8 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
-import org.siemac.metamac.srm.core.domain.shared.ItemMetamacResult;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
@@ -445,8 +445,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         return orders;
     }
 
-    protected ItemMetamacResult getItemMetamacResult(List<ItemMetamacResult> items, String urn) {
-        for (ItemMetamacResult item : items) {
+    protected CodeMetamacVisualisationResult getCodeMetamacVisualisationResult(List<CodeMetamacVisualisationResult> items, String urn) {
+        for (CodeMetamacVisualisationResult item : items) {
             if (item.getUrn().equals(urn)) {
                 return item;
             }

@@ -485,7 +485,7 @@ Application SrmFacadeCore {
 			"Deletes code"
             deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by code scheme in locale and visualisation requested"
-    		List<ItemMetamacResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException;
+    		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException;
     		
     		"Creates visualisation"
     		@CodelistOrderVisualisationDto createCodelistOrderVisualisation(@CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException;

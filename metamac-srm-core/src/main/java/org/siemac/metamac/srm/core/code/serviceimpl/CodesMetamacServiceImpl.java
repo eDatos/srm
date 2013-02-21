@@ -31,6 +31,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
@@ -41,7 +42,6 @@ import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
-import org.siemac.metamac.srm.core.domain.shared.ItemMetamacResult;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -463,7 +463,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public List<ItemMetamacResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException {
+    public List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrn(codelistUrn, locale, orderVisualisationUrn, null);
 
@@ -481,7 +481,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Retrieve
-        return getCodeMetamacRepository().findCodesByCodelistByNativeSqlQuery(codelistVersion.getId(), locale, idOrderVisualisation);
+        return getCodeMetamacRepository().findCodesVisualisationByCodelistByNativeSqlQuery(codelistVersion.getId(), locale, idOrderVisualisation);
     }
 
     // ------------------------------------------------------------------------------------
