@@ -204,7 +204,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     public void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
         ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
         conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
-        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, conceptWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 

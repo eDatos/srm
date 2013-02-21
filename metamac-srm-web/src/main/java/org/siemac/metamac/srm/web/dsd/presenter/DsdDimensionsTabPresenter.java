@@ -298,7 +298,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     public void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
         ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
         conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
-        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
         StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(dimensionType);
         dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
@@ -365,7 +365,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     public void retrieveConceptsForDimensionRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
         ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
         conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
-        conceptWebCriteria.setConceptSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, conceptWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 

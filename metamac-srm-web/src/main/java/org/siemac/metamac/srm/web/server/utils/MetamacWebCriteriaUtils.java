@@ -111,9 +111,9 @@ public class MetamacWebCriteriaUtils {
                 conceptCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
                 restrictions.add(conceptCriteriaDisjunction);
             }
-            if (StringUtils.isNotBlank(criteria.getConceptSchemeUrn())) {
+            if (StringUtils.isNotBlank(criteria.getItemSchemeUrn())) {
                 MetamacCriteriaPropertyRestriction conceptSchemePropertyRestriction = new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_URN.name(),
-                        criteria.getConceptSchemeUrn(), OperationType.EQ);
+                        criteria.getItemSchemeUrn(), OperationType.EQ);
                 restrictions.add(conceptSchemePropertyRestriction);
             }
         }
