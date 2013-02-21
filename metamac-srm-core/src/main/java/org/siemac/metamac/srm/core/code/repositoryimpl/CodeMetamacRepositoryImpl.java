@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.domain.ItemMetamacResult;
+import org.siemac.metamac.srm.core.domain.shared.ItemMetamacResult;
 import org.springframework.stereotype.Repository;
 
 /**
