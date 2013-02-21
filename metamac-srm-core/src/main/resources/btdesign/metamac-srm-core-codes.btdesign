@@ -89,7 +89,7 @@ Application CodesMetamac {
 			"Deletes code"
     		deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by codelist, in tree structure"
-    		List<@CodeMetamac> retrieveCodesByCodelistUrn(String codelistUrn) throws MetamacException;
+    		List<ItemMetamacResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn) throws MetamacException;
     		
     		// VISUALISATIONS
     		
@@ -238,8 +238,10 @@ Application CodesMetamac {
 			Repository CodeMetamacRepository {
 				save;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				findByQuery(String query, Map<String, Object> parameters);
 				@CodeMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
+				List<ItemMetamacResult> findCodesByCodelistByNativeSqlQuery(Long idCodelist, String locale, Long idCodelistOrderVisualisation);
 			}
 		}
 		

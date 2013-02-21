@@ -29,7 +29,6 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
-import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -42,7 +41,6 @@ import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -53,6 +51,7 @@ import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.mapper.ConceptsDto2DoMapper;
 import org.siemac.metamac.srm.core.criteria.mapper.MetamacCriteria2SculptorCriteriaMapper;
 import org.siemac.metamac.srm.core.criteria.mapper.SculptorCriteria2MetamacCriteriaMapper;
+import org.siemac.metamac.srm.core.domain.ItemMetamacResult;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMapper;
@@ -1147,27 +1146,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<CodeHierarchyDto> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String orderVisualisationUrn) throws MetamacException {
+    public List<ItemMetamacResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Retrieve
-        List<CodeMetamac> codes = getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn);
-        CodelistOrderVisualisation codelistOrderVisualisation = null;
-        if (orderVisualisationUrn != null) {
-            CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
-            codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
-            if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation) && !codelistVersion.getMaintainableArtefact().getFinalLogicClient()) {
-                // note: alphabetic order is generated when codelist is published
-                codelistOrderVisualisation = null; // avoid error
-            }
-        } else {
-            // order in database
-        }
-
-        // Transform
-        List<CodeHierarchyDto> itemsHierarchyDto = codesDo2DtoMapper.codeMetamacDoListToCodeHierarchyDtoList(codes, codelistOrderVisualisation);
-        return itemsHierarchyDto;
+        return getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn, locale, orderVisualisationUrn);
     }
 
     // ------------------------------------------------------------------------

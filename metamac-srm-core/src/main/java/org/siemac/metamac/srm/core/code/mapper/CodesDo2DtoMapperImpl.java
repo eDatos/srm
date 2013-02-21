@@ -1,16 +1,12 @@
 package org.siemac.metamac.srm.core.code.mapper;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.domain.CodeOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -18,7 +14,6 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
-import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -27,7 +22,6 @@ import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
-import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -100,52 +94,6 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         }
         return targets;
     }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public List<CodeHierarchyDto> codeMetamacDoListToCodeHierarchyDtoList(List sources, CodelistOrderVisualisation codelistOrderVisualisation) {
-
-        Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = null;
-        if (codelistOrderVisualisation != null) {
-            mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codelistOrderVisualisationToMapByCodeUrn(codelistOrderVisualisation);
-        }
-
-        List<CodeHierarchyDto> targets = codeMetamacDoListToCodeHierarchyDtoList(sources, mapCodeOrderVisualisationByCodeUrn);
-        return targets;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private List<CodeHierarchyDto> codeMetamacDoListToCodeHierarchyDtoList(List sources, Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn) {
-        List<CodeHierarchyDto> targets = new ArrayList<CodeHierarchyDto>(sources.size());
-        for (int i = 0; i < sources.size(); i++) {
-            CodeMetamac source = (CodeMetamac) sources.get(i);
-            CodeHierarchyDto target = codeMetamacDoToCodeHierarchyDto(source, mapCodeOrderVisualisationByCodeUrn);
-            target.getChildren().addAll(codeMetamacDoListToCodeHierarchyDtoList(source.getChildren(), mapCodeOrderVisualisationByCodeUrn));
-            targets.add(target);
-        }
-        if (mapCodeOrderVisualisationByCodeUrn == null) {
-            return targets;
-        }
-
-        // Order
-        Collections.sort(targets, new Comparator<CodeHierarchyDto>() {
-
-            @Override
-            public int compare(CodeHierarchyDto o1, CodeHierarchyDto o2) {
-                return o1.getCodeIndex().compareTo(o2.getCodeIndex());
-            }
-        });
-        return targets;
-    }
-
-    class MyComparator implements Comparator<CodeHierarchyDto> {
-
-        @Override
-        public int compare(CodeHierarchyDto o1, CodeHierarchyDto o2) {
-            return o1.getCodeIndex().compareTo(o2.getCodeIndex());
-        }
-    };
-
     @Override
     public CodelistFamilyDto codelistFamilyDoToDto(CodelistFamily source) {
         if (source == null) {
@@ -389,15 +337,5 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
         target.setType(null);
         return target;
-    }
-
-    private CodeHierarchyDto codeMetamacDoToCodeHierarchyDto(CodeMetamac codeMetamac, Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn) {
-        CodeHierarchyDto codeHierarchyDto = new CodeHierarchyDto();
-        codeHierarchyDto.setItem(codeMetamacDoToDto(codeMetamac));
-        if (mapCodeOrderVisualisationByCodeUrn != null) {
-            CodeOrderVisualisation codeOrderVisualisation = mapCodeOrderVisualisationByCodeUrn.get(codeMetamac.getNameableArtefact().getUrn());
-            codeHierarchyDto.setCodeIndex(codeOrderVisualisation.getCodeIndex());
-        }
-        return codeHierarchyDto;
     }
 }

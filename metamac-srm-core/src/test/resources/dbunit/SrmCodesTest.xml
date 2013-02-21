@@ -891,7 +891,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="95"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -944,7 +944,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="96"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -5580,7 +5580,7 @@
         INTERNATIONAL_STRING_FK="11"
     />
     
- <TB_INTERNATIONAL_STRINGS
+    <TB_INTERNATIONAL_STRINGS
         ID="12"
         VERSION="1"
     />
@@ -5589,6 +5589,14 @@
         ID="121"
         LABEL="Nombre codelist-1-v2-code-1"
         LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="12"
+    /> 
+    
+    <TB_LOCALISED_STRINGS
+        ID="122"
+        LABEL="Name codelist-1-v2-code-1"
+        LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="12"
     />  
@@ -5922,13 +5930,13 @@
     />   
     
     <TB_INTERNATIONAL_STRINGS
-        ID="37"
+        ID="37" 
         VERSION="1"
     />
     
     <TB_LOCALISED_STRINGS
         ID="371"
-        LABEL="a"
+        LABEL="Nombre codelist-1-v2-code-4-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="37"
@@ -5941,11 +5949,19 @@
     
     <TB_LOCALISED_STRINGS
         ID="381"
-        LABEL="b"
-        LOCALE="es"
+        LABEL="Name codelist-1-v2-code-4-1-1"
+        LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="38"
-    />                   
+    />      
+
+    <TB_LOCALISED_STRINGS
+        ID="382"
+        LABEL="nombre it codelist-1-v2-code-4-1-1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="38"
+    />                        
 
     <TB_INTERNATIONAL_STRINGS
         ID="39"
@@ -6786,5 +6802,39 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="94"
-    />                                                                                           
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="95"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="951"
+        LABEL="name code-3"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="95"
+    />   
+    
+    <TB_LOCALISED_STRINGS
+        ID="952"
+        LABEL="nombre it code-3"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="95"
+    />       
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="96"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="961"
+        LABEL="Nombre codelist-1-v2-code-4"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="96"
+    />                                                                                                  
 </dataset>

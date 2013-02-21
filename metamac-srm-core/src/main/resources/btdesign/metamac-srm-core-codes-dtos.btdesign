@@ -114,11 +114,5 @@ Application DtosMetamacCodeDomain {
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}
-		
-		"Dto for ItemHierarchyDto to Codes"
-		DataTransferObject CodeHierarchyDto extends @ItemHierarchyDto {
-			"Index in visualisation"
-			Long codeIndex nullable;
-		}		
 	}
 }

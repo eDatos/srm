@@ -32,7 +32,6 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -54,6 +53,7 @@ import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaProper
 import org.siemac.metamac.srm.core.criteria.VariableCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.VariableElementCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.VariableFamilyCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.domain.ItemMetamacResult;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -64,7 +64,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -876,7 +875,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         assertNotNull(codeMetamacDto);
         assertEquals(CODELIST_1_V2_CODE_1, codeMetamacDto.getUrn());
 
-        assertEqualsInternationalStringDto(codeMetamacDto.getName(), "es", "Nombre codelist-1-v2-code-1", null, null);
+        assertEqualsInternationalStringDto(codeMetamacDto.getName(), "es", "Nombre codelist-1-v2-code-1", "en", "Name codelist-1-v2-code-1");
         assertEqualsInternationalStringDto(codeMetamacDto.getDescription(), "es", "Descripción codelist-1-v2-code-1", null, null);
     }
 
@@ -1216,141 +1215,67 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testRetrieveCodesByCodelistUrn() throws Exception {
         // Retrieve
         String codelistUrn = CODELIST_1_V2;
-        List<CodeHierarchyDto> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, null);
+        String locale = "en";
+        String codelistOrderVisualisation = CODELIST_1_V2_ORDER_VISUALISATION_02;
+
+        List<ItemMetamacResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, codelistOrderVisualisation);
 
         // Validate
-        assertEquals(4, codes.size());
+        assertEquals(9, codes.size());
+
         {
             // Code 01
-            ItemHierarchyDto code = codes.get(0);
-            assertTrue(code.getItem() instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2_CODE_1, code.getItem().getUrn());
-            assertEquals(0, code.getChildren().size());
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_1);
+            assertEquals("Name codelist-1-v2-code-1", code.getName());
+            assertEquals(Long.valueOf(1), code.getOrder());
         }
         {
             // Code 02
-            ItemHierarchyDto code = codes.get(1);
-            assertTrue(code.getItem() instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2_CODE_2, code.getItem().getUrn());
-            assertEquals(2, code.getChildren().size());
-            {
-                // Code 02 01
-                ItemHierarchyDto codeChild = code.getChildren().get(0);
-                assertTrue(codeChild.getItem() instanceof CodeMetamacDto);
-                assertEquals(CODELIST_1_V2_CODE_2_1, codeChild.getItem().getUrn());
-                assertEquals(1, codeChild.getChildren().size());
-                {
-                    // Code 02 01 01
-                    ItemHierarchyDto codeChildChild = codeChild.getChildren().get(0);
-                    assertEquals(CODELIST_1_V2_CODE_2_1_1, codeChildChild.getItem().getUrn());
-                    assertEquals(0, codeChildChild.getChildren().size());
-                }
-            }
-            {
-                // Code 02 02
-                ItemHierarchyDto codeChild = code.getChildren().get(1);
-                assertTrue(codeChild.getItem() instanceof CodeMetamacDto);
-                assertEquals(CODELIST_1_V2_CODE_2_2, codeChild.getItem().getUrn());
-                assertEquals(0, codeChild.getChildren().size());
-            }
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_2);
+            assertEquals(null, code.getName());
+            assertEquals(Long.valueOf(2), code.getOrder());
+        }
+        {
+            // Code 02 01
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_2_1);
+            assertEquals(null, code.getName());
+            assertEquals(Long.valueOf(1), code.getOrder());
+        }
+        {
+            // Code 02 01 01
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_2_1_1);
+            assertEquals(null, code.getName());
+            assertEquals(Long.valueOf(0), code.getOrder());
+        }
+        {
+            // Code 02 02
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_2_2);
+            assertEquals(null, code.getName()); // it has not name
+            assertEquals(Long.valueOf(0), code.getOrder());
         }
         {
             // Code 03
-            ItemHierarchyDto code = codes.get(2);
-            assertTrue(code.getItem() instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2_CODE_3, code.getItem().getUrn());
-            assertEquals(0, code.getChildren().size());
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_3);
+            assertEquals("name code-3", code.getName());
+            assertEquals(Long.valueOf(0), code.getOrder());
         }
         {
             // Code 04
-            ItemHierarchyDto code = codes.get(3);
-            assertTrue(code.getItem() instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2_CODE_4, code.getItem().getUrn());
-            assertEquals(1, code.getChildren().size());
-            {
-                // Code 04 01
-                ItemHierarchyDto codeChild = code.getChildren().get(0);
-                assertEquals(CODELIST_1_V2_CODE_4_1, codeChild.getItem().getUrn());
-                assertEquals(1, codeChild.getChildren().size());
-                {
-                    // Code 04 01 01
-                    ItemHierarchyDto codeChildChild = codeChild.getChildren().get(0);
-                    assertEquals(CODELIST_1_V2_CODE_4_1_1, codeChildChild.getItem().getUrn());
-                    assertEquals(0, codeChildChild.getChildren().size());
-                }
-            }
-        }
-    }
-
-    @Test
-    public void testRetrieveCodesByCodelistUrnOrdered() throws Exception {
-        // Retrieve
-        String codelistUrn = CODELIST_1_V2;
-        String codelistOrderVisualisationIdentifier = CODELIST_1_V2_ORDER_VISUALISATION_02;
-
-        List<CodeHierarchyDto> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, codelistOrderVisualisationIdentifier);
-
-        // Validate
-        assertEquals(4, codes.size());
-        {
-            // Code 03
-            ItemHierarchyDto code = codes.get(0);
-            assertTrue(code.getItem() instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2_CODE_3, code.getItem().getUrn());
-            assertEquals(0, code.getChildren().size());
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_4);
+            assertEquals(null, code.getName());
+            assertEquals(Long.valueOf(3), code.getOrder());
         }
         {
-            // Code 01
-            ItemHierarchyDto code = codes.get(1);
-            assertTrue(code.getItem() instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2_CODE_1, code.getItem().getUrn());
-            assertEquals(0, code.getChildren().size());
+            // Code 04 01
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_4_1);
+            assertEquals(null, code.getName());
+            assertEquals(Long.valueOf(0), code.getOrder());
         }
         {
-            // Code 02
-            ItemHierarchyDto code = codes.get(2);
-            assertTrue(code.getItem() instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2_CODE_2, code.getItem().getUrn());
-            assertEquals(2, code.getChildren().size());
-            {
-                // Code 02 02
-                ItemHierarchyDto codeChild = code.getChildren().get(0);
-                assertTrue(codeChild.getItem() instanceof CodeMetamacDto);
-                assertEquals(CODELIST_1_V2_CODE_2_2, codeChild.getItem().getUrn());
-                assertEquals(0, codeChild.getChildren().size());
-            }
-            {
-                // Code 02 01
-                ItemHierarchyDto codeChild = code.getChildren().get(1);
-                assertTrue(codeChild.getItem() instanceof CodeMetamacDto);
-                assertEquals(CODELIST_1_V2_CODE_2_1, codeChild.getItem().getUrn());
-                assertEquals(1, codeChild.getChildren().size());
-                {
-                    // Code 02 01 01
-                    ItemHierarchyDto codeChildChild = codeChild.getChildren().get(0);
-                    assertEquals(CODELIST_1_V2_CODE_2_1_1, codeChildChild.getItem().getUrn());
-                    assertEquals(0, codeChildChild.getChildren().size());
-                }
-            }
-        }
-        {
-            // Code 04
-            ItemHierarchyDto code = codes.get(3);
-            assertTrue(code.getItem() instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2_CODE_4, code.getItem().getUrn());
-            assertEquals(1, code.getChildren().size());
-            {
-                // Code 04 01
-                ItemHierarchyDto codeChild = code.getChildren().get(0);
-                assertEquals(CODELIST_1_V2_CODE_4_1, codeChild.getItem().getUrn());
-                assertEquals(1, codeChild.getChildren().size());
-                {
-                    // Code 04 01 01
-                    ItemHierarchyDto codeChildChild = codeChild.getChildren().get(0);
-                    assertEquals(CODELIST_1_V2_CODE_4_1_1, codeChildChild.getItem().getUrn());
-                    assertEquals(0, codeChildChild.getChildren().size());
-                }
-            }
+            // Code 04 01 01
+            ItemMetamacResult code = getItemMetamacResult(codes, CODELIST_1_V2_CODE_4_1_1);
+            assertEquals("Name codelist-1-v2-code-4-1-1", code.getName());
+            assertEquals(Long.valueOf(0), code.getOrder());
         }
     }
 
@@ -2545,17 +2470,28 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testUpdateCodeInOrderVisualisation() throws Exception {
         String codelistUrn = CODELIST_1_V2;
         String codeUrn = CODELIST_1_V2_CODE_1;
-        String visualisationIdentifier = CODELIST_1_V2_ORDER_VISUALISATION_01;
+        String visualisationUrn = CODELIST_1_V2_ORDER_VISUALISATION_01;
 
-        srmCoreServiceFacade.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationIdentifier, Long.valueOf(2));
-
-        // Validate visualisation
-        List<CodeHierarchyDto> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, visualisationIdentifier);
-        assertEquals(4, codes.size());
-        assertEquals(CODELIST_1_V2_CODE_2, codes.get(0).getItem().getUrn());
-        assertEquals(CODELIST_1_V2_CODE_3, codes.get(1).getItem().getUrn());
-        assertEquals(CODELIST_1_V2_CODE_1, codes.get(2).getItem().getUrn());
-        assertEquals(CODELIST_1_V2_CODE_4, codes.get(3).getItem().getUrn());
+        // Before
+        {
+            List<ItemMetamacResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisationUrn);
+            assertEquals(9, codes.size());
+            assertEquals(Long.valueOf(0), getItemMetamacResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Long.valueOf(1), getItemMetamacResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Long.valueOf(2), getItemMetamacResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Long.valueOf(3), getItemMetamacResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+        }
+        // Update
+        srmCoreServiceFacade.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationUrn, Long.valueOf(2));
+        // After
+        {
+            List<ItemMetamacResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisationUrn);
+            assertEquals(9, codes.size());
+            assertEquals(Long.valueOf(0), getItemMetamacResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Long.valueOf(1), getItemMetamacResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Long.valueOf(2), getItemMetamacResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Long.valueOf(3), getItemMetamacResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+        }
     }
 
     private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationUrnExpected, List<CodelistOrderVisualisationDto> actuals) {

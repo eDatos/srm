@@ -41,6 +41,7 @@ import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.domain.ItemMetamacResult;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -462,15 +463,27 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public List<CodeMetamac> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn) throws MetamacException {
-        // TODO pendiente consulta eficiente
-        return null;
-        // // Retrieve
-        // List<Code> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn);
-        //
-        // // Typecast
-        // List<CodeMetamac> codesMetamac = codesToCodeMetamac(codes);
-        // return codesMetamac;
+    public List<ItemMetamacResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrn(codelistUrn, locale, orderVisualisationUrn, null);
+
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+
+        // TODO hacer así?
+        Long idOrderVisualisation = null;
+        if (orderVisualisationUrn != null) {
+            CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
+            idOrderVisualisation = codelistOrderVisualisation.getId();
+            if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation) && !codelistVersion.getMaintainableArtefact().getFinalLogicClient()) {
+                // note: alphabetic order is generated when codelist is published
+                idOrderVisualisation = null; // avoid error
+            }
+        } else {
+            // any order
+        }
+
+        // Retrieve
+        return getCodeMetamacRepository().findCodesByCodelistByNativeSqlQuery(codelistVersion.getId(), locale, idOrderVisualisation);
     }
 
     // ------------------------------------------------------------------------------------

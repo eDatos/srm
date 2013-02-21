@@ -1,11 +1,5 @@
 package org.siemac.metamac.srm.core.code.mapper;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +12,6 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
-import org.siemac.metamac.srm.core.code.dto.CodeHierarchyDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -61,55 +54,6 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
 
         CodeMetamacDto dto = codesDo2DtoMapper.codeMetamacDoToDto(entity);
         CodesMetamacAsserts.assertEqualsCode(entity, dto);
-    }
-
-    @Test
-    public void testCodeMetamacDoListToItemHierarchyDtoList() {
-        List<CodeMetamac> entities = new ArrayList<CodeMetamac>();
-
-        // -> Code1
-        CodeMetamac entity1 = mockCodeWithAllMetadata();
-        entities.add(entity1);
-        // -> -> Code 1A
-        CodeMetamac entity1A = mockCodeWithAllMetadata();
-        entity1.addChildren(entity1A);
-        // -> -> Code 1B
-        CodeMetamac entity1B = mockCodeWithAllMetadata();
-        entity1.addChildren(entity1B);
-        // -> Code2
-        CodeMetamac entity2 = mockCodeWithAllMetadata();
-        entities.add(entity2);
-        // -> Code3
-        CodeMetamac entity3 = mockCodeWithAllMetadata();
-        entities.add(entity3);
-        // -> -> Code 3A
-        CodeMetamac entity3A = mockCodeWithAllMetadata();
-        entity3.addChildren(entity3A);
-        // -> -> Code 3AA
-        CodeMetamac entity3AA = mockCodeWithAllMetadata();
-        entity3A.addChildren(entity3AA);
-
-        List<CodeHierarchyDto> dtos = codesDo2DtoMapper.codeMetamacDoListToCodeHierarchyDtoList(entities, null);
-
-        // Validate
-        assertEquals(3, dtos.size());
-        assertEquals(entity1.getNameableArtefact().getCode(), dtos.get(0).getItem().getCode());
-        assertTrue(dtos.get(0).getItem() instanceof CodeMetamacDto);
-        assertEquals(2, dtos.get(0).getChildren().size());
-        assertEquals(entity1A.getNameableArtefact().getCode(), dtos.get(0).getChildren().get(0).getItem().getCode());
-        assertEquals(0, dtos.get(0).getChildren().get(0).getChildren().size());
-        assertEquals(entity1B.getNameableArtefact().getCode(), dtos.get(0).getChildren().get(1).getItem().getCode());
-        assertEquals(0, dtos.get(0).getChildren().get(1).getChildren().size());
-
-        assertEquals(entity2.getNameableArtefact().getCode(), dtos.get(1).getItem().getCode());
-        assertEquals(0, dtos.get(1).getChildren().size());
-
-        assertEquals(entity3.getNameableArtefact().getCode(), dtos.get(2).getItem().getCode());
-        assertEquals(1, dtos.get(2).getChildren().size());
-        assertEquals(entity3A.getNameableArtefact().getCode(), dtos.get(2).getChildren().get(0).getItem().getCode());
-        assertEquals(1, dtos.get(2).getChildren().get(0).getChildren().size());
-        assertEquals(entity3AA.getNameableArtefact().getCode(), dtos.get(2).getChildren().get(0).getChildren().get(0).getItem().getCode());
-        assertEquals(0, dtos.get(2).getChildren().get(0).getChildren().get(0).getChildren().size());
     }
 
     @Test
