@@ -427,7 +427,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = retrieveCategorySchemeByUrn(ctx, urnToCopy);
         // Check version to copy is published
-        SrmValidationUtils.checkArtefactCanBeVersioned(categorySchemeVersionToCopy.getLifeCycleMetadata(), urnToCopy);
+        SrmValidationUtils.checkArtefactCanBeVersioned(categorySchemeVersionToCopy.getMaintainableArtefact(), categorySchemeVersionToCopy.getLifeCycleMetadata());
         // Check does not exist any version 'no final'
         ItemSchemeVersion categorySchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(categorySchemeVersionToCopy.getItemScheme().getId());
         if (categorySchemeVersionNoFinal != null) {

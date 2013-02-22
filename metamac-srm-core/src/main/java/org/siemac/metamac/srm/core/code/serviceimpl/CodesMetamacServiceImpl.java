@@ -1168,7 +1168,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
         CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
         // Check version to copy is published
-        SrmValidationUtils.checkArtefactCanBeVersioned(codelistVersionToCopy.getLifeCycleMetadata(), urnToCopy);
+        SrmValidationUtils.checkArtefactCanBeVersioned(codelistVersionToCopy.getMaintainableArtefact(), codelistVersionToCopy.getLifeCycleMetadata());
         // Check does not exist any version 'no final'
         ItemSchemeVersion codelistVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(codelistVersionToCopy.getItemScheme().getId());
         if (codelistVersionNoFinal != null) {

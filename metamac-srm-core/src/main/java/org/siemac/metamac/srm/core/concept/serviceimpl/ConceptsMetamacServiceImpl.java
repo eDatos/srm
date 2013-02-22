@@ -635,8 +635,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private void checkConceptSchemeToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
 
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        // Check version to copy is published
-        SrmValidationUtils.checkArtefactCanBeVersioned(conceptSchemeVersionToCopy.getLifeCycleMetadata(), urnToCopy);
+        // Check version to copy is published and not imported
+        SrmValidationUtils.checkArtefactCanBeVersioned(conceptSchemeVersionToCopy.getMaintainableArtefact(), conceptSchemeVersionToCopy.getLifeCycleMetadata());
         // Check does not exist any version 'no final'
         ItemSchemeVersion conceptSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(conceptSchemeVersionToCopy.getItemScheme().getId());
         if (conceptSchemeVersionNoFinal != null) {

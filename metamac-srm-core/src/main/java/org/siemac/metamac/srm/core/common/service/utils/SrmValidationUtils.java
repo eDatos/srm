@@ -28,8 +28,9 @@ public class SrmValidationUtils {
         checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
     }
 
-    public static void checkArtefactCanBeVersioned(SrmLifeCycleMetadata lifeCycle, String urn) throws MetamacException {
-        checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+    public static void checkArtefactCanBeVersioned(MaintainableArtefact maintainableArtefact, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+        checkArtefactProcStatus(lifeCycle, maintainableArtefact.getUrn(), ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        SdmxSrmValidationUtils.checkMaintainableArtefactNotImported(maintainableArtefact);
     }
 
     public static void checkArtefactProcStatus(SrmLifeCycleMetadata lifeCycle, String urn, ProcStatusEnum... procStatus) throws MetamacException {

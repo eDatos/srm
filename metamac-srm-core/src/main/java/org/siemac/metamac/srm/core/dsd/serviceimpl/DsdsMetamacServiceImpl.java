@@ -235,7 +235,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null, null);
-        checkDataStructureDefinitionVersioning(ctx, urnToCopy);
+        checkDataStructureDefinitionToVersioning(ctx, urnToCopy);
 
         // ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
         // ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
@@ -531,11 +531,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
     }
 
-    private void checkDataStructureDefinitionVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    private void checkDataStructureDefinitionToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         // Check version to copy is published
-        SrmValidationUtils.checkArtefactCanBeVersioned(dataStructureDefinitionVersionToCopy.getLifeCycleMetadata(), urnToCopy);
+        SrmValidationUtils.checkArtefactCanBeVersioned(dataStructureDefinitionVersionToCopy.getMaintainableArtefact(), dataStructureDefinitionVersionToCopy.getLifeCycleMetadata());
 
         // Check does not exist any version 'no final'
         StructureVersion dataStructureVersionNoFinal = structureVersionRepository.findStructureVersionFinal(dataStructureDefinitionVersionToCopy.getStructure().getId());
