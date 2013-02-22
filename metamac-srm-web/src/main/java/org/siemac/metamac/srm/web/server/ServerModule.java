@@ -108,6 +108,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationAc
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationsBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.SaveOrganisationSchemeActionHandler;
@@ -220,6 +221,7 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
@@ -301,6 +303,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(VersionOrganisationSchemeAction.class, VersionOrganisationSchemeActionHandler.class);
         bindHandler(DeleteOrganisationSchemeListAction.class, DeleteOrganisationSchemeListActionHandler.class);
         bindHandler(GetOrganisationsBySchemeAction.class, GetOrganisationsBySchemeActionHandler.class);
+        bindHandler(GetOrganisationsAction.class, GetOrganisationsActionHandler.class);
         bindHandler(SaveOrganisationAction.class, SaveOrganisationActionHandler.class);
         bindHandler(DeleteOrganisationsAction.class, DeleteOrganisationsActionHandler.class);
         bindHandler(GetOrganisationAction.class, GetOrganisationActionHandler.class);

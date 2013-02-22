@@ -50,6 +50,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -616,9 +617,10 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             organisationsTreeGrid.setItems(organisationSchemeDto, organisations);
         } else {
             // Organisation list
+            OrganisationTypeEnum organisationTypeEnum = CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType());
             OrganisationRecord[] records = new OrganisationRecord[organisations.size()];
             for (int i = 0; i < organisations.size(); i++) {
-                records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getOrganisationRecord(organisations.get(i));
+                records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getOrganisationRecord(organisations.get(i), organisationTypeEnum);
             }
             organisationListGrid.setData(records);
         }

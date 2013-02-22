@@ -72,9 +72,11 @@ import org.siemac.metamac.srm.web.dsd.view.DsdViewImpl;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationPresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
+import org.siemac.metamac.srm.web.organisation.presenter.OrganisationsPresenter;
 import org.siemac.metamac.srm.web.organisation.view.OrganisationSchemeListViewImpl;
 import org.siemac.metamac.srm.web.organisation.view.OrganisationSchemeViewImpl;
 import org.siemac.metamac.srm.web.organisation.view.OrganisationViewImpl;
+import org.siemac.metamac.srm.web.organisation.view.OrganisationsViewImpl;
 import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.organisation.widgets.view.OrganisationsToolStripViewImpl;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
@@ -142,6 +144,7 @@ public class ClientModule extends AbstractPresenterModule {
                 OrganisationSchemeListPresenter.OrganisationSchemeListProxy.class);
         bindPresenter(OrganisationSchemePresenter.class, OrganisationSchemePresenter.OrganisationSchemeView.class, OrganisationSchemeViewImpl.class,
                 OrganisationSchemePresenter.OrganisationSchemeProxy.class);
+        bindPresenter(OrganisationsPresenter.class, OrganisationsPresenter.OrganisationsView.class, OrganisationsViewImpl.class, OrganisationsPresenter.OrganisationsProxy.class);
         bindPresenter(OrganisationPresenter.class, OrganisationPresenter.OrganisationView.class, OrganisationViewImpl.class, OrganisationPresenter.OrganisationProxy.class);
 
         // Categories

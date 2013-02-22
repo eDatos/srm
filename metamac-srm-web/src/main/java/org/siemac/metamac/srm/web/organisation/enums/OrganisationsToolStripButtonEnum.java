@@ -4,7 +4,7 @@ import com.smartgwt.client.types.ValueEnum;
 
 public enum OrganisationsToolStripButtonEnum implements ValueEnum {
 
-    ORGANISATION_SCHEMES("org_scheme_button"), ORGANISATIONS("org_button");
+    ORGANISATION_SCHEMES("org_scheme_button"), ORGANISATIONS("organisation_button");
 
     private String value;
 

@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 import java.util.LinkedHashMap;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -36,6 +37,7 @@ public class CommonUtils {
     public static LinkedHashMap<String, String> getOrganisationTypeHashMap() {
         if (organisationTypeHashMap == null) {
             organisationTypeHashMap = new LinkedHashMap<String, String>();
+            organisationTypeHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
             for (OrganisationTypeEnum type : OrganisationTypeEnum.values()) {
                 organisationTypeHashMap.put(type.name(), getOrganisationTypeName(type));
             }

@@ -150,6 +150,15 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    public static List<PlaceRequest> buildAbsoluteOrganisationPlaceRequest(String organisationSchemeUrn, String organisationUrn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum) {
+        List<PlaceRequest> placeRequests = buildAbsoluteOrganisationSchemeListPlaceRequest();
+        PlaceRequest organisationSchemePlace = buildRelativeOrganisationSchemePlaceRequest(organisationSchemeUrn, organisationSchemeTypeEnum);
+        PlaceRequest organisationPlace = buildRelativeOrganisationPlaceRequest(organisationUrn);
+        placeRequests.add(organisationSchemePlace);
+        placeRequests.add(organisationPlace);
+        return placeRequests;
+    }
+
     // ---------------------------------------------------------------------------
     // CATEGORIES
     // ---------------------------------------------------------------------------

@@ -1,0 +1,25 @@
+package org.siemac.metamac.srm.web.shared.criteria;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
+
+public class OrganisationWebCriteria extends ItemWebCriteria {
+
+    private static final long    serialVersionUID = 1L;
+
+    private OrganisationTypeEnum organisationType;
+
+    public OrganisationWebCriteria() {
+    }
+
+    public OrganisationWebCriteria(String criteria) {
+        super(criteria);
+    }
+
+    public OrganisationTypeEnum getOrganisationType() {
+        return organisationType;
+    }
+
+    public void setOrganisationType(OrganisationTypeEnum organisationType) {
+        this.organisationType = organisationType;
+    }
+}

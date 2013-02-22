@@ -11,6 +11,7 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class RecordUtils {
 
@@ -26,13 +27,14 @@ public class RecordUtils {
     // ORGANISATIONS
 
     public static OrganisationRecord getOrganisationRecord(OrganisationMetamacDto organisationDto) {
-        OrganisationRecord record = new OrganisationRecord(organisationDto.getId(), organisationDto.getCode(), getLocalisedString(organisationDto.getName()), organisationDto.getUrn());
+        OrganisationRecord record = new OrganisationRecord(organisationDto.getId(), organisationDto.getCode(), getLocalisedString(organisationDto.getName()), organisationDto.getUrn(),
+                organisationDto.getItemSchemeVersionUrn(), organisationDto.getType());
         return record;
     }
 
-    public static OrganisationRecord getOrganisationRecord(ItemHierarchyDto organisation) {
+    public static OrganisationRecord getOrganisationRecord(ItemHierarchyDto organisation, OrganisationTypeEnum organisationTypeEnum) {
         OrganisationRecord record = new OrganisationRecord(organisation.getItem().getId(), organisation.getItem().getCode(), getLocalisedString(organisation.getItem().getName()), organisation
-                .getItem().getUrn());
+                .getItem().getUrn(), organisation.getItem().getItemSchemeVersionUrn(), organisationTypeEnum);
         return record;
     }
 
@@ -43,5 +45,4 @@ public class RecordUtils {
                 .getOrganisationUnit()), contactDto);
         return record;
     }
-
 }

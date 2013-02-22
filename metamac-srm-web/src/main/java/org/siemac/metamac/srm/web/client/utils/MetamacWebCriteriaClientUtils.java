@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ItemWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.OrganisationWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VersionableResourceWebCriteria;
 
 public class MetamacWebCriteriaClientUtils {
@@ -65,6 +66,10 @@ public class MetamacWebCriteriaClientUtils {
 
     public static OrganisationSchemeWebCriteria addLastVersionConditionToOrganisationSchemeWebCriteria(OrganisationSchemeWebCriteria organisationSchemeWebCriteria) {
         return (OrganisationSchemeWebCriteria) getVersionableResourceWebCriteriaForLastVersion(organisationSchemeWebCriteria);
+    }
+
+    public static OrganisationWebCriteria addLastVersionConditionToOrganisationWebCriteria(OrganisationWebCriteria organisationWebCriteria) {
+        return (OrganisationWebCriteria) addLastVersionConditionToItemWebCriteria(organisationWebCriteria);
     }
 
     // DSD
