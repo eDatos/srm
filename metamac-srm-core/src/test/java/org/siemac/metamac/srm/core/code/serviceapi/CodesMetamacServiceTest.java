@@ -1977,7 +1977,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         assertEquals(urn, code.getNameableArtefact().getUrn());
         assertNull(code.getVariableElement());
-        assertEqualsInternationalString(code.getShortName(), "es", "nombre corto code2", "en", "short name 1 code2");
+        assertEqualsInternationalString(code.getShortName(), "es", "nombre corto code2", "en", "short name code2");
     }
 
     @Test
@@ -3672,7 +3672,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(urn, variableElement.getNameableArtefact().getUrn());
         assertEquals("VARIABLE_ELEMENT_02", variableElement.getNameableArtefact().getCode());
         assertEqualsInternationalString(variableElement.getNameableArtefact().getName(), "es", "Nombre 2-2", "en", "Name 2-2");
-        assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2-2", "en", "Short name 2-2");
+        assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto variableElement 2-2", "en", "Short name variableElement 2-2");
         assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidFrom());
         assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidTo());
         assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());

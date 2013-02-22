@@ -1154,7 +1154,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
             // Restrictions
             MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), "short name 1", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), "short name", OperationType.LIKE));
             conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_URN.name(), CODELIST_1_V2, OperationType.EQ));
             metamacCriteria.setRestriction(conjunctionRestriction);
 
