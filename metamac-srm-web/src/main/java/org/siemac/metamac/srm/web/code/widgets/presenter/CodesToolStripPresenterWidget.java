@@ -41,7 +41,7 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
 
             @Override
             public void onClick(ClickEvent event) {
-                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistFamilyListPlaceRequest());
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistFamiliesPlaceRequest());
             }
         }));
 
@@ -49,7 +49,7 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
 
             @Override
             public void onClick(ClickEvent event) {
-                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistListPlaceRequest());
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistsPlaceRequest());
             }
         }));
 
@@ -65,7 +65,7 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
 
             @Override
             public void onClick(ClickEvent event) {
-                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariableFamilyListPlaceRequest());
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariableFamiliesPlaceRequest());
             }
         }));
 
@@ -73,7 +73,7 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
 
             @Override
             public void onClick(ClickEvent event) {
-                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariableListPlaceRequest());
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariablesPlaceRequest());
             }
         }));
     }

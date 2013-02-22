@@ -38,7 +38,7 @@ public class ConceptsToolStripPresenterWidget extends PresenterWidget<ConceptsTo
 
             @Override
             public void onClick(ClickEvent event) {
-                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteConceptSchemeListPlaceRequest());
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteConceptSchemesPlaceRequest());
             }
         }));
 

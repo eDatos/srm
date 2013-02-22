@@ -38,7 +38,7 @@ public class OrganisationsToolStripPresenterWidget extends PresenterWidget<Organ
 
             @Override
             public void onClick(ClickEvent event) {
-                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteOrganisationSchemeListPlaceRequest());
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteOrganisationSchemesPlaceRequest());
             }
         }));
 

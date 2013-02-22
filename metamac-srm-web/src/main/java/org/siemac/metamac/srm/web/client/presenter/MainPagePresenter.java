@@ -219,26 +219,26 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
     @Override
     public void goToConcepts() {
-        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteConceptSchemeListPlaceRequest());
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteConceptSchemesPlaceRequest());
     }
 
     @Override
     public void goToCodelists() {
-        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistListPlaceRequest());
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistsPlaceRequest());
     }
 
     @Override
     public void goToDsds() {
-        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdListPlaceRequest());
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdsPlaceRequest());
     }
 
     @Override
     public void goToOrganisations() {
-        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteOrganisationSchemeListPlaceRequest());
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteOrganisationSchemesPlaceRequest());
     }
 
     @Override
     public void goToCategories() {
-        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCategorySchemeListPlaceRequest());
+        placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCategorySchemesPlaceRequest());
     }
 }
