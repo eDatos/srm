@@ -25,6 +25,7 @@ public class CodesToolStripViewImpl implements CodesToolStripPresenterWidget.Cod
     private CustomToolStripButton codesButton;
     private CustomToolStripButton variableFamiliesButton;
     private CustomToolStripButton variablesButton;
+    private CustomToolStripButton variableElementsButton;
 
     @Inject
     public CodesToolStripViewImpl() {
@@ -59,11 +60,17 @@ public class CodesToolStripViewImpl implements CodesToolStripPresenterWidget.Cod
         variablesButton.setActionType(SelectionType.RADIO);
         variablesButton.setRadioGroup(RADIO_GROUP);
 
+        variableElementsButton = new CustomToolStripButton(MetamacSrmWeb.getConstants().variableElements());
+        variableElementsButton.setID(CodesToolStripButtonEnum.VARIABLE_ELEMENTS.getValue());
+        variableElementsButton.setActionType(SelectionType.RADIO);
+        variableElementsButton.setRadioGroup(RADIO_GROUP);
+
         toolStrip.addButton(codelistFamiliesButton);
         toolStrip.addButton(codelistsButton);
         toolStrip.addButton(codesButton);
         toolStrip.addButton(variableFamiliesButton);
         toolStrip.addButton(variablesButton);
+        toolStrip.addButton(variableElementsButton);
     }
 
     @Override
@@ -120,5 +127,10 @@ public class CodesToolStripViewImpl implements CodesToolStripPresenterWidget.Cod
     @Override
     public HasClickHandlers getVariablesButton() {
         return variablesButton;
+    }
+
+    @Override
+    public HasClickHandlers getVariableElementsButton() {
+        return variableElementsButton;
     }
 }

@@ -53,7 +53,6 @@ public class GetVariableElementsActionHandler extends SecurityActionHandler<GetV
 
         // Variable element Criteria
         restriction.getRestrictions().add(MetamacWebCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
-
         criteria.setRestriction(restriction);
 
         // Pagination

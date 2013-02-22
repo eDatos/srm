@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.shared.criteria;
 
-public class VariableElementWebCriteria extends MetamacWebCriteria {
+public class VariableElementWebCriteria extends NameableArtefactWebCriteria {
 
     private static final long serialVersionUID = 1L;
 

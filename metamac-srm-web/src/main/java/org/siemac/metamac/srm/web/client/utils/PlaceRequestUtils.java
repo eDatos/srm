@@ -354,6 +354,13 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    public static List<PlaceRequest> buildAbsoluteVariableElementsPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.variableElementsPage));
+        return placeRequestHierarchy;
+    }
+
     public static List<PlaceRequest> buildAbsoluteVariableElementPlaceRequest(String variableCode, String variableElementCode) {
         List<PlaceRequest> placeRequestHierarchy = buildAbsoluteVariablePlaceRequest(variableCode);
         placeRequestHierarchy.add(buildRelativeVariableElementPlaceRequest(variableElementCode));

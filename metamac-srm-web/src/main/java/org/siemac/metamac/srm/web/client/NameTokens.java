@@ -47,6 +47,7 @@ public class NameTokens {
     public static final String variableFamilyPage         = "variableFamily";
     public static final String variableListPage           = "variables";
     public static final String variablePage               = "variable";
+    public static final String variableElementsPage       = "variableElements";
     public static final String variableElementPage        = "variableElement";
 
 }

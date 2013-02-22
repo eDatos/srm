@@ -1,8 +1,5 @@
 package org.siemac.metamac.srm.web.server.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
@@ -257,32 +254,43 @@ public class MetamacWebCriteriaUtils {
         return conjunctionRestriction;
     }
 
-    /**
-     * Returns a {@link MetamacCriteriaConjunctionRestriction} that compares the criteria with the CODE and NAMEof the VariableElement
-     * 
-     * @param criteria
-     * @return
-     */
     public static MetamacCriteriaConjunctionRestriction getVariableElementCriteriaRestriction(VariableElementWebCriteria criteria) {
-        MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
-        List<MetamacCriteriaRestriction> restrictions = new ArrayList<MetamacCriteriaRestriction>();
+        MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+
         if (criteria != null) {
+
+            // General criteria
+
             if (StringUtils.isNotBlank(criteria.getCriteria())) {
                 MetamacCriteriaDisjunctionRestriction variableElementCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
                 variableElementCriteriaDisjunction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
                 variableElementCriteriaDisjunction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
-                restrictions.add(variableElementCriteriaDisjunction);
+                // TODO Variable URN
+                conjunctionRestriction.getRestrictions().add(variableElementCriteriaDisjunction);
+            }
+
+            // Specific criteria
+
+            if (StringUtils.isNotBlank(criteria.getCode())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getUrn())) {
+                // TODO
+                // conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
             }
             if (StringUtils.isNotBlank(criteria.getVariableUrn())) {
                 MetamacCriteriaPropertyRestriction variableElementPropertyRestriction = new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.VARIABLE_URN.name(),
                         criteria.getVariableUrn(), OperationType.EQ);
-                restrictions.add(variableElementPropertyRestriction);
+                conjunctionRestriction.getRestrictions().add(variableElementPropertyRestriction);
             }
         }
-        restriction.getRestrictions().addAll(restrictions);
-        return restriction;
+
+        return conjunctionRestriction;
     }
 
     // -------------------------------------------------------------------------------------------------------------

@@ -28,6 +28,7 @@ import org.siemac.metamac.srm.web.code.presenter.CodelistListPresenter;
 import org.siemac.metamac.srm.web.code.presenter.CodelistPresenter;
 import org.siemac.metamac.srm.web.code.presenter.CodesPresenter;
 import org.siemac.metamac.srm.web.code.presenter.VariableElementPresenter;
+import org.siemac.metamac.srm.web.code.presenter.VariableElementsPresenter;
 import org.siemac.metamac.srm.web.code.presenter.VariableFamilyListPresenter;
 import org.siemac.metamac.srm.web.code.presenter.VariableFamilyPresenter;
 import org.siemac.metamac.srm.web.code.presenter.VariableListPresenter;
@@ -39,6 +40,7 @@ import org.siemac.metamac.srm.web.code.view.CodelistListViewImpl;
 import org.siemac.metamac.srm.web.code.view.CodelistViewImpl;
 import org.siemac.metamac.srm.web.code.view.CodesViewImpl;
 import org.siemac.metamac.srm.web.code.view.VariableElementViewImpl;
+import org.siemac.metamac.srm.web.code.view.VariableElementsViewImpl;
 import org.siemac.metamac.srm.web.code.view.VariableFamilyListViewImpl;
 import org.siemac.metamac.srm.web.code.view.VariableFamilyViewImpl;
 import org.siemac.metamac.srm.web.code.view.VariableListViewImpl;
@@ -166,6 +168,7 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(VariableListPresenter.class, VariableListPresenter.VariableListView.class, VariableListViewImpl.class, VariableListPresenter.VariableListProxy.class);
         bindPresenter(VariableFamilyPresenter.class, VariableFamilyPresenter.VariableFamilyView.class, VariableFamilyViewImpl.class, VariableFamilyPresenter.VariableFamilyProxy.class);
         bindPresenter(VariablePresenter.class, VariablePresenter.VariableView.class, VariableViewImpl.class, VariablePresenter.VariableProxy.class);
+        bindPresenter(VariableElementsPresenter.class, VariableElementsPresenter.VariableElementsView.class, VariableElementsViewImpl.class, VariableElementsPresenter.VariableElementsProxy.class);
         bindPresenter(VariableElementPresenter.class, VariableElementPresenter.VariableElementView.class, VariableElementViewImpl.class, VariableElementPresenter.VariableElementProxy.class);
         bindPresenter(CodesPresenter.class, CodesPresenter.CodesView.class, CodesViewImpl.class, CodesPresenter.CodesProxy.class);
     }

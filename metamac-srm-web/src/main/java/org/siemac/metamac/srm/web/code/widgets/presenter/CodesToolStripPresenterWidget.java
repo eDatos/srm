@@ -23,6 +23,7 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
         HasClickHandlers getCodesButton();
         HasClickHandlers getVariableFamiliesButton();
         HasClickHandlers getVariablesButton();
+        HasClickHandlers getVariableElementsButton();
 
         void selectButton(CodesToolStripButtonEnum button);
     }
@@ -74,6 +75,14 @@ public class CodesToolStripPresenterWidget extends PresenterWidget<CodesToolStri
             @Override
             public void onClick(ClickEvent event) {
                 placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariablesPlaceRequest());
+            }
+        }));
+
+        registerHandler(getView().getVariableElementsButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariableElementsPlaceRequest());
             }
         }));
     }

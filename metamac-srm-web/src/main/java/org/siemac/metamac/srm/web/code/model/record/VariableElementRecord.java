@@ -31,6 +31,10 @@ public class VariableElementRecord extends ListGridRecord {
         setAttribute(VariableElementDS.URN, value);
     }
 
+    public String getCode() {
+        return getAttributeAsString(VariableElementDS.CODE);
+    }
+
     public String getUrn() {
         return getAttributeAsString(VariableElementDS.URN);
     }
