@@ -10,9 +10,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 
 public abstract class ImportationMetamacCommonValidations {
 
-    public void validateRestrictionsGeneral(ServiceContext ctx, Object source) throws MetamacException {
-    }
-
     /**
      * Besides this, other validations are performed in the methods preCreate of services.
      * 

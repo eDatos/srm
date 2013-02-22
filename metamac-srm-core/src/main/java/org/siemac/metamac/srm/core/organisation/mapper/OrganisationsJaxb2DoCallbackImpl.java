@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencySchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationSchemesType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
@@ -15,15 +24,6 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsJaxb2DoCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencySchemeType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerSchemeType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderSchemeType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationSchemesType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitSchemeType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 
 @org.springframework.stereotype.Component("organisationsMetamacJaxb2DoCallback")
 public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements OrganisationsJaxb2DoCallback {
@@ -214,7 +214,6 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
      **************************************************************************/
     @Override
     public void validateRestrictions(ServiceContext ctx, OrganisationSchemeVersion source) throws MetamacException {
-        validateRestrictionsGeneral(ctx, source);
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(source.getOrganisationSchemeType())) {
             validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
         } else {

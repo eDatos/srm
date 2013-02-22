@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorisationType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorisationsType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemesType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -16,11 +21,6 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesJaxb2DoCallback;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorisationType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorisationsType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemeType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemesType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 
 @Component("categoriesMetamacJaxb2DoCallback")
 public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements CategoriesJaxb2DoCallback {
@@ -116,12 +116,14 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
      **************************************************************************/
     @Override
     public void validateRestrictions(ServiceContext ctx, CategorySchemeVersion source) throws MetamacException {
-        validateRestrictionsGeneral(ctx, source);
+        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
     }
 
     @Override
     public void validateRestrictions(ServiceContext ctx, Categorisation source) throws MetamacException {
-        validateRestrictionsGeneral(ctx, source);
+        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
+        // TODO añadir validación de que en metamac el artefacto (o el esquema al que pertenezca) debe de ser final
+        // TODO añadir validación de que en metamac el esquema de la categoría debe de ser final
     }
 
 }

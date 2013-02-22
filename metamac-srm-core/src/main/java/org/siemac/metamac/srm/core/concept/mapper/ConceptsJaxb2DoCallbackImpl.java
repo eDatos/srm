@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptSchemeType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -15,9 +18,6 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCop
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsJaxb2DoCallback;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptSchemeType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptsType;
 
 @org.springframework.stereotype.Component("conceptsMetamacJaxb2DoCallback")
 public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements ConceptsJaxb2DoCallback {
@@ -121,7 +121,6 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
      **************************************************************************/
     @Override
     public void validateRestrictions(ServiceContext ctx, ConceptSchemeVersion source) throws MetamacException {
-        validateRestrictionsGeneral(ctx, source);
         validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
     }
 

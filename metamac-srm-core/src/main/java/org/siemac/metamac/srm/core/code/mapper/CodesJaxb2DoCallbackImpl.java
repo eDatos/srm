@@ -20,15 +20,19 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ItemSchemeCommonA
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesJaxb2DoCallback;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ActionToPerformEnum;
 
 @org.springframework.stereotype.Component("codesMetamacJaxb2DoCallback")
 public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements CodesJaxb2DoCallback {
+
+    private final Class                   codeClass     = CodeMetamac.class;
+    private final Class                   codeListClass = CodelistVersionMetamac.class;
 
     @Autowired
     private CodesMetamacService           codesMetamacService;
 
     @Autowired
-    @Qualifier("ItemSchemeCommonActionsImportSdmxSrm")
+    @Qualifier("ItemSchemeCommonActionsImport")
     private ItemSchemeCommonActionsImport itemSchemeCommonActionsImport;
 
     /**************************************************************************
@@ -121,7 +125,6 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
      **************************************************************************/
     @Override
     public void validateRestrictions(ServiceContext ctx, CodelistVersion source) throws MetamacException {
-        validateRestrictionsGeneral(ctx, source);
         validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
     }
 
@@ -129,7 +132,20 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
      * IS_FINAL and IS_PARTIAL
      **************************************************************************/
     @Override
-    public boolean performImportationFinalAndPartialActions(ServiceContext ctx, CodelistVersion codelistVersionOld, CodelistVersion codelistVersionNew) throws MetamacException {
+    public ActionToPerformEnum performImportationFinalAndPartialActions(ServiceContext ctx, CodelistVersion codelistVersionOld, CodelistVersion codelistVersionNew) throws MetamacException {
         return itemSchemeCommonActionsImport.performImportationFinalAndPartialActions(ctx, codelistVersionOld, codelistVersionNew);
+    }
+
+    /**************************************************************************
+     * Getters
+     **************************************************************************/
+    @Override
+    public Class getCodeClass() {
+        return codeClass;
+    }
+
+    @Override
+    public Class getCodeListClass() {
+        return codeListClass;
     }
 }

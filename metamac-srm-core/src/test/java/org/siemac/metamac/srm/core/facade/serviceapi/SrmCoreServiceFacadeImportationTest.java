@@ -188,6 +188,50 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
 
     @Test
     @DirtyDatabase
+    @Ignore
+    public void testImport_CODELIST_PARTIAL_AND_FINAL() throws Exception {
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt1 = new TransactionTemplate(transactionManager);
+        tt1.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt1.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_NO_PARTIAL)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+        WaitUntilJobFinished();
+
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt2 = new TransactionTemplate(transactionManager);
+        tt2.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt2.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_NO_PARTIAL)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+        WaitUntilJobFinished();
+
+    }
+
+    @Test
+    @DirtyDatabase
     public void testImport_DEMOGRAPHY_CONCEPTS() throws Exception {
         // New Transaction: Because the job needs persisted data
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);

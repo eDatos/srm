@@ -213,7 +213,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
      **************************************************************************/
     @Override
     public void validateRestrictions(ServiceContext ctx, DataStructureDefinitionVersion source) throws MetamacException {
-        validateRestrictionsGeneral(ctx, source);
+        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
     }
 
 }
