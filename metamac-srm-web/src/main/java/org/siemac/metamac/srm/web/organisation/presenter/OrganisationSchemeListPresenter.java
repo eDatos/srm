@@ -16,7 +16,9 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.organisation.enums.OrganisationsToolStripButtonEnum;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeListUiHandlers;
+import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
@@ -55,14 +57,18 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
         implements
             OrganisationSchemeListUiHandlers {
 
-    public final static int                           SCHEME_LIST_FIRST_RESULT           = 0;
-    public final static int                           SCHEME_LIST_MAX_RESULTS            = 30;
+    public final static int                           SCHEME_LIST_FIRST_RESULT                       = 0;
+    public final static int                           SCHEME_LIST_MAX_RESULTS                        = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
 
+    private OrganisationsToolStripPresenterWidget     organisationsToolStripPresenterWidget;
+
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetStructuralResourcesToolBar             = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentOrganisationsToolBar = new Object();
 
     @ProxyCodeSplit
     @NameToken(NameTokens.organisationSchemeListPage)
@@ -84,10 +90,11 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
 
     @Inject
     public OrganisationSchemeListPresenter(EventBus eventBus, OrganisationSchemeListView organisationSchemeListView, OrganisationSchemeListProxy organisationSchemeListProxy, DispatchAsync dispatcher,
-            PlaceManager placeManager) {
+            PlaceManager placeManager, OrganisationsToolStripPresenterWidget organisationsToolStripPresenterWidget) {
         super(eventBus, organisationSchemeListView, organisationSchemeListProxy);
         this.dispatcher = dispatcher;
         this.placeManager = placeManager;
+        this.organisationsToolStripPresenterWidget = organisationsToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -109,8 +116,12 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentOrganisationsToolBar, organisationsToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, getConstants().organisationSchemes());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.ORGANISATIONS);
+        organisationsToolStripPresenterWidget.selectOrganisationsMenuButton(OrganisationsToolStripButtonEnum.ORGANISATION_SCHEMES);
     }
 
     @Override

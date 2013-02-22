@@ -137,6 +137,13 @@ public class PlaceRequestUtils {
         return getParamFromUrl(placeManager, NameTokens.organisationPage, PlaceRequestParams.organisationParamId);
     }
 
+    public static List<PlaceRequest> buildAbsoluteOrganisationsPlaceRequest() {
+        List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
+        placeRequestHierarchy.add(new PlaceRequest(NameTokens.organisationsPage));
+        return placeRequestHierarchy;
+    }
+
     public static PlaceRequest buildRelativeOrganisationPlaceRequest(String organisationUrn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(organisationUrn));
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.organisationPage).with(PlaceRequestParams.organisationParamId, splitUrn[splitUrn.length - 1]);

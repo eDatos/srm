@@ -75,6 +75,8 @@ import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePrese
 import org.siemac.metamac.srm.web.organisation.view.OrganisationSchemeListViewImpl;
 import org.siemac.metamac.srm.web.organisation.view.OrganisationSchemeViewImpl;
 import org.siemac.metamac.srm.web.organisation.view.OrganisationViewImpl;
+import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.organisation.widgets.view.OrganisationsToolStripViewImpl;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 
 import com.google.inject.Singleton;
@@ -104,6 +106,7 @@ public class ClientModule extends AbstractPresenterModule {
         bindSingletonPresenterWidget(CodesToolStripPresenterWidget.class, CodesToolStripPresenterWidget.CodesToolStripView.class, CodesToolStripViewImpl.class);
         bindSingletonPresenterWidget(CategoriesToolStripPresenterWidget.class, CategoriesToolStripPresenterWidget.CategoriesToolStripView.class, CategoriesToolStripViewImpl.class);
         bindSingletonPresenterWidget(ConceptsToolStripPresenterWidget.class, ConceptsToolStripPresenterWidget.ConceptsToolStripView.class, ConceptsToolStripViewImpl.class);
+        bindSingletonPresenterWidget(OrganisationsToolStripPresenterWidget.class, OrganisationsToolStripPresenterWidget.OrganisationsToolStripView.class, OrganisationsToolStripViewImpl.class);
 
         // Gate keeper
         bind(LoggedInGatekeeper.class).in(Singleton.class);

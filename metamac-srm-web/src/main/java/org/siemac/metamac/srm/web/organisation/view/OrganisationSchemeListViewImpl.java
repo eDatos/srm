@@ -161,13 +161,6 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         ListGridField type = new ListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
         organisationSchemeList.getListGrid().setFields(fieldCode, fieldName, status, type);
 
-        panel = new VLayout();
-        panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
-        panel.addMember(toolStrip);
-        panel.addMember(searchSectionStack);
-        panel.addMember(organisationSchemeList);
-
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationSchemeDeleteConfirmationTitle(), getConstants().organisationSchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
@@ -178,11 +171,35 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
                 deleteConfirmationWindow.hide();
             }
         });
+
+        panel = new VLayout();
+        panel.setHeight100();
+
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(toolStrip);
+        subPanel.addMember(searchSectionStack);
+        subPanel.addMember(organisationSchemeList);
+
+        panel.addMember(subPanel);
     }
 
     @Override
     public Widget asWidget() {
         return panel;
+    }
+
+    @Override
+    public void setInSlot(Object slot, Widget content) {
+        if (slot == OrganisationSchemeListPresenter.TYPE_SetContextAreaContentOrganisationsToolBar) {
+            if (content != null) {
+                panel.addMember(content, 0);
+            }
+        } else {
+            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
+            // Who knows, maybe the parent class knows what to do with this slot.
+            super.setInSlot(slot, content);
+        }
     }
 
     @Override

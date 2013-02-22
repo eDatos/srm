@@ -17,8 +17,10 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.organisation.enums.OrganisationsToolStripButtonEnum;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
+import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
@@ -59,11 +61,13 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class OrganisationPresenter extends Presenter<OrganisationPresenter.OrganisationView, OrganisationPresenter.OrganisationProxy> implements OrganisationUiHandlers {
 
-    private final DispatchAsync    dispatcher;
-    private final PlaceManager     placeManager;
+    private final DispatchAsync                   dispatcher;
+    private final PlaceManager                    placeManager;
 
-    private String                 organisationSchemeUrn;
-    private OrganisationMetamacDto organisationMetamacDto;
+    private String                                organisationSchemeUrn;
+    private OrganisationMetamacDto                organisationMetamacDto;
+
+    private OrganisationsToolStripPresenterWidget organisationsToolStripPresenterWidget;
 
     @TitleFunction
     public static String getTranslatedTitle() {
@@ -83,13 +87,17 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentOrganisation = new Type<RevealContentHandler<?>>();
+    public static final Type<RevealContentHandler<?>> TYPE_SetContextAreaContentOrganisation         = new Type<RevealContentHandler<?>>();
+
+    public static final Object                        TYPE_SetContextAreaContentOrganisationsToolBar = new Object();
 
     @Inject
-    public OrganisationPresenter(EventBus eventBus, OrganisationView view, OrganisationProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager) {
+    public OrganisationPresenter(EventBus eventBus, OrganisationView view, OrganisationProxy proxy, DispatchAsync dispatcher, PlaceManager placeManager,
+            OrganisationsToolStripPresenterWidget organisationsToolStripPresenterWidget) {
         super(eventBus, view, proxy);
         this.placeManager = placeManager;
         this.dispatcher = dispatcher;
+        this.organisationsToolStripPresenterWidget = organisationsToolStripPresenterWidget;
         getView().setUiHandlers(this);
     }
 
@@ -101,8 +109,12 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setInSlot(TYPE_SetContextAreaContentOrganisationsToolBar, organisationsToolStripPresenterWidget);
+
         SetTitleEvent.fire(this, getConstants().organisation());
         SelectMenuButtonEvent.fire(this, ToolStripButtonEnum.ORGANISATIONS);
+        organisationsToolStripPresenterWidget.selectOrganisationsMenuButton(OrganisationsToolStripButtonEnum.ORGANISATIONS);
     }
 
     @Override

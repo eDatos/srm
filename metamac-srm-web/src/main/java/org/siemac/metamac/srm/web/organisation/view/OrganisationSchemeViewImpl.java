@@ -557,6 +557,19 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     @Override
+    public void setInSlot(Object slot, Widget content) {
+        if (slot == OrganisationSchemePresenter.TYPE_SetContextAreaContentOrganisationsToolBar) {
+            if (content != null) {
+                panel.addMember(content, 0);
+            }
+        } else {
+            // To support inheritance in your views it is good practice to call super.setInSlot when you can't handle the call.
+            // Who knows, maybe the parent class knows what to do with this slot.
+            super.setInSlot(slot, content);
+        }
+    }
+
+    @Override
     public void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         this.organisationSchemeDto = organisationSchemeMetamacDto;
 
