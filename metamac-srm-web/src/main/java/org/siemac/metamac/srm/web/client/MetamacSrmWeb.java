@@ -46,6 +46,7 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
     // Application id should be the same than the one defined in org.siemac.metamac.srm.core.common.constants.SrmConstants.SECURITY_APPLICATION_ID
     @Override
     public void onModuleLoad() {
+        setUncaughtExceptionHandler();
         ginjector.getDispatcher().execute(new GetNavigationBarUrlAction(), new WaitingAsyncCallback<GetNavigationBarUrlResult>() {
 
             @Override
@@ -56,7 +57,11 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
             @Override
             public void onWaitSuccess(GetNavigationBarUrlResult result) {
                 // Load scripts for navigation bar
-                MetamacNavBar.loadScripts(result.getNavigationBarUrl());
+                if (result.getNavigationBarUrl() != null) {
+                    MetamacNavBar.loadScripts(result.getNavigationBarUrl());
+                } else {
+                    logger.log(Level.SEVERE, "Error loading toolbar");
+                }
                 loadNonSecuredApplication();
             };
         });
@@ -168,8 +173,6 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
                 defaultMainatainer = result.getOrganisationMetamacDto();
 
                 // Load the application
-                setUncaughtExceptionHandler();
-                // MetamacSrmWeb.this.set
                 LoginAuthenticatedEvent.fire(ginjector.getEventBus(), MetamacSrmWeb.principal);
                 // This is required for GWT-Platform proxy's generator.
                 DelayedBindRegistry.bind(ginjector);
