@@ -5,6 +5,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -27,6 +28,13 @@ public class ItemSchemeCommonActionsImportImpl implements ItemSchemeCommonAction
 
     @Override
     public ActionToPerformEnum performImportationFinalAndPartialActions(ServiceContext ctx, CodelistVersion codelistVersionOld, CodelistVersion codelistVersionNew) throws MetamacException {
+        CodelistVersionMetamac codelistVersionOldMetamac = (CodelistVersionMetamac) codelistVersionOld;
+        CodelistVersionMetamac codelistVersionNewMetamac = (CodelistVersionMetamac) codelistVersionNew;
+
+        // TODO continuar aqui
+        // if (codelistVersionOldMetamac.get) {
+        // Codificando partial y procstatus ---------------------------------
+        // }
 
         if (BooleanUtils.isTrue(codelistVersionNew.getMaintainableArtefact().getFinalLogic())) {
             if (BooleanUtils.isTrue(codelistVersionNew.getIsPartial())) {
@@ -40,7 +48,6 @@ public class ItemSchemeCommonActionsImportImpl implements ItemSchemeCommonAction
                     .build();
         }
     }
-
     /**
      * New ItemScheme (Final = true, Partial = true)
      * 
