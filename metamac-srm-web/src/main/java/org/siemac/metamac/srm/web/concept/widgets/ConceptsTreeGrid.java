@@ -74,16 +74,16 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
                             String sdmxRole = treeNode.getAttributeAsString(ConceptDS.SDMX_RELATED_ARTEFACT);
 
                             boolean matches = true;
-                            if (codeCriteria != null && !StringUtils.startsWithIgnoreCase(code, codeCriteria)) {
+                            if (codeCriteria != null && !StringUtils.containsIgnoreCase(code, codeCriteria)) {
                                 matches = false;
                             }
-                            if (nameCriteria != null && !StringUtils.startsWithIgnoreCase(name, nameCriteria)) {
+                            if (nameCriteria != null && !StringUtils.containsIgnoreCase(name, nameCriteria)) {
                                 matches = false;
                             }
-                            if (typeCriteria != null && !StringUtils.startsWithIgnoreCase(type, typeCriteria)) {
+                            if (typeCriteria != null && !StringUtils.containsIgnoreCase(type, typeCriteria)) {
                                 matches = false;
                             }
-                            if (sdmxRoleCriteria != null && !StringUtils.startsWithIgnoreCase(sdmxRole, sdmxRoleCriteria)) {
+                            if (sdmxRoleCriteria != null && !StringUtils.containsIgnoreCase(sdmxRole, sdmxRoleCriteria)) {
                                 matches = false;
                             }
                             if (matches) {

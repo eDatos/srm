@@ -95,10 +95,10 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
                             String name = treeNode.getAttributeAsString(ItemDS.NAME);
 
                             boolean matches = true;
-                            if (codeCriteria != null && !StringUtils.startsWithIgnoreCase(code, codeCriteria)) {
+                            if (codeCriteria != null && !StringUtils.containsIgnoreCase(code, codeCriteria)) {
                                 matches = false;
                             }
-                            if (nameCriteria != null && !StringUtils.startsWithIgnoreCase(name, nameCriteria)) {
+                            if (nameCriteria != null && !StringUtils.containsIgnoreCase(name, nameCriteria)) {
                                 matches = false;
                             }
                             if (matches) {
