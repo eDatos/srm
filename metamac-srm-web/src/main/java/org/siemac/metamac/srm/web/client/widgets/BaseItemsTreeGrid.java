@@ -167,6 +167,7 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
     protected TreeNode createItemSchemeTreeNode(ItemSchemeDto itemSchemeDto) {
         TreeNode node = new TreeNode(SCHEME_NODE_NAME);
         node.setID(SCHEME_NODE_NAME);
+        node.setAttribute(ItemDS.URN, itemSchemeDto.getUrn());
         node.setAttribute(ItemDS.CODE, itemSchemeDto.getCode());
         node.setAttribute(ItemDS.NAME, InternationalStringUtils.getLocalisedString(itemSchemeDto.getName()));
         return node;
