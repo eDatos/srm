@@ -41,6 +41,9 @@ public class ConceptsTreeWindow extends CustomWindow {
         conceptsTreeGrid.setAutoFitMaxRecords(15);
         conceptsTreeGrid.getField(ConceptDS.CODE).setWidth("50%");
 
+        // Do not filter concepts
+        conceptsTreeGrid.setShowFilterEditor(false);
+
         // Do not show TYPE and SDMX_RELATED_ARTEFACT fields
         conceptsTreeGrid.getField(ConceptDS.TYPE).setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
         conceptsTreeGrid.getField(ConceptDS.SDMX_RELATED_ARTEFACT).setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
