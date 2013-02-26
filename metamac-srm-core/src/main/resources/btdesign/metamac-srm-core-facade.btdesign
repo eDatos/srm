@@ -470,6 +470,8 @@ Application SrmFacadeCore {
     		
     		"Creates code"
 	   		@CodeMetamacDto createCode(@CodeMetamacDto codeMetamacDto) throws MetamacException;
+    		"Creates a list of hierarchical codes"
+	   		createCodesHierarchy(String codelistUrn, String parentUrn, List<@ItemHierarchyDto> codesMetamacDto) throws MetamacException;
 	   		"Updates code"
             @CodeMetamacDto updateCode(@CodeMetamacDto codeDto) throws MetamacException;
 			"Change variable element to code"

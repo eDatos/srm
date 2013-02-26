@@ -64,6 +64,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -802,6 +803,16 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(NOT_EXISTS, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
+    }
+
+    @Test
+    public void testCreateCodesHierarchyInCodelistRootLevel() throws Exception {
+        testCreateCodesHierarchyInCodelistCommon(null);
+    }
+
+    @Test
+    public void testCreateCodesHierarchyInParent() throws Exception {
+        testCreateCodesHierarchyInCodelistCommon(CODELIST_2_V1_CODE_1);
     }
 
     @Test
@@ -2510,6 +2521,116 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             }
         }
         return null;
+    }
+
+    public void testCreateCodesHierarchyInCodelistCommon(String parentUrn) throws Exception {
+
+        String codelistUrn = CODELIST_2_V1;
+
+        List<ItemHierarchyDto> items = new ArrayList<ItemHierarchyDto>();
+
+        String newCode1 = null;
+        String newCode2 = null;
+        String newCode2Child1 = null;
+        String newCode3 = null;
+        String newCode3Child1 = null;
+        String newCode3Child2 = null;
+
+        {
+            ItemHierarchyDto item = new ItemHierarchyDto();
+            item.setItem(CodesMetamacDtoMocks.mockCodeDto());
+            newCode1 = item.getItem().getCode();
+            items.add(item);
+            // no child
+        }
+        {
+            ItemHierarchyDto item = new ItemHierarchyDto();
+            item.setItem(CodesMetamacDtoMocks.mockCodeDto());
+            newCode2 = item.getItem().getCode();
+            items.add(item);
+            // children
+            {
+                ItemHierarchyDto itemChild = new ItemHierarchyDto();
+                itemChild.setItem(CodesMetamacDtoMocks.mockCodeDto());
+                newCode2Child1 = itemChild.getItem().getCode();
+                item.addChildren(itemChild);
+            }
+        }
+        {
+            ItemHierarchyDto item = new ItemHierarchyDto();
+            item.setItem(CodesMetamacDtoMocks.mockCodeDto());
+            newCode3 = item.getItem().getCode();
+            items.add(item);
+            // children
+            {
+                ItemHierarchyDto itemChild = new ItemHierarchyDto();
+                itemChild.setItem(CodesMetamacDtoMocks.mockCodeDto());
+                newCode3Child1 = itemChild.getItem().getCode();
+                item.addChildren(itemChild);
+            }
+            {
+                ItemHierarchyDto itemChild = new ItemHierarchyDto();
+                itemChild.setItem(CodesMetamacDtoMocks.mockCodeDto());
+                newCode3Child2 = itemChild.getItem().getCode();
+                item.addChildren(itemChild);
+            }
+        }
+
+        // Create
+        srmCoreServiceFacade.createCodesHierarchy(getServiceContextAdministrador(), codelistUrn, parentUrn, items);
+
+        // Validate
+        String locale = "en";
+        String codelistOrderVisualisation = null;
+
+        List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, codelistOrderVisualisation);
+        String codeSubstringUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).";
+        // Validate
+        assertEquals(8, codes.size()); // 2 existing + 6 new
+
+        {
+            // new Code 1
+            CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, codeSubstringUrn + newCode1);
+            if (parentUrn == null) {
+                assertEquals(null, code.getParent());
+            } else {
+                assertEquals(parentUrn, code.getParent().getUrn());
+            }
+        }
+        {
+            // new Code 2
+            CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, codeSubstringUrn + newCode2);
+            if (parentUrn == null) {
+                assertEquals(null, code.getParent());
+            } else {
+                assertEquals(parentUrn, code.getParent().getUrn());
+            }
+            {
+                // new Code 2 child 1
+                CodeMetamacVisualisationResult codeChild = getCodeMetamacVisualisationResult(codes, codeSubstringUrn + newCode2Child1);
+                assertEquals(code.getUrn(), codeChild.getParent().getUrn());
+            }
+        }
+        {
+            // new Code 3
+            CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, codeSubstringUrn + newCode3);
+            if (parentUrn == null) {
+                assertEquals(null, code.getParent());
+            } else {
+                assertEquals(parentUrn, code.getParent().getUrn());
+            }
+
+            {
+                // new Code 3 child 1
+                CodeMetamacVisualisationResult codeChild = getCodeMetamacVisualisationResult(codes, codeSubstringUrn + newCode3Child1);
+                assertEquals(code.getUrn(), codeChild.getParent().getUrn());
+            }
+            {
+                // new Code 3 child 1
+                CodeMetamacVisualisationResult codeChild = getCodeMetamacVisualisationResult(codes, codeSubstringUrn + newCode3Child2);
+                assertEquals(code.getUrn(), codeChild.getParent().getUrn());
+            }
+        }
     }
 
     @Override

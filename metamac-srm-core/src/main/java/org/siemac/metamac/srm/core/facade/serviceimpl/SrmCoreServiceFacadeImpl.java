@@ -1054,6 +1054,22 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public void createCodesHierarchy(ServiceContext ctx, String codelistUrn, String parentUrn, List<ItemHierarchyDto> codesMetamacDto) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
+        ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Create all
+        CodeMetamac parent = null;
+        if (parentUrn != null) {
+            parent = getCodesMetamacService().retrieveCodeByUrn(ctx, parentUrn);
+        }
+        for (ItemHierarchyDto itemHierarchyDto : codesMetamacDto) {
+            createCodeHierarchy(ctx, codelistUrn, parent, itemHierarchyDto);
+        }
+    }
+
+    @Override
     public CodeMetamacDto updateCode(ServiceContext ctx, CodeMetamacDto codeDto) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeDto.getUrn());
@@ -2865,6 +2881,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
             DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
         } else {
             throw new MetamacException(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED, ctx.getUserId());
+        }
+    }
+
+    private void createCodeHierarchy(ServiceContext ctx, String codelistUrn, CodeMetamac parent, ItemHierarchyDto itemHierarchyDto) throws MetamacException {
+        // Transform
+        CodeMetamacDto codeMetamacDto = (CodeMetamacDto) itemHierarchyDto.getItem();
+        CodeMetamac codeMetamac = codesDto2DoMapper.codeDtoToDo(codeMetamacDto);
+        codeMetamac.setParent(parent);
+
+        // Create
+        CodeMetamac codeMetamacCreated = getCodesMetamacService().createCode(ctx, codelistUrn, codeMetamac);
+        for (ItemHierarchyDto childDto : itemHierarchyDto.getChildren()) {
+            createCodeHierarchy(ctx, codelistUrn, codeMetamacCreated, childDto);
         }
     }
 
