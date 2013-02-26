@@ -100,5 +100,4 @@ public class ConceptsTreeWindow extends CustomWindow {
     public ConceptsTreeGrid getConceptsTreeGrid() {
         return conceptsTreeGrid;
     }
-
 }
