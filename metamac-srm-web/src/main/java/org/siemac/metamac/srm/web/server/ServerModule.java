@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.AddCodelistsToCodelistFam
 import org.siemac.metamac.srm.web.server.handlers.code.AddVariableElementsToVariableActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.AddVariablesToVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CancelCodelistValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.CreateCodesHierarchyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CreateVariableElementOperationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodelistFamiliesActionHandler;
@@ -137,6 +138,7 @@ import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction
 import org.siemac.metamac.srm.web.shared.code.AddVariableElementsToVariableAction;
 import org.siemac.metamac.srm.web.shared.code.AddVariablesToVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
+import org.siemac.metamac.srm.web.shared.code.CreateCodesHierarchyAction;
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistFamiliesAction;
@@ -373,6 +375,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetVariableElementOperationsByVariableElementAction.class, GetVariableElementOperationsByVariableElementActionHandler.class);
         bindHandler(UpdateCodeVariableElementAction.class, UpdateCodeVariableElementActionHandler.class);
         bindHandler(GetCodesAction.class, GetCodesActionHandler.class);
+        bindHandler(CreateCodesHierarchyAction.class, CreateCodesHierarchyActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
