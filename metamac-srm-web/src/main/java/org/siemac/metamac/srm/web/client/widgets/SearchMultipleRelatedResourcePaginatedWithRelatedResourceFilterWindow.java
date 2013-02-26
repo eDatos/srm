@@ -107,6 +107,7 @@ public class SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWind
         addItem(form);
         show();
     }
+
     public HasClickHandlers getSave() {
         return form.getItem(FIELD_SAVE);
     }
