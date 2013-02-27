@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.srm.web.client.utils.ItemsTreeGridUtils;
 import org.siemac.metamac.web.common.client.resources.StyleUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
@@ -165,12 +166,7 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
     }
 
     protected TreeNode createItemSchemeTreeNode(ItemSchemeDto itemSchemeDto) {
-        TreeNode node = new TreeNode(SCHEME_NODE_NAME);
-        node.setID(SCHEME_NODE_NAME);
-        node.setAttribute(ItemDS.URN, itemSchemeDto.getUrn());
-        node.setAttribute(ItemDS.CODE, itemSchemeDto.getCode());
-        node.setAttribute(ItemDS.NAME, InternationalStringUtils.getLocalisedString(itemSchemeDto.getName()));
-        return node;
+        return ItemsTreeGridUtils.createItemSchemeTreeNode(SCHEME_NODE_NAME, itemSchemeDto);
     }
 
     protected void addItemsToContextMenu(MenuItem... menuItems) {
