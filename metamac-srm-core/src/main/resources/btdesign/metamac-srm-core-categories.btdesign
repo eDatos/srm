@@ -71,6 +71,10 @@ Application CategoriesMetamac {
     		// Categorisations
     		"Creates categorisation"
     		@Categorisation createCategorisation(String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException;
+    		"Pre Create"
+    		preCreateCategorisation(String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException;
+    		"Post Create"
+    		@Categorisation postCreateCategorisation(String artefactCategorisedUrn, @Categorisation categorisation) throws MetamacException;
     		"Retrieves categorisation by urn"
     		@Categorisation retrieveCategorisationByUrn(String urn) throws MetamacException;
     		"Deletes categorisation"

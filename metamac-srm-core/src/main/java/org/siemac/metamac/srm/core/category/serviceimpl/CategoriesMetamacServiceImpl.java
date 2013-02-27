@@ -279,15 +279,26 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public Categorisation createCategorisation(ServiceContext ctx, String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException {
 
+        preCreateCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn);
+
+        // Create
+        Categorisation categorisation = categoriesService.createCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn, SrmConstants.VERSION_PATTERN_METAMAC);
+        categorisation = postCreateCategorisation(ctx, artefactCategorisedUrn, categorisation);
+        return categorisation;
+    }
+
+    @Override
+    public void preCreateCategorisation(ServiceContext ctx, String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException {
         // Validation
         CategoriesInvocationValidator.checkCreateCategorisation(categoryUrn, artefactCategorisedUrn, maintainerUrn, null);
         // Category, externally published
         checkCategoryExternallyPublished(ctx, categoryUrn);
         // Maintainer, externally published
         checkMaintainerExternallyPublished(ctx, maintainerUrn);
+    }
 
-        // Create
-        Categorisation categorisation = categoriesService.createCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn, SrmConstants.VERSION_PATTERN_METAMAC);
+    @Override
+    public Categorisation postCreateCategorisation(ServiceContext ctx, String artefactCategorisedUrn, Categorisation categorisation) throws MetamacException {
         // Automatically publication
         // Note: we can find artefact as maintainable instead of identifiable because in Metamac all artefacts with categorisation inherit to maintainable
         MaintainableArtefact artefact = maintainableArtefactRepository.findByUrn(artefactCategorisedUrn);

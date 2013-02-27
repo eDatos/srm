@@ -80,8 +80,10 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         ConceptSchemeVersionMetamac previousMetamac = (ConceptSchemeVersionMetamac) previous;
         ConceptSchemeVersionMetamac targetMetamac = (ConceptSchemeVersionMetamac) target;
 
+        // TODO OJO, con los partial perderíamos herencia, es lo mismo que pasa con los dsd en la herencia de ordenes y niveles
         // Versioning related concepts
         conceptsMetamacService.versioningRelatedConcepts(ctx, previousMetamac, targetMetamac);
+
     }
 
     @Override
@@ -114,8 +116,6 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
             // Related concepts
             targetMetamac.setLegalActs(BaseVersioningCopyUtils.copy(previousMetamac.getLegalActs()));
 
-            // TODO can not copy related concepts, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept
-            // es necesario hacer validación para poder copiar los related concepts???
         }
 
         // Fill metadata

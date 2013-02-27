@@ -82,8 +82,6 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
             targetMetamac.setAccessType(previousMetamac.getAccessType()); // AccesType
             targetMetamac.setFamily(previousMetamac.getFamily()); // CodelistFamily
             targetMetamac.setVariable(previousMetamac.getVariable()); // Variable
-            // TODO herencia default order visualization
-            // TODO herencia niveles de apertura
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -100,7 +98,8 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
         // Fill metadata
         codesMetamacService.postCreateCodelist(ctx, targetMetamac, (previousVersion != null) ? previousMetamac.getReplaceToCodelists() : new ArrayList<CodelistVersionMetamac>()); // ReplaceToCodelists
 
-        // TODO falta añadir los defaultOrder y los niveles de apertura
+        // TODO herencia default order visualization
+        // TODO herencia niveles de apertura
     }
 
     @Override
