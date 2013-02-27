@@ -35,6 +35,7 @@ import org.siemac.metamac.srm.web.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.code.widgets.VersionCodelistWindow;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -406,6 +407,16 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     @Override
     public void setCategoriesForCategorisations(GetCategoriesResult result) {
         categorisationsPanel.setCategories(result);
+    }
+
+    @Override
+    public void setCodelistsToCreateComplexCodelist(GetCodelistsResult result) {
+        codesTreeGrid.setCodelistsToCreateComplexCodelist(result);
+    }
+
+    @Override
+    public void setCodesToCreateComplexCodelist(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
+        codesTreeGrid.setCodesToCreateComplexCodelist(codelistMetamacDto, codes);
     }
 
     @Override

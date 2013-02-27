@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -7,13 +9,15 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.BaseCodeUiHandlers;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.MenuItem;
@@ -25,21 +29,27 @@ import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 
 public class CodesTreeGrid extends BaseCodesTreeGrid {
 
-    private NewCodeWindow                  newCodeWindow;
-    private DeleteConfirmationWindow       deleteConfirmationWindow;
+    private NewCodeWindow                     newCodeWindow;
+    private SearchMultipleCodeHierarchyWindow searchMultipleCodeHierarchyWindow;
+    private DeleteConfirmationWindow          deleteConfirmationWindow;
 
-    private MenuItem                       createCodeMenuItem;
-    private MenuItem                       deleteCodeMenuItem;
+    private HandlerRegistration               folderDropHandlerRegistration;
 
-    private CodelistMetamacDto             codelistMetamacDto;
-    private CodeMetamacVisualisationResult selectedCode;
+    private MenuItem                          createCodeMenuItem;
+    private MenuItem                          addCodeMenuItem;
+    private MenuItem                          deleteCodeMenuItem;
 
-    private CodelistOrderVisualisationDto  codelistOrderVisualisationDto;
+    private CodelistMetamacDto                codelistMetamacDto;
+    private CodeMetamacVisualisationResult    selectedCode;
 
-    private BaseCodeUiHandlers             uiHandlers;
+    private CodelistOrderVisualisationDto     codelistOrderVisualisationDto;
+
+    private BaseCodeUiHandlers                uiHandlers;
 
     public CodesTreeGrid() {
         super();
+
+        getField(ItemDS.CODE).setWidth("45%");
 
         setCanReorderRecords(true);
         setCanAcceptDroppedRecords(true);
@@ -48,7 +58,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
         setShowOpenIcons(true);
         setShowDropIcons(true);
 
-        addFolderDropHandler(new FolderDropHandler() {
+        folderDropHandlerRegistration = addFolderDropHandler(new FolderDropHandler() {
 
             @Override
             public void onFolderDrop(FolderDropEvent event) {
@@ -78,9 +88,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
                     if (!StringUtils.equals(oldItemParent, newItemParent)) {
                         // Update code parent
                         if (CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus())) {
-                            uiHandlers.updateCodeParent(droppedNode.getAttribute(CodeDS.URN), dropFolder.getAttribute(CodeDS.URN), codelistOrderVisualisationDto != null
-                                    ? codelistOrderVisualisationDto.getUrn()
-                                    : null);
+                            uiHandlers.updateCodeParent(droppedNode.getAttribute(CodeDS.URN), newItemParent, codelistOrderVisualisationDto != null ? codelistOrderVisualisationDto.getUrn() : null);
                         }
                     } else {
                         // Update order
@@ -98,12 +106,12 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
         // Context menu
 
-        createCodeMenuItem = new MenuItem(MetamacSrmWeb.getConstants().codeCreate());
+        createCodeMenuItem = new MenuItem(getConstants().codeCreate());
         createCodeMenuItem.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(MenuItemClickEvent event) {
-                newCodeWindow = new NewCodeWindow(MetamacSrmWeb.getConstants().codeCreate());
+                newCodeWindow = new NewCodeWindow(getConstants().codeCreate());
                 newCodeWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
@@ -120,8 +128,17 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
             }
         });
 
-        deleteCodeMenuItem = new MenuItem(MetamacSrmWeb.getConstants().codeDelete());
-        deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().codelistDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().codeDeleteConfirmation());
+        addCodeMenuItem = new MenuItem(getConstants().codeAddFromCodelist());
+        addCodeMenuItem.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(MenuItemClickEvent event) {
+                searchMultipleCodeHierarchyWindow = new SearchMultipleCodeHierarchyWindow(codelistMetamacDto, uiHandlers);
+            }
+        });
+
+        deleteCodeMenuItem = new MenuItem(getConstants().codeDelete());
+        deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistDeleteConfirmationTitle(), getConstants().codeDeleteConfirmation());
         deleteConfirmationWindow.getYesButton().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 
             @Override
@@ -137,7 +154,13 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
             }
         });
 
-        addItemsToContextMenu(createCodeMenuItem, deleteCodeMenuItem);
+        addItemsToContextMenu(createCodeMenuItem, addCodeMenuItem, deleteCodeMenuItem);
+    }
+
+    @Override
+    public void removeHandlerRegistrations() {
+        super.removeHandlerRegistrations();
+        folderDropHandlerRegistration.removeHandler();
     }
 
     public void setItems(ItemSchemeDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
@@ -172,8 +195,17 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
     protected void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult code) {
         selectedCode = code;
         createCodeMenuItem.setEnabled(CodesClientSecurityUtils.canCreateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
+        addCodeMenuItem.setEnabled(CodesClientSecurityUtils.canCreateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
         deleteCodeMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName) && CodesClientSecurityUtils.canDeleteCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
         showContextMenu();
+    }
+
+    public void setCodelistsToCreateComplexCodelist(GetCodelistsResult result) {
+        searchMultipleCodeHierarchyWindow.setCodelists(result);
+    }
+
+    public void setCodesToCreateComplexCodelist(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
+        searchMultipleCodeHierarchyWindow.setCodes(codelistMetamacDto, codes);
     }
 
     private boolean isDroppable(TreeNode dropFolder) {

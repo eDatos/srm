@@ -37,6 +37,7 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentResult;
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -267,6 +268,17 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
                 retrieveCode(codeUrn);
             }
         });
+    }
+
+    @Override
+    public void retrieveCodelistsForCreateComplexCodelists(int firstResult, int maxResults, CodelistWebCriteria criteria) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void retrieveCodesForCreateComplexCodelists(String codelistUrn) {
+        // TODO Auto-generated method stub
+
     }
 
     @Override

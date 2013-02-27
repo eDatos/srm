@@ -137,6 +137,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setVariables(GetVariablesResult result);
         void setCodelistsToReplace(List<RelatedResourceDto> codelists, int firstResult, int totalResults);
 
+        void setCodelistsToCreateComplexCodelist(GetCodelistsResult result);
+        void setCodesToCreateComplexCodelist(CodelistMetamacDto codelistDto, List<CodeMetamacVisualisationResult> codes);
+
         // Categorisations
 
         void setCategorisations(List<CategorisationDto> categorisationDtos);
@@ -680,6 +683,48 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(GetCategoriesResult result) {
                 getView().setCategoriesForCategorisations(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCodelistsForCreateComplexCodelists(int firstResult, int maxResults, CodelistWebCriteria criteria) {
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistsResult result) {
+                getView().setCodelistsToCreateComplexCodelist(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveCodesForCreateComplexCodelists(final String codelistUrn) {
+        dispatcher.execute(new GetCodelistAction(codelistUrn), new WaitingAsyncCallback<GetCodelistResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
+            }
+
+            @Override
+            public void onWaitSuccess(GetCodelistResult result) {
+                final CodelistMetamacDto codelistMetamacDto = result.getCodelistMetamacDto();
+                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, null, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetCodesByCodelistResult result) {
+                        getView().setCodesToCreateComplexCodelist(codelistMetamacDto, result.getCodes());
+                    }
+                });
             }
         });
     }
