@@ -166,8 +166,11 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     }
 
     @Override
-    public void groupDimensionDescriptorJaxbToDoExtension(ServiceContext ctx, GroupType source, GroupDimensionDescriptor target) throws MetamacException {
-        // Meta-data in previous version -> Nothing to extends
+    public void groupDimensionDescriptorJaxbToDoExtension(ServiceContext ctx, GroupType source, GroupDimensionDescriptor previous, GroupDimensionDescriptor target) throws MetamacException {
+        if (previous != null) {
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+        }
     }
 
     @Override
@@ -179,6 +182,9 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     public void dimensionJaxbToDoExtension(ServiceContext ctx, DimensionType source, Dimension previous, Dimension target) throws MetamacException {
         if (previous != null) {
             target.setSpecialDimensionType(previous.getSpecialDimensionType());
+
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -186,6 +192,9 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     public void measureDimensionJaxbToDoExtension(ServiceContext ctx, MeasureDimensionType source, MeasureDimension previous, MeasureDimension target) throws MetamacException {
         if (previous != null) {
             target.setSpecialDimensionType(previous.getSpecialDimensionType());
+
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -193,18 +202,27 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     public void timeDimensionJaxbToDoExtension(ServiceContext ctx, TimeDimensionType source, TimeDimension previous, TimeDimension target) throws MetamacException {
         if (previous != null) {
             target.setSpecialDimensionType(previous.getSpecialDimensionType());
+
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
     @Override
-    public void primaryMeasureJaxbToDoExtension(ServiceContext ctx, PrimaryMeasureType source, PrimaryMeasure target) throws MetamacException {
-        // Meta-data in previous version -> Nothing to extends
+    public void primaryMeasureJaxbToDoExtension(ServiceContext ctx, PrimaryMeasureType source, PrimaryMeasure previous, PrimaryMeasure target) throws MetamacException {
+        if (previous != null) {
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+        }
     }
 
     @Override
     public void dataAttributeJaxbToDoExtension(ServiceContext ctx, AttributeType source, DataAttribute previous, DataAttribute target) throws MetamacException {
         if (previous != null) {
             target.setSpecialAttributeType(previous.getSpecialAttributeType());
+
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -212,6 +230,9 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     public void reportingYearStartDayJaxbToDoExtension(ServiceContext ctx, ReportingYearStartDayType source, ReportingYearStartDay previous, ReportingYearStartDay target) throws MetamacException {
         if (previous != null) {
             target.setSpecialAttributeType(previous.getSpecialAttributeType());
+
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
