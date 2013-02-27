@@ -1,14 +1,15 @@
 package org.siemac.metamac.srm.core.base.serviceimpl.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -31,22 +32,28 @@ public class ItemSchemeCommonActionsImportImpl implements ItemSchemeCommonAction
         CodelistVersionMetamac codelistVersionOldMetamac = (CodelistVersionMetamac) codelistVersionOld;
         CodelistVersionMetamac codelistVersionNewMetamac = (CodelistVersionMetamac) codelistVersionNew;
 
-        // TODO continuar aqui
-        // if (codelistVersionOldMetamac.get) {
-        // Codificando partial y procstatus ---------------------------------
-        // }
-
-        if (BooleanUtils.isTrue(codelistVersionNew.getMaintainableArtefact().getFinalLogic())) {
-            if (BooleanUtils.isTrue(codelistVersionNew.getIsPartial())) {
-                return performImportationFinalAndPartialActionsNewAsFinalAndPartial(ctx, codelistVersionOld, codelistVersionNew);
+        if (BooleanUtils.isTrue(codelistVersionOldMetamac.getIsPartial())) {
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(codelistVersionOldMetamac.getLifeCycleMetadata().getProcStatus())
+                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistVersionOldMetamac.getLifeCycleMetadata().getProcStatus())) {
+                // The resource was published then create a dummy code list with the codes that not appears in the published version.
+                // TODO hacer esto
+                // return ActionToPerformEnum.ADD_ITEMS_IN_NEW_ITEMSCHEME;
+                throw new UnsupportedOperationException();
             } else {
-                return performImportationFinalAndPartialActionsNewAsFinalAndNotPartial(ctx, codelistVersionOld, codelistVersionNew);
+                // Merge: Delete the codes already persisted. The new codes will be persisted.
+                List<Item> items = new ArrayList<Item>(codelistVersionNewMetamac.getItems());
+                for (Item item : items) { // Because this items aren't persisted, this is optimize.
+                    CodeMetamac codeMetamacOld = (CodeMetamac) codeRepository.findIfExistAPreviousVersion(CodeMetamac.class, codelistVersionOldMetamac.getId(), item.getNameableArtefact().getCode());
+                    if (codeMetamacOld != null) {
+                        codelistVersionNewMetamac.removeItem(item);
+                        codelistVersionNewMetamac.removeItemsFirstLevel(item);
+                    }
+                }
+                return ActionToPerformEnum.ADD_ITEMS_IN_CURRENT_ITEMSCHEME;
             }
-        } else {
-            // Check: All codelists imported in METAMAC must be FINAL
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_FINAL_LOGIC)
-                    .build();
         }
+
+        return ActionToPerformEnum.NOTHING;
     }
     /**
      * New ItemScheme (Final = true, Partial = true)
@@ -61,7 +68,7 @@ public class ItemSchemeCommonActionsImportImpl implements ItemSchemeCommonAction
         if (BooleanUtils.isTrue(codelistVersionOld.getMaintainableArtefact().getFinalLogic())) {
             if (BooleanUtils.isTrue(codelistVersionOld.getIsPartial())) {
                 performRemoveToMergeItems(ctx, codelistVersionOld, codelistVersionNew);
-                return ActionToPerformEnum.PERSIST_ITEMS;
+                return ActionToPerformEnum.NOTHING;
             } else {
                 return ActionToPerformEnum.NOTHING;
             }
@@ -85,7 +92,7 @@ public class ItemSchemeCommonActionsImportImpl implements ItemSchemeCommonAction
                 // Replace all items with the supplied elements.
                 codelistVersionOld.removeAllItems();
                 // TODO Ahora habría que añadir los hijos
-                return ActionToPerformEnum.PERSIST_ITEMS;
+                return ActionToPerformEnum.NOTHING;
             } else {
                 return ActionToPerformEnum.NOTHING;
             }
