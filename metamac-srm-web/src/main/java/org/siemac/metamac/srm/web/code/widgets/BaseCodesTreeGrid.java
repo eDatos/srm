@@ -3,10 +3,10 @@ package org.siemac.metamac.srm.web.code.widgets;
 import java.util.Arrays;
 import java.util.List;
 
-import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.BaseItemsTreeGrid;
+import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.types.TreeModelType;
@@ -68,19 +68,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
     }
 
     protected CodeTreeNode createItemTreeNode(CodeMetamacVisualisationResult item) {
-        CodeTreeNode node = new CodeTreeNode(item.getName());
-        node.setID(item.getUrn());
-        node.setIsFolder(true);
-        node.setParentID(item.getParent() != null ? item.getParent().getUrn() : SCHEME_NODE_NAME);
-        node.setAttribute(ItemDS.CODE, item.getCode());
-        node.setAttribute(ItemDS.NAME, item.getName() != null ? item.getName() : StringUtils.EMPTY);
-        node.setAttribute(ItemDS.URN, item.getUrn());
-        node.setAttribute(ItemDS.ITEM_PARENT_URN, item.getParent() != null ? item.getParent().getUrn() : null);
-        node.setAttribute(ItemDS.DTO, item);
-        // Specify the order of the node in its level.
-        // Avoid null pointer in CodeTreeNode comparator setting 0 when there is no order defined.
-        node.setOrder(item.getOrder() == null ? 0 : item.getOrder());
-        return node;
+        return CodesTreeGridUtils.createCodeTreeNode(SCHEME_NODE_NAME, item);
     }
 
     protected abstract void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult itemMetamacResult);
