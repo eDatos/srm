@@ -14,6 +14,7 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationSchemesType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitSchemeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.base.mapper.BaseJaxb2DoInheritUtils;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -61,10 +62,10 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO completar con metadata heredable
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -81,11 +82,11 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO completar con metadata heredable
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
-            // TODO herencia IString --> De contacts
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotationsContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
         }
 
         // Fill pre-persist meta-data
@@ -100,10 +101,10 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO completar con metadata heredable
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -120,11 +121,11 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO completar con metadata heredable
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
-            // TODO herencia IString --> De contacts
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotationsContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
         }
 
         // Fill pre-persist meta-data
@@ -139,15 +140,15 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO completar con metadata heredable
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
-        // Fill pre-persist meta-data
+        // Validate and complete fill
         organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
     }
 
@@ -159,11 +160,11 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO completar con metadata heredable
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
-            // TODO herencia IString --> De contacts
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotationsContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
         }
 
         // Fill pre-persist meta-data
@@ -178,15 +179,15 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO completar con metadata heredable
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
-        // Fill meta-data
+        // Validate and complete fill
         organisationsMetamacService.preCreateOrganisationScheme(ctx, targetMetamac);
     }
 
@@ -198,11 +199,11 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO completar con metadata heredable
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
-            // TODO herencia IString --> De contacts
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotationsContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
         }
 
         // Fill pre-persist meta-data

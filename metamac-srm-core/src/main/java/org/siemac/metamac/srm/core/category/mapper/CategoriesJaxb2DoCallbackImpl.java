@@ -10,6 +10,7 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategorySchemesType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.base.mapper.BaseJaxb2DoInheritUtils;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
@@ -76,9 +77,10 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -94,9 +96,11 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+
         }
 
         // Fill Metadata

@@ -57,6 +57,8 @@ public class ConceptVersioningCopyCallbackMetamacImpl implements ConceptVersioni
         for (ConceptMetamac conceptRole : source.getRoleConcepts()) {
             target.addRoleConcept(conceptRole);
         }
-        // can not copy related concepts, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept
+        // Do not copy related concepts in this point, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept. They will be copied in
+        // service
+
     }
 }

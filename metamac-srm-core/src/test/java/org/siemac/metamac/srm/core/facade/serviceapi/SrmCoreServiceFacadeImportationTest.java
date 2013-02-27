@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -188,8 +189,8 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
 
     @Test
     @DirtyDatabase
-    @Ignore
-    public void testImport_CODELIST_PARTIAL_AND_FINAL() throws Exception {
+    @Rollback(false)
+    public void testImport_CodelistNoPartialAndFinalWithPreviousAsPartialAndDraft() throws Exception {
         // New Transaction: Because the job needs persisted data
         final TransactionTemplate tt1 = new TransactionTemplate(transactionManager);
         tt1.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -198,7 +199,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_NO_PARTIAL)));
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_A)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -228,6 +229,56 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         });
         WaitUntilJobFinished();
 
+        CodelistVersionMetamac codelistVersion = null;
+        codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_FREQ_V1);
+        assertEquals(8, codelistVersion.getItems().size());
+    }
+
+    @Test
+    @DirtyDatabase
+    @Rollback(false)
+    public void testImport_CodelistPartialAndFinalWithPreviousAsPartialAndDraft() throws Exception {
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt1 = new TransactionTemplate(transactionManager);
+        tt1.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt1.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_A)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+        WaitUntilJobFinished();
+
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt2 = new TransactionTemplate(transactionManager);
+        tt2.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt2.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_B)));
+                } catch (MetamacException e) {
+                    logger.error("Job thread failed: ", e);
+                } catch (FileNotFoundException e) {
+                    logger.error("Job thread failed: ", e);
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+        WaitUntilJobFinished();
+
+        CodelistVersionMetamac codelistVersion = null;
+        codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_FREQ_V1);
+        assertEquals(7, codelistVersion.getItems().size());
     }
 
     @Test

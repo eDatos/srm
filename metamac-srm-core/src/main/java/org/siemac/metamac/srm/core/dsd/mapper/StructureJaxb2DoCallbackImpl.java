@@ -17,12 +17,14 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.PrimaryMeasureType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ReportingYearStartDayType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.TimeDimensionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.base.mapper.BaseJaxb2DoInheritUtils;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
@@ -138,14 +140,19 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
         DataStructureDefinitionVersionMetamac previousMetamac = (DataStructureDefinitionVersionMetamac) previous;
         DataStructureDefinitionVersionMetamac targetMetamac = (DataStructureDefinitionVersionMetamac) target;
 
-        // Fill Meta-data
-        dsdsMetamacService.preCreateDataStructureDefinition(ctx, targetMetamac);
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
+
+            targetMetamac.setStatisticalOperation(BaseVersioningCopyUtils.copy(previousMetamac.getStatisticalOperation()));
+        }
+
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
-        // TODO Completar con herencia en metadatos, primero AVISAR A SAN para ver si el completado de metadatos de la versión
-        // anterior se puede hacer antes o después del precreate para hacer cosas como sólo t dejo q sean vacíos si es la primera versión
-        // en el resto los deberíashaber copiado, y por tanto se comprueban las restricciones. Ver si se fastidiase algo si lo hago ANTES y
-        // comentarlo con SAN.
+        // Validate and complete fill
+        dsdsMetamacService.preCreateDataStructureDefinition(ctx, targetMetamac);
     }
 
     @Override

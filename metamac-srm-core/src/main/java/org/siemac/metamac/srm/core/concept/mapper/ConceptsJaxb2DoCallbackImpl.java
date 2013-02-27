@@ -8,6 +8,7 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptSchemeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.base.mapper.BaseJaxb2DoInheritUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
@@ -59,9 +60,11 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
+
             targetMetamac.setType(previousMetamac.getType());
             targetMetamac.setRelatedOperation(BaseVersioningCopyUtils.copy(previousMetamac.getRelatedOperation()));
         }
@@ -88,9 +91,11 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // TODO herencia IString --> Name
-            // TODO herencia IString --> Description
-            // TODO herencia IString --> Annotations
+            // Inherit translations (for all international strings)
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName()); // Name
+            BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription()); // Description
+            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+
             targetMetamac.setPluralName(BaseVersioningCopyUtils.copy(previousMetamac.getPluralName()));
             targetMetamac.setAcronym(BaseVersioningCopyUtils.copy(previousMetamac.getAcronym()));
             targetMetamac.setDescriptionSource(BaseVersioningCopyUtils.copy(previousMetamac.getDescriptionSource()));
@@ -109,7 +114,8 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
             // Related concepts
             targetMetamac.setLegalActs(BaseVersioningCopyUtils.copy(previousMetamac.getLegalActs()));
 
-            // can not copy related concepts, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept
+            // TODO can not copy related concepts, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept
+            // es necesario hacer validación para poder copiar los related concepts???
         }
 
         // Fill metadata
