@@ -195,6 +195,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         return dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
+
     @Override
     public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String dataStructureDefinitionVersionUrn, Component component) throws MetamacException {
 

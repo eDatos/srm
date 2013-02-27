@@ -37,6 +37,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 
 @Service("dsdLifeCycle")
 public class DsdLifeCycleImpl extends LifeCycleImpl {
@@ -101,6 +102,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             }
 
             boolean isDsdWithMeasureDimension = false;
+            boolean isDsdWithSpatialDimension = false;
             // Check all dimensions must be appears in stub or heading
             for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                 if (componentList instanceof DimensionDescriptor) {
@@ -108,35 +110,47 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                         if (!stubDimensionSet.contains(component) && !headingDimensionSet.contains(component)) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_INCOMPLETE));
                         }
+                        // Initialize auxiliary data for other constraints
                         if (component instanceof MeasureDimension) {
                             isDsdWithMeasureDimension = true;
+                        } else if (SpecialDimensionTypeEnum.SPATIAL.equals(((DimensionComponent) component).getSpecialDimensionType())) {
+                            isDsdWithSpatialDimension = true;
                         }
                     }
                     break;
                 }
             }
 
-            // Check: If the DSD not contain a measure-dimension, then it must have a special attribute type
-            boolean foundSpecialAttributeOfMeasure = false;
-            if (!isDsdWithMeasureDimension) {
+            // Constraints only valid for non imported artifacts
+            if (!dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getIsImported()) {
+                // Check: If the DSD not contain a measure-dimension, then it must have a special attribute type
+                // Check: If the DSD not contain a spatial-dimension, then it must have a special attribute type
+                boolean foundSpecialAttributeOfMeasure = false;
+                boolean foundSpecialAttributeOfSpatial = false;
                 for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                     if (componentList instanceof AttributeDescriptor) {
                         for (Component component : componentList.getComponents()) {
                             if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(((DataAttribute) component).getSpecialAttributeType())) {
                                 foundSpecialAttributeOfMeasure = true;
+                            } else {
+                                foundSpecialAttributeOfSpatial = true;
                             }
                         }
                         break;
                     }
                 }
-                if (!foundSpecialAttributeOfMeasure) {
-                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_INCOMPLETE));
+
+                if (!isDsdWithMeasureDimension && !foundSpecialAttributeOfMeasure) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_MEASUREDIM_SPECIAL_ATTR));
+                }
+
+                if (!isDsdWithSpatialDimension && !foundSpecialAttributeOfSpatial) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_SPATIALDIM_SPECIAL_ATTR));
                 }
             }
 
             // TODO grouping validation tiene que hacerse aquí--> SIII
         }
-
         @Override
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
