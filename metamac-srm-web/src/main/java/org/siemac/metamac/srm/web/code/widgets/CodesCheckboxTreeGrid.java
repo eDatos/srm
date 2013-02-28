@@ -40,7 +40,7 @@ public class CodesCheckboxTreeGrid extends TreeGrid {
         setShowConnectors(true);
         setLeaveScrollbarGap(false);
         setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        setCascadeSelection(true);
+        setCascadeSelection(false);
         setRollUnderCanvasProperties(StyleUtils.getRollUnderCanvasProperties());
 
         TreeGridField codeField = new TreeGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());

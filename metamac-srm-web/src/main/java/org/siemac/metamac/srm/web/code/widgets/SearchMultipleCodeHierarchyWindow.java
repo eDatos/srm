@@ -7,6 +7,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedItem;
 import org.siemac.metamac.srm.web.code.view.handlers.BaseCodeUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
@@ -21,6 +22,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.widgets.Label;
@@ -28,20 +30,27 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
+import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
+import com.smartgwt.client.widgets.tree.TreeNode;
 
 /**
  * Window with a {@link CodesCheckboxTreeGrid} and a {@link SearchRelatedResourcePaginatedItem} as the codelist filter.
  */
 public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
-    private static final int                     FIRST_RESULTS          = 0;
-    private static final int                     MAX_RESULTS            = 6;
-    private static final int                     FORM_ITEM_CUSTOM_WIDTH = 500;
-    private static final String                  FIELD_SAVE             = "save-cod";
+    private static final int                     FORM_ITEM_CUSTOM_WIDTH      = 500;
+
+    private static final int                     FIRST_RESULTS               = 0;
+    private static final int                     MAX_RESULTS                 = 6;
+
+    private static final String                  TREE_NODE_SELECTED_PROPERTY = "isSelected";
 
     protected CustomDynamicForm                  filterForm;
     protected CustomDynamicForm                  form;
@@ -51,8 +60,10 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
     protected CodesCheckboxTreeGrid              codesTreeGrid;
 
-    private CodelistMetamacDto                   complexCodelistToAddCodes;          // Codelist where the selected codes will be inserted
+    private CodelistMetamacDto                   complexCodelistToAddCodes;                 // Codelist where the selected codes will be inserted
     private BaseCodeUiHandlers                   uiHandlers;
+
+    private boolean                              cascadeSelection            = true;
 
     public SearchMultipleCodeHierarchyWindow(CodelistMetamacDto complexCodelistToAddCodes, BaseCodeUiHandlers uiHandlers) {
         super(getConstants().codeAdd());
@@ -116,15 +127,13 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
         // TREE SELECTION TYPE
 
-        final CheckboxItem partialSelectionItem = new CheckboxItem("partialSelect", getConstants().actionTreeAllowPartialSelection());
+        final CheckboxItem partialSelectionItem = new CheckboxItem("cascadeSelection", getConstants().actionTreeCascadeSelection());
         partialSelectionItem.setDefaultValue(true);
-        partialSelectionItem.addChangeHandler(new ChangeHandler() {
+        partialSelectionItem.addChangedHandler(new ChangedHandler() {
 
             @Override
-            public void onChange(ChangeEvent event) {
-                boolean selected = partialSelectionItem.getValueAsBoolean();
-                codesTreeGrid.setShowPartialSelection(!selected);
-                codesTreeGrid.redraw();
+            public void onChanged(ChangedEvent event) {
+                cascadeSelection = partialSelectionItem.getValueAsBoolean();
             }
         });
 
@@ -136,8 +145,27 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         codesTreeGrid = new CodesCheckboxTreeGrid();
         codesTreeGrid.setMargin(15);
         codesTreeGrid.setWidth(760);
+        codesTreeGrid.setSelectionProperty(TREE_NODE_SELECTED_PROPERTY);
+        codesTreeGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 
-        CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().accept());
+            @Override
+            public void onSelectionChanged(SelectionEvent event) {
+                if (cascadeSelection) {
+                    if (event.getRecord() != null && event.getRecord().getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY) != null) {
+                        updateNodeSelectionStatusInCascade((TreeNode) event.getRecord(), event.getRecord().getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY));
+                    }
+                }
+            }
+        });
+
+        CustomButtonItem saveItem = new CustomButtonItem("save-cod", MetamacWebCommon.getConstants().accept());
+        saveItem.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO
+            }
+        });
 
         form = new CustomDynamicForm();
         form.setMargin(15);
@@ -190,5 +218,19 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         // Do not include the codes of the own codelist
         codelistWebCriteria.setIsNotCodelistUrn(complexCodelistToAddCodes.getUrn());
         return codelistWebCriteria;
+    }
+
+    private void updateNodeSelectionStatusInCascade(TreeNode treeNode, boolean selectionStatus) {
+        // When setting this property to TRUE/FALSE, the treeNode is selected/unselected WITHOUT firing a new SelectionChanged event
+        treeNode.setAttribute(TREE_NODE_SELECTED_PROPERTY, selectionStatus);
+
+        // Select the treeNode children
+        Record[] children = codesTreeGrid.getRecordList().findAll(ItemDS.ITEM_PARENT_URN, treeNode.getAttributeAsString(ItemDS.URN));
+        if (children != null) {
+            for (Record child : children) {
+                updateNodeSelectionStatusInCascade((TreeNode) child, selectionStatus);
+            }
+        }
+        codesTreeGrid.markForRedraw();
     }
 }
