@@ -24,7 +24,7 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(ItemDS.CODE, item.getCode());
         node.setAttribute(ItemDS.NAME, item.getName() != null ? item.getName() : StringUtils.EMPTY);
         node.setAttribute(ItemDS.URN, item.getUrn());
-        node.setAttribute(ItemDS.ITEM_PARENT_URN, item.getParent() != null ? item.getParent().getUrn() : null);
+        node.setAttribute(ItemDS.ITEM_PARENT_URN, item.getParent() != null ? item.getParent().getUrn() : schemeNodeName);
         node.setAttribute(ItemDS.DTO, item);
         // Specify the order of the node in its level.
         // Avoid null pointer in CodeTreeNode comparator setting 0 when there is no order defined.

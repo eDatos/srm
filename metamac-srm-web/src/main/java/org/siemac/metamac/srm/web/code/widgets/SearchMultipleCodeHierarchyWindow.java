@@ -34,6 +34,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -61,6 +62,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
     protected CodesCheckboxTreeGrid              codesTreeGrid;
 
     private CodelistMetamacDto                   complexCodelistToAddCodes;                 // Codelist where the selected codes will be inserted
+    private String                               selectedCodelistUrn;                       // Codelist selected. The codes of this codelist will be inserted in the complex codelist
     private BaseCodeUiHandlers                   uiHandlers;
 
     private boolean                              cascadeSelection            = true;
@@ -150,9 +152,17 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
             @Override
             public void onSelectionChanged(SelectionEvent event) {
-                if (cascadeSelection) {
-                    if (event.getRecord() != null && event.getRecord().getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY) != null) {
-                        updateNodeSelectionStatusInCascade((TreeNode) event.getRecord(), event.getRecord().getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY));
+                Record selectedRecord = event.getRecord();
+                if (selectedRecord != null) {
+                    if (cascadeSelection) {
+                        if (selectedRecord.getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY) != null) {
+                            updateNodeSelectionStatusInCascade((TreeNode) selectedRecord, selectedRecord.getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY));
+                        }
+                    } else {
+                        // If the cascade selection is not enabled, and the selected node is the codelist node, DO NOT SELECT the node
+                        if (StringUtils.equals(selectedCodelistUrn, selectedRecord.getAttributeAsString(ItemDS.URN))) {
+                            ((TreeNode) selectedRecord).setAttribute(TREE_NODE_SELECTED_PROPERTY, false);
+                        }
                     }
                 }
             }
@@ -163,7 +173,16 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO
+
+                ListGridRecord[] selectedRecords = codesTreeGrid.getSelectedRecords();
+                for (ListGridRecord record : selectedRecords) {
+                    if (!StringUtils.equals(selectedCodelistUrn, record.getAttribute(ItemDS.URN))) { // Do not add the codelist node!
+                        String recordParent = record.getAttribute(ItemDS.ITEM_PARENT_URN);
+                        if (recordParent == null) {
+                            // TODO ¿Necesario conservar jerarquía?
+                        }
+                    }
+                }
             }
         });
 
@@ -191,6 +210,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
     }
 
     public void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
+        this.selectedCodelistUrn = codelistMetamacDto.getUrn();
         codesTreeGrid.setItems(codelistMetamacDto, codes);
     }
 

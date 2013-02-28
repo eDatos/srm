@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.Arrays;
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
@@ -14,6 +15,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.TreeModelType;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeGridField;
@@ -21,11 +23,9 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class CodesCheckboxTreeGrid extends TreeGrid {
 
-    protected static final String SCHEME_NODE_NAME = "scheme-node";
+    protected ItemSchemeDto itemSchemeDto;
 
-    protected ItemSchemeDto       itemSchemeDto;
-
-    protected Tree                tree;
+    protected Tree          tree;
 
     public CodesCheckboxTreeGrid() {
         super();
@@ -75,12 +75,19 @@ public class CodesCheckboxTreeGrid extends TreeGrid {
     }
 
     protected TreeNode createCodelistTreeNode(ItemSchemeDto itemSchemeDto) {
-        TreeNode node = CodesTreeGridUtils.createCodelistTreeNode(SCHEME_NODE_NAME, itemSchemeDto);
-        node.setEnabled(false);
-        return node;
+        return CodesTreeGridUtils.createCodelistTreeNode(itemSchemeDto.getUrn(), itemSchemeDto);
     }
 
     protected CodeTreeNode createCodeTreeNode(CodeMetamacVisualisationResult item) {
-        return CodesTreeGridUtils.createCodeTreeNode(SCHEME_NODE_NAME, item);
+        return CodesTreeGridUtils.createCodeTreeNode(itemSchemeDto.getUrn(), item);
+    }
+
+    @Override
+    protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {
+        // Set the style of the codelist node like a disable node (the codelist node can be selected to select all the codes)
+        if (StringUtils.equals(record.getAttributeAsString(ItemDS.URN), itemSchemeDto.getUrn())) {
+            return "color:#aaaaaa;";
+        }
+        return super.getCellCSSText(record, rowNum, colNum);
     }
 }
