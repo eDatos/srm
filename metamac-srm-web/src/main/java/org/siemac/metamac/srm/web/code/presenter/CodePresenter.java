@@ -29,6 +29,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodeResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
@@ -88,6 +90,10 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
         void setCode(CodeMetamacDto codeDto);
         void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes);
         void setVariableElements(GetRelatedResourcesResult result);
+
+        // Complex codelists
+        void setCodelistsToCreateComplexCodelist(GetCodelistsResult result);
+        void setCodesToCreateComplexCodelist(CodelistMetamacDto codelistDto, List<CodeMetamacVisualisationResult> codes);
     }
 
     @ContentSlot
@@ -272,13 +278,44 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void retrieveCodelistsForCreateComplexCodelists(int firstResult, int maxResults, CodelistWebCriteria criteria) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistsResult result) {
+                getView().setCodelistsToCreateComplexCodelist(result);
+            }
+        });
     }
 
     @Override
-    public void retrieveCodesForCreateComplexCodelists(String codelistUrn) {
-        // TODO Auto-generated method stub
+    public void retrieveCodesForCreateComplexCodelists(final String codelistUrn) {
+        dispatcher.execute(new GetCodelistAction(codelistUrn), new WaitingAsyncCallback<GetCodelistResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
+            }
+
+            @Override
+            public void onWaitSuccess(GetCodelistResult result) {
+                final CodelistMetamacDto codelistMetamacDto = result.getCodelistMetamacDto();
+                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, null, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetCodesByCodelistResult result) {
+                        getView().setCodesToCreateComplexCodelist(codelistMetamacDto, result.getCodes());
+                    }
+                });
+            }
+        });
     }
 
     @Override

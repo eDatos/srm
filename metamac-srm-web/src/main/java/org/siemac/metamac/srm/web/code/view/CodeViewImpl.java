@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodeMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -274,6 +275,16 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         setCodeViewMode(codeDto);
         setCodeEditionMode(codeDto);
+    }
+
+    @Override
+    public void setCodelistsToCreateComplexCodelist(GetCodelistsResult result) {
+        codesTreeGrid.setCodelistsToCreateComplexCodelist(result);
+    }
+
+    @Override
+    public void setCodesToCreateComplexCodelist(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
+        codesTreeGrid.setCodesToCreateComplexCodelist(codelistMetamacDto, codes);
     }
 
     private void setCodeViewMode(CodeMetamacDto codeDto) {
