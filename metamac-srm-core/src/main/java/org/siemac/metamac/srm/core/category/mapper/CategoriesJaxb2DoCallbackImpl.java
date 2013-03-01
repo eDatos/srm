@@ -136,12 +136,12 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
      **************************************************************************/
     @Override
     public void validateRestrictions(ServiceContext ctx, CategorySchemeVersion source) throws MetamacException {
-        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
+        validateRestrictionsItemSchemeVersion(ctx, source, false);
     }
 
     @Override
     public void validateRestrictions(ServiceContext ctx, Categorisation source) throws MetamacException {
-        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
+        validateRestrictionsCategorisation(ctx, source.getMaintainableArtefact(), false);
         // TODO añadir validación de que en metamac el artefacto (o el esquema al que pertenezca) debe de ser final
         // TODO añadir validación de que en metamac el esquema de la categoría debe de ser final
     }

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Copyright SDMX 2010 - www.sdmx.org -->
+<message:Structure
+	xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"
+	xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"
+	xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message ../schemas/SDMXMessage.xsd">
+	<message:Header>
+		<message:ID>DEMOGRAPHY</message:ID>
+		<message:Test>false</message:Test>
+		<message:Prepared>2010-11-13T08:00:33+08:00</message:Prepared>
+		<message:Sender id="SDMX01" />
+	</message:Header>
+	<message:Structures>
+		<structure:Concepts>
+			<structure:ConceptScheme id="CS_DEMO" isFinal="true"
+ 				agencyID="SDMX01" version="1.0">
+				<common:Name xml:lang="en">Demography measures concept scheme
+				</common:Name>
+				<structure:Concept id="PJANT">
+					<common:Name xml:lang="en">Population on 1 January of Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="LBIRTHST">
+					<common:Name xml:lang="en">Births in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="DEATHST">
+					<common:Name xml:lang="en">Deaths in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="ADJT">
+					<common:Name xml:lang="en">Statistical adjustment in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="PJAN1T">
+					<common:Name xml:lang="en">Population on 1 January Year X+1
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="LBIRTHOUT">
+					<common:Name xml:lang="en">Births outside marriage in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="DEATHUN1">
+					<common:Name xml:lang="en">Deaths under 1 year in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="MAR">
+					<common:Name xml:lang="en">Marriages in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="DIV">
+					<common:Name xml:lang="en">Divorces in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="IMMIT">
+					<common:Name xml:lang="en">Immigrants in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="EMIGT">
+					<common:Name xml:lang="en">Emigrants in Year X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer"
+							minValue="0" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="NETMT">
+					<common:Name xml:lang="en">Net migration in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Integer" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="TFRNSI">
+					<common:Name xml:lang="en">Total fertility rate in Year X
+					</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Decimal"
+							decimals="2" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+				<structure:Concept id="LEXPNSIT">
+					<common:Name xml:lang="en">Life expectancy at birth in Year
+						X</common:Name>
+					<structure:CoreRepresentation>
+						<structure:TextFormat textType="Decimal"
+							decimals="1" />
+					</structure:CoreRepresentation>
+				</structure:Concept>
+			</structure:ConceptScheme>
+		</structure:Concepts>
+	</message:Structures>
+</message:Structure>

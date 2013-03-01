@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:Structure xmlns:p="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"
+	xmlns:p1="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer"
+	xmlns:p2="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common"
+	xmlns:p3="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"
+	xmlns:p4="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic"
+	xmlns:p5="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific"
+	xmlns:p6="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic"
+	xmlns:p7="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific"
+	xmlns:p8="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry"
+	xmlns:p9="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query"
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message ../statistic-sdmx-v2_1-domain/etc/schema/sdmx21/SDMXMessage.xsd ">
+	<p:Header>
+		<p:ID>ID</p:ID>
+		<p:Test>false</p:Test>
+		<p:Prepared>2001-12-31T12:00:00</p:Prepared>
+		<p:Sender id="ISTAC">
+			<p2:Name xml:lang="en">Name</p2:Name>
+			<p:Contact>
+				<p2:Name xml:lang="en">Name</p2:Name>
+				<p:Department xml:lang="en">Department</p:Department>
+				<p:Role xml:lang="en">Role</p:Role>
+				<p:Telephone>Telephone</p:Telephone>
+			</p:Contact>
+			<p:Timezone>Z</p:Timezone>
+		</p:Sender>
+		<p:Receiver id="METAMAC" xsi:type="p:PartyType">
+			<p2:Name xml:lang="en">Name</p2:Name>
+			<p:Contact>
+				<p2:Name xml:lang="en">Name</p2:Name>
+				<p:Department xml:lang="en">Department</p:Department>
+				<p:Role xml:lang="en">Role</p:Role>
+				<p:Telephone>Telephone</p:Telephone>
+			</p:Contact>
+		</p:Receiver>
+		<p2:Name xml:lang="en">Name</p2:Name>
+		<p:Source xml:lang="en">Source</p:Source>
+	</p:Header>
+	<p:Structures>
+		<p3:OrganisationSchemes>
+
+			<p3:AgencyScheme agencyID="SDMX" id="AGENCIES"
+				isExternalReference="false" isFinal="false" isPartial="false"
+				serviceURL="http://tempuri.org" structureURL="http://tempuri.org"
+				uri="http://tempuri.org" urn="http://tempuri.org" validFrom="2001-12-31T12:00:00"
+				validTo="2001-12-31T12:00:00" version="1.0">
+				<p2:Annotations>
+					<p2:Annotation id="AGENCIES_SCHEME_ANNO_01">
+						<p2:AnnotationTitle>AnnotationTitle</p2:AnnotationTitle>
+						<p2:AnnotationType>AnnotationType</p2:AnnotationType>
+						<p2:AnnotationURL>http://tempuri.org</p2:AnnotationURL>
+						<p2:AnnotationText xml:lang="en">AnnotationText
+						</p2:AnnotationText>
+					</p2:Annotation>
+				</p2:Annotations>
+				<p2:Name xml:lang="en">Agency Scheme Test Name</p2:Name>
+				<p2:Description xml:lang="en">Agency Scheme Test
+					Description</p2:Description>
+
+				<p3:Agency id="FAO" uri="http://tempuri.org" urn="http://tempuri.org">
+					<p2:Annotations>
+						<p2:Annotation id="FAO_ANNO_01">
+							<p2:AnnotationTitle>AnnotationTitle</p2:AnnotationTitle>
+							<p2:AnnotationType>AnnotationType</p2:AnnotationType>
+							<p2:AnnotationURL>http://tempuri.org</p2:AnnotationURL>
+							<p2:AnnotationText xml:lang="en">AnnotationText
+							</p2:AnnotationText>
+						</p2:Annotation>
+					</p2:Annotations>
+					<p2:Name xml:lang="en">Food and Agriculture Organization
+					</p2:Name>
+					<p2:Description xml:lang="en">The United Nations Food and
+						Agriculture Organization.</p2:Description>
+					<p3:Contact id="CONTACT_01">
+						<p2:Name xml:lang="en">Jhon</p2:Name>
+						<p3:Department xml:lang="en">Personal</p3:Department>
+						<p3:Role xml:lang="en">boss</p3:Role>
+						<p3:Telephone>922123456789</p3:Telephone>
+					</p3:Contact>
+				</p3:Agency>
+
+			</p3:AgencyScheme>
+			
+		</p3:OrganisationSchemes>
+	</p:Structures>
+	<p1:Footer>
+		<p1:Message code="UNKNOWN" severity="Error">
+			<p2:Text xml:lang="en">Text</p2:Text>
+		</p1:Message>
+	</p1:Footer>
+</p:Structure>

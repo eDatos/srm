@@ -5,10 +5,65 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 
 public abstract class ImportationMetamacCommonValidations {
+
+    @Autowired
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+
+    @Autowired
+    private StructureVersionRepository  structureVersionRepository;
+
+    /**
+     * Besides this, other validations are performed in the methods preCreate of services.
+     * 
+     * @param ctx
+     * @param previous
+     * @param source
+     * @param canBeNotFinal
+     * @throws MetamacException
+     */
+    public void validateRestrictionsItemSchemeVersion(ServiceContext ctx, ItemSchemeVersion source, boolean canBeNotFinal) throws MetamacException {
+
+        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), canBeNotFinal);
+
+        // Check does not exist any version 'no final'
+        ItemSchemeVersion conceptSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
+                .getMaintainableArtefact().getCode());
+        if (conceptSchemeVersionNoFinal != null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_EXIST_NOT_FINAL_VERSION)
+                    .withMessageParameters(conceptSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
+    }
+
+    /**
+     * Besides this, other validations are performed in the methods preCreate of services.
+     * 
+     * @param ctx
+     * @param previous
+     * @param source
+     * @param canBeNotFinal
+     * @throws MetamacException
+     */
+    public void validateRestrictionsStructureVersionVersion(ServiceContext ctx, StructureVersion source, boolean canBeNotFinal) throws MetamacException {
+
+        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), canBeNotFinal);
+
+        // Check does not exist any version 'no final'
+        StructureVersion structureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
+                .getMaintainableArtefact().getCode());
+        if (structureVersionNoFinal != null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_EXIST_NOT_FINAL_VERSION)
+                    .withMessageParameters(structureVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        }
+    }
 
     /**
      * Besides this, other validations are performed in the methods preCreate of services.
@@ -19,8 +74,20 @@ public abstract class ImportationMetamacCommonValidations {
      * @param canBeNotFinal
      * @throws MetamacException
      */
-    public <T extends MaintainableArtefact> void validateRestrictionsMaintainableArtefact(ServiceContext ctx, T source, boolean canBeNotFinal) throws MetamacException {
+    public <T extends MaintainableArtefact> void validateRestrictionsCategorisation(ServiceContext ctx, T source, boolean canBeNotFinal) throws MetamacException {
+        validateRestrictionsMaintainableArtefact(ctx, source, canBeNotFinal);
+    }
 
+    /**
+     * Besides this, other validations are performed in the methods preCreate of services.
+     * 
+     * @param <T>
+     * @param ctx
+     * @param source
+     * @param canBeNotFinal
+     * @throws MetamacException
+     */
+    private <T extends MaintainableArtefact> void validateRestrictionsMaintainableArtefact(ServiceContext ctx, T source, boolean canBeNotFinal) throws MetamacException {
         // Check: All artifacts imported in METAMAC must be FINAL unless AgencySchemes, DataProviderSchemes and DataConsumerSchemes.
         if (!source.getFinalLogic() && !canBeNotFinal) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_FINAL_LOGIC)

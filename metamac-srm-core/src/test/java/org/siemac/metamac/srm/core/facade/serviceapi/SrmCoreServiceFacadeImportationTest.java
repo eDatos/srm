@@ -22,7 +22,6 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,35 +49,28 @@ import com.arte.statistic.sdmx.srm.core.importation.serviceapi.utils.Importation
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
 
-    private static Logger                 logger                                             = LoggerFactory.getLogger(SrmCoreServiceFacadeImportationTest.class);
-
-    // AGENCIES SCHEMES
-    private final String                  AGENCYSCHEME_SDMX01_AGENCIES_V1                    = "urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX01:AGENCIES(1.0)";
-    private final String                  AGENCYSCHEME_SDMX01_DATA_CONSUMERS_V1              = "urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=SDMX01:DATA_CONSUMERS(1.0)";
-    private final String                  AGENCYSCHEME_SDMX01_DATA_PROVIDERS_V1              = "urn:sdmx:org.sdmx.infomodel.base.DataProviderScheme=SDMX01:DATA_PROVIDERS(1.0)";
-    private final String                  AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATION_UNIT_SCHEME_01(1.0)";
-    private final String                  AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V2 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATION_UNIT_SCHEME_01(2.0)";
+    private static Logger                 logger                                        = LoggerFactory.getLogger(SrmCoreServiceFacadeImportationTest.class);
 
     // CODELISTS
-    private final String                  CODELIST_SDMX01_CL_DECIMALS_V1                     = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(1.0)";
-    private final String                  CODELIST_SDMX01_CL_DECIMALS_V2                     = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(2.0)";
-    private final String                  CODELIST_SDMX01_CL_FREQ_V1                         = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_FREQ(1.0)";
-    private final String                  CODELIST_SDMX01_CL_CONF_STATUS_V1                  = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_CONF_STATUS(1.0)";
-    private final String                  CODELIST_SDMX01_CL_OBS_STATUS_V1                   = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_OBS_STATUS(1.0)";
-    private final String                  CODELIST_SDMX01_CL_UNIT_MULT_V1                    = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_UNIT_MULT(1.0)";
+    private final String                  CODELIST_SDMX01_CL_DECIMALS_V1                = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(1.0)";
+    private final String                  CODELIST_SDMX01_CL_DECIMALS_V2                = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(2.0)";
+    private final String                  CODELIST_SDMX01_CL_FREQ_V1                    = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_FREQ(1.0)";
+    private final String                  CODELIST_SDMX01_CL_CONF_STATUS_V1             = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_CONF_STATUS(1.0)";
+    private final String                  CODELIST_SDMX01_CL_OBS_STATUS_V1              = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_OBS_STATUS(1.0)";
+    private final String                  CODELIST_SDMX01_CL_UNIT_MULT_V1               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_UNIT_MULT(1.0)";
 
     // CONCEPTS SCHEMES
-    private final String                  CONCEPTSCHEME_SDMX01_CROSS_DOMAIN_CONCEPTS_V1      = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CROSS_DOMAIN_CONCEPTS(1.0)";
-    private final String                  CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_CONCEPTS(1.0)";
-    private final String                  CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V2              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_CONCEPTS(2.0)";
-    private final String                  CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1              = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_MEASURES(1.0)";
+    private final String                  CONCEPTSCHEME_SDMX01_CROSS_DOMAIN_CONCEPTS_V1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CROSS_DOMAIN_CONCEPTS(1.0)";
+    private final String                  CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V1         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_CONCEPTS(1.0)";
+    private final String                  CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V2         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_CONCEPTS(2.0)";
+    private final String                  CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_MEASURES(1.0)";
 
     // DSDs
-    private final String                  DSD_SDMX01_V1                                      = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DEMOGRAPHY(1.0)";
-    private final String                  DSD_SDMX01_V2                                      = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DEMOGRAPHY(2.0)";
+    private final String                  DSD_SDMX01_V1                                 = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DEMOGRAPHY(1.0)";
+    private final String                  DSD_SDMX01_V2                                 = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DEMOGRAPHY(2.0)";
 
     // Categories
-    private final String                  CATEGORYSCHEME_SDW_ECONOMIC_CONCEPTS               = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0)";
+    private final String                  CATEGORYSCHEME_SDW_ECONOMIC_CONCEPTS          = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0)";
 
     @Autowired
     protected SrmCoreServiceFacade        srmCoreServiceFacade;
@@ -98,53 +90,6 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
-    }
-
-    @Test
-    @DirtyDatabase
-    public void testImport_EXAMPLE_ORGANISATIONS() throws Exception {
-        // New Transaction: Because the job needs persisted data
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.EXAMPLE_ORGANISATIONS)));
-                } catch (MetamacException e) {
-                    logger.error("Job thread failed: ", e);
-                } catch (FileNotFoundException e) {
-                    logger.error("Job thread failed: ", e);
-                }
-                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
-            }
-        });
-
-        WaitUntilJobFinished();
-
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = null;
-
-        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_AGENCIES_V1);
-        assertEquals(1, organisationSchemeVersion.getItems().size());
-
-        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_DATA_CONSUMERS_V1);
-        assertEquals(1, organisationSchemeVersion.getItems().size());
-
-        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_DATA_PROVIDERS_V1);
-        assertEquals(1, organisationSchemeVersion.getItems().size());
-
-        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V1);
-        assertEquals(2, organisationSchemeVersion.getItems().size());
-        assertFalse(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-
-        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V2);
-        assertEquals(1, organisationSchemeVersion.getItems().size());
-        assertTrue(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-
-        assertEquals(2, organisationSchemeVersion.getItemScheme().getVersions().size());
-
-        // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
 
     @Test

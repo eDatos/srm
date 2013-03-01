@@ -128,7 +128,7 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
      **************************************************************************/
     @Override
     public void validateRestrictions(ServiceContext ctx, CodelistVersion source) throws MetamacException {
-        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
+        validateRestrictionsItemSchemeVersion(ctx, source, false);
     }
 
     /**************************************************************************

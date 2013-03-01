@@ -216,9 +216,9 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
     @Override
     public void validateRestrictions(ServiceContext ctx, OrganisationSchemeVersion source) throws MetamacException {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(source.getOrganisationSchemeType())) {
-            validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
+            validateRestrictionsItemSchemeVersion(ctx, source, false);
         } else {
-            validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), true);
+            validateRestrictionsItemSchemeVersion(ctx, source, true);
         }
     }
 
