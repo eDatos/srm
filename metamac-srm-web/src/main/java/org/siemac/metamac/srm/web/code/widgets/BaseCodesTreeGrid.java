@@ -12,8 +12,12 @@ import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
+import com.smartgwt.client.data.SortSpecifier;
+import com.smartgwt.client.types.SortDirection;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.SortChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SortEvent;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.tree.TreeNode;
@@ -44,6 +48,23 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
         codeFields[codeFields.length - 1] = orderField;
 
         setFields(codeFields);
+
+        // Do not let to order in descending direction!!
+        addSortChangedHandler(new SortChangedHandler() {
+
+            @Override
+            public void onSortChanged(SortEvent event) {
+                SortSpecifier[] sortSpecifiers = event.getSortSpecifiers();
+                if (sortSpecifiers != null) {
+                    for (SortSpecifier sortSpecifier : sortSpecifiers) {
+                        if (SortDirection.DESCENDING.equals(sortSpecifier.getSortDirection())) {
+                            // Instead of cancel the event (do not know if it is possible), the column is ordered again in ascending order
+                            sort(CodeDS.ORDER, SortDirection.ASCENDING);
+                        }
+                    }
+                }
+            }
+        });
 
         // Bind events
 
