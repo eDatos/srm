@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import java.util.Comparator;
 
+import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
+
 import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class CodeTreeNode extends TreeNode implements Comparable<CodeTreeNode> {
@@ -18,6 +20,7 @@ public class CodeTreeNode extends TreeNode implements Comparable<CodeTreeNode> {
 
     public void setOrder(Long order) {
         this.order = order;
+        setAttribute(CodeDS.ORDER, order);
     }
 
     @Override

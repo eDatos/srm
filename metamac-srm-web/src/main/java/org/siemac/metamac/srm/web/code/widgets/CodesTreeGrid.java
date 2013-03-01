@@ -58,6 +58,10 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
         setShowOpenIcons(true);
         setShowDropIcons(true);
 
+        // Order by ORDER field
+        setCanSort(true);
+        setSortField(CodeDS.ORDER);
+
         folderDropHandlerRegistration = addFolderDropHandler(new FolderDropHandler() {
 
             @Override

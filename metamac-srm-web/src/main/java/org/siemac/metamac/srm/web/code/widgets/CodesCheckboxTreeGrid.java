@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -55,16 +54,9 @@ public class CodesCheckboxTreeGrid extends TreeGrid {
         TreeNode[] treeNodes = new TreeNode[itemMetamacResults.size() + 1];
         treeNodes[0] = createCodelistTreeNode(itemSchemeDto);
 
-        CodeTreeNode[] codeTreeNodes = new CodeTreeNode[itemMetamacResults.size()];
         for (int i = 0; i < itemMetamacResults.size(); i++) {
-            codeTreeNodes[i] = createCodeTreeNode(itemMetamacResults.get(i));
+            treeNodes[i + 1] = createCodeTreeNode(itemMetamacResults.get(i));
         }
-
-        // Sort the codes by its order
-        Arrays.sort(codeTreeNodes, CodeTreeNode.OrderComparator);
-
-        // Add the sorted codes to the final array (with the codelist root node)
-        System.arraycopy(codeTreeNodes, 0, treeNodes, 1, codeTreeNodes.length);
 
         tree = new Tree();
         tree.setModelType(TreeModelType.PARENT);

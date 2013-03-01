@@ -1,16 +1,21 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
-import java.util.Arrays;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.BaseItemsTreeGrid;
+import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
+import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.types.TreeModelType;
+import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.tree.Tree;
+import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.tree.TreeNode;
 import com.smartgwt.client.widgets.tree.events.FolderContextClickEvent;
 import com.smartgwt.client.widgets.tree.events.FolderContextClickHandler;
@@ -20,6 +25,25 @@ import com.smartgwt.client.widgets.tree.events.LeafContextClickHandler;
 public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
     public BaseCodesTreeGrid() {
+
+        // Add order field to treeGrid and disable the option to order by CODE and NAME fields
+
+        // Do not enable the button to order by other fields than order field
+        ListGridField[] itemFields = getFields();
+        for (ListGridField itemField : itemFields) {
+            itemField.setCanSort(false);
+        }
+
+        // Add the orderField to the previous fields
+        TreeGridField orderField = new TreeGridField(CodeDS.ORDER, getConstants().codeOrder());
+        orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        orderField.setCanSort(true);
+
+        ListGridField[] codeFields = new ListGridField[itemFields.length + 1];
+        System.arraycopy(itemFields, 0, codeFields, 0, itemFields.length);
+        codeFields[codeFields.length - 1] = orderField;
+
+        setFields(codeFields);
 
         // Bind events
 
@@ -49,16 +73,9 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
         TreeNode[] treeNodes = new TreeNode[itemMetamacResults.size() + 1];
         treeNodes[0] = createItemSchemeTreeNode(itemSchemeDto);
 
-        CodeTreeNode[] codeTreeNodes = new CodeTreeNode[itemMetamacResults.size()];
         for (int i = 0; i < itemMetamacResults.size(); i++) {
-            codeTreeNodes[i] = createItemTreeNode(itemMetamacResults.get(i));
+            treeNodes[i + 1] = createItemTreeNode(itemMetamacResults.get(i));
         }
-
-        // Sort the codes by its order
-        Arrays.sort(codeTreeNodes, CodeTreeNode.OrderComparator);
-
-        // Add the sorted codes to the final array (with the codelist root node)
-        System.arraycopy(codeTreeNodes, 0, treeNodes, 1, codeTreeNodes.length);
 
         tree = new Tree();
         tree.setModelType(TreeModelType.PARENT);
