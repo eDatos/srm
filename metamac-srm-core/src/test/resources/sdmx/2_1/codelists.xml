@@ -51,47 +51,6 @@
 					<common:Name>Nine</common:Name>
 				</structure:Code>
 			</structure:Codelist>
-			<structure:Codelist id="CL_DECIMALS" agencyID="SDMX01" isFinal="true"
-				version="2.0"
-				urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(2.0)">
-				<common:Name>Code list for Decimals (DECIMALS)</common:Name>
-				<common:Description xml:lang="en">It provides a list
-					of values showing the number of decimal digits used in the data.
-				</common:Description>
-				<structure:Code id="0">
-					<common:Name>Zero</common:Name>
-				</structure:Code>
-				<structure:Code id="1">
-					<common:Name>One</common:Name>
-				</structure:Code>
-				<structure:Code id="2">
-					<common:Name>Two</common:Name>
-				</structure:Code>
-				<structure:Code id="3">
-					<common:Name>Three</common:Name>
-				</structure:Code>
-				<structure:Code id="4">
-					<common:Name>Four</common:Name>
-				</structure:Code>
-				<structure:Code id="5">
-					<common:Name>Five</common:Name>
-				</structure:Code>
-				<structure:Code id="6">
-					<common:Name>Six</common:Name>
-				</structure:Code>
-				<structure:Code id="7">
-					<common:Name>Seven</common:Name>
-				</structure:Code>
-				<structure:Code id="8">
-					<common:Name>Eight</common:Name>
-				</structure:Code>
-				<structure:Code id="9">
-					<common:Name>Nine</common:Name>
-				</structure:Code>
-				<structure:Code id="10">
-					<common:Name>Ten</common:Name>
-				</structure:Code>
-			</structure:Codelist>
 			<structure:Codelist id="CL_FREQ" agencyID="SDMX01" isFinal="true"
 				version="1.0"
 				urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_FREQ(1.0)">

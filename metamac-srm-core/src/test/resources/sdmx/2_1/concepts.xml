@@ -662,23 +662,6 @@
 					<common:Name xml:lang="en">Demography</common:Name>
 				</structure:Concept>
 			</structure:ConceptScheme>
-			<structure:ConceptScheme id="DEMO_CONCEPTS" isFinal="true"
-				agencyID="SDMX01" version="2.0">
-				<common:Name xml:lang="en">Demography domain concept scheme
-				</common:Name>
-				<structure:Concept id="COUNTRY">
-					<common:Name xml:lang="en">Reporting Country</common:Name>
-				</structure:Concept>
-				<structure:Concept id="SEX">
-					<common:Name xml:lang="en">Sex</common:Name>
-				</structure:Concept>
-				<structure:Concept id="DEMO">
-					<common:Name xml:lang="en">Demography</common:Name>
-				</structure:Concept>
-				<structure:Concept id="AGE">
-					<common:Name xml:lang="en">Age</common:Name>
-				</structure:Concept>
-			</structure:ConceptScheme>
 			<structure:ConceptScheme id="DEMO_MEASURES" isFinal="true"
  				agencyID="SDMX01" version="1.0">
 				<common:Name xml:lang="en">Demography measures concept scheme
