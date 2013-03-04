@@ -4,6 +4,4 @@
     <comment>Configurations</comment>
 	<!--  The following URN must be the same in the SQL script provided -->
     <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01</entry>
-    <!--  The following URN must be create in the system before any DSD creation -->
-    <entry key="metamac.srm.primary_measure.default_concept_id.urn">urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01</entry>
 </properties>

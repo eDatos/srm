@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Configurations</comment>
+     <!--  The following URN must be create in the system before any DSD creation -->
+    <entry key="metamac.srm.primary_measure.default_concept_id.urn">urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01</entry>
+</properties>
