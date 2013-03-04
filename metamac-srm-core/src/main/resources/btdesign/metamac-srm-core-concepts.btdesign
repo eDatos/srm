@@ -133,31 +133,31 @@ Application ConceptsMetamac {
 			hint="idSequence=M_CONCEPTS"
 			
 			"Plural name"
-			- @InternationalString pluralName nullable cascade="all" databaseColumn="PLURAL_NAME_FK";
+			- @InternationalString pluralName nullable cascade="all" fetch="lazy" databaseColumn="PLURAL_NAME_FK";
 			"Acronym"
-			- @InternationalString acronym nullable cascade="all" databaseColumn="ACRONYM_FK";
+			- @InternationalString acronym nullable cascade="all" fetch="lazy" databaseColumn="ACRONYM_FK";
 			"Documents of accepted authority, which contain the definition"
-			- @InternationalString descriptionSource nullable cascade="all" databaseColumn="DESCRIPTION_SOURCE_FK";
+			- @InternationalString descriptionSource nullable cascade="all" fetch="lazy" databaseColumn="DESCRIPTION_SOURCE_FK";
 			"A description of the circumstances in which the European Statistical System uses the variable and the purposes this use serves"
-			- @InternationalString context nullable cascade="all" databaseColumn="CONTEXT_FK";
+			- @InternationalString context nullable cascade="all" fetch="lazy" databaseColumn="CONTEXT_FK";
 			"Web address where the relevant methodological manual is disseminated"
-			- @InternationalString docMethod nullable cascade="all" databaseColumn="DOC_METHOD_FK";
+			- @InternationalString docMethod nullable cascade="all" fetch="lazy" databaseColumn="DOC_METHOD_FK";
 			"Concept role"
 			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
        		"Concept type"
-       		- @ConceptType type cascade="none" nullable databaseColumn="CONCEPT_TYPE_FK";
+       		- @ConceptType type cascade="none" nullable fetch="lazy" databaseColumn="CONCEPT_TYPE_FK";
 			"A description of the way the derived variable is computed with the use of other variables"
-			- @InternationalString derivation nullable cascade="all" databaseColumn="DERIVATION_FK";
+			- @InternationalString derivation nullable cascade="all" fetch="lazy" databaseColumn="DERIVATION_FK";
 			"Web addresses where relevant legal acts are disseminated"
-			- @InternationalString legalActs nullable cascade="all" databaseColumn="LEGAL_ACTS_FK";
+			- @InternationalString legalActs nullable cascade="all" fetch="lazy" databaseColumn="LEGAL_ACTS_FK";
 			"Extends concept of other concept scheme"
-			- @ConceptMetamac conceptExtends nullable cascade="none" databaseColumn="EXTENDS_FK";
+			- @ConceptMetamac conceptExtends nullable cascade="none" fetch="lazy" databaseColumn="EXTENDS_FK";
 			"Roles"
 			- Bag<@ConceptMetamac> roleConcepts cascade="none" fetch="lazy" databaseJoinTable="TB_M_CONCEPT_ROLES" databaseJoinColumn="CONCEPT_FK" databaseColumn="CONCEPT_ROLE_FK" ;
 			"Related concepts in same concept scheme"
 			- Bag<@ConceptMetamac> relatedConcepts cascade="none" fetch="lazy" databaseJoinTable="TB_M_CONCEPT_RELATED" databaseJoinColumn="CONCEPT_FK" databaseColumn="CONCEPT_RELATED_FK" ;
 			"Variable"
-			- @Variable variable nullable cascade="none" databaseColumn="VARIABLE_FK" <-> concepts;
+			- @Variable variable nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> concepts;
 			
 			Repository ConceptMetamacRepository {
 				save;
