@@ -34,12 +34,14 @@ public abstract class ImportationMetamacCommonValidations {
 
         validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), canBeNotFinal);
 
-        // Check does not exist any version 'no final'
-        ItemSchemeVersion itemSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
-                .getMaintainableArtefact().getCode());
-        if (itemSchemeVersionNoFinal != null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_EXIST_NOT_FINAL_VERSION)
-                    .withMessageParameters(itemSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+        if (!canBeNotFinal) {
+            // Check does not exist any version 'no final'
+            ItemSchemeVersion itemSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
+                    .getMaintainableArtefact().getCode());
+            if (itemSchemeVersionNoFinal != null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_EXIST_NOT_FINAL_VERSION)
+                        .withMessageParameters(itemSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
+            }
         }
     }
 
@@ -52,9 +54,9 @@ public abstract class ImportationMetamacCommonValidations {
      * @param canBeNotFinal
      * @throws MetamacException
      */
-    public void validateRestrictionsStructureVersionVersion(ServiceContext ctx, StructureVersion source, boolean canBeNotFinal) throws MetamacException {
+    public void validateRestrictionsStructureVersionVersion(ServiceContext ctx, StructureVersion source) throws MetamacException {
 
-        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), canBeNotFinal);
+        validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
 
         // Check does not exist any version 'no final'
         StructureVersion structureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source

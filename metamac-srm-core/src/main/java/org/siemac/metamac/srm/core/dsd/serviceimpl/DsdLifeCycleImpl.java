@@ -30,10 +30,12 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParametersInternal;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
@@ -94,6 +96,21 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             // Check mandatory attributes
             ValidationUtils.checkMetadataRequired(dataStructureDefinitionVersionMetamac.getAutoOpen(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_AUTOPEN, exceptions);
 
+            // Check: Grouping validation, the DSD must have a DimensionDescriptor (with almost one dimension) and MeasureDescriptor (with primary measure)
+            for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
+                if (componentList instanceof MeasureDescriptor) {
+                    if (componentList.getComponents().size() != 1) {
+                        exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_VALIDATION_CONSTRAINT_CARDINALITY_MIN,
+                                ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION + ServiceExceptionParametersInternal.COMPONENT_PRIMARY_MEASURE));
+                    }
+                } else if (componentList instanceof DimensionDescriptor) {
+                    if (componentList.getComponents().size() == 0) {
+                        exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_VALIDATION_CONSTRAINT_CARDINALITY_MIN,
+                                ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION + ServiceExceptionParametersInternal.COMPONENT_DIMENSION));
+                    }
+                }
+            }
+
             // Check mutual exclusivity between dimensions in the heading and stub.
             for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
                 if (stubDimensionSet.contains(dimensionOrder.getDimension())) {
@@ -148,9 +165,8 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                     exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_SPATIALDIM_SPECIAL_ATTR));
                 }
             }
-
-            // TODO grouping validation tiene que hacerse aquí--> SIII
         }
+
         @Override
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
