@@ -8,4 +8,9 @@ public interface SrmConfiguration {
      * Retrieve organisation that is maintainer default to create artefacts
      */
     public String retrieveMaintainerUrnDefault() throws MetamacException;
+
+    /**
+     * Retrieve the concept ID for concept identification default of primary measure to create artefacts
+     */
+    public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException;
 }

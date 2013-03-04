@@ -38,6 +38,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRep
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
@@ -51,14 +52,19 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.TextFormatRepresentation;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
+import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureVersioningCopyUtils.StructureVersioningCopyCallback;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 
 /**
  * Implementation of DsdsMetamacService.
@@ -95,6 +101,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Autowired
     private StructureVersionRepository            structureVersionRepository;
 
+    @Autowired
+    private SrmConfiguration                      srmConfiguration;
+
     public DsdsMetamacServiceImpl() {
     }
 
@@ -104,9 +113,25 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         preCreateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
 
         // Save
-        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.createDataStructureDefinition(ctx, dataStructureDefinitionVersion, SrmConstants.VERSION_PATTERN_METAMAC);
-    }
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.createDataStructureDefinition(ctx,
+                dataStructureDefinitionVersion, SrmConstants.VERSION_PATTERN_METAMAC);
 
+        // By default
+        // Create the MeasureDescriptor
+        // Create the PrimaryMeasure with:
+        // - concept id by default: OBS_VALUE (this concept is specified in the data)
+        // - an non enumerated representation with type Decimals
+        PrimaryMeasure primaryMeasure = new PrimaryMeasure();
+        String primaryMeasureConceptIdUrnDefault = srmConfiguration.retrievePrimaryMeasureConceptIdUrnDefault();
+        primaryMeasure.setCptIdRef(conceptsService.retrieveConceptByUrn(ctx, primaryMeasureConceptIdUrnDefault));
+        TextFormatRepresentation localRepresentation = new TextFormatRepresentation();
+        localRepresentation.setNonEnumerated(new Facet(FacetValueTypeEnum.DECIMAL_FVT));
+        primaryMeasure.setLocalRepresentation(localRepresentation);
+        dataStructureDefinitionService.saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), new MeasureDescriptor());
+        dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), primaryMeasure);
+
+        return dataStructureDefinitionVersionMetamac;
+    }
     @Override
     public DataStructureDefinitionVersionMetamac preCreateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation

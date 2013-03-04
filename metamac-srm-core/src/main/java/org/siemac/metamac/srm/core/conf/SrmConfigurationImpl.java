@@ -20,6 +20,11 @@ public class SrmConfigurationImpl implements SrmConfiguration {
         return retrieveProperty(SrmConstants.METAMAC_ORGANISATION_URN, Boolean.TRUE);
     }
 
+    @Override
+    public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException {
+        return retrieveProperty(SrmConstants.METAMAC_SRM_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.TRUE);
+    }
+
     private String retrieveProperty(String propertyName, Boolean required) throws MetamacException {
         String propertyValue = configurationService.getProperty(propertyName);
         if (StringUtils.isBlank(propertyValue)) {
