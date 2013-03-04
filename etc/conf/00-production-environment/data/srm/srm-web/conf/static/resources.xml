@@ -4,4 +4,6 @@
     <comment>Configurations</comment>
     <entry key="metamac.srm.clients.statistical.operations.rest.internal">${metamac.endpoints.statistical.operations.rest.internal}</entry>
     <entry key="metamac.srm.user.guide.file.name">Gestor_recursos_estructurales-Manual_usuario.pdf</entry>
+    <!--  The following URN must be create in the system before any DSD creation -->
+    <entry key="metamac.srm.primary_measure.default_concept_id.urn">urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01</entry>
 </properties>
