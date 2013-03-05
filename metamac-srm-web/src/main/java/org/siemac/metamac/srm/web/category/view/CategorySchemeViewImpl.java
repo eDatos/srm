@@ -47,6 +47,9 @@ import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -336,17 +339,17 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         RequiredTextItem code = new RequiredTextItem(CategorySchemeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getCategorySchemeIdentifierCustomValidator());
-        code.setShowIfCondition(CategorySchemeFormUtils.getCodeFormItemIfFunction(categorySchemeDto));
+        code.setShowIfCondition(getCodeFormItemIfFunction());
 
         ViewTextItem staticCode = new ViewTextItem(CategorySchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
-        staticCode.setShowIfCondition(CategorySchemeFormUtils.getStaticCodeFormItemIfFunction(categorySchemeDto));
+        staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
 
         MultiLanguageTextItem name = new MultiLanguageTextItem(CategorySchemeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
-        name.setShowIfCondition(CategorySchemeFormUtils.getNameFormItemIfFunction(categorySchemeDto));
+        name.setShowIfCondition(getNameFormItemIfFunction());
 
         ViewMultiLanguageTextItem staticName = new ViewMultiLanguageTextItem(CategorySchemeDS.NAME_VIEW, getConstants().nameableArtefactName());
-        staticName.setShowIfCondition(CategorySchemeFormUtils.getStaticNameFormItemIfFunction(categorySchemeDto));
+        staticName.setShowIfCondition(getStaticNameFormItemIfFunction());
 
         ViewTextItem uri = new ViewTextItem(CategorySchemeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategorySchemeDS.URN, getConstants().identifiableArtefactUrn());
@@ -358,10 +361,10 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
 
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CategorySchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        description.setShowIfCondition(CategorySchemeFormUtils.getDescriptionFormItemIfFunction(categorySchemeDto));
+        description.setShowIfCondition(getDescriptionFormItemIfFunction());
 
         ViewMultiLanguageTextItem staticDescription = new ViewMultiLanguageTextItem(CategorySchemeDS.DESCRIPTION_VIEW, getConstants().nameableArtefactDescription());
-        staticDescription.setShowIfCondition(CategorySchemeFormUtils.getStaticDescriptionFormItemIfFunction(categorySchemeDto));
+        staticDescription.setShowIfCondition(getStaticDescriptionFormItemIfFunction());
 
         ViewTextItem partial = new ViewTextItem(CategorySchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CategorySchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
@@ -608,5 +611,69 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         categorySchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CategorySchemeDS.COMMENTS));
 
         return categorySchemeDto;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEM IF FUNCTIONS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private FormItemIfFunction getCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CategorySchemeFormUtils.canCodeBeEdited(categorySchemeDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !CategorySchemeFormUtils.canCodeBeEdited(categorySchemeDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getNameFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CategorySchemeFormUtils.canNameBeEdited(categorySchemeDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticNameFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !CategorySchemeFormUtils.canNameBeEdited(categorySchemeDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getDescriptionFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CategorySchemeFormUtils.canDescriptionBeEdited(categorySchemeDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticDescriptionFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !CategorySchemeFormUtils.canDescriptionBeEdited(categorySchemeDto);
+            }
+        };
     }
 }
