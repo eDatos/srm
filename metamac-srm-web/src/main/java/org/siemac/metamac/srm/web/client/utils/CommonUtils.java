@@ -13,7 +13,11 @@ import org.siemac.metamac.srm.web.client.enums.BooleanItemEnum;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 
 public class CommonUtils {
 
@@ -125,5 +129,67 @@ public class CommonUtils {
 
     public static boolean canCodeBeEdited(ProcStatusEnum procStatus, String versionLogic) {
         return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(versionLogic);
+    }
+
+    // MAINTAINER UTILS
+
+    public static boolean isDefaultMaintainer(String maintainerUrn) {
+        return StringUtils.equals(maintainerUrn, MetamacSrmWeb.getDefaultMaintainer().getUrn());
+    }
+
+    public static boolean isDefaultMaintainer(RelatedResourceDto maintainer) {
+        return isDefaultMaintainer(maintainer.getUrn());
+    }
+
+    /**
+     * Shows an editable SDMX metadata only if the resource has the default maintainer
+     * 
+     * @param maintainerUrn
+     * @return
+     */
+    public static FormItemIfFunction getEditableSDMXMetadataFormitemIfFunction(final String maintainerUrn) {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return isDefaultMaintainer(maintainerUrn);
+            }
+        };
+    }
+
+    /**
+     * Shows an editable SDMX metadata only if the resource has the default maintainer
+     * 
+     * @param maintainerUrn
+     * @return
+     */
+    public static FormItemIfFunction getEditableSDMXMetadataFormitemIfFunction(RelatedResourceDto maintainer) {
+        return getEditableSDMXMetadataFormitemIfFunction(maintainer.getUrn());
+    }
+
+    /**
+     * Shows a non editable SDMX metadata if the resource has not the default maintainer
+     * 
+     * @param maintainerUrn
+     * @return
+     */
+    public static FormItemIfFunction getNonEditableSDMXMetadataFormitemIfFunction(final String maintainerUrn) {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !isDefaultMaintainer(maintainerUrn);
+            }
+        };
+    }
+
+    /**
+     * Shows a non editable SDMX metadata if the resource has not the default maintainer
+     * 
+     * @param maintainerUrn
+     * @return
+     */
+    public static FormItemIfFunction getNonEditableSDMXMetadataFormitemIfFunction(RelatedResourceDto maintainer) {
+        return getNonEditableSDMXMetadataFormitemIfFunction(maintainer.getUrn());
     }
 }
