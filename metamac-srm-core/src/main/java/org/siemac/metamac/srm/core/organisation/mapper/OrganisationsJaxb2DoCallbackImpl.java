@@ -210,6 +210,12 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
         organisationsMetamacService.preCreateOrganisation(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
 
+    @Override
+    public void applyTemporalRestrictionsToTheSchemeIfIsNecessary(ServiceContext ctx, OrganisationSchemeVersion previous, OrganisationSchemeVersion target) throws MetamacException {
+        // Duplicate the previous version and mark the new version as temporal.
+        throw new UnsupportedOperationException();
+    }
+
     /**************************************************************************
      * VALIDATE
      **************************************************************************/
