@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsResult;
 import org.siemac.metamac.web.common.client.widgets.PaginatedListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -61,7 +62,8 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
             public void onRecordClick(RecordClickEvent event) {
                 String organisationSchemeUrn = ((OrganisationRecord) event.getRecord()).getOrganisationSchemeUrn();
                 String organisationUrn = ((OrganisationRecord) event.getRecord()).getUrn();
-                getUiHandlers().goToOrganisation(organisationSchemeUrn, organisationUrn, null); // TODO
+                OrganisationTypeEnum organisationTypeEnum = ((OrganisationRecord) event.getRecord()).getOrganisationType();
+                getUiHandlers().goToOrganisation(organisationSchemeUrn, organisationUrn, organisationTypeEnum);
             }
         });
 
