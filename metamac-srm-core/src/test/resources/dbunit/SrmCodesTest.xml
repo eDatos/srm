@@ -43,7 +43,6 @@
     <TB_SEQUENCES SEQUENCE_NAME="M_VARIABLES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VARIABLE_ELEMENTS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_CODELIST_ORDER_VISUAL" SEQUENCE_NEXT_VALUE="100000000" />
-    <TB_SEQUENCES SEQUENCE_NAME="M_CODE_ORDER_VISUAL" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OPERATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OP_SOURCES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OP_TARGETS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -377,6 +376,11 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="111"
+              ORDER1="0"
+              ORDER2="[null]"
+              ORDER3="[null]"
+              ORDER4="[null]"
+              ORDER5="[null]"
              />
             
             <TB_ITEMS
@@ -430,6 +434,7 @@
                     ID="111"
                     CODELIST_FK="11"
                     NAMEABLE_ARTEFACT_FK="9997111"
+                    COLUMN_INDEX="1"
                     
                     UUID="codelist-visualisation-111"
                     VERSION="1"
@@ -464,24 +469,7 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                 
-                
-                        <!--    -> CODE01 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1111"
-                            CODE_INDEX="0"
-                            CODE_FK="111"
-                            CODELIST_VISUALISATION_FK="111"
-                            
-                            UUID="code-visualisation-1111"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        />             
+                />                          
     
     <!-- **************************************************************************************  -->                
     <!-- VERSION 2                                                                               -->
@@ -596,6 +584,8 @@
               VARIABLE_ELEMENT_FK="22"
               SHORT_NAME_FK="[null]"
               TB_CODES="121"
+              ORDER1="0"
+              ORDER2="1"
              />
             
             <TB_ITEMS
@@ -674,6 +664,8 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="77"
               TB_CODES="122"
+                ORDER1="1"
+                ORDER2="2"
              />
                      
             <TB_ITEMS
@@ -727,6 +719,8 @@
               VARIABLE_ELEMENT_FK="21"
               SHORT_NAME_FK="[null]"
               TB_CODES="1221"
+              ORDER1="0"
+              ORDER2="1"
              />
         
             <TB_ITEMS
@@ -780,6 +774,8 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="94"
               TB_CODES="12211"
+              ORDER1="0"
+              ORDER2="0"
              />
         
             <TB_ITEMS
@@ -833,6 +829,8 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="1222"
+              ORDER1="1"
+              ORDER2="0"
              />
         
             <TB_ITEMS
@@ -886,6 +884,8 @@
               VARIABLE_ELEMENT_FK="23"
               SHORT_NAME_FK="[null]"
               TB_CODES="123"
+              ORDER1="2"
+              ORDER2="0"
              />
             
             <TB_ITEMS
@@ -939,6 +939,8 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="124"
+              ORDER1="3"
+              ORDER2="3"
              />
                      
             <TB_ITEMS
@@ -992,6 +994,8 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="1241"
+              ORDER1="0"
+              ORDER2="0"
              />
         
             <TB_ITEMS
@@ -1045,6 +1049,8 @@
               VARIABLE_ELEMENT_FK="21"
               SHORT_NAME_FK="[null]"
               TB_CODES="12411"
+              ORDER1="0"
+              ORDER2="0"
              />
         
             <TB_ITEMS
@@ -1110,6 +1116,7 @@
                     ID="121"
                     CODELIST_FK="12"
                     NAMEABLE_ARTEFACT_FK="9997121"
+                    COLUMN_INDEX="1"
                     
                     UUID="codelist-visualisation-121"
                     VERSION="1"
@@ -1145,176 +1152,13 @@
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
                 />                 
-                
-                        <!--    -> CODE01 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1211"
-                            CODE_INDEX="0"
-                            CODE_FK="121"
-                            CODELIST_VISUALISATION_FK="121"
-                            
-                            UUID="code-visualisation-1211"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        /> 
-                        
-                        <!--    -> CODE02 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1212"
-                            CODE_INDEX="1"
-                            CODE_FK="122"
-                            CODELIST_VISUALISATION_FK="121"
-                            
-                            UUID="code-visualisation-1212"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        /> 
-                        
-                            <!--    -> CODE0201 -->
-                            <TB_M_CODE_ORDER_VISUAL 
-                                ID="12121"
-                                CODE_INDEX="0"
-                                CODE_FK="1221"
-                                CODELIST_VISUALISATION_FK="121"
-                                
-                                UUID="code-visualisation-12121"
-                                VERSION="1"
-                                CREATED_BY="user1"
-                                CREATED_DATE="2011-01-01 01:02:03"
-                                CREATED_DATE_TZ="Europe/London"
-                                LAST_UPDATED_BY="user2"
-                                LAST_UPDATED="2011-01-22 01:02:03"
-                                LAST_UPDATED_TZ="Europe/London"
-                            /> 
-                            <!--       -> CODE020101 -->
-                                <TB_M_CODE_ORDER_VISUAL 
-                                    ID="121211"
-                                    CODE_INDEX="0"
-                                    CODE_FK="12211"
-                                    CODELIST_VISUALISATION_FK="121"
-                                    
-                                    UUID="code-visualisation-121211"
-                                    VERSION="1"
-                                    CREATED_BY="user1"
-                                    CREATED_DATE="2011-01-01 01:02:03"
-                                    CREATED_DATE_TZ="Europe/London"
-                                    LAST_UPDATED_BY="user2"
-                                    LAST_UPDATED="2011-01-22 01:02:03"
-                                    LAST_UPDATED_TZ="Europe/London"
-                                />
-                                                            
-                            <!--    -> CODE0202 -->
-                            <TB_M_CODE_ORDER_VISUAL 
-                                ID="12122"
-                                CODE_INDEX="1"
-                                CODE_FK="1222"
-                                CODELIST_VISUALISATION_FK="121"
-                                
-                                UUID="code-visualisation-12122"
-                                VERSION="1"
-                                CREATED_BY="user1"
-                                CREATED_DATE="2011-01-01 01:02:03"
-                                CREATED_DATE_TZ="Europe/London"
-                                LAST_UPDATED_BY="user2"
-                                LAST_UPDATED="2011-01-22 01:02:03"
-                                LAST_UPDATED_TZ="Europe/London"
-                            />                         
-                        
-                        <!--    -> CODE03 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1213"
-                            CODE_INDEX="2"
-                            CODE_FK="123"
-                            CODELIST_VISUALISATION_FK="121"
-                            
-                            UUID="code-visualisation-1213"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        /> 
-                        
-                        <!--    -> CODE04 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1214"
-                            CODE_INDEX="3"
-                            CODE_FK="124"
-                            CODELIST_VISUALISATION_FK="121"
-                            
-                            UUID="code-visualisation-1214"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        />                 
-                                                
-                
-                        <!--    -> CODE0401 -->
-                            <TB_M_CODE_ORDER_VISUAL 
-                                ID="12141"
-                                CODE_INDEX="0"
-                                CODE_FK="1241"
-                                CODELIST_VISUALISATION_FK="121"
-                                
-                                UUID="code-visualisation-12141"
-                                VERSION="1"
-                                CREATED_BY="user1"
-                                CREATED_DATE="2011-01-01 01:02:03"
-                                CREATED_DATE_TZ="Europe/London"
-                                LAST_UPDATED_BY="user2"
-                                LAST_UPDATED="2011-01-22 01:02:03"
-                                LAST_UPDATED_TZ="Europe/London"
-                            />                 
-                                                       
-                            <!--        -> CODE040101 -->
-                                <TB_M_CODE_ORDER_VISUAL 
-                                    ID="121411"
-                                    CODE_INDEX="0"
-                                    CODE_FK="12411"
-                                    CODELIST_VISUALISATION_FK="121"
-                                    
-                                    UUID="code-visualisation-121411"
-                                    VERSION="1"
-                                    CREATED_BY="user1"
-                                    CREATED_DATE="2011-01-01 01:02:03"
-                                    CREATED_DATE_TZ="Europe/London"
-                                    LAST_UPDATED_BY="user2"
-                                    LAST_UPDATED="2011-01-22 01:02:03"
-                                    LAST_UPDATED_TZ="Europe/London"
-                                />                              
+                                        
             
-
-                <!-- VISUALISATION02 -->
-                    <!-- -> CODE03 -->
-                    <!-- -> CODE01 -->
-                    <!-- -> CODE02 -->
-                    <!--    -> CODE0202 -->
-                    <!--    -> CODE0201 -->
-                    <!--       -> CODE020101 -->
-                    <!-- -> CODE04 -->
-                    <!--    -> CODE0401 -->
-                    <!--        -> CODE040101 -->
-
                 <TB_M_CODELIST_ORDER_VISUAL 
                     ID="122"
                     CODELIST_FK="12"
                     NAMEABLE_ARTEFACT_FK="9997122"
+                    COLUMN_INDEX="2"
                     
                     UUID="codelist-visualisation-122"
                     VERSION="1"
@@ -1350,159 +1194,7 @@
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
                 />                 
-                
-                        <!--    -> CODE01 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1221"
-                            CODE_INDEX="1"
-                            CODE_FK="121"
-                            CODELIST_VISUALISATION_FK="122"
-                            
-                            UUID="code-visualisation-1221"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        /> 
-                        
-                        <!--    -> CODE02 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1222"
-                            CODE_INDEX="2"
-                            CODE_FK="122"
-                            CODELIST_VISUALISATION_FK="122"
-                            
-                            UUID="code-visualisation-1222"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        /> 
-                        
-                            <!--    -> CODE0201 -->
-                            <TB_M_CODE_ORDER_VISUAL 
-                                ID="12221"
-                                CODE_INDEX="1"
-                                CODE_FK="1221"
-                                CODELIST_VISUALISATION_FK="122"
-                                
-                                UUID="code-visualisation-12221"
-                                VERSION="1"
-                                CREATED_BY="user1"
-                                CREATED_DATE="2011-01-01 01:02:03"
-                                CREATED_DATE_TZ="Europe/London"
-                                LAST_UPDATED_BY="user2"
-                                LAST_UPDATED="2011-01-22 01:02:03"
-                                LAST_UPDATED_TZ="Europe/London"
-                            /> 
-                            <!--       -> CODE020101 -->
-                                <TB_M_CODE_ORDER_VISUAL 
-                                    ID="122211"
-                                    CODE_INDEX="0"
-                                    CODE_FK="12211"
-                                    CODELIST_VISUALISATION_FK="122"
-                                    
-                                    UUID="code-visualisation-122211"
-                                    VERSION="1"
-                                    CREATED_BY="user1"
-                                    CREATED_DATE="2011-01-01 01:02:03"
-                                    CREATED_DATE_TZ="Europe/London"
-                                    LAST_UPDATED_BY="user2"
-                                    LAST_UPDATED="2011-01-22 01:02:03"
-                                    LAST_UPDATED_TZ="Europe/London"
-                                />
-                                                            
-                            <!--    -> CODE0202 -->
-                            <TB_M_CODE_ORDER_VISUAL 
-                                ID="12222"
-                                CODE_INDEX="0"
-                                CODE_FK="1222"
-                                CODELIST_VISUALISATION_FK="122"
-                                
-                                UUID="code-visualisation-12222"
-                                VERSION="1"
-                                CREATED_BY="user1"
-                                CREATED_DATE="2011-01-01 01:02:03"
-                                CREATED_DATE_TZ="Europe/London"
-                                LAST_UPDATED_BY="user2"
-                                LAST_UPDATED="2011-01-22 01:02:03"
-                                LAST_UPDATED_TZ="Europe/London"
-                            />                         
-                        
-                        <!--    -> CODE03 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1223"
-                            CODE_INDEX="0"
-                            CODE_FK="123"
-                            CODELIST_VISUALISATION_FK="122"
-                            
-                            UUID="code-visualisation-1223"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        /> 
-                        
-                        <!--    -> CODE04 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="1224"
-                            CODE_INDEX="3"
-                            CODE_FK="124"
-                            CODELIST_VISUALISATION_FK="122"
-                            
-                            UUID="code-visualisation-1224"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        />                 
-                                                
-                
-                        <!--    -> CODE0401 -->
-                            <TB_M_CODE_ORDER_VISUAL 
-                                ID="12241"
-                                CODE_INDEX="0"
-                                CODE_FK="1241"
-                                CODELIST_VISUALISATION_FK="122"
-                                
-                                UUID="code-visualisation-12241"
-                                VERSION="1"
-                                CREATED_BY="user1"
-                                CREATED_DATE="2011-01-01 01:02:03"
-                                CREATED_DATE_TZ="Europe/London"
-                                LAST_UPDATED_BY="user2"
-                                LAST_UPDATED="2011-01-22 01:02:03"
-                                LAST_UPDATED_TZ="Europe/London"
-                            />                 
-                                                       
-                            <!--        -> CODE040101 -->
-                                <TB_M_CODE_ORDER_VISUAL 
-                                    ID="122411"
-                                    CODE_INDEX="0"
-                                    CODE_FK="12411"
-                                    CODELIST_VISUALISATION_FK="122"
-                                    
-                                    UUID="code-visualisation-122411"
-                                    VERSION="1"
-                                    CREATED_BY="user1"
-                                    CREATED_DATE="2011-01-01 01:02:03"
-                                    CREATED_DATE_TZ="Europe/London"
-                                    LAST_UPDATED_BY="user2"
-                                    LAST_UPDATED="2011-01-22 01:02:03"
-                                    LAST_UPDATED_TZ="Europe/London"
-                                />                              
+                                         
                     
     
     <!-- ************************************************************************************** -->
@@ -2505,6 +2197,7 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="611"
+              ORDER1="0"
              />
             
             <TB_ITEMS
@@ -2558,6 +2251,7 @@
                     ID="611"
                     CODELIST_FK="61"
                     NAMEABLE_ARTEFACT_FK="9997611"
+                    COLUMN_INDEX="1"
                     
                     UUID="codelist-visualisation-611"
                     VERSION="1"
@@ -2592,24 +2286,7 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                 
-                
-                        <!--    -> CODE01 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="6111"
-                            CODE_INDEX="0"
-                            CODE_FK="611"
-                            CODELIST_VISUALISATION_FK="611"
-                            
-                            UUID="code-visualisation-6111"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        />                 
+                />                               
             
     <!-- ************************************************************************************** -->
     <!-- CODELIST 7                                                                             -->
@@ -2813,6 +2490,7 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="721"
+              ORDER1="0"
              />
             
             <TB_ITEMS
@@ -2866,6 +2544,7 @@
                     ID="721"
                     CODELIST_FK="72"
                     NAMEABLE_ARTEFACT_FK="9997721"
+                    COLUMN_INDEX="1"
                     
                     UUID="codelist-visualisation-721"
                     VERSION="1"
@@ -2900,24 +2579,7 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                 
-                
-                        <!--    -> CODE01 -->
-                        <TB_M_CODE_ORDER_VISUAL 
-                            ID="7211"
-                            CODE_INDEX="0"
-                            CODE_FK="721"
-                            CODELIST_VISUALISATION_FK="721"
-                            
-                            UUID="code-visualisation-7211"
-                            VERSION="1"
-                            CREATED_BY="user1"
-                            CREATED_DATE="2011-01-01 01:02:03"
-                            CREATED_DATE_TZ="Europe/London"
-                            LAST_UPDATED_BY="user2"
-                            LAST_UPDATED="2011-01-22 01:02:03"
-                            LAST_UPDATED_TZ="Europe/London"
-                        />                 
+                />                  
     
     <!-- ************************************************************************************** -->
     <!-- CODELIST 8                                                                             -->

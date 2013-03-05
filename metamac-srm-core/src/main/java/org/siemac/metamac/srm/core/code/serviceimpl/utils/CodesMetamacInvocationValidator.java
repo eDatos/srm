@@ -109,14 +109,14 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationUrn, Long newCodeIndex, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkUpdateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(codelistOrderVisualisationUrn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(newCodeIndex, ServiceExceptionParameters.CODE_ORDER_VISUALISATION_INDEX, exceptions);
+        ValidationUtils.checkParameterRequired(newCodeIndex, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_INDEX, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -158,7 +158,6 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ValidationUtils.checkParameterRequired(codelistOrderVisualisation, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION, exceptions);
         if (codelistOrderVisualisation != null) {
             checkCodelistOrderVisualisation(codelistOrderVisualisation, exceptions);
-            ValidationUtils.checkMetadataEmpty(codelistOrderVisualisation.getCodes(), ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_CODES, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);

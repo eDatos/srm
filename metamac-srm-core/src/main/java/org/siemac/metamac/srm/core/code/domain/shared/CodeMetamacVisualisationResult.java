@@ -12,7 +12,7 @@ public class CodeMetamacVisualisationResult implements Serializable {
     private Long                           parentIdDatabase;
     private CodeMetamacVisualisationResult parent;
     private String                         name;
-    private Long                           order;
+    private Integer                        order;
 
     public CodeMetamacVisualisationResult() {
     }
@@ -65,11 +65,11 @@ public class CodeMetamacVisualisationResult implements Serializable {
         this.name = name;
     }
 
-    public Long getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(Long order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 

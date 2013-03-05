@@ -35,16 +35,17 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
     protected CodeMetamacRepository codeMetamacRepository;
 
     @Test
-    public void testRetrieveCodesByCodelistUrn() throws Exception {
+    public void testRetrieveCodesOrderedByCodelistUrn() throws Exception {
 
         // Retrieve
-        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistByNativeSqlQuery(Long.valueOf(12));
+        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(1));
 
         // Validate common metadata and SHORT_NAME
         assertEquals(9, codes.size());
+        int i = 0;
         {
             // Code 01 (validate all metadata)
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_1);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_1, code.getUrnProvider());
             assertEquals(CODELIST_1_V2_CODE_1, code.getUrn());
             assertEquals(null, code.getUriProvider());
@@ -76,7 +77,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
         }
         {
             // Code 02
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_2);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_2, code.getUrn());
             assertEquals("CODE02", code.getCode());
             assertEquals(1, code.getName().size());
@@ -87,7 +88,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
         }
         {
             // Code 02 01
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_2_1);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_2_1, code.getUrn());
             assertEquals("CODE02", code.getParent().getCode());
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
@@ -96,7 +97,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
         }
         {
             // Code 02 01 01
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_2_1_1);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_2_1_1, code.getUrn());
             assertEquals("CODE0201", code.getParent().getCode());
             CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "nombre corto 2-1-1", null, null);
@@ -104,31 +105,31 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
 
         {
             // Code 02 02
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_2_2);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_2_2, code.getUrn());
             CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), null, null, null, null);
         }
         {
             // Code 03
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_3);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_3, code.getUrn());
             CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Nombre corto variableElement 2-3", null, null);
         }
         {
             // Code 04
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_4);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_4, code.getUrn());
             CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), null, null, null, null);
         }
         {
             // Code 04 01
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_4_1);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_4_1, code.getUrn());
             CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), null, null, null, null);
         }
         {
             // Code 04 01 01
-            ItemResult code = getItemResult(codes, CODELIST_1_V2_CODE_4_1_1);
+            ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_4_1_1, code.getUrn());
             assertEquals("CODE0401", code.getParent().getCode());
             assertEquals(CODELIST_1_V2_CODE_4_1, code.getParent().getUrn());

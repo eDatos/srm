@@ -42,7 +42,6 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.utils.BaseServiceTestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.domain.CodeOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -275,13 +274,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     public void testPreCreateCodelist() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO testPreCreateCodelist
     }
+
     @Override
     public void testPostCreateCodelist() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO testPostCreateCodelist
     }
 
     @Override
@@ -2114,7 +2112,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(Long.valueOf(121), code.getItemIdDatabase());
                 assertEquals(null, code.getParent());
                 assertEquals(null, code.getParentIdDatabase());
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
                 // Code 02
@@ -2122,7 +2120,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(CODELIST_1_V2_CODE_2, code.getUrn());
                 assertEquals("CODE02", code.getCode());
                 assertEquals("Nombre codelist-1-v2-code-2", code.getName());
-                assertEquals(Long.valueOf(1), code.getOrder());
+                assertEquals(Integer.valueOf(1), code.getOrder());
             }
             {
                 // Code 02 01 (validate parent)
@@ -2132,7 +2130,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("Nombre codelist-1-v2-code-2-1", code.getName());
                 assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), code.getParentIdDatabase());
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
                 // Code 02 01 01
@@ -2141,7 +2139,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("CODE0201", code.getParent().getCode());
                 assertEquals("Nombre codelist-1-v2-code-2-1-1", code.getName());
                 assertEquals(Long.valueOf("1221"), code.getParentIdDatabase());
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
                 // Code 02 02
@@ -2151,28 +2149,28 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), code.getParentIdDatabase());
                 assertEquals(null, code.getName()); // it has not name
-                assertEquals(Long.valueOf(1), code.getOrder());
+                assertEquals(Integer.valueOf(1), code.getOrder());
             }
             {
                 // Code 03
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3);
                 assertEquals(CODELIST_1_V2_CODE_3, code.getUrn());
                 assertEquals(null, code.getName()); // it has name in locale
-                assertEquals(Long.valueOf(2), code.getOrder());
+                assertEquals(Integer.valueOf(2), code.getOrder());
             }
             {
                 // Code 04
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4);
                 assertEquals(CODELIST_1_V2_CODE_4, code.getUrn());
                 assertEquals("Nombre codelist-1-v2-code-4", code.getName());
-                assertEquals(Long.valueOf(3), code.getOrder());
+                assertEquals(Integer.valueOf(3), code.getOrder());
             }
             {
                 // Code 04 01
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1);
                 assertEquals(CODELIST_1_V2_CODE_4_1, code.getUrn());
                 assertEquals("Nombre codelist-1-v2-code-4-1", code.getName());
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
                 // Code 04 01 01
@@ -2181,7 +2179,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("CODE0401", code.getParent().getCode());
                 assertEquals(CODELIST_1_V2_CODE_4_1, code.getParent().getUrn());
                 assertEquals(null, code.getName()); // it has name in locale
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
         }
 
@@ -2196,55 +2194,55 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 // Code 01
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1);
                 assertEquals("Name codelist-1-v2-code-1", code.getName());
-                assertEquals(Long.valueOf(1), code.getOrder());
+                assertEquals(Integer.valueOf(1), code.getOrder());
             }
             {
                 // Code 02
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2);
                 assertEquals(null, code.getName());
-                assertEquals(Long.valueOf(2), code.getOrder());
+                assertEquals(Integer.valueOf(2), code.getOrder());
             }
             {
                 // Code 02 01
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1);
                 assertEquals(null, code.getName());
-                assertEquals(Long.valueOf(1), code.getOrder());
+                assertEquals(Integer.valueOf(1), code.getOrder());
             }
             {
                 // Code 02 01 01
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1);
                 assertEquals(null, code.getName());
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
                 // Code 02 02
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2);
                 assertEquals(null, code.getName()); // it has not name
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
                 // Code 03
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3);
                 assertEquals("name code-3", code.getName());
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
                 // Code 04
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4);
                 assertEquals(null, code.getName());
-                assertEquals(Long.valueOf(3), code.getOrder());
+                assertEquals(Integer.valueOf(3), code.getOrder());
             }
             {
                 // Code 04 01
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1);
                 assertEquals(null, code.getName());
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
                 // Code 04 01 01
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1);
                 assertEquals("Name codelist-1-v2-code-4-1-1", code.getName());
-                assertEquals(Long.valueOf(0), code.getOrder());
+                assertEquals(Integer.valueOf(0), code.getOrder());
             }
         }
 
@@ -3896,29 +3894,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(orderVisualisationUrn, codelistOrderVisualisation.getNameableArtefact().getUrn());
         assertEquals(codelistUrn, codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getUrn());
         assertEqualsInternationalString(codelistOrderVisualisation.getNameableArtefact().getName(), "es", "visualización - órdenes 1-2-1", "en", "order - visualisation 1-2-1");
+        assertEquals(Integer.valueOf(1), codelistOrderVisualisation.getColumnIndex());
 
         assertEquals("user1", codelistOrderVisualisation.getCreatedBy());
         assertEqualsDate("2011-01-01 01:02:03", codelistOrderVisualisation.getCreatedDate());
         assertEquals("user2", codelistOrderVisualisation.getLastUpdatedBy());
         assertEqualsDate("2011-01-22 01:02:03", codelistOrderVisualisation.getLastUpdated());
-
-        // Codes
-        assertEquals(9, codelistOrderVisualisation.getCodes().size());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), codelistOrderVisualisation.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), codelistOrderVisualisation.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), codelistOrderVisualisation.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), codelistOrderVisualisation.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), codelistOrderVisualisation.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), codelistOrderVisualisation.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), codelistOrderVisualisation.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), codelistOrderVisualisation.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), codelistOrderVisualisation.getCodes());
     }
 
     @Override
     @Test
     public void testCreateCodelistOrderVisualisation() throws Exception {
-
         ServiceContext ctx = getServiceContextAdministrador();
 
         CodelistOrderVisualisation codelistOrderVisualisation = CodesMetamacDoMocks.mockCodelistOrderVisualisation();
@@ -3931,17 +3917,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEqualsCodelistOrderVisualisation(codelistOrderVisualisation, codelistOrderVisualisationCreated);
 
         // Validate codes
-        assertNotNull(codelistOrderVisualisationCreated.getCodes());
-        assertEquals(9, codelistOrderVisualisationCreated.getCodes().size());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), codelistOrderVisualisationCreated.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), codelistOrderVisualisationCreated.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), codelistOrderVisualisationCreated.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), codelistOrderVisualisationCreated.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), codelistOrderVisualisationCreated.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), codelistOrderVisualisationCreated.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), codelistOrderVisualisationCreated.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), codelistOrderVisualisationCreated.getCodes());
-        assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), codelistOrderVisualisationCreated.getCodes());
+        List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", codelistOrderVisualisationCreated.getNameableArtefact().getUrn());
+        assertEquals(9, codes.size());
+        assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+        assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+        assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder());
+        assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+        assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder());
+        assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+        assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+        assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+        assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
     }
 
     @Test
@@ -4006,24 +3992,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
 
             // Validate codes
-            assertEquals(10, codelistOrderVisualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(codeCreated.getNameableArtefact().getUrn(), Long.valueOf(4), codelistOrderVisualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", codelistOrderVisualisation.getNameableArtefact().getUrn());
+            assertEquals(10, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(4), getCodeMetamacVisualisationResult(codes, codeCreated.getNameableArtefact().getUrn()).getOrder());
         }
         // Visualisation 02
         {
             CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
 
             // Validate codes
-            assertEquals(10, codelistOrderVisualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(codeCreated.getNameableArtefact().getUrn(), Long.valueOf(4), codelistOrderVisualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", codelistOrderVisualisation.getNameableArtefact().getUrn());
+            assertEquals(10, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(4), getCodeMetamacVisualisationResult(codes, codeCreated.getNameableArtefact().getUrn()).getOrder());
+
         }
     }
 
@@ -4046,20 +4035,57 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
 
             // Validate codes
-            assertEquals(10, codelistOrderVisualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(codeCreated.getNameableArtefact().getUrn(), Long.valueOf(2), codelistOrderVisualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", codelistOrderVisualisation.getNameableArtefact().getUrn());
+            assertEquals(10, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, codeCreated.getNameableArtefact().getUrn()).getOrder());
         }
         // Visualisation 02
         {
             CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
 
             // Validate codes
-            assertEquals(10, codelistOrderVisualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), codelistOrderVisualisation.getCodes());
-            assertContainsCodeOrderVisualisation(codeCreated.getNameableArtefact().getUrn(), Long.valueOf(2), codelistOrderVisualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", codelistOrderVisualisation.getNameableArtefact().getUrn());
+            assertEquals(10, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, codeCreated.getNameableArtefact().getUrn()).getOrder());
+        }
+    }
+
+    @Test
+    public void testCreateCodeSubCodeInLevelWithoutOtherCodesTestingOrderVisualisation() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodeMetamac code = CodesMetamacDoMocks.mockCode();
+        CodeMetamac codeParent = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_4_1_1);
+        code.setParent(codeParent);
+
+        String codelistUrn = CODELIST_1_V2;
+
+        // Create
+        CodeMetamac codeCreated = codesService.createCode(ctx, codelistUrn, code);
+
+        // Validate visualisations
+        // Visualisation 01
+        {
+            CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
+
+            // Validate codes
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", codelistOrderVisualisation.getNameableArtefact().getUrn());
+            assertEquals(10, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, codeCreated.getNameableArtefact().getUrn()).getOrder());
+        }
+        // Visualisation 02
+        {
+            CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
+
+            // Validate codes
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", codelistOrderVisualisation.getNameableArtefact().getUrn());
+            assertEquals(10, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, codeCreated.getNameableArtefact().getUrn()).getOrder());
+
         }
     }
 
@@ -4069,6 +4095,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         String urn = CODELIST_1_V2_ORDER_VISUALISATION_02;
 
+        // Check any column of code
+        {
+            CodeMetamac code1 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+            assertNotNull(code1.getOrder1());
+            assertNotNull(code1.getOrder2());
+
+            CodeMetamac code2 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2);
+            assertNotNull(code2.getOrder1());
+            assertNotNull(code2.getOrder2());
+        }
+
+        //
         codesService.deleteCodelistOrderVisualisation(getServiceContextAdministrador(), urn);
 
         // Retrieve deleted visualisation
@@ -4078,6 +4116,19 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
+        }
+
+        entityManager.clear();
+
+        // Check clear order
+        {
+            CodeMetamac code1 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+            assertNotNull(code1.getOrder1());
+            assertNull(code1.getOrder2());
+
+            CodeMetamac code2 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2);
+            assertNotNull(code2.getOrder1());
+            assertNull(code2.getOrder2());
         }
     }
 
@@ -4111,82 +4162,89 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testUpdateCodeInOrderVisualisation() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
         String codeUrn = CODELIST_1_V2_CODE_1;
         String visualisationUrn = CODELIST_1_V2_ORDER_VISUALISATION_01;
 
-        codesService.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationUrn, Long.valueOf(2));
+        codesService.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationUrn, Integer.valueOf(2));
 
         // Validate visualisation
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), visualisationUrn);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(2), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(0), visualisation.getCodes());// changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(1), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder()); // changed
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder()); // changed
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder()); // changed
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
 
         // Validate other visualisation does not change
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
     }
 
     @Test
     public void testUpdateCodeSubcodeInOrderVisualisation() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
         String codeUrn = CODELIST_1_V2_CODE_2_1;
         String visualisationUrn = CODELIST_1_V2_ORDER_VISUALISATION_01;
 
-        codesService.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationUrn, Long.valueOf(1));
+        codesService.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationUrn, Integer.valueOf(1));
 
         // Validate visualisation
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), visualisationUrn);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder()); // changed
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // changed
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
 
         // Validate other visualisation does not change
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
     }
 
     @Test
     public void testDeleteCodeCheckUpdateOrderVisualisation() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
         String urn = CODELIST_1_V2_CODE_3;
 
         // Delete code
@@ -4196,35 +4254,37 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation 01
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
-            assertEquals(8, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(2), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(8, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder()); // changed
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
 
         // Validate visualisation 02
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
-            assertEquals(8, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(2), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(8, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder()); // changed
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder()); // changed
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder()); // changed
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
     }
 
     @Test
     public void testDeleteCodeWithParentAndChildrenCheckUpdateOrderVisualisation() throws Exception {
-
+        String codelistUrn = CODELIST_1_V2;
         String urn = CODELIST_1_V2_CODE_2_1;
 
         // Delete code
@@ -4233,27 +4293,29 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation 01
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
-            assertEquals(7, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // changed
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(7, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // changed
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
 
         // Validate visualisation 02
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
-            assertEquals(7, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before deleted code
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(7, codes.size());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // in same position, due to it is before deleted code
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
     }
 
@@ -4280,43 +4342,36 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNull(code.getParent());
         assertEquals(code.getItemSchemeVersion().getMaintainableArtefact().getUrn(), code.getItemSchemeVersionFirstLevel().getMaintainableArtefact().getUrn());
 
-        // Validate hierarchy
-        CodelistVersion codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-        assertEquals(5, codelistVersion.getItemsFirstLevel().size());
-        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_1);
-        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_2);
-        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_3);
-        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_4);
-        assertListItemsContainsItem(codelistVersion.getItemsFirstLevel(), CODELIST_1_V2_CODE_2_1);
-
         // Validate visualisation 01
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // changed (up)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(4), visualisation.getCodes()); // changed (change level, put at the end)
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // changed (up)
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
+            assertEquals(Integer.valueOf(4), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder()); // changed (change level, put at the end)
         }
 
         // Validate visualisation 02
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(4), visualisation.getCodes()); // changed (change level, put at the end)
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // in same position, due to it is before moved code
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
+            assertEquals(Integer.valueOf(4), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder()); // changed (change level, put at the end)
         }
     }
 
@@ -4349,31 +4404,33 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation 01
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // changed (up)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes()); // changed (change level, put at the end)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // changed (up)
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder()); // changed (change level, put at the end)
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
 
         // Validate visualisation 02
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(1), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(2), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(3), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes()); // changed (change level, put at the end)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // in same position, due to it is before moved code
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
+            assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder()); // changed (change level, put at the end)
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
     }
 
@@ -4404,31 +4461,33 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation 01
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_01);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(0), visualisation.getCodes()); // changed (up)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(1), visualisation.getCodes()); // in same position, due to it is before moved code
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(2), visualisation.getCodes()); // changed (change level, put at the end)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(1), visualisation.getCodes()); // changed (up)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(2), visualisation.getCodes()); // changed (up)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder()); // changed (up)
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder()); // in same position, due to it is before moved code
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // in same position, due to it is before moved code
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());// changed (change level, put at the end)
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder()); // changed (up)
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder()); // changed (up)
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
 
         // Validate visualisation 02
         {
             CodelistOrderVisualisation visualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
-            assertEquals(9, visualisation.getCodes().size());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2, Long.valueOf(1), visualisation.getCodes()); // changed (up)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_3, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1, Long.valueOf(1), visualisation.getCodes()); // in same position, due to it is before moved code
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_1_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_2_2, Long.valueOf(0), visualisation.getCodes()); // in same position, due to it is before moved code
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_1, Long.valueOf(2), visualisation.getCodes()); // changed (change level, put at the end)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4, Long.valueOf(2), visualisation.getCodes()); // changed (up)
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1, Long.valueOf(0), visualisation.getCodes());
-            assertContainsCodeOrderVisualisation(CODELIST_1_V2_CODE_4_1_1, Long.valueOf(0), visualisation.getCodes());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisation.getNameableArtefact().getUrn());
+            assertEquals(9, codes.size());
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder()); // changed (up)
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOrder()); // in same position, due to it is before moved code
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOrder()); // in same position, due to it is before moved code
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());// changed (change level, put at the end)
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder()); // in same position, due to it is before moved code
+            assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder()); // changed (up)
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1).getOrder());
         }
     }
 
@@ -4653,25 +4712,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationUrnExpected, List<CodelistOrderVisualisation> actuals) {
-        for (CodelistOrderVisualisation actual : actuals) {
-            if (actual.getNameableArtefact().getUrn().equals(codelistOrderVisualisationUrnExpected)) {
-                return;
-            }
-        }
-        fail("visualisation not found");
-    }
-
-    private void assertContainsCodeOrderVisualisation(String codeUrnExpected, Long orderExpected, List<CodeOrderVisualisation> actuals) {
-        for (CodeOrderVisualisation actual : actuals) {
-            if (actual.getCode().getNameableArtefact().getUrn().equals(codeUrnExpected)) {
-                assertEquals(orderExpected, actual.getCodeIndex());
-                return;
-            }
-        }
-        fail("code not found in order");
-    }
-
     private VariableElementOperation getVariableElementOperationByCode(List<VariableElementOperation> operations, String code) {
         for (VariableElementOperation variableElementOperation : operations) {
             if (code.equals(variableElementOperation.getCode())) {
@@ -4679,6 +4719,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         }
         return null;
+    }
+
+    private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationUrnExpected, List<CodelistOrderVisualisation> actuals) {
+        for (CodelistOrderVisualisation actual : actuals) {
+            if (actual.getNameableArtefact().getUrn().equals(codelistOrderVisualisationUrnExpected)) {
+                return;
+            }
+        }
+        fail("visualisation not found");
     }
 
     private CodeMetamac getCode(List<Item> items, String urn) {

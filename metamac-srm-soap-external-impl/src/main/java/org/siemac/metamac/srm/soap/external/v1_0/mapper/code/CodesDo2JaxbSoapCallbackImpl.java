@@ -62,6 +62,6 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
 
     @Override
     public List<ItemResult> findCodesByCodelistEfficiently(Long idCodelist) {
-        return codeRepository.findCodesByCodelistByNativeSqlQuery(idCodelist);
+        return codeRepository.findCodesByCodelistOrderedInDepth(idCodelist, null); // TODO orderColumnIndex
     }
 }

@@ -601,7 +601,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     }
 
     private void mockFindCodesByNativeSqlQuery() throws MetamacException {
-        when(codeRepository.findCodesByCodelistByNativeSqlQuery(any(Long.class), any(Boolean.class))).thenAnswer(new Answer<List<ItemResult>>() {
+        when(codeRepository.findCodesByCodelistUnordered(any(Long.class), any(Boolean.class))).thenAnswer(new Answer<List<ItemResult>>() {
 
             @Override
             public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {

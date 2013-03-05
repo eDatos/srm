@@ -25,6 +25,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_RELATIONS                               = create("exception.srm.codelists.variable_element.with_relations");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_OPERATIONS                              = create("exception.srm.codelists.variable_element.with_operations");
     public static final CommonServiceExceptionType CODELIST_ALPHABETICAL_ORDER_OPERATION_NOT_SUPPORTED           = create("exception.srm.codelists.order_visualisation.alphabetical.operation_not_supported");
+    public static final CommonServiceExceptionType CODELIST_ORDER_VISUALISATION_MAXIMUM_REACHED                  = create("exception.srm.codelists.order_visualisation.maximum_reached");
 
     // Variable elements
     public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE                = create("exception.srm.codelists.variable_element.must_belong_to_same_variable");

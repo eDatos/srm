@@ -5,12 +5,12 @@ import java.util.List;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
-import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -19,7 +19,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
 
     @Autowired
-    private CodeRepository        codeRepository;
+    private CodeMetamacRepository codeRepository;
 
     @Autowired
     private CodesDo2RestMapperV10 codesDo2RestMapperV10;
@@ -63,6 +63,6 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
 
     @Override
     public List<ItemResult> findCodesByCodelistEfficiently(Long idCodelist) {
-        return codeRepository.findCodesByCodelistByNativeSqlQuery(idCodelist, Boolean.TRUE);
+        return codeRepository.findCodesByCodelistOrderedInDepth(idCodelist, null); // TODO columnIndex
     }
 }

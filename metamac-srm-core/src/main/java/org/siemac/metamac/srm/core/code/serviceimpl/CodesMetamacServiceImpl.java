@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -24,7 +22,6 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.domain.CodeOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -88,6 +85,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Autowired
     @Qualifier("codesVersioningCopyWithoutCodesCallbackMetamac")
     private CodesVersioningCopyCallback    codesVersioningCopyWithoutCodesCallback;
+
+    private final int                      CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER = 20;
 
     public CodesMetamacServiceImpl() {
     }
@@ -295,15 +294,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         code = (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
 
         // Add to all visualisations of codelist, at the end of level
-        updateOneCodeOrderInLevelPuttingAtTheEnd(codelistVersion.getOrderVisualisations(), code);
-
+        for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
+            if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
+                continue;
+            }
+            setCodeOrderInLastPositionInLevel(codelistVersion, codelistOrderVisualisation, code.getParent(), code);
+        }
+        code = getCodeMetamacRepository().save(code);
         return code;
     }
 
     @Override
     public CodeMetamac preCreateCode(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodeMetamac code) throws MetamacException {
-        // CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-
         // Validation
         CodesMetamacInvocationValidator.checkCreateCode(codelistVersion, code, null);
         checkCodeToCreateOrUpdate(ctx, codelistVersion, code);
@@ -360,7 +362,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
         Item parentActual = code.getParent() != null ? code.getParent() : null;
         String parentActualUrn = parentActual != null ? parentActual.getNameableArtefact().getUrn() : null;
-        Item parentTarget = parentTargetUrn != null ? retrieveCodeByUrn(ctx, parentTargetUrn) : null;
+        CodeMetamac parentTarget = parentTargetUrn != null ? retrieveCodeByUrn(ctx, parentTargetUrn) : null;
 
         if (StringUtils.equals(parentActualUrn, parentTargetUrn)) {
             // nothing
@@ -372,39 +374,34 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             checkItemIsNotChildren(ctx, code, parentTargetUrn);
         }
 
-        // Update target parent, adding code
+        // Update target parent
         if (parentTarget == null) {
             code.setParent(null);
-            code.getItemSchemeVersion().addItemsFirstLevel(code);
+            code.setItemSchemeVersionFirstLevel(codelistVersion);
         } else {
+            code.setParent(parentTarget);
             code.setItemSchemeVersionFirstLevel(null);
-            parentTarget.addChildren(code);
         }
-        code = getCodeMetamacRepository().save(code);
 
         // Update orders, in previous and new level
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
             if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
                 continue;
             }
-
-            Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codelistOrderVisualisationToMapByCodeUrn(codelistOrderVisualisation);
-
-            // Update orders of other codes in previous level
-            Long codeIndexInLevelBefore = mapCodeOrderVisualisationByCodeUrn.get(code.getNameableArtefact().getUrn()).getCodeIndex();
-            List<Item> codesInPreviousLevel = parentActual != null ? parentActual.getChildren() : codelistVersion.getItemsFirstLevel();
-            updateAllCodesOrdersInLevelRemovingCode(ctx, codesInPreviousLevel, codeIndexInLevelBefore, mapCodeOrderVisualisationByCodeUrn);
-
-            // Update order in new level
-            updateOneCodeOrderInLevelPuttingAtTheEnd(codelistOrderVisualisation, code);
+            // remove from previous level
+            reorderCodesDeletingOneCode(codelistVersion, codelistOrderVisualisation, parentActual, code);
+            // add at the end in new level
+            setCodeOrderInLastPositionInLevel(codelistVersion, codelistOrderVisualisation, code.getParent(), code);
         }
+
+        code = getCodeMetamacRepository().save(code);
     }
 
     @Override
-    public void updateCodeInOrderVisualisation(ServiceContext ctx, String codeUrn, String codelistOrderVisualisationUrn, Long newCodeIndex) throws MetamacException {
+    public void updateCodeInOrderVisualisation(ServiceContext ctx, String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex) throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkCodeInOrderVisualisation(codeUrn, codelistOrderVisualisationUrn, newCodeIndex, null);
+        CodesMetamacInvocationValidator.checkUpdateCodeInOrderVisualisation(codeUrn, codelistOrderVisualisationUrn, newCodeIndex, null);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, codeUrn);
         checkCodelistCanBeModified(codelistVersion);
 
@@ -412,17 +409,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(codelistOrderVisualisationUrn);
         SrmValidationUtils.checkNotAlphabeticalOrderVisualisation(codelistOrderVisualisation);
 
-        Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codelistOrderVisualisationToMapByCodeUrn(codelistOrderVisualisation);
-
-        // Change order of code
-        CodeOrderVisualisation codeOrderVisualisation = mapCodeOrderVisualisationByCodeUrn.get(code.getNameableArtefact().getUrn());
-        Long codeIndexInLevelBefore = codeOrderVisualisation.getCodeIndex();
-        codeOrderVisualisation.setCodeIndex(newCodeIndex);
-        getCodeOrderVisualisationRepository().save(codeOrderVisualisation);
-
-        // Update orders of codes in same level, also checking new order
-        List<Item> codesInLevel = getCodesInSameLevel(code);
-        updateAllCodesOrdersInLevelChangingOrder(ctx, codesInLevel, code, codeIndexInLevelBefore, newCodeIndex, mapCodeOrderVisualisationByCodeUrn);
+        // Reorder codes in same level
+        reorderCodesDeletingOneCode(codelistVersion, codelistOrderVisualisation, code.getParent(), code);
+        reorderCodesAddingOneCodeInMiddle(codelistVersion, codelistOrderVisualisation, code, newCodeIndex);
+        // Update code
+        SrmServiceUtils.setCodeOrder(code, codelistOrderVisualisation.getColumnIndex(), newCodeIndex);
         getCodeMetamacRepository().save(code);
     }
 
@@ -439,29 +430,22 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public void deleteCode(ServiceContext ctx, String urn) throws MetamacException {
-
         // Validation
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, urn);
         checkCodelistCanBeModified(codelistVersion);
 
-        // Before delete code, get order of code in each level
-        Map<String, CodeOrderVisualisation> codeOrdersInVisualisations = codeOrderInAllVisualisationToMap(urn);
-
         CodeMetamac code = retrieveCodeByUrn(ctx, urn);
-        List<Item> codesInSameLevel = getCodesInSameLevel(code);
-
-        // Delete code
-        codesService.deleteCode(ctx, urn);
-
-        // Reorder codes in same level
+        Item parent = code.getParent();
+        // Before delete code, update order of other codes in level
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
             if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
                 continue;
             }
-            Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn = SrmServiceUtils.codelistOrderVisualisationToMapByCodeUrn(codelistOrderVisualisation);
-            updateAllCodesOrdersInLevelRemovingCode(ctx, codesInSameLevel, codeOrdersInVisualisations.get(codelistOrderVisualisation.getNameableArtefact().getUrn()).getCodeIndex(),
-                    mapCodeOrderVisualisationByCodeUrn);
+            reorderCodesDeletingOneCode(codelistVersion, codelistOrderVisualisation, parent, code);
         }
+
+        // Delete code
+        codesService.deleteCode(ctx, urn);
     }
 
     @Override
@@ -470,20 +454,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrn(codelistUrn, locale, orderVisualisationUrn, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-        Long idOrderVisualisation = null;
+        Integer columnIndex = null;
         if (orderVisualisationUrn != null) {
             CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
-            idOrderVisualisation = codelistOrderVisualisation.getId();
+            columnIndex = codelistOrderVisualisation.getColumnIndex();
             if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation) && !codelistVersion.getMaintainableArtefact().getFinalLogicClient()) {
                 // note: alphabetic order is generated when codelist is published
-                idOrderVisualisation = null; // avoid error
+                columnIndex = null; // avoid error
             }
         } else {
             // any order
         }
 
         // Retrieve
-        return getCodeMetamacRepository().findCodesVisualisationByCodelistByNativeSqlQuery(codelistVersion.getId(), locale, idOrderVisualisation);
+        return getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersion.getId(), locale, columnIndex);
     }
 
     // ------------------------------------------------------------------------------------
@@ -990,6 +974,30 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return getVariableElementOperationRepository().findByVariableElementUrn(variableElementUrn);
     }
 
+    /**
+     * Get a column available in Code to store orders
+     */
+    private Integer getCodelistOrderVisualisationAvailable(CodelistVersionMetamac codelistVersion) throws MetamacException {
+        int index = -1;
+        for (int i = 1; i <= CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {
+            boolean alreadyExists = false;
+            for (CodelistOrderVisualisation codelistOrderVisualisationPrevious : codelistVersion.getOrderVisualisations()) {
+                if (codelistOrderVisualisationPrevious.getColumnIndex().intValue() == i) {
+                    alreadyExists = true;
+                    break;
+                }
+            }
+            if (!alreadyExists) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
+            throw new MetamacException(ServiceExceptionType.CODELIST_ORDER_VISUALISATION_MAXIMUM_REACHED, codelistVersion.getMaintainableArtefact().getUrn());
+        }
+        return Integer.valueOf(index);
+    }
+
     // ------------------------------------------------------------------------------------
     // CODELIST VISUALISATIONS
     // ------------------------------------------------------------------------------------
@@ -1002,9 +1010,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkCodelistCanBeModified(codelistVersion);
 
         // Create order visualisation
+        codelistOrderVisualisation.setColumnIndex(getCodelistOrderVisualisationAvailable(codelistVersion));
         codelistOrderVisualisation.setCodelistVersion(codelistVersion);
 
-        // Add all codes with default order by level
+        // Assign default order to all codes, by level
         List<Item> codesOrderedByParent = new ArrayList<Item>(codelistVersion.getItems());
         Collections.sort(codesOrderedByParent, new Comparator<Item>() {
 
@@ -1018,21 +1027,19 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         });
 
-        int order = 0;
         String previousParentUrn = null;
+        int previousOrder = -1;
         for (Item item : codesOrderedByParent) {
             CodeMetamac code = (CodeMetamac) item;
             String actualParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
             if (!StringUtils.equals(previousParentUrn, actualParentUrn)) {
-                order = 0; // another level
+                previousOrder = -1; // another level
                 previousParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
             }
-            CodeOrderVisualisation codeOrderVisualisation = new CodeOrderVisualisation();
-            codeOrderVisualisation.setCode(code);
-            codeOrderVisualisation.setCodelistVisualisation(codelistOrderVisualisation);
-            codeOrderVisualisation.setCodeIndex(Long.valueOf(order));
-            codelistOrderVisualisation.addCode(codeOrderVisualisation);
-            order++;
+            int order = previousOrder == -1 ? 0 : previousOrder + 1;
+            SrmServiceUtils.setCodeOrder(code, codelistOrderVisualisation.getColumnIndex(), Integer.valueOf(order));
+            getCodeMetamacRepository().save(code);
+            previousOrder = order;
         }
 
         // Create
@@ -1076,9 +1083,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistOrderVisualisation codelistOrderVisualisationToDelete = retrieveCodelistOrderVisualisationByUrn(urn);
         SrmValidationUtils.checkNotAlphabeticalOrderVisualisation(codelistOrderVisualisationToDelete);
 
-        // Check codelist and default visualisation
+        // Check codelist
         CodelistVersionMetamac codelistVersion = codelistOrderVisualisationToDelete.getCodelistVersion();
         checkCodelistCanBeModified(codelistVersion);
+        // Clear if it is default visualisation
         if (codelistVersion.getDefaultOrderVisualisation() != null && codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn().equals(urn)) {
             codelistVersion.setDefaultOrderVisualisation(null);
             getCodelistVersionMetamacRepository().save(codelistVersion);
@@ -1086,6 +1094,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Delete
         getCodelistOrderVisualisationRepository().delete(codelistOrderVisualisationToDelete);
+        // Clear ordenations in code columns
+        getCodeMetamacRepository().clearCodeOrder(codelistVersion, codelistOrderVisualisationToDelete.getColumnIndex());
     }
 
     @Override
@@ -1369,84 +1379,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistOrderVisualisation.getNameableArtefact().setUrnProvider(urn);
     }
 
-    private void updateAllCodesOrdersInLevelRemovingCode(ServiceContext ctx, List<Item> codesInLevel, Long codeIndexOfCodeToRemove,
-            Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn) throws MetamacException {
-        for (Item code : codesInLevel) {
-            CodeOrderVisualisation codeOrderVisualisationInLevel = mapCodeOrderVisualisationByCodeUrn.get(code.getNameableArtefact().getUrn());
-            if (codeOrderVisualisationInLevel.getCodeIndex() > codeIndexOfCodeToRemove) {
-                codeOrderVisualisationInLevel.setCodeIndex(codeOrderVisualisationInLevel.getCodeIndex() - 1);
-                getCodeOrderVisualisationRepository().save(codeOrderVisualisationInLevel);
-            }
-        }
-    }
-
-    private void updateAllCodesOrdersInLevelChangingOrder(ServiceContext ctx, List<Item> codesInLevel, Item codeToChangeOrder, Long orderBeforeUpdate, Long orderAfterUpdate,
-            Map<String, CodeOrderVisualisation> mapCodeOrderVisualisationByCodeUrn) throws MetamacException {
-
-        // Checks orders
-        if (orderAfterUpdate > codesInLevel.size()) {
-            throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.CODE_ORDER_VISUALISATION_INDEX);
-        }
-
-        // Update orders
-        for (Item codeInLevel : codesInLevel) {
-            if (codeInLevel.getId().equals(codeToChangeOrder.getId())) {
-                continue;
-            }
-            CodeOrderVisualisation codeOrderVisualisationInLevel = mapCodeOrderVisualisationByCodeUrn.get(codeInLevel.getNameableArtefact().getUrn());
-            Long orderIndexInLevel = codeOrderVisualisationInLevel.getCodeIndex();
-            if (orderAfterUpdate < orderBeforeUpdate) {
-                if (orderIndexInLevel >= orderAfterUpdate && orderIndexInLevel < orderBeforeUpdate) {
-                    codeOrderVisualisationInLevel.setCodeIndex(orderIndexInLevel + 1);
-                    getCodeOrderVisualisationRepository().save(codeOrderVisualisationInLevel);
-                }
-            } else if (orderAfterUpdate > orderBeforeUpdate) {
-                if (orderIndexInLevel > orderBeforeUpdate && orderIndexInLevel <= orderAfterUpdate) {
-                    codeOrderVisualisationInLevel.setCodeIndex(orderIndexInLevel - 1);
-                    getCodeOrderVisualisationRepository().save(codeOrderVisualisationInLevel);
-                }
-            }
-        }
-    }
-
-    private void updateOneCodeOrderInLevelPuttingAtTheEnd(List<CodelistOrderVisualisation> codelistOrderVisualisations, CodeMetamac code) {
-        for (CodelistOrderVisualisation codelistOrderVisualisation : codelistOrderVisualisations) {
-            if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
-                return;
-            }
-            updateOneCodeOrderInLevelPuttingAtTheEnd(codelistOrderVisualisation, code);
-        }
-    }
-
-    private void updateOneCodeOrderInLevelPuttingAtTheEnd(CodelistOrderVisualisation codelistOrderVisualisation, CodeMetamac code) {
-        if (SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
-            return;
-        }
-        CodeOrderVisualisation codeOrderVisualisation = SrmServiceUtils.filterCodeOrderVisualisationsByCode(codelistOrderVisualisation.getCodes(), code.getNameableArtefact().getUrn());
-        if (codeOrderVisualisation == null) {
-            codeOrderVisualisation = new CodeOrderVisualisation();
-            codeOrderVisualisation.setCode(code);
-            codelistOrderVisualisation.addCode(codeOrderVisualisation);
-        }
-        codeOrderVisualisation.setCodeIndex(Long.valueOf(getCodesInSameLevel(code).size()) - 1); // start in 0. note: code is already added to list
-        getCodeOrderVisualisationRepository().save(codeOrderVisualisation);
-    }
-
-    private List<Item> getCodesInSameLevel(CodeMetamac code) {
-        return code.getParent() != null ? code.getParent().getChildren() : code.getItemSchemeVersionFirstLevel().getItemsFirstLevel();
-    }
-
-    private Map<String, CodeOrderVisualisation> codeOrderInAllVisualisationToMap(String urn) {
-        Map<String, CodeOrderVisualisation> codeIndexInVisualisations = new HashMap<String, CodeOrderVisualisation>();
-        List<CodeOrderVisualisation> codeOrderVisualisations = getCodeOrderVisualisationRepository().findByCodeUrn(urn);
-        for (CodeOrderVisualisation codeOrderVisualisation : codeOrderVisualisations) {
-            codeIndexInVisualisations.put(codeOrderVisualisation.getCodelistVisualisation().getNameableArtefact().getUrn(), codeOrderVisualisation);
-        }
-        return codeIndexInVisualisations;
-    }
-
     /**
-     * We can not move a code to its child
+     * A code can not be moved to its child
      */
     private void checkItemIsNotChildren(ServiceContext ctx, Item item, String parentTargetUrn) throws MetamacException {
         Item parentTarget = retrieveCodeByUrn(ctx, parentTargetUrn);
@@ -1468,6 +1402,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         name.addText(new LocalisedString("en", "Alphabetical order"));
         name.addText(new LocalisedString("pt", "Ordem alfabética"));
         alphabeticalOrderVisualisation.getNameableArtefact().setName(name);
+        alphabeticalOrderVisualisation.setColumnIndex(1);
 
         // note: do not add codes, they will be added when publish
         codelistVersion.addOrderVisualisation(alphabeticalOrderVisualisation);
@@ -1522,4 +1457,31 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return variableElementOperation;
     }
+
+    private void reorderCodesDeletingOneCode(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, Item parent, CodeMetamac code) throws MetamacException {
+        Integer columnIndex = codelistOrderVisualisation.getColumnIndex();
+        Integer previousOrder = SrmServiceUtils.getCodeOrder(code, columnIndex);
+        getCodeMetamacRepository().reorderCodesDeletingOneCode(codelistVersion, parent, code, columnIndex, previousOrder);
+    }
+
+    private void reorderCodesAddingOneCodeInMiddle(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, CodeMetamac code, Integer order)
+            throws MetamacException {
+        Integer columnIndex = codelistOrderVisualisation.getColumnIndex();
+        getCodeMetamacRepository().reorderCodesAddingOneCodeInMiddle(codelistVersion, code, columnIndex, order);
+    }
+
+    private void setCodeOrderInLastPositionInLevel(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, Item parent, CodeMetamac code)
+            throws MetamacException {
+        Integer columnIndex = codelistOrderVisualisation.getColumnIndex();
+        SrmServiceUtils.setCodeOrder(code, columnIndex, -1); // min value
+        Integer actualMaximumOrderInLevel = getCodeMetamacRepository().getMaximumOrderInLevel(codelistVersion, parent, columnIndex);
+        Integer orderInNewLevel = null;
+        if (actualMaximumOrderInLevel == null) {
+            orderInNewLevel = 0;
+        } else {
+            orderInNewLevel = actualMaximumOrderInLevel + 1;
+        }
+        SrmServiceUtils.setCodeOrder(code, columnIndex, orderInNewLevel);
+    }
+
 }

@@ -378,7 +378,6 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CODELIST_FAMILIES");
         tables.add("TB_M_VARIABLES");
         tables.add("TB_M_CODELIST_ORDER_VISUAL");
-        tables.add("TB_M_CODE_ORDER_VISUAL");
         tables.add("TB_M_CODELISTS_VERSIONS");
         tables.add("TB_M_VARIABLE_ELEMENTS");
         tables.add("TB_M_VAR_ELEM_OPERATIONS");
@@ -445,13 +444,13 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         return orders;
     }
 
-    protected CodeMetamacVisualisationResult getCodeMetamacVisualisationResult(List<CodeMetamacVisualisationResult> items, String urn) {
-        for (CodeMetamacVisualisationResult item : items) {
-            if (item.getUrn().equals(urn)) {
-                return item;
+    protected CodeMetamacVisualisationResult getCodeMetamacVisualisationResult(List<CodeMetamacVisualisationResult> actuals, String codeUrn) {
+        for (CodeMetamacVisualisationResult actual : actuals) {
+            if (actual.getUrn().equals(codeUrn)) {
+                return actual;
             }
         }
-        fail("List does not contain item with urn " + urn);
+        fail("code not found");
         return null;
     }
 }
