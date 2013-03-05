@@ -142,7 +142,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
-        ViewTextItem code = new ViewTextItem(CategoryDS.CODE, getConstants().identifiableArtefactCode());
+        ViewTextItem code = new ViewTextItem(CategoryDS.CODE_VIEW, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CategoryDS.NAME, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategoryDS.URN, getConstants().identifiableArtefactUrn());
@@ -171,10 +171,13 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     private void createEditionForm() {
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
+
         RequiredTextItem code = new RequiredTextItem(CategoryDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getCategoryIdentifierCustomValidator());
+
         MultiLanguageTextItem name = new MultiLanguageTextItem(CategoryDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
+
         ViewTextItem uri = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategoryDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CategoryDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
@@ -201,7 +204,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
     private void setCategoryViewMode(CategoryMetamacDto categoryDto) {
         // Identifiers Form
-        identifiersForm.setValue(CategoryDS.CODE, categoryDto.getCode());
+        identifiersForm.setValue(CategoryDS.CODE_VIEW, categoryDto.getCode());
         identifiersForm.setValue(CategoryDS.NAME, RecordUtils.getInternationalStringRecord(categoryDto.getName()));
         identifiersForm.setValue(CategoryDS.URI, categoryDto.getUriProvider());
         identifiersForm.setValue(CategoryDS.URN, categoryDto.getUrn());
