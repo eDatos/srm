@@ -13,8 +13,10 @@ public class VersionableResourceDS extends DataSource {
     public static final String URN_PROVIDER                     = "lc-urn-provider";
     public static final String VERSION_LOGIC                    = "lc-version";
     public static final String NAME                             = "lc-name";
+    public static final String NAME_VIEW                        = "lc-name-view";        // Not mapped in DTO
     // CONTENT DESCRIPTORS
     public static final String DESCRIPTION                      = "lc-desc";
+    public static final String DESCRIPTION_VIEW                 = "lc-desc-view";        // Not mapped in DTO
     public static final String IS_EXTERNAL_REFERENCE            = "lc-ext-ref";
     public static final String FINAL                            = "lc-final";
     // CLASS DESCRIPTORS

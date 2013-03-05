@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
+import org.siemac.metamac.srm.web.category.utils.CategorySchemeFormUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeCategorisationsPanel;
@@ -46,9 +47,6 @@ import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.FormItemIfFunction;
-import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -270,8 +268,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     private void createViewForm() {
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
-        ViewTextItem code = new ViewTextItem(CategorySchemeDS.CODE, getConstants().identifiableArtefactCode());
-        ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CategorySchemeDS.NAME, getConstants().nameableArtefactName());
+        ViewTextItem code = new ViewTextItem(CategorySchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
+        ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CategorySchemeDS.NAME_VIEW, getConstants().nameableArtefactName());
         ViewTextItem uri = new ViewTextItem(CategorySchemeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategorySchemeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CategorySchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
@@ -280,7 +278,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CategorySchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CategorySchemeDS.DESCRIPTION_VIEW, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(CategorySchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CategorySchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CategorySchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
@@ -335,40 +333,40 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     private void createEditionForm() {
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
+
         RequiredTextItem code = new RequiredTextItem(CategorySchemeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getCategorySchemeIdentifierCustomValidator());
-        code.setShowIfCondition(new FormItemIfFunction() {
+        code.setShowIfCondition(CategorySchemeFormUtils.getCodeFormItemIfFunction(categorySchemeDto));
 
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(categorySchemeDto.getLifeCycle().getProcStatus(), categorySchemeDto.getVersionLogic());
-            }
-        });
         ViewTextItem staticCode = new ViewTextItem(CategorySchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
-        staticCode.setShowIfCondition(new FormItemIfFunction() {
+        staticCode.setShowIfCondition(CategorySchemeFormUtils.getStaticCodeFormItemIfFunction(categorySchemeDto));
 
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(categorySchemeDto.getLifeCycle().getProcStatus(), categorySchemeDto.getVersionLogic());
-            }
-        });
         MultiLanguageTextItem name = new MultiLanguageTextItem(CategorySchemeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
+        name.setShowIfCondition(CategorySchemeFormUtils.getNameFormItemIfFunction(categorySchemeDto));
+
+        ViewMultiLanguageTextItem staticName = new ViewMultiLanguageTextItem(CategorySchemeDS.NAME_VIEW, getConstants().nameableArtefactName());
+        staticName.setShowIfCondition(CategorySchemeFormUtils.getStaticNameFormItemIfFunction(categorySchemeDto));
+
         ViewTextItem uri = new ViewTextItem(CategorySchemeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CategorySchemeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CategorySchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(CategorySchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider, version);
+        identifiersEditionForm.setFields(code, staticCode, name, staticName, uri, urn, urnProvider, version);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
 
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CategorySchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        description.setShowIfCondition(CategorySchemeFormUtils.getDescriptionFormItemIfFunction(categorySchemeDto));
+
+        ViewMultiLanguageTextItem staticDescription = new ViewMultiLanguageTextItem(CategorySchemeDS.DESCRIPTION_VIEW, getConstants().nameableArtefactDescription());
+        staticDescription.setShowIfCondition(CategorySchemeFormUtils.getStaticDescriptionFormItemIfFunction(categorySchemeDto));
+
         ViewTextItem partial = new ViewTextItem(CategorySchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CategorySchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CategorySchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
-        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
+        contentDescriptorsEditionForm.setFields(description, staticDescription, partial, isExternalReference, isFinal);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -473,15 +471,15 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
     public void setCategorySchemeViewMode(CategorySchemeMetamacDto categorySchemeDto) {
         // Identifiers
-        identifiersForm.setValue(CategorySchemeDS.CODE, categorySchemeDto.getCode());
+        identifiersForm.setValue(CategorySchemeDS.CODE_VIEW, categorySchemeDto.getCode());
         identifiersForm.setValue(CategorySchemeDS.URI, categorySchemeDto.getUriProvider());
         identifiersForm.setValue(CategorySchemeDS.URN, categorySchemeDto.getUrn());
         identifiersForm.setValue(CategorySchemeDS.URN_PROVIDER, categorySchemeDto.getUrnProvider());
         identifiersForm.setValue(CategorySchemeDS.VERSION_LOGIC, categorySchemeDto.getVersionLogic());
-        identifiersForm.setValue(CategorySchemeDS.NAME, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));
+        identifiersForm.setValue(CategorySchemeDS.NAME_VIEW, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));
 
         // Content descriptors
-        contentDescriptorsForm.setValue(CategorySchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
+        contentDescriptorsForm.setValue(CategorySchemeDS.DESCRIPTION_VIEW, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
         contentDescriptorsForm.setValue(CategorySchemeDS.IS_PARTIAL, CommonUtils.getBooleanName(categorySchemeDto.getIsPartial()));
         contentDescriptorsForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -528,10 +526,12 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         identifiersEditionForm.setValue(CategorySchemeDS.URN_PROVIDER, categorySchemeDto.getUrnProvider());
         identifiersEditionForm.setValue(CategorySchemeDS.VERSION_LOGIC, categorySchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(CategorySchemeDS.NAME, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));
+        identifiersEditionForm.setValue(CategorySchemeDS.NAME_VIEW, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));
         identifiersEditionForm.markForRedraw();
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(CategorySchemeDS.DESCRIPTION_VIEW, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_PARTIAL, CommonUtils.getBooleanName(categorySchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
@@ -587,20 +587,26 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     }
 
     public CategorySchemeMetamacDto getCategorySchemeDto() {
-        // Identifiers
-        categorySchemeDto.setCode(identifiersEditionForm.getValueAsString(CategorySchemeDS.CODE));
-        categorySchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CategorySchemeDS.NAME));
-        // Content descriptors
-        categorySchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CategorySchemeDS.DESCRIPTION));
+
+        // SDMX METADATA
+
+        if (CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer())) {
+            // Identifiers
+            categorySchemeDto.setCode(identifiersEditionForm.getValueAsString(CategorySchemeDS.CODE));
+            categorySchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CategorySchemeDS.NAME));
+            // Content descriptors
+            categorySchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CategorySchemeDS.DESCRIPTION));
+
+            // Annotations
+            categorySchemeDto.getAnnotations().clear();
+            categorySchemeDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
+        }
+
+        // METAMAC METADATA
 
         // Comments
         categorySchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CategorySchemeDS.COMMENTS));
 
-        // Annotations
-        categorySchemeDto.getAnnotations().clear();
-        categorySchemeDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
-
         return categorySchemeDto;
     }
-
 }
