@@ -14,7 +14,7 @@ import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
-import org.siemac.metamac.srm.web.category.utils.CategorySchemeFormUtils;
+import org.siemac.metamac.srm.web.category.utils.CategoriesFormUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeCategorisationsPanel;
@@ -622,7 +622,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CategorySchemeFormUtils.canCodeBeEdited(categorySchemeDto);
+                return CategoriesFormUtils.canCategorySchemeCodeBeEdited(categorySchemeDto);
             }
         };
     }
@@ -632,7 +632,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !CategorySchemeFormUtils.canCodeBeEdited(categorySchemeDto);
+                return !CategoriesFormUtils.canCategorySchemeCodeBeEdited(categorySchemeDto);
             }
         };
     }
@@ -642,7 +642,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CategorySchemeFormUtils.canNameBeEdited(categorySchemeDto);
+                return CategoriesFormUtils.canCategorySchemeNameBeEdited(categorySchemeDto);
             }
         };
     }
@@ -652,7 +652,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !CategorySchemeFormUtils.canNameBeEdited(categorySchemeDto);
+                return !CategoriesFormUtils.canCategorySchemeNameBeEdited(categorySchemeDto);
             }
         };
     }
@@ -662,7 +662,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CategorySchemeFormUtils.canDescriptionBeEdited(categorySchemeDto);
+                return CategoriesFormUtils.canCategorySchemeDescriptionBeEdited(categorySchemeDto);
             }
         };
     }
@@ -672,7 +672,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !CategorySchemeFormUtils.canDescriptionBeEdited(categorySchemeDto);
+                return !CategoriesFormUtils.canCategorySchemeDescriptionBeEdited(categorySchemeDto);
             }
         };
     }

@@ -3,11 +3,15 @@ package org.siemac.metamac.srm.web.category.utils;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
-public class CategorySchemeFormUtils {
+public class CategoriesFormUtils {
+
+    // ---------------------------------------------------------------------------------------------
+    // CATEGORY SCHEMES
+    // ---------------------------------------------------------------------------------------------
 
     // CODE
 
-    public static boolean canCodeBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
+    public static boolean canCategorySchemeCodeBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
         if (categorySchemeDto == null) {
             return false;
         }
@@ -17,7 +21,7 @@ public class CategorySchemeFormUtils {
 
     // NAME
 
-    public static boolean canNameBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
+    public static boolean canCategorySchemeNameBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
         if (categorySchemeDto == null) {
             return false;
         }
@@ -26,10 +30,15 @@ public class CategorySchemeFormUtils {
 
     // DESCRIPTION
 
-    public static boolean canDescriptionBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
+    public static boolean canCategorySchemeDescriptionBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
         if (categorySchemeDto == null) {
             return false;
         }
         return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
     }
+
+    // ---------------------------------------------------------------------------------------------
+    // CATEGORIES
+    // ---------------------------------------------------------------------------------------------
+
 }
