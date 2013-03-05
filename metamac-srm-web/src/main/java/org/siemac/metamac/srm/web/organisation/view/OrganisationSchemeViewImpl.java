@@ -796,7 +796,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return canOrganisationCodeBeEdited();
+                return canOrganisationSchemeCodeBeEdited();
             }
         };
     }
@@ -806,12 +806,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !canOrganisationCodeBeEdited();
+                return !canOrganisationSchemeCodeBeEdited();
             }
         };
     }
 
-    private boolean canOrganisationCodeBeEdited() {
+    private boolean canOrganisationSchemeCodeBeEdited() {
         // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
         // and if the OrganisationType is not AGENCY_SCHEME, DATA_PROVIDER_SCHEME or DATA_CONSUMER_SCHEME
         // TODO check maintainer
