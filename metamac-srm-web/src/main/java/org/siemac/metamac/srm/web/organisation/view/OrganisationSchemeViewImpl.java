@@ -817,6 +817,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // TODO check maintainer
         return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(organisationSchemeDto.getLifeCycle().getProcStatus(), organisationSchemeDto.getVersionLogic())
                 && (!CommonUtils.isAgencyScheme(organisationSchemeDto.getType()) && !CommonUtils.isDataProviderScheme(organisationSchemeDto.getType()) && !CommonUtils
-                        .isDataProviderScheme(organisationSchemeDto.getType()));
+                        .isDataConsumerScheme(organisationSchemeDto.getType()));
     }
 }
