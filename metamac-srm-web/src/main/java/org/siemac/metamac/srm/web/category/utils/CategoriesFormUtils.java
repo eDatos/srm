@@ -41,4 +41,30 @@ public class CategoriesFormUtils {
     // CATEGORIES
     // ---------------------------------------------------------------------------------------------
 
+    // CODE
+
+    public static boolean canCategoryCodeBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
+        if (categorySchemeDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
+    }
+
+    // NAME
+
+    public static boolean canCategoryNameBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
+        if (categorySchemeDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
+    }
+
+    // DESCRIPTION
+
+    public static boolean canCategoryDescriptionBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
+        if (categorySchemeDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
+    }
 }
