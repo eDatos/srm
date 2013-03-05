@@ -33,7 +33,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -226,14 +226,14 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
         staticFacetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
-            if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumerated()));
-                form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
+            if (RepresentationTypeEnum.ENUMERATION.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
+                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
+                form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
                 form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).show();
                 // Facet
-            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumTEXT_FORMAT());
-                FacetDto facetDto = componentDto.getLocalRepresentation().getNonEnumerated();
+            } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
+                form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumTEXT_FORMAT());
+                FacetDto facetDto = componentDto.getLocalRepresentation().getTextFormat();
                 staticFacetForm.setFacet(facetDto);
                 staticFacetForm.show();
             }
@@ -260,14 +260,14 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         facetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
             // Code List
-            if (TypeRepresentationEnum.ENUMERATED.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumerated().getUrn());
-                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumerated()));
-                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(TypeRepresentationEnum.ENUMERATED.toString());
+            if (RepresentationTypeEnum.ENUMERATION.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
+                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumeration().getUrn());
+                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
+                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(RepresentationTypeEnum.ENUMERATION.toString());
                 // Facet
-            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(TypeRepresentationEnum.TEXT_FORMAT.toString());
-                FacetDto facetDto = componentDto.getLocalRepresentation().getNonEnumerated();
+            } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
+                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(RepresentationTypeEnum.TEXT_FORMAT.toString());
+                FacetDto facetDto = componentDto.getLocalRepresentation().getTextFormat();
                 facetForm.setFacet(facetDto);
             }
         }
@@ -289,25 +289,25 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // Representation
         if (editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue() != null && !editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue().toString().isEmpty()) {
-            TypeRepresentationEnum representationType = TypeRepresentationEnum.valueOf(editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue().toString());
+            RepresentationTypeEnum representationType = RepresentationTypeEnum.valueOf(editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue().toString());
 
             if (primaryMeasure.getLocalRepresentation() == null) {
                 primaryMeasure.setLocalRepresentation(new RepresentationDto());
             }
 
             // Code List
-            if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
-                primaryMeasure.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                primaryMeasure.getLocalRepresentation().setEnumerated(
+            if (RepresentationTypeEnum.ENUMERATION.equals(representationType)) {
+                primaryMeasure.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+                primaryMeasure.getLocalRepresentation().setEnumeration(
                         StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                 TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)));
-                primaryMeasure.getLocalRepresentation().setNonEnumerated(null);
+                primaryMeasure.getLocalRepresentation().setTextFormat(null);
                 // Facet
-            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
-                primaryMeasure.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
+            } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
+                primaryMeasure.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
                 FacetDto facetDto = facetForm.getFacet();
-                primaryMeasure.getLocalRepresentation().setNonEnumerated(facetDto);
-                primaryMeasure.getLocalRepresentation().setEnumerated(null);
+                primaryMeasure.getLocalRepresentation().setTextFormat(facetDto);
+                primaryMeasure.getLocalRepresentation().setEnumeration(null);
             }
         } else {
             // No representation

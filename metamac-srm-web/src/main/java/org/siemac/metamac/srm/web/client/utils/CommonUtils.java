@@ -14,7 +14,7 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -61,16 +61,16 @@ public class CommonUtils {
         if (typeRepresentationHashMap == null) {
             typeRepresentationHashMap = new LinkedHashMap<String, String>();
             typeRepresentationHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-            for (TypeRepresentationEnum r : TypeRepresentationEnum.values()) {
-                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + r.getName());
+            for (RepresentationTypeEnum r : RepresentationTypeEnum.values()) {
+                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().representationTypeEnum() + r.getName());
                 typeRepresentationHashMap.put(r.toString(), value);
             }
         }
         return typeRepresentationHashMap;
     }
 
-    public static String getTypeRepresentationName(TypeRepresentationEnum typeRepresentationEnum) {
-        return typeRepresentationEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRepresentationEnum() + typeRepresentationEnum.name()) : null;
+    public static String getTypeRepresentationName(RepresentationTypeEnum typeRepresentationEnum) {
+        return typeRepresentationEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().representationTypeEnum() + typeRepresentationEnum.name()) : null;
     }
 
     // BOOLEAN

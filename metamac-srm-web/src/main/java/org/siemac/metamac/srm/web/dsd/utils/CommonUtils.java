@@ -15,11 +15,11 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 
 public class CommonUtils {
@@ -193,8 +193,8 @@ public class CommonUtils {
 
     public static String getConceptSchemeUrnOfMeasureDimensionRepresentation(List<DimensionComponentDto> dimensionComponentDtos) {
         DimensionComponentDto measureDimension = getMesureDimension(dimensionComponentDtos);
-        if (measureDimension != null && measureDimension.getLocalRepresentation() != null && measureDimension.getLocalRepresentation().getEnumerated() != null) {
-            return measureDimension.getLocalRepresentation().getEnumerated().getUrn();
+        if (measureDimension != null && measureDimension.getLocalRepresentation() != null && measureDimension.getLocalRepresentation().getEnumeration() != null) {
+            return measureDimension.getLocalRepresentation().getEnumeration().getUrn();
         }
         return null;
     }
@@ -207,7 +207,7 @@ public class CommonUtils {
      */
     public static boolean isRepresentationTypeEnumerated(String representationType) {
         if (representationType != null && !representationType.isEmpty()) {
-            return TypeRepresentationEnum.ENUMERATED.equals(TypeRepresentationEnum.valueOf(representationType)) ? true : false;
+            return RepresentationTypeEnum.ENUMERATION.equals(RepresentationTypeEnum.valueOf(representationType)) ? true : false;
         }
         return false;
     }

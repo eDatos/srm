@@ -50,11 +50,11 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDataAttribute;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -638,16 +638,16 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticFacetForm.clearValues();
         if (dataAttributeDto.getLocalRepresentation() != null) {
             // Code List
-            if (TypeRepresentationEnum.ENUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+            if (RepresentationTypeEnum.ENUMERATION.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
                 // Codelist
-                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumENUMERATED());
-                form.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumerated()));
+                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
+                form.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
                 form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).show();
-            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+            } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
                 // Facet
-                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().typeRepresentationEnumTEXT_FORMAT());
+                staticRepresentationTypeItem.setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumTEXT_FORMAT());
                 // Only one facet in a Representation
-                FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getNonEnumerated();
+                FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getTextFormat();
                 staticFacetForm.setFacet(facetDto);
                 staticFacetForm.show();
             }
@@ -717,15 +717,15 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         representationTypeItem.clearValue();
         facetForm.clearValues();
         if (dataAttributeDto.getLocalRepresentation() != null) {
-            if (TypeRepresentationEnum.ENUMERATED.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
-                representationTypeItem.setValue(TypeRepresentationEnum.ENUMERATED.toString());
-                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, dataAttributeDto.getLocalRepresentation().getEnumerated().getUrn());
-                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumerated()));
-            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getTypeRepresentationEnum())) {
+            if (RepresentationTypeEnum.ENUMERATION.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
+                representationTypeItem.setValue(RepresentationTypeEnum.ENUMERATION.toString());
+                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, dataAttributeDto.getLocalRepresentation().getEnumeration().getUrn());
+                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
+            } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
                 // Facet
-                representationTypeItem.setValue(TypeRepresentationEnum.TEXT_FORMAT.toString());
+                representationTypeItem.setValue(RepresentationTypeEnum.TEXT_FORMAT.toString());
                 // Only one facet in a Representation
-                FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getNonEnumerated();
+                FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getTextFormat();
                 facetForm.setFacet(facetDto);
             }
         }
@@ -799,25 +799,25 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
         if (representationTypeItem.getValue() != null && !representationTypeItem.getValue().toString().isEmpty()) {
-            TypeRepresentationEnum representationType = TypeRepresentationEnum.valueOf(representationTypeItem.getValue().toString());
+            RepresentationTypeEnum representationType = RepresentationTypeEnum.valueOf(representationTypeItem.getValue().toString());
 
             if (dataAttributeDto.getLocalRepresentation() == null) {
                 dataAttributeDto.setLocalRepresentation(new RepresentationDto());
             }
 
             // Code List
-            if (TypeRepresentationEnum.ENUMERATED.equals(representationType)) {
-                dataAttributeDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.ENUMERATED);
-                dataAttributeDto.getLocalRepresentation().setEnumerated(
+            if (RepresentationTypeEnum.ENUMERATION.equals(representationType)) {
+                dataAttributeDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+                dataAttributeDto.getLocalRepresentation().setEnumeration(
                         StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                 TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)));
-                dataAttributeDto.getLocalRepresentation().setNonEnumerated(null);
+                dataAttributeDto.getLocalRepresentation().setTextFormat(null);
                 // Facet
-            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(representationType)) {
-                dataAttributeDto.getLocalRepresentation().setTypeRepresentationEnum(TypeRepresentationEnum.TEXT_FORMAT);
+            } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
+                dataAttributeDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
                 FacetDto facetDto = facetForm.getFacet();
-                dataAttributeDto.getLocalRepresentation().setNonEnumerated(facetDto);
-                dataAttributeDto.getLocalRepresentation().setEnumerated(null);
+                dataAttributeDto.getLocalRepresentation().setTextFormat(facetDto);
+                dataAttributeDto.getLocalRepresentation().setEnumeration(null);
             }
         } else {
             // No representation

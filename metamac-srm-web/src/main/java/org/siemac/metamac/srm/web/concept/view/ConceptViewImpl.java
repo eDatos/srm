@@ -60,7 +60,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -326,7 +326,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
             @Override
             public void onChanged(ChangedEvent event) {
-                if (TypeRepresentationEnum.TEXT_FORMAT.name().equals(representation.getValueAsString())) {
+                if (RepresentationTypeEnum.TEXT_FORMAT.name().equals(representation.getValueAsString())) {
                     facetEditionForm.show();
                 } else {
                     facetEditionForm.hide();
@@ -449,13 +449,13 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
         contentDescriptorsForm.setValue(ConceptDS.VARIABLE_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getVariable()));
-        contentDescriptorsForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTypeRepresentationEnum().name() : null);
-        contentDescriptorsForm.setValue(
-                RepresentationDS.TYPE_VIEW,
-                conceptDto.getCoreRepresentation() != null ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation()
-                        .getTypeRepresentationEnum()) : null);
+        contentDescriptorsForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
+        contentDescriptorsForm.setValue(RepresentationDS.TYPE_VIEW,
+                conceptDto.getCoreRepresentation() != null
+                        ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
+                        : null);
         contentDescriptorsForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW,
-                conceptDto.getCoreRepresentation() != null ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumerated()) : null);
+                conceptDto.getCoreRepresentation() != null ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration()) : null);
         contentDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
         contentDescriptorsForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null
                 ? CommonWebUtils.getElementName(conceptDto.getType().getIdentifier(), conceptDto.getType().getDescription())
@@ -464,12 +464,12 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsForm.markForRedraw();
 
         // Non enumerated representation
-        if (conceptDto.getCoreRepresentation() != null && TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
+        if (conceptDto.getCoreRepresentation() != null && RepresentationTypeEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
             facetForm.show();
         } else {
             facetForm.hide();
         }
-        facetForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getNonEnumerated() : null);
+        facetForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTextFormat() : null);
         facetForm.markForRedraw();
 
         // Class descriptors
@@ -508,24 +508,24 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
         contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getVariable()));
         contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE, conceptDto.getVariable() != null ? conceptDto.getVariable().getUrn() : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTypeRepresentationEnum().name() : null);
-        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumerated() != null
-                ? conceptDto.getCoreRepresentation().getEnumerated().getUrn()
+        contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
+        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumeration() != null
+                ? conceptDto.getCoreRepresentation().getEnumeration().getUrn()
                 : null);
-        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumerated() != null
-                ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumerated())
+        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumeration() != null
+                ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration())
                 : null);
         contentDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? conceptDto.getType().getIdentifier() : null);
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
         // Non enumerated representation
-        if (conceptDto.getCoreRepresentation() != null && TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
+        if (conceptDto.getCoreRepresentation() != null && RepresentationTypeEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
             facetEditionForm.show();
         } else {
             facetEditionForm.hide();
         }
-        facetEditionForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getNonEnumerated() : null);
+        facetEditionForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTextFormat() : null);
 
         // Class descriptors
 
@@ -565,17 +565,17 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             if (conceptDto.getCoreRepresentation() == null) {
                 conceptDto.setCoreRepresentation(new RepresentationDto());
             }
-            conceptDto.getCoreRepresentation().setTypeRepresentationEnum(
-                    !StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE)) ? TypeRepresentationEnum.valueOf(contentDescriptorsEditionForm
+            conceptDto.getCoreRepresentation().setRepresentationType(
+                    !StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE)) ? RepresentationTypeEnum.valueOf(contentDescriptorsEditionForm
                             .getValueAsString(RepresentationDS.TYPE)) : null);
-            if (TypeRepresentationEnum.ENUMERATED.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
-                conceptDto.getCoreRepresentation().setNonEnumerated(null);
-                conceptDto.getCoreRepresentation().setEnumerated(
+            if (RepresentationTypeEnum.ENUMERATION.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
+                conceptDto.getCoreRepresentation().setTextFormat(null);
+                conceptDto.getCoreRepresentation().setEnumeration(
                         StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                 TypeExternalArtefactsEnum.CODELIST, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)));
-            } else if (TypeRepresentationEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getTypeRepresentationEnum())) {
-                conceptDto.getCoreRepresentation().setEnumerated(null);
-                conceptDto.getCoreRepresentation().setNonEnumerated(facetEditionForm.getFacet());
+            } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
+                conceptDto.getCoreRepresentation().setEnumeration(null);
+                conceptDto.getCoreRepresentation().setTextFormat(facetEditionForm.getFacet());
             }
         } else {
             conceptDto.setCoreRepresentation(null);
