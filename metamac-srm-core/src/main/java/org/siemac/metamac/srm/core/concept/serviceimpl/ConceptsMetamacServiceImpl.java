@@ -37,7 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
@@ -46,6 +45,7 @@ import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsVersioningCopyUtils.ConceptVersioningCopyCallback;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 /**
  * Implementation of ConceptsMetamacService.
@@ -734,9 +734,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      */
     private void checkConceptEnumeratedRepresentation(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
         if (BooleanUtils.isFalse(conceptSchemeVersion.getMaintainableArtefact().getIsImported())) {
-            if (concept.getCoreRepresentation() != null && concept.getCoreRepresentation() instanceof EnumeratedRepresentation) {
-                EnumeratedRepresentation enumeratedRepresentation = (EnumeratedRepresentation) concept.getCoreRepresentation();
-                String codelistUrn = enumeratedRepresentation.getEnumeratedCodeList().getMaintainableArtefact().getUrn();
+            if (concept.getCoreRepresentation() != null && RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
+                String codelistUrn = concept.getCoreRepresentation().getEnumerationCodelist().getMaintainableArtefact().getUrn();
                 // check codelist belongs to same variable of concept
                 if (concept.getVariable() == null) {
                     throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE).withMessageParameters(codelistUrn)

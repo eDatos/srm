@@ -50,15 +50,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.EnumeratedRepresentation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptProperties;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -1583,8 +1584,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.setParent(null);
         concept.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1));
         concept.setVariable(codesService.retrieveVariableByUrn(ctx, VARIABLE_1));
-        EnumeratedRepresentation enumeratedRepresentation = new EnumeratedRepresentation();
-        enumeratedRepresentation.setEnumeratedCodeList(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V1));
+        Representation enumeratedRepresentation = new Representation();
+        enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+        enumeratedRepresentation.setEnumerationCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V1));
         concept.setCoreRepresentation(enumeratedRepresentation);
 
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
@@ -1656,9 +1658,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1);
             try {
                 assertFalse(codelistVersion.getVariable().getNameableArtefact().getUrn().equals(concept.getVariable().getNameableArtefact().getUrn()));
-                EnumeratedRepresentation enumeratedRepresentation = new EnumeratedRepresentation();
-
-                enumeratedRepresentation.setEnumeratedCodeList(codelistVersion);
+                Representation enumeratedRepresentation = new Representation();
+                enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+                enumeratedRepresentation.setEnumerationCodelist(codelistVersion);
                 concept.setCoreRepresentation(enumeratedRepresentation);
 
                 conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
@@ -1675,8 +1677,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         {
             CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1);
             try {
-                EnumeratedRepresentation enumeratedRepresentation = new EnumeratedRepresentation();
-                enumeratedRepresentation.setEnumeratedCodeList(codelistVersion);
+                Representation enumeratedRepresentation = new Representation();
+                enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+                enumeratedRepresentation.setEnumerationCodelist(codelistVersion);
                 concept.setCoreRepresentation(enumeratedRepresentation);
                 concept.setVariable(null);
 
@@ -1838,9 +1841,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1);
         try {
             assertFalse(codelistVersion.getVariable().getNameableArtefact().getUrn().equals(concept.getVariable().getNameableArtefact().getUrn()));
-            EnumeratedRepresentation enumeratedRepresentation = new EnumeratedRepresentation();
-
-            enumeratedRepresentation.setEnumeratedCodeList(codelistVersion);
+            Representation enumeratedRepresentation = new Representation();
+            enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+            enumeratedRepresentation.setEnumerationCodelist(codelistVersion);
             concept.setCoreRepresentation(enumeratedRepresentation);
 
             conceptsService.updateConcept(getServiceContextAdministrador(), concept);
@@ -1860,7 +1863,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
         concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
         concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1_CONCEPT_1));
-        assertTrue(concept.getCoreRepresentation() instanceof EnumeratedRepresentation);
+        assertTrue(RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType()));
         concept.setCoreRepresentation(ConceptsDoMocks.mockTextFormatRepresentation());
 
         // Update

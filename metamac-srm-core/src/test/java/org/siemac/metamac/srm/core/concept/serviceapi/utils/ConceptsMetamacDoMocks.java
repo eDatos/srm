@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
 
@@ -47,7 +47,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setType(conceptType);
         target.setDerivation(mockInternationalString("derivation"));
         target.setLegalActs(mockInternationalString("legalActs"));
-        mockConcept(target, TypeRepresentationEnum.ENUMERATED, coreRepresentation);
+        mockConcept(target, RepresentationTypeEnum.ENUMERATION, coreRepresentation);
         return target;
     }
 
@@ -63,7 +63,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
         target.setType(mockConceptTypeFixedValues("conceptType1"));
         target.setVariable(CodesMetamacDoMocks.mockVariableFixedValues("variable1"));
-        mockConceptFixedValues(target, resourceID, itemSchemeVersion, parent, TypeRepresentationEnum.ENUMERATED);
+        mockConceptFixedValues(target, resourceID, itemSchemeVersion, parent, RepresentationTypeEnum.ENUMERATION);
         return target;
     }
 

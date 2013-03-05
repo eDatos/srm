@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -1025,7 +1025,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
             ConceptSchemeMetamacDto[] conceptSchemeMetamacDtos = {draftNonOperationSchemeVersion, draftOperationSchemeVersion};
 
-            ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.TEXT_FORMAT);
+            ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.TEXT_FORMAT);
             for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : conceptSchemeMetamacDtos) {
                 conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeMetamacDto.getUrn());
                 srmCoreServiceFacade.createConcept(getServiceContextJefeNormalizacion(), conceptMetamacDto);
@@ -1037,7 +1037,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
             ConceptSchemeMetamacDto prodValidationOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_10_V3);
             ConceptSchemeMetamacDto[] conceptSchemeMetamacDtos = {draftOperationSchemeVersion, prodValidationOperationSchemeVersion};
 
-            ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.TEXT_FORMAT);
+            ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.TEXT_FORMAT);
             for (ConceptSchemeMetamacDto conceptSchemeMetamacDto : conceptSchemeMetamacDtos) {
                 conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeMetamacDto.getUrn());
                 srmCoreServiceFacade.createConcept(getServiceContextTecnicoProduccion(), conceptMetamacDto);
@@ -1055,7 +1055,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
         ConceptSchemeMetamacDto diffValidationNonOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_6_V1);
         ConceptSchemeMetamacDto diffValidationOperationSchemeVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_11_V1);
 
-        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+        ConceptMetamacDto conceptMetamacDto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.ENUMERATION);
 
         {
             // JEFE_NORMALIZACION without permission in Operation

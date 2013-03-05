@@ -578,10 +578,10 @@
             
             <TB_REPRESENTATIONS
                 ID="121"
-                REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
+                REPRESENTATION_TYPE="ENUMERATION"
                 CODELIST_FK="2011"
-                CONCEPTSCHEME_FK="[null]"
-                FACET_FK="[null]"
+                CONCEPT_SCHEME_FK="[null]"
+                TEXT_FORMAT_FK="[null]"
                 
                 UUID="representation-121"
                 VERSION="1"

@@ -53,9 +53,9 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
+import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
-import com.arte.statistic.sdmx.srm.core.base.domain.TextFormatRepresentation;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
@@ -65,6 +65,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureVersioningCopyUtils.StructureVersioningCopyCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 /**
  * Implementation of DsdsMetamacService.
@@ -124,8 +125,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         PrimaryMeasure primaryMeasure = new PrimaryMeasure();
         String primaryMeasureConceptIdUrnDefault = srmConfiguration.retrievePrimaryMeasureConceptIdUrnDefault();
         primaryMeasure.setCptIdRef(conceptsService.retrieveConceptByUrn(ctx, primaryMeasureConceptIdUrnDefault));
-        TextFormatRepresentation localRepresentation = new TextFormatRepresentation();
-        localRepresentation.setNonEnumerated(new Facet(FacetValueTypeEnum.DECIMAL_FVT));
+        Representation localRepresentation = new Representation();
+        localRepresentation.setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
+        localRepresentation.setTextFormat(new Facet(FacetValueTypeEnum.DECIMAL_FVT));
         primaryMeasure.setLocalRepresentation(localRepresentation);
         dataStructureDefinitionService.saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), new MeasureDescriptor());
         dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), primaryMeasure);

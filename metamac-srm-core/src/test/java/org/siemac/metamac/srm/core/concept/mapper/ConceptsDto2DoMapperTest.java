@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -40,7 +40,7 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
 
     @Test
     public void testConceptMetamacDoToDto() throws MetamacException {
-        ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(TypeRepresentationEnum.ENUMERATED);
+        ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.ENUMERATION);
         dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE01", VARIABLE_1));
 
         ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);

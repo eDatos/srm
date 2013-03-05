@@ -3558,40 +3558,41 @@
     	ID="1"
     	UUID="tb_representations-1"
     	VERSION="0"
-    	REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
-    	CONCEPTSCHEME_FK="1021"
-    	CODELIST_FK="[null]"
-    	FACET_FK="[null]"
+        REPRESENTATION_TYPE="ENUMERATION"
+        CODELIST_FK="[null]"
+        CONCEPT_SCHEME_FK="1021"
+        TEXT_FORMAT_FK="[null]"
     />
     
     <TB_REPRESENTATIONS
     	ID="2"
     	UUID="tb_representations-2"
     	VERSION="0"
-    	REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
-    	CONCEPTSCHEME_FK="[null]"
-    	CODELIST_FK="2011"
-    	FACET_FK="[null]"
+        REPRESENTATION_TYPE="ENUMERATION"
+        CODELIST_FK="2011"
+        CONCEPT_SCHEME_FK="[null]"
+        TEXT_FORMAT_FK="[null]"
     />
     
      <TB_REPRESENTATIONS
     	ID="3"
     	UUID="tb_representations-3"
     	VERSION="0"
-    	REPRESENTATION_TYPE="TEXT_FORMAT_REPRESENTATION"
-    	CONCEPTSCHEME_FK="[null]"
-    	CODELIST_FK="[null]"
-    	FACET_FK="1"
+        REPRESENTATION_TYPE="TEXT_FORMAT"
+        CODELIST_FK="[null]"
+        CONCEPT_SCHEME_FK="[null]"
+        TEXT_FORMAT_FK="1"
+        
     />
     
     <TB_REPRESENTATIONS
     	ID="4"
     	UUID="tb_representations-4"
     	VERSION="0"
-    	REPRESENTATION_TYPE="ENUMERATED_REPRESENTATION"
-    	CONCEPTSCHEME_FK="[null]"
-    	CODELIST_FK="2011"
-    	FACET_FK="[null]"
+        REPRESENTATION_TYPE="ENUMERATION"
+        CODELIST_FK="2011"
+        CONCEPT_SCHEME_FK="[null]"
+        TEXT_FORMAT_FK="[null]"
     />    
     
     <TB_M_DIMENSION_ORDERS

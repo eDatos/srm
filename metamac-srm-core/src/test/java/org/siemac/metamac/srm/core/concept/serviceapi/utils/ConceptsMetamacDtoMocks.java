@@ -12,7 +12,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRepresentationEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 public class ConceptsMetamacDtoMocks {
 
@@ -46,7 +46,7 @@ public class ConceptsMetamacDtoMocks {
     // CONCEPTS
     // -----------------------------------------------------------------------------------
 
-    public static ConceptMetamacDto mockConceptDto(TypeRepresentationEnum typeRepresentationEnum) {
+    public static ConceptMetamacDto mockConceptDto(RepresentationTypeEnum typeRepresentationEnum) {
         ConceptMetamacDto conceptMetamacDto = new ConceptMetamacDto();
         ConceptsDtoMocks.mockConceptDto(conceptMetamacDto, typeRepresentationEnum);
         conceptMetamacDto.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
