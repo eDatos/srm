@@ -183,15 +183,8 @@ public class CodelistOrdersSectionStack extends CustomSectionStack {
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String orderCode = ((CodelistOrderRecord) event.getRecord()).getAttribute(CodelistOrderDS.CODE);
-                    if (SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(orderCode) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(codelistProcStatus)) {
-                        // The alphabetical order can not be visualized until the codelist is published
-                        InformationWindow informationWindow = new InformationWindow(getMessages().codelistOrderAlphabeticalInfoViewTitle(), getMessages().codelistOrderAlphabeticalInfoViewMessage());
-                        informationWindow.show();
-                    } else {
-                        String orderUrn = ((CodelistOrderRecord) event.getRecord()).getAttribute(CodelistOrderDS.URN);
-                        uiHandlers.retrieveCodesByCodelist(orderUrn);
-                    }
+                    String orderUrn = ((CodelistOrderRecord) event.getRecord()).getAttribute(CodelistOrderDS.URN);
+                    uiHandlers.retrieveCodesByCodelist(orderUrn);
                 }
             }
         });
