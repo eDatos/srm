@@ -513,6 +513,14 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
+    public static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisation expected, CodelistOrderVisualisationDto actual) {
+        assertEqualsCodelistOrderVisualisation(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    public static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisationDto expected, CodelistOrderVisualisation actual) {
+        assertEqualsCodelistOrderVisualisation(actual, expected, MapperEnum.DTO2DO);
+    }
+
     public static void assertEqualsCodelistOrderVisualisationDto(CodelistOrderVisualisationDto expected, CodelistOrderVisualisationDto actual) {
         assertEqualsNullability(expected, actual);
         if (expected == null) {
@@ -520,6 +528,34 @@ public class CodesMetamacAsserts extends CodesAsserts {
         }
         // other artefacts
         CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
+    }
+
+    private static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisation entity, CodelistOrderVisualisationDto dto, MapperEnum mapperEnum) {
+        if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+            assertEquals(entity.getId(), dto.getId());
+
+            assertNotNull(entity.getUuid());
+            assertEquals(entity.getUuid(), dto.getUuid());
+
+            assertNotNull(entity.getCreatedBy());
+            assertEquals(entity.getCreatedBy(), dto.getCreatedBy());
+
+            assertNotNull(entity.getCreatedDate());
+            assertTrue(DateUtils.isSameInstant(entity.getCreatedDate().toDate(), dto.getCreatedDate()));
+
+            assertNotNull(entity.getLastUpdatedBy());
+            assertEquals(entity.getLastUpdatedBy(), dto.getLastUpdatedBy());
+
+            assertNotNull(entity.getLastUpdated());
+            assertTrue(DateUtils.isSameInstant(entity.getLastUpdated().toDate(), dto.getLastUpdated()));
+
+            assertNotNull(entity.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersion());
+            assertEquals(entity.getVersion(), dto.getVersionOptimisticLocking());
+        }
+
+        // other artefacts
+        assertEqualsNameableArtefact(entity.getNameableArtefact(), dto, mapperEnum);
     }
 
     public static void assertEqualsCodelistOrderVisualisationResourceDto(CodelistOrderVisualisation entity, RelatedResourceDto dto, MapperEnum mapperEnum) {

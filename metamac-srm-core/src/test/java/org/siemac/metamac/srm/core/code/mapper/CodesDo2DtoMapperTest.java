@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
@@ -102,7 +103,13 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
         CodesMetamacAsserts.assertEqualsVariableElementOperation(entity, dto);
     }
 
-    // TODO test mapper visualisations
+    @Test
+    public void testCodelistOrderVisualisationDoToDto() {
+        CodelistOrderVisualisation entity = mockCodelistOrderVisualisationWithAllMetadata();
+
+        CodelistOrderVisualisationDto dto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(entity);
+        CodesMetamacAsserts.assertEqualsCodelistOrderVisualisation(entity, dto);
+    }
 
     private CodelistVersionMetamac mockCodelistWithAllMetadata() {
         CodelistVersionMetamac entity = CodesMetamacDoMocks.mockCodelistFixedValues("agency01", "codelist01", "01.000");

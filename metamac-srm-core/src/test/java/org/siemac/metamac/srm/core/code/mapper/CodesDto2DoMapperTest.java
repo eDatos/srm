@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -14,6 +15,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -117,7 +119,13 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
         CodesMetamacAsserts.assertEqualsVariableElement(dto, entity);
     }
 
-    // TODO test mapper visualisations
+    @Test
+    public void testCodelistOrderVisualisationDtoToDo() throws MetamacException {
+        CodelistOrderVisualisationDto dto = CodesMetamacDtoMocks.mockCodelistOrderVisualisationDto();
+
+        CodelistOrderVisualisation entity = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(dto);
+        CodesMetamacAsserts.assertEqualsCodelistOrderVisualisation(dto, entity);
+    }
 
     @Override
     protected String getDataSetFile() {
