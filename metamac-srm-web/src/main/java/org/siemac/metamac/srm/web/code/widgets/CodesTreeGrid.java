@@ -73,7 +73,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
                     TreeNode[] siblings = getData().getChildren(dropFolder);
 
                     // We find out the position of the node under the dropFolder
-                    int relPosition = position; // Use to update position
+                    int relativePosition = position; // Used to update position
                     int pos = -1;
                     for (int i = 0; i < siblings.length; i++) {
                         if (siblings[i] == droppedNode) {
@@ -81,10 +81,8 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
                         }
                     }
                     if (pos >= 0 && pos < position) { // If moved node is before final position, the position must be updated
-                        relPosition--;
+                        relativePosition--;
                     }
-
-                    Long order = Long.valueOf(relPosition);
 
                     String oldItemParent = droppedNode.getAttribute(CodeDS.ITEM_PARENT_URN);
                     String newItemParent = SCHEME_NODE_NAME.equals(dropFolder.getName()) ? null : dropFolder.getAttribute(CodeDS.URN);
@@ -99,7 +97,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
                         if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
                             // Only update order if there is order selected
                             if (codelistOrderVisualisationDto != null) {
-                                uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), order);
+                                uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), relativePosition);
                             }
                         }
                     }

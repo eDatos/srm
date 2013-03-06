@@ -7,11 +7,11 @@ import com.gwtplatform.dispatch.annotation.In;
 public class UpdateCodeInOrder {
 
     @In(1)
-    String codeUrn;
+    String  codeUrn;
 
     @In(2)
-    String codelistOrderUrn;
+    String  codelistOrderUrn;
 
     @In(3)
-    Long   newCodeIndex;
+    Integer newCodeIndex;
 }

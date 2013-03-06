@@ -8,25 +8,24 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class CodeTreeNode extends TreeNode implements Comparable<CodeTreeNode> {
 
-    private Long order;
+    private Integer order;
 
     public CodeTreeNode(String name) {
         super(name);
     }
 
-    public Long getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(Long order) {
+    public void setOrder(Integer order) {
         this.order = order;
         setAttribute(CodeDS.ORDER, order);
     }
 
     @Override
     public int compareTo(CodeTreeNode o) {
-        Long value = this.getOrder() - o.getOrder();
-        return value.intValue();
+        return this.getOrder() - o.getOrder();
     }
 
     public static Comparator<CodeTreeNode> OrderComparator = new Comparator<CodeTreeNode>() {
@@ -34,8 +33,8 @@ public class CodeTreeNode extends TreeNode implements Comparable<CodeTreeNode> {
                                                                @Override
                                                                public int compare(CodeTreeNode codeNode1, CodeTreeNode codeNode2) {
 
-                                                                   Long order1 = codeNode1.getOrder();
-                                                                   Long order2 = codeNode2.getOrder();
+                                                                   Integer order1 = codeNode1.getOrder();
+                                                                   Integer order2 = codeNode2.getOrder();
 
                                                                    // Ascending order
                                                                    return order1.compareTo(order2);

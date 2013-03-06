@@ -14,6 +14,6 @@ public interface BaseCodeUiHandlers extends CategorisationUiHandlers {
     void retrieveCodelistsForCreateComplexCodelists(int firstResult, int maxResults, CodelistWebCriteria criteria);
     void retrieveCodesForCreateComplexCodelists(String codelistUrn);
 
-    void updateCodeInOrder(String codeUrn, String codelistOrderIdentifier, Long newCodeIndex);
+    void updateCodeInOrder(String codeUrn, String codelistOrderIdentifier, Integer newCodeIndex);
     void updateCodeParent(String codeUrn, String newParentUrn, String codelistOrderIdentifier);
 }

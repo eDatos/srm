@@ -517,7 +517,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void updateCodeInOrder(String codeUrn, final String codelistOrderUrn, Long newCodeIndex) {
+    public void updateCodeInOrder(String codeUrn, final String codelistOrderUrn, Integer newCodeIndex) {
         dispatcher.execute(new UpdateCodeInOrderAction(codeUrn, codelistOrderUrn, newCodeIndex), new WaitingAsyncCallback<UpdateCodeInOrderResult>() {
 
             @Override

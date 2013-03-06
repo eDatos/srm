@@ -241,7 +241,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
-    public void updateCodeInOrder(String codeUrn, final String codelistOrderIdentifier, Long newCodeIndex) {
+    public void updateCodeInOrder(String codeUrn, final String codelistOrderIdentifier, Integer newCodeIndex) {
         throw new UnsupportedOperationException();
     }
 
