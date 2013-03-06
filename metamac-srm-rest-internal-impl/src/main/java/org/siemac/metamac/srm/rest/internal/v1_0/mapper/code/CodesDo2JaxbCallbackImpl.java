@@ -62,7 +62,7 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
     }
 
     @Override
-    public List<ItemResult> findCodesByCodelistEfficiently(Long idCodelist) {
-        return codeRepository.findCodesByCodelistOrderedInDepth(idCodelist, null); // TODO columnIndex
+    public List<ItemResult> findCodesByCodelistEfficiently(CodelistVersion codelistVersion) {
+        return codeRepository.findCodesByCodelistOrderedInDepth(codelistVersion.getId(), ((CodelistVersionMetamac) codelistVersion).getDefaultOrderVisualisation().getColumnIndex(), Boolean.FALSE);
     }
 }

@@ -185,7 +185,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex) {
+    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) {
 
         // Find codes
         List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, Boolean.TRUE);
@@ -197,11 +197,13 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
         }
 
-        // Fill short name
-        // Try fill from variable element
-        executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
-        // If code has not variable element, try fill with short name in code
-        executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
+        if (extendedMetamacMetadata) {
+            // Fill short name
+            // Try fill from variable element
+            executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
+            // If code has not variable element, try fill with short name in code
+            executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
+        }
 
         // Order // TODO y columna X
         // // Query query1 = getEntityManager().createNativeQuery(

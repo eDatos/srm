@@ -259,7 +259,7 @@ Application CodesMetamac {
 				@CodeMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex);
-				List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex);
+				List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata);
 				
 				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Item parent, @CodeMetamac code, Integer columnIndex, Integer orderCodeToDelete);
 				reorderCodesAddingOneCodeInMiddle(@CodelistVersionMetamac codelistVersion, @CodeMetamac code, Integer columnIndex, Integer orderCodeToAdd);

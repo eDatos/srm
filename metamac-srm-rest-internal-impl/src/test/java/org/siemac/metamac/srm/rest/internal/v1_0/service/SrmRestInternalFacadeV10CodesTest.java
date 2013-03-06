@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
@@ -616,7 +617,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             };
         });
 
-        when(codeMetamacRepository.findCodesByCodelistOrderedInDepth(any(Long.class), any(Integer.class))).thenAnswer(new Answer<List<ItemResult>>() {
+        when(codeMetamacRepository.findCodesByCodelistOrderedInDepth(any(Long.class), any(Integer.class), eq(Boolean.FALSE))).thenAnswer(new Answer<List<ItemResult>>() {
 
             @Override
             public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {

@@ -38,7 +38,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
     public void testRetrieveCodesOrderedByCodelistUrn() throws Exception {
 
         // Retrieve
-        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(1));
+        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(1), Boolean.TRUE);
 
         // Validate common metadata and SHORT_NAME
         assertEquals(9, codes.size());

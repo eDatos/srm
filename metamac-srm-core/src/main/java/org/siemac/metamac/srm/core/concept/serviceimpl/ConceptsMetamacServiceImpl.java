@@ -723,8 +723,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private void checkConceptToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
         checkConceptMetadataExtends(ctx, concept, conceptSchemeVersion.getMaintainableArtefact().getUrn());
-
-        // If it is not imported, check enumerated representation
         checkConceptEnumeratedRepresentation(conceptSchemeVersion, concept);
     }
 
