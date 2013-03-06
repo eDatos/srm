@@ -8,26 +8,24 @@ import com.smartgwt.client.data.fields.DataSourceTextField;
 public class ItemDS extends DataSource {
 
     // IDENTIFIERS
-    public static final String ID               = "item-id";
-    public static final String CODE             = "item-code";
-    public static final String CODE_VIEW        = "item-code-view";   // Not mapped in DTO
-    public static final String URI              = "item-uri";
-    public static final String URN              = "item-urn";
-    public static final String URN_PROVIDER     = "item-urn-provider";
-    public static final String NAME             = "item-name";
-    public static final String NAME_VIEW        = "item-name-view";   // Not mapped in DTO
+    public static final String ID              = "item-id";
+    public static final String CODE            = "item-code";
+    public static final String CODE_VIEW       = "item-code-view";   // Not mapped in DTO
+    public static final String URI             = "item-uri";
+    public static final String URN             = "item-urn";
+    public static final String URN_PROVIDER    = "item-urn-provider";
+    public static final String NAME            = "item-name";
     // CONTENT DESCRIPTORS
-    public static final String DESCRIPTION      = "item-desc";
-    public static final String DESCRIPTION_VIEW = "item-desc-view";   // Not mapped in DTO
+    public static final String DESCRIPTION     = "item-desc";
     // COMMENTS
-    public static final String COMMENTS         = "item-comments";
+    public static final String COMMENTS        = "item-comments";
 
-    public static String       ITEM_PARENT_URN  = "item-parent-urn";
-    public static String       ITEM_SCHEME_URN  = "item-scheme-urn";
+    public static String       ITEM_PARENT_URN = "item-parent-urn";
+    public static String       ITEM_SCHEME_URN = "item-scheme-urn";
 
-    public static final String IS_LAST_VERSION  = "item-last-version"; // For advanced search
+    public static final String IS_LAST_VERSION = "item-last-version"; // For advanced search
 
-    public static String       DTO              = "item-dto";
+    public static String       DTO             = "item-dto";
 
     public ItemDS() {
         DataSourceTextField urn = new DataSourceTextField(URN, MetamacSrmWeb.getConstants().identifiableArtefactUrn());

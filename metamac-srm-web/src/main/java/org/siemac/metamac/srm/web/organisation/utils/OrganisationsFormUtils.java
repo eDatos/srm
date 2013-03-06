@@ -24,24 +24,6 @@ public class OrganisationsFormUtils {
                         .isDataConsumerScheme(organisationSchemeDto.getType())) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
     }
 
-    // NAME
-
-    public static boolean canOrganisationSchemeNameBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        if (organisationSchemeDto == null) {
-            return false;
-        }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
-    }
-
-    // DESCRIPTION
-
-    public static boolean canOrganisationSchemeDescriptionBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        if (organisationSchemeDto == null) {
-            return false;
-        }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
-    }
-
     // ---------------------------------------------------------------------------------------------
     // ORGANISATIONS
     // ---------------------------------------------------------------------------------------------
@@ -57,23 +39,5 @@ public class OrganisationsFormUtils {
             return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(organisationSchemeDto.getLifeCycle().getProcStatus());
         }
         return true;
-    }
-
-    // NAME
-
-    public static boolean canOrganisationNameBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        if (organisationSchemeDto == null) {
-            return false;
-        }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
-    }
-
-    // DESCRIPTION
-
-    public static boolean canOrganisationDescriptionBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        if (organisationSchemeDto == null) {
-            return false;
-        }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
     }
 }

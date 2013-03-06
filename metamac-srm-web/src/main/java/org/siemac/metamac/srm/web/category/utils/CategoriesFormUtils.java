@@ -19,24 +19,6 @@ public class CategoriesFormUtils {
                 && CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
     }
 
-    // NAME
-
-    public static boolean canCategorySchemeNameBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
-        if (categorySchemeDto == null) {
-            return false;
-        }
-        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
-    }
-
-    // DESCRIPTION
-
-    public static boolean canCategorySchemeDescriptionBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
-        if (categorySchemeDto == null) {
-            return false;
-        }
-        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
-    }
-
     // ---------------------------------------------------------------------------------------------
     // CATEGORIES
     // ---------------------------------------------------------------------------------------------
@@ -44,24 +26,6 @@ public class CategoriesFormUtils {
     // CODE
 
     public static boolean canCategoryCodeBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
-        if (categorySchemeDto == null) {
-            return false;
-        }
-        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
-    }
-
-    // NAME
-
-    public static boolean canCategoryNameBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
-        if (categorySchemeDto == null) {
-            return false;
-        }
-        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
-    }
-
-    // DESCRIPTION
-
-    public static boolean canCategoryDescriptionBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
         if (categorySchemeDto == null) {
             return false;
         }
