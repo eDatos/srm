@@ -39,8 +39,4 @@ public class OrganisationsFormUtils {
         }
         return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
     }
-
-    // TYPE
-
-    // TODO
 }
