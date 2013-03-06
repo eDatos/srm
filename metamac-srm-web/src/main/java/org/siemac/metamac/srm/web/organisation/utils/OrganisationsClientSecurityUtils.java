@@ -61,16 +61,20 @@ public class OrganisationsClientSecurityUtils {
 
     // ORGANISATIONS
 
-    public static boolean canCreateOrganisation(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
-        return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
+    public static boolean canCreateOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
+                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
     }
 
     public static boolean canUpdateOrganisation(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
         return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
     }
 
-    public static boolean canDeleteOrganisation(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
-        return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
+    public static boolean canDeleteOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
+                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
     }
 
     // CONTACTS

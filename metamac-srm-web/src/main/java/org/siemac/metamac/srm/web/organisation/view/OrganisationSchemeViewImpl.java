@@ -561,9 +561,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         } else {
             showOrganisationList();
             // Security to create organisations
-            newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
-                    ? Visibility.VISIBLE
-                    : Visibility.HIDDEN);
+            newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
             toolStrip.markForRedraw();
         }
 
@@ -762,8 +760,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
     private void showListGridDeleteButton() {
         if (!ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
-                && !ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
-                && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto.getLifeCycle().getProcStatus(), organisationSchemeDto.getType())) {
+                && !ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus()) && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto)) {
             deleteButton.show();
         } else {
             deleteButton.hide();
