@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.organisation.utils;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.security.shared.SharedOrganisationsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
@@ -70,5 +71,23 @@ public class OrganisationsClientSecurityUtils {
 
     public static boolean canDeleteOrganisation(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
         return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
+    }
+
+    // CONTACTS
+
+    public static boolean canCreateContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
+    }
+
+    public static boolean canUpdateContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType());
+    }
+
+    public static boolean canDeleteContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
     }
 }

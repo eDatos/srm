@@ -415,8 +415,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Security
         mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
-        contactMainFormLayout.setCanEdit(canModifyContacts());
-        contactNewButton.setVisibility(canModifyContacts() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateContact(organisationSchemeMetamacDto));
+        contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canCreateContact(organisationSchemeMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
 
     private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {
@@ -516,10 +516,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     private void showContactListGridDeleteButton() {
-        if (canModifyContacts()) {
+        if (OrganisationsClientSecurityUtils.canDeleteContact(organisationSchemeMetamacDto)) {
             contactDeleteButton.show();
         }
     }
+
     private List<ContactDto> updateContacts(List<ContactDto> contactDtos, ContactDto contactDto) {
         if (contactDto.getId() == null) {
             // If there is a non saved contact in the list, replace it
@@ -638,12 +639,5 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
                 return !OrganisationsFormUtils.canOrganisationDescriptionBeEdited(organisationSchemeMetamacDto);
             }
         };
-    }
-
-    // CONTACTS
-
-    private boolean canModifyContacts() {
-        return OrganisationsClientSecurityUtils.canUpdateOrganisation(this.organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), this.organisationSchemeMetamacDto.getType())
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
     }
 }

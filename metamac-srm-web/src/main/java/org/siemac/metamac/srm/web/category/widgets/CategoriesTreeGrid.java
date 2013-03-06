@@ -7,7 +7,6 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.BaseCategoryUiHandlers;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.widgets.ItemsTreeGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
@@ -110,11 +109,10 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
     }
 
     private boolean canCreateCategory() {
-        return CategoriesClientSecurityUtils.canCreateCategory(categorySchemeMetamacDto.getLifeCycle().getProcStatus()) && CommonUtils.isDefaultMaintainer(categorySchemeMetamacDto.getMaintainer());
+        return CategoriesClientSecurityUtils.canCreateCategory(categorySchemeMetamacDto);
     }
 
     private boolean canDeleteCategory(String nodeName) {
-        return !SCHEME_NODE_NAME.equals(nodeName) && CategoriesClientSecurityUtils.canDeleteCategory(categorySchemeMetamacDto.getLifeCycle().getProcStatus())
-                && CommonUtils.isDefaultMaintainer(categorySchemeMetamacDto.getMaintainer());
+        return !SCHEME_NODE_NAME.equals(nodeName) && CategoriesClientSecurityUtils.canDeleteCategory(categorySchemeMetamacDto);
     }
 }

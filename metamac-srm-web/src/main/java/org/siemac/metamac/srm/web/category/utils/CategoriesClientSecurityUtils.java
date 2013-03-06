@@ -1,8 +1,10 @@
 package org.siemac.metamac.srm.web.category.utils;
 
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 public class CategoriesClientSecurityUtils {
 
@@ -58,15 +60,19 @@ public class CategoriesClientSecurityUtils {
 
     // CATEGORIES
 
-    public static boolean canCreateCategory(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canCreateCategory(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus())
+                && CommonUtils.isDefaultMaintainer(categorySchemeMetamacDto.getMaintainer());
     }
 
     public static boolean canUpdateCategory(ProcStatusEnum procStatus) {
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCategory(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canDeleteCategory(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus())
+                && CommonUtils.isDefaultMaintainer(categorySchemeMetamacDto.getMaintainer());
     }
 }
