@@ -135,6 +135,9 @@ public class CommonUtils {
     }
 
     public static boolean isDefaultMaintainer(RelatedResourceDto maintainer) {
+        if (maintainer == null) { // The maintainer is null in the root AgencyScheme
+            return false;
+        }
         return isDefaultMaintainer(maintainer.getUrn());
     }
 }

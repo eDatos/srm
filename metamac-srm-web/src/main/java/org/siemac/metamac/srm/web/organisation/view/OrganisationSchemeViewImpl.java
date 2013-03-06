@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRe
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
+import org.siemac.metamac.srm.web.organisation.utils.OrganisationsFormUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.NewOrganisationWindow;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeCategorisationsPanel;
@@ -448,18 +449,27 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private void createEditionForm() {
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
+
         RequiredTextItem code = new RequiredTextItem(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getOrganisationSchemeIdentifierCustomValidator());
         code.setShowIfCondition(getCodeFormItemIfFunction());
+
         ViewTextItem staticCode = new ViewTextItem(OrganisationSchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
         staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
+
         MultiLanguageTextItem name = new MultiLanguageTextItem(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
+        name.setShowIfCondition(getNameFormItemIfFunction());
+
+        ViewMultiLanguageTextItem staticName = new ViewMultiLanguageTextItem(OrganisationSchemeDS.NAME_VIEW, getConstants().nameableArtefactName());
+        staticName.setShowIfCondition(getStaticNameFormItemIfFunction());
+
         ViewTextItem uri = new ViewTextItem(OrganisationSchemeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(OrganisationSchemeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(OrganisationSchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(OrganisationSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider, version);
+
+        identifiersEditionForm.setFields(code, staticCode, name, staticName, uri, urn, urnProvider, version);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -488,10 +498,15 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         });
 
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(OrganisationSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        description.setShowIfCondition(getDescriptionFormItemIfFunction());
+
+        ViewMultiLanguageTextItem staticDescription = new ViewMultiLanguageTextItem(OrganisationSchemeDS.DESCRIPTION_VIEW, getConstants().nameableArtefactDescription());
+        staticDescription.setShowIfCondition(getStaticDescriptionFormItemIfFunction());
+
         ViewTextItem partial = new ViewTextItem(OrganisationSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(OrganisationSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
-        contentDescriptorsEditionForm.setFields(type, staticType, description, partial, isExternalReference, isFinal);
+        contentDescriptorsEditionForm.setFields(type, staticType, description, staticDescription, partial, isExternalReference, isFinal);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -689,12 +704,14 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         identifiersEditionForm.setValue(OrganisationSchemeDS.URN_PROVIDER, organisationSchemeDto.getUrnProvider());
         identifiersEditionForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getName()));
+        identifiersEditionForm.setValue(OrganisationSchemeDS.NAME_VIEW, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getName()));
         identifiersEditionForm.markForRedraw();
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.TYPE, organisationSchemeDto.getType().name());
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.TYPE_VIEW, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.DESCRIPTION_VIEW, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(organisationSchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, organisationSchemeDto.getIsExternalReference() != null ? (organisationSchemeDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
@@ -738,20 +755,28 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     public OrganisationSchemeMetamacDto getOrganisationSchemeDto() {
-        // Identifiers
-        organisationSchemeDto.setCode(identifiersEditionForm.getValueAsString(OrganisationSchemeDS.CODE));
-        organisationSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(OrganisationSchemeDS.NAME));
-        // Content descriptors
-        organisationSchemeDto.setType(contentDescriptorsEditionForm.getValueAsString(OrganisationSchemeDS.TYPE) != null ? OrganisationSchemeTypeEnum.valueOf(contentDescriptorsEditionForm
-                .getValueAsString(OrganisationSchemeDS.TYPE)) : null);
-        organisationSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(OrganisationSchemeDS.DESCRIPTION));
+
+        // SDMX METADATA
+
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer())) {
+
+            // Identifiers
+            organisationSchemeDto.setCode(identifiersEditionForm.getValueAsString(OrganisationSchemeDS.CODE));
+            organisationSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(OrganisationSchemeDS.NAME));
+            // Content descriptors
+            organisationSchemeDto.setType(contentDescriptorsEditionForm.getValueAsString(OrganisationSchemeDS.TYPE) != null ? OrganisationSchemeTypeEnum.valueOf(contentDescriptorsEditionForm
+                    .getValueAsString(OrganisationSchemeDS.TYPE)) : null);
+            organisationSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(OrganisationSchemeDS.DESCRIPTION));
+
+            // Annotations
+            organisationSchemeDto.getAnnotations().clear();
+            organisationSchemeDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
+        }
+
+        // METAMAC METADATA
 
         // Comments
         organisationSchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(OrganisationSchemeDS.COMMENTS));
-
-        // Annotations
-        organisationSchemeDto.getAnnotations().clear();
-        organisationSchemeDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return organisationSchemeDto;
     }
@@ -791,12 +816,18 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         }
     }
 
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEM IF FUNCTIONS
+    // ------------------------------------------------------------------------------------------------------------
+
+    // CODE
+
     private FormItemIfFunction getCodeFormItemIfFunction() {
         return new FormItemIfFunction() {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return canOrganisationSchemeCodeBeEdited();
+                return OrganisationsFormUtils.canOrganisationSchemeCodeBeEdited(organisationSchemeDto);
             }
         };
     }
@@ -806,17 +837,56 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !canOrganisationSchemeCodeBeEdited();
+                return !OrganisationsFormUtils.canOrganisationSchemeCodeBeEdited(organisationSchemeDto);
             }
         };
     }
 
-    private boolean canOrganisationSchemeCodeBeEdited() {
-        // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-        // and if the OrganisationType is not AGENCY_SCHEME, DATA_PROVIDER_SCHEME or DATA_CONSUMER_SCHEME
-        // TODO check maintainer
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(organisationSchemeDto.getLifeCycle().getProcStatus(), organisationSchemeDto.getVersionLogic())
-                && (!CommonUtils.isAgencyScheme(organisationSchemeDto.getType()) && !CommonUtils.isDataProviderScheme(organisationSchemeDto.getType()) && !CommonUtils
-                        .isDataConsumerScheme(organisationSchemeDto.getType()));
+    // NAME
+
+    private FormItemIfFunction getNameFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return OrganisationsFormUtils.canOrganisationSchemeNameBeEdited(organisationSchemeDto);
+            }
+        };
     }
+
+    private FormItemIfFunction getStaticNameFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !OrganisationsFormUtils.canOrganisationSchemeNameBeEdited(organisationSchemeDto);
+            }
+        };
+    }
+
+    // DESCRIPTION
+
+    private FormItemIfFunction getDescriptionFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return OrganisationsFormUtils.canOrganisationSchemeDescriptionBeEdited(organisationSchemeDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticDescriptionFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !OrganisationsFormUtils.canOrganisationSchemeDescriptionBeEdited(organisationSchemeDto);
+            }
+        };
+    }
+
+    // TYPE
+
+    // TODO
 }
