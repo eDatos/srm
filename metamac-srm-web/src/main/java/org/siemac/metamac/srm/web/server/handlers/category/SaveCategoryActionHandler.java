@@ -40,5 +40,4 @@ public class SaveCategoryActionHandler extends SecurityActionHandler<SaveCategor
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

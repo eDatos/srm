@@ -40,5 +40,4 @@ public class SaveOrganisationActionHandler extends SecurityActionHandler<SaveOrg
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }
