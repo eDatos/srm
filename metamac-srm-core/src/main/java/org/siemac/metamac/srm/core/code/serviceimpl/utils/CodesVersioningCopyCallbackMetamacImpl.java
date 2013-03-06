@@ -34,6 +34,9 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         target.setVariable(source.getVariable());
         target.setFamily(source.getFamily());
         // note: replaceBy and replaceTo metadata do not must be copied, because they are related to concrete versions of codelist
+
+        // Copy visualisations TODO
+        // TODO default visualisation
     }
 
     @Override
@@ -52,5 +55,19 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         CodeMetamac target = (CodeMetamac) targetSdmx;
         target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
         target.setVariableElement(source.getVariableElement());
+        // TODO comprobar copia de órdenes
+        // for (int i = 1; i <= SrmConstants.CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {
+        // Integer order = SrmServiceUtils.getCodeOrder(source, i);
+        // if (order != null) {
+        // SrmServiceUtils.setCodeOrder(target, i, order);
+        // }
+        // }
     }
+
+    // private void copyCodelistOrderVisualisation(CodelistOrderVisualisation source, CodelistOrderVisualisation target) {
+    // target.setColumnIndex(source.getColumnIndex());
+    // // TODO codelist
+    // // TODO nameableArtefact, calcular urn, urnProvider, copiar code
+    //
+    // }
 }

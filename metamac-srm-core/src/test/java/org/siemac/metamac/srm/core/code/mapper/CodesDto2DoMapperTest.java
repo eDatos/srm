@@ -52,7 +52,7 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
     public void testCodelistDtoToDoWithLoad() throws MetamacException {
         CodelistMetamacDto dto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
         dto.setUrn(CODELIST_1_V2);
-        dto.setDefaultOrderVisualisation(CodesMetamacDtoMocks.mockCodelistOrderVisualisationRelatedResourceDto("VISUALISATION_02", CODELIST_1_V2_ORDER_VISUALISATION_02));
+        dto.setDefaultOrderVisualisation(CodesMetamacDtoMocks.mockCodelistOrderVisualisationRelatedResourceDto("VISUALISATION_02", CODELIST_1_V2_ORDER_VISUALISATION_03));
         dto.setVersionOptimisticLocking(1L);
         CodelistVersionMetamac entity = codesDto2DoMapper.codelistDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsCodelist(dto, entity);

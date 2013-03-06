@@ -265,7 +265,8 @@ Application CodesMetamac {
 				reorderCodesAddingOneCodeInMiddle(@CodelistVersionMetamac codelistVersion, @CodeMetamac code, Integer columnIndex, Integer orderCodeToAdd);
 				clearCodeOrders(@CodelistVersionMetamac codelistVersion, Integer columnIndex);
 				copyCodeOrders(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
-				Integer getMaximumOrderInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, Integer columnIndex);
+				Integer getCodeMaximumOrderInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, Integer columnIndex);
+				Integer getCodeAlphabeticPositionInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, @Item code);
 			}
 		}
 		

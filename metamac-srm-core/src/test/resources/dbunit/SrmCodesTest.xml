@@ -442,8 +442,7 @@
             
                 <!-- VISUALISATIONS -->
                 
-                <!-- VISUALISATION01 -->
-                    <!-- -> CODE01 -->
+                <!-- ALPHABETICAL -->
                 
                 <TB_M_CODELIST_ORDER_VISUAL 
                     ID="111"
@@ -465,10 +464,10 @@
                     ID="9997111"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="VISUALISATION01"
+                    CODE="ALPHABETICAL"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(01.000).VISUALISATION01"
-                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(01.000).VISUALISATION01"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(01.000).ALPHABETICAL"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(01.000).ALPHABETICAL"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
@@ -519,7 +518,7 @@
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="121"
+        DEFAULT_ORDER_VISUALISATION_FK="122"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -600,7 +599,8 @@
               SHORT_NAME_FK="[null]"
               TB_CODES="121"
               ORDER1="0"
-              ORDER2="1"
+              ORDER2="0"
+              ORDER3="1"
              />
             
             <TB_ITEMS
@@ -680,7 +680,8 @@
               SHORT_NAME_FK="77"
               TB_CODES="122"
                 ORDER1="1"
-                ORDER2="2"
+                ORDER2="1"
+                ORDER3="2"
              />
                      
             <TB_ITEMS
@@ -735,7 +736,8 @@
               SHORT_NAME_FK="[null]"
               TB_CODES="1221"
               ORDER1="0"
-              ORDER2="1"
+              ORDER2="0"
+              ORDER3="1"
              />
         
             <TB_ITEMS
@@ -791,6 +793,7 @@
               TB_CODES="12211"
               ORDER1="0"
               ORDER2="0"
+              ORDER3="0"
              />
         
             <TB_ITEMS
@@ -845,7 +848,8 @@
               SHORT_NAME_FK="[null]"
               TB_CODES="1222"
               ORDER1="1"
-              ORDER2="0"
+              ORDER2="1"
+              ORDER3="0"
              />
         
             <TB_ITEMS
@@ -900,7 +904,8 @@
               SHORT_NAME_FK="[null]"
               TB_CODES="123"
               ORDER1="2"
-              ORDER2="0"
+              ORDER2="2"
+              ORDER3="0"
              />
             
             <TB_ITEMS
@@ -956,6 +961,7 @@
               TB_CODES="124"
               ORDER1="3"
               ORDER2="3"
+              ORDER3="3"
              />
                      
             <TB_ITEMS
@@ -1011,6 +1017,7 @@
               TB_CODES="1241"
               ORDER1="0"
               ORDER2="0"
+              ORDER3="0"
              />
         
             <TB_ITEMS
@@ -1066,6 +1073,7 @@
               TB_CODES="12411"
               ORDER1="0"
               ORDER2="0"
+              ORDER3="0"
              />
         
             <TB_ITEMS
@@ -1113,10 +1121,11 @@
             
             
             <!-- VISUALISATIONS -->
-                <!-- VISUALISATION01 -->
-                <!-- VISUALISATION02 -->    
+                <!-- ALPHABETICAL -->
+                <!-- VISUALISATION01 -->    
+                <!-- VISUALISATION02 -->
                 
-                <!-- VISUALISATION01 -->
+                <!-- ALPHABETICAL -->
                     <!-- -> CODE01 -->
                     <!-- -> CODE02 -->
                     <!--    -> CODE0201 -->
@@ -1147,10 +1156,10 @@
                     ID="9997121"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="VISUALISATION01"
+                    CODE="ALPHABETICAL"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION01"
-                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION01"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).ALPHABETICAL"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).ALPHABETICAL"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
@@ -1166,9 +1175,19 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                 
-                                        
-            
+                />     
+                
+                <!-- VISUALISATION01 -->
+                    <!-- -> CODE01 -->
+                    <!-- -> CODE02 -->
+                    <!--    -> CODE0201 -->
+                    <!--       -> CODE020101 -->
+                    <!--    -> CODE0202 -->
+                    <!-- -> CODE03 -->
+                    <!-- -> CODE04 -->
+                    <!--    -> CODE0401 -->
+                    <!--        -> CODE040101 -->
+                
                 <TB_M_CODELIST_ORDER_VISUAL 
                     ID="122"
                     CODELIST_FK="12"
@@ -1196,11 +1215,53 @@
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
-                    NAME_FK="79"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     COMMENT_FK="[null]"
                     
                     UUID="annotableArtefact-9997122"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                 
+                                        
+            
+                <TB_M_CODELIST_ORDER_VISUAL 
+                    ID="123"
+                    CODELIST_FK="12"
+                    NAMEABLE_ARTEFACT_FK="9997123"
+                    COLUMN_INDEX="3"
+                    
+                    UUID="codelist-visualisation-123"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9997123"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION03"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION03"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION03"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="79"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9997123"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -2259,7 +2320,7 @@
             
                 <!-- VISUALISATIONS -->
                 
-                <!-- VISUALISATION01 -->
+                <!-- ALPHABETICAL -->
                     <!-- -> CODE01 -->
                 
                 <TB_M_CODELIST_ORDER_VISUAL 
@@ -2282,10 +2343,10 @@
                     ID="9997611"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="VISUALISATION01"
+                    CODE="ALPHABETICAL"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST06(01.000).VISUALISATION01"
-                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST06(01.000).VISUALISATION01"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST06(01.000).ALPHABETICAL"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST06(01.000).ALPHABETICAL"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
@@ -2552,7 +2613,7 @@
             
                 <!-- VISUALISATIONS -->
                 
-                <!-- VISUALISATION01 -->
+                <!-- ALPHABETICAL -->
                     <!-- -> CODE01 -->
                 
                 <TB_M_CODELIST_ORDER_VISUAL 
@@ -2575,10 +2636,10 @@
                     ID="9997721"
                     ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                     
-                    CODE="VISUALISATION01"
+                    CODE="ALPHABETICAL"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST07(02.000).VISUALISATION01"
-                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST07(02.000).VISUALISATION01"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST07(02.000).ALPHABETICAL"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST07(02.000).ALPHABETICAL"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     

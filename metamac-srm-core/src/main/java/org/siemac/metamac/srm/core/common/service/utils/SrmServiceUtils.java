@@ -5,14 +5,12 @@ import java.util.List;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang.StringUtils;
-import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
@@ -102,19 +100,19 @@ public class SrmServiceUtils {
         return SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(orderVisualisation.getNameableArtefact().getCode());
     }
 
-    public static void setCodeOrder(CodeMetamac code, int columnIndex, Integer codeIndex) throws MetamacException {
+    public static void setCodeOrder(CodeMetamac code, int columnIndex, Integer codeIndex) {
         try {
             MethodUtils.invokeExactMethod(code, "setOrder" + columnIndex, codeIndex);
         } catch (Exception e) {
-            throw new MetamacException(e, ServiceExceptionType.UNKNOWN);
+            throw new RuntimeException(e);
         }
     }
 
-    public static Integer getCodeOrder(CodeMetamac code, int columnIndex) throws MetamacException {
+    public static Integer getCodeOrder(CodeMetamac code, int columnIndex) {
         try {
             return (Integer) MethodUtils.invokeExactMethod(code, "getOrder" + columnIndex, null);
         } catch (Exception e) {
-            throw new MetamacException(e, ServiceExceptionType.UNKNOWN);
+            throw new RuntimeException(e);
         }
     }
 }

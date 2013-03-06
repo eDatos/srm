@@ -1594,13 +1594,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Override
     public void testPreCreateCategorisation() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testPreCreateCategorisation
 
     }
 
     @Override
     public void testPostCreateCategorisation() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testPostCreateCategorisation
 
     }
 
