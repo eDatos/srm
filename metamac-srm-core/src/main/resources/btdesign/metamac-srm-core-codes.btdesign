@@ -231,88 +231,27 @@ Application CodesMetamac {
 			- @InternationalString shortName nullable cascade="all" fetch="lazy" databaseColumn="SHORT_NAME_FK";
 			"Variable element"
 			- @VariableElement variableElement nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_ELEMENT_FK"  <-> codes;
-			"Order 1"
 			Integer order1 nullable;
-			"Order 2"
 			Integer order2 nullable;
-			"Order 3"
 			Integer order3 nullable;
-			"Order 4"
 			Integer order4 nullable;
-			"Order 5"
 			Integer order5 nullable;
-			/*
-			"Order 6"
 			Integer order6 nullable;
-			"Order 7"
 			Integer order7 nullable;
-			"Order 8"
 			Integer order8 nullable;
-			"Order 9"
 			Integer order9 nullable;
-			"Order 10"
 			Integer order10 nullable;
-			"Order 11"
 			Integer order11 nullable;
-			"Order 12"
 			Integer order12 nullable;
-			"Order 13"
 			Integer order13 nullable;
-			"Order 14"
 			Integer order14 nullable;
-			"Order 15"
 			Integer order15 nullable;
-			"Order 16"
 			Integer order16 nullable;
-			"Order 17"
 			Integer order17 nullable;
-			"Order 18"
 			Integer order18 nullable;
-			"Order 19"
 			Integer order19 nullable;
-			"Order 20"
 			Integer order20 nullable;
-			"Openness 1"
-			String openness1 nullable length="255";
-			"Openness 2"
-			String openness2 nullable length="255";
-			"Openness 3"
-			String openness3 nullable length="255";
-			"Openness 4"
-			String openness4 nullable length="255";
-			"Openness 5"
-			String openness5 nullable length="255";
-			"Openness 6"
-			String openness6 nullable length="255";
-			"Openness 7"
-			String openness7 nullable length="255";
-			"Openness 8"
-			String openness8 nullable length="255";
-			"Openness 9"
-			String openness9 nullable length="255";
-			"Openness 10"
-			String openness10 nullable length="255";
-			"Openness 11"
-			String openness11 nullable length="255";
-			"Openness 12"
-			String openness12 nullable length="255";
-			"Openness 13"
-			String openness13 nullable length="255";
-			"Openness 14"
-			String openness14 nullable length="255";
-			"Openness 15"
-			String openness15 nullable length="255";
-			"Openness 16"
-			String openness16 nullable length="255";
-			"Openness 17"
-			String openness17 nullable length="255";
-			"Openness 18"
-			String openness18 nullable length="255";
-			"Openness 19"
-			String openness19 nullable length="255";
-			"Openness 20"
-			String openness20 nullable length="255";			
-			*/
+
 			Repository CodeMetamacRepository {
 				save;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
@@ -324,7 +263,8 @@ Application CodesMetamac {
 				
 				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Item parent, @CodeMetamac code, Integer columnIndex, Integer orderCodeToDelete);
 				reorderCodesAddingOneCodeInMiddle(@CodelistVersionMetamac codelistVersion, @CodeMetamac code, Integer columnIndex, Integer orderCodeToAdd);
-				clearCodeOrder(@CodelistVersionMetamac codelistVersion, Integer columnIndex);
+				clearCodeOrders(@CodelistVersionMetamac codelistVersion, Integer columnIndex);
+				copyCodeOrders(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
 				Integer getMaximumOrderInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, Integer columnIndex);
 			}
 		}
