@@ -329,6 +329,8 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     // FORM ITEM IF FUNCTIONS
     // ------------------------------------------------------------------------------------------------------------
 
+    // CODE
+
     private FormItemIfFunction getCodeFormItemIfFunction() {
         return new FormItemIfFunction() {
 
@@ -349,6 +351,8 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         };
     }
 
+    // NAME
+
     private FormItemIfFunction getNameFormItemIfFunction() {
         return new FormItemIfFunction() {
 
@@ -368,6 +372,8 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
             }
         };
     }
+
+    // DESCRIPTION
 
     private FormItemIfFunction getDescriptionFormItemIfFunction() {
         return new FormItemIfFunction() {

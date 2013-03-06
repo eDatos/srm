@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.organisation.utils;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+
 public class OrganisationsFormUtils {
 
     // ---------------------------------------------------------------------------------------------
@@ -34,6 +36,41 @@ public class OrganisationsFormUtils {
     // DESCRIPTION
 
     public static boolean canOrganisationSchemeDescriptionBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
+        if (organisationSchemeDto == null) {
+            return false;
+        }
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // ORGANISATIONS
+    // ---------------------------------------------------------------------------------------------
+
+    // CODE
+
+    public static boolean canOrganisationCodeBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
+        if (organisationSchemeDto == null || !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer())) {
+            return false;
+        }
+        // If organisation type is AGENCY, code can only be edited when organisation is not published
+        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeDto.getType())) {
+            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(organisationSchemeDto.getLifeCycle().getProcStatus());
+        }
+        return true;
+    }
+
+    // NAME
+
+    public static boolean canOrganisationNameBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
+        if (organisationSchemeDto == null) {
+            return false;
+        }
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
+    }
+
+    // DESCRIPTION
+
+    public static boolean canOrganisationDescriptionBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
         if (organisationSchemeDto == null) {
             return false;
         }
