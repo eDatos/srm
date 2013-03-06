@@ -134,7 +134,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             @Override
             public void onClick(ClickEvent event) {
                 contactListGrid.deselectAllRecords();
-                contactMainFormLayout.setContact(new ContactDto(), true);
+                contactMainFormLayout.setContact(organisationSchemeMetamacDto, new ContactDto(), true);
                 contactMainFormLayout.setEditionMode();
                 contactMainFormLayout.show();
             }
@@ -197,7 +197,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
                     ContactDto selectedContact = ((ContactRecord) event.getRecord()).getContactDto();
-                    contactMainFormLayout.setContact(selectedContact, false);
+                    contactMainFormLayout.setContact(organisationSchemeMetamacDto, selectedContact, false);
                     contactMainFormLayout.show();
                 }
             }
@@ -465,7 +465,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             if (record != null) {
                 contactListGrid.selectRecord(record);
                 if (record instanceof ContactRecord) {
-                    contactMainFormLayout.setContact(((ContactRecord) record).getContactDto(), false);
+                    contactMainFormLayout.setContact(organisationSchemeMetamacDto, ((ContactRecord) record).getContactDto(), false);
                     contactMainFormLayout.show();
                 }
             }

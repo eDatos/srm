@@ -10,11 +10,15 @@ public class ContactDS extends DataSource {
     public static final String ID                = "con-id";
     public static final String NAME              = "con-name";
     public static final String ORGANISATION_UNIT = "con-ou";
-    public static final String TELEPHONE         = "con-tel";
     public static final String RESPONSIBILITY    = "con-res";
+    public static final String TELEPHONE         = "con-tel";
+    public static final String TELEPHONE_VIEW    = "con-tel-view";  // Not mapped in DTO
     public static final String FAX               = "con-fax";
+    public static final String FAX_VIEW          = "con-fax-view";  // Not mapped in DTO
     public static final String EMAIL             = "con-email";
+    public static final String EMAIL_VIEW        = "con-email-view"; // Not mapped in DTO
     public static final String URL               = "con-url";
+    public static final String URL_VIEW          = "con-url-view";  // Not mapped in DTO
 
     public static final String DTO               = "con-dto";
 
@@ -23,5 +27,4 @@ public class ContactDS extends DataSource {
         identifier.setPrimaryKey(true);
         addField(identifier);
     }
-
 }

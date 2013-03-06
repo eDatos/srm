@@ -40,4 +40,36 @@ public class OrganisationsFormUtils {
         }
         return true;
     }
+
+    // ---------------------------------------------------------------------------------------------
+    // CONTACT
+    // ---------------------------------------------------------------------------------------------
+
+    public static boolean canContactUrlBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
+        if (organisationSchemeDto == null) {
+            return false;
+        }
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
+    }
+
+    public static boolean canContactTelephoneBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
+        if (organisationSchemeDto == null) {
+            return false;
+        }
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
+    }
+
+    public static boolean canContactEmailBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
+        if (organisationSchemeDto == null) {
+            return false;
+        }
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
+    }
+
+    public static boolean canContactFaxBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
+        if (organisationSchemeDto == null) {
+            return false;
+        }
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
+    }
 }
