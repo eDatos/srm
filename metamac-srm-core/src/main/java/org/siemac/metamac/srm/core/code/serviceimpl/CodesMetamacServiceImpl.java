@@ -215,7 +215,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodelistVersionMetamac publishInternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
-        // TODO generar orden para alfabético
         return (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn);
     }
 

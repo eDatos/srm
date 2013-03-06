@@ -35,7 +35,7 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         target.setFamily(source.getFamily());
         // note: replaceBy and replaceTo metadata do not must be copied, because they are related to concrete versions of codelist
 
-        // Copy visualisations TODO
+        // TODO Copy visualisations
         // TODO default visualisation
     }
 
