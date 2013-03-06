@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.stereotype.Component;
 
@@ -34,9 +36,7 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         target.setVariable(source.getVariable());
         target.setFamily(source.getFamily());
         // note: replaceBy and replaceTo metadata do not must be copied, because they are related to concrete versions of codelist
-
-        // TODO Copy visualisations
-        // TODO default visualisation
+        // note: codelist visualisations are copied in CodesMetamacService
     }
 
     @Override
@@ -55,19 +55,11 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         CodeMetamac target = (CodeMetamac) targetSdmx;
         target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
         target.setVariableElement(source.getVariableElement());
-        // TODO comprobar copia de órdenes
-        // for (int i = 1; i <= SrmConstants.CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {
-        // Integer order = SrmServiceUtils.getCodeOrder(source, i);
-        // if (order != null) {
-        // SrmServiceUtils.setCodeOrder(target, i, order);
-        // }
-        // }
+        for (int i = 1; i <= SrmConstants.CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {
+            Integer order = SrmServiceUtils.getCodeOrder(source, i);
+            if (order != null) {
+                SrmServiceUtils.setCodeOrder(target, i, order);
+            }
+        }
     }
-
-    // private void copyCodelistOrderVisualisation(CodelistOrderVisualisation source, CodelistOrderVisualisation target) {
-    // target.setColumnIndex(source.getColumnIndex());
-    // // TODO codelist
-    // // TODO nameableArtefact, calcular urn, urnProvider, copiar code
-    //
-    // }
 }

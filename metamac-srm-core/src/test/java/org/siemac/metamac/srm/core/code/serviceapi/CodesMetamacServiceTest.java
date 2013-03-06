@@ -1429,6 +1429,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urnExpectedCode21 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE0201";
         String urnExpectedCode211 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE020101";
         String urnExpectedCode22 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE0202";
+        String urnExpectedVisualisation01 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(02.000).ALPHABETICAL";
+        String urnExpectedVisualisation02 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(02.000).VISUALISATION02";
 
         CodelistVersionMetamac codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
         CodelistVersionMetamac codelistVersionNewVersion = codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.TRUE, VersionTypeEnum.MAJOR);
@@ -1465,26 +1467,50 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             {
                 CodeMetamac code = (CodeMetamac) codelistVersionNewVersion.getItemsFirstLevel().get(0);
                 assertEquals(urnExpectedCode1, code.getNameableArtefact().getUrn());
-
                 assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-1", null, null);
+                assertEquals(Integer.valueOf(0), code.getOrder1());
+                assertEquals(Integer.valueOf(1), code.getOrder2());
+                assertEquals(null, code.getOrder3());
+                assertEquals(null, code.getOrder4());
+                assertEquals(null, code.getOrder5());
+                assertEquals(null, code.getOrder6());
+                assertEquals(null, code.getOrder7());
+                assertEquals(null, code.getOrder8());
+                assertEquals(null, code.getOrder9());
+                assertEquals(null, code.getOrder10());
+                assertEquals(null, code.getOrder11());
+                assertEquals(null, code.getOrder12());
+                assertEquals(null, code.getOrder13());
+                assertEquals(null, code.getOrder14());
+                assertEquals(null, code.getOrder15());
+                assertEquals(null, code.getOrder16());
+                assertEquals(null, code.getOrder17());
+                assertEquals(null, code.getOrder18());
+                assertEquals(null, code.getOrder19());
+                assertEquals(null, code.getOrder20());
 
                 assertEquals(0, code.getChildren().size());
             }
             {
                 CodeMetamac code = (CodeMetamac) codelistVersionNewVersion.getItemsFirstLevel().get(1);
                 assertEquals(urnExpectedCode2, code.getNameableArtefact().getUrn());
-
                 assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-2", null, null);
+                assertEquals(Integer.valueOf(1), code.getOrder1());
+                assertEquals(Integer.valueOf(0), code.getOrder2());
 
                 assertEquals(2, code.getChildren().size());
                 {
                     CodeMetamac codeChild = (CodeMetamac) code.getChildren().get(0);
                     assertEquals(urnExpectedCode21, codeChild.getNameableArtefact().getUrn());
+                    assertEquals(Integer.valueOf(0), codeChild.getOrder1());
+                    assertEquals(Integer.valueOf(1), codeChild.getOrder2());
 
                     assertEquals(1, codeChild.getChildren().size());
                     {
                         CodeMetamac codeChildChild = (CodeMetamac) codeChild.getChildren().get(0);
                         assertEquals(urnExpectedCode211, codeChildChild.getNameableArtefact().getUrn());
+                        assertEquals(Integer.valueOf(0), codeChildChild.getOrder1());
+                        assertEquals(Integer.valueOf(0), codeChildChild.getOrder2());
 
                         assertEquals(0, codeChildChild.getChildren().size());
                     }
@@ -1492,9 +1518,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 {
                     CodeMetamac codeChild = (CodeMetamac) code.getChildren().get(1);
                     assertEquals(urnExpectedCode22, codeChild.getNameableArtefact().getUrn());
+                    assertEquals(Integer.valueOf(1), codeChild.getOrder1());
+                    assertEquals(Integer.valueOf(0), codeChild.getOrder2());
 
                     assertEquals(0, codeChild.getChildren().size());
                 }
+            }
+
+            // Visualisations
+            assertEquals(urnExpectedVisualisation01, codelistVersionNewVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn());
+            assertEquals(2, codelistVersionNewVersion.getOrderVisualisations().size());
+            {
+                CodelistOrderVisualisation codelistOrderVisualisation = assertContainsCodelistOrderVisualisation(urnExpectedVisualisation01, codelistVersionNewVersion.getOrderVisualisations());
+                assertEquals("ALPHABETICAL", codelistOrderVisualisation.getNameableArtefact().getCode());
+                assertEquals(Integer.valueOf(1), codelistOrderVisualisation.getColumnIndex());
+                assertEqualsInternationalString(codelistOrderVisualisation.getNameableArtefact().getName(), "es", "Alfabético", null, null);
+            }
+            {
+                CodelistOrderVisualisation codelistOrderVisualisation = assertContainsCodelistOrderVisualisation(urnExpectedVisualisation02, codelistVersionNewVersion.getOrderVisualisations());
+                assertEquals("VISUALISATION02", codelistOrderVisualisation.getNameableArtefact().getCode());
+                assertEquals(Integer.valueOf(2), codelistOrderVisualisation.getColumnIndex());
+                assertEqualsInternationalString(codelistOrderVisualisation.getNameableArtefact().getName(), "es", "Visualización 02", null, null);
             }
         }
 
@@ -4833,13 +4877,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         return null;
     }
 
-    private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationUrnExpected, List<CodelistOrderVisualisation> actuals) {
+    private CodelistOrderVisualisation assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationUrnExpected, List<CodelistOrderVisualisation> actuals) {
         for (CodelistOrderVisualisation actual : actuals) {
             if (actual.getNameableArtefact().getUrn().equals(codelistOrderVisualisationUrnExpected)) {
-                return;
+                return actual;
             }
         }
         fail("visualisation not found");
+        return null;
     }
 
     private CodeMetamac getCode(List<Item> items, String urn) {

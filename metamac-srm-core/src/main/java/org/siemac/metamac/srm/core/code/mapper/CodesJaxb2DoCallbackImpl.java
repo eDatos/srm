@@ -100,8 +100,11 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
         // Fill metadata
         codesMetamacService.postCreateCodelist(ctx, targetMetamac, (previousVersion != null) ? previousMetamac.getReplaceToCodelists() : new ArrayList<CodelistVersionMetamac>()); // ReplaceToCodelists
 
-        // TODO herencia default order visualization
+        // TODO DECIDIR SI SE VAN A HEREDAR LOS ÓRDENES. Después, hablar con San para decidir el algoritmo de copia de órdenes. OJO! No volver a crear el orden alfabético en V2
+        // TODO herencia order visualisations
+        // TODO herencia default order visualisation
         // TODO herencia niveles de apertura
+        // TODO herencia todas las columnas de orden de los code
     }
 
     @Override

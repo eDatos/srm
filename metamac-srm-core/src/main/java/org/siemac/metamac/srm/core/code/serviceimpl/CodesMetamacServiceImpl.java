@@ -51,6 +51,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
@@ -107,6 +108,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
 
         // Post create actions
+        // Add alphabetical order
+        codelistVersion = createCodelistOrderVisualisationAlphabetical(codelistVersion);
+        // Execute common actions after creation
         postCreateCodelist(ctx, codelistVersion, replaceTo);
 
         return codelistVersion;
@@ -141,10 +145,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (codelistVersion.getVariable() != null) {
             codelistVersion.getVariable().addCodelist(codelistVersion);
         }
-
-        // Add alphabetical order
-        codelistVersion = createCodelistOrderVisualisationAlphabetical(codelistVersion);
-
         return codelistVersion;
     }
 
@@ -244,9 +244,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Versioning
         CodesVersioningCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningCopyWithCodesCallback : codesVersioningCopyWithoutCodesCallback;
+        CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
         CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, callback);
 
-        // TODO versionar visualizaciones
+        // Versioning visualisations // TODO cuando se implementen las versiones dummy, decidir dónde ubicar este código
+        versioningCodelistOrderVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
         return codelistNewVersion;
     }
 
@@ -1381,7 +1383,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
                 @Override
                 public int compare(Item i1, Item i2) {
-                    if (i1.getParent() == null || i2.getParent() == null) {
+                    if (i1.getParent() == null && i2.getParent() == null) {
+                        return i1.getNameableArtefact().getCode().compareTo(i2.getNameableArtefact().getCode());
+                    } else if (i1.getParent() == null || i2.getParent() == null) {
                         return -1;
                     } else if (!i1.getParent().getId().equals(i2.getParent().getId())) {
                         return i1.getParent().getId().compareTo(i2.getParent().getId());
@@ -1496,4 +1500,21 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         SrmServiceUtils.setCodeOrder(code, columnIndex, orderInNewLevel);
     }
 
+    private void versioningCodelistOrderVisualisations(ServiceContext ctx, CodelistVersionMetamac source, CodelistVersionMetamac target) throws MetamacException {
+        for (CodelistOrderVisualisation codelistOrderVisualisationSource : source.getOrderVisualisations()) {
+            CodelistOrderVisualisation codelistOrderVisualisationTarget = copyCodelistOrderVisualisation(codelistOrderVisualisationSource, target);
+            if (source.getDefaultOrderVisualisation().getNameableArtefact().getCode().equals(codelistOrderVisualisationSource.getNameableArtefact().getCode())) {
+                target.setDefaultOrderVisualisation(codelistOrderVisualisationTarget);
+            }
+        }
+    }
+
+    private CodelistOrderVisualisation copyCodelistOrderVisualisation(CodelistOrderVisualisation source, CodelistVersionMetamac codelistTarget) throws MetamacException {
+        CodelistOrderVisualisation target = new CodelistOrderVisualisation();
+        target.setColumnIndex(source.getColumnIndex());
+        target.setNameableArtefact(BaseVersioningCopyUtils.copyNameableArtefact(source.getNameableArtefact()));
+        codelistTarget.addOrderVisualisation(target);
+        setCodelistOrderVisualisationUrnUnique(target);
+        return target;
+    }
 }

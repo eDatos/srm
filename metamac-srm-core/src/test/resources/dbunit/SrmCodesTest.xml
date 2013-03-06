@@ -1528,7 +1528,7 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUALISATION_FK="311"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1601,6 +1601,8 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="311"
+              ORDER1="0"
+              ORDER2="1"
              />
             
             <TB_ITEMS
@@ -1654,6 +1656,8 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="312"
+              ORDER1="1"
+              ORDER2="0"
              />            
         
             <TB_ITEMS
@@ -1701,12 +1705,16 @@
             <!-- CODE0201 -->
             <TB_CODES
                 TB_ITEMS="3121"
+                ORDER1="0"
+                ORDER2="1"
             />
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="3121"
+              ORDER1="0"
+              ORDER2="1"
              />            
         
             <TB_ITEMS
@@ -1760,6 +1768,9 @@
                       VARIABLE_ELEMENT_FK="[null]"
                       SHORT_NAME_FK="[null]"
                       TB_CODES="31211"
+                      ORDER1="0"
+                      ORDER2="0"
+                      
                      />                    
                 
                     <TB_ITEMS
@@ -1807,12 +1818,16 @@
             <!-- CODE0202 -->
             <TB_CODES
                 TB_ITEMS="3122"
+                ORDER1="1"
+                ORDER2="0"
             />
         
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="3122"
+              ORDER1="1"
+              ORDER2="0"
              />
                      
             <TB_ITEMS
@@ -1855,7 +1870,92 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
-            />           
+            />     
+            
+            
+                <!-- ORDER VISUALISATION ALPHABETIC -->
+                <TB_M_CODELIST_ORDER_VISUAL 
+                    ID="311"
+                    CODELIST_FK="31"
+                    NAMEABLE_ARTEFACT_FK="9997311"
+                    COLUMN_INDEX="1"
+                    
+                    UUID="codelist-visualisation-311"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9997311"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ALPHABETICAL"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(01.000).ALPHABETICAL"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(01.000).ALPHABETICAL"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="99"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9997311"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />  
+                
+            <!-- ORDER VISUALISATION 02 -->
+                <TB_M_CODELIST_ORDER_VISUAL 
+                    ID="312"
+                    CODELIST_FK="31"
+                    NAMEABLE_ARTEFACT_FK="9997312"
+                    COLUMN_INDEX="2"
+                    
+                    UUID="codelist-visualisation-312"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9997312"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION02"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(01.000).VISUALISATION02"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(01.000).VISUALISATION02"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="100"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9997312"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                           
 
 
     <!-- ************************************************************************************** -->
@@ -6633,6 +6733,33 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="98"
+    />     
+    
+     <TB_INTERNATIONAL_STRINGS
+        ID="99"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="991"
+        LABEL="Alfabético"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="99"
     />              
+         
+     <TB_INTERNATIONAL_STRINGS
+        ID="100"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1001"
+        LABEL="Visualización 02"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="100"
+    />              
+                               
                                                                                                   
 </dataset>
