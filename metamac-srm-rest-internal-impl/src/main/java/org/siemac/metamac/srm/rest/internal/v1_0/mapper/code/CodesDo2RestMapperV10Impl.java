@@ -93,7 +93,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         target.setFamily(toItem(source.getFamily()));
         target.setVariable(toItem(source.getVariable()));
         target.setAccessType(toAccessType(source.getAccessType()));
-        // target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode()); // TODO rest DefaultOrderVisualisation
+        target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode());
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));

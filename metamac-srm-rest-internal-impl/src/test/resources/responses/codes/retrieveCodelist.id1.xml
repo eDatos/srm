@@ -5,8 +5,8 @@
             <common:AnnotationTitle>title-code2</common:AnnotationTitle>
             <common:AnnotationType>type-code2</common:AnnotationType>
             <common:AnnotationURL>url-code2</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
             <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
         </common:Annotation>
         <common:Annotation id="code1">
             <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -135,8 +135,8 @@
     <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
     <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
     <sr:comment>
-        <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
         <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
     </sr:comment>
     <sr:shortName>
         <cdomain:text xml:lang="en">shortName-itemScheme1v01.000 in English</cdomain:text>
@@ -158,4 +158,5 @@
         </cdomain:title>
     </sr:variable>
     <sr:accessType>PUBLIC</sr:accessType>
+    <sr:defaultOrderVisualisation>defaultOrderVisualisation1</sr:defaultOrderVisualisation>
 </sr:codelist>
