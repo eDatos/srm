@@ -3,11 +3,14 @@ package org.siemac.metamac.srm.web.client.utils;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
-import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.web.client.representation.widgets.BaseFacetForm;
+import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.RepresentationConstraintSharedValidator;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -25,13 +28,27 @@ public class FacetFormUtils {
      * @param facetForm
      * @param representationType
      */
-    public static void setFacetFormVisibility(DsdFacetForm facetForm, String representationType) {
-        if (representationType == null || representationType.isEmpty()) {
-            facetForm.hide();
-        } else if (!CommonUtils.isRepresentationTypeEnumerated(representationType)) {
+    @Deprecated
+    public static void setFacetFormVisibility(BaseFacetForm facetForm, String representationType) {
+        if (!StringUtils.isBlank(representationType) && StringUtils.equals(representationType, RepresentationTypeEnum.TEXT_FORMAT.name())) {
             facetForm.show();
         } else {
             facetForm.hide();
+        }
+    }
+
+    /**
+     * Shows or hides facetForm and staticFacetForm depending on whether representationType is TEXT_FORMAT or not, and on the maintainer of the resource.
+     */
+    public static void setFacetFormVisibility(BaseFacetForm facetForm, StaticFacetForm staticFacetForm, String representationType, RelatedResourceDto maintainer) {
+        facetForm.hide();
+        staticFacetForm.hide();
+        if (StringUtils.equals(representationType, RepresentationTypeEnum.TEXT_FORMAT.name())) {
+            if (CommonUtils.isDefaultMaintainer(maintainer)) {
+                facetForm.show();
+            } else {
+                staticFacetForm.show();
+            }
         }
     }
 

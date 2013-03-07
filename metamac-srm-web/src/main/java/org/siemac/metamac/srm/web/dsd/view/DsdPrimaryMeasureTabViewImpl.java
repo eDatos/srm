@@ -66,6 +66,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     // EDITION FORM
     private GroupDynamicForm                     editionForm;
     private DsdFacetForm                         facetEditionForm;
+    private StaticFacetForm                      facetStaticEditionForm;
     private AnnotationsPanel                     editionAnnotationsPanel;
 
     private SearchRelatedResourcePaginatedWindow searchConceptWindow;
@@ -165,7 +166,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
             @Override
             public void onChanged(ChangedEvent event) {
-                FacetFormUtils.setFacetFormVisibility(facetEditionForm, representationTypeItem.getValueAsString());
+                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto.getMaintainer());
             }
         });
 
@@ -191,12 +192,15 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         facetEditionForm = new DsdFacetForm();
         facetEditionForm.setVisibility(Visibility.HIDDEN);
+        facetStaticEditionForm = new StaticFacetForm();
+        facetStaticEditionForm.setVisibility(Visibility.HIDDEN);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(editionForm);
         mainFormLayout.addEditionCanvas(facetEditionForm);
+        mainFormLayout.addEditionCanvas(facetStaticEditionForm);
         mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
     }
 
@@ -319,9 +323,11 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumTEXT_FORMAT());
                 FacetDto facetDto = componentDto.getLocalRepresentation().getTextFormat();
                 facetEditionForm.setFacet(facetDto);
+                facetStaticEditionForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetEditionForm, ((CustomSelectItem) editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE)).getValueAsString());
+        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE),
+                dataStructureDefinitionMetamacDto.getMaintainer());
         editionForm.markForRedraw();
 
         // Clear errors
