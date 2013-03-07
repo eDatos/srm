@@ -85,7 +85,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
                     }
 
                     String oldItemParent = droppedNode.getAttribute(CodeDS.ITEM_PARENT_URN);
-                    String newItemParent = SCHEME_NODE_NAME.equals(dropFolder.getName()) ? null : dropFolder.getAttribute(CodeDS.URN);
+                    String newItemParent = SCHEME_NODE_NAME.equals(dropFolder.getName()) ? SCHEME_NODE_NAME : dropFolder.getAttribute(CodeDS.URN);
 
                     if (!StringUtils.equals(oldItemParent, newItemParent)) {
                         // Update code parent
