@@ -157,6 +157,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         // REPRESENTATION TYPE
 
         final CustomSelectItem representationTypeItem = new CustomSelectItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
+        representationTypeItem.setShowIfCondition(getRepresentationTypeFormItemIfFunction());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
@@ -167,12 +168,21 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
             }
         });
+
+        ViewTextItem staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW, MetamacSrmWeb.getConstants().representation());
+        staticRepresentationTypeItem.setShowIfCondition(getStaticRepresentationTypeFormItemIfFunction());
+
+        // ENUNMERATED REPRESENTATION
+
         SearchViewTextItem enumeratedRepresentation = new SearchViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().representationEnumerated());
         enumeratedRepresentation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
         SearchViewTextItem enumeratedRepresentationView = createEnumeratedRepresentationItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, MetamacSrmWeb.getConstants().representationEnumerated());
 
-        editionForm.setFields(code, urn, urnProvider, concept, staticEditableConcept, staticConcept, representationTypeItem, enumeratedRepresentation, enumeratedRepresentationView);
+        editionForm.setFields(code, urn, urnProvider, concept, staticEditableConcept, staticConcept, representationTypeItem, staticRepresentationTypeItem, enumeratedRepresentation,
+                enumeratedRepresentationView);
+
+        // FACET
 
         facetForm = new DsdFacetForm();
         facetForm.setVisibility(Visibility.HIDDEN);
@@ -243,12 +253,19 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
         staticFacetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
+
             if (RepresentationTypeEnum.ENUMERATION.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
-                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
+
+                // Codelist
+
                 form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
+                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
                 form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).show();
-                // Facet
+
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
+
+                // Facet
+
                 form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumTEXT_FORMAT());
                 FacetDto facetDto = componentDto.getLocalRepresentation().getTextFormat();
                 staticFacetForm.setFacet(facetDto);
@@ -277,14 +294,22 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         facetForm.clearValues();
         facetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
-            // Code List
+
             if (RepresentationTypeEnum.ENUMERATION.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
+
+                // Codelist
+
+                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(RepresentationTypeEnum.ENUMERATION.toString());
+                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
                 editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumeration().getUrn());
                 editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
-                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(RepresentationTypeEnum.ENUMERATION.toString());
-                // Facet
+
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
+
+                // Facet
+
                 editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(RepresentationTypeEnum.TEXT_FORMAT.toString());
+                editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumTEXT_FORMAT());
                 FacetDto facetDto = componentDto.getLocalRepresentation().getTextFormat();
                 facetForm.setFacet(facetDto);
             }
@@ -487,6 +512,28 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canPrimaryMeasureConceptBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // REPRESENTATION TYPE
+
+    private FormItemIfFunction getRepresentationTypeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canPrimaryMeasureRepresentationTypeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticRepresentationTypeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canPrimaryMeasureRepresentationTypeBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }

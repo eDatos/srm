@@ -29,7 +29,18 @@ public class DsdsFormUtils {
     // PRIMARY MEASURE
     // ---------------------------------------------------------------------------------------------
 
+    // CONCEPT
+
     public static boolean canPrimaryMeasureConceptBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
+    // REPRESENTATION TYPE
+
+    public static boolean canPrimaryMeasureRepresentationTypeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
