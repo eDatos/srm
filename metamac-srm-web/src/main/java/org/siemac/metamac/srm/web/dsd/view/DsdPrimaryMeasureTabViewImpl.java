@@ -313,20 +313,26 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 primaryMeasure.setLocalRepresentation(new RepresentationDto());
             }
 
-            // Code List
             if (RepresentationTypeEnum.ENUMERATION.equals(representationType)) {
+
+                // Code List
+
                 primaryMeasure.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
                 primaryMeasure.getLocalRepresentation().setEnumeration(
                         StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                 TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)));
                 primaryMeasure.getLocalRepresentation().setTextFormat(null);
-                // Facet
+
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
+
+                // Facet
+
                 primaryMeasure.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
                 FacetDto facetDto = facetForm.getFacet();
                 primaryMeasure.getLocalRepresentation().setTextFormat(facetDto);
                 primaryMeasure.getLocalRepresentation().setEnumeration(null);
             }
+
         } else {
             // No representation
             primaryMeasure.setLocalRepresentation(null);
