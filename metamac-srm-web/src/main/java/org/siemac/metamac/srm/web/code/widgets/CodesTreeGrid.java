@@ -89,12 +89,21 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
                     String newItemParent = SCHEME_NODE_NAME.equals(dropFolder.getName()) ? SCHEME_NODE_NAME : dropFolder.getAttribute(CodeDS.URN);
 
                     if (!StringUtils.equals(oldItemParent, newItemParent)) {
-                        // Update code parent
+
+                        // UPDATE CODE PARENT
+
                         if (CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+
+                            if (SCHEME_NODE_NAME.equals(newItemParent)) {
+                                // The code will be moved to the first level. The parent is null.
+                                newItemParent = null;
+                            }
                             uiHandlers.updateCodeParent(droppedNode.getAttribute(CodeDS.URN), newItemParent, codelistOrderVisualisationDto != null ? codelistOrderVisualisationDto.getUrn() : null);
                         }
                     } else {
-                        // Update order
+
+                        // UPDATE ORDER
+
                         if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
                             // Only update order if there is an order selected and it is not the alphabetical one
                             if (codelistOrderVisualisationDto != null && !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistOrderVisualisationDto.getCode())) {
