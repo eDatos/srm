@@ -1,9 +1,14 @@
 package org.siemac.metamac.srm.web.organisation.utils;
 
+import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
+/**
+ * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends the maintainer of the resource.
+ * The metadata of type {@link InternationalStringDto} are always editable (that's why are not specified in this class), but only to specify new translations.
+ */
 public class OrganisationsFormUtils {
 
     // ---------------------------------------------------------------------------------------------
