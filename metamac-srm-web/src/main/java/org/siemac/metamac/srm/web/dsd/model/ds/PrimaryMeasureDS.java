@@ -16,4 +16,5 @@ public class PrimaryMeasureDS {
 
     public static final String ENUMERATED_REPRESENTATION              = "pm-repr-enum";
     public static final String ENUMERATED_REPRESENTATION_EDITION_VIEW = "pm-repr-enum-ed-view"; // Not mapped in DTO
+    public static final String ENUMERATED_REPRESENTATION_VIEW         = "pm-repr-enum-ed";     // Not mapped in DTO
 }
