@@ -118,7 +118,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
-        ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, MetamacSrmWeb.getConstants().representationEnumerated());
+        ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().representationEnumerated());
         form.setFields(code, urn, urnProvider, concept, staticRepresentationTypeItem, enumeratedRepresentation);
 
         staticFacetForm = new StaticFacetForm();
@@ -172,7 +172,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW, MetamacSrmWeb.getConstants().representation());
         staticRepresentationTypeItem.setShowIfCondition(getStaticRepresentationTypeFormItemIfFunction());
 
-        // ENUNMERATED REPRESENTATION
+        // ENUMERATED REPRESENTATION
 
         ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().representationEnumerated());
         enumeratedRepresentation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
@@ -255,8 +255,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // Representation
         staticFacetForm.hide();
-        form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).hide();
-        form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
+        form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).hide();
+        form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).clearValue();
         form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
         staticFacetForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
@@ -266,8 +266,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 // Codelist
 
                 form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
-                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
-                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).show();
+                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
+                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).show();
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
 
