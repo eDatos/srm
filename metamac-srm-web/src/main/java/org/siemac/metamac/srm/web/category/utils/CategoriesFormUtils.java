@@ -5,7 +5,7 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 /**
- * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends the maintainer of the resource.
+ * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource.
  * The metadata of type {@link InternationalStringDto} are always editable (that's why are not specified in this class), but only to specify new translations.
  */
 public class CategoriesFormUtils {

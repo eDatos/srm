@@ -148,8 +148,13 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT, getConstants().concept()); // This item is never shown. Stores the concept URN
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
-        SearchViewTextItem conceptView = createConceptItem(PrimaryMeasureDS.CONCEPT_EDITION_VIEW, getConstants().concept()); // This item is shown in editionMode, but only when the concept can be
-                                                                                                                             // edited
+        SearchViewTextItem staticEditableConcept = createConceptItem(PrimaryMeasureDS.CONCEPT_EDITION_VIEW, getConstants().concept()); // Shown in editionMode, only when the concept is editable
+        staticEditableConcept.setShowIfCondition(getConceptFormItemIfFunction());
+
+        ViewTextItem staticConcept = new ViewTextItem(PrimaryMeasureDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept()); // This item is shown when the concept can not be edited
+        staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction());
+
+        // REPRESENTATION TYPE
 
         final CustomSelectItem representationTypeItem = new CustomSelectItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
@@ -167,7 +172,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         SearchViewTextItem enumeratedRepresentationView = createEnumeratedRepresentationItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, MetamacSrmWeb.getConstants().representationEnumerated());
 
-        editionForm.setFields(code, urn, urnProvider, concept, conceptView, representationTypeItem, enumeratedRepresentation, enumeratedRepresentationView);
+        editionForm.setFields(code, urn, urnProvider, concept, staticEditableConcept, staticConcept, representationTypeItem, enumeratedRepresentation, enumeratedRepresentationView);
 
         facetForm = new DsdFacetForm();
         facetForm.setVisibility(Visibility.HIDDEN);
@@ -263,6 +268,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         // Concept
         editionForm.setValue(PrimaryMeasureDS.CONCEPT, componentDto.getCptIdRef() != null ? componentDto.getCptIdRef().getUrn() : null);
         editionForm.setValue(PrimaryMeasureDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(componentDto.getCptIdRef()));
+        editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(componentDto.getCptIdRef()));
 
         // Representation
         editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
