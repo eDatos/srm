@@ -43,76 +43,101 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     public CodeMetamacRepositoryImpl() {
     }
 
-    // TODO strings? si no se ponen como constantes, crear StringBuilder para poder unir las dos consultas de cada método
-
     @Override
-    public void reorderCodesDeletingOneCode(CodelistVersionMetamac codelistVersion, Item parent, CodeMetamac code, Integer columnIndex, Integer orderCodeToDelete) {
-        String column = getOrderColumnName(columnIndex);
-        Query queryUpdate = null;
+    public void reorderCodesDeletingOneCode(CodelistVersionMetamac codelistVersion, Item parent, CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToDelete) {
+        String orderColumn = getOrderColumnName(orderColumnIndex);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set " + orderColumn + " = " + orderColumn + " - 1 ");
+        sb.append("WHERE TB_CODES in ");
+        sb.append("(SELECT i.ID ");
+        sb.append("FROM TB_ITEMS i ");
+        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         if (parent == null) {
-            queryUpdate = getEntityManager().createNativeQuery(
-                    "UPDATE TB_M_CODES set " + column + " = " + column + " - 1 "
-                            + "WHERE TB_CODES in (select i.ID from TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK is null) AND " + column + " > :order");
+            sb.append("AND i.PARENT_FK is null");
         } else {
-            queryUpdate = getEntityManager().createNativeQuery(
-                    "UPDATE TB_M_CODES set " + column + " = " + column + " - 1 "
-                            + "WHERE TB_CODES in (select i.ID from TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK = :parent) AND " + column + " > :order");
-            queryUpdate.setParameter("parent", parent.getId());
+            sb.append("AND i.PARENT_FK = :parent");
         }
+        sb.append(") AND " + orderColumn + " > :order");
+
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.setParameter("order", orderCodeToDelete);
+        if (parent != null) {
+            queryUpdate.setParameter("parent", parent.getId());
+        }
         queryUpdate.executeUpdate();
     }
 
     @Override
-    public void reorderCodesAddingOneCodeInMiddle(CodelistVersionMetamac codelistVersion, CodeMetamac code, Integer columnIndex, Integer orderCodeToAdd) {
-        String column = getOrderColumnName(columnIndex);
-        Query queryUpdate = null;
+    public void reorderCodesAddingOneCodeInMiddle(CodelistVersionMetamac codelistVersion, CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToAdd) {
+        String orderColumn = getOrderColumnName(orderColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set " + orderColumn + " = " + orderColumn + " + 1 ");
+        sb.append("WHERE TB_CODES in (");
+        sb.append("SELECT i.ID ");
+        sb.append("FROM TB_ITEMS i ");
+        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         if (code.getParent() == null) {
-            queryUpdate = getEntityManager().createNativeQuery(
-                    "UPDATE TB_M_CODES set " + column + " = " + column + " + 1 "
-                            + "WHERE TB_CODES in (select i.ID from TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK is null) AND " + column + " >= :order");
+            sb.append("AND i.PARENT_FK is null");
         } else {
-            queryUpdate = getEntityManager().createNativeQuery(
-                    "UPDATE TB_M_CODES set " + column + " = " + column + " + 1 "
-                            + "WHERE TB_CODES in (select i.ID from TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK = :parent) AND " + column + " >= :order");
-            queryUpdate.setParameter("parent", code.getParent().getId());
+            sb.append("AND i.PARENT_FK = :parent");
         }
+        sb.append(") AND " + orderColumn + " >= :order");
+
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.setParameter("order", orderCodeToAdd);
+        if (code.getParent() != null) {
+            queryUpdate.setParameter("parent", code.getParent().getId());
+        }
         queryUpdate.executeUpdate();
     }
 
     @Override
-    public void clearCodeOrders(CodelistVersionMetamac codelistVersion, Integer columnIndex) {
-        String column = getOrderColumnName(columnIndex);
-        Query queryUpdate = getEntityManager().createNativeQuery(
-                "UPDATE TB_M_CODES set " + column + " = null WHERE TB_CODES in (select i.ID from TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion)");
+    public void clearCodesOrderColumn(CodelistVersionMetamac codelistVersion, Integer orderColumnIndex) {
+        String orderColumn = getOrderColumnName(orderColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set " + orderColumn + " = null ");
+        sb.append("WHERE TB_CODES in ( ");
+        sb.append("SELECT i.ID ");
+        sb.append("FROM TB_ITEMS i ");
+        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion)");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
 
     @Override
-    public void copyCodeOrders(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
+    public void copyCodesOrderColumn(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
         String columnSource = getOrderColumnName(columnIndexSource);
         String columnTarget = getOrderColumnName(columnIndexTarget);
-        Query queryUpdate = getEntityManager().createNativeQuery(
-                "UPDATE TB_M_CODES set " + columnTarget + " = " + columnSource + " WHERE TB_CODES in (select i.ID from TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion)");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set " + columnTarget + " = " + columnSource + " ");
+        sb.append("WHERE TB_CODES in ( ");
+        sb.append("SELECT i.ID ");
+        sb.append("FROM TB_ITEMS i ");
+        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion)");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
 
     @SuppressWarnings("rawtypes")
     @Override
-    public Integer getCodeMaximumOrderInLevel(CodelistVersionMetamac codelistVersion, Item parent, Integer columnIndex) {
-        String column = getOrderColumnName(columnIndex);
-        Query query = null;
+    public Integer getCodeMaximumOrderInLevel(CodelistVersionMetamac codelistVersion, Item parent, Integer orderColumnIndex) {
+        String orderColumn = getOrderColumnName(orderColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT max(" + orderColumn + ") ");
+        sb.append("FROM TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         if (parent == null) {
-            query = getEntityManager().createNativeQuery(
-                    "SELECT max(" + column + ") from TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK is null");
+            sb.append("AND i.PARENT_FK is null");
         } else {
-            query = getEntityManager().createNativeQuery(
-                    "SELECT max(" + column + ") from TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK = :parent");
+            sb.append("AND i.PARENT_FK = :parent");
+        }
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        if (parent != null) {
             query.setParameter("parent", parent.getId());
         }
         query.setParameter("codelistVersion", codelistVersion.getId());
@@ -126,18 +151,21 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Override
     public Integer getCodeAlphabeticPositionInLevel(CodelistVersionMetamac codelistVersion, Item parent, Item code) {
-        Query query = null;
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT COUNT(1) ");
+        sb.append("FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        sb.append("AND a.CODE < '" + code.getNameableArtefact().getCode() + "' ");
         if (parent == null) {
-            query = getEntityManager().createNativeQuery(
-                    "SELECT COUNT(1) from TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND a.CODE < '"
-                            + code.getNameableArtefact().getCode() + "' AND i.PARENT_FK is null ");
+            sb.append("AND i.PARENT_FK is null");
         } else {
-            query = getEntityManager().createNativeQuery(
-                    "SELECT COUNT(1) from TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND a.CODE < '"
-                            + code.getNameableArtefact().getCode() + "' AND i.PARENT_FK = :parent");
+            sb.append("AND i.PARENT_FK = :parent");
+        }
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("codelistVersion", codelistVersion.getId());
+        if (parent != null) {
             query.setParameter("parent", parent.getId());
         }
-        query.setParameter("codelistVersion", codelistVersion.getId());
         List resultsOrder = query.getResultList();
         if (CollectionUtils.isEmpty(resultsOrder) || resultsOrder.get(0) == null) {
             return null;
@@ -193,7 +221,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer columnIndex, Boolean extendedMetamacMetadata) throws MetamacException {
+    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) throws MetamacException {
 
         // Find codes
         List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, Boolean.TRUE);
@@ -215,36 +243,36 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
         // TODO VISTAS MATERIALIZADAS en bbdd para que sea el mismo código independientemente de la bbdd?
         // Order
-        String columnOrderName = getOrderColumnName(columnIndex);
-        StringBuilder sqlBuilder = new StringBuilder();
+        String orderColumn = getOrderColumnName(orderColumnIndex);
+        StringBuilder sb = new StringBuilder();
         // Retrieve items id ordered
         if (srmConfiguration.isDatabaseOracle()) {
-            sqlBuilder.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, 6, '0'), '.') ORDER_PATH ");
-            sqlBuilder.append("FROM ");
-            sqlBuilder.append("(");
-            sqlBuilder.append("SELECT c." + columnOrderName + " COD_ORDER, i.ID ITEM_ID, i.PARENT_FK ITEM_PARENT_FK ");
-            sqlBuilder.append("FROM TB_M_CODES c JOIN TB_ITEMS i on i.ID = c.TB_CODES ");
-            sqlBuilder.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
-            sqlBuilder.append(")");
-            sqlBuilder.append("START WITH ITEM_PARENT_FK is null ");
-            sqlBuilder.append("CONNECT BY PRIOR ITEM_ID = ITEM_PARENT_FK ");
-            sqlBuilder.append("ORDER BY ORDER_PATH asc");
+            sb.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, 6, '0'), '.') ORDER_PATH ");
+            sb.append("FROM ");
+            sb.append("(");
+            sb.append("SELECT c." + orderColumn + " COD_ORDER, i.ID ITEM_ID, i.PARENT_FK ITEM_PARENT_FK ");
+            sb.append("FROM TB_M_CODES c JOIN TB_ITEMS i on i.ID = c.TB_CODES ");
+            sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
+            sb.append(")");
+            sb.append("START WITH ITEM_PARENT_FK is null ");
+            sb.append("CONNECT BY PRIOR ITEM_ID = ITEM_PARENT_FK ");
+            sb.append("ORDER BY ORDER_PATH asc");
         } else if (srmConfiguration.isDatabaseSqlServer()) {
-            sqlBuilder.append("WITH Parents(R_ID, R_SORT, R_ITEM_SCHEME_VERSION_FK, R_SORT_STRING) AS ");
-            sqlBuilder.append("( ");
-            sqlBuilder.append("SELECT i1.ID AS R_ID, c1." + columnOrderName + " AS R_SORT, i1.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
-            sqlBuilder.append("'/' + REPLICATE(0, 6 - LEN(c1." + columnOrderName + ")) + CAST(c1." + columnOrderName + " AS varchar(4000)) AS R_SORT_STRING ");
-            sqlBuilder.append("FROM TB_M_CODES AS c1 INNER JOIN TB_ITEMS AS i1 ON i1.ID = c1.TB_CODES ");
-            sqlBuilder.append("WHERE i1.PARENT_FK IS NULL and i1.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
-            sqlBuilder.append("UNION ALL ");
-            sqlBuilder.append("SELECT i2.ID, c2." + columnOrderName + ", i2.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
-            sqlBuilder.append("p.R_SORT_STRING + '/' + REPLICATE(0, 6 - LEN(c2." + columnOrderName + ")) + CAST(c2." + columnOrderName + " AS varchar(4000)) AS R_SORT_STRING ");
-            sqlBuilder.append("FROM TB_M_CODES AS c2 INNER JOIN TB_ITEMS AS i2 ON i2.ID = c2.TB_CODES INNER JOIN Parents AS p ON p.R_ID = i2.PARENT_FK ) ");
-            sqlBuilder.append("SELECT * FROM Parents ORDER BY R_SORT_STRING");
+            sb.append("WITH Parents(R_ID, R_SORT, R_ITEM_SCHEME_VERSION_FK, R_SORT_STRING) AS ");
+            sb.append("( ");
+            sb.append("SELECT i1.ID AS R_ID, c1." + orderColumn + " AS R_SORT, i1.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
+            sb.append("'/' + REPLICATE(0, 6 - LEN(c1." + orderColumn + ")) + CAST(c1." + orderColumn + " AS varchar(4000)) AS R_SORT_STRING ");
+            sb.append("FROM TB_M_CODES AS c1 INNER JOIN TB_ITEMS AS i1 ON i1.ID = c1.TB_CODES ");
+            sb.append("WHERE i1.PARENT_FK IS NULL and i1.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+            sb.append("UNION ALL ");
+            sb.append("SELECT i2.ID, c2." + orderColumn + ", i2.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
+            sb.append("p.R_SORT_STRING + '/' + REPLICATE(0, 6 - LEN(c2." + orderColumn + ")) + CAST(c2." + orderColumn + " AS varchar(4000)) AS R_SORT_STRING ");
+            sb.append("FROM TB_M_CODES AS c2 INNER JOIN TB_ITEMS AS i2 ON i2.ID = c2.TB_CODES INNER JOIN Parents AS p ON p.R_ID = i2.PARENT_FK ) ");
+            sb.append("SELECT * FROM Parents ORDER BY R_SORT_STRING");
         } else {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
         }
-        Query queryOrder = getEntityManager().createNativeQuery(sqlBuilder.toString());
+        Query queryOrder = getEntityManager().createNativeQuery(sb.toString());
         queryOrder.setParameter("codelistVersion", idCodelist);
         List resultsOrder = queryOrder.getResultList();
 
@@ -272,14 +300,18 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @SuppressWarnings("rawtypes")
-    private List executeQueryFindCodesByCodelistByNativeSqlQuery(Long idCodelist, String locale, Integer columnIndex) {
+    private List executeQueryFindCodesByCodelistByNativeSqlQuery(Long idCodelist, String locale, Integer orderColumnIndex) {
         // note: this query return null label if locale not exits for a code
         String sqlQuery = null;
-        if (columnIndex != null) {
-            String column = getOrderColumnName(columnIndex);
-            sqlQuery = "SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + column + " FROM TB_M_CODES c INNER JOIN TB_ITEMS i on c.TB_CODES = i.ID "
-                    + "INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale "
-                    + "WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
+        if (orderColumnIndex != null) {
+            String orderColumn = getOrderColumnName(orderColumnIndex);
+            StringBuilder sb = new StringBuilder();
+            sb.append("SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + " ");
+            sb.append("FROM TB_M_CODES c INNER JOIN TB_ITEMS i on c.TB_CODES = i.ID ");
+            sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+            sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
+            sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
+            sqlQuery = sb.toString();
         } else {
             sqlQuery = NATIVE_SQL_QUERY_CODES_BY_CODELIST;
         }
