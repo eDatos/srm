@@ -174,10 +174,17 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // ENUNMERATED REPRESENTATION
 
-        SearchViewTextItem enumeratedRepresentation = new SearchViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().representationEnumerated());
+        ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().representationEnumerated());
         enumeratedRepresentation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
         SearchViewTextItem enumeratedRepresentationView = createEnumeratedRepresentationItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, MetamacSrmWeb.getConstants().representationEnumerated());
+        enumeratedRepresentationView.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isRepresentationTypeEnumerated(form.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE));
+            }
+        });
 
         editionForm.setFields(code, urn, urnProvider, concept, staticEditableConcept, staticConcept, representationTypeItem, staticRepresentationTypeItem, enumeratedRepresentation,
                 enumeratedRepresentationView);
@@ -315,7 +322,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         }
         FacetFormUtils.setFacetFormVisibility(facetForm, ((CustomSelectItem) editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE)).getValueAsString());
-        editionForm.redraw();
+        editionForm.markForRedraw();
 
         // Clear errors
         editionForm.clearErrors(true);
@@ -441,13 +448,6 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         final int MAX_RESULTS = 8;
         final SearchViewTextItem enumeratedRepresentationItem = new SearchViewTextItem(name, title);
         enumeratedRepresentationItem.setRequired(true);
-        enumeratedRepresentationItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isRepresentationTypeEnumerated(((CustomSelectItem) editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE)).getValueAsString());
-            }
-        });
         enumeratedRepresentationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
