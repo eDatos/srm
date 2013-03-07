@@ -175,19 +175,17 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         // ENUMERATED REPRESENTATION
 
         ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, MetamacSrmWeb.getConstants().representationEnumerated());
-        enumeratedRepresentation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        enumeratedRepresentation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction()); // This item is never shown. Stores the enumerated representation (codelist URN)
 
-        SearchViewTextItem enumeratedRepresentationView = createEnumeratedRepresentationItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW, MetamacSrmWeb.getConstants().representationEnumerated());
-        enumeratedRepresentationView.setShowIfCondition(new FormItemIfFunction() {
+        SearchViewTextItem enumeratedRepresentationEditionView = createEnumeratedRepresentationItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW, MetamacSrmWeb.getConstants()
+                .representationEnumerated());
+        enumeratedRepresentationEditionView.setShowIfCondition(getEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the enumerated representation is editable
 
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isRepresentationTypeEnumerated(form.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE));
-            }
-        });
+        ViewTextItem enumeratedRepresentationView = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, MetamacSrmWeb.getConstants().representationEnumerated());
+        enumeratedRepresentationView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
 
         editionForm.setFields(code, urn, urnProvider, concept, staticEditableConcept, staticConcept, representationTypeItem, staticRepresentationTypeItem, enumeratedRepresentation,
-                enumeratedRepresentationView);
+                enumeratedRepresentationEditionView, enumeratedRepresentationView);
 
         // FACET
 
@@ -295,6 +293,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(componentDto.getCptIdRef()));
 
         // Representation
+        editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
         editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW).clearValue();
         editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).clearValue();
         editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
@@ -309,7 +308,9 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(RepresentationTypeEnum.ENUMERATION.toString());
                 editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW).setValue(MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
                 editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumeration().getUrn());
-                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
+                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW).setValue(
+                        RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
+                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
 
@@ -545,7 +546,9 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return DsdsFormUtils.canPrimaryMeasureEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
+                // Shown when the representation type selected is ENUMERATION and the enumerated representation can be edited
+                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE))
+                        && DsdsFormUtils.canPrimaryMeasureEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
@@ -555,7 +558,9 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !DsdsFormUtils.canPrimaryMeasureEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
+                // Shown when the representation type selected is ENUMERATION and the enumerated representation can NOT be edited
+                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE))
+                        && !DsdsFormUtils.canPrimaryMeasureEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
