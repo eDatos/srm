@@ -47,6 +47,15 @@ public class DsdsFormUtils {
         return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
+    // ENUMERATED REPRESENTATION
+
+    public static boolean canPrimaryMeasureEnumeratedRepresentationBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // ---------------------------------------------------------------------------------------------
     // DIMENSIONS
     // ---------------------------------------------------------------------------------------------
