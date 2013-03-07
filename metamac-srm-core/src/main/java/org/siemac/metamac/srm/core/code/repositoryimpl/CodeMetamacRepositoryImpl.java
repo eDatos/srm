@@ -8,16 +8,20 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 
 /**
  * Repository implementation for CodeMetamac
@@ -27,6 +31,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Autowired
     private CodeRepository      codeRepository;
+
+    @Autowired
+    private SrmConfiguration    srmConfiguration;
 
     private final static String NATIVE_SQL_QUERY_CODES_BY_CODELIST                             = "SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
 
@@ -184,8 +191,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         return targets;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) {
+    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer columnIndex, Boolean extendedMetamacMetadata) throws MetamacException {
 
         // Find codes
         List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, Boolean.TRUE);
@@ -205,29 +213,49 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
         }
 
-        // Order // TODO y columna X
-        // // Query query1 = getEntityManager().createNativeQuery(
-        // // "SELECT COD_TB_CODES, COD_ORDER1, ITEM_ID, ITEM_PARENT_FK, LEVEL, SYS_CONNECT_BY_PATH(COD_ORDER1, '.') ORDER_PATH " + "FROM " + "("
-        // // + "SELECT codes.tb_codes COD_TB_CODES, codes.ORDER1 COD_ORDER1, items.ID ITEM_ID, items.PARENT_FK ITEM_PARENT_FK "
-        // // + "FROM TB_M_CODES codes JOIN TB_ITEMS items on items.ID = codes.TB_CODES " + "WHERE items.item_scheme_version_fk = :codelistVersion order by codes.ORDER1 asc"
-        // // + ") START WITH ITEM_PARENT_FK is null " + "CONNECT BY PRIOR ITEM_ID = ITEM_PARENT_FK " + "ORDER BY ORDER_PATH");
-        // Query query1 = getEntityManager().createNativeQuery(
-        // "SELECT ITEM_ID, COD_ORDER1, SYS_CONNECT_BY_PATH(lpad(COD_ORDER1, 7, '0'), '.') ORDER_PATH " + "FROM " + "(" + "SELECT c.ORDER1 COD_ORDER1, i.ID ITEM_ID, i.PARENT_FK ITEM_PARENT_FK "
-        // + "FROM TB_M_CODES c JOIN TB_ITEMS i on i.ID = c.TB_CODES " + "WHERE i.item_scheme_version_fk = :codelistVersion " + "order by c.ORDER1 asc " + ") "
-        // + "START WITH ITEM_PARENT_FK is null " + "CONNECT BY PRIOR ITEM_ID = ITEM_PARENT_FK " + "ORDER BY ORDER_PATH asc");
-        // // TODO mirar si hay q hacer order by dentro
-        // query1.setParameter("codelistVersion", idCodelist);
-        // List resultsOrder = query1.getResultList();
-        // // TODO lpad con 6
+        // TODO VISTAS MATERIALIZADAS en bbdd para que sea el mismo código independientemente de la bbdd?
+        // Order
+        String columnOrderName = getOrderColumnName(columnIndex);
+        StringBuilder sqlBuilder = new StringBuilder();
+        // Retrieve items id ordered
+        if (srmConfiguration.isDatabaseOracle()) {
+            sqlBuilder.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, 6, '0'), '.') ORDER_PATH ");
+            sqlBuilder.append("FROM ");
+            sqlBuilder.append("(");
+            sqlBuilder.append("SELECT c." + columnOrderName + " COD_ORDER, i.ID ITEM_ID, i.PARENT_FK ITEM_PARENT_FK ");
+            sqlBuilder.append("FROM TB_M_CODES c JOIN TB_ITEMS i on i.ID = c.TB_CODES ");
+            sqlBuilder.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
+            sqlBuilder.append(")");
+            sqlBuilder.append("START WITH ITEM_PARENT_FK is null ");
+            sqlBuilder.append("CONNECT BY PRIOR ITEM_ID = ITEM_PARENT_FK ");
+            sqlBuilder.append("ORDER BY ORDER_PATH asc");
+        } else if (srmConfiguration.isDatabaseSqlServer()) {
+            sqlBuilder.append("WITH Parents(R_ID, R_SORT, R_ITEM_SCHEME_VERSION_FK, R_SORT_STRING) AS ");
+            sqlBuilder.append("( ");
+            sqlBuilder.append("SELECT i1.ID AS R_ID, c1." + columnOrderName + " AS R_SORT, i1.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
+            sqlBuilder.append("'/' + REPLICATE(0, 6 - LEN(c1." + columnOrderName + ")) + CAST(c1." + columnOrderName + " AS varchar(4000)) AS R_SORT_STRING ");
+            sqlBuilder.append("FROM TB_M_CODES AS c1 INNER JOIN TB_ITEMS AS i1 ON i1.ID = c1.TB_CODES ");
+            sqlBuilder.append("WHERE i1.PARENT_FK IS NULL and i1.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+            sqlBuilder.append("UNION ALL ");
+            sqlBuilder.append("SELECT i2.ID, c2." + columnOrderName + ", i2.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
+            sqlBuilder.append("p.R_SORT_STRING + '/' + REPLICATE(0, 6 - LEN(c2." + columnOrderName + ")) + CAST(c2." + columnOrderName + " AS varchar(4000)) AS R_SORT_STRING ");
+            sqlBuilder.append("FROM TB_M_CODES AS c2 INNER JOIN TB_ITEMS AS i2 ON i2.ID = c2.TB_CODES INNER JOIN Parents AS p ON p.R_ID = i2.PARENT_FK ) ");
+            sqlBuilder.append("SELECT * FROM Parents ORDER BY R_SORT_STRING");
+        } else {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
+        }
+        Query queryOrder = getEntityManager().createNativeQuery(sqlBuilder.toString());
+        queryOrder.setParameter("codelistVersion", idCodelist);
+        List resultsOrder = queryOrder.getResultList();
 
-        // List<ItemResult> ordered = new ArrayList<ItemResult>(codes.size());
-        // for (Object resultOrder : resultsOrder) {
-        // Long codeId = getLong(((Object[]) resultOrder)[0]);
-        // ItemResult code = mapCodeByItemId.get(codeId);
-        // ordered.add(code);
-        // }
-        // return ordered;
-        return codes;
+        // Order previous result list thanks to ordered list of items id
+        List<ItemResult> ordered = new ArrayList<ItemResult>(codes.size());
+        for (Object resultOrder : resultsOrder) {
+            Long codeId = getLong(((Object[]) resultOrder)[0]);
+            ItemResult code = mapCodeByItemId.get(codeId);
+            ordered.add(code);
+        }
+        return ordered;
     }
 
     @SuppressWarnings("rawtypes")

@@ -13,4 +13,15 @@ public interface SrmConfiguration {
      * Retrieve the concept ID for concept identification default of primary measure to create artefacts
      */
     public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException;
+
+    /**
+     * Check if Database is Oracle
+     */
+    public Boolean isDatabaseOracle() throws MetamacException;
+
+    /**
+     * Check if Database is SQL Server
+     */
+    public Boolean isDatabaseSqlServer() throws MetamacException;
+
 }

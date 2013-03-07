@@ -12,30 +12,38 @@ import org.apache.commons.lang.mutable.MutableLong;
 
 public class CodelistsToSql {
 
-    // TODO setear al mÃ¡ximo actual de ids
-    // TODO ojo! no se setea el valor actual en la tabla de sentencias
-    private static long            firstId                      = 80000000;
-    private static int             numCodes                     = 15000;
-    private static Boolean         withAnnotations              = Boolean.TRUE;
+    /**
+     * TENER EN CUENTA QUE HAY QUE ESTABLECER LOS VALORES DE LAS VARIABLES GLOBALES EN CADA EJECUCIÓN:
+     * 1) Debe haberse insertado un maintainer por defecto, e indicar su id en la variable 'idMaintainer'
+     * 2) 'firstId': setear al máximo + 1 de ids de todas las tablas.
+     * 3) Indicar si debe o no publicarse 'publishCodelist'
+     * 4) Número de códigos en "numCodes"
+     * 5) Para muchos códigos, es mejor poner 'separateFiles' a true para que separe el resultado en varios ficheros.
+     */
+    private static long                   firstId                      = 100000000;
+    private static int                    numCodes                     = 15000;
+    private static Boolean                withAnnotations              = Boolean.TRUE;
+    private static Boolean                publishCodelist              = Boolean.FALSE;
 
-    private static MutableLong     idInternationalString        = new MutableLong(firstId);
-    private static MutableLong     idLocalistedString           = new MutableLong(firstId);
-    private static MutableLong     idCodes                      = new MutableLong(firstId);
-    private static MutableLong     idCodelists                  = new MutableLong(firstId);
-    private static MutableLong     idAnnotableArtefact          = new MutableLong(firstId);
-    private static MutableLong     idAnnotations                = new MutableLong(firstId);
-    private static MutableLong     idVariables                  = new MutableLong(firstId);
-    private static MutableLong     idVariableElements           = new MutableLong(firstId);
-    private static MutableLong     idCodelistOrderVisualisation = new MutableLong(firstId);
+    private static MutableLong            idInternationalString        = new MutableLong(firstId);
+    private static MutableLong            idLocalistedString           = new MutableLong(firstId);
+    private static MutableLong            idCodes                      = new MutableLong(firstId);
+    private static MutableLong            idCodelists                  = new MutableLong(firstId);
+    private static MutableLong            idAnnotableArtefact          = new MutableLong(firstId);
+    private static MutableLong            idAnnotations                = new MutableLong(firstId);
+    private static MutableLong            idVariables                  = new MutableLong(firstId);
+    private static MutableLong            idVariableElements           = new MutableLong(firstId);
+    private static MutableLong            idCodelistOrderVisualisation = new MutableLong(firstId);
 
-    private static List<String>    insertSentences              = new ArrayList<String>();
-    private static Long            idMaintainer                 = Long.valueOf(2);              // TODO ojo! debe haberse insertado un maintainer por defecto, e indicar su id en la variable global
+    private static List<String>           insertSentences              = new ArrayList<String>();
+    private static Long                   idMaintainer                 = Long.valueOf(2);
 
-    private static List<Long>      parents                      = new ArrayList<Long>(numCodes); // parents id to aleatory parent
-    private static final boolean   separateFiles                = false;
+    private static List<Long>             parents                      = new ArrayList<Long>(numCodes);   // parents id to aleatory parent
+    private static final boolean          separateFiles                = false;
 
-    private static Map<Long, Long> parentsLevel                 = new HashMap<Long, Long>();
-    private static int             maxDepth                     = 15;
+    private static Map<Long, Long>        parentsLevel                 = new HashMap<Long, Long>();
+    private static Map<Long, MutableLong> parentsChildrenNumber        = new HashMap<Long, MutableLong>();
+    private static int                    maxDepth                     = 15;
 
     public static void main(String[] args) throws Exception {
         String codeCodelist = "codelist" + idCodelists;
@@ -45,23 +53,31 @@ public class CodelistsToSql {
         long idVariable = insertVariableUpdatingCodelist(codeVariable, idCodelist);
 
         parents.add(null); // add null value to generate codes in first level
+        parentsChildrenNumber.put(null, new MutableLong(0));
         int countFile = 1;
         for (int i = 0; i < numCodes; i++) {
             Long parentId = parents.get(RandomUtils.nextInt(parents.size()));
-            long idCode = insertCode(codeCodelist, idCodelist, parentId, codeVariable, idVariable);
+            Long codeId = insertCode(codeCodelist, idCodelist, parentId, codeVariable, idVariable);
 
             if (parentId != null) {
+                parentsChildrenNumber.get(parentId).add(1);
+
+                // Check actual item can be parent
                 Long levelCode = parentsLevel.get(parentId) + 1;
                 if (levelCode.intValue() <= maxDepth) {
-                    parents.add(idCode);
-                    parentsLevel.put(idCode, levelCode);
+                    parents.add(codeId);
+                    parentsLevel.put(codeId, levelCode);
                 } else {
                     // demasiado profundo
                 }
             } else {
                 // first level can be parent always
-                parents.add(idCode);
-                parentsLevel.put(idCode, Long.valueOf(1));
+                parents.add(codeId);
+                parentsLevel.put(codeId, Long.valueOf(1));
+                parentsChildrenNumber.get(parentId).add(1);
+            }
+            if (parentsLevel.containsKey(codeId)) {
+                parentsChildrenNumber.put(codeId, new MutableLong(0));
             }
 
             // Save into file
@@ -71,6 +87,23 @@ public class CodelistsToSql {
                 countFile++;
             }
         }
+
+        // Update sequences
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idInternationalString + " WHERE SEQUENCE_NAME = 'I18NSTRS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idLocalistedString + " WHERE SEQUENCE_NAME = 'L10NSTRS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'ITEM_SCHEMES';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'ITEM_SCHEMES_VERSIONS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'CODELISTS_VERSIONS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'M_CODELISTS_VERSIONS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'ITEMS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'CODES';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'M_CODES';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idAnnotableArtefact + " WHERE SEQUENCE_NAME = 'ANNOTABLE_ARTEFACTS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idAnnotations + " WHERE SEQUENCE_NAME = 'ANNOTATIONS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idVariables + " WHERE SEQUENCE_NAME = 'M_VARIABLES';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idVariableElements + " WHERE SEQUENCE_NAME = 'M_VARIABLE_ELEMENTS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelistOrderVisualisation + " WHERE SEQUENCE_NAME = 'M_CODELIST_ORDER_VISUAL';");
+
         if (insertSentences.size() > 0) {
             // Save into file
             saveFile(insertSentences, "target/codelist-out" + countFile + ".sql");
@@ -85,7 +118,14 @@ public class CodelistsToSql {
         insertCodelistVersion();
         insertCodelistVersionMetamac();
         long idCodelistInserted = idCodelists.longValue();
-        insertCodelistOrderVisualisation(codeCodelist, idCodelistInserted, 1);
+        Long idOrderVisualisationDefault = null;
+        for (int i = 0; i < 20; i++) {
+            Long idOrderVisualisation = insertCodelistOrderVisualisation(codeCodelist, idCodelistInserted, i + 1);
+            if (idOrderVisualisationDefault == null) {
+                idOrderVisualisationDefault = idOrderVisualisation;
+            }
+        }
+        insertSentences.add("UPDATE TB_M_CODELISTS_VERSIONS set DEFAULT_ORDER_VISUALISATION_FK = " + idOrderVisualisationDefault + " where TB_CODELISTS_VERSIONS = " + idCodelistInserted + ";");
 
         // prepare next
         idCodelists.add(1);
@@ -102,7 +142,7 @@ public class CodelistsToSql {
         insertItem(idCodelist, idNameableArtefact, idCode, idParent);
         insertCode(idCode);
         long variableElement = insertVariableElement(codeVariable, idVariable);
-        insertCodeMetamac(idCode, variableElement);
+        insertCodeMetamac(idParent, idCode, variableElement);
 
         // prepare next
         idCodes.add(1);
@@ -270,6 +310,7 @@ public class CodelistsToSql {
         long name = insertInternationalString(code + " " + title);
         long description = insertInternationalString("description_" + code);
         long comment = insertInternationalString("comment_" + code);
+        String finalLogic = publishCodelist ? "1" : "0";
 
         insertSentences
                 .add("INSERT INTO TB_ANNOTABLE_ARTEFACTS (ID, UUID, VERSION, ANNOTABLE_ARTEFACT_TYPE, CODE, URN, URN_PROVIDER, NAME_FK, DESCRIPTION_FK, COMMENT_FK, VERSION_LOGIC, FINAL_LOGIC, FINAL_LOGIC_CLIENT, LATEST_FINAL, IS_LAST_VERSION, IS_IMPORTED, MAINTAINER_FK) values ("
@@ -288,8 +329,9 @@ public class CodelistsToSql {
                         + description
                         + ", "
                         + comment
-                        + ", '01.000', 1, 1, 1, 1, 0, "
-                        + idMaintainer + ");");
+                        + ", '01.000', "
+                        + finalLogic
+                        + ", " + finalLogic + ", " + finalLogic + ", 1, 0, " + idMaintainer + ");");
 
         insertAnnotation(id);
         insertAnnotation(id);
@@ -376,7 +418,8 @@ public class CodelistsToSql {
          */
         String subcode = idCodelists.toString();
         long shortName = insertInternationalString("shortName_" + subcode);
-        insertSentences.add("INSERT INTO TB_M_CODELISTS_VERSIONS (SHORT_NAME_FK, PROC_STATUS, ACCESS_TYPE, TB_CODELISTS_VERSIONS) values (" + shortName + ", 'EXTERNALLY_PUBLISHED', 'PUBLIC', "
+        String status = publishCodelist ? "EXTERNALLY_PUBLISHED" : "DRAFT";
+        insertSentences.add("INSERT INTO TB_M_CODELISTS_VERSIONS (SHORT_NAME_FK, PROC_STATUS, ACCESS_TYPE, TB_CODELISTS_VERSIONS) values (" + shortName + ", '" + status + "', 'PUBLIC', "
                 + idCodelists + ");");
     }
 
@@ -403,7 +446,12 @@ public class CodelistsToSql {
     private static Long insertCodelistOrderVisualisation(String codeCodelist, long idCodelist, Integer columnIndex) {
 
         Long id = idCodelistOrderVisualisation.toLong();
-        String code = "orden1";
+        String code = null;
+        if (columnIndex.intValue() == 1) {
+            code = "ALPHABETICAL";
+        } else {
+            code = "orden" + columnIndex;;
+        }
         String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=ISTAC:" + codeCodelist + "(1.0)." + code;
         long idNameableArtefact = insertNameableArtefact(urn, code, false);
         insertSentences.add("INSERT INTO TB_M_CODELIST_ORDER_VISUAL (ID, UUID, VERSION, COLUMN_INDEX, NAMEABLE_ARTEFACT_FK, CODELIST_FK) values (" + id + ", " + id + ", 0, " + columnIndex + ", "
@@ -526,11 +574,17 @@ public class CodelistsToSql {
      * TB_CODES NUMBER(19) NOT NULL
      * );
      */
-    private static void insertCodeMetamac(long idCode, long variableElement) {
+    private static void insertCodeMetamac(Long idParent, long idCode, long variableElement) {
         String subcode = String.valueOf(idCode);
         long shortName = insertInternationalString("shortName_" + subcode);
-        int order = RandomUtils.nextInt(numCodes);
-        insertSentences.add("INSERT INTO TB_M_CODES (SHORT_NAME_FK, VARIABLE_ELEMENT_FK, TB_CODES, ORDER1) values (" + shortName + ", " + variableElement + ", " + idCode + ", " + order + ");");
+        MutableLong order = parentsChildrenNumber.get(idParent);
+        StringBuilder sentenceOrders = new StringBuilder();
+        for (int i = 0; i < 20; i++) {
+            sentenceOrders.append(", " + order);
+        }
+        insertSentences
+                .add("INSERT INTO TB_M_CODES (SHORT_NAME_FK, VARIABLE_ELEMENT_FK, TB_CODES, ORDER1, ORDER2, ORDER3, ORDER4, ORDER5, ORDER6, ORDER7, ORDER8, ORDER9, ORDER10, ORDER11, ORDER12, ORDER13, ORDER14, ORDER15, ORDER16, ORDER17, ORDER18, ORDER19, ORDER20) "
+                        + "values (" + shortName + ", " + variableElement + ", " + idCode + sentenceOrders + ");");
     }
 
     /**

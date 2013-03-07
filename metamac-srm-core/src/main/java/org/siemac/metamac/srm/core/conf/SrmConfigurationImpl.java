@@ -25,6 +25,18 @@ public class SrmConfigurationImpl implements SrmConfiguration {
         return retrieveProperty(SrmConstants.METAMAC_SRM_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.TRUE);
     }
 
+    @Override
+    public Boolean isDatabaseOracle() throws MetamacException {
+        String database = retrieveProperty(SrmConstants.DB_DRIVER_NAME, Boolean.TRUE);
+        return SrmConstants.DB_DRIVER_NAME_ORACLE.equals(database);
+    }
+
+    @Override
+    public Boolean isDatabaseSqlServer() throws MetamacException {
+        String database = retrieveProperty(SrmConstants.DB_DRIVER_NAME, Boolean.TRUE);
+        return SrmConstants.DB_DRIVER_NAME_MSSQL.equals(database);
+    }
+
     private String retrieveProperty(String propertyName, Boolean required) throws MetamacException {
         String propertyValue = configurationService.getProperty(propertyName);
         if (StringUtils.isBlank(propertyValue)) {
