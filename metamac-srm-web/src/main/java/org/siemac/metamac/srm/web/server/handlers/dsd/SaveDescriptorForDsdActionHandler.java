@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
-import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -33,10 +32,4 @@ public class SaveDescriptorForDsdActionHandler extends SecurityActionHandler<Sav
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
-    @Override
-    public void undo(SaveDescriptorForDsdAction action, SaveDescriptorForDsdResult result, ExecutionContext context) throws ActionException {
-
-    }
-
 }
