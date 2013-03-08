@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -268,10 +267,8 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         this.dataStructureDefinitionMetamacDto = dsd;
 
         // Security
-        ProcStatusEnum procStatus = dsd.getLifeCycle().getProcStatus();
-        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dsd);
-        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateGroupKeys(procStatus, operationCode) ? Visibility.VISIBLE : Visibility.HIDDEN);
-        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateGroupKeys(procStatus, operationCode));
+        newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateGroupKeys(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateGroupKeys(dataStructureDefinitionMetamacDto));
 
         deselectGroupKeys();
         this.dimensionComponentDtos = dimensionComponentDtos;
@@ -434,8 +431,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canUpdateGroupKeys(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(),
-                CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
+        if (DsdClientSecurityUtils.canDeleteGroupKeys(dataStructureDefinitionMetamacDto)) {
             deleteToolStripButton.show();
         }
     }

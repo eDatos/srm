@@ -9,7 +9,6 @@ import java.util.List;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
@@ -494,10 +493,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         this.dataStructureDefinitionMetamacDto = dsd;
 
         // Security
-        ProcStatusEnum procStatus = dsd.getLifeCycle().getProcStatus();
-        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dsd);
-        newToolStripButton.setVisibility(DsdClientSecurityUtils.canUpdateAttributes(procStatus, operationCode) ? Visibility.VISIBLE : Visibility.HIDDEN);
-        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateAttributes(procStatus, operationCode));
+        newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateAttribute(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateAttribute(dataStructureDefinitionMetamacDto));
 
         deselectAttribute();
         attributesGrid.selectAllRecords();
@@ -895,8 +892,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     }
 
     private void showDeleteToolStripButton() {
-        if (DsdClientSecurityUtils.canUpdateAttributes(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(),
-                CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto))) {
+        if (DsdClientSecurityUtils.canDeleteAttribute(dataStructureDefinitionMetamacDto)) {
             deleteToolStripButton.show();
         }
     }

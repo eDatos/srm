@@ -8,7 +8,6 @@ import java.util.List;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
@@ -455,10 +454,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         deselectDimension();
 
         // Security
-        ProcStatusEnum procStatus = dsd.getLifeCycle().getProcStatus();
-        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dsd);
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateDimension(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
-        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimension(procStatus, operationCode));
+        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimension(dataStructureDefinitionMetamacDto));
 
         dimensionsGrid.selectAllRecords();
         dimensionsGrid.removeSelectedData();
@@ -592,6 +589,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         return dimensionComponentDto;
     }
+
     @Override
     public List<DimensionComponentDto> getSelectedDimensions() {
         if (dimensionsGrid.getSelectedRecords() != null) {

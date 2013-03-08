@@ -69,8 +69,9 @@ public class DsdClientSecurityUtils {
                 && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
-    public static boolean canUpdateDimension(ProcStatusEnum procStatus, String operationCode) {
-        return SharedDsdSecurityUtils.canUpdateDimensions(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
+    public static boolean canUpdateDimension(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils.canUpdateDimensions(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode);
     }
 
     public static boolean canDeleteDimension(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
@@ -82,14 +83,44 @@ public class DsdClientSecurityUtils {
 
     // ATTRIBUTES
 
-    public static boolean canUpdateAttributes(ProcStatusEnum procStatus, String operationCode) {
-        return SharedDsdSecurityUtils.canUpdateAttributes(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
+    public static boolean canCreateAttribute(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils.canUpdateAttributes(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
+    public static boolean canUpdateAttribute(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils.canUpdateAttributes(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode);
+    }
+
+    public static boolean canDeleteAttribute(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils.canUpdateAttributes(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
     // GROUP KEYS
 
-    public static boolean canUpdateGroupKeys(ProcStatusEnum procStatus, String operationCode) {
-        return SharedDsdSecurityUtils.canUpdateGroupKeys(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
+    public static boolean canCreateGroupKeys(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils.canUpdateGroupKeys(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
+    public static boolean canUpdateGroupKeys(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils.canUpdateGroupKeys(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode);
+    }
+
+    public static boolean canDeleteGroupKeys(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils.canUpdateGroupKeys(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
     // CATEGORISATIONS
