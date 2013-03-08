@@ -31,6 +31,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
@@ -96,7 +97,7 @@ public class CodesDo2RestMapperTest {
     }
 
     @Test
-    public void testToCodelist() {
+    public void testToCodelist() throws MetamacException {
 
         CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
 
@@ -141,7 +142,7 @@ public class CodesDo2RestMapperTest {
     }
 
     @Test
-    public void testToCodelistImported() {
+    public void testToCodelistImported() throws MetamacException {
 
         CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);

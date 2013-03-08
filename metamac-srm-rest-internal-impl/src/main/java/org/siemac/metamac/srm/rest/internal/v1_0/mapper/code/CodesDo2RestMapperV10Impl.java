@@ -6,6 +6,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
@@ -66,7 +67,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
     }
 
     @Override
-    public Codelist toCodelist(CodelistVersionMetamac source) {
+    public Codelist toCodelist(CodelistVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
