@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.soap.external.v1_0.mapper.code;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Code;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelist;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilies;
@@ -28,7 +29,7 @@ public interface CodesDo2SoapMapperV10 {
     public CodelistFamilies toCodelistFamilies(PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> result, Integer limit);
 
     public Codelists toCodelists(PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac> result, Integer limit);
-    public Codelist toCodelist(CodelistVersionMetamac source);
+    public Codelist toCodelist(CodelistVersionMetamac source) throws MetamacException;
     public void toCodelist(CodelistVersionMetamac source, Codelist target);
     public Code toCode(CodeMetamac source);
     public void toCode(CodeMetamac source, Code target);

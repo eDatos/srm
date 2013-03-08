@@ -16,6 +16,7 @@ import java.util.List;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.soap.common.v1_0.domain.Resource;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Code;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelist;
@@ -212,7 +213,7 @@ public class CodesDo2SoapMapperTest {
     }
 
     @Test
-    public void testToCodelist() {
+    public void testToCodelist() throws MetamacException {
 
         CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
 
