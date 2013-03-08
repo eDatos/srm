@@ -513,10 +513,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     private void setConceptSchemeOfTheMeasureDimension(List<DimensionComponentDto> dimensionComponentDtos) {
         String conceptSchemeUrn = CommonUtils.getConceptSchemeUrnOfMeasureDimensionRepresentation(dimensionComponentDtos);
-        if (!StringUtils.equals(conceptSchemeUrn, conceptSchemeUrnOfMeasureDimensionRepresentation)) {
+        // Load the concepts if the conceptScheme is not null and has not been retrieved previously
+        // The concepts are used to fill 'showDecimalsPrecision' (a DSD visualisation metadata)
+        if (conceptSchemeUrn != null && !StringUtils.equals(conceptSchemeUrn, conceptSchemeUrnOfMeasureDimensionRepresentation)) {
             this.conceptSchemeUrnOfMeasureDimensionRepresentation = conceptSchemeUrn;
             // Load concepts of the specified concept scheme
             retrieveConcepts(conceptSchemeUrn);
+        } else {
+            conceptSchemeUrn = null;
         }
     }
 }
