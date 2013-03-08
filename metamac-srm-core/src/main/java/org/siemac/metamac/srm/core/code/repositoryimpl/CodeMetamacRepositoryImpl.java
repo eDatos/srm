@@ -95,7 +95,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void clearCodesOrderColumn(CodelistVersionMetamac codelistVersion, Integer orderColumnIndex) {
+    public void clearCodeOrders(CodelistVersionMetamac codelistVersion, Integer orderColumnIndex) {
         String orderColumn = getOrderColumnName(orderColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + orderColumn + " = null ");
@@ -109,7 +109,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void copyCodesOrderColumn(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
+    public void copyCodeOrders(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
         String columnSource = getOrderColumnName(columnIndexSource);
         String columnTarget = getOrderColumnName(columnIndexTarget);
 
