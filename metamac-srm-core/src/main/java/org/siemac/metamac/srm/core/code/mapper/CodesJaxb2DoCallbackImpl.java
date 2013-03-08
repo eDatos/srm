@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidatio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.arte.statistic.sdmx.srm.core.base.mapper.BaseJaxb2DoInheritUtils;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ItemSchemeCommonActionsImport;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
@@ -77,7 +77,7 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setShortName(BaseVersioningCopyUtils.copy(previousMetamac.getShortName())); // ShortName
             targetMetamac.setIsRecommended(previousMetamac.getIsRecommended()); // IsRecommended
@@ -120,7 +120,7 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
             targetMetamac.getNameableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setShortName(BaseVersioningCopyUtils.copy(previousMetamac.getShortName())); // ShortName
             targetMetamac.setVariableElement(previousMetamac.getVariableElement());

@@ -20,10 +20,12 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.arte.statistic.sdmx.srm.core.base.mapper.BaseJaxb2DoInheritUtils;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsJaxb2DoCallback;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsMergeAssert;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 @org.springframework.stereotype.Component("organisationsMetamacJaxb2DoCallback")
@@ -31,6 +33,9 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
     @Autowired
     private OrganisationsMetamacService organisationsMetamacService;
+
+    @Autowired
+    private OrganisationRepository      organisationRepository;
 
     /**************************************************************************
      * CREATES
@@ -67,7 +72,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -89,8 +94,8 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
             targetMetamac.getNameableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
-            BaseJaxb2DoInheritUtils.inheritAnnotationsContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
         }
 
         // Fill pre-persist meta-data
@@ -110,7 +115,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -132,8 +137,8 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
             targetMetamac.getNameableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
-            BaseJaxb2DoInheritUtils.inheritAnnotationsContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
         }
 
         // Fill pre-persist meta-data
@@ -153,7 +158,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -175,8 +180,8 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
             targetMetamac.getNameableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
-            BaseJaxb2DoInheritUtils.inheritAnnotationsContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
         }
 
         // Fill pre-persist meta-data
@@ -196,7 +201,7 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -218,8 +223,8 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
             targetMetamac.getNameableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
-            BaseJaxb2DoInheritUtils.inheritAnnotationsContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritContact(previousMetamac.getContacts(), targetMetamac.getContacts()); // Contacts
         }
 
         // Fill pre-persist meta-data
@@ -227,9 +232,32 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
     }
 
     @Override
-    public void applyTemporalRestrictionsToTheSchemeIfIsNecessary(ServiceContext ctx, OrganisationSchemeVersion previous, OrganisationSchemeVersion target) throws MetamacException {
+    public OrganisationSchemeVersion applyTemporalRestrictionsToTheSchemeIfIsNecessary(ServiceContext ctx, OrganisationSchemeVersion previous, OrganisationSchemeVersion temp,
+            List<Organisation> tempOrganisations) throws MetamacException {
+
+        boolean isEqualArtifact = true;
+        isEqualArtifact = OrganisationsMergeAssert.mergeUpdateOrganisationSchemeVersionWithoutOrganisations(previous, temp, false, null);
+        if (isEqualArtifact) {
+            for (Organisation organisation : tempOrganisations) {
+
+                // Find previous Organisation if exist
+                Organisation organisationPrevious = organisationRepository.findIfExistAPreviousVersion(previous.getId(), organisation.getNameableArtefact().getCode());
+                if (organisationPrevious == null) {
+                    isEqualArtifact = false;
+                } else {
+                    isEqualArtifact = OrganisationsMergeAssert.mergeUpdateOrganisationOfTypeAgencyOrDataConsumerOrDataProvider(organisationPrevious, organisation, false, null);
+                }
+                if (!isEqualArtifact) {
+                    break;
+                }
+            }
+        }
+
         // Duplicate the previous version and mark the new version as temporal.
-        throw new UnsupportedOperationException();
+        if (!isEqualArtifact) {
+            // TODO duplicate
+        }
+        return previous;
     }
 
     /**************************************************************************

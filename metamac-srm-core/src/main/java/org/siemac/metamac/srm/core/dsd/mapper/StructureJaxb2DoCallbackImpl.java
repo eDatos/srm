@@ -23,7 +23,7 @@ import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidatio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.srm.core.base.mapper.BaseJaxb2DoInheritUtils;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
@@ -146,7 +146,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setStatisticalOperation(BaseVersioningCopyUtils.copy(previousMetamac.getStatisticalOperation()));
         }
@@ -171,7 +171,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     public void groupDimensionDescriptorJaxbToDoExtension(ServiceContext ctx, GroupType source, GroupDimensionDescriptor previous, GroupDimensionDescriptor target) throws MetamacException {
         if (previous != null) {
             // Inherit translations (for all international strings)
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -186,7 +186,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
             target.setSpecialDimensionType(previous.getSpecialDimensionType());
 
             // Inherit translations (for all international strings)
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -196,7 +196,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
             target.setSpecialDimensionType(previous.getSpecialDimensionType());
 
             // Inherit translations (for all international strings)
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -206,7 +206,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
             target.setSpecialDimensionType(previous.getSpecialDimensionType());
 
             // Inherit translations (for all international strings)
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -214,7 +214,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     public void primaryMeasureJaxbToDoExtension(ServiceContext ctx, PrimaryMeasureType source, PrimaryMeasure previous, PrimaryMeasure target) throws MetamacException {
         if (previous != null) {
             // Inherit translations (for all international strings)
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -224,7 +224,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
             target.setSpecialAttributeType(previous.getSpecialAttributeType());
 
             // Inherit translations (for all international strings)
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 
@@ -234,7 +234,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
             target.setSpecialAttributeType(previous.getSpecialAttributeType());
 
             // Inherit translations (for all international strings)
-            BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(previous.getAnnotations(), target.getAnnotations()); // Annotations
+            BaseJaxb2DoInheritUtils.inheritAnnotations(previous.getAnnotations(), target.getAnnotations()); // Annotations
         }
     }
 

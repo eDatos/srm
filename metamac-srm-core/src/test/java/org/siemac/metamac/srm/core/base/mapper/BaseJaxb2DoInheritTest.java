@@ -17,7 +17,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
-import com.arte.statistic.sdmx.srm.core.base.mapper.BaseJaxb2DoInheritUtils;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -142,7 +142,7 @@ public class BaseJaxb2DoInheritTest {
             annotationNews.add(annotation);
         }
 
-        BaseJaxb2DoInheritUtils.inheritAnnotationsInternatialString(annotationOlds, annotationNews);
+        BaseJaxb2DoInheritUtils.inheritAnnotations(annotationOlds, annotationNews);
         assertEquals(1, annotationNews.size());
         Annotation annotation = annotationNews.iterator().next();
         assertEquals(3, annotation.getText().getTexts().size());
