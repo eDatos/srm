@@ -159,4 +159,5 @@
     </sr:variable>
     <sr:accessType>PUBLIC</sr:accessType>
     <sr:defaultOrderVisualisation>defaultOrderVisualisation1</sr:defaultOrderVisualisation>
+    <sr:defaultOpennessVisualisation>defaultOpennessVisualisation1</sr:defaultOpennessVisualisation>
 </sr:codelist>

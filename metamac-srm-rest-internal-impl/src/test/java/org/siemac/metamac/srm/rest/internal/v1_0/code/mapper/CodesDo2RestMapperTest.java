@@ -117,7 +117,8 @@ public class CodesDo2RestMapperTest {
         assertEqualsInternationalString("es", "shortName-resourceID1v01.123 en Español", "en", "shortName-resourceID1v01.123 in English", target.getShortName());
         assertTrue(target.isIsRecommended());
         assertEquals(AccessType.PUBLIC, target.getAccessType());
-        // assertEquals("defaultOrderVisualisation1", target.getDefaultOrderVisualisation()); // TODO order visualisation
+        assertEquals("defaultOrderVisualisation1", target.getDefaultOrderVisualisation());
+        assertEquals("defaultOpennessVisualisation1", target.getDefaultOpennessVisualisation());
         assertEquals("family1", target.getFamily().getId());
         assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getTitle());
         assertEquals("variable1", target.getVariable().getId());

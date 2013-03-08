@@ -89,6 +89,7 @@
                     <xs:element name="replaceTo" type="tns:ReplaceTo" minOccurs="0" />
                     <xs:element name="accessType" type="tns:AccessType" minOccurs="1" />
                     <xs:element name="defaultOrderVisualisation" type="xs:string" minOccurs="1" />
+                    <xs:element name="defaultOpennessVisualisation" type="xs:string" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
