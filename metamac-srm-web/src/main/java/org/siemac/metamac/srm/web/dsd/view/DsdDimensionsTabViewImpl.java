@@ -354,42 +354,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // REPRESENTATION TYPE
 
-        final CustomSelectItem representationTypeItem = new CustomSelectItem(DimensionDS.REPRESENTATION_TYPE, getConstants().representation());
-        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
-        representationTypeItem.setRedrawOnChange(true);
-        representationTypeItem.addChangedHandler(new ChangedHandler() {
-
-            @Override
-            public void onChanged(ChangedEvent event) {
-                // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
-                FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
-            }
-        });
-        CustomValidator measureCustomValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                // Measure dimensions must be enumerated
-                if (CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE))) {
-                    return RepresentationTypeEnum.ENUMERATION.toString().equals(value) ? true : false;
-                }
-                return true;
-            }
-        };
-        measureCustomValidator.setErrorMessage(MetamacSrmWeb.getMessages().errorRequiredEnumeratedRepresentationInMeasureDimension());
-        CustomValidator timeCustomValidator = new CustomValidator() {
-
-            @Override
-            protected boolean condition(Object value) {
-                // Time dimensions must have a non enumerated representation
-                if (CommonUtils.isDimensionTypeTimeDimension(editionForm.getValueAsString(DimensionDS.TYPE))) {
-                    return RepresentationTypeEnum.TEXT_FORMAT.toString().equals(value) ? true : false;
-                }
-                return true;
-            }
-        };
-        timeCustomValidator.setErrorMessage(MetamacSrmWeb.getMessages().errorRequiredNonEnumeratedRepresentationInTimeDimension());
-        representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
+        final CustomSelectItem representationTypeItem = createRepresentationTypeItem(DimensionDS.REPRESENTATION_TYPE, getConstants().representation());
 
         // ENUMERATED REPRESENTATION
 
@@ -833,6 +798,46 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         if (DsdClientSecurityUtils.canDeleteDimension(dataStructureDefinitionMetamacDto)) {
             deleteToolStripButton.show();
         }
+    }
+
+    private CustomSelectItem createRepresentationTypeItem(String name, String title) {
+        final CustomSelectItem representationTypeItem = new CustomSelectItem(name, title);
+        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
+        representationTypeItem.setRedrawOnChange(true);
+        representationTypeItem.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
+                FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
+            }
+        });
+        CustomValidator measureCustomValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                // Measure dimensions must be enumerated
+                if (CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE))) {
+                    return RepresentationTypeEnum.ENUMERATION.toString().equals(value) ? true : false;
+                }
+                return true;
+            }
+        };
+        measureCustomValidator.setErrorMessage(MetamacSrmWeb.getMessages().errorRequiredEnumeratedRepresentationInMeasureDimension());
+        CustomValidator timeCustomValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                // Time dimensions must have a non enumerated representation
+                if (CommonUtils.isDimensionTypeTimeDimension(editionForm.getValueAsString(DimensionDS.TYPE))) {
+                    return RepresentationTypeEnum.TEXT_FORMAT.toString().equals(value) ? true : false;
+                }
+                return true;
+            }
+        };
+        timeCustomValidator.setErrorMessage(MetamacSrmWeb.getMessages().errorRequiredNonEnumeratedRepresentationInTimeDimension());
+        representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
+        return representationTypeItem;
     }
 
     private RelatedResourceListItem createRoleItem(String name, String title) {
