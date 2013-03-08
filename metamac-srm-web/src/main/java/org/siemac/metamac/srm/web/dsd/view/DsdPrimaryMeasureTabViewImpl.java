@@ -157,18 +157,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // REPRESENTATION TYPE
 
-        final CustomSelectItem representationTypeItem = new CustomSelectItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
+        final CustomSelectItem representationTypeItem = createRepresentationTypeItem(PrimaryMeasureDS.REPRESENTATION_TYPE, MetamacSrmWeb.getConstants().representation());
         representationTypeItem.setShowIfCondition(getRepresentationTypeFormItemIfFunction());
-        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
-        representationTypeItem.setRedrawOnChange(true);
-        // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
-        representationTypeItem.addChangedHandler(new ChangedHandler() {
-
-            @Override
-            public void onChanged(ChangedEvent event) {
-                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto.getMaintainer());
-            }
-        });
 
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW, MetamacSrmWeb.getConstants().representation());
         staticRepresentationTypeItem.setShowIfCondition(getStaticRepresentationTypeFormItemIfFunction());
@@ -390,6 +380,21 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     private boolean validate() {
         return Visibility.HIDDEN.equals(facetEditionForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
+    }
+
+    private CustomSelectItem createRepresentationTypeItem(String name, String title) {
+        final CustomSelectItem representationTypeItem = new CustomSelectItem(name, title);
+        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
+        representationTypeItem.setRedrawOnChange(true);
+        // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
+        representationTypeItem.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto.getMaintainer());
+            }
+        });
+        return representationTypeItem;
     }
 
     private SearchViewTextItem createConceptItem(String name, String title) {
