@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -302,7 +301,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         descriptorDto.setCode(code.getValueAsString());
 
         descriptorDto.getComponents().clear();
-        List<DimensionComponentDto> dimensions = getDimensions(dimensionsItem.getValues());
+        List<DimensionComponentDto> dimensions = CommonUtils.getDimensionComponentDtosWithSpecifiedUrns(dimensionComponentDtos, dimensionsItem.getValues());
         descriptorDto.getComponents().addAll(dimensions);
 
         // If it is a new component, specify type
@@ -386,9 +385,9 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         Set<ComponentDto> dimensionComponentDtos = descriptorDto.getComponents();
         List<String> dimensions = new ArrayList<String>();
         for (ComponentDto c : dimensionComponentDtos) {
-            dimensions.add(c.getId().toString());
+            dimensions.add(c.getUrn());
         }
-        dimensionsItem.setValues(dimensions.toArray(new String[0]));
+        dimensionsItem.setValues(dimensions.toArray(new String[dimensions.size()]));
 
         // Annotations
         editionAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations());
@@ -427,28 +426,6 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     private void deselectGroupKeys() {
         selectedDescriptorLayout.hide();
         deleteToolStripButton.hide();
-    }
-
-    private List<DimensionComponentDto> getDimensions(String[] selectedDimensionUrns) {
-        List<DimensionComponentDto> dimensionComponentDtos = new ArrayList<DimensionComponentDto>();
-        for (String urn : selectedDimensionUrns) {
-            if (!StringUtils.isBlank(urn)) {
-                DimensionComponentDto dimensionComponentDto = getDimensionComponentDto(urn);
-                if (dimensionComponentDto != null) {
-                    dimensionComponentDtos.add(getDimensionComponentDto(urn));
-                }
-            }
-        }
-        return dimensionComponentDtos;
-    }
-
-    private DimensionComponentDto getDimensionComponentDto(String urn) {
-        for (DimensionComponentDto dimensionComponentDto : dimensionComponentDtos) {
-            if (StringUtils.equals(urn, dimensionComponentDto.getUrn())) {
-                return dimensionComponentDto;
-            }
-        }
-        return null;
     }
 
     private void setTranslationsShowed(boolean translationsShowed) {

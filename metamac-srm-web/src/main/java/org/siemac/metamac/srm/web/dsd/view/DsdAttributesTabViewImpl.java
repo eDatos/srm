@@ -683,26 +683,26 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         if (dataAttributeDto.getRelateTo() != null && dataAttributeDto.getRelateTo().getId() != null) {
             relationType.setValue(dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
             // Group keys for group relationship
-            groupKeyFormForGroupRelationship.setValue((dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : (dataAttributeDto.getRelateTo()
-                    .getGroupKeyForGroupRelationship().getId() == null) ? null : dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship().getId().toString());
+            groupKeyFormForGroupRelationship.setValue((dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
+                    .getGroupKeyForGroupRelationship().getUrn());
 
             // Group keys form dimension relationship
             groupKeysForDimensionRelationshipItem.clearValue();
             List<DescriptorDto> attributeGroupKeys = new ArrayList<DescriptorDto>(dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship());
             List<String> groupKeys = new ArrayList<String>();
             for (DescriptorDto d : attributeGroupKeys) {
-                groupKeys.add(d.getId().toString());
+                groupKeys.add(d.getUrn());
             }
-            groupKeysForDimensionRelationshipItem.setValues(groupKeys.toArray(new String[0]));
+            groupKeysForDimensionRelationshipItem.setValues(groupKeys.toArray(new String[groupKeys.size()]));
 
             // Dimensions for dimension relationship
             dimensionsForDimensionRelationshipItem.clearValue();
             List<DimensionComponentDto> attributeDimensions = new ArrayList<DimensionComponentDto>(dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship());
             List<String> dimensions = new ArrayList<String>();
             for (DimensionComponentDto d : attributeDimensions) {
-                dimensions.add(d.getId().toString());
+                dimensions.add(d.getUrn());
             }
-            dimensionsForDimensionRelationshipItem.setValues(dimensions.toArray(new String[0]));
+            dimensionsForDimensionRelationshipItem.setValues(dimensions.toArray(new String[dimensions.size()]));
         }
 
         // Role
@@ -788,11 +788,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relationType.getValueAsString());
         dataAttributeDto.getRelateTo().setTypeRelathionship(typeRelathionship);
         if (TypeRelathionship.GROUP_RELATIONSHIP.equals(typeRelathionship)) {
-            DescriptorDto descriptorDto = getGroupKeysDto(groupKeyFormForGroupRelationship.getValueAsString());
+            DescriptorDto descriptorDto = CommonUtils.getDescriptorDtoWithSpecifiedUrn(descriptorDtos, groupKeyFormForGroupRelationship.getValueAsString());
             dataAttributeDto.getRelateTo().setGroupKeyForGroupRelationship(descriptorDto);
         } else if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(typeRelathionship)) {
-            List<DescriptorDto> groupKeysRelation = getGroupKeys(groupKeysForDimensionRelationshipItem.getValues());
-            List<DimensionComponentDto> dimensionsRelation = getDimensions(dimensionsForDimensionRelationshipItem.getValues());
+            List<DescriptorDto> groupKeysRelation = CommonUtils.getDescriptorDtosWithSpecifiedUrns(descriptorDtos, groupKeysForDimensionRelationshipItem.getValues());
+            List<DimensionComponentDto> dimensionsRelation = CommonUtils.getDimensionComponentDtosWithSpecifiedUrns(dimensionComponentDtos, dimensionsForDimensionRelationshipItem.getValues());
             dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship().addAll(groupKeysRelation);
             dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship().addAll(dimensionsRelation);
         }
@@ -887,48 +887,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void deselectAttribute() {
         selectedComponentLayout.hide();
         deleteToolStripButton.hide();
-    }
-
-    private List<DimensionComponentDto> getDimensions(String[] dimensions) {
-        List<DimensionComponentDto> dimensionComponentDtos = new ArrayList<DimensionComponentDto>();
-        for (String id : dimensions) {
-            DimensionComponentDto dimensionComponentDto = getDimensionComponentDto(id);
-            dimensionComponentDtos.add(dimensionComponentDto);
-        }
-        return dimensionComponentDtos;
-    }
-
-    private List<DescriptorDto> getGroupKeys(String[] groupKeys) {
-        List<DescriptorDto> descriptorDtos = new ArrayList<DescriptorDto>();
-        for (String id : groupKeys) {
-            DescriptorDto descriptorDto = getGroupKeysDto(id);
-            descriptorDtos.add(descriptorDto);
-        }
-        return descriptorDtos;
-    }
-
-    private DescriptorDto getGroupKeysDto(String id) {
-        if (id != null) {
-            Long idDescriptor = Long.valueOf(id);
-            for (DescriptorDto d : descriptorDtos) {
-                if (d.getId().compareTo(idDescriptor) == 0) {
-                    return d;
-                }
-            }
-        }
-        return null;
-    }
-
-    private DimensionComponentDto getDimensionComponentDto(String id) {
-        if (id != null) {
-            Long idDimension = Long.valueOf(id);
-            for (DimensionComponentDto d : dimensionComponentDtos) {
-                if (d.getId().compareTo(idDimension) == 0) {
-                    return d;
-                }
-            }
-        }
-        return null;
     }
 
     private void setTranslationsShowed(boolean translationsShowed) {

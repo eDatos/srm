@@ -159,7 +159,7 @@ public class CommonUtils {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
         for (DescriptorDto descriptorDto : descriptorDtos) {
-            valueMap.put(descriptorDto.getId().toString(), descriptorDto.getCode());
+            valueMap.put(descriptorDto.getUrn(), descriptorDto.getCode());
         }
         return valueMap;
     }
@@ -273,6 +273,56 @@ public class CommonUtils {
 
     public static String getStatisticalOperationCodeFromDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
         return dataStructureDefinitionMetamacDto.getStatisticalOperation() != null ? dataStructureDefinitionMetamacDto.getStatisticalOperation().getCode() : null;
+    }
+
+    /**
+     * Returns a {@link DimensionComponentDto} if the URN is in the list of urns specified
+     * 
+     * @param dimensionComponentDtos
+     * @param urns
+     * @return
+     */
+    public static List<DimensionComponentDto> getDimensionComponentDtosWithSpecifiedUrns(List<DimensionComponentDto> dimensionComponentDtos, String[] urns) {
+        List<DimensionComponentDto> selectedDimensions = new ArrayList<DimensionComponentDto>();
+        for (String urn : urns) {
+            if (!StringUtils.isBlank(urn)) {
+                for (DimensionComponentDto dimension : dimensionComponentDtos) {
+                    if (StringUtils.equals(urn, dimension.getUrn())) {
+                        selectedDimensions.add(dimension);
+                    }
+                }
+            }
+        }
+        return selectedDimensions;
+    }
+
+    /**
+     * Returns a {@link DescriptorDto} if the URN is in the list of urns specified
+     * 
+     * @param descriptorDtos
+     * @param urns
+     * @return
+     */
+    public static List<DescriptorDto> getDescriptorDtosWithSpecifiedUrns(List<DescriptorDto> descriptorDtos, String[] urns) {
+        List<DescriptorDto> selectedDescriptors = new ArrayList<DescriptorDto>();
+        for (String urn : urns) {
+            if (!StringUtils.isBlank(urn)) {
+                DescriptorDto descriptorDto = getDescriptorDtoWithSpecifiedUrn(descriptorDtos, urn);
+                if (descriptorDto != null) {
+                    selectedDescriptors.add(descriptorDto);
+                }
+            }
+        }
+        return selectedDescriptors;
+    }
+
+    public static DescriptorDto getDescriptorDtoWithSpecifiedUrn(List<DescriptorDto> descriptorDtos, String urn) {
+        for (DescriptorDto descriptor : descriptorDtos) {
+            if (StringUtils.equals(urn, descriptor.getUrn())) {
+                return descriptor;
+            }
+        }
+        return null;
     }
 
     // METADATA VISIBILITY
