@@ -126,7 +126,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private RequiredSelectItem                           dimensionsForDimensionRelationshipItem;         // Required if relationType == DIMENSION_RELATIONSHIP
     private RequiredSelectItem                           groupKeyFormForGroupRelationship;               // Required if relationType == GROUP_RELATIONSHIP
     // Representation
-    private CustomSelectItem                             representationTypeItem;
     private DsdFacetForm                                 facetForm = null;
 
     private ToolStripButton                              newToolStripButton;
@@ -434,7 +433,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
 
-        representationTypeItem = new CustomSelectItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
+        final CustomSelectItem representationTypeItem = new CustomSelectItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
         representationTypeItem.setRedrawOnChange(true);
         // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
@@ -715,22 +714,22 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Representation
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
-        representationTypeItem.clearValue();
+        editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE).clearValue();
         facetForm.clearValues();
         if (dataAttributeDto.getLocalRepresentation() != null) {
             if (RepresentationTypeEnum.ENUMERATION.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
-                representationTypeItem.setValue(RepresentationTypeEnum.ENUMERATION.toString());
+                editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE, RepresentationTypeEnum.ENUMERATION.toString());
                 editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, dataAttributeDto.getLocalRepresentation().getEnumeration().getUrn());
                 editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
                 // Facet
-                representationTypeItem.setValue(RepresentationTypeEnum.TEXT_FORMAT.toString());
+                editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE, RepresentationTypeEnum.TEXT_FORMAT.toString());
                 // Only one facet in a Representation
                 FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getTextFormat();
                 facetForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
+        FacetFormUtils.setFacetFormVisibility(facetForm, editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE));
         editionForm.redraw();
 
         // Annotations
@@ -799,22 +798,27 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         }
 
         // Representation
-        if (representationTypeItem.getValue() != null && !representationTypeItem.getValue().toString().isEmpty()) {
-            RepresentationTypeEnum representationType = RepresentationTypeEnum.valueOf(representationTypeItem.getValue().toString());
+        if (!StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE))) {
+            RepresentationTypeEnum representationType = RepresentationTypeEnum.valueOf(editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE));
 
             if (dataAttributeDto.getLocalRepresentation() == null) {
                 dataAttributeDto.setLocalRepresentation(new RepresentationDto());
             }
 
-            // Code List
             if (RepresentationTypeEnum.ENUMERATION.equals(representationType)) {
+
+                // CODELIST
+
                 dataAttributeDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
                 dataAttributeDto.getLocalRepresentation().setEnumeration(
                         StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                                 TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)));
                 dataAttributeDto.getLocalRepresentation().setTextFormat(null);
-                // Facet
+
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
+
+                // TEXT FORMAT (FACET)
+
                 dataAttributeDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
                 FacetDto facetDto = facetForm.getFacet();
                 dataAttributeDto.getLocalRepresentation().setTextFormat(facetDto);
@@ -1033,7 +1037,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // Show CodeList if RepresentationTypeEnum = ENUMERATED
-                return CommonUtils.isRepresentationTypeEnumerated(representationTypeItem.getValueAsString());
+                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE));
             }
         });
         codelistItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
