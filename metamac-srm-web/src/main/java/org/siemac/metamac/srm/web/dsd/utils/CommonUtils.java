@@ -150,7 +150,7 @@ public class CommonUtils {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
         for (DimensionComponentDto d : dimensionComponentDtos) {
-            valueMap.put(d.getId().toString(), d.getCode());
+            valueMap.put(d.getUrn(), d.getCode());
         }
         return valueMap;
     }

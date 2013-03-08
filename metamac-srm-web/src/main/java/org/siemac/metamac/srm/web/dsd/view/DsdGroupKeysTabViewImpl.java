@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -428,21 +429,23 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         deleteToolStripButton.hide();
     }
 
-    private List<DimensionComponentDto> getDimensions(String[] selectedDimensions) {
+    private List<DimensionComponentDto> getDimensions(String[] selectedDimensionUrns) {
         List<DimensionComponentDto> dimensionComponentDtos = new ArrayList<DimensionComponentDto>();
-        for (String d : selectedDimensions) {
-            dimensionComponentDtos.add(getDimensionComponentDto(d));
+        for (String urn : selectedDimensionUrns) {
+            if (!StringUtils.isBlank(urn)) {
+                DimensionComponentDto dimensionComponentDto = getDimensionComponentDto(urn);
+                if (dimensionComponentDto != null) {
+                    dimensionComponentDtos.add(getDimensionComponentDto(urn));
+                }
+            }
         }
         return dimensionComponentDtos;
     }
 
-    private DimensionComponentDto getDimensionComponentDto(String id) {
-        if (id != null) {
-            Long idDimension = Long.valueOf(id);
-            for (DimensionComponentDto d : dimensionComponentDtos) {
-                if (d.getId().compareTo(idDimension) == 0) {
-                    return d;
-                }
+    private DimensionComponentDto getDimensionComponentDto(String urn) {
+        for (DimensionComponentDto dimensionComponentDto : dimensionComponentDtos) {
+            if (StringUtils.equals(urn, dimensionComponentDto.getUrn())) {
+                return dimensionComponentDto;
             }
         }
         return null;
