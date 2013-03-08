@@ -42,7 +42,8 @@
     <TB_SEQUENCES SEQUENCE_NAME="M_VARIABLE_FAMILIES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VARIABLES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VARIABLE_ELEMENTS" SEQUENCE_NEXT_VALUE="100000000" />
-    <TB_SEQUENCES SEQUENCE_NAME="M_CODELIST_ORDER_VISUAL" SEQUENCE_NEXT_VALUE="100000000" />
+    <TB_SEQUENCES SEQUENCE_NAME="M_CODELIST_ORDER_VIS" SEQUENCE_NEXT_VALUE="100000000" />
+    <TB_SEQUENCES SEQUENCE_NAME="M_CODELIST_OPENNESS_VIS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OPERATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OP_SOURCES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OP_TARGETS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -305,7 +306,8 @@
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="6"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="111"
+        DEFAULT_ORDER_VISUAL_FK="111"
+        DEFAULT_OPENNESS_VISUAL_FK="111"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -376,6 +378,7 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="111"
+              
               ORDER1="0"
               ORDER2="[null]"
               ORDER3="[null]"
@@ -396,6 +399,27 @@
               ORDER18="[null]"
               ORDER19="[null]"
               ORDER20="[null]"
+              
+              OPENNESS1="0"
+              OPENNESS2="[null]"
+              OPENNESS3="[null]"
+              OPENNESS4="[null]"
+              OPENNESS5="[null]"
+              OPENNESS6="[null]"
+              OPENNESS7="[null]"
+              OPENNESS8="[null]"
+              OPENNESS9="[null]"
+              OPENNESS10="[null]"
+              OPENNESS11="[null]"
+              OPENNESS12="[null]"
+              OPENNESS13="[null]"
+              OPENNESS14="[null]"
+              OPENNESS15="[null]"
+              OPENNESS16="[null]"
+              OPENNESS17="[null]"
+              OPENNESS18="[null]"
+              OPENNESS19="[null]"
+              OPENNESS20="[null]"              
              />
             
             <TB_ITEMS
@@ -440,17 +464,16 @@
                 LAST_UPDATED_TZ="Europe/London"
             />      
             
-                <!-- VISUALISATIONS -->
+                <!-- ORDER VISUALISATIONS -->
                 
                 <!-- ALPHABETICAL -->
-                
-                <TB_M_CODELIST_ORDER_VISUAL 
+                <TB_M_CODELIST_ORDER_VIS 
                     ID="111"
                     CODELIST_FK="11"
                     NAMEABLE_ARTEFACT_FK="9997111"
                     COLUMN_INDEX="1"
                     
-                    UUID="codelist-visualisation-111"
+                    UUID="codelist-order-visualisation-111"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -483,7 +506,51 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                          
+                />   
+                
+                <!-- OPENNESS VISUALISATIONS -->
+                
+                <!-- ALL EXPANDED -->
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="111"
+                    CODELIST_FK="11"
+                    NAMEABLE_ARTEFACT_FK="9998111"
+                    COLUMN_INDEX="1"
+                    
+                    UUID="codelist-openness-visualisation-111"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9998111"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ALL_EXPANDED"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(01.000).ALL_EXPANDED"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(01.000).ALL_EXPANDED"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="101"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9998111"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                          
     
     <!-- **************************************************************************************  -->                
     <!-- VERSION 2                                                                               -->
@@ -518,7 +585,8 @@
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="122"
+        DEFAULT_ORDER_VISUAL_FK="122"
+        DEFAULT_OPENNESS_VISUAL_FK="122"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -601,6 +669,9 @@
               ORDER1="0"
               ORDER2="0"
               ORDER3="1"
+              OPENNESS1="1"
+              OPENNESS2="0"
+              OPENNESS3="1"              
              />
             
             <TB_ITEMS
@@ -682,6 +753,9 @@
                 ORDER1="1"
                 ORDER2="1"
                 ORDER3="2"
+                OPENNESS1="1"
+                OPENNESS2="1"
+                OPENNESS3="1"                   
              />
                      
             <TB_ITEMS
@@ -738,6 +812,9 @@
               ORDER1="0"
               ORDER2="0"
               ORDER3="1"
+              OPENNESS1="1"
+              OPENNESS2="1"
+              OPENNESS3="1"                 
              />
         
             <TB_ITEMS
@@ -794,6 +871,9 @@
               ORDER1="0"
               ORDER2="0"
               ORDER3="0"
+              OPENNESS1="1"
+              OPENNESS2="0"
+              OPENNESS3="0"                 
              />
         
             <TB_ITEMS
@@ -850,6 +930,9 @@
               ORDER1="1"
               ORDER2="1"
               ORDER3="0"
+              OPENNESS1="1"
+              OPENNESS2="1"
+              OPENNESS3="1"                 
              />
         
             <TB_ITEMS
@@ -906,6 +989,9 @@
               ORDER1="2"
               ORDER2="2"
               ORDER3="0"
+              OPENNESS1="1"
+              OPENNESS2="1"
+              OPENNESS3="0"                 
              />
             
             <TB_ITEMS
@@ -962,6 +1048,9 @@
               ORDER1="3"
               ORDER2="3"
               ORDER3="3"
+              OPENNESS1="1"
+              OPENNESS2="0"
+              OPENNESS3="0"                 
              />
                      
             <TB_ITEMS
@@ -1018,6 +1107,9 @@
               ORDER1="0"
               ORDER2="0"
               ORDER3="0"
+              OPENNESS1="1"
+              OPENNESS2="1"
+              OPENNESS3="1"                 
              />
         
             <TB_ITEMS
@@ -1074,6 +1166,9 @@
               ORDER1="0"
               ORDER2="0"
               ORDER3="0"
+              OPENNESS1="1"
+              OPENNESS2="0"
+              OPENNESS3="1"                 
              />
         
             <TB_ITEMS
@@ -1120,7 +1215,7 @@
             
             
             
-            <!-- VISUALISATIONS -->
+            <!-- ORDER VISUALISATIONS -->
                 <!-- ALPHABETICAL -->
                 <!-- VISUALISATION01 -->    
                 <!-- VISUALISATION02 -->
@@ -1136,13 +1231,13 @@
                     <!--    -> CODE0401 -->
                     <!--        -> CODE040101 -->
                 
-                <TB_M_CODELIST_ORDER_VISUAL 
+                <TB_M_CODELIST_ORDER_VIS 
                     ID="121"
                     CODELIST_FK="12"
                     NAMEABLE_ARTEFACT_FK="9997121"
                     COLUMN_INDEX="1"
                     
-                    UUID="codelist-visualisation-121"
+                    UUID="codelist-order-visualisation-121"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -1188,13 +1283,13 @@
                     <!--    -> CODE0401 -->
                     <!--        -> CODE040101 -->
                 
-                <TB_M_CODELIST_ORDER_VISUAL 
+                <TB_M_CODELIST_ORDER_VIS 
                     ID="122"
                     CODELIST_FK="12"
                     NAMEABLE_ARTEFACT_FK="9997122"
                     COLUMN_INDEX="2"
                     
-                    UUID="codelist-visualisation-122"
+                    UUID="codelist-order-visualisation-122"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -1230,13 +1325,14 @@
                 />                                 
                                         
             
-                <TB_M_CODELIST_ORDER_VISUAL 
+                <!-- VISUALISATION02 -->
+                <TB_M_CODELIST_ORDER_VIS 
                     ID="123"
                     CODELIST_FK="12"
                     NAMEABLE_ARTEFACT_FK="9997123"
                     COLUMN_INDEX="3"
                     
-                    UUID="codelist-visualisation-123"
+                    UUID="codelist-order-visualisation-123"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -1272,7 +1368,139 @@
                 />                 
                                          
                     
-    
+                <!-- OPENNESS VISUALISATIONS -->
+                <!-- ALL_EXPANDED -->
+                <!-- VISUALISATION01 -->    
+                <!-- VISUALISATION02 -->
+                
+                <!-- ALL_EXPANDED -->
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="121"
+                    CODELIST_FK="12"
+                    NAMEABLE_ARTEFACT_FK="9998121"
+                    COLUMN_INDEX="1"
+                    
+                    UUID="codelist-openness-visualisation-121"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9998121"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ALL_EXPANDED"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).ALL_EXPANDED"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).ALL_EXPANDED"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="102"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9998121"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />     
+                
+                <!-- VISUALISATION01 -->                
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="122"
+                    CODELIST_FK="12"
+                    NAMEABLE_ARTEFACT_FK="9998122"
+                    COLUMN_INDEX="2"
+                    
+                    UUID="codelist-openness-visualisation-122"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9998122"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION02"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).VISUALISATION02"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).VISUALISATION02"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="103"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9998122"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                 
+                                        
+            
+                <!-- VISUALISATION02 -->
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="123"
+                    CODELIST_FK="12"
+                    NAMEABLE_ARTEFACT_FK="9998123"
+                    COLUMN_INDEX="3"
+                    
+                    UUID="codelist-openness-visualisation-123"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9998123"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION03"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).VISUALISATION03"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).VISUALISATION03"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="104"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9998123"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                 
+                       
+                           
     <!-- ************************************************************************************** -->
     <!-- CODELIST 2                                                                             -->
     <!--        - Version 1: draft                                                              -->
@@ -1315,7 +1543,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -1528,7 +1757,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="311"
+        DEFAULT_ORDER_VISUAL_FK="311"
+        DEFAULT_OPENNESS_VISUAL_FK="311"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -1603,6 +1833,8 @@
               TB_CODES="311"
               ORDER1="0"
               ORDER2="1"
+              OPENNESS1="1"
+              OPENNESS2="1"
              />
             
             <TB_ITEMS
@@ -1658,6 +1890,8 @@
               TB_CODES="312"
               ORDER1="1"
               ORDER2="0"
+              OPENNESS1="1"
+              OPENNESS2="0"
              />            
         
             <TB_ITEMS
@@ -1705,8 +1939,6 @@
             <!-- CODE0201 -->
             <TB_CODES
                 TB_ITEMS="3121"
-                ORDER1="0"
-                ORDER2="1"
             />
             
             <TB_M_CODES
@@ -1715,6 +1947,8 @@
               TB_CODES="3121"
               ORDER1="0"
               ORDER2="1"
+              OPENNESS1="1"
+              OPENNESS2="1"
              />            
         
             <TB_ITEMS
@@ -1770,7 +2004,8 @@
                       TB_CODES="31211"
                       ORDER1="0"
                       ORDER2="0"
-                      
+                      OPENNESS1="1"
+                      OPENNESS2="0"
                      />                    
                 
                     <TB_ITEMS
@@ -1818,8 +2053,6 @@
             <!-- CODE0202 -->
             <TB_CODES
                 TB_ITEMS="3122"
-                ORDER1="1"
-                ORDER2="0"
             />
         
             <TB_M_CODES
@@ -1828,6 +2061,8 @@
               TB_CODES="3122"
               ORDER1="1"
               ORDER2="0"
+              OPENNESS1="1"
+              OPENNESS2="0"
              />
                      
             <TB_ITEMS
@@ -1872,15 +2107,16 @@
                 LAST_UPDATED_TZ="Europe/London"
             />     
             
-            
+                <!-- ORDER VISUALISATIONS -->
+                
                 <!-- ORDER VISUALISATION ALPHABETIC -->
-                <TB_M_CODELIST_ORDER_VISUAL 
+                <TB_M_CODELIST_ORDER_VIS 
                     ID="311"
                     CODELIST_FK="31"
                     NAMEABLE_ARTEFACT_FK="9997311"
                     COLUMN_INDEX="1"
                     
-                    UUID="codelist-visualisation-311"
+                    UUID="codelist-order-visualisation-311"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -1915,14 +2151,14 @@
                     LAST_UPDATED_TZ="Europe/London"
                 />  
                 
-            <!-- ORDER VISUALISATION 02 -->
-                <TB_M_CODELIST_ORDER_VISUAL 
+                <!-- ORDER VISUALISATION 02 -->
+                <TB_M_CODELIST_ORDER_VIS 
                     ID="312"
                     CODELIST_FK="31"
                     NAMEABLE_ARTEFACT_FK="9997312"
                     COLUMN_INDEX="2"
                     
-                    UUID="codelist-visualisation-312"
+                    UUID="codelist-order-visualisation-312"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -1955,7 +2191,93 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                                           
+                />    
+                
+                <!-- OPENNESS VISUALISATIONS -->
+                
+                <!-- OPENNESS VISUALISATION ALPHABETIC -->
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="311"
+                    CODELIST_FK="31"
+                    NAMEABLE_ARTEFACT_FK="9998311"
+                    COLUMN_INDEX="1"
+                    
+                    UUID="codelist-order-visualisation-311"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9998311"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ALL_EXPANDED"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(01.000).ALL_EXPANDED"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(01.000).ALL_EXPANDED"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="105"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9998311"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />  
+                
+                <!-- OPENNESS VISUALISATION 02 -->
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="312"
+                    CODELIST_FK="31"
+                    NAMEABLE_ARTEFACT_FK="9998312"
+                    COLUMN_INDEX="2"
+                    
+                    UUID="codelist-openness-visualisation-312"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9998312"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="VISUALISATION02"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(01.000).VISUALISATION02"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(01.000).VISUALISATION02"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="106"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9998312"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                                           
 
 
     <!-- ************************************************************************************** -->
@@ -2000,7 +2322,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2153,7 +2476,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2306,7 +2630,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="6"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="611"
+        DEFAULT_ORDER_VISUAL_FK="611"
+        DEFAULT_OPENNESS_VISUAL_FK="611"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2374,6 +2699,7 @@
               SHORT_NAME_FK="[null]"
               TB_CODES="611"
               ORDER1="0"
+              OPENNESS1="1"
              />
             
             <TB_ITEMS
@@ -2418,18 +2744,18 @@
                 LAST_UPDATED_TZ="Europe/London"
             />     
             
-                <!-- VISUALISATIONS -->
+                <!-- ORDER VISUALISATIONS -->
                 
                 <!-- ALPHABETICAL -->
                     <!-- -> CODE01 -->
                 
-                <TB_M_CODELIST_ORDER_VISUAL 
+                <TB_M_CODELIST_ORDER_VIS 
                     ID="611"
                     CODELIST_FK="61"
                     NAMEABLE_ARTEFACT_FK="9997611"
                     COLUMN_INDEX="1"
                     
-                    UUID="codelist-visualisation-611"
+                    UUID="codelist-order-visualisation-611"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -2462,7 +2788,52 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                               
+                />   
+                
+                <!-- OPENNESS VISUALISATIONS -->
+                
+                <!-- ALL EXPANDED -->
+                
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="611"
+                    CODELIST_FK="61"
+                    NAMEABLE_ARTEFACT_FK="9998611"
+                    COLUMN_INDEX="1"
+                    
+                    UUID="codelist-openness-visualisation-611"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9998611"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ALL_EXPANDED"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST06(01.000).ALL_EXPANDED"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST06(01.000).ALL_EXPANDED"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="81"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9998611"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                               
             
     <!-- ************************************************************************************** -->
     <!-- CODELIST 7                                                                             -->
@@ -2509,7 +2880,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2599,7 +2971,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="5"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="721"
+        DEFAULT_ORDER_VISUAL_FK="721"
+        DEFAULT_OPENNESS_VISUAL_FK="721"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -2667,6 +3040,7 @@
               SHORT_NAME_FK="[null]"
               TB_CODES="721"
               ORDER1="0"
+              OPENNESS1="1"
              />
             
             <TB_ITEMS
@@ -2711,18 +3085,18 @@
                 LAST_UPDATED_TZ="Europe/London"
             />      
             
-                <!-- VISUALISATIONS -->
+                <!-- ORDER VISUALISATIONS -->
                 
                 <!-- ALPHABETICAL -->
                     <!-- -> CODE01 -->
                 
-                <TB_M_CODELIST_ORDER_VISUAL 
+                <TB_M_CODELIST_ORDER_VIS 
                     ID="721"
                     CODELIST_FK="72"
                     NAMEABLE_ARTEFACT_FK="9997721"
                     COLUMN_INDEX="1"
                     
-                    UUID="codelist-visualisation-721"
+                    UUID="codelist-order-visualisation-721"
                     VERSION="1"
                     CREATED_BY="user1"
                     CREATED_DATE="2011-01-01 01:02:03"
@@ -2755,7 +3129,51 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                  
+                />   
+                
+                <!-- OPENNESS VISUALISATIONS -->
+                
+                <!-- ALL_EXPANDED -->
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="721"
+                    CODELIST_FK="72"
+                    NAMEABLE_ARTEFACT_FK="9998721"
+                    COLUMN_INDEX="1"
+                    
+                    UUID="codelist-openness-visualisation-721"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9998721"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ALL_EXPANDED"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST07(02.000).ALL_EXPANDED"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST07(02.000).ALL_EXPANDED"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="82"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-9998721"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                  
     
     <!-- ************************************************************************************** -->
     <!-- CODELIST 8                                                                             -->
@@ -2801,7 +3219,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -2954,7 +3373,8 @@
         CODELIST_FAMILY_FK="2"
         VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="[null]"
         PRODUCTION_VALIDATION_DATE="[null]"
@@ -3058,7 +3478,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3148,7 +3569,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3291,7 +3713,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3446,7 +3869,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3602,7 +4026,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="21"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -3757,7 +4182,8 @@
         CODELIST_FAMILY_FK="[null]"
         VARIABLE_FK="1"
         REPLACED_BY_CODELIST_FK="[null]"
-        DEFAULT_ORDER_VISUALISATION_FK="[null]"
+        DEFAULT_ORDER_VISUAL_FK="[null]"
+        DEFAULT_OPENNESS_VISUAL_FK="[null]"
         
         PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
         PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
@@ -6759,7 +7185,85 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="100"
-    />              
+    /> 
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="101"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1011"
+        LABEL="Visualización de apertura Todos abiertos 1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="101"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="102"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1021"
+        LABEL="Visualización de apertura Todos abiertos 1-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="102"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="103"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1031"
+        LABEL="Visualización 02 1-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="103"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="104"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1041"
+        LABEL="Visualización 03 1-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="104"
+    />       
+ 
+    <TB_INTERNATIONAL_STRINGS
+        ID="105"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1051"
+        LABEL="Visualización de apertura Todos abiertos 3-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="105"
+    />     
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="106"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1061"
+        LABEL="Visualización 02 3-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="106"
+    />                          
                                
                                                                                                   
 </dataset>

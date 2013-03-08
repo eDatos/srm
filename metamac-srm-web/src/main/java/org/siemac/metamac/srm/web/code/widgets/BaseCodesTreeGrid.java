@@ -9,7 +9,6 @@ import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.BaseItemsTreeGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
-import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.data.SortSpecifier;
@@ -40,7 +39,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
         // Add the orderField to the previous fields
         TreeGridField orderField = new TreeGridField(CodeDS.ORDER, getConstants().codeOrder());
-        orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        // orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
         orderField.setCanSort(true);
 
         ListGridField[] codeFields = new ListGridField[itemFields.length + 1];

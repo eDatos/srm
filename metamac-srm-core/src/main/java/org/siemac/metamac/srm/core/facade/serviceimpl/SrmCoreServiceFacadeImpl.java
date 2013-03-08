@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -33,6 +34,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
@@ -1106,18 +1108,28 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
         ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
-        // Update order
+        // Update parent
         getCodesMetamacService().updateCodeParent(ctx, codeUrn, newParentUrn);
     }
 
     @Override
-    public void updateCodeInOrderVisualisation(ServiceContext ctx, String codeUrn, String codelistOrderVisualisationIdentifier, Integer newCodeIndex) throws MetamacException {
+    public void updateCodeInOrderVisualisation(ServiceContext ctx, String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
         ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Update order
-        getCodesMetamacService().updateCodeInOrderVisualisation(ctx, codeUrn, codelistOrderVisualisationIdentifier, newCodeIndex);
+        getCodesMetamacService().updateCodeInOrderVisualisation(ctx, codeUrn, codelistOrderVisualisationUrn, newCodeIndex);
+    }
+
+    @Override
+    public void updateCodeInOpennessVisualisation(ServiceContext ctx, String codeUrn, String codelistOpennessVisualisationUrn, Boolean openness) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
+        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Update order
+        getCodesMetamacService().updateCodeInOpennessVisualisation(ctx, codeUrn, codelistOpennessVisualisationUrn, openness);
     }
 
     @Override
@@ -1162,16 +1174,17 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException {
+    public List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn)
+            throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Retrieve
-        return getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn, locale, orderVisualisationUrn);
+        return getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn, locale, orderVisualisationUrn, opennessVisualisationUrn);
     }
 
     // ------------------------------------------------------------------------
-    // VISUALISATIONS
+    // ORDER VISUALISATIONS
     // ------------------------------------------------------------------------
 
     @Override
@@ -1243,6 +1256,81 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform
         List<CodelistOrderVisualisationDto> codelistOrderVisualisationsDto = codesDo2DtoMapper.codelistOrderVisualisationsDoToDto(codelistOrderVisualisations);
         return codelistOrderVisualisationsDto;
+    }
+
+    // ------------------------------------------------------------------------
+    // OPENNESS VISUALISATIONS
+    // ------------------------------------------------------------------------
+
+    @Override
+    public CodelistOpennessVisualisationDto retrieveCodelistOpennessVisualisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindCodelistOpennessVisualisation(ctx);
+
+        // Retrieve
+        CodelistOpennessVisualisation codelistOpennessVisualisation = getCodesMetamacService().retrieveCodelistOpennessVisualisationByUrn(ctx, urn);
+
+        // Transform
+        CodelistOpennessVisualisationDto codelistOpennessVisualisationDto = codesDo2DtoMapper.codelistOpennessVisualisationDoToDto(codelistOpennessVisualisation);
+        return codelistOpennessVisualisationDto;
+    }
+
+    @Override
+    public CodelistOpennessVisualisationDto createCodelistOpennessVisualisation(ServiceContext ctx, CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistOpennessVisualisationDto.getCodelist().getUrn());
+        CodesSecurityUtils.canCrudCodelistOpennessVisualisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Transform
+        CodelistOpennessVisualisation codelistOpennessVisualisation = codesDto2DoMapper.codelistOpennessVisualisationDtoToDo(codelistOpennessVisualisationDto);
+
+        // Create
+        CodelistOpennessVisualisation codelistOpennessVisualisationCreated = getCodesMetamacService().createCodelistOpennessVisualisation(ctx, codelistOpennessVisualisationDto.getCodelist().getUrn(),
+                codelistOpennessVisualisation);
+
+        // Transform to DTO
+        codelistOpennessVisualisationDto = codesDo2DtoMapper.codelistOpennessVisualisationDoToDto(codelistOpennessVisualisationCreated);
+        return codelistOpennessVisualisationDto;
+    }
+
+    @Override
+    public CodelistOpennessVisualisationDto updateCodelistOpennessVisualisation(ServiceContext ctx, CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) throws MetamacException {
+        // Security
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistOpennessVisualisationDto.getCodelist().getUrn());
+        CodesSecurityUtils.canCrudCodelistOpennessVisualisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Transform
+        CodelistOpennessVisualisation codelistOpennessVisualisationToUpdate = codesDto2DoMapper.codelistOpennessVisualisationDtoToDo(codelistOpennessVisualisationDto);
+
+        // Update
+        CodelistOpennessVisualisation codelistOpennessVisualisationUpdated = getCodesMetamacService().updateCodelistOpennessVisualisation(ctx, codelistOpennessVisualisationToUpdate);
+
+        // Transform to DTO
+        codelistOpennessVisualisationDto = codesDo2DtoMapper.codelistOpennessVisualisationDoToDto(codelistOpennessVisualisationUpdated);
+        return codelistOpennessVisualisationDto;
+    }
+
+    @Override
+    public void deleteCodelistOpennessVisualisation(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodelistOpennessVisualisation codelistOpennessVisualisation = getCodesMetamacService().retrieveCodelistOpennessVisualisationByUrn(ctx, urn);
+        CodesSecurityUtils.canCrudCodelistOpennessVisualisation(ctx, codelistOpennessVisualisation.getCodelistVersion().getLifeCycleMetadata().getProcStatus());
+
+        // Delete
+        getCodesMetamacService().deleteCodelistOpennessVisualisation(ctx, urn);
+    }
+
+    @Override
+    public List<CodelistOpennessVisualisationDto> retrieveCodelistOpennessVisualisationsByCodelist(ServiceContext ctx, String codelistUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindCodelistOpennessVisualisation(ctx);
+
+        // Retrieve
+        List<CodelistOpennessVisualisation> codelistOpennessVisualisations = getCodesMetamacService().retrieveCodelistOpennessVisualisationsByCodelist(ctx, codelistUrn);
+
+        // Transform
+        List<CodelistOpennessVisualisationDto> codelistOpennessVisualisationsDto = codesDo2DtoMapper.codelistOpennessVisualisationsDoToDto(codelistOpennessVisualisations);
+        return codelistOpennessVisualisationsDto;
     }
 
     // ------------------------------------------------------------------------

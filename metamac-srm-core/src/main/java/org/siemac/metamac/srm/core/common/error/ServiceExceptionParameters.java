@@ -37,12 +37,15 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CODELIST_SHORT_NAME                                                = CODELIST + ".short_name";
     public static final String CODELIST_ACCESS_TYPE                                               = CODELIST + ".access_type";
     public static final String CODELIST_DEFAULT_ORDER_VISUALISATION                               = CODELIST + ".default_order_visualisation";
+    public static final String CODELIST_DEFAULT_OPENNESS_VISUALISATION                            = CODELIST + ".default_openness_visualisation";
     public static final String CODELIST_VARIABLE                                                  = CODELIST + ".variable";
     public static final String CODELIST_IS_VARIABLE_UPDATED                                       = CODELIST + ".is_variable_updated";
 
     // CODELIST VISUALISATION
     public static final String CODELIST_ORDER_VISUALISATION                                       = "codelist_order_visualisation";
     public static final String CODELIST_ORDER_VISUALISATION_INDEX                                 = CODELIST_ORDER_VISUALISATION + ".index";
+    public static final String CODELIST_OPENNESS_VISUALISATION                                    = "codelist_openness_visualisation";
+    public static final String CODELIST_OPENNESS_VISUALISATION_EXPANDED                           = CODELIST_OPENNESS_VISUALISATION + ".expanded";
 
     // CODELIST FAMILY
     public static final String CODELIST_FAMILY                                                    = "codelist_family";

@@ -21,6 +21,14 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
         return SharedItemsSecurityUtils.canUpdateItemScheme(metamacPrincipal, codelistProcStatus);
     }
 
+    public static boolean canRetrieveOrFindCodelistOpennessVisualisation(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canCrudCodelistOpennessVisualisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum codelistProcStatus) {
+        return SharedItemsSecurityUtils.canUpdateItemScheme(metamacPrincipal, codelistProcStatus);
+    }
+
     public static boolean canRetrieveOrFindCodelistFamily(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
     }

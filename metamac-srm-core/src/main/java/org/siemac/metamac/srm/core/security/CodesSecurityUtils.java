@@ -24,6 +24,18 @@ public class CodesSecurityUtils extends SecurityUtils {
         }
     }
 
+    public static void canRetrieveOrFindCodelistOpennessVisualisation(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canRetrieveOrFindCodelistOpennessVisualisation(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
+    public static void canCrudCodelistOpennessVisualisation(ServiceContext ctx, ProcStatusEnum codelistProcStatus) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(getMetamacPrincipal(ctx), codelistProcStatus)) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canRetrieveOrFindCodelistFamily(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canRetrieveOrFindCodelistFamily(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);

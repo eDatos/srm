@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -15,6 +16,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
@@ -55,6 +57,7 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
         CodelistMetamacDto dto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
         dto.setUrn(CODELIST_1_V2);
         dto.setDefaultOrderVisualisation(CodesMetamacDtoMocks.mockCodelistOrderVisualisationRelatedResourceDto("VISUALISATION_02", CODELIST_1_V2_ORDER_VISUALISATION_03));
+        dto.setDefaultOpennessVisualisation(CodesMetamacDtoMocks.mockCodelistOpennessVisualisationRelatedResourceDto("VISUALISATION_02", CODELIST_1_V2_OPENNESS_VISUALISATION_03));
         dto.setVersionOptimisticLocking(1L);
         CodelistVersionMetamac entity = codesDto2DoMapper.codelistDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsCodelist(dto, entity);
@@ -125,6 +128,14 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
 
         CodelistOrderVisualisation entity = codesDto2DoMapper.codelistOrderVisualisationDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsCodelistOrderVisualisation(dto, entity);
+    }
+
+    @Test
+    public void testCodelistOpennessVisualisationDtoToDo() throws MetamacException {
+        CodelistOpennessVisualisationDto dto = CodesMetamacDtoMocks.mockCodelistOpennessVisualisationDto();
+
+        CodelistOpennessVisualisation entity = codesDto2DoMapper.codelistOpennessVisualisationDtoToDo(dto);
+        CodesMetamacAsserts.assertEqualsCodelistOpennessVisualisation(dto, entity);
     }
 
     @Override

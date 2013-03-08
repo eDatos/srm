@@ -23,6 +23,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -108,8 +109,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
 
         // Post create actions
-        // Add alphabetical order
-        codelistVersion = createCodelistOrderVisualisationAlphabetical(codelistVersion);
+        codelistVersion = createCodelistOrderVisualisationAlphabetical(codelistVersion); // Add alphabetical order
+        codelistVersion = createCodelistOpennessVisualisationAllOpened(codelistVersion); // Add all opened visualisation
         // Execute common actions after creation
         postCreateCodelist(ctx, codelistVersion, replaceTo);
 
@@ -233,6 +234,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Delete
         codelistVersionMetamac.removeAllReplaceToCodelists(); // codelist can be deleted although it replaces to another codelist
         codelistVersionMetamac.setDefaultOrderVisualisation(null);
+        codelistVersionMetamac.setDefaultOpennessVisualisation(null);
         codesService.deleteCodelist(ctx, urn);
     }
 
@@ -249,6 +251,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Versioning visualisations // TODO cuando se implementen las versiones dummy, decidir dónde ubicar este código
         versioningCodelistOrderVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
+        versioningCodelistOpennessVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
         return codelistNewVersion;
     }
 
@@ -291,19 +294,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Save code
         code = (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
-
         // Add to all visualisations of codelist
-        Boolean alphabeticalAlreadyUpdated = Boolean.FALSE; // to avoid select to compare code of nameable
-        Integer orderInLastPosition = null; // no avoid innecessary extra queries
-        for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
-            if (!alphabeticalAlreadyUpdated && SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
-                setCodeOrderInAlphabeticalPositionAndReorderCodesInLevel(codelistVersion, codelistOrderVisualisation, code.getParent(), code);
-                alphabeticalAlreadyUpdated = Boolean.TRUE;
-            } else {
-                orderInLastPosition = setCodeOrderInLastPositionInLevel(codelistVersion, codelistOrderVisualisation, code.getParent(), code, orderInLastPosition);
-            }
-        }
-        code = getCodeMetamacRepository().save(code);
+        code = createCodeSetVisualisations(codelistVersion, code);
         return code;
     }
 
@@ -400,6 +392,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 orderInLastPosition = setCodeOrderInLastPositionInLevel(codelistVersion, codelistOrderVisualisation, code.getParent(), code, orderInLastPosition);
             }
         }
+        // Note: openness configuration remains inmutable
         code = getCodeMetamacRepository().save(code);
     }
 
@@ -411,16 +404,35 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, codeUrn);
         checkCodelistCanBeModified(codelistVersion);
 
-        CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
         CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(codelistOrderVisualisationUrn);
         SrmValidationUtils.checkNotAlphabeticalOrderVisualisation(codelistOrderVisualisation);
 
+        CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
         // Reorder codes in same level
         reorderCodesDeletingOneCode(codelistVersion, codelistOrderVisualisation, code.getParent(), code);
         reorderCodesAddingOneCodeInMiddle(codelistVersion, codelistOrderVisualisation, code, newCodeIndex);
         // Update code
         SrmServiceUtils.setCodeOrder(code, codelistOrderVisualisation.getColumnIndex(), newCodeIndex);
         getCodeMetamacRepository().save(code);
+    }
+
+    // TODO hacer múltiple
+    @Override
+    public Boolean updateCodeInOpennessVisualisation(ServiceContext ctx, String codeUrn, String opennessVisualisation, Boolean openness) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkUpdateCodeInOpennessVisualisation(codeUrn, opennessVisualisation, openness, null);
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, codeUrn);
+        checkCodelistCanBeModified(codelistVersion);
+
+        CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByUrn(opennessVisualisation);
+        SrmValidationUtils.checkNotOpenedOpennessVisualisation(codelistOpennessVisualisation);
+
+        // Update code
+        CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
+        SrmServiceUtils.setCodeOpenness(code, codelistOpennessVisualisation.getColumnIndex(), openness);
+        getCodeMetamacRepository().save(code);
+
+        return SrmServiceUtils.getCodeOpenness(code, codelistOpennessVisualisation.getColumnIndex());
     }
 
     @Override
@@ -446,27 +458,32 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
             reorderCodesDeletingOneCode(codelistVersion, codelistOrderVisualisation, parent, code);
         }
+        // Openness visualisations of other codes in level are not affected
 
         // Delete code
         codesService.deleteCode(ctx, urn);
     }
 
     @Override
-    public List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException {
+    public List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn)
+            throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrn(codelistUrn, locale, orderVisualisationUrn, null);
+        CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrn(codelistUrn, locale, orderVisualisationUrn, opennessVisualisationUrn, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-        Integer columnIndex = null;
+        Integer orderColumnIndex = null;
         if (orderVisualisationUrn != null) {
             CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
-            columnIndex = codelistOrderVisualisation.getColumnIndex();
-        } else {
-            // any order
+            orderColumnIndex = codelistOrderVisualisation.getColumnIndex();
+        }
+        Integer opennessColumnIndex = null;
+        if (opennessVisualisationUrn != null) {
+            CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByUrn(ctx, opennessVisualisationUrn);
+            opennessColumnIndex = codelistOpennessVisualisation.getColumnIndex();
         }
 
         // Retrieve
-        return getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersion.getId(), locale, columnIndex);
+        return getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersion.getId(), locale, orderColumnIndex, opennessColumnIndex);
     }
 
     // ------------------------------------------------------------------------------------
@@ -997,8 +1014,32 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return Integer.valueOf(index);
     }
 
+    /**
+     * Get a column available in Code to store opennesss
+     */
+    private Integer getCodelistOpennessVisualisationAvailable(CodelistVersionMetamac codelistVersion) throws MetamacException {
+        int index = -1;
+        for (int i = 1; i <= SrmConstants.CODELIST_OPENNESS_VISUALISATION_MAXIMUM_NUMBER; i++) {
+            boolean alreadyExists = false;
+            for (CodelistOpennessVisualisation codelistOpennessVisualisationPrevious : codelistVersion.getOpennessVisualisations()) {
+                if (codelistOpennessVisualisationPrevious.getColumnIndex().intValue() == i) {
+                    alreadyExists = true;
+                    break;
+                }
+            }
+            if (!alreadyExists) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
+            throw new MetamacException(ServiceExceptionType.CODELIST_OPENNESS_VISUALISATION_MAXIMUM_REACHED, codelistVersion.getMaintainableArtefact().getUrn());
+        }
+        return Integer.valueOf(index);
+    }
+
     // ------------------------------------------------------------------------------------
-    // CODELIST VISUALISATIONS
+    // CODELIST ORDER VISUALISATIONS
     // ------------------------------------------------------------------------------------
     @Override
     public CodelistOrderVisualisation createCodelistOrderVisualisation(ServiceContext ctx, String codelistUrn, CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException {
@@ -1013,7 +1054,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistOrderVisualisation.setCodelistVersion(codelistVersion);
 
         // Assign default order to all codes, by level (copy from alphabetic)
-        getCodeMetamacRepository().copyCodeOrders(codelistVersion, SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_COLUMN_INDEX, codelistOrderVisualisation.getColumnIndex());
+        getCodeMetamacRepository().copyCodesOrderColumn(codelistVersion, SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_COLUMN_INDEX, codelistOrderVisualisation.getColumnIndex());
 
         // Create
         setCodelistOrderVisualisationUrnUnique(codelistOrderVisualisation);
@@ -1068,7 +1109,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Delete
         getCodelistOrderVisualisationRepository().delete(codelistOrderVisualisationToDelete);
         // Clear ordenations in code columns
-        getCodeMetamacRepository().clearCodeOrders(codelistVersion, codelistOrderVisualisationToDelete.getColumnIndex());
+        getCodeMetamacRepository().clearCodesOrderColumn(codelistVersion, codelistOrderVisualisationToDelete.getColumnIndex());
     }
 
     @Override
@@ -1080,6 +1121,92 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Retrieve
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
         return codelistVersion.getOrderVisualisations();
+    }
+
+    // ------------------------------------------------------------------------------------
+    // CODELIST OPENNESS VISUALISATIONS
+    // ------------------------------------------------------------------------------------
+    @Override
+    public CodelistOpennessVisualisation createCodelistOpennessVisualisation(ServiceContext ctx, String codelistUrn, CodelistOpennessVisualisation codelistOpennessVisualisation)
+            throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkCreateCodelistOpennessVisualisation(codelistUrn, codelistOpennessVisualisation, null);
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        checkCodelistCanBeModified(codelistVersion);
+
+        // Create openness visualisation
+        codelistOpennessVisualisation.setColumnIndex(getCodelistOpennessVisualisationAvailable(codelistVersion));
+        codelistOpennessVisualisation.setCodelistVersion(codelistVersion);
+
+        // Assign default openness to all codes
+        getCodeMetamacRepository().updateCodesOpennessColumn(codelistVersion, codelistOpennessVisualisation.getColumnIndex(), SrmConstants.CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE);
+
+        // Create
+        setCodelistOpennessVisualisationUrnUnique(codelistOpennessVisualisation);
+        return getCodelistOpennessVisualisationRepository().save(codelistOpennessVisualisation);
+    }
+
+    @Override
+    public CodelistOpennessVisualisation retrieveCodelistOpennessVisualisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(urn);
+
+        // Retrieve
+        CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByUrn(urn);
+        return codelistOpennessVisualisation;
+    }
+
+    @Override
+    public CodelistOpennessVisualisation updateCodelistOpennessVisualisation(ServiceContext ctx, CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkUpdateCodelistOpennessVisualisation(codelistOpennessVisualisation, null);
+        checkCodelistCanBeModified(codelistOpennessVisualisation.getCodelistVersion());
+
+        // If code has been changed, update URN
+        if (codelistOpennessVisualisation.getNameableArtefact().getIsCodeUpdated()) {
+            if (codelistOpennessVisualisation.getNameableArtefact().getUrn().endsWith("." + SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE)) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE);
+            }
+            setCodelistOpennessVisualisationUrnUnique(codelistOpennessVisualisation);
+        }
+        codelistOpennessVisualisation.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
+
+        // Update
+        return getCodelistOpennessVisualisationRepository().save(codelistOpennessVisualisation);
+    }
+
+    @Override
+    public void deleteCodelistOpennessVisualisation(ServiceContext ctx, String urn) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
+        CodelistOpennessVisualisation codelistOpennessVisualisationToDelete = retrieveCodelistOpennessVisualisationByUrn(urn);
+        SrmValidationUtils.checkNotOpenedOpennessVisualisation(codelistOpennessVisualisationToDelete);
+
+        // Check codelist
+        CodelistVersionMetamac codelistVersion = codelistOpennessVisualisationToDelete.getCodelistVersion();
+        checkCodelistCanBeModified(codelistVersion);
+        // Clear if it is default visualisation
+        if (codelistVersion.getDefaultOpennessVisualisation() != null && codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getUrn().equals(urn)) {
+            codelistVersion.setDefaultOpennessVisualisation(null);
+            getCodelistVersionMetamacRepository().save(codelistVersion);
+        }
+
+        // Delete
+        getCodelistOpennessVisualisationRepository().delete(codelistOpennessVisualisationToDelete);
+        // Clear configurations in code columns
+        getCodeMetamacRepository().clearCodesOpennessColumn(codelistVersion, codelistOpennessVisualisationToDelete.getColumnIndex());
+    }
+
+    @Override
+    public List<CodelistOpennessVisualisation> retrieveCodelistOpennessVisualisationsByCodelist(ServiceContext ctx, String codelistUrn) throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveByUrn(codelistUrn);
+
+        // Retrieve
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        return codelistVersion.getOpennessVisualisations();
     }
 
     // ------------------------------------------------------------------------------------
@@ -1122,13 +1249,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Maintainer
         srmValidation.checkMaintainer(ctx, codelist.getMaintainableArtefact(), codelist.getMaintainableArtefact().getIsImported());
 
-        // Visualisations
-        if (codelist.getDefaultOrderVisualisation() != null) {
-            // Check it is visualisation of this codelist
-            if (!codelist.getDefaultOrderVisualisation().getCodelistVersion().getMaintainableArtefact().getUrn().equals(codelist.getMaintainableArtefact().getUrn())) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
-                        .withMessageParameters(ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION).build();
-            }
+        // Visualisations (check they belong to this codelist)
+        if (codelist.getDefaultOrderVisualisation() != null
+                && !codelist.getDefaultOrderVisualisation().getCodelistVersion().getMaintainableArtefact().getUrn().equals(codelist.getMaintainableArtefact().getUrn())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION)
+                    .build();
+        }
+        if (codelist.getDefaultOpennessVisualisation() != null
+                && !codelist.getDefaultOpennessVisualisation().getCodelistVersion().getMaintainableArtefact().getUrn().equals(codelist.getMaintainableArtefact().getUrn())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
+                    .withMessageParameters(ServiceExceptionParameters.CODELIST_DEFAULT_OPENNESS_VISUALISATION).build();
         }
 
         // Check codelist doesnt replace self
@@ -1243,6 +1373,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistOrderVisualisation;
     }
 
+    private CodelistOpennessVisualisation retrieveCodelistOpennessVisualisationByUrn(String urn) throws MetamacException {
+        CodelistOpennessVisualisation codelistOpennessVisualisation = getCodelistOpennessVisualisationRepository().findByUrn(urn);
+        if (codelistOpennessVisualisation == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return codelistOpennessVisualisation;
+    }
+
     private void checkCodelistCanBeModified(CodelistVersionMetamac codelistVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
     }
@@ -1342,7 +1480,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     /**
-     * Generate urn, check it is unique and set to variable element. Set also urnProvider
+     * Generate urn, check it is unique and set to visualisation. Set also urnProvider
      */
     private void setCodelistOrderVisualisationUrnUnique(CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException {
         String urn = GeneratorUrnUtils.generateCodelistOrderVisualisationUrn(codelistOrderVisualisation);
@@ -1350,6 +1488,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         codelistOrderVisualisation.getNameableArtefact().setUrn(urn);
         codelistOrderVisualisation.getNameableArtefact().setUrnProvider(urn);
+    }
+
+    /**
+     * Generate urn, check it is unique and set to visualisation. Set also urnProvider
+     */
+    private void setCodelistOpennessVisualisationUrnUnique(CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException {
+        String urn = GeneratorUrnUtils.generateCodelistOpennessVisualisationUrn(codelistOpennessVisualisation);
+        identifiableArtefactRepository.checkUrnUnique(urn, codelistOpennessVisualisation.getNameableArtefact().getId());
+
+        codelistOpennessVisualisation.getNameableArtefact().setUrn(urn);
+        codelistOpennessVisualisation.getNameableArtefact().setUrnProvider(urn);
     }
 
     /**
@@ -1415,7 +1564,27 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         }
         return codelistVersion;
+    }
 
+    private CodelistVersionMetamac createCodelistOpennessVisualisationAllOpened(CodelistVersionMetamac codelistVersion) throws MetamacException {
+        CodelistOpennessVisualisation allExpandedOpennessVisualisation = new CodelistOpennessVisualisation();
+        allExpandedOpennessVisualisation.setNameableArtefact(new NameableArtefact());
+        allExpandedOpennessVisualisation.getNameableArtefact().setCode(SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE);
+        // NameableArtefact
+        InternationalString name = new InternationalString();
+        name.addText(new LocalisedString("es", "Todos desplegados"));
+        name.addText(new LocalisedString("en", "All opened"));
+        name.addText(new LocalisedString("pt", "Tudo aberto"));
+        allExpandedOpennessVisualisation.getNameableArtefact().setName(name);
+        allExpandedOpennessVisualisation.setColumnIndex(SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_COLUMN_INDEX);
+
+        codelistVersion.addOpennessVisualisation(allExpandedOpennessVisualisation);
+        setCodelistOpennessVisualisationUrnUnique(allExpandedOpennessVisualisation);
+        codelistVersion = getCodelistVersionMetamacRepository().save(codelistVersion);
+
+        // Add codes with expanded = true as default // TODO comprobar en importación que se hace correctamente, para un codelist con sus codes sin persistir
+        getCodeMetamacRepository().updateCodesOpennessColumn(codelistVersion, allExpandedOpennessVisualisation.getColumnIndex(), Boolean.TRUE);
+        return codelistVersion;
     }
 
     private VariableElementOperation createVariableElementOperationCommon(VariableElementOperationTypeEnum operationType, List<String> sources, List<String> targets) throws MetamacException {
@@ -1526,5 +1695,55 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistTarget.addOrderVisualisation(target);
         setCodelistOrderVisualisationUrnUnique(target);
         return target;
+    }
+
+    private void versioningCodelistOpennessVisualisations(ServiceContext ctx, CodelistVersionMetamac source, CodelistVersionMetamac target) throws MetamacException {
+        for (CodelistOpennessVisualisation codelistOpennessVisualisationSource : source.getOpennessVisualisations()) {
+            CodelistOpennessVisualisation codelistOpennessVisualisationTarget = copyCodelistOpennessVisualisation(codelistOpennessVisualisationSource, target);
+            if (source.getDefaultOpennessVisualisation().getNameableArtefact().getCode().equals(codelistOpennessVisualisationSource.getNameableArtefact().getCode())) {
+                target.setDefaultOpennessVisualisation(codelistOpennessVisualisationTarget);
+            }
+        }
+    }
+
+    private CodelistOpennessVisualisation copyCodelistOpennessVisualisation(CodelistOpennessVisualisation source, CodelistVersionMetamac codelistTarget) throws MetamacException {
+        CodelistOpennessVisualisation target = new CodelistOpennessVisualisation();
+        target.setColumnIndex(source.getColumnIndex());
+        target.setNameableArtefact(BaseVersioningCopyUtils.copyNameableArtefact(source.getNameableArtefact()));
+        codelistTarget.addOpennessVisualisation(target);
+        setCodelistOpennessVisualisationUrnUnique(target);
+        return target;
+    }
+
+    private CodeMetamac createCodeSetVisualisations(CodelistVersionMetamac codelistVersion, CodeMetamac code) throws MetamacException {
+
+        // Order visualisations
+        Boolean alphabeticalAlreadyUpdated = Boolean.FALSE; // to avoid select to compare code of nameable
+        Integer orderInLastPosition = null; // no avoid innecessary extra queries
+        for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
+            if (!alphabeticalAlreadyUpdated && SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
+                setCodeOrderInAlphabeticalPositionAndReorderCodesInLevel(codelistVersion, codelistOrderVisualisation, code.getParent(), code);
+                alphabeticalAlreadyUpdated = Boolean.TRUE;
+            } else {
+                orderInLastPosition = setCodeOrderInLastPositionInLevel(codelistVersion, codelistOrderVisualisation, code.getParent(), code, orderInLastPosition);
+            }
+        }
+
+        // Openness visualisations
+        Boolean defaultOpennessValue = SrmConstants.CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE;
+        Boolean allExpandedAlreadyUpdated = Boolean.FALSE; // to avoid select to compare code of nameable
+        for (CodelistOpennessVisualisation codelistOpennessVisualisation : codelistVersion.getOpennessVisualisations()) {
+            Boolean value = null;
+            if (!allExpandedAlreadyUpdated && SrmServiceUtils.isAllExpandedOpennessVisualisation(codelistOpennessVisualisation)) {
+                value = Boolean.TRUE;
+                allExpandedAlreadyUpdated = Boolean.TRUE;
+            } else {
+                value = defaultOpennessValue;
+            }
+            SrmServiceUtils.setCodeOpenness(code, codelistOpennessVisualisation.getColumnIndex(), value);
+        }
+
+        code = getCodeMetamacRepository().save(code);
+        return code;
     }
 }

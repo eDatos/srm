@@ -480,6 +480,8 @@ Application SrmFacadeCore {
 			updateCodeParent(String codeUrn, String newParentUrn) throws MetamacException;
 			"Updates position of code to visualisation requested"
 			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex) throws MetamacException;
+			"Updates openness of code to visualisation requested"
+			updateCodeInOpennessVisualisation(String codeUrn, String codelistOpennessVisualisationUrn, Boolean openness) throws MetamacException;
 	   		"Retrieves a code by URN"
             @CodeMetamacDto retrieveCodeByUrn(String urn) throws MetamacException;
             "Finds codes by criteria"
@@ -487,19 +489,30 @@ Application SrmFacadeCore {
 			"Deletes code"
             deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by code scheme in locale and visualisation requested"
-    		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn) throws MetamacException;
+    		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn) throws MetamacException;
     		
-    		"Creates visualisation"
+    		"Creates order visualisation"
     		@CodelistOrderVisualisationDto createCodelistOrderVisualisation(@CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException;
-			"Updates visualisation"
+			"Updates order visualisation"
 			@CodelistOrderVisualisationDto updateCodelistOrderVisualisation(@CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException;
-    		"Retrieves visualisation by identifier"
+    		"Retrieves order visualisation by identifier"
     		@CodelistOrderVisualisationDto retrieveCodelistOrderVisualisationByUrn(String urn) throws MetamacException;
-    		"Retrieve visualisations by codelist"
+    		"Retrieve order visualisations by codelist"
     		List<@CodelistOrderVisualisationDto> retrieveCodelistOrderVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
-			"Deletes visualisation"
+			"Deletes order visualisation"
     		deleteCodelistOrderVisualisation(String urn) throws MetamacException;
     		
+    		"Creates openness visualisation"
+    		@CodelistOpennessVisualisationDto createCodelistOpennessVisualisation(@CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) throws MetamacException;
+			"Updates openness visualisation"
+			@CodelistOpennessVisualisationDto updateCodelistOpennessVisualisation(@CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) throws MetamacException;
+    		"Retrieves openness visualisation by identifier"
+    		@CodelistOpennessVisualisationDto retrieveCodelistOpennessVisualisationByUrn(String urn) throws MetamacException;
+    		"Retrieve openness visualisations by codelist"
+    		List<@CodelistOpennessVisualisationDto> retrieveCodelistOpennessVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
+			"Deletes openness visualisation"
+    		deleteCodelistOpennessVisualisation(String urn) throws MetamacException;
+    		    		
 			"Creates codelist family"
 			@CodelistFamilyDto createCodelistFamily(@CodelistFamilyDto codelistFamilyDto) throws MetamacException;
 			"Updates codelist family"

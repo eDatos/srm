@@ -29,6 +29,7 @@ Application CodesMetamac {
 			> @VariableElementRepository
 			> @VariableElementOperationRepository
 			> @CodelistOrderVisualisationRepository
+			> @CodelistOpennessVisualisationRepository
 
 			// CODELISTS
 
@@ -81,6 +82,8 @@ Application CodesMetamac {
 			updateCodeParent(String codeUrn, String newParentUrn) throws MetamacException;
 			"Updates position of code to visualisation requested"
 			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex) throws MetamacException;
+			"Updates openness of code to visualisation requested"
+			Boolean updateCodeInOpennessVisualisation(String codeUrn, String codelistOpennessVisualisationUrn, Boolean openness) throws MetamacException;
     		"Retrieves code by urn"
     		@CodeMetamac retrieveCodeByUrn(String urn) throws MetamacException;
     		"Finds codes by criteria"
@@ -88,22 +91,33 @@ Application CodesMetamac {
 			"Deletes code"
     		deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by codelist, in tree structure"
-    		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn) throws MetamacException;
+    		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn, String codelistOpennessVisualisationUrn) throws MetamacException;
     		
     		// VISUALISATIONS
     		
-    		"Creates visualisation"
+    		"Creates order visualisation"
     		@CodelistOrderVisualisation createCodelistOrderVisualisation(String codelistUrn, @CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException;
-			"Updates visualisation"
+			"Updates order visualisation"
 			@CodelistOrderVisualisation updateCodelistOrderVisualisation(@CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException;
-    		"Retrieves visualisation by identifier"
+    		"Retrieves order visualisation by identifier"
     		@CodelistOrderVisualisation retrieveCodelistOrderVisualisationByUrn(String urn) throws MetamacException;
-    		"Retrieve visualisations by codelist"
+    		"Retrieve order visualisations by codelist"
     		List<@CodelistOrderVisualisation> retrieveCodelistOrderVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
-			"Deletes visualisation"
+			"Deletes order visualisation"
     		deleteCodelistOrderVisualisation(String urn) throws MetamacException;
 
-			// CODESLIST FAMILIES
+			"Creates openness visualisation"
+    		@CodelistOpennessVisualisation createCodelistOpennessVisualisation(String codelistUrn, @CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException;
+			"Updates openness visualisation"
+			@CodelistOpennessVisualisation updateCodelistOpennessVisualisation(@CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException;
+    		"Retrieves openness visualisation by identifier"
+    		@CodelistOpennessVisualisation retrieveCodelistOpennessVisualisationByUrn(String urn) throws MetamacException;
+    		"Retrieve openness visualisations by codelist"
+    		List<@CodelistOpennessVisualisation> retrieveCodelistOpennessVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
+			"Deletes openness visualisation"
+    		deleteCodelistOpennessVisualisation(String urn) throws MetamacException;
+    		
+			// CODELIST FAMILIES
 			
 			"Creates codelist family"
 			@CodelistFamily createCodelistFamily(@CodelistFamily codelistFamily) throws MetamacException;
@@ -208,10 +222,16 @@ Application CodesMetamac {
 			- @CodelistVersionMetamac replacedByCodelist nullable cascade="none" fetch="lazy" databaseColumn="REPLACED_BY_CODELIST_FK"  <-> replaceToCodelists;
 			"Codelists that are replaced by this one"
 			- Bag<@CodelistVersionMetamac> replaceToCodelists cascade="none" fetch="lazy" <-> replacedByCodelist;
+
 			"Order visualisations of codelist"
 			- Bag<@CodelistOrderVisualisation> orderVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> codelistVersion;
 			"Default order visualisation"
-			- @CodelistOrderVisualisation defaultOrderVisualisation nullable cascade="none" fetch="lazy" databaseColumn="DEFAULT_ORDER_VISUALISATION_FK";
+			- @CodelistOrderVisualisation defaultOrderVisualisation nullable cascade="none" fetch="lazy" databaseColumn="DEFAULT_ORDER_VISUAL_FK";
+
+			"Openness visualisations of codelist"
+			- Bag<@CodelistOpennessVisualisation> opennessVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> codelistVersion;
+			"Default openness visualisation"
+			- @CodelistOpennessVisualisation defaultOpennessVisualisation nullable cascade="none" fetch="lazy" databaseColumn="DEFAULT_OPENNESS_VISUAL_FK";
 			
 			Repository CodelistVersionMetamacRepository {
 				save;
@@ -231,6 +251,7 @@ Application CodesMetamac {
 			- @InternationalString shortName nullable cascade="all" fetch="lazy" databaseColumn="SHORT_NAME_FK";
 			"Variable element"
 			- @VariableElement variableElement nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_ELEMENT_FK"  <-> codes;
+			
 			Integer order1 nullable;
 			Integer order2 nullable;
 			Integer order3 nullable;
@@ -251,28 +272,53 @@ Application CodesMetamac {
 			Integer order18 nullable;
 			Integer order19 nullable;
 			Integer order20 nullable;
-
+			
+			Boolean openness1 nullable;
+			Boolean openness2 nullable;
+			Boolean openness3 nullable;
+			Boolean openness4 nullable;
+			Boolean openness5 nullable;
+			Boolean openness6 nullable;
+			Boolean openness7 nullable;
+			Boolean openness8 nullable;
+			Boolean openness9 nullable;
+			Boolean openness10 nullable;
+			Boolean openness11 nullable;
+			Boolean openness12 nullable;
+			Boolean openness13 nullable;
+			Boolean openness14 nullable;
+			Boolean openness15 nullable;
+			Boolean openness16 nullable;
+			Boolean openness17 nullable;
+			Boolean openness18 nullable;
+			Boolean openness19 nullable;
+			Boolean openness20 nullable;
+			
 			Repository CodeMetamacRepository {
 				save;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByQuery(String query, Map<String, Object> parameters);
 				@CodeMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
-				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex);
+				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex);
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) throws MetamacException;
 				
-				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Item parent, @CodeMetamac code, Integer columnIndex, Integer orderCodeToDelete);
-				reorderCodesAddingOneCodeInMiddle(@CodelistVersionMetamac codelistVersion, @CodeMetamac code, Integer columnIndex, Integer orderCodeToAdd);
-				clearCodeOrders(@CodelistVersionMetamac codelistVersion, Integer columnIndex);
-				copyCodeOrders(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
-				Integer getCodeMaximumOrderInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, Integer columnIndex);
+				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Item parent, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToDelete);
+				reorderCodesAddingOneCodeInMiddle(@CodelistVersionMetamac codelistVersion, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToAdd);
+				clearCodesOrderColumn(@CodelistVersionMetamac codelistVersion, Integer orderColumnIndex);
+				copyCodesOrderColumn(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
+				Integer getCodeMaximumOrderInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, Integer orderColumnIndex);
 				Integer getCodeAlphabeticPositionInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, @Item code);
+
+				clearCodesOpennessColumn(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex);
+				copyCodesOpennessColumn(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
+				updateCodesOpennessColumn(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded);
 			}
 		}
 		
 		Entity CodelistOrderVisualisation {
-			databaseTable="TB_M_CODELIST_ORDER_VISUAL"
-			hint="idSequence=M_CODELIST_ORDER_VISUAL"
+			databaseTable="TB_M_CODELIST_ORDER_VIS"
+			hint="idSequence=M_CODELIST_ORDER_VIS"
 			
 			"Nameable artefact"
 			- @NameableArtefact nameableArtefact not nullable cascade="all" fetch="lazy" databaseColumn="NAMEABLE_ARTEFACT_FK";
@@ -289,7 +335,28 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CodelistOrderVisualisation findByUrn(String orderVisualisationUrn);
 			}			
-		}				
+		}	
+		
+		Entity CodelistOpennessVisualisation {
+			databaseTable="TB_M_CODELIST_OPENNESS_VIS"
+			hint="idSequence=M_CODELIST_OPENNESS_VIS"
+			
+			"Nameable artefact"
+			- @NameableArtefact nameableArtefact not nullable cascade="all" fetch="lazy" databaseColumn="NAMEABLE_ARTEFACT_FK";
+			"Last update to optimistic locking"
+			DateTimeTZ updateDate nullable;
+			"Column with openness in table of Codes"
+			Integer columnIndex not nullable;
+			"Relation to codelist"			
+			- @CodelistVersionMetamac codelistVersion not nullable cascade="none" fetch="lazy" databaseColumn="CODELIST_FK" <-> opennessVisualisations;
+			
+			Repository CodelistOpennessVisualisationRepository {
+				save;
+				delete;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				@CodelistOpennessVisualisation findByUrn(String opennessVisualisationUrn);
+			}			
+		}						
 
 		Entity CodelistFamily {
 			databaseTable="TB_M_CODELIST_FAMILIES"

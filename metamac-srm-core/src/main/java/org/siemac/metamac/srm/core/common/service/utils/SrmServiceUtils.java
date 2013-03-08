@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -100,6 +101,10 @@ public class SrmServiceUtils {
         return SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(orderVisualisation.getNameableArtefact().getCode());
     }
 
+    public static Boolean isAllExpandedOpennessVisualisation(CodelistOpennessVisualisation opennessVisualisation) {
+        return SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE.equals(opennessVisualisation.getNameableArtefact().getCode());
+    }
+
     public static void setCodeOrder(CodeMetamac code, int columnIndex, Integer codeIndex) {
         try {
             MethodUtils.invokeExactMethod(code, "setOrder" + columnIndex, codeIndex);
@@ -111,6 +116,22 @@ public class SrmServiceUtils {
     public static Integer getCodeOrder(CodeMetamac code, int columnIndex) {
         try {
             return (Integer) MethodUtils.invokeExactMethod(code, "getOrder" + columnIndex, null);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setCodeOpenness(CodeMetamac code, int columnIndex, Boolean openness) {
+        try {
+            MethodUtils.invokeExactMethod(code, "setOpenness" + columnIndex, openness);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Boolean getCodeOpenness(CodeMetamac code, int columnIndex) {
+        try {
+            return (Boolean) MethodUtils.invokeExactMethod(code, "getOpenness" + columnIndex, null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

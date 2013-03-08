@@ -7,6 +7,7 @@ import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
@@ -127,7 +128,7 @@ public class CodesMetamacDtoMocks {
     }
 
     // -----------------------------------------------------------------------------------
-    // VISUALISATIONS
+    // ORDER VISUALISATIONS
     // -----------------------------------------------------------------------------------
     public static CodelistOrderVisualisationDto mockCodelistOrderVisualisationDto() {
         CodelistOrderVisualisationDto codelistOrderVisualisationDto = new CodelistOrderVisualisationDto();
@@ -137,6 +138,25 @@ public class CodesMetamacDtoMocks {
     }
 
     public static RelatedResourceDto mockCodelistOrderVisualisationRelatedResourceDto(String code, String urn) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(code);
+        relatedResourceDto.setUrn(urn);
+        relatedResourceDto.setUrnProvider(urn);
+        relatedResourceDto.setType(null);
+        return relatedResourceDto;
+    }
+
+    // -----------------------------------------------------------------------------------
+    // OPENNESS VISUALISATIONS
+    // -----------------------------------------------------------------------------------
+    public static CodelistOpennessVisualisationDto mockCodelistOpennessVisualisationDto() {
+        CodelistOpennessVisualisationDto codelistOpennessVisualisationDto = new CodelistOpennessVisualisationDto();
+        codelistOpennessVisualisationDto.setCode("code-" + MetamacMocks.mockString(10));
+        codelistOpennessVisualisationDto.setName(MetamacMocks.mockInternationalStringDto());
+        return codelistOpennessVisualisationDto;
+    }
+
+    public static RelatedResourceDto mockCodelistOpennessVisualisationRelatedResourceDto(String code, String urn) {
         RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
         relatedResourceDto.setCode(code);
         relatedResourceDto.setUrn(urn);

@@ -10,6 +10,7 @@ import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsIn
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodeDto;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistMetamacDto;
+import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistOpennessVisualisationDto;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsCodelistOrderVisualisationDto;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
@@ -1228,8 +1230,10 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         String codelistUrn = CODELIST_1_V2;
         String locale = "en";
         String codelistOrderVisualisation = CODELIST_1_V2_ORDER_VISUALISATION_03;
+        String codelistOpennessVisualisation = CODELIST_1_V2_OPENNESS_VISUALISATION_03;
 
-        List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, codelistOrderVisualisation);
+        List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, codelistOrderVisualisation,
+                codelistOpennessVisualisation);
 
         // Validate
         assertEquals(9, codes.size());
@@ -1239,54 +1243,63 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1);
             assertEquals("Name codelist-1-v2-code-1", code.getName());
             assertEquals(Integer.valueOf(1), code.getOrder());
+            assertEquals(Boolean.TRUE, code.getOpenness());
         }
         {
             // Code 02
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2);
             assertEquals(null, code.getName());
             assertEquals(Integer.valueOf(2), code.getOrder());
+            assertEquals(Boolean.TRUE, code.getOpenness());
         }
         {
             // Code 02 01
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1);
             assertEquals(null, code.getName());
             assertEquals(Integer.valueOf(1), code.getOrder());
+            assertEquals(Boolean.TRUE, code.getOpenness());
         }
         {
             // Code 02 01 01
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1);
             assertEquals(null, code.getName());
             assertEquals(Integer.valueOf(0), code.getOrder());
+            assertEquals(Boolean.FALSE, code.getOpenness());
         }
         {
             // Code 02 02
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2);
             assertEquals(null, code.getName()); // it has not name
             assertEquals(Integer.valueOf(0), code.getOrder());
+            assertEquals(Boolean.TRUE, code.getOpenness());
         }
         {
             // Code 03
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3);
             assertEquals("name code-3", code.getName());
             assertEquals(Integer.valueOf(0), code.getOrder());
+            assertEquals(Boolean.FALSE, code.getOpenness());
         }
         {
             // Code 04
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4);
             assertEquals(null, code.getName());
             assertEquals(Integer.valueOf(3), code.getOrder());
+            assertEquals(Boolean.FALSE, code.getOpenness());
         }
         {
             // Code 04 01
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1);
             assertEquals(null, code.getName());
             assertEquals(Integer.valueOf(0), code.getOrder());
+            assertEquals(Boolean.TRUE, code.getOpenness());
         }
         {
             // Code 04 01 01
             CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1);
             assertEquals("Name codelist-1-v2-code-4-1-1", code.getName());
             assertEquals(Integer.valueOf(0), code.getOrder());
+            assertEquals(Boolean.TRUE, code.getOpenness());
         }
     }
 
@@ -2409,7 +2422,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     // ------------------------------------------------------------------------------------
-    // CODELIST VISUALISATIONS
+    // CODELIST ORDER VISUALISATIONS
     // ------------------------------------------------------------------------------------
 
     @Test
@@ -2486,7 +2499,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         // Before
         {
-            List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisationUrn);
+            List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisationUrn, null);
             assertEquals(9, codes.size());
             assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
             assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
@@ -2497,12 +2510,113 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         srmCoreServiceFacade.updateCodeInOrderVisualisation(getServiceContextAdministrador(), codeUrn, visualisationUrn, Integer.valueOf(2));
         // After
         {
-            List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisationUrn);
+            List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", visualisationUrn, null);
             assertEquals(9, codes.size());
             assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOrder());
             assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOrder());
             assertEquals(Integer.valueOf(2), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOrder());
             assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOrder());
+        }
+    }
+
+    // ------------------------------------------------------------------------------------
+    // CODELIST OPENNESS VISUALISATIONS
+    // ------------------------------------------------------------------------------------
+
+    @Test
+    public void testRetrieveCodelistOpennessVisualisationByUrn() throws Exception {
+        // Retrieve
+        String urn = CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED;
+        CodelistOpennessVisualisationDto codelistOpennessVisualisation = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertNotNull(codelistOpennessVisualisation);
+        assertEquals(CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED, codelistOpennessVisualisation.getUrn());
+        assertEqualsInternationalStringDto(codelistOpennessVisualisation.getName(), "es", "Visualización de apertura Todos abiertos 1-2", null, null);
+    }
+
+    @Test
+    public void testCreateCodelistOpennessVisualisation() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodelistOpennessVisualisationDto codelistOpennessVisualisation = CodesMetamacDtoMocks.mockCodelistOpennessVisualisationDto();
+        codelistOpennessVisualisation.setCodelist(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST01", CODELIST_1_V2));
+
+        // Create
+        CodelistOpennessVisualisationDto codelistOpennessVisualisationCreated = srmCoreServiceFacade.createCodelistOpennessVisualisation(ctx, codelistOpennessVisualisation);
+        assertEqualsCodelistOpennessVisualisationDto(codelistOpennessVisualisation, codelistOpennessVisualisationCreated);
+    }
+
+    @Test
+    public void testUpdateCodelistOpennessVisualisation() throws Exception {
+        CodelistOpennessVisualisationDto codelistOpennessVisualisation = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(),
+                CODELIST_1_V2_OPENNESS_VISUALISATION_02);
+        codelistOpennessVisualisation.setName(MetamacMocks.mockInternationalStringDto());
+
+        // Update
+        CodelistOpennessVisualisationDto codelistOpennessVisualisationUpdated = srmCoreServiceFacade.updateCodelistOpennessVisualisation(getServiceContextAdministrador(),
+                codelistOpennessVisualisation);
+
+        // Validate
+        assertEqualsCodelistOpennessVisualisationDto(codelistOpennessVisualisation, codelistOpennessVisualisationUpdated);
+    }
+
+    @Test
+    public void testDeleteCodelistOpennessVisualisation() throws Exception {
+
+        String urn = CODELIST_1_V2_OPENNESS_VISUALISATION_02;
+
+        srmCoreServiceFacade.deleteCodelistOpennessVisualisation(getServiceContextAdministrador(), urn);
+
+        // Retrieve deleted visualisation
+        try {
+            srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), urn);
+            fail("visualisation deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testRetrieveCodelistOpennessVisualisationsByCodelist() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
+
+        List<CodelistOpennessVisualisationDto> visualisations = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationsByCodelist(getServiceContextAdministrador(), codelistUrn);
+
+        assertEquals(3, visualisations.size());
+        assertContainsCodelistOpennessVisualisation(CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED, visualisations);
+        assertContainsCodelistOpennessVisualisation(CODELIST_1_V2_OPENNESS_VISUALISATION_02, visualisations);
+        assertContainsCodelistOpennessVisualisation(CODELIST_1_V2_OPENNESS_VISUALISATION_03, visualisations);
+    }
+
+    @Test
+    public void testUpdateCodeInOpennessVisualisation() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
+        String codeUrn = CODELIST_1_V2_CODE_1;
+        String visualisationUrn = CODELIST_1_V2_OPENNESS_VISUALISATION_02;
+
+        // Before
+        {
+            List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisationUrn);
+            assertEquals(9, codes.size());
+            assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, codeUrn).getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOpenness());
+            assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOpenness());
+        }
+        // Update
+        srmCoreServiceFacade.updateCodeInOpennessVisualisation(getServiceContextAdministrador(), codeUrn, visualisationUrn, Boolean.TRUE);
+        // After
+        {
+            List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisationUrn);
+            assertEquals(9, codes.size());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, codeUrn).getOpenness());
+            // other inmmutable
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOpenness());
+            assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOpenness());
         }
     }
 
@@ -2512,7 +2626,16 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 return;
             }
         }
-        fail("visualisation not found");
+        fail("order visualisation not found");
+    }
+
+    private void assertContainsCodelistOpennessVisualisation(String codelistOpennessVisualisationUrnExpected, List<CodelistOpennessVisualisationDto> actuals) {
+        for (CodelistOpennessVisualisationDto actual : actuals) {
+            if (actual.getUrn().equals(codelistOpennessVisualisationUrnExpected)) {
+                return;
+            }
+        }
+        fail("openness visualisation not found");
     }
 
     private VariableElementOperationDto getVariableElementOperationByCode(List<VariableElementOperationDto> operations, String code) {
@@ -2584,7 +2707,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         String locale = "en";
         String codelistOrderVisualisation = null;
 
-        List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, codelistOrderVisualisation);
+        List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, codelistOrderVisualisation, null);
         String codeSubstringUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).";
         // Validate
         assertEquals(8, codes.size()); // 2 existing + 6 new

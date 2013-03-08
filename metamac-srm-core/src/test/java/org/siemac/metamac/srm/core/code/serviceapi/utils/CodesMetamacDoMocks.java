@@ -5,6 +5,7 @@ import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -46,6 +47,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setFamily(mockCodelistFamilyFixedValues("family1"));
         target.setVariable(mockVariableFixedValues("variable1"));
         target.setDefaultOrderVisualisation(mockCodelistOrderVisualisationFixedValues("defaultOrderVisualisation1"));
+        target.setDefaultOpennessVisualisation(mockCodelistOpennessVisualisationFixedValues("defaultOpennessVisualisation1"));
         return target;
     }
 
@@ -199,7 +201,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
     }
 
     // ------------------------------------------------------------------------------------
-    // CODELIST VISUALISATIONS
+    // CODELIST ORDER VISUALISATIONS
     // ------------------------------------------------------------------------------------
 
     public static CodelistOrderVisualisation mockCodelistOrderVisualisation() {
@@ -222,4 +224,27 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         return target;
     }
 
+    // ------------------------------------------------------------------------------------
+    // CODELIST OPENNESS VISUALISATIONS
+    // ------------------------------------------------------------------------------------
+
+    public static CodelistOpennessVisualisation mockCodelistOpennessVisualisation() {
+        CodelistOpennessVisualisation codelistOpennessVisualisation = new CodelistOpennessVisualisation();
+        codelistOpennessVisualisation.setNameableArtefact(mockNameableArtefact("code-" + MetamacMocks.mockString(5)));
+        return codelistOpennessVisualisation;
+    }
+
+    public static CodelistOpennessVisualisation mockCodelistOpennessVisualisationFixedValues(String resourceID) {
+        CodelistOpennessVisualisation target = new CodelistOpennessVisualisation();
+        target.getUuid(); // generate uuid
+        target.setVersion(Long.valueOf(1));
+        target.setCreatedBy("userCreatedBy");
+        target.setCreatedDate(new DateTime(2012, 10, 1, 10, 12, 13, 14));
+        target.setLastUpdatedBy("userLastUpdated");
+        target.setLastUpdated(new DateTime(2012, 11, 5, 10, 12, 13, 14));
+        target.setUpdateDate(new DateTime(2012, 11, 5, 10, 12, 13, 14));
+        target.setNameableArtefact(new NameableArtefact());
+        mockNameableArtefactFixedValues(target.getNameableArtefact(), resourceID, null);
+        return target;
+    }
 }

@@ -11,6 +11,8 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyRepository;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisationRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisationRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -24,6 +26,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableRepository;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
@@ -61,6 +64,9 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     @Autowired
     private CodelistOrderVisualisationRepository                           codelistOrderVisualisationRepository;
+
+    @Autowired
+    private CodelistOpennessVisualisationRepository                        codelistOpennessVisualisationRepository;
 
     @Override
     public CodelistVersionMetamac codelistDtoToDo(CodelistMetamacDto source) throws MetamacException {
@@ -104,6 +110,11 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             target.setDefaultOrderVisualisation(retrieveCodelistOrderVisualisation(source.getDefaultOrderVisualisation().getUrn()));
         } else {
             target.setDefaultOrderVisualisation(null);
+        }
+        if (source.getDefaultOpennessVisualisation() != null) {
+            target.setDefaultOpennessVisualisation(retrieveCodelistOpennessVisualisation(source.getDefaultOpennessVisualisation().getUrn()));
+        } else {
+            target.setDefaultOpennessVisualisation(null);
         }
 
         dto2DoMapperSdmxSrm.codelistDtoToDo(source, target);
@@ -300,6 +311,33 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         return target;
     }
 
+    @Override
+    public CodelistOpennessVisualisation codelistOpennessVisualisationDtoToDo(CodelistOpennessVisualisationDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // If exists, retrieves existing entity. Otherwise, creates new entity.
+        CodelistOpennessVisualisation target = null;
+        if (source.getUrn() == null) {
+            target = new CodelistOpennessVisualisation();
+        } else {
+            target = retrieveCodelistOpennessVisualisation(source.getUrn());
+            OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking());
+        }
+
+        if (target.getId() == null) {
+            target.setNameableArtefact(new NameableArtefact());
+        }
+
+        target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
+
+        // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
+        target.setUpdateDate(new DateTime());
+
+        return target;
+    }
+
     private CodelistVersionMetamac retrieveCodelist(String urn) throws MetamacException {
         CodelistVersionMetamac target = codelistVersionMetamacRepository.findByUrn(urn);
         if (target == null) {
@@ -356,6 +394,15 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     private CodelistOrderVisualisation retrieveCodelistOrderVisualisation(String urn) throws MetamacException {
         CodelistOrderVisualisation target = codelistOrderVisualisationRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    private CodelistOpennessVisualisation retrieveCodelistOpennessVisualisation(String urn) throws MetamacException {
+        CodelistOpennessVisualisation target = codelistOpennessVisualisationRepository.findByUrn(urn);
         if (target == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build();

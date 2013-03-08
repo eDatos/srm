@@ -13,6 +13,7 @@ public class CodeMetamacVisualisationResult implements Serializable {
     private CodeMetamacVisualisationResult parent;
     private String                         name;
     private Integer                        order;
+    private Boolean                        openness;
 
     public CodeMetamacVisualisationResult() {
     }
@@ -73,4 +74,11 @@ public class CodeMetamacVisualisationResult implements Serializable {
         this.order = order;
     }
 
+    public Boolean getOpenness() {
+        return openness;
+    }
+
+    public void setOpenness(Boolean openness) {
+        this.openness = openness;
+    }
 }

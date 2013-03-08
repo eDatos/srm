@@ -105,6 +105,7 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
         // TODO herencia default order visualisation
         // TODO herencia niveles de apertura
         // TODO herencia todas las columnas de orden de los code
+        // TODO herencia idem para openness
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -121,7 +122,20 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkRetrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkUpdateCodeInOpennessVisualisation(String codeUrn, String codelistOpennessVisualisationUrn, Boolean openness, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(codelistOpennessVisualisationUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(openness, ServiceExceptionParameters.CODELIST_OPENNESS_VISUALISATION_EXPANDED, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
@@ -129,6 +143,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
         // orderVisualisationUrn optional
+        // opennessVisualisationUrn optional
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -147,7 +162,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
     }
 
     // ---------------------------------------------------------------------------
-    // CODELIST VISUALISATIONS
+    // CODELIST ORDER VISUALISATIONS
     // ---------------------------------------------------------------------------
 
     public static void checkCreateCodelistOrderVisualisation(String codelistUrn, CodelistOrderVisualisation codelistOrderVisualisation, List<MetamacExceptionItem> exceptions) throws MetamacException {
@@ -181,6 +196,45 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         checkNameableArtefact(codelistOrderVisualisation.getNameableArtefact(), exceptions);
         if (codelistOrderVisualisation.getNameableArtefact() != null) {
             SemanticIdentifierValidationUtils.checkCodelistOrderVisualisationSemanticIdentifier(codelistOrderVisualisation, exceptions);
+        }
+    }
+
+    // ---------------------------------------------------------------------------
+    // CODELIST OPENNESS VISUALISATIONS
+    // ---------------------------------------------------------------------------
+
+    public static void checkCreateCodelistOpennessVisualisation(String codelistUrn, CodelistOpennessVisualisation codelistOpennessVisualisation, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(codelistOpennessVisualisation, ServiceExceptionParameters.CODELIST_OPENNESS_VISUALISATION, exceptions);
+        if (codelistOpennessVisualisation != null) {
+            checkCodelistOpennessVisualisation(codelistOpennessVisualisation, exceptions);
+        }
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkUpdateCodelistOpennessVisualisation(CodelistOpennessVisualisation codelistOpennessVisualisation, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+        checkCodelistOpennessVisualisation(codelistOpennessVisualisation, exceptions);
+        ValidationUtils.checkParameterRequired(codelistOpennessVisualisation.getCodelistVersion(), ServiceExceptionParameters.CODELIST, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    private static void checkCodelistOpennessVisualisation(CodelistOpennessVisualisation codelistOpennessVisualisation, List<MetamacExceptionItem> exceptions) {
+        ValidationUtils.checkParameterRequired(codelistOpennessVisualisation, ServiceExceptionParameters.CODELIST_OPENNESS_VISUALISATION, exceptions);
+        if (codelistOpennessVisualisation == null) {
+            return;
+        }
+        checkNameableArtefact(codelistOpennessVisualisation.getNameableArtefact(), exceptions);
+        if (codelistOpennessVisualisation.getNameableArtefact() != null) {
+            SemanticIdentifierValidationUtils.checkCodelistOpennessVisualisationSemanticIdentifier(codelistOpennessVisualisation, exceptions);
         }
     }
 

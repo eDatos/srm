@@ -5,6 +5,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -55,6 +56,12 @@ public class SrmValidationUtils {
     public static void checkNotAlphabeticalOrderVisualisation(CodelistOrderVisualisation orderVisualisation) throws MetamacException {
         if (SrmServiceUtils.isAlphabeticalOrderVisualisation(orderVisualisation)) {
             throw new MetamacException(ServiceExceptionType.CODELIST_ALPHABETICAL_ORDER_OPERATION_NOT_SUPPORTED, orderVisualisation.getNameableArtefact().getUrn());
+        }
+    }
+
+    public static void checkNotOpenedOpennessVisualisation(CodelistOpennessVisualisation opennessVisualisation) throws MetamacException {
+        if (SrmServiceUtils.isAllExpandedOpennessVisualisation(opennessVisualisation)) {
+            throw new MetamacException(ServiceExceptionType.CODELIST_ALL_EXPANDED_OPENNESS_VISUALISATION_OPERATION_NOT_SUPPORTED, opennessVisualisation.getNameableArtefact().getUrn());
         }
     }
 

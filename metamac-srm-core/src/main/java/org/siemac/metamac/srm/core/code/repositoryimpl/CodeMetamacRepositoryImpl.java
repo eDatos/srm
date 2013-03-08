@@ -35,12 +35,24 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     @Autowired
     private SrmConfiguration    srmConfiguration;
 
-    private final static String NATIVE_SQL_QUERY_CODES_BY_CODELIST                             = "SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
-
     private final static String NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is not null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
     private final static String NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST                  = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion and c.SHORT_NAME_FK is not null";
+    private final static String BOOLEAN_TRUE_DATABASE                                          = "1";
+    private final static String BOOLEAN_FALSE_DATABASE                                         = "0";
 
     public CodeMetamacRepositoryImpl() {
+    }
+
+    @Override
+    public CodeMetamac findByUrn(String urn) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("urn", urn);
+        List<CodeMetamac> result = findByQuery("from CodeMetamac where nameableArtefact.urn = :urn", parameters, 1);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
     }
 
     @Override
@@ -95,30 +107,60 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void clearCodeOrders(CodelistVersionMetamac codelistVersion, Integer orderColumnIndex) {
+    public void clearCodesOrderColumn(CodelistVersionMetamac codelistVersion, Integer orderColumnIndex) {
         String orderColumn = getOrderColumnName(orderColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + orderColumn + " = null ");
-        sb.append("WHERE TB_CODES in ( ");
-        sb.append("SELECT i.ID ");
-        sb.append("FROM TB_ITEMS i ");
-        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion)");
+        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
 
     @Override
-    public void copyCodeOrders(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
+    public void copyCodesOrderColumn(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
         String columnSource = getOrderColumnName(columnIndexSource);
         String columnTarget = getOrderColumnName(columnIndexTarget);
 
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + columnTarget + " = " + columnSource + " ");
-        sb.append("WHERE TB_CODES in ( ");
-        sb.append("SELECT i.ID ");
-        sb.append("FROM TB_ITEMS i ");
-        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion)");
+        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
+        queryUpdate.executeUpdate();
+    }
+
+    @Override
+    public void clearCodesOpennessColumn(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex) {
+        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = null ");
+        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
+        queryUpdate.executeUpdate();
+    }
+
+    @Override
+    public void copyCodesOpennessColumn(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
+        String columnSource = getOpennessColumnName(columnIndexSource);
+        String columnTarget = getOpennessColumnName(columnIndexTarget);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set " + columnTarget + " = " + columnSource + " ");
+        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
+        queryUpdate.executeUpdate();
+    }
+
+    @Override
+    public void updateCodesOpennessColumn(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) {
+        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        String expandedSql = expanded ? BOOLEAN_TRUE_DATABASE : BOOLEAN_FALSE_DATABASE;
+        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + expandedSql + " ");
+        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -149,6 +191,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Integer getCodeAlphabeticPositionInLevel(CodelistVersionMetamac codelistVersion, Item parent, Item code) {
         StringBuilder sb = new StringBuilder();
@@ -175,22 +218,10 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public CodeMetamac findByUrn(String urn) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("urn", urn);
-        List<CodeMetamac> result = findByQuery("from CodeMetamac where nameableArtefact.urn = :urn", parameters, 1);
-        if (result == null || result.isEmpty()) {
-            return null;
-        } else {
-            return result.get(0);
-        }
-    }
-
-    @Override
     @SuppressWarnings("rawtypes")
-    public List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex) {
+    public List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) {
         // Find codes
-        List codesResultSql = executeQueryFindCodesByCodelistByNativeSqlQuery(idCodelist, locale, orderColumnIndex);
+        List codesResultSql = executeQueryFindCodesByCodelistByNativeSqlQuery(idCodelist, locale, orderColumnIndex, opennessColumnIndex);
 
         // Transform object[] results
         List<CodeMetamacVisualisationResult> targets = new ArrayList<CodeMetamacVisualisationResult>(codesResultSql.size());
@@ -200,14 +231,13 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             Long actualItemId = getLong(codeResultSqlArray[0]);
             CodeMetamacVisualisationResult target = mapCodeByItemId.get(actualItemId);
             if (target == null) {
-                target = codeResultSqlToCodeResult(codeResultSqlArray, null, orderColumnIndex);
+                target = codeResultSqlToCodeResult(codeResultSqlArray, null, orderColumnIndex, opennessColumnIndex);
                 targets.add(target);
                 mapCodeByItemId.put(target.getItemIdDatabase(), target);
             } else {
-                codeResultSqlToCodeResult(codeResultSqlArray, target, orderColumnIndex);
+                codeResultSqlToCodeResult(codeResultSqlArray, target, orderColumnIndex, opennessColumnIndex);
             }
         }
-
         // Parent: fill manually with java code
         for (CodeMetamacVisualisationResult target : targets) {
             if (target.getParentIdDatabase() != null) {
@@ -215,7 +245,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
                 target.setParent(parent);
             }
         }
-
         return targets;
     }
 
@@ -242,6 +271,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         }
 
         // TODO VISTAS MATERIALIZADAS en bbdd para que sea el mismo código independientemente de la bbdd?
+        // TODO procedimiento almacenado?
         // Order
         String orderColumn = getOrderColumnName(orderColumnIndex);
         StringBuilder sb = new StringBuilder();
@@ -299,30 +329,34 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         }
     }
 
+    /**
+     * NOTE: this query return null label if locale not exits for a code
+     */
     @SuppressWarnings("rawtypes")
-    private List executeQueryFindCodesByCodelistByNativeSqlQuery(Long idCodelist, String locale, Integer orderColumnIndex) {
-        // note: this query return null label if locale not exits for a code
-        String sqlQuery = null;
-        if (orderColumnIndex != null) {
-            String orderColumn = getOrderColumnName(orderColumnIndex);
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + " ");
-            sb.append("FROM TB_M_CODES c INNER JOIN TB_ITEMS i on c.TB_CODES = i.ID ");
-            sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
-            sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
-            sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
-            sqlQuery = sb.toString();
-        } else {
-            sqlQuery = NATIVE_SQL_QUERY_CODES_BY_CODELIST;
+    private List executeQueryFindCodesByCodelistByNativeSqlQuery(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) {
+        // default values, to execute same query, but in transformation to result they will be ignored
+        if (orderColumnIndex == null) {
+            orderColumnIndex = Integer.valueOf(1);
         }
-        Query query = getEntityManager().createNativeQuery(sqlQuery);
+        if (opennessColumnIndex == null) {
+            opennessColumnIndex = Integer.valueOf(1);
+        }
+        String orderColumn = getOrderColumnName(orderColumnIndex);
+        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + ", c." + opennessColumn + " ");
+        sb.append("FROM TB_M_CODES c INNER JOIN TB_ITEMS i on c.TB_CODES = i.ID ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
+        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
+        Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("codelistVersion", idCodelist);
         query.setParameter("locale", locale);
         List codesResultSql = query.getResultList();
         return codesResultSql;
     }
 
-    private CodeMetamacVisualisationResult codeResultSqlToCodeResult(Object[] source, CodeMetamacVisualisationResult target, Integer orderColumnIndex) {
+    private CodeMetamacVisualisationResult codeResultSqlToCodeResult(Object[] source, CodeMetamacVisualisationResult target, Integer orderColumnIndex, Integer opennessColumnIndex) {
         if (target == null) {
             target = new CodeMetamacVisualisationResult();
         }
@@ -334,6 +368,13 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         target.setName(getString(source[i++]));
         if (orderColumnIndex != null) {
             target.setOrder(getInteger(source[i++]));
+        } else {
+            i++; // skip this column
+        }
+        if (opennessColumnIndex != null) {
+            target.setOpenness(getBoolean(source[i++]));
+        } else {
+            i++; // skip this column
         }
         return target;
     }
@@ -350,6 +391,16 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         return source != null ? Integer.valueOf(source.toString()) : null;
     }
 
+    private Boolean getBoolean(Object source) {
+        if (source == null) {
+            return null;
+        } else if (BOOLEAN_TRUE_DATABASE.equals(source.toString())) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
     private void internationalStringResultSqltoInternationalStringResult(Object[] source, Map<String, String> target) {
         int i = 1; // 0 is itemId
         String locale = getString(source[i++]);
@@ -362,5 +413,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     private String getOrderColumnName(Integer columnIndex) {
         return "ORDER" + columnIndex;
+    }
+
+    private String getOpennessColumnName(Integer columnIndex) {
+        return "OPENNESS" + columnIndex;
     }
 }

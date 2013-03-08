@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -15,6 +16,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
@@ -111,6 +113,14 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
         CodesMetamacAsserts.assertEqualsCodelistOrderVisualisation(entity, dto);
     }
 
+    @Test
+    public void testCodelistOpennessVisualisationDoToDto() {
+        CodelistOpennessVisualisation entity = mockCodelistOpennessVisualisationWithAllMetadata();
+
+        CodelistOpennessVisualisationDto dto = codesDo2DtoMapper.codelistOpennessVisualisationDoToDto(entity);
+        CodesMetamacAsserts.assertEqualsCodelistOpennessVisualisation(entity, dto);
+    }
+
     private CodelistVersionMetamac mockCodelistWithAllMetadata() {
         CodelistVersionMetamac entity = CodesMetamacDoMocks.mockCodelistFixedValues("agency01", "codelist01", "01.000");
         entity.setFamily(mockCodelistFamilyWithAllMetadata());
@@ -170,6 +180,11 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
 
     private CodelistOrderVisualisation mockCodelistOrderVisualisationWithAllMetadata() {
         CodelistOrderVisualisation entity = CodesMetamacDoMocks.mockCodelistOrderVisualisationFixedValues("order01");
+        return entity;
+    }
+
+    private CodelistOpennessVisualisation mockCodelistOpennessVisualisationWithAllMetadata() {
+        CodelistOpennessVisualisation entity = CodesMetamacDoMocks.mockCodelistOpennessVisualisationFixedValues("openness01");
         return entity;
     }
 

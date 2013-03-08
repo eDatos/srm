@@ -30,6 +30,8 @@ Application DtosMetamacCodeDomain {
 			- @RelatedResourceDto variable nullable;
 			"Default order visualisation"
 			- @RelatedResourceDto defaultOrderVisualisation nullable;
+			"Default openness visualisation"
+			- @RelatedResourceDto defaultOpennessVisualisation nullable;
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}
@@ -114,5 +116,13 @@ Application DtosMetamacCodeDomain {
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}
+		
+		"Dto for CodelistOpennessVisualisation"		
+		DataTransferObject CodelistOpennessVisualisationDto extends @NameableArtefactDto {
+			"Codelist"
+			- @RelatedResourceDto codelist not nullable;
+			"Version to optimistic locking"
+			Long versionOptimisticLocking;
+		}		
 	}
 }
