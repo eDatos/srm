@@ -340,22 +340,23 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        // Type
+        // TYPE
 
         ViewTextItem dimensionType = new ViewTextItem(DimensionDS.TYPE, getConstants().dsdDimensionsType());
         dimensionType.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         ViewTextItem dimensionTypeView = new ViewTextItem(DimensionDS.TYPE_VIEW, getConstants().dsdDimensionsType());
 
-        // Concept
+        // CONCEPT
+
         ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT, MetamacSrmWeb.getConstants().concept());
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem conceptView = createConceptItem(DimensionDS.CONCEPT_VIEW, MetamacSrmWeb.getConstants().concept());
 
-        // Role
+        // ROLES
 
         RelatedResourceListItem conceptRoleItem = createRoleItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole());
 
-        // Representation
+        // REPRESENTATION TYPE
 
         representationTypeItem = new CustomSelectItem(DimensionDS.REPRESENTATION_TYPE, getConstants().representation());
         representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
@@ -394,7 +395,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         timeCustomValidator.setErrorMessage(MetamacSrmWeb.getMessages().errorRequiredNonEnumeratedRepresentationInTimeDimension());
         representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
 
+        // ENUMERATED REPRESENTATION
+
         // Codelist
+
         ViewTextItem codelist = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, MetamacSrmWeb.getConstants().codelist());
         codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem codelistView = createEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist());
@@ -406,13 +410,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         SearchViewTextItem conceptSchemeView = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, MetamacSrmWeb.getConstants()
                 .conceptScheme());
 
+        // Urn
+
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, conceptView, conceptRoleItem, representationTypeItem, codelist, codelistView, conceptScheme,
                 conceptSchemeView, urn, urnProvider);
 
-        // Facet Form
+        // FACET
 
         facetForm = new DsdFacetForm();
         facetForm.setVisibility(Visibility.HIDDEN);
