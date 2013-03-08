@@ -66,7 +66,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
     // VIEW FORM
 
-    private GroupDynamicForm                  staticForm;
+    private GroupDynamicForm                  form;
     private ViewTextItem                      staticCode;
     private ViewTextItem                      staticDimensionsItem;
 
@@ -214,17 +214,17 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
      * @return
      */
     private void createViewForm() {
-        staticForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdGroupKeysDetails());
+        form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdGroupKeysDetails());
         staticCode = new ViewTextItem(GroupKeysDS.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysId());
         ViewTextItem urn = new ViewTextItem(GroupKeysDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(GroupKeysDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         staticDimensionsItem = new ViewTextItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
-        staticForm.setFields(staticCode, urn, urnProvider, staticDimensionsItem);
+        form.setFields(staticCode, urn, urnProvider, staticDimensionsItem);
 
         // Annotations
         viewAnnotationsPanel = new AnnotationsPanel(true);
 
-        mainFormLayout.addViewCanvas(staticForm);
+        mainFormLayout.addViewCanvas(form);
         mainFormLayout.addViewCanvas(viewAnnotationsPanel);
     }
 
@@ -353,8 +353,8 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
         staticCode.setValue(descriptorDto.getCode());
 
-        staticForm.setValue(GroupKeysDS.URN, descriptorDto.getUrn());
-        staticForm.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
+        form.setValue(GroupKeysDS.URN, descriptorDto.getUrn());
+        form.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
 
         staticDimensionsItem.clearValue();
         List<ComponentDto> dimensionComponentDtos = new ArrayList<ComponentDto>(descriptorDto.getComponents());
