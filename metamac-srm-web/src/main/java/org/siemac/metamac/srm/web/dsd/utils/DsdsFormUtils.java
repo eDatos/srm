@@ -60,9 +60,27 @@ public class DsdsFormUtils {
     // DIMENSIONS
     // ---------------------------------------------------------------------------------------------
 
+    // REPRESENTATION TYPE
+
+    public static boolean canDimensionRepresentationTypeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // ---------------------------------------------------------------------------------------------
     // ATTRIBUTES
     // ---------------------------------------------------------------------------------------------
+
+    // REPRESENTATION TYPE
+
+    public static boolean canAttributeRepresentationTypeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
 
     // ---------------------------------------------------------------------------------------------
     // GROUP KEYS

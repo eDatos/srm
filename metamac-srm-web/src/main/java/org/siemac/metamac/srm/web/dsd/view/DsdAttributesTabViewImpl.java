@@ -433,17 +433,15 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
 
-        final CustomSelectItem representationTypeItem = new CustomSelectItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
-        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
-        representationTypeItem.setRedrawOnChange(true);
-        // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
-        representationTypeItem.addChangedHandler(new ChangedHandler() {
+        // REPRESENTATION TYPE
 
-            @Override
-            public void onChanged(ChangedEvent event) {
-                FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
-            }
-        });
+        final CustomSelectItem representationTypeItem = createRepresentationTypeItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
+        representationTypeItem.setShowIfCondition(getRepresentationTypeFormItemIfFunction());
+
+        ViewTextItem staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE_VIEW, getConstants().representation());
+        staticRepresentationTypeItem.setShowIfCondition(getStaticRepresentationTypeFormItemIfFunction());
+
+        // ENUMERATED REPRESENTATION
 
         ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
         codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
@@ -453,7 +451,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, type, assignmentStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
-                groupKeyFormForGroupRelationship, representationTypeItem, codelist, codelistView, urn, urnProvider);
+                groupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
 
@@ -715,15 +713,25 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE).clearValue();
+        editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE_VIEW).clearValue();
         facetForm.clearValues();
         if (dataAttributeDto.getLocalRepresentation() != null) {
+
             if (RepresentationTypeEnum.ENUMERATION.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
+
+                // CODELIST
+
                 editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE, RepresentationTypeEnum.ENUMERATION.toString());
+                editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE_VIEW, MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
                 editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, dataAttributeDto.getLocalRepresentation().getEnumeration().getUrn());
                 editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
+
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
-                // Facet
+
+                // FACET
+
                 editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE, RepresentationTypeEnum.TEXT_FORMAT.toString());
+                editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE_VIEW, MetamacSrmWeb.getCoreMessages().representationTypeEnumTEXT_FORMAT());
                 // Only one facet in a Representation
                 FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getTextFormat();
                 facetForm.setFacet(facetDto);
@@ -903,6 +911,21 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         if (DsdClientSecurityUtils.canDeleteAttribute(dataStructureDefinitionMetamacDto)) {
             deleteToolStripButton.show();
         }
+    }
+
+    private CustomSelectItem createRepresentationTypeItem(String name, String title) {
+        final CustomSelectItem representationTypeItem = new CustomSelectItem(name, title);
+        representationTypeItem.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
+        representationTypeItem.setRedrawOnChange(true);
+        // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
+        representationTypeItem.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
+            }
+        });
+        return representationTypeItem;
     }
 
     private SearchViewTextItem createConceptItem(String name, String title) {
