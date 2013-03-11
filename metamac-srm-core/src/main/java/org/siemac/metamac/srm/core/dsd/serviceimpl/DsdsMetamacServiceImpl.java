@@ -25,7 +25,6 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
-import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
@@ -576,7 +575,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private void checkDataStructureDefinitionCanBeModified(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(dataStructureDefinitionVersion.getLifeCycleMetadata(), dataStructureDefinitionVersion.getMaintainableArtefact().getUrn());
     }
-
+    
     /**
      * Finds concept schemes with concepts could be concept in primary measure, time dimension, measure dimension or dimension in DSD
      */
@@ -591,8 +590,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
                 dsdUrn);
         if (dataStructureDefinitionVersionMetamac.getStatisticalOperation() == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED)
-                    .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_STATISTICAL_OPERATION).build();
+            // do not execute find, zero results
+            return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
         }
 
         // Prepare conditions
@@ -633,8 +632,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
                 dsdUrn);
         if (dataStructureDefinitionVersionMetamac.getStatisticalOperation() == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED)
-                    .withMessageParameters(ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_STATISTICAL_OPERATION).build();
+            return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
         }
 
         // Prepare conditions
@@ -686,6 +684,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return conceptSchemeVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
 
+    @SuppressWarnings("unchecked")
     private PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsd(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
             String conceptUrn) throws MetamacException {
         // Validation
@@ -695,7 +694,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         ConceptMetamac concept = conceptsService.retrieveConceptByUrn(ctx, conceptUrn);
         Variable variable = concept.getVariable();
         if (variable == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
+            return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
         }
         return findCodelistsPublishedByConditions(ctx, conditions, pagingParameter, variable.getNameableArtefact().getUrn());
     }
@@ -733,4 +732,5 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 ConceptSchemeVersionMetamac.class);
 
     }
+
 }

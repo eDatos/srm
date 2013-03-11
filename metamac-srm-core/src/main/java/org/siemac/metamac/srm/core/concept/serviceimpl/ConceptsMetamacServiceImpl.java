@@ -564,8 +564,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Validation
         Variable variable = concept.getVariable();
         if (variable == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
-
+            return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
         }
         // Prepare conditions
         Class entitySearchedClass = CodelistVersionMetamac.class;

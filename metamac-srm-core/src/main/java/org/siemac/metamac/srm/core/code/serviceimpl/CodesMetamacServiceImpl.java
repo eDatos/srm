@@ -877,6 +877,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return variableElementPagedResult;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public PagedResult<VariableElement> findVariableElementsForCodesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String codelistUrn)
             throws MetamacException {
@@ -884,6 +885,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkFindVariableElementsForCodesByCondition(conditions, pagingParameter, codelistUrn, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        if (codelistVersion.getVariable() == null) {
+            return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
+        }
+
         // Find
         if (conditions == null) {
             conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).distinctRoot().build();
