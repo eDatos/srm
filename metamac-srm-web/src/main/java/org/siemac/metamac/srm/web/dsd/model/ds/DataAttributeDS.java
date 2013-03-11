@@ -6,6 +6,7 @@ public class DataAttributeDS {
     public static final String SPECIAL_ATTRIBUTE_TYPE                  = "attr-type";
 
     public static final String CODE                                    = "attr-code";
+    public static final String CODE_VIEW                               = "attr-code-view";
 
     public static final String URN                                     = "attr-urn";
     public static final String URN_PROVIDER                            = "attr-urn-provider";

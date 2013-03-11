@@ -324,16 +324,16 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
      * @return
      */
     private void createEditionForm() {
-
-        // ····
-        // Form
-        // ····
         editionForm = new GroupDynamicForm(getConstants().dsdAttributeDetails());
 
-        // Id
+        // Code
 
         RequiredTextItem code = new RequiredTextItem(DataAttributeDS.CODE, getConstants().dsdAttributeId());
         code.setValidators(SemanticIdentifiersUtils.getAttributeIdentifierCustomValidator());
+        code.setShowIfCondition(getCodeFormItemIfFunction());
+
+        ViewTextItem staticCode = new ViewTextItem(DataAttributeDS.CODE_VIEW, getConstants().dsdAttributeId());
+        staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
 
         // Type
 
@@ -448,8 +448,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, type, assignmentStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem,
-                groupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
+        editionForm.setFields(code, staticCode, type, assignmentStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem,
+                dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
 
@@ -553,7 +553,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void setAttributeViewMode(DataAttributeDto dataAttributeDto) {
         this.dataAttributeDto = dataAttributeDto;
 
-        // Id
+        // Code
         form.setValue(DataAttributeDS.CODE, dataAttributeDto.getCode());
 
         // Type
@@ -654,8 +654,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void setAttributeEditionMode(DataAttributeDto dataAttributeDto) {
         this.dataAttributeDto = dataAttributeDto;
 
-        // Id
+        // Code
         editionForm.setValue(DataAttributeDS.CODE, dataAttributeDto.getCode());
+        editionForm.setValue(DataAttributeDS.CODE_VIEW, dataAttributeDto.getCode());
 
         // Type
         editionForm.setValue(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, dataAttributeDto.getSpecialAttributeType() != null ? dataAttributeDto.getSpecialAttributeType().name() : null);
@@ -1114,6 +1115,28 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // ------------------------------------------------------------------------------------------------------------
     // FORM ITEM IF FUNCTIONS
     // ------------------------------------------------------------------------------------------------------------
+
+    // CODE
+
+    private FormItemIfFunction getCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canAttributeCodeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canAttributeCodeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
 
     // REPRESENTATION TYPE
 

@@ -120,6 +120,15 @@ public class DsdsFormUtils {
     // ATTRIBUTES
     // ---------------------------------------------------------------------------------------------
 
+    // CODE
+
+    public static boolean canAttributeCodeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // REPRESENTATION TYPE
 
     public static boolean canAttributeRepresentationTypeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
