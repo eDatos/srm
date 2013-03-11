@@ -11,7 +11,8 @@ public class DataAttributeDS {
     public static final String URN                                     = "attr-urn";
     public static final String URN_PROVIDER                            = "attr-urn-provider";
 
-    public static final String USAGE_STATUS                            = "attr-assign-status";
+    public static final String USAGE_STATUS                            = "attr-us-status";
+    public static final String USAGE_STATUS_VIEW                       = "attr-us-status-view";     // Not mapped in DTO
 
     public static final String CONCEPT                                 = "attr-con";
     public static final String CONCEPT_VIEW                            = "attr-con-view";           // Not mapped in DTO

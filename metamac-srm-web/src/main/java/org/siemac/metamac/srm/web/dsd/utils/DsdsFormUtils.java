@@ -129,6 +129,15 @@ public class DsdsFormUtils {
         return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
+    // USAGE STATUS
+
+    public static boolean canAttributeUsageStatusBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // REPRESENTATION TYPE
 
     public static boolean canAttributeRepresentationTypeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {

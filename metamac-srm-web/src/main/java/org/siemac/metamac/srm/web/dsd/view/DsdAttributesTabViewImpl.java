@@ -184,9 +184,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         attributesGrid.setSelectionType(SelectionStyle.SIMPLE);
         attributesGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
         ListGridField codeField = new ListGridField(AttributeRecord.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
-        ListGridField assigmentField = new ListGridField(AttributeRecord.ASSIGNMENT, MetamacSrmWeb.getConstants().dsdAttributeAssignmentStatus());
+        ListGridField usageField = new ListGridField(AttributeRecord.ASSIGNMENT, MetamacSrmWeb.getConstants().dsdAttributeUsageStatus());
         ListGridField attributeConceptField = new ListGridField(AttributeRecord.CONCEPT, MetamacSrmWeb.getConstants().concept());
-        attributesGrid.setFields(codeField, assigmentField, attributeConceptField);
+        attributesGrid.setFields(codeField, usageField, attributeConceptField);
         // ToolTip
         codeField.setShowHover(true);
         codeField.setHoverCustomizer(new HoverCustomizer() {
@@ -197,8 +197,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 return attributeRecord.getCode();
             }
         });
-        assigmentField.setShowHover(true);
-        assigmentField.setHoverCustomizer(new HoverCustomizer() {
+        usageField.setShowHover(true);
+        usageField.setHoverCustomizer(new HoverCustomizer() {
 
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
@@ -296,7 +296,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem type = new ViewTextItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
         ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept());
         RelatedResourceListItem roleItem = new RelatedResourceListItem(DataAttributeDS.ROLE, getConstants().dsdAttributeRole(), false);
-        ViewTextItem staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeAssignmentStatus());
+        ViewTextItem usageStatusItem = new ViewTextItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeUsageStatus());
         staticRelationType = new ViewTextItem(DataAttributeDS.RELATED_WITH, getConstants().dsdAttributeRelatedWith());
         staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         staticDimensionsForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeDimensionsForDimensionRelationship());
@@ -305,7 +305,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        form.setFields(code, type, staticAssignmentStatusItem, concept, roleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
+        form.setFields(code, type, usageStatusItem, concept, roleItem, staticRelationType, staticGroupKeysForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
                 staticGroupKeyFormForGroupRelationship, staticRepresentationTypeItem, codelist, urn, urnProvider);
 
         facetForm = new StaticFacetForm();
@@ -340,10 +340,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         CustomSelectItem type = new CustomSelectItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
         type.setValueMap(CommonUtils.getDataAttributeTypeHashMap());
 
-        // Assignment Status
+        // Usage Status
 
-        RequiredSelectItem assignmentStatusItem = new RequiredSelectItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeAssignmentStatus());
-        assignmentStatusItem.setValueMap(CommonUtils.getUsageStatusHashMap());
+        RequiredSelectItem usageStatusItem = new RequiredSelectItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeUsageStatus());
+        usageStatusItem.setValueMap(CommonUtils.getUsageStatusHashMap());
+        usageStatusItem.setShowIfCondition(getUsageStatusFormItemIfFunction());
+
+        ViewTextItem staticUsageStatusItem = new ViewTextItem(DataAttributeDS.USAGE_STATUS_VIEW, getConstants().dsdAttributeUsageStatus());
+        staticUsageStatusItem.setShowIfCondition(getStaticUsageStatusFormItemIfFunction());
 
         // Concept
 
@@ -448,7 +452,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCode, type, assignmentStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem,
+        editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem,
                 dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
@@ -572,7 +576,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ((RelatedResourceListItem) form.getItem(DataAttributeDS.ROLE)).setRelatedResources(dataAttributeDto.getRole());
         form.getItem(DataAttributeDS.ROLE).show();
 
-        // Assignment Status
+        // Usage Status
         form.setValue(DataAttributeDS.USAGE_STATUS, CommonUtils.getUsageStatusName(dataAttributeDto.getUsageStatus()));
 
         // RelateTo
@@ -703,8 +707,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Role
         ((RelatedResourceListItem) editionForm.getItem(DataAttributeDS.ROLE)).setRelatedResources(dataAttributeDto.getRole());
 
-        // Assignment Status
+        // Usage Status
         editionForm.setValue(DataAttributeDS.USAGE_STATUS, (dataAttributeDto.getUsageStatus() == null) ? null : dataAttributeDto.getUsageStatus().toString());
+        editionForm.setValue(DataAttributeDS.USAGE_STATUS_VIEW, CommonUtils.getUsageStatusName(dataAttributeDto.getUsageStatus()));
 
         // Representation
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
@@ -773,7 +778,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(
                 TypeExternalArtefactsEnum.CONCEPT, editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
 
-        // Assignment Status
+        // Usage Status
         dataAttributeDto.setUsageStatus(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.USAGE_STATUS)) ? null : UsageStatus.valueOf(editionForm
                 .getValueAsString(DataAttributeDS.USAGE_STATUS)));
 
@@ -1134,6 +1139,28 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canAttributeCodeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // USAGE STATUS
+
+    private FormItemIfFunction getUsageStatusFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canAttributeUsageStatusBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticUsageStatusFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canAttributeUsageStatusBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
