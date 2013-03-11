@@ -391,7 +391,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, staticEditableConcept, staticConcept, conceptRoleItem, staticConceptRoleItem, representationTypeItem,
-                staticRepresentationTypeItem, codelist, staticEditableCodelist, staticCodelist, conceptScheme, staticEditableConceptScheme, urn, urnProvider);
+                staticRepresentationTypeItem, codelist, staticEditableCodelist, staticCodelist, conceptScheme, staticEditableConceptScheme, staticConceptScheme, urn, urnProvider);
 
         // FACET
 
