@@ -278,7 +278,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         form = new GroupDynamicForm(getConstants().dsdDimensionDetails());
         ViewTextItem code = new ViewTextItem(DimensionDS.CODE_VIEW, getConstants().dsdDimensionsId());
         ViewTextItem dimensionType = new ViewTextItem(DimensionDS.TYPE_VIEW, getConstants().dsdDimensionsType());
-        ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT_VIEW, getConstants().concept());
+        ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT_EDITION_VIEW, getConstants().concept());
 
         RelatedResourceListItem conceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole(), false);
         conceptRoleItem.setShowIfCondition(new FormItemIfFunction() {
@@ -337,7 +337,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT, getConstants().concept());
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem conceptView = createConceptItem(DimensionDS.CONCEPT_VIEW, getConstants().concept());
+        SearchViewTextItem conceptView = createConceptItem(DimensionDS.CONCEPT_EDITION_VIEW, getConstants().concept());
 
         // ROLES
 
@@ -584,7 +584,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Type
         form.setValue(DimensionDS.TYPE_VIEW, CommonUtils.getDimensionTypeName(dimensionComponentDto));
         // Concept
-        form.setValue(DimensionDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
+        form.setValue(DimensionDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
 
         // Role
         form.getItem(DimensionDS.ROLE).hide();
@@ -658,7 +658,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Concept
         editionForm.setValue(DimensionDS.CONCEPT, dimensionComponentDto.getCptIdRef() != null ? dimensionComponentDto.getCptIdRef().getUrn() : null);
-        editionForm.setValue(DimensionDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
+        editionForm.setValue(DimensionDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
 
         // Role
         ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(dimensionComponentDto.getRole());
@@ -970,7 +970,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
                         editionForm.setValue(DimensionDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(DimensionDS.CONCEPT_VIEW, selectedConcept != null
+                        editionForm.setValue(DimensionDS.CONCEPT_EDITION_VIEW, selectedConcept != null
                                 ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept)
                                 : null);
 
