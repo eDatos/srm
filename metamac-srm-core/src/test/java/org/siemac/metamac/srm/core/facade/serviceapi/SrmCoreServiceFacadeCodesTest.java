@@ -1169,7 +1169,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
             // Restrictions
             MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
-            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), "short name", OperationType.LIKE));
+            conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), "short name", OperationType.ILIKE));
             conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_URN.name(), CODELIST_1_V2, OperationType.EQ));
             metamacCriteria.setRestriction(conjunctionRestriction);
 
@@ -1183,11 +1183,16 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(3, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(3, codesPagedResult.getResults().size());
+            assertEquals(4, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(4, codesPagedResult.getResults().size());
             assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
 
             int i = 0;
+            assertNotNull(codesPagedResult.getResults().get(i).getVariableElement());
+            assertNull(codesPagedResult.getResults().get(i).getShortName());
+            assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i).getUrn());
+
+            i++;
             assertNull(codesPagedResult.getResults().get(i).getVariableElement());
             assertNotNull(codesPagedResult.getResults().get(i).getShortName());
             assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i).getUrn());

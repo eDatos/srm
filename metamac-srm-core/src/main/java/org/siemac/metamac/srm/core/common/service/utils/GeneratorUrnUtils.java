@@ -7,6 +7,8 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
+
 public class GeneratorUrnUtils extends com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils {
 
     /**
@@ -40,10 +42,10 @@ public class GeneratorUrnUtils extends com.arte.statistic.sdmx.srm.core.common.s
     /**
      * Generate order visualisation urn
      */
-    public static String generateCodelistOrderVisualisationUrn(CodelistOrderVisualisation codelistOrderVisualisation) {
-        String[] maintainerCode = generateSdmxUrnMaintainerIdFragment(codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getMaintainer());
-        String codelistCode = codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getCode();
-        String codelistVersionNumber = codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getVersionLogic();
+    public static String generateCodelistOrderVisualisationUrn(CodelistVersion codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation) {
+        String[] maintainerCode = generateSdmxUrnMaintainerIdFragment(codelistVersion.getMaintainableArtefact().getMaintainer());
+        String codelistCode = codelistVersion.getMaintainableArtefact().getCode();
+        String codelistVersionNumber = codelistVersion.getMaintainableArtefact().getVersionLogic();
 
         return generateSiemacStructuralResourcesCodelistOrderVisualisationUrn(maintainerCode, codelistCode, codelistVersionNumber, codelistOrderVisualisation.getNameableArtefact().getCode());
     }
@@ -51,10 +53,10 @@ public class GeneratorUrnUtils extends com.arte.statistic.sdmx.srm.core.common.s
     /**
      * Generate openness visualisation urn
      */
-    public static String generateCodelistOpennessVisualisationUrn(CodelistOpennessVisualisation codelistOpennessVisualisation) {
-        String[] maintainerCode = generateSdmxUrnMaintainerIdFragment(codelistOpennessVisualisation.getCodelistVersion().getMaintainableArtefact().getMaintainer());
-        String codelistCode = codelistOpennessVisualisation.getCodelistVersion().getMaintainableArtefact().getCode();
-        String codelistVersionNumber = codelistOpennessVisualisation.getCodelistVersion().getMaintainableArtefact().getVersionLogic();
+    public static String generateCodelistOpennessVisualisationUrn(CodelistVersion codelistVersion, CodelistOpennessVisualisation codelistOpennessVisualisation) {
+        String[] maintainerCode = generateSdmxUrnMaintainerIdFragment(codelistVersion.getMaintainableArtefact().getMaintainer());
+        String codelistCode = codelistVersion.getMaintainableArtefact().getCode();
+        String codelistVersionNumber = codelistVersion.getMaintainableArtefact().getVersionLogic();
 
         return generateSiemacStructuralResourcesCodelistOpennessLevelsUrn(maintainerCode, codelistCode, codelistVersionNumber, codelistOpennessVisualisation.getNameableArtefact().getCode());
     }

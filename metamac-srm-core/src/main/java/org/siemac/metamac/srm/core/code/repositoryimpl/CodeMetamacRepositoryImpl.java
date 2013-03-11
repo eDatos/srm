@@ -37,8 +37,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     private final static String NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is not null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
     private final static String NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST                  = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion and c.SHORT_NAME_FK is not null";
-    private final static String BOOLEAN_TRUE_DATABASE                                          = "1";
-    private final static String BOOLEAN_FALSE_DATABASE                                         = "0";
+    private final static String BOOLEAN_TRUE_DATABASE_AS_1                                     = "1";
+    private final static String BOOLEAN_FALSE_DATABASE_AS_0                                    = "0";
 
     public CodeMetamacRepositoryImpl() {
     }
@@ -230,7 +230,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Override
     @SuppressWarnings("rawtypes")
-    public List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) {
+    public List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException {
         // Find codes
         List codesResultSql = executeQueryFindCodesByCodelistByNativeSqlQuery(idCodelist, locale, orderColumnIndex, opennessColumnIndex);
 
@@ -367,7 +367,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         return codesResultSql;
     }
 
-    private CodeMetamacVisualisationResult codeResultSqlToCodeResult(Object[] source, CodeMetamacVisualisationResult target, Integer orderColumnIndex, Integer opennessColumnIndex) {
+    private CodeMetamacVisualisationResult codeResultSqlToCodeResult(Object[] source, CodeMetamacVisualisationResult target, Integer orderColumnIndex, Integer opennessColumnIndex)
+            throws MetamacException {
         if (target == null) {
             target = new CodeMetamacVisualisationResult();
         }
@@ -395,20 +396,36 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     private Long getLong(Object source) {
-        return source != null ? Long.valueOf(source.toString()) : null;
+        if (source == null) {
+            return null;
+        } else if (source instanceof Long) {
+            return (Long) source;
+        } else {
+            return Long.valueOf(source.toString());
+        }
     }
 
     private Integer getInteger(Object source) {
-        return source != null ? Integer.valueOf(source.toString()) : null;
-    }
-
-    private Boolean getBoolean(Object source) {
         if (source == null) {
             return null;
-        } else if (BOOLEAN_TRUE_DATABASE.equals(source.toString())) {
-            return Boolean.TRUE;
+        } else if (source instanceof Integer) {
+            return (Integer) source;
         } else {
+            return Integer.valueOf(source.toString());
+        }
+    }
+
+    private Boolean getBoolean(Object source) throws MetamacException {
+        if (source == null) {
+            return null;
+        } else if (source instanceof Boolean) {
+            return (Boolean) source;
+        } else if (BOOLEAN_TRUE_DATABASE_AS_1.equals(source.toString())) {
+            return Boolean.TRUE;
+        } else if (BOOLEAN_FALSE_DATABASE_AS_0.equals(source.toString())) {
             return Boolean.FALSE;
+        } else {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Boolean unrecognised: " + source).build();
         }
     }
 
@@ -431,6 +448,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     private String getOpennessColumnValude(Boolean expanded) {
-        return expanded ? BOOLEAN_TRUE_DATABASE : BOOLEAN_FALSE_DATABASE;
+        return expanded ? BOOLEAN_TRUE_DATABASE_AS_1 : BOOLEAN_FALSE_DATABASE_AS_0;
     }
 }

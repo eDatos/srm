@@ -300,7 +300,7 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters);
 				@CodeMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
-				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex);
+				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) throws MetamacException;
 				
 				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Item parent, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToDelete);
