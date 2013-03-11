@@ -291,7 +291,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, getConstants().representation());
         ViewTextItem codelist = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
-        ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, getConstants().conceptScheme());
+        ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, getConstants().conceptScheme());
 
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
@@ -614,8 +614,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         facetForm.hide();
         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).hide();
         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
-        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).hide();
-        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).clearValue();
+        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME).hide();
+        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME).clearValue();
         form.getItem(DimensionDS.REPRESENTATION_TYPE).clearValue();
         facetForm.clearValues();
         if (dimensionComponentDto.getLocalRepresentation() != null) {
@@ -637,9 +637,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     form.getItem(DimensionDS.REPRESENTATION_TYPE).setValue(getCoreMessages().representationTypeEnumENUMERATION());
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW,
+                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME,
                                 RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumeration()));
-                        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).show();
+                        form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME).show();
                     }
                 }
 
