@@ -82,10 +82,10 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
 
-    private VLayout                                      panel;
-    private InternationalMainFormLayout                  mainFormLayout;
+    private final VLayout                                panel;
+    private final InternationalMainFormLayout            mainFormLayout;
 
-    private ConceptsTreeGrid                             conceptsTreeGrid;
+    private final ConceptsTreeGrid                       conceptsTreeGrid;
 
     // View forms
     private GroupDynamicForm                             identifiersForm;
@@ -457,9 +457,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW,
                 conceptDto.getCoreRepresentation() != null ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration()) : null);
         contentDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
-        contentDescriptorsForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null
-                ? CommonWebUtils.getElementName(conceptDto.getType().getIdentifier(), conceptDto.getType().getDescription())
-                : null);
+        contentDescriptorsForm.setValue(ConceptDS.TYPE,
+                conceptDto.getConceptType() != null ? CommonWebUtils.getElementName(conceptDto.getConceptType().getIdentifier(), conceptDto.getConceptType().getDescription()) : null);
         ((RelatedResourceListItem) contentDescriptorsForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
         contentDescriptorsForm.markForRedraw();
 
@@ -516,7 +515,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration())
                 : null);
         contentDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? conceptDto.getType().getIdentifier() : null);
+        contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getConceptType() != null ? conceptDto.getConceptType().getIdentifier() : null);
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
         // Non enumerated representation
@@ -582,7 +581,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         }
         conceptDto.setSdmxRelatedArtefact(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) ? ConceptRoleEnum.valueOf(contentDescriptorsEditionForm
                 .getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) : null);
-        conceptDto.setType(contentDescriptorsEditionForm.getValue(ConceptDS.TYPE) != null ? getConceptTypeDto(contentDescriptorsEditionForm.getValueAsString(ConceptDS.TYPE)) : null);
+        conceptDto.setConceptType(contentDescriptorsEditionForm.getValue(ConceptDS.TYPE) != null ? getConceptTypeDto(contentDescriptorsEditionForm.getValueAsString(ConceptDS.TYPE)) : null);
         // Roles get in getRoles method
 
         // Class descriptors

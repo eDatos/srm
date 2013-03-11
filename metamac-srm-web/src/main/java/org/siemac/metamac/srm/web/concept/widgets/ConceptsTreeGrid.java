@@ -180,8 +180,8 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
         node.setAttribute(ConceptDS.ITEM_PARENT_URN, itemParentUrn);
         node.setAttribute(
                 ConceptDS.TYPE,
-                ((ConceptMetamacDto) itemHierarchyDto.getItem()).getType() != null ? CommonWebUtils.getElementName(((ConceptMetamacDto) itemHierarchyDto.getItem()).getType().getIdentifier(),
-                        ((ConceptMetamacDto) itemHierarchyDto.getItem()).getType().getDescription()) : StringUtils.EMPTY);
+                ((ConceptMetamacDto) itemHierarchyDto.getItem()).getConceptType() != null ? CommonWebUtils.getElementName(((ConceptMetamacDto) itemHierarchyDto.getItem()).getConceptType()
+                        .getIdentifier(), ((ConceptMetamacDto) itemHierarchyDto.getItem()).getConceptType().getDescription()) : StringUtils.EMPTY);
         node.setAttribute(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(((ConceptMetamacDto) itemHierarchyDto.getItem()).getSdmxRelatedArtefact()));
 
         // Node children
