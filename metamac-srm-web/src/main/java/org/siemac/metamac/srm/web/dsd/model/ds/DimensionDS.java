@@ -15,6 +15,8 @@ public class DimensionDS {
     public static final String CONCEPT_VIEW                                  = "dim-con-view";             // Not mapped in DTO
 
     public static final String ROLE                                          = "dim-role";
+    public static final String ROLE_VIEW                                     = "dim-role-view";            // Not mapped in DTO
+
     public static final String REPRESENTATION_TYPE                           = "dim-repr-type";
     public static final String REPRESENTATION_TYPE_VIEW                      = "dim-repr-type-view";       // Not mapped in DTO
     public static final String ENUMERATED_REPRESENTATION_CODELIST            = "dim-repr-enum-code";

@@ -80,6 +80,15 @@ public class DsdsFormUtils {
         return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
+    // ROLE
+
+    public static boolean canDimensionRoleBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // REPRESENTATION TYPE
 
     public static boolean canDimensionRepresentationTypeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {

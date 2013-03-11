@@ -347,6 +347,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // ROLES
 
         RelatedResourceListItem conceptRoleItem = createRoleItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole());
+        conceptRoleItem.setShowIfCondition(getRoleFormItemIfFunction());
+
+        RelatedResourceListItem staticConceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE_VIEW, getConstants().dsdDimensionsRole(), false);
+        staticConceptRoleItem.setShowIfCondition(getStaticRoleFormItemIfFunction());
 
         // REPRESENTATION TYPE
 
@@ -375,7 +379,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, staticEditableConcept, staticConcept, conceptRoleItem, representationTypeItem,
+        editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, staticEditableConcept, staticConcept, conceptRoleItem, staticConceptRoleItem, representationTypeItem,
                 staticRepresentationTypeItem, codelist, codelistView, conceptScheme, conceptSchemeView, urn, urnProvider);
 
         // FACET
@@ -668,6 +672,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Role
         ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(dimensionComponentDto.getRole());
+        ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE_VIEW)).setRelatedResources(dimensionComponentDto.getRole());
 
         // Representation
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
@@ -867,13 +872,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         final int MAX_RESULTS = 8;
 
         RelatedResourceListItem relatedResources = new RelatedResourceListItem(name, title, true);
-        relatedResources.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionRoleVisible(dimensionComponentDto.getTypeDimensionComponent());
-            }
-        });
         relatedResources.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -1167,6 +1165,28 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canDimensionConceptBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // ROLE
+
+    private FormItemIfFunction getRoleFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionRoleVisible(dimensionComponentDto.getTypeDimensionComponent()) && DsdsFormUtils.canDimensionRoleBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticRoleFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionRoleVisible(dimensionComponentDto.getTypeDimensionComponent()) && !DsdsFormUtils.canDimensionRoleBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
