@@ -45,6 +45,10 @@ public class CommonUtils {
         return usageStatusHashMap;
     }
 
+    public static String getUsageStatusName(UsageStatus usageStatus) {
+        return usageStatus != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().usageStatus() + usageStatus.name()) : null;
+    }
+
     // TYPE RELATIONSHIP
 
     public static LinkedHashMap<String, String> getTypeRelathionshipHashMap() {

@@ -107,7 +107,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // VIEW FORM
 
     private GroupDynamicForm                             form;
-    private ViewTextItem                                 staticAssignmentStatusItem;
     // Relation
     private ViewTextItem                                 staticRelationType;
     private ViewTextItem                                 staticGroupKeysForDimensionRelationshipItem;
@@ -298,7 +297,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem type = new ViewTextItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
         ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept());
         RelatedResourceListItem roleItem = new RelatedResourceListItem(DataAttributeDS.ROLE, getConstants().dsdAttributeRole(), false);
-        staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, getConstants().dsdAttributeAssignmentStatus());
+        ViewTextItem staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, getConstants().dsdAttributeAssignmentStatus());
         staticRelationType = new ViewTextItem(DataAttributeDS.RELATED_WITH, getConstants().dsdAttributeRelatedWith());
         staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         staticDimensionsForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeDimensionsForDimensionRelationship());
@@ -575,9 +574,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form.getItem(DataAttributeDS.ROLE).show();
 
         // Assignment Status
-        String value = (dataAttributeDto.getUsageStatus() == null) ? null : MetamacSrmWeb.getCoreMessages().getString(
-                MetamacSrmWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName());
-        staticAssignmentStatusItem.setValue(value);
+        form.setValue(DataAttributeDS.ASSIGMENT_STATUS, CommonUtils.getUsageStatusName(dataAttributeDto.getUsageStatus()));
 
         // RelateTo
         staticRelationType.setValue(new String());
