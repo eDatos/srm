@@ -83,7 +83,7 @@
         ID="1001"
         ITEM_SCHEME_FK="100"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1001"
+        MAINTAINABLE_ARTEFACT_FK="1001"
         
         UUID="organisationScheme-100-v1"
         VERSION="1"
@@ -271,7 +271,7 @@
         ID="11"
         ITEM_SCHEME_FK="1"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="11"
+        MAINTAINABLE_ARTEFACT_FK="11"
         
         UUID="rganisationScheme-1-v1"
         VERSION="1"
@@ -412,7 +412,7 @@
         ID="12"
         ITEM_SCHEME_FK="1"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="12"
+        MAINTAINABLE_ARTEFACT_FK="12"
         
         UUID="rganisationScheme-2-v2"
         VERSION="1"
@@ -946,7 +946,7 @@
         ID="21"
         ITEM_SCHEME_FK="2"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="21"
+        MAINTAINABLE_ARTEFACT_FK="21"
         
         UUID="categoryScheme-2-v1"
         VERSION="1"
@@ -1152,7 +1152,7 @@
         ID="31"
         ITEM_SCHEME_FK="3"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="31"
+        MAINTAINABLE_ARTEFACT_FK="31"
         
         UUID="categoryScheme-3-v1"
         VERSION="1"
@@ -1517,7 +1517,7 @@
         ID="41"
         ITEM_SCHEME_FK="4"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="41"
+        MAINTAINABLE_ARTEFACT_FK="41"
         
         UUID="categoryScheme-4-v1"
         VERSION="1"
@@ -1670,7 +1670,7 @@
         ID="51"
         ITEM_SCHEME_FK="5"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="51"
+        MAINTAINABLE_ARTEFACT_FK="51"
         
         UUID="categoryScheme-5-v1"
         VERSION="1"
@@ -1822,7 +1822,7 @@
         ID="61"
         ITEM_SCHEME_FK="6"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="61"
+        MAINTAINABLE_ARTEFACT_FK="61"
         
         UUID="categoryScheme-6-v1"
         VERSION="1"
@@ -1975,7 +1975,7 @@
         ID="71"
         ITEM_SCHEME_FK="7"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="71"
+        MAINTAINABLE_ARTEFACT_FK="71"
         
         UUID="categoryScheme-7-v1"
         VERSION="1"
@@ -2059,7 +2059,7 @@
         ID="72"
         ITEM_SCHEME_FK="7"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="72"
+        MAINTAINABLE_ARTEFACT_FK="72"
         
         UUID="categoryScheme-7-v2"
         VERSION="1"

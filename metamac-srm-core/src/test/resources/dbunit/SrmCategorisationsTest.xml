@@ -83,7 +83,7 @@
         ID="1001"
         ITEM_SCHEME_FK="100"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1001"
+        MAINTAINABLE_ARTEFACT_FK="1001"
         
         UUID="organisationScheme-100-v1"
         VERSION="1"
@@ -269,7 +269,7 @@
         ID="11"
         ITEM_SCHEME_FK="1"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="11"
+        MAINTAINABLE_ARTEFACT_FK="11"
         
         UUID="categoryScheme-1-v1"
         VERSION="1"
@@ -421,7 +421,7 @@
         ID="21"
         ITEM_SCHEME_FK="2"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="21"
+        MAINTAINABLE_ARTEFACT_FK="21"
         
         UUID="conceptScheme-1-v1"
         VERSION="1"
@@ -574,7 +574,7 @@
         
     <TB_CATEGORISATIONS
         ID="3"
-        MAINTANABLE_ARTEFACT_FK="3"
+        MAINTAINABLE_ARTEFACT_FK="3"
         CATEGORY_FK="111"
         ARTEFACT_CATEGORISED_FK="21"
         
@@ -635,7 +635,7 @@
         
     <TB_CATEGORISATIONS
         ID="4"
-        MAINTANABLE_ARTEFACT_FK="4"
+        MAINTAINABLE_ARTEFACT_FK="4"
         CATEGORY_FK="111"
         ARTEFACT_CATEGORISED_FK="21"
         
@@ -709,7 +709,7 @@
         ID="51"
         ITEM_SCHEME_FK="5"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="51"
+        MAINTAINABLE_ARTEFACT_FK="51"
         
         UUID="categoryScheme-5-v1"
         VERSION="1"
@@ -848,7 +848,7 @@
         
     <TB_CATEGORISATIONS
         ID="6"
-        MAINTANABLE_ARTEFACT_FK="6"
+        MAINTAINABLE_ARTEFACT_FK="6"
         CATEGORY_FK="111"
         ARTEFACT_CATEGORISED_FK="1001"
         
@@ -923,7 +923,7 @@
         ID="71"
         ITEM_SCHEME_FK="7"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="71"
+        MAINTAINABLE_ARTEFACT_FK="71"
         
         UUID="conceptScheme-2-v1"
         VERSION="1"
@@ -1075,7 +1075,7 @@
         
     <TB_CATEGORISATIONS
         ID="8"
-        MAINTANABLE_ARTEFACT_FK="8"
+        MAINTAINABLE_ARTEFACT_FK="8"
         CATEGORY_FK="111"
         ARTEFACT_CATEGORISED_FK="71"
         
@@ -1136,7 +1136,7 @@
         
     <TB_CATEGORISATIONS
         ID="9"
-        MAINTANABLE_ARTEFACT_FK="9"
+        MAINTAINABLE_ARTEFACT_FK="9"
         CATEGORY_FK="111"
         ARTEFACT_CATEGORISED_FK="71"
         

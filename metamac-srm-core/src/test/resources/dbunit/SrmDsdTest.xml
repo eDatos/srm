@@ -90,7 +90,7 @@
         ID="1001"
         ITEM_SCHEME_FK="100"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1001"
+        MAINTAINABLE_ARTEFACT_FK="1001"
         
         UUID="organisationScheme-100-v1"
         VERSION="1"
@@ -526,7 +526,7 @@
         ID="1011"
         ITEM_SCHEME_FK="101"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1011"
+        MAINTAINABLE_ARTEFACT_FK="1011"
         
         UUID="organisationScheme-101-v1"
         VERSION="1"
@@ -661,7 +661,7 @@
         ID="1021"
         ITEM_SCHEME_FK="102"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1021"
+        MAINTAINABLE_ARTEFACT_FK="1021"
         
         UUID="conceptscheme2-v1"
         VERSION="1"
@@ -889,7 +889,7 @@
         ID="1031"
         ITEM_SCHEME_FK="103"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1031"
+        MAINTAINABLE_ARTEFACT_FK="1031"
         
         UUID="conceptScheme-03-v1"
         VERSION="1"
@@ -1175,7 +1175,7 @@
         ID="1041"
         ITEM_SCHEME_FK="104"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1041"
+        MAINTAINABLE_ARTEFACT_FK="1041"
         
         UUID="conceptScheme-04-v1"
         VERSION="1"
@@ -1334,7 +1334,7 @@
         ID="1051"
         ITEM_SCHEME_FK="105"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1051"
+        MAINTAINABLE_ARTEFACT_FK="1051"
         
         UUID="conceptScheme-05-v1"
         VERSION="1"
@@ -1493,7 +1493,7 @@
         ID="1061"
         ITEM_SCHEME_FK="106"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1061"
+        MAINTAINABLE_ARTEFACT_FK="1061"
         
         UUID="conceptScheme-06-v1"
         VERSION="1"
@@ -1652,7 +1652,7 @@
         ID="1071"
         ITEM_SCHEME_FK="107"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1071"
+        MAINTAINABLE_ARTEFACT_FK="1071"
         
         UUID="conceptScheme-07-v1"
         VERSION="1"
@@ -1811,7 +1811,7 @@
         ID="1081"
         ITEM_SCHEME_FK="108"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="1081"
+        MAINTAINABLE_ARTEFACT_FK="1081"
         
         UUID="conceptScheme-08-v1"
         VERSION="1"
@@ -1987,7 +1987,7 @@
         ID="2011"
         ITEM_SCHEME_FK="201"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="2011"
+        MAINTAINABLE_ARTEFACT_FK="2011"
         
         UUID="codelist-7-v1"
         VERSION="1"
@@ -2195,7 +2195,7 @@
         ID="2021"
         ITEM_SCHEME_FK="202"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="2021"
+        MAINTAINABLE_ARTEFACT_FK="2021"
         
         UUID="codelist-8-v1"
         VERSION="1"
@@ -2296,7 +2296,7 @@
         ID="2031"
         ITEM_SCHEME_FK="203"
         IS_PARTIAL="0"
-        MAINTANABLE_ARTEFACT_FK="2031"
+        MAINTAINABLE_ARTEFACT_FK="2031"
         
         UUID="codelist-9-v1"
         VERSION="1"
@@ -2397,7 +2397,7 @@
     <TB_STRUCTURES_VERSIONS
         ID="11"
         STRUCTURE_FK="1"
-        MAINTANABLE_ARTEFACT_FK="11"
+        MAINTAINABLE_ARTEFACT_FK="11"
         
         UUID="structure-01-v1"
         VERSION="1"
@@ -2483,7 +2483,7 @@
  	<TB_STRUCTURES_VERSIONS
         ID="12"
         STRUCTURE_FK="1"
-        MAINTANABLE_ARTEFACT_FK="12"
+        MAINTAINABLE_ARTEFACT_FK="12"
         
         UUID="structure-01-v2"
         VERSION="1"
@@ -2599,7 +2599,7 @@
     <TB_STRUCTURES_VERSIONS
         ID="21"
         STRUCTURE_FK="2"
-        MAINTANABLE_ARTEFACT_FK="21"
+        MAINTAINABLE_ARTEFACT_FK="21"
         
         UUID="structure-02-v1"
         VERSION="1"
@@ -2695,7 +2695,7 @@
     <TB_STRUCTURES_VERSIONS
         ID="31"
         STRUCTURE_FK="3"
-        MAINTANABLE_ARTEFACT_FK="31"
+        MAINTAINABLE_ARTEFACT_FK="31"
         
         UUID="structure-03-v1"
         VERSION="1"
@@ -2793,7 +2793,7 @@
     <TB_STRUCTURES_VERSIONS
         ID="41"
         STRUCTURE_FK="4"
-        MAINTANABLE_ARTEFACT_FK="41"
+        MAINTAINABLE_ARTEFACT_FK="41"
         
         UUID="structure-04-v1"
         VERSION="1"
@@ -2889,7 +2889,7 @@
     <TB_STRUCTURES_VERSIONS
         ID="51"
         STRUCTURE_FK="5"
-        MAINTANABLE_ARTEFACT_FK="51"
+        MAINTAINABLE_ARTEFACT_FK="51"
         
         UUID="structure-05-v1"
         VERSION="1"
@@ -2985,7 +2985,7 @@
     <TB_STRUCTURES_VERSIONS
         ID="61"
         STRUCTURE_FK="6"
-        MAINTANABLE_ARTEFACT_FK="611"
+        MAINTAINABLE_ARTEFACT_FK="611"
         
         UUID="structure-06-v1"
         VERSION="1"

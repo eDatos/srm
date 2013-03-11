@@ -369,11 +369,11 @@ public class CodelistsToSql {
          * LAST_UPDATED TIMESTAMP,
          * LAST_UPDATED_BY VARCHAR2(50),
          * VERSION NUMBER(19) NOT NULL,
-         * MAINTANABLE_ARTEFACT_FK NUMBER(19),
+         * MAINTAINABLE_ARTEFACT_FK NUMBER(19),
          * ITEM_SCHEME_FK NUMBER(19) NOT NULL
          * );
          */
-        insertSentences.add("INSERT INTO TB_ITEM_SCHEMES_VERSIONS (ID, UUID, VERSION, MAINTANABLE_ARTEFACT_FK, ITEM_SCHEME_FK) values (" + idCodelists + ", " + idCodelists + ", 1, "
+        insertSentences.add("INSERT INTO TB_ITEM_SCHEMES_VERSIONS (ID, UUID, VERSION, MAINTAINABLE_ARTEFACT_FK, ITEM_SCHEME_FK) values (" + idCodelists + ", " + idCodelists + ", 1, "
                 + idMaintainableArtefact + ", " + idCodelists + ");");
     }
 
