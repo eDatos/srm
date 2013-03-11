@@ -16,7 +16,9 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -2607,7 +2609,9 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOpenness());
         }
         // Update
-        srmCoreServiceFacade.updateCodeInOpennessVisualisation(getServiceContextAdministrador(), codeUrn, visualisationUrn, Boolean.TRUE);
+        Map<String, Boolean> values = new HashMap<String, Boolean>();
+        values.put(codeUrn, Boolean.TRUE);
+        srmCoreServiceFacade.updateCodesInOpennessVisualisation(getServiceContextAdministrador(), visualisationUrn, values);
         // After
         {
             List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisationUrn);

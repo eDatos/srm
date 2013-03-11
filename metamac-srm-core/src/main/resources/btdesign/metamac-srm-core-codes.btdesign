@@ -83,7 +83,7 @@ Application CodesMetamac {
 			"Updates position of code to visualisation requested"
 			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex) throws MetamacException;
 			"Updates openness of code to visualisation requested"
-			Boolean updateCodeInOpennessVisualisation(String codeUrn, String codelistOpennessVisualisationUrn, Boolean openness) throws MetamacException;
+			updateCodesInOpennessVisualisation(String codelistOpennessVisualisationUrn, Map<String, Boolean> openness) throws MetamacException;
     		"Retrieves code by urn"
     		@CodeMetamac retrieveCodeByUrn(String urn) throws MetamacException;
     		"Finds codes by criteria"
@@ -310,9 +310,10 @@ Application CodesMetamac {
 				Integer getCodeMaximumOrderInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, Integer orderColumnIndex);
 				Integer getCodeAlphabeticPositionInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, @Item code);
 
-				clearCodesOpennessColumn(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex);
-				copyCodesOpennessColumn(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
-				updateCodesOpennessColumn(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded);
+				clearCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex);
+				copyCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
+				updateCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded);
+				updateCodeOpennessColumn(@CodelistVersionMetamac codelistVersion, String codeUrn, Integer opennessColumnIndex, Boolean expanded);
 			}
 		}
 		

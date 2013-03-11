@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -122,12 +123,11 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkUpdateCodeInOpennessVisualisation(String codeUrn, String codelistOpennessVisualisationUrn, Boolean openness, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkUpdateCodeInOpennessVisualisation(String codelistOpennessVisualisationUrn, Map<String, Boolean> openness, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
-        ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(codelistOpennessVisualisationUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(openness, ServiceExceptionParameters.CODELIST_OPENNESS_VISUALISATION_EXPANDED, exceptions);
 

@@ -4,4 +4,7 @@
     <comment>Configurations</comment>
      <!--  The following URN must be create in the system before any DSD creation -->
     <entry key="metamac.srm.dsd.primary_measure.default_concept.urn">urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME02(01.000).CONCEPT01</entry>
+    
+    <!-- PENDIENTE UNIFICAR CON SPRING-TEST.PROPERTIES -->
+    <entry key="metamac.srm.db.driverName">oracle.jdbc.OracleDriver</entry>
 </properties>

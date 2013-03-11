@@ -481,7 +481,7 @@ Application SrmFacadeCore {
 			"Updates position of code to visualisation requested"
 			updateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex) throws MetamacException;
 			"Updates openness of code to visualisation requested"
-			updateCodeInOpennessVisualisation(String codeUrn, String codelistOpennessVisualisationUrn, Boolean openness) throws MetamacException;
+			updateCodesInOpennessVisualisation(String codelistOpennessVisualisationUrn, Map<String, Boolean> openness) throws MetamacException;
 	   		"Retrieves a code by URN"
             @CodeMetamacDto retrieveCodeByUrn(String urn) throws MetamacException;
             "Finds codes by criteria"

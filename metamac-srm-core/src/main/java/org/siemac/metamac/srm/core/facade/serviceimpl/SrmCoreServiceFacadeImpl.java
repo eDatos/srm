@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.facade.serviceimpl;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -1123,13 +1124,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void updateCodeInOpennessVisualisation(ServiceContext ctx, String codeUrn, String codelistOpennessVisualisationUrn, Boolean openness) throws MetamacException {
+    public void updateCodesInOpennessVisualisation(ServiceContext ctx, String codelistOpennessVisualisationUrn, Map<String, Boolean> openness) throws MetamacException {
         // Security
-        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
-        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodelistOpennessVisualisation codelistOpennessVisualisation = getCodesMetamacService().retrieveCodelistOpennessVisualisationByUrn(ctx, codelistOpennessVisualisationUrn);
+        ItemsSecurityUtils.canUpdateItem(ctx, codelistOpennessVisualisation.getCodelistVersion().getLifeCycleMetadata().getProcStatus());
 
         // Update order
-        getCodesMetamacService().updateCodeInOpennessVisualisation(ctx, codeUrn, codelistOpennessVisualisationUrn, openness);
+        getCodesMetamacService().updateCodesInOpennessVisualisation(ctx, codelistOpennessVisualisationUrn, openness);
     }
 
     @Override

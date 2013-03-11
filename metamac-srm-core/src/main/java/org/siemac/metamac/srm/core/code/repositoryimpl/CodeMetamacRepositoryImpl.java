@@ -131,7 +131,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void clearCodesOpennessColumn(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex) {
+    public void clearCodesOpennessColumnByCodelist(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex) {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = null ");
@@ -142,7 +142,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void copyCodesOpennessColumn(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
+    public void copyCodesOpennessColumnByCodelist(CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget) {
         String columnSource = getOpennessColumnName(columnIndexSource);
         String columnTarget = getOpennessColumnName(columnIndexTarget);
 
@@ -155,13 +155,24 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void updateCodesOpennessColumn(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) {
+    public void updateCodesOpennessColumnByCodelist(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
-        String expandedSql = expanded ? BOOLEAN_TRUE_DATABASE : BOOLEAN_FALSE_DATABASE;
-        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + expandedSql + " ");
+        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValude(expanded) + " ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
+        queryUpdate.executeUpdate();
+    }
+
+    @Override
+    public void updateCodeOpennessColumn(CodelistVersionMetamac codelistVersion, String codeUrn, Integer opennessColumnIndex, Boolean expanded) {
+        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValude(expanded) + " ");
+        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID WHERE a.URN = :codeUrn AND i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        queryUpdate.setParameter("codeUrn", codeUrn);
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
@@ -417,5 +428,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     private String getOpennessColumnName(Integer columnIndex) {
         return "OPENNESS" + columnIndex;
+    }
+
+    private String getOpennessColumnValude(Boolean expanded) {
+        return expanded ? BOOLEAN_TRUE_DATABASE : BOOLEAN_FALSE_DATABASE;
     }
 }

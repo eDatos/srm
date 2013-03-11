@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -416,23 +417,21 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         getCodeMetamacRepository().save(code);
     }
 
-    // TODO hacer múltiple
     @Override
-    public Boolean updateCodeInOpennessVisualisation(ServiceContext ctx, String codeUrn, String opennessVisualisation, Boolean openness) throws MetamacException {
+    public void updateCodesInOpennessVisualisation(ServiceContext ctx, String opennessVisualisation, Map<String, Boolean> openness) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkUpdateCodeInOpennessVisualisation(codeUrn, opennessVisualisation, openness, null);
-        CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, codeUrn);
-        checkCodelistCanBeModified(codelistVersion);
-
+        CodesMetamacInvocationValidator.checkUpdateCodeInOpennessVisualisation(opennessVisualisation, openness, null);
         CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByUrn(opennessVisualisation);
+        CodelistVersionMetamac codelistVersion = codelistOpennessVisualisation.getCodelistVersion();
+        checkCodelistCanBeModified(codelistVersion);
         SrmValidationUtils.checkNotOpenedOpennessVisualisation(codelistOpennessVisualisation);
+        // Note: In repository method 'updateCodeOpennessColumn' check code belongs to this codelist
 
-        // Update code
-        CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
-        SrmServiceUtils.setCodeOpenness(code, codelistOpennessVisualisation.getColumnIndex(), openness);
-        getCodeMetamacRepository().save(code);
-
-        return SrmServiceUtils.getCodeOpenness(code, codelistOpennessVisualisation.getColumnIndex());
+        // Update codes
+        Integer columnIndex = codelistOpennessVisualisation.getColumnIndex();
+        for (String codeUrn : openness.keySet()) {
+            getCodeMetamacRepository().updateCodeOpennessColumn(codelistVersion, codeUrn, columnIndex, openness.get(codeUrn));
+        }
     }
 
     @Override
@@ -1140,7 +1139,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistOpennessVisualisation.setCodelistVersion(codelistVersion);
 
         // Assign default openness to all codes
-        getCodeMetamacRepository().updateCodesOpennessColumn(codelistVersion, codelistOpennessVisualisation.getColumnIndex(), SrmConstants.CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE);
+        getCodeMetamacRepository().updateCodesOpennessColumnByCodelist(codelistVersion, codelistOpennessVisualisation.getColumnIndex(), SrmConstants.CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE);
 
         // Create
         setCodelistOpennessVisualisationUrnUnique(codelistOpennessVisualisation);
@@ -1195,7 +1194,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Delete
         getCodelistOpennessVisualisationRepository().delete(codelistOpennessVisualisationToDelete);
         // Clear configurations in code columns
-        getCodeMetamacRepository().clearCodesOpennessColumn(codelistVersion, codelistOpennessVisualisationToDelete.getColumnIndex());
+        getCodeMetamacRepository().clearCodesOpennessColumnByCodelist(codelistVersion, codelistOpennessVisualisationToDelete.getColumnIndex());
     }
 
     @Override
@@ -1583,14 +1582,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion = getCodelistVersionMetamacRepository().save(codelistVersion);
 
         // Add codes with expanded = true as default // TODO comprobar en importación que se hace correctamente, para un codelist con sus codes sin persistir
-        getCodeMetamacRepository().updateCodesOpennessColumn(codelistVersion, allExpandedOpennessVisualisation.getColumnIndex(), Boolean.TRUE);
+        getCodeMetamacRepository().updateCodesOpennessColumnByCodelist(codelistVersion, allExpandedOpennessVisualisation.getColumnIndex(), Boolean.TRUE);
         return codelistVersion;
     }
 
     private VariableElementOperation createVariableElementOperationCommon(VariableElementOperationTypeEnum operationType, List<String> sources, List<String> targets) throws MetamacException {
 
         // Validation
-
         CodesMetamacInvocationValidator.checkAddVariableElementOperation(sources, targets, null);
 
         VariableElementOperation variableElementOperation = new VariableElementOperation();
