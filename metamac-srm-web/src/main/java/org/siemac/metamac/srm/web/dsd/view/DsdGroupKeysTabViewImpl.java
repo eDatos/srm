@@ -65,14 +65,10 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     private AnnotationsPanel                  editionAnnotationsPanel;
 
     // VIEW FORM
-
     private GroupDynamicForm                  form;
 
     // EDITION FORM
-
     private GroupDynamicForm                  editionForm;
-    private RequiredTextItem                  code;
-    private CustomSelectItem                  dimensionsItem;
 
     private ToolStripButton                   newToolStripButton;
     private ToolStripButton                   deleteToolStripButton;
@@ -235,14 +231,14 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
 
         // Id
-        code = new RequiredTextItem(GroupKeysDS.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysId());
+        RequiredTextItem code = new RequiredTextItem(GroupKeysDS.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysId());
         code.setValidators(SemanticIdentifiersUtils.getGroupDescriptorIdentifierCustomValidator());
 
         ViewTextItem urn = new ViewTextItem(GroupKeysDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(GroupKeysDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         // Dimensions
-        dimensionsItem = new CustomSelectItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
+        CustomSelectItem dimensionsItem = new CustomSelectItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
         dimensionsItem.setMultiple(true);
         dimensionsItem.setPickListWidth(350);
 
@@ -270,7 +266,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
         deselectGroupKeys();
         this.dimensionComponentDtos = dimensionComponentDtos;
-        dimensionsItem.setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
+        editionForm.getItem(GroupKeysDS.DIMENSIONS).setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
 
         groupKeysGrid.selectAllRecords();
         groupKeysGrid.removeSelectedData();
@@ -293,10 +289,11 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
     @Override
     public DescriptorDto getGroupKeys() {
-        descriptorDto.setCode(code.getValueAsString());
+        descriptorDto.setCode(editionForm.getValueAsString(GroupKeysDS.CODE));
 
         descriptorDto.getComponents().clear();
-        List<DimensionComponentDto> dimensions = CommonUtils.getDimensionComponentDtosWithSpecifiedUrns(dimensionComponentDtos, dimensionsItem.getValues());
+        List<DimensionComponentDto> dimensions = CommonUtils.getDimensionComponentDtosWithSpecifiedUrns(dimensionComponentDtos,
+                ((CustomSelectItem) editionForm.getItem(GroupKeysDS.DIMENSIONS)).getValues());
         descriptorDto.getComponents().addAll(dimensions);
 
         // If it is a new component, specify type
@@ -371,18 +368,18 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     private void setGroupKeysEditionMode(DescriptorDto descriptorDto) {
         this.descriptorDto = descriptorDto;
 
-        code.setValue(descriptorDto.getCode());
+        editionForm.setValue(GroupKeysDS.CODE, descriptorDto.getCode());
 
         editionForm.setValue(GroupKeysDS.URN, descriptorDto.getUrn());
         editionForm.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
 
-        dimensionsItem.clearValue();
+        editionForm.getItem(GroupKeysDS.DIMENSIONS).clearValue();
         Set<ComponentDto> dimensionComponentDtos = descriptorDto.getComponents();
         List<String> dimensions = new ArrayList<String>();
         for (ComponentDto c : dimensionComponentDtos) {
             dimensions.add(c.getUrn());
         }
-        dimensionsItem.setValues(dimensions.toArray(new String[dimensions.size()]));
+        ((CustomSelectItem) editionForm.getItem(GroupKeysDS.DIMENSIONS)).setValues(dimensions.toArray(new String[dimensions.size()]));
 
         // Annotations
         editionAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations());
