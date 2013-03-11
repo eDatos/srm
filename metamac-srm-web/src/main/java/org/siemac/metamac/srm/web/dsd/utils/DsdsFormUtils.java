@@ -60,6 +60,17 @@ public class DsdsFormUtils {
     // DIMENSIONS
     // ---------------------------------------------------------------------------------------------
 
+    // CODE
+
+    public static boolean canDimensionCodeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, String typeDimensionComponent) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+
+        return !org.siemac.metamac.srm.web.dsd.utils.CommonUtils.isDimensionTypeTimeDimension(typeDimensionComponent)
+                && CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // REPRESENTATION TYPE
 
     public static boolean canDimensionRepresentationTypeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {

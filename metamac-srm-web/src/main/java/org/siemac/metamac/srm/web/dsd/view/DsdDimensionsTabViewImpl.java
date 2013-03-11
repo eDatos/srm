@@ -320,23 +320,11 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         RequiredTextItem code = new RequiredTextItem(DimensionDS.CODE, getConstants().dsdDimensionsId());
         code.setRedrawOnChange(true);
         code.setValidators(SemanticIdentifiersUtils.getDimensionIdentifierCustomValidator());
-        code.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.canDimensionCodeBeEdited(editionForm.getValueAsString(DimensionDS.TYPE));
-            }
-        });
+        code.setShowIfCondition(getCodeFormItemIfFunction());
 
         ViewTextItem staticCodeEdit = new ViewTextItem(DimensionDS.CODE_VIEW, getConstants().dsdDimensionsId());
         staticCodeEdit.setRedrawOnChange(true);
-        staticCodeEdit.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !CommonUtils.canDimensionCodeBeEdited(editionForm.getValueAsString(DimensionDS.TYPE));
-            }
-        });
+        staticCodeEdit.setShowIfCondition(getStaticCodeFormItemIfFunction());
 
         // TYPE
 
@@ -1127,6 +1115,28 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     // ------------------------------------------------------------------------------------------------------------
     // FORM ITEM IF FUNCTIONS
     // ------------------------------------------------------------------------------------------------------------
+
+    // CODE
+
+    private FormItemIfFunction getCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canDimensionCodeBeEdited(dataStructureDefinitionMetamacDto, editionForm.getValueAsString(DimensionDS.TYPE));
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canDimensionCodeBeEdited(dataStructureDefinitionMetamacDto, editionForm.getValueAsString(DimensionDS.TYPE));
+            }
+        };
+    }
 
     // REPRESENTATION TYPE
 

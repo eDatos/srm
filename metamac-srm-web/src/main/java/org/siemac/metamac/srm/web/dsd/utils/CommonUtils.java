@@ -327,10 +327,6 @@ public class CommonUtils {
 
     // METADATA VISIBILITY
 
-    public static boolean canDimensionCodeBeEdited(String typeDimensionComponent) {
-        return !isDimensionTypeTimeDimension(typeDimensionComponent);
-    }
-
     public static boolean isDimensionRoleVisible(TypeDimensionComponent typeDimensionComponent) {
         return !isDimensionTypeTimeDimension(typeDimensionComponent);
     }
