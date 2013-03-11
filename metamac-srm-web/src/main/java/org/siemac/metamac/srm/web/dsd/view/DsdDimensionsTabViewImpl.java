@@ -378,7 +378,16 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, getConstants().conceptScheme());
         conceptScheme.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
-        SearchViewTextItem conceptSchemeView = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, getConstants().conceptScheme());
+        SearchViewTextItem staticEditableConceptScheme = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, getConstants().conceptScheme());
+        staticEditableConceptScheme.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                // Show ConceptScheme if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
+                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE))
+                        && CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE));
+            }
+        });
 
         // URNs
 
@@ -386,7 +395,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, staticEditableConcept, staticConcept, conceptRoleItem, staticConceptRoleItem, representationTypeItem,
-                staticRepresentationTypeItem, codelist, staticEditableCodelist, staticCodelist, conceptScheme, conceptSchemeView, urn, urnProvider);
+                staticRepresentationTypeItem, codelist, staticEditableCodelist, staticCodelist, conceptScheme, staticEditableConceptScheme, urn, urnProvider);
 
         // FACET
 
@@ -1002,15 +1011,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private SearchViewTextItem createMeasureDimensionEnumeratedRepresentationItem(String name, String title) {
         final SearchViewTextItem conceptSchemeItem = new SearchViewTextItem(name, title);
         conceptSchemeItem.setRequired(true);
-        conceptSchemeItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // Show ConceptScheme if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
-                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE))
-                        && CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE));
-            }
-        });
         // Info icon
         FormItemIcon measureDimensionInfo = new FormItemIcon();
         measureDimensionInfo.setSrc(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.info().getURL());
