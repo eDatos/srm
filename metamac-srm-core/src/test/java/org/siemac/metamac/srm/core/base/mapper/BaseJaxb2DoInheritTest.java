@@ -62,13 +62,13 @@ public class BaseJaxb2DoInheritTest {
             internationalStringOld.addText(localisedString);
         }
 
-        BaseJaxb2DoInheritUtils.inheritInternationString(internationalStringOld, internationalStringNew);
+        InternationalString internationalStringInherit = BaseJaxb2DoInheritUtils.inheritInternationString(internationalStringOld, internationalStringNew);
 
-        assertEquals(4, internationalStringNew.getTexts().size());
-        assertEquals("text in 'pt' old", internationalStringNew.getLocalisedLabel("pt"));
-        assertEquals("text in 'es' old", internationalStringNew.getLocalisedLabel("es"));
-        assertEquals("text in 'en' new", internationalStringNew.getLocalisedLabel("en"));
-        assertEquals("text in 'ca' new", internationalStringNew.getLocalisedLabel("ca"));
+        assertEquals(4, internationalStringInherit.getTexts().size());
+        assertEquals("text in 'pt' old", internationalStringInherit.getLocalisedLabel("pt"));
+        assertEquals("text in 'es' old", internationalStringInherit.getLocalisedLabel("es"));
+        assertEquals("text in 'en' new", internationalStringInherit.getLocalisedLabel("en"));
+        assertEquals("text in 'ca' new", internationalStringInherit.getLocalisedLabel("ca"));
     }
 
     @Test
