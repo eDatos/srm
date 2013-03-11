@@ -378,8 +378,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, getConstants().conceptScheme()); // This item is never shown. Stores the conceptScheme URN
         conceptScheme.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
-        SearchViewTextItem staticEditableConceptScheme = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW, getConstants().conceptScheme());
-        staticEditableConceptScheme.setShowIfCondition(getConceptSchemeEnumeratedRepresentationFormItemIfFunction());
+        SearchViewTextItem staticEditableConceptScheme = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW, getConstants()
+                .conceptScheme());
+        staticEditableConceptScheme.setShowIfCondition(getConceptSchemeEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the conceptScheme is editable
+
+        ViewTextItem staticConceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, getConstants().conceptScheme());
+        staticConceptScheme.setShowIfCondition(getStaticConceptSchemeEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the conceptScheme can not be edited
 
         // URNs
 
@@ -687,6 +691,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME).clearValue();
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW).clearValue();
+        editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).clearValue();
         editionForm.getItem(DimensionDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(DimensionDS.REPRESENTATION_TYPE_VIEW).clearValue();
         facetEditionForm.clearValues();
@@ -718,6 +723,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, dimensionComponentDto.getLocalRepresentation().getEnumeration().getUrn());
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW,
+                                RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumeration()));
+                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW,
                                 RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumeration()));
                     }
                 }
@@ -1045,8 +1052,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         searchConceptSchemeForEnumeratedRepresentationWindow.markForDestroy();
                         // Set selected concept scheme in form
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, selectedConceptScheme != null ? selectedConceptScheme.getUrn() : null);
-                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW,
-                                selectedConceptScheme != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConceptScheme) : null);
+                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW, selectedConceptScheme != null
+                                ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConceptScheme)
+                                : null);
                         editionForm.validate(false);
                     }
                 });
