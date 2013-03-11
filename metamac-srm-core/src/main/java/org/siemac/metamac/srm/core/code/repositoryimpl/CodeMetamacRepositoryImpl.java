@@ -56,6 +56,16 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
+    public void clearCodesVariableElementByCodelist(CodelistVersionMetamac codelistVersion) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set VARIABLE_ELEMENT_FK = null ");
+        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
+        queryUpdate.executeUpdate();
+    }
+
+    @Override
     public void reorderCodesDeletingOneCode(CodelistVersionMetamac codelistVersion, Item parent, CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToDelete) {
         String orderColumn = getOrderColumnName(orderColumnIndex);
 

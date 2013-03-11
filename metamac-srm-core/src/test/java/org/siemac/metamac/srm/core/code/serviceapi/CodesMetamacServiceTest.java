@@ -408,7 +408,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testUpdateCodelistChangingVariable() throws Exception {
-        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
+        String codelistUrn = CODELIST_1_V2;
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
         assertEquals(VARIABLE_2, codelistVersion.getVariable().getNameableArtefact().getUrn());
 
         // Check actual element variables of codes
@@ -432,6 +434,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codelistVersion.setIsVariableUpdated(Boolean.TRUE);
         CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
         assertEqualsVariable(variable, codelistVersionUpdated.getVariable());
+
+        entityManager.clear();
+        codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
 
         // Check element variables are removed from codes
         assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1).getVariableElement());

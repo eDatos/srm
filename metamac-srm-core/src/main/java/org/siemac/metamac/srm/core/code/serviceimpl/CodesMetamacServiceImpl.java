@@ -164,11 +164,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // if variable is changed, remove variable elements of codes
         if (codelistVersion.getIsVariableUpdated()) {
-            for (Item item : codelistVersion.getItems()) {
-                CodeMetamac code = (CodeMetamac) item;
-                code.setVariableElement(null);
-                getCodeMetamacRepository().save(code);
-            }
+            getCodeMetamacRepository().clearCodesVariableElementByCodelist(codelistVersion);
         }
 
         // Save codelist

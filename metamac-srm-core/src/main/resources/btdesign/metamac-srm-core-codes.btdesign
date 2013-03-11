@@ -303,6 +303,8 @@ Application CodesMetamac {
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) throws MetamacException;
 				
+				clearCodesVariableElementByCodelist(@CodelistVersionMetamac codelistVersion);
+				
 				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Item parent, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToDelete);
 				reorderCodesAddingOneCodeInMiddle(@CodelistVersionMetamac codelistVersion, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToAdd);
 				clearCodesOrderColumn(@CodelistVersionMetamac codelistVersion, Integer orderColumnIndex);
