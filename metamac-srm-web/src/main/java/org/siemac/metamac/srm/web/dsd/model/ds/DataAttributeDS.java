@@ -19,6 +19,7 @@ public class DataAttributeDS {
     public static final String CONCEPT_VIEW                            = "attr-con-view";           // Not mapped in DTO
 
     public static final String ROLE                                    = "attr-role";
+    public static final String ROLE_VIEW                               = "attr-role-view";          // Not mapped in DTO
 
     public static final String RELATED_WITH                            = "attr-related-with";
 
