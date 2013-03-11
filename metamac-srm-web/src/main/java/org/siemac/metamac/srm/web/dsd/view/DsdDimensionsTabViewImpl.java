@@ -379,14 +379,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         conceptScheme.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
         SearchViewTextItem staticEditableConceptScheme = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, getConstants().conceptScheme());
-        staticEditableConceptScheme.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionConceptSchemeEnumeratedRepresentationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE),
-                        editionForm.getValueAsString(DimensionDS.TYPE));
-            }
-        });
+        staticEditableConceptScheme.setShowIfCondition(getConceptSchemeEnumeratedRepresentationFormItemIfFunction());
 
         // URNs
 
