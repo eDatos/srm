@@ -145,7 +145,7 @@ Application ConceptsMetamac {
 			"Concept role"
 			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
        		"Concept type"
-       		- @ConceptType type cascade="none" nullable fetch="lazy" databaseColumn="CONCEPT_TYPE_FK";
+       		- @ConceptType conceptType cascade="none" nullable fetch="lazy" databaseColumn="CONCEPT_TYPE_FK";
 			"A description of the way the derived variable is computed with the use of other variables"
 			- @InternationalString derivation nullable cascade="all" fetch="lazy" databaseColumn="DERIVATION_FK";
 			"Web addresses where relevant legal acts are disseminated"

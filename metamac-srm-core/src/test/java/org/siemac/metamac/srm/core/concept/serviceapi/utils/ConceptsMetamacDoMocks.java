@@ -44,7 +44,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setContext(mockInternationalString("context"));
         target.setDocMethod(mockInternationalString("docMethod"));
         target.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
-        target.setType(conceptType);
+        target.setConceptType(conceptType);
         target.setDerivation(mockInternationalString("derivation"));
         target.setLegalActs(mockInternationalString("legalActs"));
         mockConcept(target, RepresentationTypeEnum.ENUMERATION, coreRepresentation);
@@ -61,7 +61,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setDerivation(mockInternationalStringFixedValues("derivation", resourceID));
         target.setLegalActs(mockInternationalStringFixedValues("legalActs", resourceID));
         target.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
-        target.setType(mockConceptTypeFixedValues("conceptType1"));
+        target.setConceptType(mockConceptTypeFixedValues("conceptType1"));
         target.setVariable(CodesMetamacDoMocks.mockVariableFixedValues("variable1"));
         mockConceptFixedValues(target, resourceID, itemSchemeVersion, parent, RepresentationTypeEnum.ENUMERATION);
         return target;

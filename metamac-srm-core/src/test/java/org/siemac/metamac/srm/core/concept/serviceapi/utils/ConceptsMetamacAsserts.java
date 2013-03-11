@@ -52,7 +52,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(expected.getContext(), actual.getContext());
         assertEqualsInternationalString(expected.getDocMethod(), actual.getDocMethod());
         assertEquals(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
-        assertEqualsConceptType(expected.getType(), actual.getType());
+        assertEqualsConceptType(expected.getConceptType(), actual.getConceptType());
         assertEqualsInternationalString(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
         assertEqualsConceptExtends(expected.getConceptExtends(), actual.getConceptExtends());
@@ -71,7 +71,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalStringDto(expected.getContext(), actual.getContext());
         assertEqualsInternationalStringDto(expected.getDocMethod(), actual.getDocMethod());
         assertEquals(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
-        assertEqualsConceptType(expected.getType(), actual.getType());
+        assertEqualsConceptType(expected.getConceptType(), actual.getConceptType());
         assertEqualsInternationalStringDto(expected.getDerivation(), actual.getDerivation());
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getConceptExtends(), actual.getConceptExtends());
@@ -143,7 +143,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(entity.getContext(), dto.getContext());
         assertEqualsInternationalString(entity.getDocMethod(), dto.getDocMethod());
         assertEquals(entity.getSdmxRelatedArtefact(), dto.getSdmxRelatedArtefact());
-        assertEquals(entity.getType().getIdentifier(), dto.getType().getIdentifier());
+        assertEquals(entity.getConceptType().getIdentifier(), dto.getConceptType().getIdentifier());
         assertEqualsInternationalString(entity.getDerivation(), dto.getDerivation());
         assertEqualsInternationalString(entity.getLegalActs(), dto.getLegalActs());
         assertEqualsNullability(entity.getConceptExtends(), dto.getConceptExtends());

@@ -47,7 +47,7 @@ public class ConceptVersioningCopyCallbackMetamacImpl implements ConceptVersioni
         target.setContext(BaseVersioningCopyUtils.copy(source.getContext()));
         target.setDocMethod(BaseVersioningCopyUtils.copy(source.getDocMethod()));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
-        target.setType(source.getType());
+        target.setConceptType(source.getConceptType());
         target.setDerivation(BaseVersioningCopyUtils.copy(source.getDerivation()));
         target.setLegalActs(BaseVersioningCopyUtils.copy(source.getLegalActs()));
         target.setVariable(source.getVariable());

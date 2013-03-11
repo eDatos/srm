@@ -90,7 +90,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
         target.setContext(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getContext(), target.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT));
         target.setDocMethod(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getDocMethod(), target.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
-        target.setType(conceptTypeDtoToDo(source.getType()));
+        target.setConceptType(conceptTypeDtoToDo(source.getConceptType()));
         target.setDerivation(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
         target.setLegalActs(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
 

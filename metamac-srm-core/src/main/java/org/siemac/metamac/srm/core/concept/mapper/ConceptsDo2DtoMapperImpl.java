@@ -73,7 +73,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         target.setContext(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getContext()));
         target.setDocMethod(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDocMethod()));
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
-        target.setType(conceptTypeDoToDto(source.getType()));
+        target.setConceptType(conceptTypeDoToDto(source.getConceptType()));
         target.setDerivation(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDerivation()));
         target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getLegalActs()));
         target.setConceptExtends(conceptMetamacDoToRelatedResourceDto(source.getConceptExtends()));

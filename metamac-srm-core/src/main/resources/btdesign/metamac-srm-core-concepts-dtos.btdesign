@@ -29,7 +29,7 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto context nullable;
 			- @InternationalStringDto docMethod nullable;
 			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
-			- @ConceptTypeDto type nullable;			
+			- @ConceptTypeDto conceptType nullable;			
 			- @InternationalStringDto derivation nullable;
 			- @InternationalStringDto legalActs nullable;
 			- @RelatedResourceDto conceptExtends nullable;

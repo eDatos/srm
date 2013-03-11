@@ -49,7 +49,10 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
+import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -173,6 +176,24 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
         assertTrue(dataStructureDefinitionMetamacDto.getName().getTexts().iterator().next().getLabel().contains("CHANGED"));
         assertNull(dataStructureDefinitionMetamacDto.getDescription());
+    }
+
+    @Test
+    public void testDimension() throws Exception {
+
+        // Create ****************
+        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(),
+                DataStructureDefinitionMetamacDtoMocks.mockDataStructureDefinitionMetamacDto());
+
+        DescriptorDto descriptorDtoMock = (DescriptorDto) DataStructureDefinitionDtoMocks.createComponentListDtoTypeDimensionDescriptorMock(false);
+        descriptorDtoMock = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), descriptorDtoMock);
+
+        DimensionComponentDto dimensionComponentDtoTypeDimensionMock = DataStructureDefinitionDtoMocks.createDimensionComponentDtoTypeDimensionMock();
+        dimensionComponentDtoTypeDimensionMock = (DimensionComponentDto) srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(),
+                dataStructureDefinitionMetamacDto.getUrn(), dimensionComponentDtoTypeDimensionMock);
+
+        int kaka = 23;
+
     }
 
     // @Ignore // TODO tests import: pendiente reestructuración del servicio de importación

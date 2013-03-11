@@ -108,7 +108,7 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
             targetMetamac.setContext(BaseVersioningCopyUtils.copy(previousMetamac.getContext()));
             targetMetamac.setDocMethod(BaseVersioningCopyUtils.copy(previousMetamac.getDocMethod()));
             targetMetamac.setSdmxRelatedArtefact(previousMetamac.getSdmxRelatedArtefact());
-            targetMetamac.setType(previousMetamac.getType());
+            targetMetamac.setConceptType(previousMetamac.getConceptType());
             // Roles : can copy "roles" because they are concepts in another concept scheme
             for (ConceptMetamac conceptRole : previousMetamac.getRoleConcepts()) {
                 targetMetamac.addRoleConcept(conceptRole);

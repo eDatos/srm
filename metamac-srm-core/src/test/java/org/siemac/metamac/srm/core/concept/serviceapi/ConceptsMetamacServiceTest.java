@@ -1289,7 +1289,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "es", "Derivation conceptScheme-3-v1-concept-1", null, null);
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getLegalActs(), "es", "LegalActs conceptScheme-3-v1-concept-1", null, null);
                 assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
-                assertEquals(CONCEPT_TYPE_DERIVED, concept.getType().getIdentifier());
+                assertEquals(CONCEPT_TYPE_DERIVED, concept.getConceptType().getIdentifier());
                 assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, concept.getConceptExtends().getNameableArtefact().getUrn());
                 assertEquals(VARIABLE_1, concept.getVariable().getNameableArtefact().getUrn());
 
@@ -1308,7 +1308,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertNull(concept.getDerivation());
                 assertNull(concept.getLegalActs());
                 assertNull(concept.getSdmxRelatedArtefact());
-                assertNull(concept.getType());
+                assertNull(concept.getConceptType());
                 assertNull(concept.getConceptExtends());
                 assertEquals(VARIABLE_2, concept.getVariable().getNameableArtefact().getUrn());
 
@@ -1917,7 +1917,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "es", "Derivation conceptScheme-1-v2-concept-1", null, null);
         ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getLegalActs(), "es", "LegalActs conceptScheme-1-v2-concept-1", null, null);
         assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
-        assertEquals(CONCEPT_TYPE_DIRECT, concept.getType().getIdentifier());
+        assertEquals(CONCEPT_TYPE_DIRECT, concept.getConceptType().getIdentifier());
         assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, concept.getConceptExtends().getNameableArtefact().getUrn());
         assertEquals(VARIABLE_1, concept.getVariable().getNameableArtefact().getUrn());
     }

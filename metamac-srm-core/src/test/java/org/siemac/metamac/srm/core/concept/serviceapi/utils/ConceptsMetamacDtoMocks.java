@@ -50,7 +50,7 @@ public class ConceptsMetamacDtoMocks {
         ConceptMetamacDto conceptMetamacDto = new ConceptMetamacDto();
         ConceptsDtoMocks.mockConceptDto(conceptMetamacDto, typeRepresentationEnum);
         conceptMetamacDto.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
-        conceptMetamacDto.setType(mockConceptTypeDto());
+        conceptMetamacDto.setConceptType(mockConceptTypeDto());
         return conceptMetamacDto;
     }
 
