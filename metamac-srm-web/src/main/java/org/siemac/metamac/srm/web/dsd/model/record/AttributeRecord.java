@@ -7,17 +7,17 @@ public class AttributeRecord extends ListGridRecord {
 
     public static final String IDENTIFIER         = "identifier";
     public static final String CODE               = "attr-code";
-    public static final String ASSIGNMENT         = "assignment";
+    public static final String USAGE_STATUS       = "usage-status";
     public static final String CONCEPT            = "concept";
     public static final String DATA_ATTRIBUTE_DTO = "data_attribute_dto";
 
     public AttributeRecord() {
     }
 
-    public AttributeRecord(Long id, String code, String assigment, String conceptDto, DataAttributeDto dataAttributeDto) {
+    public AttributeRecord(Long id, String code, String usageStatus, String conceptDto, DataAttributeDto dataAttributeDto) {
         setIdentifier(id);
         setCode(code);
-        setAssignment(assigment);
+        setUsageStatus(usageStatus);
         setConcept(conceptDto);
         setDataAttributeDto(dataAttributeDto);
     }
@@ -30,8 +30,8 @@ public class AttributeRecord extends ListGridRecord {
         setAttribute(CODE, value);
     }
 
-    public void setAssignment(String value) {
-        setAttribute(ASSIGNMENT, value);
+    public void setUsageStatus(String value) {
+        setAttribute(USAGE_STATUS, value);
     }
 
     public void setConcept(String value) {
@@ -50,8 +50,8 @@ public class AttributeRecord extends ListGridRecord {
         return getAttributeAsString(CODE);
     }
 
-    public String getAssigment() {
-        return getAttributeAsString(ASSIGNMENT);
+    public String getUsageStatus() {
+        return getAttributeAsString(USAGE_STATUS);
     }
 
     public String getConcept() {
@@ -61,5 +61,4 @@ public class AttributeRecord extends ListGridRecord {
     public DataAttributeDto getDataAttributeDto() {
         return (DataAttributeDto) getAttributeAsObject(DATA_ATTRIBUTE_DTO);
     }
-
 }

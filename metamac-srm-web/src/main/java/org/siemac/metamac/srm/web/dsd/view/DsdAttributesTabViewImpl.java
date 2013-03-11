@@ -184,7 +184,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         attributesGrid.setSelectionType(SelectionStyle.SIMPLE);
         attributesGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
         ListGridField codeField = new ListGridField(AttributeRecord.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
-        ListGridField usageField = new ListGridField(AttributeRecord.ASSIGNMENT, MetamacSrmWeb.getConstants().dsdAttributeUsageStatus());
+        ListGridField usageField = new ListGridField(AttributeRecord.USAGE_STATUS, MetamacSrmWeb.getConstants().dsdAttributeUsageStatus());
         ListGridField attributeConceptField = new ListGridField(AttributeRecord.CONCEPT, MetamacSrmWeb.getConstants().concept());
         attributesGrid.setFields(codeField, usageField, attributeConceptField);
         // ToolTip
@@ -203,7 +203,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
                 AttributeRecord attributeRecord = (AttributeRecord) record;
-                return attributeRecord.getAssigment();
+                return attributeRecord.getUsageStatus();
             }
         });
         attributeConceptField.setShowHover(true);
