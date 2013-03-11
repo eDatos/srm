@@ -383,9 +383,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // Show ConceptScheme if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
-                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE))
-                        && CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE));
+                return CommonUtils.isDimensionConceptSchemeEnumeratedRepresentationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE),
+                        editionForm.getValueAsString(DimensionDS.TYPE));
             }
         });
 
@@ -1233,6 +1232,32 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return CommonUtils.isDimensionCodelistEnumeratedRepresenationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE), editionForm.getValueAsString(DimensionDS.TYPE))
                         && !DsdsFormUtils.canDimensionCodelistEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // CONCEPT SCHEME (ENUMERATED REPRESENTATION)
+
+    private FormItemIfFunction getConceptSchemeEnumeratedRepresentationFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionConceptSchemeEnumeratedRepresentationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE),
+                        editionForm.getValueAsString(DimensionDS.TYPE))
+                        && DsdsFormUtils.canDimensionConceptSchemeEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticConceptSchemeEnumeratedRepresentationFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionConceptSchemeEnumeratedRepresentationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE),
+                        editionForm.getValueAsString(DimensionDS.TYPE))
+                        && !DsdsFormUtils.canDimensionConceptSchemeEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }

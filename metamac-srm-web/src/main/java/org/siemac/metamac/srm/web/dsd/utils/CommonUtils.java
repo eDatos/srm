@@ -335,4 +335,9 @@ public class CommonUtils {
         // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
         return isRepresentationTypeEnumerated(representationType) && !isDimensionTypeMeasureDimension(dimensionType);
     }
+
+    public static boolean isDimensionConceptSchemeEnumeratedRepresentationVisible(String representationType, String dimensionType) {
+        // Show ConceptScheme if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
+        return isRepresentationTypeEnumerated(representationType) && isDimensionTypeMeasureDimension(dimensionType);
+    }
 }
