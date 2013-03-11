@@ -1212,7 +1212,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionCodelistEnumeratedRepresenationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE), editionForm.getValueAsString(DimensionDS.TYPE))
+                return CommonUtils.isDimensionCodelistEnumeratedRepresentationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE), editionForm.getValueAsString(DimensionDS.TYPE))
                         && DsdsFormUtils.canDimensionCodelistEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
@@ -1223,7 +1223,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionCodelistEnumeratedRepresenationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE), editionForm.getValueAsString(DimensionDS.TYPE))
+                return CommonUtils.isDimensionCodelistEnumeratedRepresentationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE), editionForm.getValueAsString(DimensionDS.TYPE))
                         && !DsdsFormUtils.canDimensionCodelistEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
