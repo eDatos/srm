@@ -294,7 +294,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form = new GroupDynamicForm(getConstants().dsdAttributeDetails());
         ViewTextItem code = new ViewTextItem(DataAttributeDS.CODE, getConstants().dsdAttributeId());
         ViewTextItem type = new ViewTextItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
-        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept());
+        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, getConstants().concept());
         RelatedResourceListItem roleItem = new RelatedResourceListItem(DataAttributeDS.ROLE, getConstants().dsdAttributeRole(), false);
         ViewTextItem usageStatusItem = new ViewTextItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeUsageStatus());
         staticRelationType = new ViewTextItem(DataAttributeDS.RELATED_WITH, getConstants().dsdAttributeRelatedWith());
@@ -335,12 +335,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem staticCode = new ViewTextItem(DataAttributeDS.CODE_VIEW, getConstants().dsdAttributeId());
         staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
 
-        // Type
+        // TYPE
 
         CustomSelectItem type = new CustomSelectItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
         type.setValueMap(CommonUtils.getDataAttributeTypeHashMap());
 
-        // Usage Status
+        // USAGE STATUS
 
         RequiredSelectItem usageStatusItem = new RequiredSelectItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeUsageStatus());
         usageStatusItem.setValueMap(CommonUtils.getUsageStatusHashMap());
@@ -349,13 +349,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem staticUsageStatusItem = new ViewTextItem(DataAttributeDS.USAGE_STATUS_VIEW, getConstants().dsdAttributeUsageStatus());
         staticUsageStatusItem.setShowIfCondition(getStaticUsageStatusFormItemIfFunction());
 
-        // Concept
+        // CONCEPT
 
         ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, getConstants().concept());
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+
         SearchViewTextItem conceptView = createConceptItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept());
 
-        // Role
+        // ROLE
 
         RelatedResourceListItem roleItem = createRoleItem(DataAttributeDS.ROLE, getConstants().dsdDimensionsRole());
 
@@ -568,7 +569,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
-        form.setValue(DataAttributeDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
+        form.setValue(DataAttributeDS.CONCEPT, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
 
         // Role
         form.getItem(DataAttributeDS.ROLE).hide();
