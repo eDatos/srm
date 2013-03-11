@@ -335,9 +335,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // CONCEPT
 
-        ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT, getConstants().concept());
+        ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT, getConstants().concept()); // This item is never shown. Stores the concept URN
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem conceptView = createConceptItem(DimensionDS.CONCEPT_EDITION_VIEW, getConstants().concept());
+
+        SearchViewTextItem staticEditableConcept = createConceptItem(DimensionDS.CONCEPT_EDITION_VIEW, getConstants().concept()); // Shown in editionMode, only when the concept is editable
+        staticEditableConcept.setShowIfCondition(getConceptFormItemIfFunction());
+
+        ViewTextItem staticConcept = new ViewTextItem(DimensionDS.CONCEPT_VIEW, getConstants().concept()); // This item is shown when the concept can not be edited
+        staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction());
 
         // ROLES
 
@@ -370,8 +375,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, conceptView, conceptRoleItem, representationTypeItem, staticRepresentationTypeItem, codelist,
-                codelistView, conceptScheme, conceptSchemeView, urn, urnProvider);
+        editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, staticEditableConcept, staticConcept, conceptRoleItem, representationTypeItem,
+                staticRepresentationTypeItem, codelist, codelistView, conceptScheme, conceptSchemeView, urn, urnProvider);
 
         // FACET
 
@@ -659,6 +664,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Concept
         editionForm.setValue(DimensionDS.CONCEPT, dimensionComponentDto.getCptIdRef() != null ? dimensionComponentDto.getCptIdRef().getUrn() : null);
         editionForm.setValue(DimensionDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
+        editionForm.setValue(DimensionDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
 
         // Role
         ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(dimensionComponentDto.getRole());
@@ -970,9 +976,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
                         editionForm.setValue(DimensionDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(DimensionDS.CONCEPT_EDITION_VIEW, selectedConcept != null
-                                ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept)
-                                : null);
+                        editionForm.setValue(DimensionDS.CONCEPT_EDITION_VIEW,
+                                selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
                         editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
@@ -1140,6 +1145,28 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canDimensionCodeBeEdited(dataStructureDefinitionMetamacDto, editionForm.getValueAsString(DimensionDS.TYPE));
+            }
+        };
+    }
+
+    // CONCEPT
+
+    private FormItemIfFunction getConceptFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canDimensionConceptBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticConceptFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canDimensionConceptBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }

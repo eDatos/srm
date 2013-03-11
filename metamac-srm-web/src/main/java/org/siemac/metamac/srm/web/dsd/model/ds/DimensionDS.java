@@ -9,8 +9,11 @@ public class DimensionDS {
     public static final String URN_PROVIDER                                  = "dim-urn-provider";
     public static final String TYPE                                          = "dim-type";
     public static final String TYPE_VIEW                                     = "dim-type-view";            // Not mapped in DTO
+
     public static final String CONCEPT                                       = "dim-con";
-    public static final String CONCEPT_VIEW                                  = "dim-con-view";
+    public static final String CONCEPT_EDITION_VIEW                          = "dim-con-ed-view";          // Not mapped in DTO
+    public static final String CONCEPT_VIEW                                  = "dim-con-view";             // Not mapped in DTO
+
     public static final String ROLE                                          = "dim-role";
     public static final String REPRESENTATION_TYPE                           = "dim-repr-type";
     public static final String REPRESENTATION_TYPE_VIEW                      = "dim-repr-type-view";       // Not mapped in DTO
