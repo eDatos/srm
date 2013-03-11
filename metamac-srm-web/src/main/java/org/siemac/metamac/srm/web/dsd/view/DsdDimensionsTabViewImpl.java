@@ -100,12 +100,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     // VIEW FORM
 
     private GroupDynamicForm                             form;
-    private StaticFacetForm                              staticFacetForm;
+    private StaticFacetForm                              facetForm;
 
     // EDITION FORM
 
     private GroupDynamicForm                             editionForm;
-    private DsdFacetForm                                 facetForm;
+    private DsdFacetForm                                 facetEditionForm;
 
     private ToolStripButton                              newToolStripButton;
     private ToolStripButton                              deleteToolStripButton;
@@ -297,13 +297,13 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         form.setFields(code, dimensionType, concept, conceptRoleItem, staticRepresentationTypeItem, codelist, conceptScheme, urn, urnProvider);
 
-        staticFacetForm = new StaticFacetForm();
+        facetForm = new StaticFacetForm();
 
         // Annotations
         viewAnnotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(form);
-        mainFormLayout.addViewCanvas(staticFacetForm);
+        mainFormLayout.addViewCanvas(facetForm);
         mainFormLayout.addViewCanvas(viewAnnotationsPanel);
     }
 
@@ -374,8 +374,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // FACET
 
-        facetForm = new DsdFacetForm();
-        facetForm.setVisibility(Visibility.HIDDEN);
+        facetEditionForm = new DsdFacetForm();
+        facetEditionForm.setVisibility(Visibility.HIDDEN);
         // TextType applicable to TimeDimension is restricted to those that represent time
         CustomValidator timeValidator = new CustomValidator() {
 
@@ -391,15 +391,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         };
         timeValidator.setErrorMessage(getMessages().errorTextTypeInTimeDimension());
-        facetForm.getTextType().setValidateOnChange(true);
-        facetForm.getTextType().setRedrawOnChange(true);
-        facetForm.getTextType().setValidators(timeValidator);
+        facetEditionForm.getTextType().setValidateOnChange(true);
+        facetEditionForm.getTextType().setRedrawOnChange(true);
+        facetEditionForm.getTextType().setValidators(timeValidator);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(editionForm);
-        mainFormLayout.addEditionCanvas(facetForm);
+        mainFormLayout.addEditionCanvas(facetEditionForm);
         mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
     }
 
@@ -530,7 +530,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 // Facet
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
                 dimensionComponentDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
-                FacetDto facetDto = facetForm.getFacet();
+                FacetDto facetDto = facetEditionForm.getFacet();
                 dimensionComponentDto.getLocalRepresentation().setTextFormat(facetDto);
                 dimensionComponentDto.getLocalRepresentation().setEnumeration(null);
             }
@@ -590,13 +590,13 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         }
 
         // Representation
-        staticFacetForm.hide();
+        facetForm.hide();
         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).hide();
         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).hide();
         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).clearValue();
         form.getItem(DimensionDS.REPRESENTATION_TYPE).clearValue();
-        staticFacetForm.clearValues();
+        facetForm.clearValues();
         if (dimensionComponentDto.getLocalRepresentation() != null) {
             if (RepresentationTypeEnum.ENUMERATION.equals(dimensionComponentDto.getLocalRepresentation().getRepresentationType())) {
 
@@ -628,8 +628,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                 form.getItem(DimensionDS.REPRESENTATION_TYPE).setValue(getCoreMessages().representationTypeEnumTEXT_FORMAT());
                 FacetDto facetDto = dimensionComponentDto.getLocalRepresentation().getTextFormat();
-                staticFacetForm.setFacet(facetDto);
-                staticFacetForm.show();
+                facetForm.setFacet(facetDto);
+                facetForm.show();
             }
         }
 
@@ -665,7 +665,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).clearValue();
         editionForm.getItem(DimensionDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(DimensionDS.REPRESENTATION_TYPE_VIEW).clearValue();
-        facetForm.clearValues();
+        facetEditionForm.clearValues();
         if (dimensionComponentDto.getLocalRepresentation() != null) {
 
             if (RepresentationTypeEnum.ENUMERATION.equals(dimensionComponentDto.getLocalRepresentation().getRepresentationType())) {
@@ -704,10 +704,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 editionForm.setValue(DimensionDS.REPRESENTATION_TYPE_VIEW, getCoreMessages().representationTypeEnumTEXT_FORMAT());
 
                 FacetDto facetDto = dimensionComponentDto.getLocalRepresentation().getTextFormat();
-                facetForm.setFacet(facetDto);
+                facetEditionForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetForm, editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE));
+        FacetFormUtils.setFacetFormVisibility(facetEditionForm, editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE));
 
         // Annotations
         editionAnnotationsPanel.setAnnotations(dimensionComponentDto.getAnnotations());
@@ -717,7 +717,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     @Override
     public boolean validate() {
-        return Visibility.HIDDEN.equals(facetForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetForm.validate(false));
+        return Visibility.HIDDEN.equals(facetEditionForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
     }
 
     @Override
@@ -788,7 +788,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Clear errors
         editionForm.clearErrors(true);
-        facetForm.clearErrors(true);
+        facetEditionForm.clearErrors(true);
     }
 
     /**
@@ -819,7 +819,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             public void onChanged(ChangedEvent event) {
                 // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
-                FacetFormUtils.setFacetFormVisibility(facetForm, representationTypeItem.getValueAsString());
+                FacetFormUtils.setFacetFormVisibility(facetEditionForm, representationTypeItem.getValueAsString());
             }
         });
         CustomValidator measureCustomValidator = new CustomValidator() {
