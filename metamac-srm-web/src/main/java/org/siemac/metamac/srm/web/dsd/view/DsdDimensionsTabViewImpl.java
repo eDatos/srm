@@ -106,6 +106,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     private GroupDynamicForm                             editionForm;
     private DsdFacetForm                                 facetEditionForm;
+    private StaticFacetForm                              facetStaticEditionForm;
 
     private ToolStripButton                              newToolStripButton;
     private ToolStripButton                              deleteToolStripButton;
@@ -395,11 +396,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         facetEditionForm.getTextType().setRedrawOnChange(true);
         facetEditionForm.getTextType().setValidators(timeValidator);
 
+        facetStaticEditionForm = new StaticFacetForm();
+        facetStaticEditionForm.setVisibility(Visibility.HIDDEN);
+
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(editionForm);
         mainFormLayout.addEditionCanvas(facetEditionForm);
+        mainFormLayout.addEditionCanvas(facetStaticEditionForm);
         mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
     }
 
@@ -705,14 +710,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                 FacetDto facetDto = dimensionComponentDto.getLocalRepresentation().getTextFormat();
                 facetEditionForm.setFacet(facetDto);
+                facetStaticEditionForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetEditionForm, editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE));
+        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE),
+                dataStructureDefinitionMetamacDto.getMaintainer());
+        editionForm.markForRedraw();
 
         // Annotations
         editionAnnotationsPanel.setAnnotations(dimensionComponentDto.getAnnotations());
-
-        editionForm.markForRedraw();
     }
 
     @Override
@@ -819,7 +825,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             public void onChanged(ChangedEvent event) {
                 // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
-                FacetFormUtils.setFacetFormVisibility(facetEditionForm, representationTypeItem.getValueAsString());
+                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto.getMaintainer());
             }
         });
         CustomValidator measureCustomValidator = new CustomValidator() {
