@@ -98,6 +98,24 @@ public class DsdsFormUtils {
         return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
+    // CODELIST (ENUMERATED REPRESENTATION)
+
+    public static boolean canDimensionCodelistEnumeratedRepresentationBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
+    // CONCEPT SCHEME (ENUMERATED REPRESENTATION)
+
+    public static boolean canDimensionConceptSchemeEnumeratedRepresentationBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // ---------------------------------------------------------------------------------------------
     // ATTRIBUTES
     // ---------------------------------------------------------------------------------------------
