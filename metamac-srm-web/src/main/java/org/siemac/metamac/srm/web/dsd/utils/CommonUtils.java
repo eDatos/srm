@@ -330,4 +330,9 @@ public class CommonUtils {
     public static boolean isDimensionRoleVisible(TypeDimensionComponent typeDimensionComponent) {
         return !isDimensionTypeTimeDimension(typeDimensionComponent);
     }
+
+    public static boolean isDimensionCodelistEnumeratedRepresenationVisible(String representationType, String dimensionType) {
+        // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
+        return isRepresentationTypeEnumerated(representationType) && !isDimensionTypeMeasureDimension(dimensionType);
+    }
 }

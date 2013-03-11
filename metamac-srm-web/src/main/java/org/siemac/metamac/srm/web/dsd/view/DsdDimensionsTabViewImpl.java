@@ -366,21 +366,30 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         ViewTextItem codelist = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
         codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem codelistView = createEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
+
+        SearchViewTextItem staticEditableCodelist = createEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
+        staticEditableCodelist.setShowIfCondition(new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionCodelistEnumeratedRepresenationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE), editionForm.getValueAsString(DimensionDS.TYPE));
+            }
+        });
 
         // ConceptScheme
 
         ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, getConstants().conceptScheme());
         conceptScheme.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+
         SearchViewTextItem conceptSchemeView = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, getConstants().conceptScheme());
 
-        // Urn
+        // URNs
 
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, staticEditableConcept, staticConcept, conceptRoleItem, staticConceptRoleItem, representationTypeItem,
-                staticRepresentationTypeItem, codelist, codelistView, conceptScheme, conceptSchemeView, urn, urnProvider);
+                staticRepresentationTypeItem, codelist, staticEditableCodelist, conceptScheme, conceptSchemeView, urn, urnProvider);
 
         // FACET
 
@@ -1059,15 +1068,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         final int MAX_RESULTS = 8;
         final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
         codelistItem.setRequired(true);
-        codelistItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
-                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE))
-                        && !CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE));
-            }
-        });
         codelistItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
