@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGroupKeysTabUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -36,6 +37,9 @@ import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -230,19 +234,27 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     private void createEditionForm() {
         editionForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdDimensionDetails());
 
-        // Id
+        // Code
+
         RequiredTextItem code = new RequiredTextItem(GroupKeysDS.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysId());
         code.setValidators(SemanticIdentifiersUtils.getGroupDescriptorIdentifierCustomValidator());
+        code.setShowIfCondition(getCodeFormItemIfFunction());
+
+        ViewTextItem staticCode = new ViewTextItem(GroupKeysDS.CODE_VIEW, MetamacSrmWeb.getConstants().dsdGroupKeysId());
+        staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
+
+        // URNs
 
         ViewTextItem urn = new ViewTextItem(GroupKeysDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(GroupKeysDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         // Dimensions
+
         CustomSelectItem dimensionsItem = new CustomSelectItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
         dimensionsItem.setMultiple(true);
         dimensionsItem.setPickListWidth(350);
 
-        editionForm.setFields(code, urn, urnProvider, dimensionsItem);
+        editionForm.setFields(code, staticCode, urn, urnProvider, dimensionsItem);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
@@ -369,6 +381,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         this.descriptorDto = descriptorDto;
 
         editionForm.setValue(GroupKeysDS.CODE, descriptorDto.getCode());
+        editionForm.setValue(GroupKeysDS.CODE_VIEW, descriptorDto.getCode());
 
         editionForm.setValue(GroupKeysDS.URN, descriptorDto.getUrn());
         editionForm.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
@@ -429,5 +442,31 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         if (DsdClientSecurityUtils.canDeleteGroupKeys(dataStructureDefinitionMetamacDto)) {
             deleteToolStripButton.show();
         }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEM IF FUNCTIONS
+    // ------------------------------------------------------------------------------------------------------------
+
+    // CODE
+
+    private FormItemIfFunction getCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canGroupKeysCodeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canGroupKeysCodeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
     }
 }

@@ -86,4 +86,12 @@ public class DsdsFormUtils {
     // GROUP KEYS
     // ---------------------------------------------------------------------------------------------
 
+    // CODE
+
+    public static boolean canGroupKeysCodeBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
 }
