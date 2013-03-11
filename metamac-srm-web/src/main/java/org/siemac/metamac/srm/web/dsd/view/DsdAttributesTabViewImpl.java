@@ -351,10 +351,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // CONCEPT
 
-        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, getConstants().concept());
+        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, getConstants().concept()); // This item is never shown. Stores the concept URN
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
-        SearchViewTextItem conceptView = createConceptItem(DataAttributeDS.CONCEPT_EDITION_VIEW, getConstants().concept());
+        SearchViewTextItem staticEditableConcept = createConceptItem(DataAttributeDS.CONCEPT_EDITION_VIEW, getConstants().concept());
+        staticEditableConcept.setShowIfCondition(getConceptFormItemIfFunction()); // Shown in editionMode, only when the concept is editable
+
+        ViewTextItem staticConcept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept()); // This item is shown when the concept can not be edited
+        staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction());
 
         // ROLE
 
@@ -453,8 +457,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, conceptView, roleItem, relationType, groupKeysForDimensionRelationshipItem,
-                dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
+        editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticEditableConcept, staticConcept, roleItem, relationType,
+                groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist,
+                codelistView, urn, urnProvider);
 
         // Facet Form
 
@@ -673,6 +678,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Concept
         editionForm.setValue(DataAttributeDS.CONCEPT, dataAttributeDto.getCptIdRef() != null ? dataAttributeDto.getCptIdRef().getUrn() : null);
         editionForm.setValue(DataAttributeDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
+        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
 
         // RelateTo
         relationType.setValue(new String());
