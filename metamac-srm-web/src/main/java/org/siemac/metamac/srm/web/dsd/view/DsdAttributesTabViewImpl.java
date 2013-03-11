@@ -118,7 +118,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // EDITION FORM
 
     private GroupDynamicForm                             editionForm;
-    private RequiredSelectItem                           assignmentStatusItem;
     // Relation
     private RequiredSelectItem                           relationType;
     private CustomSelectItem                             groupKeysForDimensionRelationshipItem;
@@ -297,7 +296,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem type = new ViewTextItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
         ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept());
         RelatedResourceListItem roleItem = new RelatedResourceListItem(DataAttributeDS.ROLE, getConstants().dsdAttributeRole(), false);
-        ViewTextItem staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.ASSIGMENT_STATUS, getConstants().dsdAttributeAssignmentStatus());
+        ViewTextItem staticAssignmentStatusItem = new ViewTextItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeAssignmentStatus());
         staticRelationType = new ViewTextItem(DataAttributeDS.RELATED_WITH, getConstants().dsdAttributeRelatedWith());
         staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         staticDimensionsForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeDimensionsForDimensionRelationship());
@@ -343,7 +342,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Assignment Status
 
-        assignmentStatusItem = new RequiredSelectItem(DataAttributeDS.ASSIGMENT_STATUS, getConstants().dsdAttributeAssignmentStatus());
+        RequiredSelectItem assignmentStatusItem = new RequiredSelectItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeAssignmentStatus());
         assignmentStatusItem.setValueMap(CommonUtils.getUsageStatusHashMap());
 
         // Concept
@@ -574,7 +573,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form.getItem(DataAttributeDS.ROLE).show();
 
         // Assignment Status
-        form.setValue(DataAttributeDS.ASSIGMENT_STATUS, CommonUtils.getUsageStatusName(dataAttributeDto.getUsageStatus()));
+        form.setValue(DataAttributeDS.USAGE_STATUS, CommonUtils.getUsageStatusName(dataAttributeDto.getUsageStatus()));
 
         // RelateTo
         staticRelationType.setValue(new String());
@@ -704,7 +703,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ((RelatedResourceListItem) editionForm.getItem(DataAttributeDS.ROLE)).setRelatedResources(dataAttributeDto.getRole());
 
         // Assignment Status
-        assignmentStatusItem.setValue((dataAttributeDto.getUsageStatus() == null) ? null : dataAttributeDto.getUsageStatus().toString());
+        editionForm.setValue(DataAttributeDS.USAGE_STATUS, (dataAttributeDto.getUsageStatus() == null) ? null : dataAttributeDto.getUsageStatus().toString());
 
         // Representation
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
@@ -774,8 +773,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 TypeExternalArtefactsEnum.CONCEPT, editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
 
         // Assignment Status
-        dataAttributeDto.setUsageStatus((assignmentStatusItem.getValueAsString() == null || assignmentStatusItem.getValueAsString().isEmpty()) ? null : UsageStatus.valueOf(assignmentStatusItem
-                .getValueAsString()));
+        dataAttributeDto.setUsageStatus(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.USAGE_STATUS)) ? null : UsageStatus.valueOf(editionForm
+                .getValueAsString(DataAttributeDS.USAGE_STATUS)));
 
         // Relation
         if (dataAttributeDto.getRelateTo() == null) {
@@ -845,7 +844,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         return dataAttributeDto;
     }
-
     @Override
     public boolean validate() {
         return Visibility.HIDDEN.equals(facetEditionForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
