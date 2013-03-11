@@ -67,8 +67,6 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     // VIEW FORM
 
     private GroupDynamicForm                  form;
-    private ViewTextItem                      staticCode;
-    private ViewTextItem                      staticDimensionsItem;
 
     // EDITION FORM
 
@@ -215,11 +213,11 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
      */
     private void createViewForm() {
         form = new GroupDynamicForm(MetamacSrmWeb.getConstants().dsdGroupKeysDetails());
-        staticCode = new ViewTextItem(GroupKeysDS.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysId());
+        ViewTextItem code = new ViewTextItem(GroupKeysDS.CODE, MetamacSrmWeb.getConstants().dsdGroupKeysId());
         ViewTextItem urn = new ViewTextItem(GroupKeysDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(GroupKeysDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        staticDimensionsItem = new ViewTextItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
-        form.setFields(staticCode, urn, urnProvider, staticDimensionsItem);
+        ViewTextItem dimensionsItem = new ViewTextItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
+        form.setFields(code, urn, urnProvider, dimensionsItem);
 
         // Annotations
         viewAnnotationsPanel = new AnnotationsPanel(true);
@@ -351,12 +349,12 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     private void setGroupKeysViewMode(DescriptorDto descriptorDto) {
         this.descriptorDto = descriptorDto;
 
-        staticCode.setValue(descriptorDto.getCode());
+        form.setValue(GroupKeysDS.CODE, descriptorDto.getCode());
 
         form.setValue(GroupKeysDS.URN, descriptorDto.getUrn());
         form.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
 
-        staticDimensionsItem.clearValue();
+        form.getItem(GroupKeysDS.DIMENSIONS).clearValue();
         List<ComponentDto> dimensionComponentDtos = new ArrayList<ComponentDto>(descriptorDto.getComponents());
 
         StringBuilder dimensionBuilder = new StringBuilder();
@@ -364,7 +362,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
             dimensionBuilder.append(i != 0 ? ",  " : "");
             dimensionBuilder.append(dimensionComponentDtos.get(i).getCode());
         }
-        staticDimensionsItem.setValue(dimensionBuilder.toString());
+        form.setValue(GroupKeysDS.DIMENSIONS, dimensionBuilder.toString());
 
         // Annotations
         viewAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations());
