@@ -386,6 +386,9 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         ((CustomSelectItem) editionForm.getItem(GroupKeysDS.DIMENSIONS)).clearValue();
         ((CustomSelectItem) editionForm.getItem(GroupKeysDS.DIMENSIONS)).setValues(getDimensionComponentDtoUrnsAsArray(descriptorDto.getComponents()));
 
+        editionForm.getItem(GroupKeysDS.DIMENSIONS_VIEW).clearValue();
+        editionForm.setValue(GroupKeysDS.DIMENSIONS_VIEW, getDimensionCodesSeparatedByComma(descriptorDto.getComponents()));
+
         // Annotations
         editionAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations());
     }
