@@ -253,8 +253,12 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         CustomSelectItem dimensionsItem = new CustomSelectItem(GroupKeysDS.DIMENSIONS, MetamacSrmWeb.getConstants().dsdDimensions());
         dimensionsItem.setMultiple(true);
         dimensionsItem.setPickListWidth(350);
+        dimensionsItem.setShowIfCondition(getDimensionsFormItemIfFunction());
 
-        editionForm.setFields(code, staticCode, urn, urnProvider, dimensionsItem);
+        ViewTextItem staticDimensionsItem = new ViewTextItem(GroupKeysDS.DIMENSIONS_VIEW, MetamacSrmWeb.getConstants().dsdDimensions());
+        staticDimensionsItem.setShowIfCondition(getStaticDimensionFormItemIfFunction());
+
+        editionForm.setFields(code, staticCode, urn, urnProvider, dimensionsItem, staticDimensionsItem);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
@@ -364,14 +368,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         form.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
 
         form.getItem(GroupKeysDS.DIMENSIONS).clearValue();
-        List<ComponentDto> dimensionComponentDtos = new ArrayList<ComponentDto>(descriptorDto.getComponents());
-
-        StringBuilder dimensionBuilder = new StringBuilder();
-        for (int i = 0; i < dimensionComponentDtos.size(); i++) {
-            dimensionBuilder.append(i != 0 ? ",  " : "");
-            dimensionBuilder.append(dimensionComponentDtos.get(i).getCode());
-        }
-        form.setValue(GroupKeysDS.DIMENSIONS, dimensionBuilder.toString());
+        form.setValue(GroupKeysDS.DIMENSIONS, getDimensionCodesSeparatedByComma(descriptorDto.getComponents()));
 
         // Annotations
         viewAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations());
@@ -386,13 +383,8 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         editionForm.setValue(GroupKeysDS.URN, descriptorDto.getUrn());
         editionForm.setValue(GroupKeysDS.URN_PROVIDER, descriptorDto.getUrnProvider());
 
-        editionForm.getItem(GroupKeysDS.DIMENSIONS).clearValue();
-        Set<ComponentDto> dimensionComponentDtos = descriptorDto.getComponents();
-        List<String> dimensions = new ArrayList<String>();
-        for (ComponentDto c : dimensionComponentDtos) {
-            dimensions.add(c.getUrn());
-        }
-        ((CustomSelectItem) editionForm.getItem(GroupKeysDS.DIMENSIONS)).setValues(dimensions.toArray(new String[dimensions.size()]));
+        ((CustomSelectItem) editionForm.getItem(GroupKeysDS.DIMENSIONS)).clearValue();
+        ((CustomSelectItem) editionForm.getItem(GroupKeysDS.DIMENSIONS)).setValues(getDimensionComponentDtoUrnsAsArray(descriptorDto.getComponents()));
 
         // Annotations
         editionAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations());
@@ -444,6 +436,25 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         }
     }
 
+    private String getDimensionCodesSeparatedByComma(Set<ComponentDto> dimensionComponentDtosSet) {
+        List<ComponentDto> dimensionComponentDtos = new ArrayList<ComponentDto>();
+        dimensionComponentDtos.addAll(dimensionComponentDtosSet);
+        StringBuilder dimensionBuilder = new StringBuilder();
+        for (int i = 0; i < dimensionComponentDtos.size(); i++) {
+            dimensionBuilder.append(i != 0 ? ",  " : "");
+            dimensionBuilder.append(dimensionComponentDtos.get(i).getCode());
+        }
+        return dimensionBuilder.toString();
+    }
+
+    private String[] getDimensionComponentDtoUrnsAsArray(Set<ComponentDto> dimensionComponentDtos) {
+        List<String> urns = new ArrayList<String>();
+        for (ComponentDto dimension : dimensionComponentDtos) {
+            urns.add(dimension.getUrn());
+        }
+        return urns.toArray(new String[dimensionComponentDtos.size()]);
+    }
+
     // ------------------------------------------------------------------------------------------------------------
     // FORM ITEM IF FUNCTIONS
     // ------------------------------------------------------------------------------------------------------------
@@ -466,6 +477,28 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canGroupKeysCodeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // DIMENSIONS
+
+    private FormItemIfFunction getDimensionsFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canGroupKeysDimensionsBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticDimensionFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canGroupKeysDimensionsBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
