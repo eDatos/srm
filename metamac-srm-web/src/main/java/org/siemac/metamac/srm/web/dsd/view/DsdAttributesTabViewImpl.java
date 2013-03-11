@@ -125,6 +125,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private RequiredSelectItem                           groupKeyFormForGroupRelationship;               // Required if relationType == GROUP_RELATIONSHIP
     // Representation
     private DsdFacetForm                                 facetEditionForm = null;
+    private StaticFacetForm                              facetStaticEditionForm;
 
     private ToolStripButton                              newToolStripButton;
     private ToolStripButton                              deleteToolStripButton;
@@ -466,11 +467,15 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         facetEditionForm = new DsdFacetForm();
         facetEditionForm.setVisibility(Visibility.HIDDEN);
 
+        facetStaticEditionForm = new StaticFacetForm();
+        facetStaticEditionForm.setVisibility(Visibility.HIDDEN);
+
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(editionForm);
         mainFormLayout.addEditionCanvas(facetEditionForm);
+        mainFormLayout.addEditionCanvas(facetStaticEditionForm);
         mainFormLayout.addEditionCanvas(editionAnnotationsPanel);
     }
 
@@ -724,6 +729,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE_VIEW).clearValue();
         facetEditionForm.clearValues();
+        facetStaticEditionForm.clearValues();
         if (dataAttributeDto.getLocalRepresentation() != null) {
 
             if (RepresentationTypeEnum.ENUMERATION.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
@@ -744,9 +750,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 // Only one facet in a Representation
                 FacetDto facetDto = dataAttributeDto.getLocalRepresentation().getTextFormat();
                 facetEditionForm.setFacet(facetDto);
+                facetStaticEditionForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetEditionForm, editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE));
+        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE),
+                dataStructureDefinitionMetamacDto.getMaintainer());
         editionForm.redraw();
 
         // Annotations
@@ -769,7 +777,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     @Override
     public DataAttributeDto getDsdAttribute() {
-        // Id
+        // Code
         dataAttributeDto.setCode(editionForm.getValueAsString(DataAttributeDS.CODE));
 
         // Type
@@ -930,7 +938,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public void onChanged(ChangedEvent event) {
-                FacetFormUtils.setFacetFormVisibility(facetEditionForm, representationTypeItem.getValueAsString());
+                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto.getMaintainer());
             }
         });
         return representationTypeItem;

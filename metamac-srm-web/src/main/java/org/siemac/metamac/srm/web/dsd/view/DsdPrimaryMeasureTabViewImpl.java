@@ -292,6 +292,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW).clearValue();
         facetEditionForm.clearValues();
+        facetStaticEditionForm.clearValues();
         if (componentDto.getLocalRepresentation() != null) {
 
             if (RepresentationTypeEnum.ENUMERATION.equals(componentDto.getLocalRepresentation().getRepresentationType())) {

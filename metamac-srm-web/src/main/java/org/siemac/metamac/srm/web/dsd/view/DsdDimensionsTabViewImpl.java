@@ -695,6 +695,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         editionForm.getItem(DimensionDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(DimensionDS.REPRESENTATION_TYPE_VIEW).clearValue();
         facetEditionForm.clearValues();
+        facetStaticEditionForm.clearValues();
         if (dimensionComponentDto.getLocalRepresentation() != null) {
 
             if (RepresentationTypeEnum.ENUMERATION.equals(dimensionComponentDto.getLocalRepresentation().getRepresentationType())) {
