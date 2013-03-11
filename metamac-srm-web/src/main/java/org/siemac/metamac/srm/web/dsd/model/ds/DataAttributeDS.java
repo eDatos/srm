@@ -15,6 +15,7 @@ public class DataAttributeDS {
     public static final String USAGE_STATUS_VIEW                       = "attr-us-status-view";     // Not mapped in DTO
 
     public static final String CONCEPT                                 = "attr-con";
+    public static final String CONCEPT_EDITION_VIEW                    = "attr-con-ed-view";        // Not mapped in DTO
     public static final String CONCEPT_VIEW                            = "attr-con-view";           // Not mapped in DTO
 
     public static final String ROLE                                    = "attr-role";

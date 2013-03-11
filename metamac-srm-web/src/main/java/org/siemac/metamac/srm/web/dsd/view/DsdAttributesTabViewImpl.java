@@ -354,7 +354,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, getConstants().concept());
         concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
-        SearchViewTextItem conceptView = createConceptItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept());
+        SearchViewTextItem conceptView = createConceptItem(DataAttributeDS.CONCEPT_EDITION_VIEW, getConstants().concept());
 
         // ROLE
 
@@ -672,7 +672,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Concept
         editionForm.setValue(DataAttributeDS.CONCEPT, dataAttributeDto.getCptIdRef() != null ? dataAttributeDto.getCptIdRef().getUrn() : null);
-        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
+        editionForm.setValue(DataAttributeDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
 
         // RelateTo
         relationType.setValue(new String());
@@ -977,7 +977,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
                         editionForm.setValue(DataAttributeDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW,
+                        editionForm.setValue(DataAttributeDS.CONCEPT_EDITION_VIEW,
                                 selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
@@ -1140,6 +1140,28 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canAttributeCodeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // CONCEPT
+
+    private FormItemIfFunction getConceptFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canAttributeConceptBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticConceptFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canAttributeConceptBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
