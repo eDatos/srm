@@ -119,7 +119,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // Relation
     private CustomSelectItem                             groupKeysForDimensionRelationshipItem;
     private RequiredSelectItem                           dimensionsForDimensionRelationshipItem;         // Required if relationType == DIMENSION_RELATIONSHIP
-    private RequiredSelectItem                           groupKeyFormForGroupRelationship;               // Required if relationType == GROUP_RELATIONSHIP
     // Representation
     private DsdFacetForm                                 facetEditionForm = null;
     private StaticFacetForm                              facetStaticEditionForm;
@@ -418,7 +417,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Group Keys for group relationship
 
-        groupKeyFormForGroupRelationship = new RequiredSelectItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyForGroupRelationship());
+        RequiredSelectItem groupKeyFormForGroupRelationship = new RequiredSelectItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyForGroupRelationship());
         groupKeyFormForGroupRelationship.setPickListWidth(350);
         // Show GroupKeyForGroupRelationship if TypeRelathionship = GROUP_RELATIONSHIP
         groupKeyFormForGroupRelationship.setShowIfCondition(new FormItemIfFunction() {
@@ -499,7 +498,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     public void setGroupKeys(List<DescriptorDto> descriptorDtos) {
         this.descriptorDtos = descriptorDtos;
         LinkedHashMap<String, String> groupKeysMap = CommonUtils.getDescriptorDtoHashMap(descriptorDtos);
-        groupKeyFormForGroupRelationship.setValueMap(groupKeysMap);
+        ((CustomSelectItem) editionForm.getItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP)).setValueMap(groupKeysMap);
         groupKeysForDimensionRelationshipItem.setValueMap(groupKeysMap);
     }
 
@@ -691,7 +690,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // RelateTo
         editionForm.clearValue(DataAttributeDS.RELATED_TO);
-        groupKeyFormForGroupRelationship.clearValue();
+        editionForm.clearValue(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP);
         groupKeysForDimensionRelationshipItem.clearValue();
         dimensionsForDimensionRelationshipItem.clearValue();
 
@@ -700,7 +699,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             editionForm.setValue(DataAttributeDS.RELATED_TO_VIEW, CommonUtils.getTypeRelationshipName(dataAttributeDto.getRelateTo().getTypeRelathionship()));
 
             // Group keys for group relationship
-            groupKeyFormForGroupRelationship.setValue((dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
+            editionForm.setValue(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, (dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
                     .getGroupKeyForGroupRelationship().getUrn());
 
             // Group keys form dimension relationship
@@ -820,7 +819,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(editionForm.getValueAsString(DataAttributeDS.RELATED_TO));
         dataAttributeDto.getRelateTo().setTypeRelathionship(typeRelathionship);
         if (TypeRelathionship.GROUP_RELATIONSHIP.equals(typeRelathionship)) {
-            DescriptorDto descriptorDto = CommonUtils.getDescriptorDtoWithSpecifiedUrn(descriptorDtos, groupKeyFormForGroupRelationship.getValueAsString());
+            DescriptorDto descriptorDto = CommonUtils.getDescriptorDtoWithSpecifiedUrn(descriptorDtos, editionForm.getValueAsString(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP));
             dataAttributeDto.getRelateTo().setGroupKeyForGroupRelationship(descriptorDto);
         } else if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(typeRelathionship)) {
             List<DescriptorDto> groupKeysRelation = CommonUtils.getDescriptorDtosWithSpecifiedUrns(descriptorDtos, groupKeysForDimensionRelationshipItem.getValues());
