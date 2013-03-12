@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.siemac.metamac.srm.core.base.utils.BaseServiceTestUtils.assertListItemsContainsItem;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
@@ -1269,16 +1269,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
             // Concepts
             assertEquals(5, conceptSchemeVersionNewVersion.getItems().size());
-            assertEquals(urnExpectedConcept1, conceptSchemeVersionNewVersion.getItems().get(0).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedConcept2, conceptSchemeVersionNewVersion.getItems().get(1).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedConcept21, conceptSchemeVersionNewVersion.getItems().get(2).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedConcept211, conceptSchemeVersionNewVersion.getItems().get(3).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedConcept22, conceptSchemeVersionNewVersion.getItems().get(4).getNameableArtefact().getUrn());
+            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept1);
+            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept2);
+            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept21);
+            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept211);
+            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept22);
 
             assertEquals(2, conceptSchemeVersionNewVersion.getItemsFirstLevel().size());
             {
-                ConceptMetamac concept = (ConceptMetamac) conceptSchemeVersionNewVersion.getItemsFirstLevel().get(0);
-                assertEquals(urnExpectedConcept1, concept.getNameableArtefact().getUrn());
+                ConceptMetamac concept = assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItemsFirstLevel(), urnExpectedConcept1);
 
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "es", "Nombre conceptScheme-3-v1-concept-1", null, null);
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getPluralName(), "es", "PluralName conceptScheme-3-v1-concept-1", null, null);
@@ -1296,7 +1295,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(0, concept.getChildren().size());
             }
             {
-                ConceptMetamac concept = (ConceptMetamac) conceptSchemeVersionNewVersion.getItemsFirstLevel().get(1);
+                ConceptMetamac concept = assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItemsFirstLevel(), urnExpectedConcept2);
                 assertEquals(urnExpectedConcept2, concept.getNameableArtefact().getUrn());
 
                 ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "es", "Nombre conceptScheme-3-v1-concept-2", null, null);
@@ -1314,21 +1313,19 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
                 assertEquals(2, concept.getChildren().size());
                 {
-                    ConceptMetamac conceptChild = (ConceptMetamac) concept.getChildren().get(0);
-                    assertEquals(urnExpectedConcept21, conceptChild.getNameableArtefact().getUrn());
+                    ConceptMetamac conceptChild = assertListConceptsContainsConcept(concept.getChildren(), urnExpectedConcept21);
                     assertNull(conceptChild.getVariable());
 
                     assertEquals(1, conceptChild.getChildren().size());
                     {
-                        ConceptMetamac conceptChildChild = (ConceptMetamac) conceptChild.getChildren().get(0);
-                        assertEquals(urnExpectedConcept211, conceptChildChild.getNameableArtefact().getUrn());
+                        ConceptMetamac conceptChildChild = assertListConceptsContainsConcept(conceptChild.getChildren(), urnExpectedConcept211);
                         assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_2, conceptChildChild.getConceptExtends().getNameableArtefact().getUrn());
 
                         assertEquals(0, conceptChildChild.getChildren().size());
                     }
                 }
                 {
-                    ConceptMetamac conceptChild = (ConceptMetamac) concept.getChildren().get(1);
+                    ConceptMetamac conceptChild = assertListConceptsContainsConcept(concept.getChildren(), urnExpectedConcept22);
                     assertEquals(urnExpectedConcept22, conceptChild.getNameableArtefact().getUrn());
 
                     assertEquals(0, conceptChild.getChildren().size());
@@ -1604,11 +1601,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         assertEquals(5, conceptSchemeVersion.getItemsFirstLevel().size());
         assertEquals(9, conceptSchemeVersion.getItems().size());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptSchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptSchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
-        assertEquals(conceptRetrieved.getNameableArtefact().getUrn(), conceptSchemeVersion.getItemsFirstLevel().get(4).getNameableArtefact().getUrn());
+        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
     }
 
     @Test
@@ -1634,11 +1631,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(4, conceptSchemeVersion.getItemsFirstLevel().size());
         assertEquals(9, conceptSchemeVersion.getItems().size());
 
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptSchemeVersion.getItemsFirstLevel().get(0).getNameableArtefact().getUrn());
-        assertEquals(conceptRetrieved.getNameableArtefact().getUrn(), conceptSchemeVersion.getItemsFirstLevel().get(0).getChildren().get(0).getNameableArtefact().getUrn());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptSchemeVersion.getItemsFirstLevel().get(1).getNameableArtefact().getUrn());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, conceptSchemeVersion.getItemsFirstLevel().get(2).getNameableArtefact().getUrn());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, conceptSchemeVersion.getItemsFirstLevel().get(3).getNameableArtefact().getUrn());
+        Item concept1 = assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertListItemsContainsItem(concept1.getChildren(), conceptRetrieved.getNameableArtefact().getUrn());
     }
 
     @Test
@@ -2133,48 +2127,41 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(4, concepts.size());
         {
             // Concept 01
-            ConceptMetamac concept = concepts.get(0);
-            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, concept.getNameableArtefact().getUrn());
+            ConceptMetamac concept = assertListConceptsContainsConcept(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
             assertEquals(0, concept.getChildren().size());
         }
         {
             // Concept 02
-            ConceptMetamac concept = concepts.get(1);
-            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getNameableArtefact().getUrn());
+            ConceptMetamac concept = assertListConceptsContainsConcept(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2);
             assertEquals(1, concept.getChildren().size());
             {
                 // Concept 02 01
-                ConceptMetamac conceptChild = (ConceptMetamac) concept.getChildren().get(0);
-                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptChild.getNameableArtefact().getUrn());
+                ConceptMetamac conceptChild = assertListConceptsContainsConcept(concept.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
                 assertEquals(1, conceptChild.getChildren().size());
                 {
                     // Concept 02 01 01
-                    ConceptMetamac conceptChildChild = (ConceptMetamac) conceptChild.getChildren().get(0);
-                    assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptChildChild.getNameableArtefact().getUrn());
+                    ConceptMetamac conceptChildChild = assertListConceptsContainsConcept(conceptChild.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
                     assertEquals(0, conceptChildChild.getChildren().size());
                 }
             }
         }
         {
             // Concept 03
-            ConceptMetamac concept = concepts.get(2);
-            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, concept.getNameableArtefact().getUrn());
+            ConceptMetamac concept = assertListConceptsContainsConcept(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
             assertEquals(0, concept.getChildren().size());
         }
         {
             // Concept 04
-            ConceptMetamac concept = concepts.get(3);
-            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, concept.getNameableArtefact().getUrn());
+            ConceptMetamac concept = assertListConceptsContainsConcept(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4);
             assertEquals(1, concept.getChildren().size());
             {
                 // Concept 04 01
-                ConceptMetamac conceptChild = (ConceptMetamac) concept.getChildren().get(0);
+                ConceptMetamac conceptChild = assertListConceptsContainsConcept(concept.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, conceptChild.getNameableArtefact().getUrn());
                 assertEquals(1, conceptChild.getChildren().size());
                 {
                     // Concept 04 01 01
-                    ConceptMetamac conceptChildChild = (ConceptMetamac) conceptChild.getChildren().get(0);
-                    assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptChildChild.getNameableArtefact().getUrn());
+                    ConceptMetamac conceptChildChild = assertListConceptsContainsConcept(conceptChild.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
                     assertEquals(0, conceptChildChild.getChildren().size());
                 }
             }
@@ -2762,13 +2749,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     }
 
-    private void assertListConceptsContainsConcept(List<ConceptMetamac> items, String urn) {
-        for (Item item : items) {
-            if (item.getNameableArtefact().getUrn().equals(urn)) {
-                return;
+    @SuppressWarnings("rawtypes")
+    private ConceptMetamac assertListConceptsContainsConcept(List items, String urn) {
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            ConceptMetamac concept = (ConceptMetamac) iterator.next();
+            if (concept.getNameableArtefact().getUrn().equals(urn)) {
+                return concept;
             }
         }
         fail("List does not contain item with urn " + urn);
+        return null;
     }
 
     @Override

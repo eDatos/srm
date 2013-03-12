@@ -20,6 +20,7 @@ import org.siemac.metamac.sso.client.SsoClientConstants;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
@@ -458,6 +459,16 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
             }
         }
         fail("code not found");
+        return null;
+    }
+
+    protected ItemHierarchyDto assertListContainsItemHierarchy(List<ItemHierarchyDto> items, String urn) {
+        for (ItemHierarchyDto itemHierarchyDto : items) {
+            if (itemHierarchyDto.getItem().getUrn().equals(urn)) {
+                return itemHierarchyDto;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
         return null;
     }
 }

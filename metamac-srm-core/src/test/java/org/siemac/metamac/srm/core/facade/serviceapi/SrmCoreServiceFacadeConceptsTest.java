@@ -937,53 +937,45 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals(4, concepts.size());
         {
             // Concept 01
-            ItemHierarchyDto concept = concepts.get(0);
+            ItemHierarchyDto concept = assertListContainsItemHierarchy(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
             assertTrue(concept.getItem() instanceof ConceptMetamacDto);
-            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, concept.getItem().getUrn());
             assertEquals(0, concept.getChildren().size());
         }
         {
             // Concept 02
-            ItemHierarchyDto concept = concepts.get(1);
+            ItemHierarchyDto concept = assertListContainsItemHierarchy(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2);
             assertTrue(concept.getItem() instanceof ConceptMetamacDto);
-            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getItem().getUrn());
             assertEquals(1, concept.getChildren().size());
             {
                 // Concept 02 01
-                ItemHierarchyDto conceptChild = concept.getChildren().get(0);
+                ItemHierarchyDto conceptChild = assertListContainsItemHierarchy(concept.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
                 assertTrue(conceptChild.getItem() instanceof ConceptMetamacDto);
-                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptChild.getItem().getUrn());
                 assertEquals(1, conceptChild.getChildren().size());
                 {
                     // Concept 02 01 01
-                    ItemHierarchyDto conceptChildChild = conceptChild.getChildren().get(0);
-                    assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptChildChild.getItem().getUrn());
+                    ItemHierarchyDto conceptChildChild = assertListContainsItemHierarchy(conceptChild.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
                     assertEquals(0, conceptChildChild.getChildren().size());
                 }
             }
         }
         {
             // Concept 03
-            ItemHierarchyDto concept = concepts.get(2);
+            ItemHierarchyDto concept = assertListContainsItemHierarchy(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
             assertTrue(concept.getItem() instanceof ConceptMetamacDto);
-            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, concept.getItem().getUrn());
             assertEquals(0, concept.getChildren().size());
         }
         {
             // Concept 04
-            ItemHierarchyDto concept = concepts.get(3);
+            ItemHierarchyDto concept = assertListContainsItemHierarchy(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4);
             assertTrue(concept.getItem() instanceof ConceptMetamacDto);
-            assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, concept.getItem().getUrn());
             assertEquals(1, concept.getChildren().size());
             {
                 // Concept 04 01
-                ItemHierarchyDto conceptChild = concept.getChildren().get(0);
-                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, conceptChild.getItem().getUrn());
+                ItemHierarchyDto conceptChild = assertListContainsItemHierarchy(concept.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
                 assertEquals(1, conceptChild.getChildren().size());
                 {
                     // Concept 04 01 01
-                    ItemHierarchyDto conceptChildChild = conceptChild.getChildren().get(0);
-                    assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptChildChild.getItem().getUrn());
+                    ItemHierarchyDto conceptChildChild = assertListContainsItemHierarchy(conceptChild.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
                     assertEquals(0, conceptChildChild.getChildren().size());
                 }
             }

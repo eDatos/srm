@@ -821,53 +821,45 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         assertEquals(4, categories.size());
         {
             // Category 01
-            ItemHierarchyDto category = categories.get(0);
+            ItemHierarchyDto category = assertListContainsItemHierarchy(categories, CATEGORY_SCHEME_1_V2_CATEGORY_1);
             assertTrue(category.getItem() instanceof CategoryMetamacDto);
-            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, category.getItem().getUrn());
             assertEquals(0, category.getChildren().size());
         }
         {
             // Category 02
-            ItemHierarchyDto category = categories.get(1);
+            ItemHierarchyDto category = assertListContainsItemHierarchy(categories, CATEGORY_SCHEME_1_V2_CATEGORY_2);
             assertTrue(category.getItem() instanceof CategoryMetamacDto);
-            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getItem().getUrn());
             assertEquals(1, category.getChildren().size());
             {
                 // Category 02 01
-                ItemHierarchyDto categoryChild = (ItemHierarchyDto) category.getChildren().get(0);
+                ItemHierarchyDto categoryChild = assertListContainsItemHierarchy(category.getChildren(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
                 assertTrue(categoryChild.getItem() instanceof CategoryMetamacDto);
-                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoryChild.getItem().getUrn());
                 assertEquals(1, categoryChild.getChildren().size());
                 {
                     // Category 02 01 01
-                    ItemHierarchyDto categoryChildChild = (ItemHierarchyDto) categoryChild.getChildren().get(0);
-                    assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoryChildChild.getItem().getUrn());
+                    ItemHierarchyDto categoryChildChild = assertListContainsItemHierarchy(categoryChild.getChildren(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
                     assertEquals(0, categoryChildChild.getChildren().size());
                 }
             }
         }
         {
             // Category 03
-            ItemHierarchyDto category = categories.get(2);
+            ItemHierarchyDto category = assertListContainsItemHierarchy(categories, CATEGORY_SCHEME_1_V2_CATEGORY_3);
             assertTrue(category.getItem() instanceof CategoryMetamacDto);
-            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, category.getItem().getUrn());
             assertEquals(0, category.getChildren().size());
         }
         {
             // Category 04
-            ItemHierarchyDto category = categories.get(3);
+            ItemHierarchyDto category = assertListContainsItemHierarchy(categories, CATEGORY_SCHEME_1_V2_CATEGORY_4);
             assertTrue(category.getItem() instanceof CategoryMetamacDto);
-            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, category.getItem().getUrn());
             assertEquals(1, category.getChildren().size());
             {
                 // Category 04 01
-                ItemHierarchyDto categoryChild = (ItemHierarchyDto) category.getChildren().get(0);
-                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, categoryChild.getItem().getUrn());
+                ItemHierarchyDto categoryChild = assertListContainsItemHierarchy(category.getChildren(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1);
                 assertEquals(1, categoryChild.getChildren().size());
                 {
                     // Category 04 01 01
-                    ItemHierarchyDto categoryChildChild = (ItemHierarchyDto) categoryChild.getChildren().get(0);
-                    assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, categoryChildChild.getItem().getUrn());
+                    ItemHierarchyDto categoryChildChild = assertListContainsItemHierarchy(categoryChild.getChildren(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1);
                     assertEquals(0, categoryChildChild.getChildren().size());
                 }
             }
