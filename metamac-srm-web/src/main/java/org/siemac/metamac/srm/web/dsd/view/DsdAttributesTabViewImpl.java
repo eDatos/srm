@@ -119,7 +119,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     private GroupDynamicForm                             editionForm;
     // Relation
-    private RequiredSelectItem                           relationType;
     private CustomSelectItem                             groupKeysForDimensionRelationshipItem;
     private RequiredSelectItem                           dimensionsForDimensionRelationshipItem;         // Required if relationType == DIMENSION_RELATIONSHIP
     private RequiredSelectItem                           groupKeyFormForGroupRelationship;               // Required if relationType == GROUP_RELATIONSHIP
@@ -371,7 +370,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation
 
-        relationType = new RequiredSelectItem(DataAttributeDS.RELATED_WITH, getConstants().dsdAttributeRelatedWith());
+        final RequiredSelectItem relationType = new RequiredSelectItem(DataAttributeDS.RELATED_WITH, getConstants().dsdAttributeRelatedWith());
         relationType.setValueMap(CommonUtils.getTypeRelathionshipHashMap());
         relationType.setRedrawOnChange(true);
 
@@ -690,13 +689,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
 
         // RelateTo
-        relationType.setValue(new String());
+        editionForm.clearValue(DataAttributeDS.RELATED_WITH);
         groupKeyFormForGroupRelationship.clearValue();
         groupKeysForDimensionRelationshipItem.clearValue();
         dimensionsForDimensionRelationshipItem.clearValue();
 
         if (dataAttributeDto.getRelateTo() != null && dataAttributeDto.getRelateTo().getId() != null) {
-            relationType.setValue(dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
+            editionForm.setValue(DataAttributeDS.RELATED_WITH, dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
             // Group keys for group relationship
             groupKeyFormForGroupRelationship.setValue((dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
                     .getGroupKeyForGroupRelationship().getUrn());
@@ -815,7 +814,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship().clear();
         }
         // - Set relation
-        TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relationType.getValueAsString());
+        TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(editionForm.getValueAsString(DataAttributeDS.RELATED_WITH));
         dataAttributeDto.getRelateTo().setTypeRelathionship(typeRelathionship);
         if (TypeRelathionship.GROUP_RELATIONSHIP.equals(typeRelathionship)) {
             DescriptorDto descriptorDto = CommonUtils.getDescriptorDtoWithSpecifiedUrn(descriptorDtos, groupKeyFormForGroupRelationship.getValueAsString());
@@ -1225,6 +1224,28 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canAttributeRoleBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // RELATED TO
+
+    private FormItemIfFunction getRelatedToFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return DsdsFormUtils.canAttributeRelatedToBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticRelatedToFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !DsdsFormUtils.canAttributeRelatedToBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
