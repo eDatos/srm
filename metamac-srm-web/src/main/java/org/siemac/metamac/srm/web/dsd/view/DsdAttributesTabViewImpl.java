@@ -110,7 +110,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // Relation
     private ViewTextItem                                 staticGroupKeysForDimensionRelationshipItem;
     private ViewTextItem                                 staticDimensionsForDimensionRelationshipItem;
-    private ViewTextItem                                 staticGroupKeyFormForGroupRelationship;
     // Representation
     private StaticFacetForm                              facetForm;
 
@@ -299,7 +298,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem relatedTo = new ViewTextItem(DataAttributeDS.RELATED_TO, getConstants().dsdAttributeRelatedWith());
         staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         staticDimensionsForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeDimensionsForDimensionRelationship());
-        staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyFormGroupRelationship());
+        ViewTextItem staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyForGroupRelationship());
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
         ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
@@ -419,7 +418,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Group Keys for group relationship
 
-        groupKeyFormForGroupRelationship = new RequiredSelectItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyFormGroupRelationship());
+        groupKeyFormForGroupRelationship = new RequiredSelectItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyForGroupRelationship());
         groupKeyFormForGroupRelationship.setPickListWidth(350);
         // Show GroupKeyForGroupRelationship if TypeRelathionship = GROUP_RELATIONSHIP
         groupKeyFormForGroupRelationship.setShowIfCondition(new FormItemIfFunction() {
@@ -598,8 +597,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // RelateTo
         form.clearValue(DataAttributeDS.RELATED_TO);
-        staticGroupKeyFormForGroupRelationship.clearValue();
-        staticGroupKeyFormForGroupRelationship.hide();
+        form.clearValue(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP);
+        form.hideItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP);
         staticGroupKeysForDimensionRelationshipItem.clearValue();
         staticGroupKeysForDimensionRelationshipItem.hide();
         staticDimensionsForDimensionRelationshipItem.clearValue();
@@ -610,9 +609,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             // Group keys for group relationship
             if (TypeRelathionship.GROUP_RELATIONSHIP.equals(dataAttributeDto.getRelateTo().getTypeRelathionship())) {
-                staticGroupKeyFormForGroupRelationship.setValue((dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
+                form.setValue(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, (dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
                         .getGroupKeyForGroupRelationship().getCode());
-                staticGroupKeyFormForGroupRelationship.show();
+                form.showItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP);
             }
 
             if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(dataAttributeDto.getRelateTo().getTypeRelathionship())) {
