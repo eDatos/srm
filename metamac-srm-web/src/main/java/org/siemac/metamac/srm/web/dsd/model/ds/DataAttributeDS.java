@@ -21,7 +21,8 @@ public class DataAttributeDS {
     public static final String ROLE                                    = "attr-role";
     public static final String ROLE_VIEW                               = "attr-role-view";          // Not mapped in DTO
 
-    public static final String RELATED_TO                              = "attr-related-with";
+    public static final String RELATED_TO                              = "attr-related-to";
+    public static final String RELATED_TO_VIEW                         = "attr-related-to-view";    // Not mapped in DTO
 
     public static final String GROUP_KEY_FOR_GROUP_RELATIONSHIP        = "attr-group-group";
 

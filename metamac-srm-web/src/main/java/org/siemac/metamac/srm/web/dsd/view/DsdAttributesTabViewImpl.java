@@ -367,11 +367,15 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         RelatedResourceListItem staticRoleItem = new RelatedResourceListItem(DataAttributeDS.ROLE_VIEW, getConstants().dsdAttributeRole(), false);
         staticRoleItem.setShowIfCondition(getStaticRoleFormItemIfFunction());
 
-        // Relation
+        // RELATED TO
 
-        final RequiredSelectItem relationType = new RequiredSelectItem(DataAttributeDS.RELATED_TO, getConstants().dsdAttributeRelatedWith());
-        relationType.setValueMap(CommonUtils.getTypeRelathionshipHashMap());
-        relationType.setRedrawOnChange(true);
+        final RequiredSelectItem relatedTo = new RequiredSelectItem(DataAttributeDS.RELATED_TO, getConstants().dsdAttributeRelatedWith());
+        relatedTo.setValueMap(CommonUtils.getTypeRelationshipHashMap());
+        relatedTo.setRedrawOnChange(true);
+        relatedTo.setShowIfCondition(getRelatedToFormItemIfFunction());
+
+        ViewTextItem staticRelatedTo = new ViewTextItem(DataAttributeDS.RELATED_TO_VIEW, getConstants().dsdAttributeRelatedWith());
+        staticRelatedTo.setShowIfCondition(getStaticRelatedToFormItemIfFunction());
 
         // Relation: Group keys for dimension relationship
 
@@ -383,8 +387,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (relationType.getValueAsString() != null && !relationType.getValueAsString().isEmpty()) {
-                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relationType.getValueAsString());
+                if (relatedTo.getValueAsString() != null && !relatedTo.getValueAsString().isEmpty()) {
+                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relatedTo.getValueAsString());
                     if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(typeRelathionship)) {
                         return true;
                     }
@@ -403,8 +407,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (relationType.getValueAsString() != null && !relationType.getValueAsString().isEmpty()) {
-                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relationType.getValueAsString());
+                if (relatedTo.getValueAsString() != null && !relatedTo.getValueAsString().isEmpty()) {
+                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relatedTo.getValueAsString());
                     if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(typeRelathionship)) {
                         return true;
                     }
@@ -422,8 +426,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (relationType.getValueAsString() != null && !relationType.getValueAsString().isEmpty()) {
-                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relationType.getValueAsString());
+                if (relatedTo.getValueAsString() != null && !relatedTo.getValueAsString().isEmpty()) {
+                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relatedTo.getValueAsString());
                     if (TypeRelathionship.GROUP_RELATIONSHIP.equals(typeRelathionship)) {
                         return true;
                     }
@@ -436,7 +440,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem formItem, Object value) {
-                return TypeRelathionship.GROUP_RELATIONSHIP.toString().equals(relationType.getValueAsString()) ? true : false;
+                return TypeRelathionship.GROUP_RELATIONSHIP.toString().equals(relatedTo.getValueAsString()) ? true : false;
             }
         });
         groupKeyFormForGroupRelationship.setValidators(ifValidator);
@@ -460,7 +464,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticEditableConcept, staticConcept, roleItem, staticRoleItem, relationType,
+        editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticEditableConcept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
                 groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist,
                 codelistView, urn, urnProvider);
 
@@ -602,8 +606,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         staticDimensionsForDimensionRelationshipItem.hide();
 
         if (dataAttributeDto.getRelateTo() != null && dataAttributeDto.getRelateTo().getId() != null) {
-            String typeValue = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
-            form.setValue(DataAttributeDS.RELATED_TO, typeValue);
+            form.setValue(DataAttributeDS.RELATED_TO, CommonUtils.getTypeRelationshipName(dataAttributeDto.getRelateTo().getTypeRelathionship()));
 
             // Group keys for group relationship
             if (TypeRelathionship.GROUP_RELATIONSHIP.equals(dataAttributeDto.getRelateTo().getTypeRelathionship())) {
@@ -695,6 +698,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         if (dataAttributeDto.getRelateTo() != null && dataAttributeDto.getRelateTo().getId() != null) {
             editionForm.setValue(DataAttributeDS.RELATED_TO, dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
+            editionForm.setValue(DataAttributeDS.RELATED_TO_VIEW, CommonUtils.getTypeRelationshipName(dataAttributeDto.getRelateTo().getTypeRelathionship()));
+
             // Group keys for group relationship
             groupKeyFormForGroupRelationship.setValue((dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
                     .getGroupKeyForGroupRelationship().getUrn());

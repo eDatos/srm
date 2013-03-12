@@ -38,8 +38,7 @@ public class CommonUtils {
             usageStatusHashMap = new LinkedHashMap<String, String>();
             usageStatusHashMap.put(new String(), new String());
             for (UsageStatus u : UsageStatus.values()) {
-                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().usageStatus() + u.getName());
-                usageStatusHashMap.put(u.toString(), value);
+                usageStatusHashMap.put(u.toString(), getUsageStatusName(u));
             }
         }
         return usageStatusHashMap;
@@ -51,16 +50,19 @@ public class CommonUtils {
 
     // TYPE RELATIONSHIP
 
-    public static LinkedHashMap<String, String> getTypeRelathionshipHashMap() {
+    public static LinkedHashMap<String, String> getTypeRelationshipHashMap() {
         if (typeRelationShipHashMap == null) {
             typeRelationShipHashMap = new LinkedHashMap<String, String>();
             typeRelationShipHashMap.put(new String(), new String());
             for (TypeRelathionship t : TypeRelathionship.values()) {
-                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + t.getName());
-                typeRelationShipHashMap.put(t.toString(), value);
+                typeRelationShipHashMap.put(t.toString(), getTypeRelationshipName(t));
             }
         }
         return typeRelationShipHashMap;
+    }
+
+    public static String getTypeRelationshipName(TypeRelathionship typeRelationship) {
+        return typeRelationship != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + typeRelationship.name()) : null;
     }
 
     // TYPE DIMENSION COMPONENT
