@@ -380,14 +380,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         groupKeysForDimensionRelationshipItem = new CustomSelectItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeGroupKeysForDimensionRelationship());
         groupKeysForDimensionRelationshipItem.setMultiple(true);
         groupKeysForDimensionRelationshipItem.setPickListWidth(350);
-        // Show GroupKeyForDimensionRelationship if TypeRelathionship = DIMENSION_RELATIONSHIP
-        groupKeysForDimensionRelationshipItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionRelationshipType(relatedTo.getValueAsString());
-            }
-        });
 
         // Relation: Dimensions for dimension relationship
 
@@ -1231,6 +1223,30 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         };
     }
 
+    // GROUPS KEYS FOR DIMENSION RELATIONSHIP
+
+    private FormItemIfFunction getGroupKeysForDimensionRelationshipFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO))
+                        && DsdsFormUtils.canAttributeGroupKeysForDimensionRelationshipBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticGroupKeysForDimensionRelationshipFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO))
+                        && !DsdsFormUtils.canAttributeGroupKeysForDimensionRelationshipBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
     // GROUPS KEYS FOR GROUP RELATIONSHIP
 
     private FormItemIfFunction getGroupKeysForGroupRelationshipFormItemIfFunction() {
@@ -1238,7 +1254,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isGroupRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO)) && DsdsFormUtils.canAttributeRelatedToBeEdited(dataStructureDefinitionMetamacDto);
+                return CommonUtils.isGroupRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO))
+                        && DsdsFormUtils.canAttributeGroupKeysForGroupRelationshipBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
@@ -1248,7 +1265,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isGroupRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO)) && !DsdsFormUtils.canAttributeRelatedToBeEdited(dataStructureDefinitionMetamacDto);
+                return CommonUtils.isGroupRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO))
+                        && !DsdsFormUtils.canAttributeGroupKeysForGroupRelationshipBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }
