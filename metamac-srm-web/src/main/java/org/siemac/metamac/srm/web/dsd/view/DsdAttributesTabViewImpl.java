@@ -407,15 +407,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         RequiredSelectItem groupKeyFormForGroupRelationship = new RequiredSelectItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyForGroupRelationship());
         groupKeyFormForGroupRelationship.setPickListWidth(350);
-        // Show GroupKeyForGroupRelationship if TypeRelathionship = GROUP_RELATIONSHIP
-        groupKeyFormForGroupRelationship.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isGroupRelationshipType(relatedTo.getValueAsString());
-            }
-        });
-        // Required if relationType == GROUP_RELATIONSHIP
+        groupKeyFormForGroupRelationship.setShowIfCondition(getGroupKeysForGroupRelationshipFormItemIfFunction());
         RequiredIfValidator ifValidator = new RequiredIfValidator(new RequiredIfFunction() {
 
             @Override
@@ -424,6 +416,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
         groupKeyFormForGroupRelationship.setValidators(ifValidator);
+
+        ViewTextItem staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP_VIEW, getConstants().dsdAttributeGroupKeyForGroupRelationship());
+        staticGroupKeyFormForGroupRelationship.setShowIfCondition(getStaticGroupKeysForGroupRelationshipFormItemIfFunction());
 
         // Representation
 
@@ -445,8 +440,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticEditableConcept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
-                groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist,
-                codelistView, urn, urnProvider);
+                groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem,
+                staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
 
@@ -683,6 +678,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             // Group keys for group relationship
             editionForm.setValue(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, (dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto.getRelateTo()
                     .getGroupKeyForGroupRelationship().getUrn());
+            editionForm.setValue(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP_VIEW, (dataAttributeDto.getRelateTo().getGroupKeyForGroupRelationship() == null) ? null : dataAttributeDto
+                    .getRelateTo().getGroupKeyForGroupRelationship().getCode());
 
             // Group keys form dimension relationship
             groupKeysForDimensionRelationshipItem.clearValue();
@@ -1230,6 +1227,28 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canAttributeRelatedToBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // GROUPS KEYS FOR GROUP RELATIONSHIP
+
+    private FormItemIfFunction getGroupKeysForGroupRelationshipFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isGroupRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO)) && DsdsFormUtils.canAttributeRelatedToBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticGroupKeysForGroupRelationshipFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isGroupRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO)) && !DsdsFormUtils.canAttributeRelatedToBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }

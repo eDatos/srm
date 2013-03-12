@@ -25,6 +25,7 @@ public class DataAttributeDS {
     public static final String RELATED_TO_VIEW                         = "attr-related-to-view";    // Not mapped in DTO
 
     public static final String GROUP_KEY_FOR_GROUP_RELATIONSHIP        = "attr-group-group";
+    public static final String GROUP_KEY_FOR_GROUP_RELATIONSHIP_VIEW   = "attr-group-group-view";   // Not mapped in DTO
 
     public static final String GROUP_KEY_FOR_DIMENSION_RELATIONSHIP    = "attr-group-dim";
 
