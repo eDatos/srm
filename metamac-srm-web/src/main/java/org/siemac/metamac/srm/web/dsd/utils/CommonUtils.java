@@ -65,6 +65,14 @@ public class CommonUtils {
         return typeRelationship != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().typeRelationship() + typeRelationship.name()) : null;
     }
 
+    public static boolean isGroupRelationshipType(String typeRelationship) {
+        return StringUtils.equals(TypeRelathionship.GROUP_RELATIONSHIP.name(), typeRelationship);
+    }
+
+    public static boolean isDimensionRelationshipType(String typeRelationship) {
+        return StringUtils.equals(TypeRelathionship.DIMENSION_RELATIONSHIP.name(), typeRelationship);
+    }
+
     // TYPE DIMENSION COMPONENT
 
     public static LinkedHashMap<String, String> getTypeDimensionComponentHashMap() {

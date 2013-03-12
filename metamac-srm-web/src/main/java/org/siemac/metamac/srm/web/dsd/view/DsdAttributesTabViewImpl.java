@@ -385,13 +385,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (relatedTo.getValueAsString() != null && !relatedTo.getValueAsString().isEmpty()) {
-                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relatedTo.getValueAsString());
-                    if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(typeRelathionship)) {
-                        return true;
-                    }
-                }
-                return false;
+                return CommonUtils.isDimensionRelationshipType(relatedTo.getValueAsString());
             }
         });
 
@@ -405,13 +399,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (relatedTo.getValueAsString() != null && !relatedTo.getValueAsString().isEmpty()) {
-                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relatedTo.getValueAsString());
-                    if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(typeRelathionship)) {
-                        return true;
-                    }
-                }
-                return false;
+                return CommonUtils.isDimensionRelationshipType(relatedTo.getValueAsString());
             }
         });
 
@@ -424,13 +412,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (relatedTo.getValueAsString() != null && !relatedTo.getValueAsString().isEmpty()) {
-                    TypeRelathionship typeRelathionship = TypeRelathionship.valueOf(relatedTo.getValueAsString());
-                    if (TypeRelathionship.GROUP_RELATIONSHIP.equals(typeRelathionship)) {
-                        return true;
-                    }
-                }
-                return false;
+                return CommonUtils.isGroupRelationshipType(relatedTo.getValueAsString());
             }
         });
         // Required if relationType == GROUP_RELATIONSHIP
@@ -438,7 +420,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public boolean execute(FormItem formItem, Object value) {
-                return TypeRelathionship.GROUP_RELATIONSHIP.toString().equals(relatedTo.getValueAsString()) ? true : false;
+                return CommonUtils.isGroupRelationshipType(relatedTo.getValueAsString());
             }
         });
         groupKeyFormForGroupRelationship.setValidators(ifValidator);
