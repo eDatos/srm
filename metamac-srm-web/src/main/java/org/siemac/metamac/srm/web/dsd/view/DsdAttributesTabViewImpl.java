@@ -108,7 +108,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     private GroupDynamicForm                             form;
     // Relation
-    private ViewTextItem                                 staticGroupKeysForDimensionRelationshipItem;
     private ViewTextItem                                 staticDimensionsForDimensionRelationshipItem;
     // Representation
     private StaticFacetForm                              facetForm;
@@ -295,7 +294,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         RelatedResourceListItem roleItem = new RelatedResourceListItem(DataAttributeDS.ROLE, getConstants().dsdAttributeRole(), false);
         ViewTextItem usageStatusItem = new ViewTextItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeUsageStatus());
         ViewTextItem relatedTo = new ViewTextItem(DataAttributeDS.RELATED_TO, getConstants().dsdAttributeRelatedWith());
-        staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeGroupKeysForDimensionRelationship());
+        ViewTextItem staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants()
+                .dsdAttributeGroupKeysForDimensionRelationship());
         staticDimensionsForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeDimensionsForDimensionRelationship());
         ViewTextItem staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyForGroupRelationship());
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
@@ -567,8 +567,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form.clearValue(DataAttributeDS.RELATED_TO);
         form.clearValue(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP);
         form.hideItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP);
-        staticGroupKeysForDimensionRelationshipItem.clearValue();
-        staticGroupKeysForDimensionRelationshipItem.hide();
+        form.clearValue(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP);
+        form.hideItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP);
         staticDimensionsForDimensionRelationshipItem.clearValue();
         staticDimensionsForDimensionRelationshipItem.hide();
 
@@ -584,15 +584,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(dataAttributeDto.getRelateTo().getTypeRelathionship())) {
                 // Group keys form dimension relationship
-                staticGroupKeysForDimensionRelationshipItem.clearValue();
                 List<DescriptorDto> attributeGroupKeys = new ArrayList<DescriptorDto>(dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship());
                 StringBuilder groupKeysBuilder = new StringBuilder();
                 for (int i = 0; i < attributeGroupKeys.size(); i++) {
                     groupKeysBuilder.append(i != 0 ? ",  " : "");
                     groupKeysBuilder.append(attributeGroupKeys.get(i).getCode());
                 }
-                staticGroupKeysForDimensionRelationshipItem.setValue(groupKeysBuilder.toString());
-                staticGroupKeysForDimensionRelationshipItem.show();
+                form.setValue(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, groupKeysBuilder.toString());
+                form.showItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP);
 
                 // Dimensions for dimension relationship
                 staticDimensionsForDimensionRelationshipItem.clearValue();
