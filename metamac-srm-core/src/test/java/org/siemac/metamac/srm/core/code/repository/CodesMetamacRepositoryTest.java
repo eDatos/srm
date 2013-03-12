@@ -34,6 +34,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
     @Autowired
     protected CodeMetamacRepository codeMetamacRepository;
 
+    // TODO ojo! Query is different in Oracle and Mssql. Waiting for METAMAC-1457 (create views?)
     @Test
     public void testRetrieveCodesOrderedByCodelistUrn() throws Exception {
 

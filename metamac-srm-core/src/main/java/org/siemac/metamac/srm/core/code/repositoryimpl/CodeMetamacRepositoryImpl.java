@@ -291,8 +291,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
         }
 
-        // TODO VISTAS MATERIALIZADAS en bbdd para que sea el mismo código independientemente de la bbdd?
-        // TODO procedimiento almacenado?
+        // TODO Vistas materializadas en bbdd para que sea el mismo código independientemente de la bbdd? Mientras, hay que modificar spring-test.properties y resources.xml para indicar el driver
         // Order
         String orderColumn = getOrderColumnName(orderColumnIndex);
         StringBuilder sb = new StringBuilder();
