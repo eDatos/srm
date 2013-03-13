@@ -291,7 +291,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 .dsdAttributeDimensionsForDimensionRelationship());
         ViewTextItem staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyForGroupRelationship());
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
-        ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
+        ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         form.setFields(code, type, usageStatusItem, concept, roleItem, relatedTo, staticGroupKeysForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
@@ -592,8 +592,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
         facetForm.hide();
-        form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).hide();
-        form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
+        form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).hide();
+        form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
         form.getItem(DataAttributeDS.REPRESENTATION_TYPE).clearValue();
         facetForm.clearValues();
         if (dataAttributeDto.getLocalRepresentation() != null) {
@@ -603,8 +603,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 // CODELIST
 
                 form.setValue(DataAttributeDS.REPRESENTATION_TYPE, MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
-                form.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
-                form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).show();
+                form.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
+                form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).show();
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
 
                 // FACET
