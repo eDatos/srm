@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePa
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataAttributeDS;
+import org.siemac.metamac.srm.web.dsd.model.ds.PrimaryMeasureDS;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
@@ -421,15 +422,23 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // ENUMERATED REPRESENTATION
 
         ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
-        codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem codelistView = createEnumeratedRepresentationItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, getConstants().codelist());
+        codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction()); // This item is never shown. Stores the enumerated representation (codelist URN)
+
+        SearchViewTextItem codelistEditionView = createEnumeratedRepresentationItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, getConstants().codelist());
+        codelistEditionView.setShowIfCondition(getEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the enumerated representation is editable
+
+        ViewTextItem codelistView = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
+        codelistView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
+
+        // URNs
 
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticEditableConcept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
                 groupKeysForDimensionRelationshipItem, staticGroupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
-                groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
+                groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistEditionView, codelistView, urn,
+                urnProvider);
 
         // Facet Form
 
@@ -680,6 +689,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Representation
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW).clearValue();
+        editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE_VIEW).clearValue();
         facetEditionForm.clearValues();
@@ -693,7 +703,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE, RepresentationTypeEnum.ENUMERATION.toString());
                 editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE_VIEW, MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
                 editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, dataAttributeDto.getLocalRepresentation().getEnumeration().getUrn());
-                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
+                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW,
+                        RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
+                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
 
@@ -1027,14 +1039,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         final int MAX_RESULTS = 8;
         final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
         codelistItem.setRequired(true);
-        codelistItem.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // Show CodeList if RepresentationTypeEnum = ENUMERATED
-                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE));
-            }
-        });
         codelistItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -1077,8 +1081,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                             searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
                             // Set selected codelist in form
                             editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
-                            editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW,
-                                    selectedCodelist != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedCodelist) : null);
+                            editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, selectedCodelist != null
+                                    ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedCodelist)
+                                    : null);
                             editionForm.validate(false);
                         }
                     });
@@ -1292,6 +1297,32 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canAttributeRepresentationTypeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // CODELIST (ENUMERATED REPRESENTATION)
+
+    private FormItemIfFunction getEnumeratedRepresentationFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                // Shown when the representation type selected is ENUMERATION and the enumerated representation can be edited
+                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE))
+                        && DsdsFormUtils.canAttributeCodelistEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticEnumeratedRepresentationFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                // Shown when the representation type selected is ENUMERATION and the enumerated representation can NOT be edited
+                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE))
+                        && !DsdsFormUtils.canAttributeCodelistEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }

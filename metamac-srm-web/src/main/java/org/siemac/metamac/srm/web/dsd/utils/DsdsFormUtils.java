@@ -201,6 +201,15 @@ public class DsdsFormUtils {
         return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
+    // CODELIST (ENUMERATED REPRESENTATION)
+
+    public static boolean canAttributeCodelistEnumeratedRepresentationBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // ---------------------------------------------------------------------------------------------
     // GROUP KEYS
     // ---------------------------------------------------------------------------------------------
