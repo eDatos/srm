@@ -318,6 +318,7 @@ Application CodesMetamac {
 				copyCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
 				updateCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded);
 				updateCodeOpennessColumn(@CodelistVersionMetamac codelistVersion, String codeUrn, Integer opennessColumnIndex, Boolean expanded);
+				updateCodeOpennessColumnToLeafCodes(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded);
 			}
 		}
 		

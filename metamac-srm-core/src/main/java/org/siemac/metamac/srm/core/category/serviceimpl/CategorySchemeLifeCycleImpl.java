@@ -98,6 +98,11 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
         }
+        @Override
+        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
+            // nothing
+            return srmResourceVersion;
+        }
 
         @Override
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {

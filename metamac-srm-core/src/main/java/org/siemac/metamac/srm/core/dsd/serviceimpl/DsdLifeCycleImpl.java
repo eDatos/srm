@@ -204,6 +204,12 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
+            // nothing
+            return srmResourceVersion;
+        }
+
+        @Override
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
         }

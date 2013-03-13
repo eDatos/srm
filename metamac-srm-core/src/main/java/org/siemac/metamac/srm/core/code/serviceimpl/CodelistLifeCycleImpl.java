@@ -12,12 +12,15 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,9 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
+
+    @Autowired
+    private CodeMetamacRepository            codeMetamacRepository;
 
     @Autowired
     private CodesService                     codesService;
@@ -103,6 +109,18 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(codelistVersion.getAccessType(), ServiceExceptionParameters.CODELIST_ACCESS_TYPE, exceptions);
             ValidationUtils.checkMetadataRequired(codelistVersion.getDefaultOrderVisualisation(), ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION, exceptions);
             ValidationUtils.checkMetadataRequired(codelistVersion.getDefaultOpennessVisualisation(), ServiceExceptionParameters.CODELIST_DEFAULT_OPENNESS_VISUALISATION, exceptions);
+        }
+
+        @Override
+        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
+            // Mark leaf codes with openness = false
+            CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
+            for (CodelistOpennessVisualisation codelistOpennessVisualisation : codelistVersion.getOpennessVisualisations()) {
+                if (!SrmServiceUtils.isAllExpandedOpennessVisualisation(codelistOpennessVisualisation)) { // TODO pendiente visualización x defecto
+                    codeMetamacRepository.updateCodeOpennessColumnToLeafCodes(codelistVersion, codelistOpennessVisualisation.getColumnIndex(), Boolean.FALSE);
+                }
+            }
+            return srmResourceVersion;
         }
 
         @Override

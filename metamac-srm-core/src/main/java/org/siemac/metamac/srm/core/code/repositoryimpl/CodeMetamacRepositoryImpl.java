@@ -187,6 +187,20 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         queryUpdate.executeUpdate();
     }
 
+    @Override
+    public void updateCodeOpennessColumnToLeafCodes(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) {
+        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValude(expanded) + " ");
+        sb.append("WHERE ");
+        sb.append("TB_CODES IN (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("AND ");
+        sb.append("TB_CODES NOT IN (SELECT DISTINCT(i.PARENT_FK) FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK IS NOT NULL) ");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
+        queryUpdate.executeUpdate();
+    }
+
     @SuppressWarnings("rawtypes")
     @Override
     public Integer getCodeMaximumOrderInLevel(CodelistVersionMetamac codelistVersion, Item parent, Integer orderColumnIndex) {

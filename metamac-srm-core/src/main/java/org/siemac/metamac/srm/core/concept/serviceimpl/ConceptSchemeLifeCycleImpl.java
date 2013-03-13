@@ -125,6 +125,12 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
+            // nothing
+            return srmResourceVersion;
+        }
+
+        @Override
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
             // note: role and extends concepts are already externally published when it is added

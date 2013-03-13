@@ -1208,6 +1208,104 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testPublishInternallyCodelistToTestOpennessVisualisationInLeafCodes() throws Exception {
+        String urn = CODELIST_1_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Force DIFFUSION_VALIDATION procStatus to can test a codelist with multiple codes and visualisations
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+        codelistVersion.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
+        itemSchemeRepository.save(codelistVersion);
+
+        // Before
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_2);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_3);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE, null));
+        }
+
+        // Publish internally
+        codelistVersion = codesService.publishInternallyCodelist(ctx, urn);
+
+        // After
+        entityManager.clear();
+        codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+        {
+            // Leaf code
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+        }
+        {
+            // Leaf code
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+        }
+        {
+            // Leaf code
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_2);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+        }
+        {
+            // Leaf code
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_3);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+        }
+        {
+            // Leaf code
+            CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1);
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+        }
+
+    }
+
+    @Test
     public void testPublishInternallyCodelistErrorRequiredMetadata() throws Exception {
         String urn = CODELIST_11_V1;
         try {
@@ -6009,6 +6107,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     private void assertCodeVisualisations(CodeMetamacVisualisationResult codeVisualisation, Integer order, Boolean openness) {
         assertEquals(order, codeVisualisation.getOrder());
         assertEquals(openness, codeVisualisation.getOpenness());
+    }
+
+    private void assertOpennessVisualisationColumns(CodeMetamac code, List<Boolean> values) {
+        int columnIndex = 1;
+        for (Boolean value : values) {
+            assertEquals(value, SrmServiceUtils.getCodeOpenness(code, columnIndex));
+            columnIndex++;
+        }
     }
 
     @Override
