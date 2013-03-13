@@ -41,5 +41,4 @@ public class SaveConceptSchemeActionHandler extends SecurityActionHandler<SaveCo
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }
