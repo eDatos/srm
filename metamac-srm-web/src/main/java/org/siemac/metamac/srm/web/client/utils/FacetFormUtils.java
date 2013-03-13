@@ -23,21 +23,6 @@ public class FacetFormUtils {
     public static Set<FacetValueTypeEnum> conceptFacetValueTypeEnums;
 
     /**
-     * Shows or hides facetForm depending on whether representationType is ENUMERATED or not.
-     * 
-     * @param facetForm
-     * @param representationType
-     */
-    @Deprecated
-    public static void setFacetFormVisibility(BaseFacetForm facetForm, String representationType) {
-        if (!StringUtils.isBlank(representationType) && StringUtils.equals(representationType, RepresentationTypeEnum.TEXT_FORMAT.name())) {
-            facetForm.show();
-        } else {
-            facetForm.hide();
-        }
-    }
-
-    /**
      * Shows or hides facetForm and staticFacetForm depending on whether representationType is TEXT_FORMAT or not, and on the maintainer of the resource.
      */
     public static void setFacetFormVisibility(BaseFacetForm facetForm, StaticFacetForm staticFacetForm, String representationType, RelatedResourceDto maintainer) {

@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
+import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
@@ -102,6 +103,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private GroupDynamicForm                             identifiersEditionForm;
     private GroupDynamicForm                             contentDescriptorsEditionForm;
     private ConceptFacetForm                             facetEditionForm;
+    private StaticFacetForm                              facetStaticEditionForm;
     private GroupDynamicForm                             classDescriptorsEditionForm;
     private GroupDynamicForm                             relationBetweenConceptsEditionForm;
     private GroupDynamicForm                             legalActsEditionForm;
@@ -336,10 +338,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
             @Override
             public void onChanged(ChangedEvent event) {
-                if (RepresentationTypeEnum.TEXT_FORMAT.name().equals(representationType.getValueAsString())) {
-                    facetEditionForm.show();
-                } else {
-                    facetEditionForm.hide();
+                if (conceptSchemeMetamacDto != null) {
+                    FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationType.getValueAsString(), conceptSchemeMetamacDto.getMaintainer());
                 }
                 contentDescriptorsEditionForm.markForRedraw();
             }
@@ -365,6 +365,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // NON ENUMERATED REPRESENTATION
         facetEditionForm = new ConceptFacetForm();
+        facetStaticEditionForm = new StaticFacetForm();
 
         // PRODUCTION DESCRIPTORS
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
@@ -395,6 +396,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(facetEditionForm);
+        mainFormLayout.addEditionCanvas(facetStaticEditionForm);
         mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
         mainFormLayout.addEditionCanvas(legalActsEditionForm);
@@ -517,7 +519,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     private void setConceptEditionMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
-        // Identifiers Form
+        // IDENTIFIERS FORM
         identifiersEditionForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersEditionForm.setValue(ConceptDS.CODE_VIEW, conceptDto.getCode());
         identifiersEditionForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
@@ -527,7 +529,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         identifiersEditionForm.setValue(ConceptDS.URN, conceptDto.getUrn());
         identifiersEditionForm.setValue(ConceptDS.URN_PROVIDER, conceptDto.getUrnProvider());
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));
         contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
         contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
@@ -550,32 +552,32 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? conceptDto.getType().getIdentifier() : null);
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
-        // Non enumerated representation
-        if (conceptDto.getCoreRepresentation() != null && RepresentationTypeEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
-            facetEditionForm.show();
-        } else {
-            facetEditionForm.hide();
-        }
+        // FACET (Non enumerated representation)
         facetEditionForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTextFormat() : null);
+        facetStaticEditionForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTextFormat() : null);
+        if (conceptSchemeMetamacDto != null) {
+            FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE),
+                    conceptSchemeMetamacDto.getMaintainer());
+        }
 
-        // Class descriptors
+        // CLASS DESCRIPTORS
 
-        // Production descriptors
+        // PRODUCTION DESCRIPTORS
         classDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
-        // Relation between concepts
+        // RELATION BETWEEN CONCEPTS
         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
         relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, conceptDto.getConceptExtends() != null ? conceptDto.getConceptExtends().getUrn() : StringUtils.EMPTY);
 
         ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
-        // Legal acts
+        // LEGAL ACTS
         legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
 
-        // Comments
+        // COMMENTS
         commentsEditionForm.setValue(ConceptDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptDto.getComment()));
 
-        // Annotations
+        // ANNOTATIONS
         annotationsEditionPanel.setAnnotations(conceptDto.getAnnotations());
     }
 
@@ -1040,6 +1042,11 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         annotationsPanel.markForRedraw();
         annotationsEditionPanel.markForRedraw();
+
+        if (conceptSchemeMetamacDto != null) {
+            FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE),
+                    conceptSchemeMetamacDto.getMaintainer());
+        }
     }
 
     // ------------------------------------------------------------------------------------------------------------

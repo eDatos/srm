@@ -8,5 +8,4 @@ public class ConceptFacetForm extends BaseFacetForm {
     public ConceptFacetForm() {
         textType.setValueMap(CommonUtils.getConceptFacetValueTypeHashMap());
     }
-
 }
