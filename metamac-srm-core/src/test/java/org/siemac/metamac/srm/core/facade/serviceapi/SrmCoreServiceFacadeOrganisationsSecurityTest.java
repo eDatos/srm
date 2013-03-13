@@ -136,7 +136,8 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testUpdatePublishedAgencyScheme() throws Exception {
-        OrganisationSchemeMetamacDto externallyPublishedVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1);
+        OrganisationSchemeMetamacDto externallyPublishedVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_ROOT_1_V1);
+        externallyPublishedVersion.setName(MetamacMocks.mockInternationalStringDto());
         srmCoreServiceFacade.updateOrganisationScheme(getServiceContextJefeNormalizacion(), externallyPublishedVersion);
     }
 
