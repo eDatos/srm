@@ -1896,6 +1896,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testCreateCodeErrorCodelistImported() throws Exception {
+        CodeMetamac code = CodesMetamacDoMocks.mockCode();
+        String codelistUrn = CODELIST_1_V2;
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        // save to force incorrect metadata
+        codelistVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        codelistVersion.getMaintainableArtefact().setMaintainer(retrieveOrganisationAgency1());
+        itemSchemeRepository.save(codelistVersion);
+
+        try {
+            codesService.createCode(getServiceContextAdministrador(), codelistUrn, code);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
     public void testCreateCodeSubcode() throws Exception {
         CodeMetamac code = CodesMetamacDoMocks.mockCode();
         CodeMetamac codeParent = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
@@ -2566,6 +2586,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
+    }
+
+    @Test
+    public void testDeleteCodeErrorCodelistImported() throws Exception {
+        String urn = CODELIST_1_V2_CODE_3;
+        String codelistUrn = CODELIST_1_V2;
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        // save to force incorrect metadata
+        codelistVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        codelistVersion.getMaintainableArtefact().setMaintainer(retrieveOrganisationAgency1());
+        itemSchemeRepository.save(codelistVersion);
+
+        try {
+            codesService.deleteCode(getServiceContextAdministrador(), urn);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
 

@@ -196,8 +196,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx,
                 dataStructureDefinitionVersionUrn);
-
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersionMetamac);
+        srmValidation.checkItemsStructureCanBeModified(ctx, dataStructureDefinitionVersionMetamac);
 
         dataStructureDefinitionService.deleteDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, componentList);
     }
@@ -229,6 +229,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 dataStructureDefinitionVersionUrn);
 
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersionMetamac);
+        srmValidation.checkItemsStructureCanBeModified(ctx, dataStructureDefinitionVersionMetamac);
 
         // If is a Dimension check is not exist in the stub or heading, or delete it if exist
         if (component instanceof DimensionComponent) {
@@ -575,7 +576,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private void checkDataStructureDefinitionCanBeModified(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(dataStructureDefinitionVersion.getLifeCycleMetadata(), dataStructureDefinitionVersion.getMaintainableArtefact().getUrn());
     }
-    
+
     /**
      * Finds concept schemes with concepts could be concept in primary measure, time dimension, measure dimension or dimension in DSD
      */

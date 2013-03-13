@@ -1824,6 +1824,27 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Test
+    public void testCreateConceptErrorConceptImported() throws Exception {
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(getServiceContextAdministrador(), CONCEPT_TYPE_DIRECT);
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        // save to force incorrect metadata
+        conceptSchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        conceptSchemeVersion.getMaintainableArtefact().setMaintainer(retrieveOrganisationAgency1());
+        itemSchemeRepository.save(conceptSchemeVersion);
+
+        try {
+            conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
     @Override
     @Test
     public void testUpdateConcept() throws Exception {

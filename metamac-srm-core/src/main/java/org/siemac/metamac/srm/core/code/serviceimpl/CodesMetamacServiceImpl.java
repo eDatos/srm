@@ -102,7 +102,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac createCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
 
-        // Fill and validate Code list
+        // Fill and validate Codelist
         preCreateCodelist(ctx, codelistVersion);
 
         // In creation, 'replaceTo' metadata must be copied to set after save codelist, due to flushing
@@ -291,6 +291,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
 
         preCreateCode(ctx, codelistVersion, code);
+        srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
         // Save code
         code = (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
@@ -309,6 +310,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         CodelistVersionMetamac codelistVersionTarget = retrieveCodelistByUrn(ctx, codelistTargetUrn);
         checkCodelistCanBeModified(codelistVersionTarget);
+        srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersionTarget);
 
         CodeMetamac parentTarget = null;
         if (parentTargetUrn != null) {
@@ -335,6 +337,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return code;
     }
+
     @Override
     public CodeMetamac updateCode(ServiceContext ctx, CodeMetamac code) throws MetamacException {
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, code.getNameableArtefact().getUrn());
@@ -381,6 +384,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkUpdateCodeParent(codeUrn, parentTargetUrn, null);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, codeUrn);
         checkCodelistCanBeModified(codelistVersion);
+        srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
         CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
         Item parentActual = code.getParent() != null ? code.getParent() : null;
@@ -477,6 +481,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, urn);
         checkCodelistCanBeModified(codelistVersion);
+        srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
         CodeMetamac code = retrieveCodeByUrn(ctx, urn);
         Item parent = code.getParent();

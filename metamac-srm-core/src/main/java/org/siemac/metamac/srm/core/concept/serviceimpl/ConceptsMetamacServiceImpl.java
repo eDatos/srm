@@ -263,7 +263,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public ConceptMetamac createConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
+
+        // Validation
         preCreateConcept(ctx, conceptSchemeUrn, concept);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
+        srmValidation.checkItemsStructureCanBeModified(ctx, conceptSchemeVersion);
 
         // Save concept
         return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
@@ -357,6 +361,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByConceptUrn(ctx, urn);
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
+        srmValidation.checkItemsStructureCanBeModified(ctx, conceptSchemeVersion);
 
         // Delete bidirectional relations of concepts relate this concept and its children (will be removed in cascade)
         removeRelatedConceptsBidirectional(concept);

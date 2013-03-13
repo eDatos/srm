@@ -197,7 +197,10 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Override
     public OrganisationMetamac createOrganisation(ServiceContext ctx, String organisationSchemeUrn, OrganisationMetamac organisation) throws MetamacException {
 
+        // Validation
         preCreateOrganisation(ctx, organisationSchemeUrn, organisation);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
+        srmValidation.checkItemsStructureCanBeModified(ctx, organisationSchemeVersion);
 
         // Save organisation
         return (OrganisationMetamac) organisationsService.createOrganisation(ctx, organisationSchemeUrn, organisation);
@@ -249,6 +252,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Validation
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
         checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
+        srmValidation.checkItemsStructureCanBeModified(ctx, organisationSchemeVersion);
 
         // Delete
         organisationsService.deleteOrganisation(ctx, urn);

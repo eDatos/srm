@@ -42,6 +42,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
@@ -65,6 +66,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
+
+    @Autowired
+    private ItemSchemeVersionRepository   itemSchemeRepository;
 
     @Override
     @Test
@@ -1376,6 +1380,26 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationRetrieved);
     }
 
+    @Test
+    public void testCreateOrganisationErrorOrganisationImported() throws Exception {
+        OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.ORGANISATION_UNIT);
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        // save to force incorrect metadata
+        organisationSchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        organisationSchemeVersion.getMaintainableArtefact().setMaintainer(retrieveOrganisationAgency1());
+        itemSchemeRepository.save(organisationSchemeVersion);
+
+        try {
+            organisationsService.createOrganisation(getServiceContextAdministrador(), organisationSchemeUrn, organisation);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
     @Override
     @Test
     public void testUpdateOrganisation() throws Exception {
@@ -1537,6 +1561,26 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
+    }
+
+    @Test
+    public void testDeleteOrganisationErrorOrganisationSchemeImported() throws Exception {
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_3;
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        // save to force incorrect metadata
+        organisationSchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        organisationSchemeVersion.getMaintainableArtefact().setMaintainer(retrieveOrganisationAgency1());
+        itemSchemeRepository.save(organisationSchemeVersion);
+
+        try {
+            organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
 

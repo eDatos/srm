@@ -13,7 +13,9 @@ import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 
 @Component("srmValidation")
@@ -48,6 +50,22 @@ public class SrmValidationImpl implements SrmValidation {
             if (!maintainerUrnDefault.equals(maintainerUrn)) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINER_MUST_BE_DEFAULT).withMessageParameters(maintainerUrn, maintainerUrnDefault).build();
             }
+        }
+    }
+
+    @Override
+    public void checkItemsStructureCanBeModified(ServiceContext ctx, ItemSchemeVersion itemSchemeVersion) throws MetamacException {
+        checkItemsStructureCanBeModified(ctx, itemSchemeVersion.getMaintainableArtefact().getIsImported());
+    }
+
+    @Override
+    public void checkItemsStructureCanBeModified(ServiceContext ctx, StructureVersion structureVersion) throws MetamacException {
+        checkItemsStructureCanBeModified(ctx, structureVersion.getMaintainableArtefact().getIsImported());
+    }
+
+    private void checkItemsStructureCanBeModified(ServiceContext ctx, Boolean artefactImported) throws MetamacException {
+        if (BooleanUtils.isTrue(artefactImported)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED).build();
         }
     }
 }

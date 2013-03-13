@@ -41,6 +41,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryProperties;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
@@ -58,6 +59,9 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
+
+    @Autowired
+    private ItemSchemeVersionRepository   itemSchemeRepository;
 
     @Override
     @Test
@@ -1220,6 +1224,26 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertListItemsContainsItem(category1.getChildren(), categoryRetrieved.getNameableArtefact().getUrn());
     }
 
+    @Test
+    public void testCreateCategoryErrorCategoryImported() throws Exception {
+        CategoryMetamac category = CategoriesMetamacDoMocks.mockCategory();
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        // save to force incorrect metadata
+        categorySchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        categorySchemeVersion.getMaintainableArtefact().setMaintainer(retrieveOrganisationAgency1());
+        itemSchemeRepository.save(categorySchemeVersion);
+
+        try {
+            categoriesService.createCategory(getServiceContextAdministrador(), categorySchemeUrn, category);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
     @Override
     @Test
     public void testUpdateCategory() throws Exception {
@@ -1363,6 +1387,26 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
+    }
+
+    @Test
+    public void testDeleteCategoryErrorCategorySchemeImported() throws Exception {
+        String urn = CATEGORY_SCHEME_1_V2_CATEGORY_3;
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        // save to force incorrect metadata
+        categorySchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        categorySchemeVersion.getMaintainableArtefact().setMaintainer(retrieveOrganisationAgency1());
+        itemSchemeRepository.save(categorySchemeVersion);
+
+        try {
+            categoriesService.deleteCategory(getServiceContextAdministrador(), urn);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
 

@@ -202,7 +202,10 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategoryMetamac createCategory(ServiceContext ctx, String categorySchemeUrn, CategoryMetamac category) throws MetamacException {
 
+        // Validation
         preCreateCategory(ctx, categorySchemeUrn, category);
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
+        srmValidation.checkItemsStructureCanBeModified(ctx, categorySchemeVersion);
 
         // Save category
         return (CategoryMetamac) categoriesService.createCategory(ctx, categorySchemeUrn, category);
@@ -247,6 +250,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Validation
         CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByCategoryUrn(ctx, urn);
         checkCategorySchemeCanBeModified(categorySchemeVersion);
+        srmValidation.checkItemsStructureCanBeModified(ctx, categorySchemeVersion);
 
         // Delete
         categoriesService.deleteCategory(ctx, urn);
