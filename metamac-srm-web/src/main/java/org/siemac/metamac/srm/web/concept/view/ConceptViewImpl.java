@@ -27,6 +27,7 @@ import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsFormUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptFacetForm;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsListItem;
@@ -82,10 +83,10 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
 
-    private final VLayout                                panel;
-    private final InternationalMainFormLayout            mainFormLayout;
+    private VLayout                                      panel;
+    private InternationalMainFormLayout                  mainFormLayout;
 
-    private final ConceptsTreeGrid                       conceptsTreeGrid;
+    private ConceptsTreeGrid                             conceptsTreeGrid;
 
     // View forms
     private GroupDynamicForm                             identifiersForm;
@@ -293,8 +294,14 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private void createEditionForm() {
         // Identifiers Form
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
+
         RequiredTextItem code = new RequiredTextItem(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getConceptIdentifierCustomValidator());
+        code.setShowIfCondition(getCodeFormItemIfFunction());
+
+        ViewTextItem staticCode = new ViewTextItem(ConceptDS.CODE_VIEW, getConstants().identifiableArtefactCode());
+        staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
+
         MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem pluralName = new MultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());
@@ -302,7 +309,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(ConceptDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersEditionForm.setFields(code, name, pluralName, acronym, uri, urn, urnProvider);
+        identifiersEditionForm.setFields(code, staticCode, name, pluralName, acronym, uri, urn, urnProvider);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -377,7 +384,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
-
     @Override
     public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
         this.conceptDto = conceptDto;
@@ -457,8 +463,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW,
                 conceptDto.getCoreRepresentation() != null ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration()) : null);
         contentDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
-        contentDescriptorsForm.setValue(ConceptDS.TYPE,
-                conceptDto.getConceptType() != null ? CommonWebUtils.getElementName(conceptDto.getConceptType().getIdentifier(), conceptDto.getConceptType().getDescription()) : null);
+        contentDescriptorsForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null
+                ? CommonWebUtils.getElementName(conceptDto.getType().getIdentifier(), conceptDto.getType().getDescription())
+                : null);
         ((RelatedResourceListItem) contentDescriptorsForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
         contentDescriptorsForm.markForRedraw();
 
@@ -493,6 +500,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private void setConceptEditionMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
         // Identifiers Form
         identifiersEditionForm.setValue(ConceptDS.CODE, conceptDto.getCode());
+        identifiersEditionForm.setValue(ConceptDS.CODE_VIEW, conceptDto.getCode());
         identifiersEditionForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
         identifiersEditionForm.setValue(ConceptDS.PLURAL_NAME, RecordUtils.getInternationalStringRecord(conceptDto.getPluralName()));
         identifiersEditionForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
@@ -515,7 +523,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration())
                 : null);
         contentDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getConceptType() != null ? conceptDto.getConceptType().getIdentifier() : null);
+        contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getType() != null ? conceptDto.getType().getIdentifier() : null);
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
 
         // Non enumerated representation
@@ -581,7 +589,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         }
         conceptDto.setSdmxRelatedArtefact(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) ? ConceptRoleEnum.valueOf(contentDescriptorsEditionForm
                 .getValueAsString(ConceptDS.SDMX_RELATED_ARTEFACT)) : null);
-        conceptDto.setConceptType(contentDescriptorsEditionForm.getValue(ConceptDS.TYPE) != null ? getConceptTypeDto(contentDescriptorsEditionForm.getValueAsString(ConceptDS.TYPE)) : null);
+        conceptDto.setType(contentDescriptorsEditionForm.getValue(ConceptDS.TYPE) != null ? getConceptTypeDto(contentDescriptorsEditionForm.getValueAsString(ConceptDS.TYPE)) : null);
         // Roles get in getRoles method
 
         // Class descriptors
@@ -992,5 +1000,31 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             }
         });
         return codelistItem;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEM IF FUNCTIONS
+    // ------------------------------------------------------------------------------------------------------------
+
+    // CODE
+
+    private FormItemIfFunction getCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return ConceptsFormUtils.canConceptCodeBeEdited(conceptSchemeMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !ConceptsFormUtils.canConceptCodeBeEdited(conceptSchemeMetamacDto);
+            }
+        };
     }
 }
