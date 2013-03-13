@@ -51,8 +51,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -61,19 +64,21 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
+    private static final ComponentDto dimensionComponentDtoTypeDimensionMock = null;
+
     @Autowired
-    protected SrmCoreServiceFacade srmCoreServiceFacade;
+    protected SrmCoreServiceFacade    srmCoreServiceFacade;
 
     // @Autowired
     // private DsdsMetamacService srmCoreServiceFacade;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
-    private Jaxb2Marshaller        marshallerWithValidation;
+    private Jaxb2Marshaller           marshallerWithValidation;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithoutValidation")
-    private CustomJaxb2Marshaller  marshallerWithoutValidation;
+    private CustomJaxb2Marshaller     marshallerWithoutValidation;
 
     // @Autowired
     // @Qualifier("mapperCoreCopyAllMetadataMode")
@@ -185,17 +190,58 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(),
                 DataStructureDefinitionMetamacDtoMocks.mockDataStructureDefinitionMetamacDto());
 
-        DescriptorDto descriptorDtoMock = (DescriptorDto) DataStructureDefinitionDtoMocks.createComponentListDtoTypeDimensionDescriptorMock(false);
+        DescriptorDto descriptorDtoMock = (DescriptorDto) DataStructureDefinitionDtoMocks.createComponentListDtoTypeDimensionDescriptorMock(false, null);
         descriptorDtoMock = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), descriptorDtoMock);
 
-        DimensionComponentDto dimensionComponentDtoTypeDimensionMock = DataStructureDefinitionDtoMocks.createDimensionComponentDtoTypeDimensionMock();
-        dimensionComponentDtoTypeDimensionMock = (DimensionComponentDto) srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(),
-                dataStructureDefinitionMetamacDto.getUrn(), dimensionComponentDtoTypeDimensionMock);
+        DimensionComponentDto dim01 = DataStructureDefinitionDtoMocks.createDimensionComponentDtoTypeDimensionMock("dim-01");
+        RepresentationDto representationDto = dim01.getLocalRepresentation();
+        representationDto.setEnumeration(null);
+        representationDto.setTextFormat(DataStructureDefinitionDtoMocks.mockFacet());
+        representationDto.setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
+        dim01.setLocalRepresentation(representationDto);
+        dim01 = (DimensionComponentDto) srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), dim01);
 
-        int kaka = 23;
+        // RepresentationDto rep = DataStructureDefinitionDtoMocks.createEnumeratedRepresentationDtoMock();
+        // {
+        // RepresentationDto rep = dim01.getLocalRepresentation();
+        // rep.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+        // rep.setTextFormat(null);
+        // rep.setEnumeration(DataStructureDefinitionDtoMocks.createEnumeratedRepresentationDtoMock().getEnumeration());
+        // dim01.setLocalRepresentation(rep);
+        // }
+        dim01.setLocalRepresentation(DataStructureDefinitionDtoMocks.createEnumeratedRepresentationDtoMock());
+        dim01 = (DimensionComponentDto) srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), dim01);
+
+        // {
+        // representationDto = dim01.setLocalRepresentation(createEnumeratedRepresentationDtoMock());
+        //
+        // dimensionComponentDtoTypeDimensionMock.setLocalRepresentation(representationDto);
+        // dimensionComponentDtoTypeDimensionMock = srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(),
+        // dimensionComponentDtoTypeDimensionMock);
+        // }
+
+        int kaka = 2;
+        // DimensionComponentDto dim02 = DataStructureDefinitionDtoMocks.createDimensionComponentDtoTypeDimensionMock("dim-02");
+        // dim02 = (DimensionComponentDto) srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), dim02);
+        //
+        // DescriptorDto groupDescriptorDto = new DescriptorDto();
+        // DataStructureDefinitionDtoMocks.mockIdentifiableArtefact(groupDescriptorDto, "group01");
+        // groupDescriptorDto.setTypeComponentList(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
+        //
+        // groupDescriptorDto.addComponent(dim01);
+        // groupDescriptorDto.addComponent(dim02);
+        //
+        // groupDescriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), groupDescriptorDto);
+        //
+        // assertEquals(2, groupDescriptorDto.getComponents().size());
+        //
+        // groupDescriptorDto.removeComponent(groupDescriptorDto.getComponents().iterator().next());
+        //
+        // groupDescriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), groupDescriptorDto);
+        //
+        // assertEquals(1, groupDescriptorDto.getComponents().size());
 
     }
-
     // @Ignore // TODO tests import: pendiente reestructuración del servicio de importación
     // @Test
     // public void testImportSDMXStructureMsg() throws Exception {
