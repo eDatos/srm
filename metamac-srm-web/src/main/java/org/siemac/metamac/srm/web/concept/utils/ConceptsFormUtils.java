@@ -36,4 +36,13 @@ public class ConceptsFormUtils {
         }
         return CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
     }
+
+    // REPRESENTATION TYPE
+
+    public static boolean canConceptRepresentationTypeBeEdited(ConceptSchemeMetamacDto conceptSchemeDto) {
+        if (conceptSchemeDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
+    }
 }
