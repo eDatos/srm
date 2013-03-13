@@ -250,6 +250,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Security
         mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
         mainFormLayout.updateButtonsVisibility(codelistMetamacDto.getLifeCycle().getProcStatus());
+
+        markFormsForRedraw();
     }
 
     @Override
@@ -275,6 +277,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         setCodeViewMode(codeDto);
         setCodeEditionMode(codeDto);
+
+        markFormsForRedraw();
     }
 
     @Override
@@ -354,6 +358,20 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
     private boolean validateEditionForms() {
         return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false);
+    }
+
+    private void markFormsForRedraw() {
+        identifiersForm.markForRedraw();
+        identifiersEditionForm.markForRedraw();
+
+        contentDescriptorsForm.markForRedraw();
+        contentDescriptorsEditionForm.markForRedraw();
+
+        commentsForm.markForRedraw();
+        commentsEditionForm.markForRedraw();
+
+        annotationsPanel.markForRedraw();
+        annotationsEditionPanel.markForRedraw();
     }
 
     private SearchViewTextItem createVariableElementItem(String name, String title) {

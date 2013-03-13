@@ -387,6 +387,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Contacts
         setContacts(organisationDto.getContacts(), contactToShowId);
+
+        markFormsForRedraw();
     }
 
     @Override
@@ -406,6 +408,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
         contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateContact(organisationSchemeMetamacDto));
         contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canCreateContact(organisationSchemeMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
+
+        markFormsForRedraw();
     }
 
     private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {
@@ -549,6 +553,20 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             contacts.add(contactRecord.getContactDto());
         }
         return contacts;
+    }
+
+    private void markFormsForRedraw() {
+        identifiersForm.markForRedraw();
+        identifiersEditionForm.markForRedraw();
+
+        contentDescriptorsForm.markForRedraw();
+        contentDescriptorsEditionForm.markForRedraw();
+
+        commentsForm.markForRedraw();
+        commentsEditionForm.markForRedraw();
+
+        annotationsPanel.markForRedraw();
+        annotationsEditionPanel.markForRedraw();
     }
 
     // ------------------------------------------------------------------------------------------------------------

@@ -384,6 +384,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
+
     @Override
     public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
         this.conceptDto = conceptDto;
@@ -402,6 +403,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         setConceptViewMode(conceptDto, roles, relatedConcepts);
         setConceptEditionMode(conceptDto, roles, relatedConcepts);
+
+        markFormsForRedraw();
     }
 
     @Override
@@ -415,8 +418,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
 
-        contentDescriptorsForm.markForRedraw();
-        contentDescriptorsEditionForm.markForRedraw();
+        markFormsForRedraw();
     }
 
     @Override
@@ -1000,6 +1002,29 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             }
         });
         return codelistItem;
+    }
+
+    private void markFormsForRedraw() {
+        identifiersForm.markForRedraw();
+        identifiersEditionForm.markForRedraw();
+
+        contentDescriptorsForm.markForRedraw();
+        contentDescriptorsEditionForm.markForRedraw();
+
+        classDescriptorsForm.markForRedraw();
+        classDescriptorsEditionForm.markForRedraw();
+
+        relationBetweenConceptsForm.markForRedraw();
+        relationBetweenConceptsEditionForm.markForRedraw();
+
+        legalActsForm.markForRedraw();
+        legalActsEditionForm.markForRedraw();
+
+        commentsForm.markForRedraw();
+        commentsEditionForm.markForRedraw();
+
+        annotationsPanel.markForRedraw();
+        annotationsEditionPanel.markForRedraw();
     }
 
     // ------------------------------------------------------------------------------------------------------------

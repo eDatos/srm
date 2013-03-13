@@ -137,6 +137,8 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
         setContactViewMode(this.contactDto);
         setContactEditionMode(this.contactDto);
+
+        markFormsForRedraw();
     }
 
     public ContactDto getContact() {
@@ -193,6 +195,11 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         editionForm.setValue(ContactDS.EMAIL_VIEW, CommonWebUtils.getStringListToString(contactDto.getEmails()));
         ((MultiTextItem) editionForm.getItem(ContactDS.FAX)).setValues(contactDto.getFaxes());
         editionForm.setValue(ContactDS.FAX_VIEW, CommonWebUtils.getStringListToString(contactDto.getFaxes()));
+        editionForm.markForRedraw();
+    }
+
+    private void markFormsForRedraw() {
+        form.markForRedraw();
         editionForm.markForRedraw();
     }
 

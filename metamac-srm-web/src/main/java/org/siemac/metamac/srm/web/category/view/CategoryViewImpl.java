@@ -132,6 +132,8 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
         setCategoryViewMode(categoryDto);
         setCategoryEditionMode(categoryDto);
+
+        markFormsForRedraw();
     }
 
     @Override
@@ -143,6 +145,8 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
         // Security
         mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategory(categorySchemeDto.getLifeCycle().getProcStatus()));
+
+        markFormsForRedraw();
 
     }
 
@@ -301,6 +305,20 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         categoryDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return categoryDto;
+    }
+
+    private void markFormsForRedraw() {
+        identifiersForm.markForRedraw();
+        identifiersEditionForm.markForRedraw();
+
+        contentDescriptorsForm.markForRedraw();
+        contentDescriptorsEditionForm.markForRedraw();
+
+        commentsForm.markForRedraw();
+        commentsEditionForm.markForRedraw();
+
+        annotationsPanel.markForRedraw();
+        annotationsEditionPanel.markForRedraw();
     }
 
     // ------------------------------------------------------------------------------------------------------------
