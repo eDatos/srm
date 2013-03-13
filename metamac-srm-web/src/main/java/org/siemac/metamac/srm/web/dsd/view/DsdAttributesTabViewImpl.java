@@ -105,14 +105,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private AnnotationsPanel                             editionAnnotationsPanel;
 
     // VIEW FORM
-
     private GroupDynamicForm                             form;
     private StaticFacetForm                              facetForm;
 
     // EDITION FORM
-
     private GroupDynamicForm                             editionForm;
-    private RequiredSelectItem                           dimensionsForDimensionRelationshipItem;         // Required if relationType == DIMENSION_RELATIONSHIP
     private DsdFacetForm                                 facetEditionForm = null;
     private StaticFacetForm                              facetStaticEditionForm;
 
@@ -384,7 +381,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Relation: Dimensions for dimension relationship
 
-        dimensionsForDimensionRelationshipItem = new RequiredSelectItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants().dsdAttributeDimensionsForDimensionRelationship());
+        RequiredSelectItem dimensionsForDimensionRelationshipItem = new RequiredSelectItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants()
+                .dsdAttributeDimensionsForDimensionRelationship());
         dimensionsForDimensionRelationshipItem.setMultiple(true);
         dimensionsForDimensionRelationshipItem.setPickListWidth(350);
         // Show DimensionsForDimensionRelationship if TypeRelathionship = DIMENSION_RELATIONSHIP
@@ -461,7 +459,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public void setDimensions(List<DimensionComponentDto> dimensionComponentDtos) {
         this.dimensionComponentDtos = dimensionComponentDtos;
-        dimensionsForDimensionRelationshipItem.setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
+        ((CustomSelectItem) editionForm.getItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP)).setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
     }
 
     @Override
@@ -649,7 +647,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionForm.clearValue(DataAttributeDS.RELATED_TO);
         editionForm.clearValue(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP);
         editionForm.clearValue(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP);
-        dimensionsForDimensionRelationshipItem.clearValue();
+        editionForm.clearValue(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP);
 
         if (dataAttributeDto.getRelateTo() != null && dataAttributeDto.getRelateTo().getId() != null) {
             editionForm.setValue(DataAttributeDS.RELATED_TO, dataAttributeDto.getRelateTo().getTypeRelathionship().toString());
@@ -668,8 +666,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                     .setValue(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP_VIEW, CommonUtils.getDescriptorListAsString(dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship()));
 
             // Dimensions for dimension relationship
-            dimensionsForDimensionRelationshipItem.clearValue();
-            dimensionsForDimensionRelationshipItem.setValues(CommonUtils.getUrnsFromDimensionComponentDtos(dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship()));
+            ((CustomSelectItem) editionForm.getItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP)).setValues(CommonUtils.getUrnsFromDimensionComponentDtos(dataAttributeDto.getRelateTo()
+                    .getDimensionForDimensionRelationship()));
         }
 
         // Role
@@ -775,7 +773,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         } else if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(typeRelathionship)) {
             List<DescriptorDto> groupKeysRelation = CommonUtils.getDescriptorDtosWithSpecifiedUrns(descriptorDtos,
                     ((CustomSelectItem) editionForm.getItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP)).getValues());
-            List<DimensionComponentDto> dimensionsRelation = CommonUtils.getDimensionComponentDtosWithSpecifiedUrns(dimensionComponentDtos, dimensionsForDimensionRelationshipItem.getValues());
+            List<DimensionComponentDto> dimensionsRelation = CommonUtils.getDimensionComponentDtosWithSpecifiedUrns(dimensionComponentDtos,
+                    ((CustomSelectItem) editionForm.getItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP)).getValues());
             dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship().addAll(groupKeysRelation);
             dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship().addAll(dimensionsRelation);
         }
