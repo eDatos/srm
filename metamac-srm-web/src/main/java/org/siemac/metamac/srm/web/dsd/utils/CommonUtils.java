@@ -3,8 +3,10 @@ package org.siemac.metamac.srm.web.dsd.utils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.util.shared.ArrayUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -337,6 +339,54 @@ public class CommonUtils {
             }
         }
         return null;
+    }
+
+    public static String getDescriptorListAsString(Set<DescriptorDto> descriptorDtos) {
+        StringBuilder builder = new StringBuilder();
+        if (descriptorDtos != null) {
+            List<DescriptorDto> descriptorList = new ArrayList<DescriptorDto>(descriptorDtos);
+            for (int i = 0; i < descriptorList.size(); i++) {
+                builder.append(i != 0 ? ",  " : "");
+                builder.append(descriptorList.get(i).getCode());
+            }
+        }
+        return builder.toString();
+    }
+
+    public static String getDimensionComponentListAsString(Set<DimensionComponentDto> dimensionComponentDtos) {
+        StringBuilder builder = new StringBuilder();
+        if (dimensionComponentDtos != null) {
+            List<DimensionComponentDto> dimensions = new ArrayList<DimensionComponentDto>(dimensionComponentDtos);
+            for (int i = 0; i < dimensions.size(); i++) {
+                builder.append(i != 0 ? ",  " : "");
+                builder.append(dimensions.get(i).getCode());
+            }
+        }
+        return builder.toString();
+    }
+
+    public static String[] getUrnsFromDescriptorDtos(Set<DescriptorDto> descriptorDtos) {
+        if (descriptorDtos != null) {
+            List<DescriptorDto> descriptorList = new ArrayList<DescriptorDto>(descriptorDtos);
+            String[] urns = new String[descriptorList.size()];
+            for (int i = 0; i < descriptorList.size(); i++) {
+                urns[i] = descriptorList.get(i).getUrn();
+            }
+            return urns;
+        }
+        return ArrayUtils.EMPTY_STRING_ARRAY;
+    }
+
+    public static String[] getUrnsFromDimensionComponentDtos(Set<DimensionComponentDto> dimensionComponentDtos) {
+        if (dimensionComponentDtos != null) {
+            List<DimensionComponentDto> dimensions = new ArrayList<DimensionComponentDto>(dimensionComponentDtos);
+            String[] urns = new String[dimensions.size()];
+            for (int i = 0; i < dimensions.size(); i++) {
+                urns[i] = dimensions.get(i).getUrn();
+            }
+            return urns;
+        }
+        return ArrayUtils.EMPTY_STRING_ARRAY;
     }
 
     // METADATA VISIBILITY

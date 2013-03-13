@@ -376,6 +376,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 .dsdAttributeGroupKeysForDimensionRelationship());
         groupKeysForDimensionRelationshipItem.setMultiple(true);
         groupKeysForDimensionRelationshipItem.setPickListWidth(350);
+        groupKeysForDimensionRelationshipItem.setShowIfCondition(getGroupKeysForDimensionRelationshipFormItemIfFunction());
+
+        ViewTextItem staticGroupKeysForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP_VIEW, getConstants()
+                .dsdAttributeGroupKeysForDimensionRelationship());
+        staticGroupKeysForDimensionRelationshipItem.setShowIfCondition(getStaticGroupKeysForDimensionRelationshipFormItemIfFunction());
 
         // Relation: Dimensions for dimension relationship
 
@@ -428,8 +433,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticEditableConcept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
-                groupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem,
-                staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
+                groupKeysForDimensionRelationshipItem, staticGroupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship,
+                staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
 
@@ -580,24 +585,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             if (TypeRelathionship.DIMENSION_RELATIONSHIP.equals(dataAttributeDto.getRelateTo().getTypeRelathionship())) {
                 // Group keys form dimension relationship
-                List<DescriptorDto> attributeGroupKeys = new ArrayList<DescriptorDto>(dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship());
-                StringBuilder groupKeysBuilder = new StringBuilder();
-                for (int i = 0; i < attributeGroupKeys.size(); i++) {
-                    groupKeysBuilder.append(i != 0 ? ",  " : "");
-                    groupKeysBuilder.append(attributeGroupKeys.get(i).getCode());
-                }
-                form.setValue(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, groupKeysBuilder.toString());
+                form.setValue(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, CommonUtils.getDescriptorListAsString(dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship()));
                 form.showItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP);
 
                 // Dimensions for dimension relationship
                 staticDimensionsForDimensionRelationshipItem.clearValue();
-                List<DimensionComponentDto> attributeDimensions = new ArrayList<DimensionComponentDto>(dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship());
-                StringBuilder dimensionBuilder = new StringBuilder();
-                for (int i = 0; i < attributeDimensions.size(); i++) {
-                    dimensionBuilder.append(i != 0 ? ",  " : "");
-                    dimensionBuilder.append(attributeDimensions.get(i).getCode());
-                }
-                staticDimensionsForDimensionRelationshipItem.setValue(dimensionBuilder.toString());
+                staticDimensionsForDimensionRelationshipItem.setValue(CommonUtils.getDimensionComponentListAsString(dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship()));
                 staticDimensionsForDimensionRelationshipItem.show();
             }
         }
@@ -669,21 +662,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                     .getRelateTo().getGroupKeyForGroupRelationship().getCode());
 
             // Group keys form dimension relationship
-            List<DescriptorDto> attributeGroupKeys = new ArrayList<DescriptorDto>(dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship());
-            List<String> groupKeys = new ArrayList<String>();
-            for (DescriptorDto d : attributeGroupKeys) {
-                groupKeys.add(d.getUrn());
-            }
-            ((CustomSelectItem) editionForm.getItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP)).setValues(groupKeys.toArray(new String[groupKeys.size()]));
+            ((CustomSelectItem) editionForm.getItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP)).setValues(CommonUtils.getUrnsFromDescriptorDtos(dataAttributeDto.getRelateTo()
+                    .getGroupKeyForDimensionRelationship()));
+            editionForm
+                    .setValue(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP_VIEW, CommonUtils.getDescriptorListAsString(dataAttributeDto.getRelateTo().getGroupKeyForDimensionRelationship()));
 
             // Dimensions for dimension relationship
             dimensionsForDimensionRelationshipItem.clearValue();
-            List<DimensionComponentDto> attributeDimensions = new ArrayList<DimensionComponentDto>(dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship());
-            List<String> dimensions = new ArrayList<String>();
-            for (DimensionComponentDto d : attributeDimensions) {
-                dimensions.add(d.getUrn());
-            }
-            dimensionsForDimensionRelationshipItem.setValues(dimensions.toArray(new String[dimensions.size()]));
+            dimensionsForDimensionRelationshipItem.setValues(CommonUtils.getUrnsFromDimensionComponentDtos(dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship()));
         }
 
         // Role
