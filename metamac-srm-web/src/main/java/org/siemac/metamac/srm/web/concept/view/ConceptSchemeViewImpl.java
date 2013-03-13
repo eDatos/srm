@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsFormUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeCategorisationsPanel;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
@@ -458,22 +459,11 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getConceptSchemeIdentifierCustomValidator());
-        code.setShowIfCondition(new FormItemIfFunction() {
+        code.setShowIfCondition(getCodeFormItemIfFunction());
 
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(conceptSchemeDto.getLifeCycle().getProcStatus(), conceptSchemeDto.getVersionLogic());
-            }
-        });
         ViewTextItem staticCode = new ViewTextItem(ConceptSchemeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
-        staticCode.setShowIfCondition(new FormItemIfFunction() {
+        staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
 
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(conceptSchemeDto.getLifeCycle().getProcStatus(), conceptSchemeDto.getVersionLogic());
-            }
-        });
         MultiLanguageTextItem name = new MultiLanguageTextItem(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         ViewTextItem uri = new ViewTextItem(ConceptSchemeDS.URI, getConstants().identifiableArtefactUri());
@@ -756,5 +746,31 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             }
         });
         return operation;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEM IF FUNCTIONS
+    // ------------------------------------------------------------------------------------------------------------
+
+    // CODE
+
+    private FormItemIfFunction getCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return ConceptsFormUtils.canConceptSchemeCodeBeEdited(conceptSchemeDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !ConceptsFormUtils.canConceptSchemeCodeBeEdited(conceptSchemeDto);
+            }
+        };
     }
 }

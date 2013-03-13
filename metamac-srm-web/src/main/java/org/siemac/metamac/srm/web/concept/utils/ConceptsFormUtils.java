@@ -1,39 +1,39 @@
-package org.siemac.metamac.srm.web.category.utils;
+package org.siemac.metamac.srm.web.concept.utils;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 /**
  * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource.
  * Metadata of type {@link InternationalStringDto} are always editable (that's why they are not specified in this class), but only to add new translations.
  */
-public class CategoriesFormUtils {
+public class ConceptsFormUtils {
 
     // ---------------------------------------------------------------------------------------------
-    // CATEGORY SCHEMES
+    // CONCEPT SCHEMES
     // ---------------------------------------------------------------------------------------------
 
     // CODE
 
-    public static boolean canCategorySchemeCodeBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
-        if (categorySchemeDto == null) {
+    public static boolean canConceptSchemeCodeBeEdited(ConceptSchemeMetamacDto conceptSchemeDto) {
+        if (conceptSchemeDto == null) {
             return false;
         }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(categorySchemeDto.getLifeCycle().getProcStatus(), categorySchemeDto.getVersionLogic())
-                && CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(conceptSchemeDto.getLifeCycle().getProcStatus(), conceptSchemeDto.getVersionLogic())
+                && CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
     }
 
     // ---------------------------------------------------------------------------------------------
-    // CATEGORIES
+    // CONCEPTS
     // ---------------------------------------------------------------------------------------------
 
     // CODE
 
-    public static boolean canCategoryCodeBeEdited(CategorySchemeMetamacDto categorySchemeDto) {
-        if (categorySchemeDto == null) {
+    public static boolean canConceptCodeBeEdited(ConceptSchemeMetamacDto conceptSchemeDto) {
+        if (conceptSchemeDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
+        return CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
     }
 }
