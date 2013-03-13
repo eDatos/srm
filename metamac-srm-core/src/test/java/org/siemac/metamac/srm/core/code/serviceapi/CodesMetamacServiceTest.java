@@ -59,6 +59,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
@@ -78,6 +79,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
@@ -1494,11 +1496,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
             // Codes
             assertEquals(5, codelistVersionNewVersion.getItems().size());
-            assertEquals(urnExpectedCode1, codelistVersionNewVersion.getItems().get(0).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedCode2, codelistVersionNewVersion.getItems().get(1).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedCode21, codelistVersionNewVersion.getItems().get(2).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedCode211, codelistVersionNewVersion.getItems().get(3).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedCode22, codelistVersionNewVersion.getItems().get(4).getNameableArtefact().getUrn());
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode1);
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode2);
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode21);
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode211);
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode22);
 
             assertEquals(2, codelistVersionNewVersion.getItemsFirstLevel().size());
             {
@@ -1956,6 +1958,363 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Override
+    @Test
+    public void testCopyCodesInCodelist() throws Exception {
+        String codelistTargetUrn = CODELIST_1_V2;
+
+        // Before
+        List<CodeMetamacVisualisationResult> hierarchyBefore = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistTargetUrn, "es", null, null);
+        assertEquals(9, hierarchyBefore.size());
+
+        // Codes to copy
+        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
+        {
+            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            code.setUrn(CODELIST_1_V2_CODE_2_1);
+            code.setCode("CODE05");
+            codesToCopy.add(code);
+        }
+        {
+            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            code.setUrn(CODELIST_1_V2_CODE_3);
+            code.setCode("CODE00");
+            codesToCopy.add(code);
+        }
+        {
+            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            code.setUrn(CODELIST_1_V2_CODE_4);
+            code.setCode("CODE01B");
+            codesToCopy.add(code);
+            {
+                CodeToCopyHierarchy codeChild = new CodeToCopyHierarchy();
+                codeChild.setUrn(CODELIST_1_V2_CODE_4_1_1);
+                codeChild.setCode("CODE01B01");
+                code.getChildren().add(codeChild);
+            }
+        }
+
+        // Copy
+        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistTargetUrn, null, codesToCopy);
+
+        entityManager.clear();
+        String code0201TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE05";
+        String code03TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE00";
+        String code04TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01B";
+        String code040101TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01B01";
+
+        // Validate
+        List<CodeMetamacVisualisationResult> hierarchyAfter = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistTargetUrn, "es", null, null);
+        assertEquals(9 + 4, hierarchyAfter.size());
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_1);
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_2);
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_2_1);
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_2_1_1);
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_2_2);
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_3);
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_4);
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_4_1);
+        getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_4_1_1);
+        getCodeMetamacVisualisationResult(hierarchyAfter, code0201TargetUrn);
+        getCodeMetamacVisualisationResult(hierarchyAfter, code03TargetUrn);
+        getCodeMetamacVisualisationResult(hierarchyAfter, code04TargetUrn);
+        getCodeMetamacVisualisationResult(hierarchyAfter, code040101TargetUrn);
+
+        // Validate previous in first level are reorder
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+            assertEquals(Integer.valueOf(1), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(1), code.getOrder3());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2);
+            assertEquals(Integer.valueOf(3), code.getOrder1());
+            assertEquals(Integer.valueOf(1), code.getOrder2());
+            assertEquals(Integer.valueOf(2), code.getOrder3());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_3);
+            assertEquals(Integer.valueOf(4), code.getOrder1());
+            assertEquals(Integer.valueOf(2), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_4);
+            assertEquals(Integer.valueOf(5), code.getOrder1());
+            assertEquals(Integer.valueOf(3), code.getOrder2());
+            assertEquals(Integer.valueOf(3), code.getOrder3());
+        }
+
+        // Validate copied
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code0201TargetUrn);
+            assertEquals("CODE05", code.getNameableArtefact().getCode());
+            assertNull(code.getParent());
+            assertNotNull(code.getItemSchemeVersionFirstLevel());
+            assertNull(code.getNameableArtefact().getUriProvider());
+            assertNull(code.getShortName());
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-2-1", "en", "Name codelist-1-v2-code-2-1");
+            assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "descripción CODELIST_1_V2_CODE_2_1", null, null);
+            assertNull(code.getNameableArtefact().getComment());
+            assertEquals(code.getVariableElement().getNameableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
+            assertEquals(2, code.getNameableArtefact().getAnnotations().size());
+            {
+                Annotation annotation = assertSetAnnotationsContainsAnnotations(code.getNameableArtefact().getAnnotations(), "CODE0201_ANNOTATION211");
+                assertEqualsInternationalString(annotation.getText(), "es", "Anotación 21", null, null);
+                assertEquals("title-annotation211", annotation.getTitle());
+                assertEquals("type-annotation211", annotation.getType());
+                assertEquals("http://annotation211", annotation.getUrl());
+                assertEquals("title-annotation211", annotation.getTitle());
+            }
+            {
+                Annotation annotation = assertSetAnnotationsContainsAnnotations(code.getNameableArtefact().getAnnotations(), "CODE0201_ANNOTATION212");
+                assertNull(annotation.getText());
+                assertEquals("title-annotation212", annotation.getTitle());
+                assertEquals("type-annotation212", annotation.getType());
+                assertEquals("http://annotation212", annotation.getUrl());
+                assertEquals("title-annotation212", annotation.getTitle());
+            }
+            assertEquals(Integer.valueOf(6), code.getOrder1());
+            assertEquals(Integer.valueOf(4), code.getOrder2());
+            assertEquals(Integer.valueOf(4), code.getOrder3());
+            assertNull(code.getOrder4());
+            assertEquals(Boolean.TRUE, code.getOpenness1());
+            assertEquals(Boolean.TRUE, code.getOpenness2());
+            assertEquals(Boolean.TRUE, code.getOpenness3());
+            assertNull(code.getOpenness4());
+
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code03TargetUrn);
+            assertEquals("CODE00", code.getNameableArtefact().getCode());
+            assertNull(code.getParent());
+            assertNotNull(code.getItemSchemeVersionFirstLevel());
+            assertNull(code.getNameableArtefact().getUriProvider());
+            assertNull(code.getShortName());
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "en", "name code-3", "it", "nombre it code-3");
+            assertNull(code.getNameableArtefact().getDescription());
+            assertEquals(code.getVariableElement().getNameableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_3);
+            assertNull(code.getNameableArtefact().getComment());
+            assertEquals(0, code.getNameableArtefact().getAnnotations().size());
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(5), code.getOrder2());
+            assertEquals(Integer.valueOf(5), code.getOrder3());
+            assertNull(code.getOrder4());
+            assertEquals(Boolean.TRUE, code.getOpenness1());
+            assertEquals(Boolean.TRUE, code.getOpenness2());
+            assertEquals(Boolean.TRUE, code.getOpenness3());
+            assertNull(code.getOpenness4());
+
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code04TargetUrn);
+            assertEquals("CODE01B", code.getNameableArtefact().getCode());
+            assertNull(code.getParent());
+            assertNotNull(code.getItemSchemeVersionFirstLevel());
+            assertNull(code.getNameableArtefact().getUriProvider());
+            assertNull(code.getShortName());
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-4", null, null);
+            assertNull(code.getNameableArtefact().getDescription());
+            assertNull(code.getVariableElement());
+            assertNull(code.getNameableArtefact().getComment());
+            assertEquals(0, code.getNameableArtefact().getAnnotations().size());
+            assertEquals(Integer.valueOf(2), code.getOrder1());
+            assertEquals(Integer.valueOf(6), code.getOrder2());
+            assertEquals(Integer.valueOf(6), code.getOrder3());
+            assertNull(code.getOrder4());
+            assertEquals(Boolean.TRUE, code.getOpenness1());
+            assertEquals(Boolean.TRUE, code.getOpenness2());
+            assertEquals(Boolean.TRUE, code.getOpenness3());
+            assertNull(code.getOpenness4());
+
+            assertEquals(1, code.getChildren().size());
+            assertEquals(code040101TargetUrn, code.getChildren().get(0).getNameableArtefact().getUrn());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code040101TargetUrn);
+            assertEquals("CODE01B01", code.getNameableArtefact().getCode());
+            assertEquals(code04TargetUrn, code.getParent().getNameableArtefact().getUrn());
+            assertNull(code.getNameableArtefact().getUriProvider());
+            assertNull(code.getShortName());
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "en", "Name codelist-1-v2-code-4-1-1", "it", "nombre it codelist-1-v2-code-4-1-1");
+            assertNull(code.getNameableArtefact().getDescription());
+            assertEquals(code.getVariableElement().getNameableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
+            assertNull(code.getNameableArtefact().getComment());
+            assertEquals(0, code.getNameableArtefact().getAnnotations().size());
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+            assertNull(code.getOrder4());
+            assertEquals(Boolean.TRUE, code.getOpenness1());
+            assertEquals(Boolean.TRUE, code.getOpenness2());
+            assertEquals(Boolean.TRUE, code.getOpenness3());
+            assertNull(code.getOpenness4());
+
+            assertEquals(0, code.getChildren().size());
+        }
+    }
+
+    @Test
+    public void testCopyCodesInCodelistInParentOnlyCheckStructureAndOrder() throws Exception {
+        String codelistTargetUrn = CODELIST_1_V2;
+        String parentUrn = CODELIST_1_V2_CODE_2;
+
+        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
+        {
+            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            code.setUrn(CODELIST_1_V2_CODE_2_1);
+            code.setCode("CODE05");
+            codesToCopy.add(code);
+        }
+        {
+            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            code.setUrn(CODELIST_1_V2_CODE_3);
+            code.setCode("CODE00");
+            codesToCopy.add(code);
+        }
+        {
+            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            code.setUrn(CODELIST_1_V2_CODE_4);
+            code.setCode("CODE01B");
+            codesToCopy.add(code);
+            {
+                CodeToCopyHierarchy codeChild = new CodeToCopyHierarchy();
+                codeChild.setUrn(CODELIST_1_V2_CODE_4_1_1);
+                codeChild.setCode("CODE01B01");
+                code.getChildren().add(codeChild);
+            }
+        }
+
+        // Copy
+        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistTargetUrn, parentUrn, codesToCopy);
+
+        entityManager.clear();
+        String code0201TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE05";
+        String code03TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE00";
+        String code04TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01B";
+        String code040101TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01B01";
+
+        // Validate
+        List<CodeMetamacVisualisationResult> hierarchyAfter = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistTargetUrn, "es", null, null);
+        assertEquals(9 + 4, hierarchyAfter.size());
+        getCodeMetamacVisualisationResult(hierarchyAfter, code0201TargetUrn);
+        getCodeMetamacVisualisationResult(hierarchyAfter, code03TargetUrn);
+        getCodeMetamacVisualisationResult(hierarchyAfter, code04TargetUrn);
+        getCodeMetamacVisualisationResult(hierarchyAfter, code040101TargetUrn);
+
+        // Validate structure (previous in level and copied)
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2_1);
+            assertEquals(Integer.valueOf(2), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(1), code.getOrder3());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2_2);
+            assertEquals(Integer.valueOf(3), code.getOrder1());
+            assertEquals(Integer.valueOf(1), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code0201TargetUrn);
+            assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
+            assertNull(code.getItemSchemeVersionFirstLevel());
+            assertEquals(Integer.valueOf(4), code.getOrder1());
+            assertEquals(Integer.valueOf(2), code.getOrder2());
+            assertEquals(Integer.valueOf(2), code.getOrder3());
+            assertNull(code.getOrder4());
+            assertEquals(Boolean.TRUE, code.getOpenness1());
+            assertEquals(Boolean.TRUE, code.getOpenness2());
+            assertEquals(Boolean.TRUE, code.getOpenness3());
+            assertNull(code.getOpenness4());
+
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code03TargetUrn);
+            assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
+            assertNull(code.getItemSchemeVersionFirstLevel());
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(3), code.getOrder2());
+            assertEquals(Integer.valueOf(3), code.getOrder3());
+            assertNull(code.getOrder4());
+            assertEquals(Boolean.TRUE, code.getOpenness1());
+            assertEquals(Boolean.TRUE, code.getOpenness2());
+            assertEquals(Boolean.TRUE, code.getOpenness3());
+            assertNull(code.getOpenness4());
+
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code04TargetUrn);
+            assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
+            assertNull(code.getItemSchemeVersionFirstLevel());
+            assertEquals(Integer.valueOf(1), code.getOrder1());
+            assertEquals(Integer.valueOf(4), code.getOrder2());
+            assertEquals(Integer.valueOf(4), code.getOrder3());
+            assertNull(code.getOrder4());
+            assertEquals(Boolean.TRUE, code.getOpenness1());
+            assertEquals(Boolean.TRUE, code.getOpenness2());
+            assertEquals(Boolean.TRUE, code.getOpenness3());
+            assertNull(code.getOpenness4());
+
+            assertEquals(1, code.getChildren().size());
+            assertEquals(code040101TargetUrn, code.getChildren().get(0).getNameableArtefact().getUrn());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code040101TargetUrn);
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+            assertNull(code.getOrder4());
+            assertEquals(Boolean.TRUE, code.getOpenness1());
+            assertEquals(Boolean.TRUE, code.getOpenness2());
+            assertEquals(Boolean.TRUE, code.getOpenness3());
+            assertNull(code.getOpenness4());
+
+            assertEquals(0, code.getChildren().size());
+        }
+    }
+
+    @Test
+    public void testCopyCodesInCodelistWithDifferentVariable() throws Exception {
+        String codelistSourceUrn = CODELIST_1_V2;
+        CodelistVersionMetamac codelistSource = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistSourceUrn);
+        String code01SourceUrn = CODELIST_1_V2_CODE_1;
+        String codelistTargetUrn = CODELIST_2_V1;
+        CodelistVersionMetamac codelistTarget = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistTargetUrn);
+        assertFalse(codelistTarget.getVariable().getNameableArtefact().getUrn().equals(codelistSource.getVariable().getNameableArtefact().getUrn()));
+
+        // Codes to copy
+        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
+        CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+        code.setUrn(code01SourceUrn);
+        code.setCode("CODE03");
+        codesToCopy.add(code);
+
+        // Copy
+        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistTargetUrn, null, codesToCopy);
+
+        entityManager.clear();
+        String code01TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE03";
+
+        // Validate
+        List<CodeMetamacVisualisationResult> hierarchyAfter = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistTargetUrn, "es", null, null);
+        assertEquals(2 + 1, hierarchyAfter.size());
+        getCodeMetamacVisualisationResult(hierarchyAfter, code01TargetUrn);
+
+        // Validate short name
+        CodeMetamac codeSource = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code01SourceUrn);
+        assertNotNull(codeSource.getVariableElement());
+
+        CodeMetamac codeTarget = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code01TargetUrn);
+        assertNull(codeTarget.getVariableElement());
+        assertNull(codeTarget.getShortName()); // because in source it was null
+    }
+
     @Test
     @Override
     public void testPreCreateCode() throws Exception {
@@ -2276,7 +2635,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("CODE02", code.getParent().getCode());
                 assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), code.getParentIdDatabase());
-                assertEquals(null, code.getName()); // it has not name
+                assertEquals("código 2-2", code.getName());
                 assertEquals(Integer.valueOf(1), code.getOrder());
             }
             {
@@ -2334,7 +2693,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             {
                 // Code 02 01
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1);
-                assertEquals(null, code.getName());
+                assertEquals("Name codelist-1-v2-code-2-1", code.getName());
                 assertEquals(Integer.valueOf(1), code.getOrder());
             }
             {

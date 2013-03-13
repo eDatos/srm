@@ -845,9 +845,9 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="15"
-                DESCRIPTION_FK="[null]"
-                COMMENT_FK="[null]"
+                NAME_FK="15" 
+                DESCRIPTION_FK="109"
+                COMMENT_FK="110"
                 
                 UUID="annotableArtefact-991221"
                 VERSION="1"
@@ -858,6 +858,31 @@
                 LAST_UPDATED="2012-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />  
+            
+            <TB_ANNOTATIONS
+                ID="9912211"
+                CODE="CODE0201_ANNOTATION211"
+                TITLE="title-annotation211"
+                TYPE="type-annotation211"    
+                URL="http://annotation211"
+                UUID="annotation-9912211"
+                VERSION="1"
+                TEXT_FK="111"
+                ANNOTABLE_ARTEFACT_FK="991221"
+            />
+            
+            <TB_ANNOTATIONS
+                ID="9912212"
+                CODE="CODE0201_ANNOTATION212"
+                TITLE="title-annotation212"
+                TYPE="type-annotation212"    
+                URL="http://annotation212"
+                UUID="annotation-99122112"
+                VERSION="1"
+                TEXT_FK="[null]"
+                ANNOTABLE_ARTEFACT_FK="991221"
+            />
+            
         
             <!-- CODE020101 -->
             <TB_CODES
@@ -963,7 +988,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="107"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -1615,6 +1640,10 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="211"
+              ORDER1="0"
+              ORDER2="1"
+              OPENNESS1="1"
+              OPENNESS2="0"
              />            
         
             <TB_ITEMS
@@ -1668,6 +1697,10 @@
               VARIABLE_ELEMENT_FK="[null]"
               SHORT_NAME_FK="[null]"
               TB_CODES="212"
+              ORDER1="1"
+              ORDER2="0"
+              OPENNESS1="1"
+              OPENNESS2="1"              
              />        
                      
             <TB_ITEMS
@@ -5929,6 +5962,15 @@
         INTERNATIONAL_STRING_FK="15"
     />   
     
+
+    <TB_LOCALISED_STRINGS
+        ID="152"
+        LABEL="Name codelist-1-v2-code-2-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="15"
+    />       
+    
     <TB_INTERNATIONAL_STRINGS
         ID="16"
         VERSION="1"
@@ -7263,7 +7305,60 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="106"
-    />                          
+    />      
+    
+  <TB_INTERNATIONAL_STRINGS
+        ID="107"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1071"
+        LABEL="código 2-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="107"
+    />     
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="109"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1091"
+        LABEL="descripción CODELIST_1_V2_CODE_2_1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="109"
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="110"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1101"
+        LABEL="comentarios CODELIST_1_V2_CODE_2_1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="110"
+    />                                  
+      
+    <TB_INTERNATIONAL_STRINGS
+        ID="111"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1111"
+        LABEL="Anotación 21"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="111"
+    />                                   
+                                  
                                
                                                                                                   
 </dataset>

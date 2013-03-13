@@ -92,7 +92,9 @@ Application CodesMetamac {
     		deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by codelist, in tree structure"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn, String codelistOpennessVisualisationUrn) throws MetamacException;
-    		
+			"Copy codes to another codelist"
+	   		copyCodesInCodelist(String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException;
+	   		    		
     		// VISUALISATIONS
     		
     		"Creates order visualisation"

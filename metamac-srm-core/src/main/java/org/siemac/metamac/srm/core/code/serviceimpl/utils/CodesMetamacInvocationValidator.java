@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
@@ -144,6 +145,18 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
         // orderVisualisationUrn optional
         // opennessVisualisationUrn optional
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkCopyCodesInCodelist(String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codelistTargetUrn, ServiceExceptionParameters.URN, exceptions);
+        // parentTargetUrn optional
+        // codesToCopy optional: do nothing
 
         ExceptionUtils.throwIfException(exceptions);
     }

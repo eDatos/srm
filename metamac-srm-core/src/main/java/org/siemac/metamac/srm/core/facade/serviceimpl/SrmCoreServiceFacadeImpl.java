@@ -32,6 +32,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -1057,19 +1058,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void createCodesHierarchy(ServiceContext ctx, String codelistUrn, String parentUrn, List<ItemHierarchyDto> codesMetamacDto) throws MetamacException {
+    public void copyCodesInCodelist(ServiceContext ctx, String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException {
         // Security
-        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
+        CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistTargetUrn);
         ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
-        // Create all
-        CodeMetamac parent = null;
-        if (parentUrn != null) {
-            parent = getCodesMetamacService().retrieveCodeByUrn(ctx, parentUrn);
-        }
-        for (ItemHierarchyDto itemHierarchyDto : codesMetamacDto) {
-            createCodeHierarchy(ctx, codelistUrn, parent, itemHierarchyDto);
-        }
+        // Copy
+        getCodesMetamacService().copyCodesInCodelist(ctx, codelistTargetUrn, parentTargetUrn, codesToCopy);
     }
 
     @Override
@@ -2970,19 +2965,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
             DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
         } else {
             throw new MetamacException(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED, ctx.getUserId());
-        }
-    }
-
-    private void createCodeHierarchy(ServiceContext ctx, String codelistUrn, CodeMetamac parent, ItemHierarchyDto itemHierarchyDto) throws MetamacException {
-        // Transform
-        CodeMetamacDto codeMetamacDto = (CodeMetamacDto) itemHierarchyDto.getItem();
-        CodeMetamac codeMetamac = codesDto2DoMapper.codeDtoToDo(codeMetamacDto);
-        codeMetamac.setParent(parent);
-
-        // Create
-        CodeMetamac codeMetamacCreated = getCodesMetamacService().createCode(ctx, codelistUrn, codeMetamac);
-        for (ItemHierarchyDto childDto : itemHierarchyDto.getChildren()) {
-            createCodeHierarchy(ctx, codelistUrn, codeMetamacCreated, childDto);
         }
     }
 
