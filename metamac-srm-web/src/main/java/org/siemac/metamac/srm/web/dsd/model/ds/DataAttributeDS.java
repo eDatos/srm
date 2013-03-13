@@ -31,6 +31,7 @@ public class DataAttributeDS {
     public static final String GROUP_KEY_FOR_DIMENSION_RELATIONSHIP_VIEW = "attr-group-dim-view";     // Not mapped in DTO
 
     public static final String DIMENSION_FOR_DIMENSION_RELATIONSHIP      = "attr-dim-dim";
+    public static final String DIMENSION_FOR_DIMENSION_RELATIONSHIP_VIEW = "attr-dim-dim-view";       // Not mapped in DTO
 
     public static final String REPRESENTATION_TYPE                       = "attr-repr-type";
     public static final String REPRESENTATION_TYPE_VIEW                  = "attr-repr-type-view";     // Not mapped in DTO

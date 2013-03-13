@@ -385,14 +385,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 .dsdAttributeDimensionsForDimensionRelationship());
         dimensionsForDimensionRelationshipItem.setMultiple(true);
         dimensionsForDimensionRelationshipItem.setPickListWidth(350);
-        // Show DimensionsForDimensionRelationship if TypeRelathionship = DIMENSION_RELATIONSHIP
-        dimensionsForDimensionRelationshipItem.setShowIfCondition(new FormItemIfFunction() {
+        dimensionsForDimensionRelationshipItem.setShowIfCondition(getDimensionsForDimensionRelationshipFormItemIfFunction());
 
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return CommonUtils.isDimensionRelationshipType(relatedTo.getValueAsString());
-            }
-        });
+        ViewTextItem staticDimensionsForDimensionRelationshipItem = new ViewTextItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP_VIEW, getConstants()
+                .dsdAttributeDimensionsForDimensionRelationship());
+        staticDimensionsForDimensionRelationshipItem.setShowIfCondition(getStaticDimensionsForDimensionRelationshipFormItemIfFunction());
 
         // Relation: Group Keys for group relationship
 
@@ -431,8 +428,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticEditableConcept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
-                groupKeysForDimensionRelationshipItem, staticGroupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, groupKeyFormForGroupRelationship,
-                staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
+                groupKeysForDimensionRelationshipItem, staticGroupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
+                groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
 
@@ -668,6 +665,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             // Dimensions for dimension relationship
             ((CustomSelectItem) editionForm.getItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP)).setValues(CommonUtils.getUrnsFromDimensionComponentDtos(dataAttributeDto.getRelateTo()
                     .getDimensionForDimensionRelationship()));
+            editionForm.setValue(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP_VIEW,
+                    CommonUtils.getDimensionComponentListAsString(dataAttributeDto.getRelateTo().getDimensionForDimensionRelationship()));
         }
 
         // Role
@@ -1223,6 +1222,30 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return CommonUtils.isDimensionRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO))
                         && !DsdsFormUtils.canAttributeGroupKeysForDimensionRelationshipBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // DIMENSIONS FOR DIMENSION RELATIONSHIP
+
+    private FormItemIfFunction getDimensionsForDimensionRelationshipFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO))
+                        && DsdsFormUtils.canAttributeDimensionsForDimensionRelationshipBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticDimensionsForDimensionRelationshipFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CommonUtils.isDimensionRelationshipType(editionForm.getValueAsString(DataAttributeDS.RELATED_TO))
+                        && !DsdsFormUtils.canAttributeDimensionsForDimensionRelationshipBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
     }

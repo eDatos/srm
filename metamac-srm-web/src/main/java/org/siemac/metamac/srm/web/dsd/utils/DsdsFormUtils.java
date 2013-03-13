@@ -174,6 +174,15 @@ public class DsdsFormUtils {
         return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
+    // DIMENSIONS FOR DIMENSION RELATIONSHIP
+
+    public static boolean canAttributeDimensionsForDimensionRelationshipBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+    }
+
     // GROUP KEYS FOR GROUP RELATIONSHIP
 
     public static boolean canAttributeGroupKeysForGroupRelationshipBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
