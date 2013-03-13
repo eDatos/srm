@@ -37,8 +37,8 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
+import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 
 @Service("dsdLifeCycle")
@@ -120,6 +120,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
             boolean isDsdWithMeasureDimension = false;
             boolean isDsdWithSpatialDimension = false;
+            boolean isDsdWithTimeDimension = false;
             // Check all dimensions must be appears in stub or heading
             for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                 if (componentList instanceof DimensionDescriptor) {
@@ -130,6 +131,8 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                         // Initialize auxiliary data for other constraints
                         if (component instanceof MeasureDimension) {
                             isDsdWithMeasureDimension = true;
+                        } else if (component instanceof TimeDimension) {
+                            isDsdWithTimeDimension = true;
                         } else if (SpecialDimensionTypeEnum.SPATIAL.equals(((DimensionComponent) component).getSpecialDimensionType())) {
                             isDsdWithSpatialDimension = true;
                         }
@@ -144,13 +147,22 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                 // Check: If the DSD not contain a spatial-dimension, then it must have a special attribute type
                 boolean foundSpecialAttributeOfMeasure = false;
                 boolean foundSpecialAttributeOfSpatial = false;
+                boolean foundSpecialAttributeOfTime = false;
                 for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                     if (componentList instanceof AttributeDescriptor) {
                         for (Component component : componentList.getComponents()) {
-                            if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(((DataAttribute) component).getSpecialAttributeType())) {
-                                foundSpecialAttributeOfMeasure = true;
-                            } else {
-                                foundSpecialAttributeOfSpatial = true;
+                            switch (((DataAttribute) component).getSpecialAttributeType()) {
+                                case MEASURE_EXTENDS:
+                                    foundSpecialAttributeOfMeasure = true;
+                                    break;
+                                case SPATIAL_EXTENDS:
+                                    foundSpecialAttributeOfSpatial = true;
+                                    break;
+                                case TIME_EXTENDS:
+                                    foundSpecialAttributeOfTime = true;
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                         break;
@@ -163,6 +175,10 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
                 if (!isDsdWithSpatialDimension && !foundSpecialAttributeOfSpatial) {
                     exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_SPATIALDIM_SPECIAL_ATTR));
+                }
+
+                if (!isDsdWithTimeDimension && !foundSpecialAttributeOfTime) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_TIMEDIM_SPECIAL_ATTR));
                 }
             }
         }
