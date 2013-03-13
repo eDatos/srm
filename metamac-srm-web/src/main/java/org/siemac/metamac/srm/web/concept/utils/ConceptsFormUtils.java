@@ -45,4 +45,13 @@ public class ConceptsFormUtils {
         }
         return CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
     }
+
+    // ENUMERATED REPRESENTATION
+
+    public static boolean canConceptEnumeratedRepresentationBeEdited(ConceptSchemeMetamacDto conceptSchemeDto) {
+        if (conceptSchemeDto == null) {
+            return false;
+        }
+        return CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
+    }
 }
