@@ -135,7 +135,7 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
         target.setContext(toInternationalString(source.getContext()));
         target.setDocMethod(toInternationalString(source.getDocMethod()));
-        target.setType(toItem(source.getType()));
+        target.setType(toItem(source.getConceptType()));
         target.setDerivation(toInternationalString(source.getDerivation()));
         target.setLegalActs(toInternationalString(source.getLegalActs()));
         target.setExtends(toResource(source.getConceptExtends()));
