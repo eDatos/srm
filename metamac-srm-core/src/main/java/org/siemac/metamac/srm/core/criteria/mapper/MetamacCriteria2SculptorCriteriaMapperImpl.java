@@ -275,7 +275,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
-                case EXTERNAL__PUBLICATION_DATE:
+                case EXTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(new LeafProperty(((LeafProperty) ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate()).getEmbeddedName(),
                             CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, ConceptSchemeVersion.class), propertyRestriction.getDateValue());
                 default:
