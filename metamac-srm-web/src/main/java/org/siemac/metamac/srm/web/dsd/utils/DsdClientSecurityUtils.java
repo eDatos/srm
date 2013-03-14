@@ -125,7 +125,11 @@ public class DsdClientSecurityUtils {
 
     // CATEGORISATIONS
 
-    public static boolean canModifyCategorisationForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode) {
-        return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
+    public static boolean canModifyCategorisationForDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils
+                .canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
     }
 }

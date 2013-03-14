@@ -54,8 +54,10 @@ public class CategoriesClientSecurityUtils {
         return SharedItemsSecurityUtils.canEndItemSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canModifyCategorisation(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canModifyCategorisation(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
+        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus())
+                && CommonUtils.isDefaultMaintainer(categorySchemeMetamacDto.getMaintainer());
     }
 
     // CATEGORIES

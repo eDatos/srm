@@ -55,8 +55,10 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canEndOrganisationSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canModifyCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
-        return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
+    public static boolean canModifyCategorisationFromOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
+        return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
+                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
     }
 
     // ORGANISATIONS
