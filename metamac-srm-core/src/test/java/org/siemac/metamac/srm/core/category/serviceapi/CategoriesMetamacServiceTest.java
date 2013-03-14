@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
@@ -1002,11 +1003,11 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
             // Categories
             assertEquals(5, categorySchemeVersionNewVersion.getItems().size());
-            assertEquals(urnExpectedCategory1, categorySchemeVersionNewVersion.getItems().get(0).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedCategory2, categorySchemeVersionNewVersion.getItems().get(1).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedCategory21, categorySchemeVersionNewVersion.getItems().get(2).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedCategory211, categorySchemeVersionNewVersion.getItems().get(3).getNameableArtefact().getUrn());
-            assertEquals(urnExpectedCategory22, categorySchemeVersionNewVersion.getItems().get(4).getNameableArtefact().getUrn());
+            assertListItemsContainsItem(categorySchemeVersionNewVersion.getItems(), urnExpectedCategory1);
+            assertListItemsContainsItem(categorySchemeVersionNewVersion.getItems(), urnExpectedCategory2);
+            assertListItemsContainsItem(categorySchemeVersionNewVersion.getItems(), urnExpectedCategory21);
+            assertListItemsContainsItem(categorySchemeVersionNewVersion.getItems(), urnExpectedCategory211);
+            assertListItemsContainsItem(categorySchemeVersionNewVersion.getItems(), urnExpectedCategory22);
 
             assertEquals(2, categorySchemeVersionNewVersion.getItemsFirstLevel().size());
             {
@@ -1422,54 +1423,45 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertEquals(4, categories.size());
         {
             // Category 01
-            CategoryMetamac category = categories.get(0);
-            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, category.getNameableArtefact().getUrn());
+            CategoryMetamac category = assertListCategoriesContainsCategory(categories, CATEGORY_SCHEME_1_V2_CATEGORY_1);
             assertEquals(0, category.getChildren().size());
         }
         {
             // Category 02
-            CategoryMetamac category = categories.get(1);
-            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getNameableArtefact().getUrn());
+            CategoryMetamac category = assertListCategoriesContainsCategory(categories, CATEGORY_SCHEME_1_V2_CATEGORY_2);
             assertEquals(1, category.getChildren().size());
             {
                 // Category 02 01
-                CategoryMetamac categoryChild = (CategoryMetamac) category.getChildren().get(0);
-                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoryChild.getNameableArtefact().getUrn());
+                CategoryMetamac categoryChild = assertListCategoriesContainsCategory(category.getChildren(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
                 assertEquals(1, categoryChild.getChildren().size());
                 {
                     // Category 02 01 01
-                    CategoryMetamac categoryChildChild = (CategoryMetamac) categoryChild.getChildren().get(0);
-                    assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, categoryChildChild.getNameableArtefact().getUrn());
+                    CategoryMetamac categoryChildChild = assertListCategoriesContainsCategory(categoryChild.getChildren(), CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
                     assertEquals(0, categoryChildChild.getChildren().size());
                 }
             }
         }
         {
             // Category 03
-            CategoryMetamac category = categories.get(2);
-            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, category.getNameableArtefact().getUrn());
+            CategoryMetamac category = assertListCategoriesContainsCategory(categories, CATEGORY_SCHEME_1_V2_CATEGORY_3);
             assertEquals(0, category.getChildren().size());
         }
         {
             // Category 04
-            CategoryMetamac category = categories.get(3);
-            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, category.getNameableArtefact().getUrn());
+            CategoryMetamac category = assertListCategoriesContainsCategory(categories, CATEGORY_SCHEME_1_V2_CATEGORY_4);
             assertEquals(1, category.getChildren().size());
             {
                 // Category 04 01
-                CategoryMetamac categoryChild = (CategoryMetamac) category.getChildren().get(0);
-                assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, categoryChild.getNameableArtefact().getUrn());
+                CategoryMetamac categoryChild = assertListCategoriesContainsCategory(category.getChildren(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1);
                 assertEquals(1, categoryChild.getChildren().size());
                 {
                     // Category 04 01 01
-                    CategoryMetamac categoryChildChild = (CategoryMetamac) categoryChild.getChildren().get(0);
-                    assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, categoryChildChild.getNameableArtefact().getUrn());
+                    CategoryMetamac categoryChildChild = assertListCategoriesContainsCategory(categoryChild.getChildren(), CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1);
                     assertEquals(0, categoryChildChild.getChildren().size());
                 }
             }
         }
     }
-
     @Override
     @Test
     public void testFindCategoriesByCondition() throws Exception {
@@ -1669,6 +1661,18 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     }
     @Override
     public void testEndCategorisationValidity() throws Exception {
+    }
+
+    @SuppressWarnings("rawtypes")
+    private CategoryMetamac assertListCategoriesContainsCategory(List items, String urn) {
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            CategoryMetamac category = (CategoryMetamac) iterator.next();
+            if (category.getNameableArtefact().getUrn().equals(urn)) {
+                return category;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
+        return null;
     }
 
     @Override
