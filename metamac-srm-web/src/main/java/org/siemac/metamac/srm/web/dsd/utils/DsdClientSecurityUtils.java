@@ -125,7 +125,13 @@ public class DsdClientSecurityUtils {
 
     // CATEGORISATIONS
 
-    public static boolean canModifyCategorisationForDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+    public static boolean canCreateCategorisationForDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        return SharedDsdSecurityUtils
+                .canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode);
+    }
+
+    public static boolean canDeleteCategorisationForDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
         // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
         String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
         return SharedDsdSecurityUtils

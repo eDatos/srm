@@ -55,7 +55,11 @@ public class CodesClientSecurityUtils {
         return SharedItemsSecurityUtils.canEndItemSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canModifyCategorisation(CodelistMetamacDto codelistMetamacDto) {
+    public static boolean canCreateCategorisation(CodelistMetamacDto codelistMetamacDto) {
+        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
+    }
+
+    public static boolean canDeleteCategorisation(CodelistMetamacDto codelistMetamacDto) {
         // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
         return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
                 && CommonUtils.isDefaultMaintainer(codelistMetamacDto.getMaintainer());

@@ -57,7 +57,13 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
-    public static boolean canModifyCategorisation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+    public static boolean canCreateCategorisation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
+        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
+                operationCode);
+    }
+
+    public static boolean canDeleteCategorisation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
         String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
         return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
