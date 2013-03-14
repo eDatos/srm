@@ -1,8 +1,10 @@
 package org.siemac.metamac.srm.web.client.representation.widgets;
 
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
+import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.web.common.client.utils.SDMXCommonWebValidatorsV2_1;
 import org.siemac.metamac.web.common.client.utils.XsdDataTypesValidators;
@@ -12,12 +14,11 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectIt
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
-import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 
 public class BaseFacetForm extends GroupDynamicForm {
 
     protected RequiredSelectItem textType;
-    protected CheckboxItem       isSequence;
+    protected BooleanSelectItem  isSequence;
     protected CustomTextItem     minLength;
     protected CustomTextItem     maxLength;
     protected CustomTextItem     startValue;
@@ -41,8 +42,7 @@ public class BaseFacetForm extends GroupDynamicForm {
         textType.setRedrawOnChange(true);
         textType.setWidth(205);
 
-        isSequence = new CheckboxItem(RepresentationDS.FACET_IS_SEQUENCE, MetamacSrmWeb.getConstants().representationFacetIsSequence());
-        isSequence.setLabelAsTitle(true);
+        isSequence = new BooleanSelectItem(RepresentationDS.FACET_IS_SEQUENCE, MetamacSrmWeb.getConstants().representationFacetIsSequence());
         isSequence.setShowIfCondition(FacetFormUtils.getIsSequenceIfFunction());
 
         minLength = new CustomTextItem(RepresentationDS.FACET_MIN_LENGTH, MetamacSrmWeb.getConstants().representationFacetMinLength());
@@ -102,7 +102,7 @@ public class BaseFacetForm extends GroupDynamicForm {
             // - FacetValueType
             textType.setValue(facetDto.getFacetValue() == null ? null : facetDto.getFacetValue().toString());
             // - FacetType
-            isSequence.setValue(getBooleanValue(facetDto.getIsSequenceFT()));
+            isSequence.setBooleanValue(BooleanUtils.parseBoolean(facetDto.getIsSequenceFT()));
             minLength.setValue(facetDto.getMinLengthFT());
             maxLength.setValue(facetDto.getMaxLengthFT());
             minValue.setValue(facetDto.getMinValueFT());
@@ -127,7 +127,7 @@ public class BaseFacetForm extends GroupDynamicForm {
         // - FacetValueType
         facetDto.setFacetValue(textType.getValueAsString() != null ? FacetValueTypeEnum.valueOf(textType.getValueAsString()) : null);
         // - FacetType
-        facetDto.setIsSequenceFT(isSequence.getVisible() && isSequence.getValue() != null ? isSequence.getValue().toString() : null);
+        facetDto.setIsSequenceFT(isSequence.getVisible() ? (isSequence.getBooleanValue() != null ? isSequence.getBooleanValue().toString() : null) : null);
         facetDto.setMinLengthFT(minLength.getVisible() ? minLength.getValueAsString() : null);
         facetDto.setMaxLengthFT(maxLength.getVisible() ? maxLength.getValueAsString() : null);
         facetDto.setMinValueFT(minValue.getVisible() ? minValue.getValueAsString() : null);
@@ -143,18 +143,11 @@ public class BaseFacetForm extends GroupDynamicForm {
         return facetDto;
     }
 
-    private boolean getBooleanValue(String value) {
-        if (value != null && ("true".equals(value) || "1".equals(value))) {
-            return true;
-        }
-        return false;
-    }
-
     public RequiredSelectItem getTextType() {
         return textType;
     }
 
-    public CheckboxItem getIsSequence() {
+    public BooleanSelectItem getIsSequence() {
         return isSequence;
     }
 
@@ -205,5 +198,4 @@ public class BaseFacetForm extends GroupDynamicForm {
     public CustomTextItem getPattern() {
         return pattern;
     }
-
 }

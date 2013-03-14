@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client.representation.widgets;
 
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
@@ -51,7 +52,7 @@ public class StaticFacetForm extends GroupDynamicForm {
         timeInterval = new ViewTextItem(RepresentationDS.FACET_TIME_INTERVAL, MetamacSrmWeb.getConstants().representationFacetTimeInterval());
         timeInterval.setShowIfCondition(FacetFormUtils.getTimeIntervalIfFunction());
 
-        startTime = new ViewTextItem(RepresentationDS.FACET_START_VALUE, MetamacSrmWeb.getConstants().representationFacetStartTime());
+        startTime = new ViewTextItem(RepresentationDS.FACET_START_TIME, MetamacSrmWeb.getConstants().representationFacetStartTime());
         startTime.setShowIfCondition(FacetFormUtils.getStartTimeIfFunction());
 
         endTime = new ViewTextItem(RepresentationDS.FACET_END_TIME, MetamacSrmWeb.getConstants().representationFacetEndTime());
@@ -86,7 +87,7 @@ public class StaticFacetForm extends GroupDynamicForm {
                     MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + facetDto.getFacetValue().getName());
             textType.setValue(value);
             // - FacetType
-            isSequence.setValue(facetDto.getIsSequenceFT() == null ? null : getBooleanTextValue(facetDto.getIsSequenceFT()));
+            isSequence.setValue(facetDto.getIsSequenceFT() == null ? null : org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(BooleanUtils.parseBoolean(facetDto.getIsSequenceFT())));
             minLength.setValue(facetDto.getMinLengthFT());
             maxLength.setValue(facetDto.getMaxLengthFT());
             minValue.setValue(facetDto.getMinValueFT());
@@ -103,13 +104,4 @@ public class StaticFacetForm extends GroupDynamicForm {
             clearValues();
         }
     }
-
-    private String getBooleanTextValue(String value) {
-        if ("true".equals(value) || "1".equals(value)) {
-            return MetamacSrmWeb.getConstants().yes();
-        } else {
-            return MetamacSrmWeb.getConstants().no();
-        }
-    }
-
 }
