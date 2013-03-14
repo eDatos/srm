@@ -1,9 +1,11 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedConceptsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 public class ConceptsClientSecurityUtils {
 
@@ -61,15 +63,21 @@ public class ConceptsClientSecurityUtils {
 
     // Concepts
 
-    public static boolean canCreateConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        return SharedConceptsSecurityUtils.canCreateConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
+    public static boolean canCreateConcept(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
+        return SharedConceptsSecurityUtils.canCreateConcept(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(), operationCode)
+                && CommonUtils.isDefaultMaintainer(conceptSchemeMetamacDto.getMaintainer());
     }
 
     public static boolean canUpdateConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         return SharedConceptsSecurityUtils.canUpdateConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
-    public static boolean canDeleteConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
-        return SharedConceptsSecurityUtils.canDeleteConcept(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
+    public static boolean canDeleteConcept(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
+        return SharedConceptsSecurityUtils.canDeleteConcept(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(), operationCode)
+                && CommonUtils.isDefaultMaintainer(conceptSchemeMetamacDto.getMaintainer());
     }
 }
