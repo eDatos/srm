@@ -26,6 +26,7 @@ import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistPresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesFormUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodelistCategorisationsPanel;
@@ -523,26 +524,16 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private void createEditionForm() {
-        // Identifiers
+        // IDENTIFIERS
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
+
         RequiredTextItem code = new RequiredTextItem(CodelistDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getCodelistIdentifierCustomValidator());
-        code.setShowIfCondition(new FormItemIfFunction() {
+        code.setShowIfCondition(getCodeFormItemIfFunction());
 
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // CODE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(codelistDto.getLifeCycle().getProcStatus(), codelistDto.getVersionLogic());
-            }
-        });
         ViewTextItem staticCode = new ViewTextItem(CodelistDS.CODE_VIEW, getConstants().identifiableArtefactCode());
-        staticCode.setShowIfCondition(new FormItemIfFunction() {
+        staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
 
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(codelistDto.getLifeCycle().getProcStatus(), codelistDto.getVersionLogic());
-            }
-        });
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodelistDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(CodelistDS.SHORT_NAME, getConstants().codelistShortName());
@@ -552,7 +543,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem version = new ViewTextItem(CodelistDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         identifiersEditionForm.setFields(code, staticCode, name, shortName, uri, urn, urnProvider, version);
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
@@ -567,13 +558,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         SearchViewTextItem variableView = createVariableItem(CodelistDS.VARIABLE_VIEW, getConstants().variable());
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, familyView, variable, variableView);
 
-        // Production descriptors
+        // PRODUCTION DESCRIPTORS
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsEditionForm.setFields(agency, procStatus);
 
-        // Diffusion descriptors
+        // DIFFUSION DESCRIPTORS
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToCodelists = createReplaceToCodelistsItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists());
         ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
@@ -589,7 +580,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsEditionForm.setFields(replaceToCodelists, replacedByCodelist, accessType, defaultOrder, replacedByVersion, replaceTo, validFrom, validTo, externalPublicationFailed,
                 externalPublicationFailedDate);
 
-        // Version responsibility
+        // VERSION RESPONSIBILITY
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
         ViewTextItem productionValidationUser = new ViewTextItem(CodelistDS.PRODUCTION_VALIDATION_USER, getConstants().lifeCycleProductionValidationUser());
         ViewTextItem productionValidationDate = new ViewTextItem(CodelistDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
@@ -602,12 +593,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         versionResponsibilityEditionForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser,
                 internalPublicationDate, externalPublicationUser, externalPublicationDate);
 
-        // Comments
+        // COMMENTS
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
         MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(CodelistDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
-        // Annotations
+        // ANNOTATIONS
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
@@ -619,11 +610,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
 
-    public void setEditionMode() {
+    private void setEditionMode() {
         mainFormLayout.setEditionMode();
     }
 
-    public void setCodelistViewMode(CodelistMetamacDto codelistDto) {
+    private void setCodelistViewMode(CodelistMetamacDto codelistDto) {
         // Identifiers
         identifiersForm.setValue(CodelistDS.CODE, codelistDto.getCode());
         identifiersForm.setValue(CodelistDS.URI, codelistDto.getUriProvider());
@@ -681,7 +672,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         annotationsPanel.setAnnotations(codelistDto.getAnnotations());
     }
 
-    public void setCodelistEditionMode(CodelistMetamacDto codelistDto) {
+    private void setCodelistEditionMode(CodelistMetamacDto codelistDto) {
         // Identifiers
         identifiersEditionForm.setValue(CodelistDS.CODE, codelistDto.getCode());
         identifiersEditionForm.setValue(CodelistDS.CODE_VIEW, codelistDto.getCode());
@@ -926,5 +917,31 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private void updateCodesTitle(String title) {
         codesLayoutTitle.setContents(title);
         codesLayout.markForRedraw();
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEM IF FUNCTIONS
+    // ------------------------------------------------------------------------------------------------------------
+
+    // CODE
+
+    private FormItemIfFunction getCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CodesFormUtils.canCodelistCodeBeEdited(codelistDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !CodesFormUtils.canCodelistCodeBeEdited(codelistDto);
+            }
+        };
     }
 }
