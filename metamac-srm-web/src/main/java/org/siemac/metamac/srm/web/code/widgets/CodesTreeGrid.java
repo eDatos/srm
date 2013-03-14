@@ -92,7 +92,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
                         // UPDATE CODE PARENT
 
-                        if (CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+                        if (CodesClientSecurityUtils.canUpdateCodeParent(codelistMetamacDto)) {
 
                             if (SCHEME_NODE_NAME.equals(newItemParent)) {
                                 // The code will be moved to the first level. The parent is null.
@@ -105,6 +105,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
                         // UPDATE ORDER
 
                         if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+
                             // Only update order if there is an order selected and it is not the alphabetical one
                             if (codelistOrderVisualisationDto != null && !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistOrderVisualisationDto.getCode())) {
                                 uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), relativePosition);
@@ -206,9 +207,9 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
     @Override
     protected void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult code) {
         selectedCode = code;
-        createCodeMenuItem.setEnabled(CodesClientSecurityUtils.canCreateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
-        addCodeMenuItem.setEnabled(CodesClientSecurityUtils.canCreateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
-        deleteCodeMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName) && CodesClientSecurityUtils.canDeleteCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
+        createCodeMenuItem.setEnabled(canCreateCode());
+        addCodeMenuItem.setEnabled(canCreateCode());
+        deleteCodeMenuItem.setEnabled(canDeleteCode(nodeName));
         showContextMenu();
     }
 
@@ -222,5 +223,13 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
     private boolean isDroppable(TreeNode dropFolder) {
         return !("/".equals(getDropFolder().getName()));
+    }
+
+    private boolean canCreateCode() {
+        return CodesClientSecurityUtils.canCreateCode(codelistMetamacDto);
+    }
+
+    private boolean canDeleteCode(String nodeName) {
+        return !SCHEME_NODE_NAME.equals(nodeName) && CodesClientSecurityUtils.canDeleteCode(codelistMetamacDto);
     }
 }

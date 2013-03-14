@@ -1,9 +1,11 @@
 package org.siemac.metamac.srm.web.code.utils;
 
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
 import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 public class CodesClientSecurityUtils {
 
@@ -67,16 +69,26 @@ public class CodesClientSecurityUtils {
 
     // CODES
 
-    public static boolean canCreateCode(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canCreateCode(CodelistMetamacDto codelistMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
+                && CommonUtils.isDefaultMaintainer(codelistMetamacDto.getMaintainer());
     }
 
     public static boolean canUpdateCode(ProcStatusEnum procStatus) {
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCode(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canUpdateCodeParent(CodelistMetamacDto codelistMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
+                && CommonUtils.isDefaultMaintainer(codelistMetamacDto.getMaintainer());
+    }
+
+    public static boolean canDeleteCode(CodelistMetamacDto codelistMetamacDto) {
+        // Maintainer is checked because the structure of an imported resource can not be modified
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
+                && CommonUtils.isDefaultMaintainer(codelistMetamacDto.getMaintainer());
     }
 
     public static boolean canUpdateCodeVariableElement(ProcStatusEnum procStatus) {
