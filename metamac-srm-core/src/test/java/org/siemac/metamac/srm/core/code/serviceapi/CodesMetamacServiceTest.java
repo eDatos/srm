@@ -1224,7 +1224,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
         {
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2);
-            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE, null));
         }
         {
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1);
@@ -1264,11 +1264,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             // Leaf code
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1);
-            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
         }
         {
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2);
-            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE, null));
         }
         {
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1);
@@ -1277,17 +1277,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             // Leaf code
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1);
-            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
         }
         {
             // Leaf code
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_2);
-            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
         }
         {
             // Leaf code
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_3);
-            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
         }
         {
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4);
@@ -1300,7 +1300,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             // Leaf code
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1);
-            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, null));
+            assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
         }
 
     }
@@ -2985,7 +2985,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // Validate
             assertEquals(9, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
-            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
+            assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOpenness());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOpenness());
@@ -3046,7 +3046,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // Validate
             assertEquals(9, codes.size());
             assertCodeVisualisations(getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1), Integer.valueOf(0), Boolean.TRUE);
-            assertCodeVisualisations(getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2), Integer.valueOf(1), Boolean.TRUE);
+            assertCodeVisualisations(getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2), Integer.valueOf(1), Boolean.FALSE);
             assertCodeVisualisations(getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1), Integer.valueOf(0), Boolean.TRUE);
             assertCodeVisualisations(getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1), Integer.valueOf(0), Boolean.FALSE);
             assertCodeVisualisations(getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2), Integer.valueOf(1), Boolean.TRUE);
@@ -5699,7 +5699,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     .getUrn());
             assertEquals(9, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, codeUrn1).getOpenness());
-            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
+            assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOpenness());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOpenness());
@@ -5754,7 +5754,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     .getUrn());
             assertEquals(7, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
-            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
+            assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOpenness());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3).getOpenness());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4).getOpenness());
@@ -5822,7 +5822,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     .getUrn());
             assertEquals(9, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
-            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
+            assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1).getOpenness());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2).getOpenness());

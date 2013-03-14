@@ -20,7 +20,6 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -116,9 +115,8 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
             // Mark leaf codes with openness = false
             CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
             for (CodelistOpennessVisualisation codelistOpennessVisualisation : codelistVersion.getOpennessVisualisations()) {
-                if (!SrmServiceUtils.isAllExpandedOpennessVisualisation(codelistOpennessVisualisation)) { // TODO pendiente visualización x defecto
-                    codeMetamacRepository.updateCodeOpennessColumnToLeafCodes(codelistVersion, codelistOpennessVisualisation.getColumnIndex(), Boolean.FALSE);
-                }
+                // IMPORTANT! If default value to leaf codes is changed to false, decide what to do with default configuration with all expanded
+                codeMetamacRepository.updateCodeOpennessColumnToLeafCodes(codelistVersion, codelistOpennessVisualisation.getColumnIndex(), Boolean.TRUE);
             }
             return srmResourceVersion;
         }
