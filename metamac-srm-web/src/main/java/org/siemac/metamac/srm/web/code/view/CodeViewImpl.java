@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedW
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.presenter.CodePresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesFormUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodeMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.CodesTreeGrid;
@@ -44,6 +45,9 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -69,6 +73,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
     private SearchRelatedResourcePaginatedWindow searchVariableElementWindow;
 
+    private CodelistMetamacDto                   codelistMetamacDto;
     private CodeMetamacDto                       codeDto;
 
     @Inject
@@ -208,19 +213,25 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     }
 
     private void createEditionForm() {
-        // Identifiers Form
+        // IDENTIFIERS FORM
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
+
         RequiredTextItem code = new RequiredTextItem(CodeDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getCodeIdentifierCustomValidator());
+        code.setShowIfCondition(getCodeFormItemIfFunction());
+
+        ViewTextItem staticCode = new ViewTextItem(CodeDS.CODE_VIEW, getConstants().identifiableArtefactCode());
+        staticCode.setShowIfCondition(getStaticCodeFormItemIfFunction());
+
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(CodeDS.SHORT_NAME, getConstants().codeShortName());
         ViewTextItem uri = new ViewTextItem(CodeDS.URI, getConstants().identifiableArtefactUri());
         ViewTextItem urn = new ViewTextItem(CodeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CodeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersEditionForm.setFields(code, name, shortName, uri, urn, urnProvider);
+        identifiersEditionForm.setFields(code, staticCode, name, shortName, uri, urn, urnProvider);
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem variableElement = new ViewTextItem(CodeDS.VARIABLE_ELEMENT, getConstants().variableElement());
@@ -228,12 +239,12 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         SearchViewTextItem variableElementView = createVariableElementItem(CodeDS.VARIABLE_ELEMENT_VIEW, getConstants().variableElement());
         contentDescriptorsEditionForm.setFields(description, variableElement, variableElementView);
 
-        // Comments
+        // COMMENTS
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
         MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(CodeDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
-        // Annotations
+        // ANNOTATIONS
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
@@ -244,6 +255,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
     @Override
     public void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
+        this.codelistMetamacDto = codelistMetamacDto;
+
         codesTreeGrid.setItems(codelistMetamacDto, codes);
         codesTreeGrid.selectItem(codeDto.getUrn());
 
@@ -316,6 +329,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     private void setCodeEditionMode(CodeMetamacDto codeDto) {
         // Identifiers Form
         identifiersEditionForm.setValue(CodeDS.CODE, codeDto.getCode());
+        identifiersEditionForm.setValue(CodeDS.CODE_VIEW, codeDto.getCode());
         identifiersEditionForm.setValue(CodeDS.NAME, RecordUtils.getInternationalStringRecord(codeDto.getName()));
         identifiersEditionForm.setValue(CodeDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codeDto.getShortName()));
         identifiersEditionForm.setValue(CodeDS.URI, codeDto.getUriProvider());
@@ -423,5 +437,31 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
             }
         });
         searchVariableElementWindow.getSave().addClickHandler(acceptButtonClickHandler);
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEM IF FUNCTIONS
+    // ------------------------------------------------------------------------------------------------------------
+
+    // CODE
+
+    private FormItemIfFunction getCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CodesFormUtils.canCodeCodeBeEdited(codelistMetamacDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticCodeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !CodesFormUtils.canCodeCodeBeEdited(codelistMetamacDto);
+            }
+        };
     }
 }
