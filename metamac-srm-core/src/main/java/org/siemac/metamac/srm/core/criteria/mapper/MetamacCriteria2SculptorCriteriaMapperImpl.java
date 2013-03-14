@@ -66,6 +66,7 @@ import org.springframework.stereotype.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 
 @Component("metamacCriteria2SculptorCriteriaMapperSrm")
 public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriteria2SculptorCriteriaMapper {
@@ -274,11 +275,13 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                case EXTERNAL__PUBLICATION_DATE:
+                    return new SculptorPropertyCriteria(new LeafProperty(((LeafProperty) ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate()).getEmbeddedName(),
+                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, ConceptSchemeVersion.class), propertyRestriction.getDateValue());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
         }
-
         @SuppressWarnings("unchecked")
         @Override
         public Property<ConceptSchemeVersionMetamac> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
