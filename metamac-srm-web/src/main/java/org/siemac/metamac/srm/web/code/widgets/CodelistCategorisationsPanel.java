@@ -1,8 +1,11 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
+
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CodelistCategorisationsPanel extends CategorisationsPanel {
 
@@ -13,7 +16,7 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
 
     @Override
     public void updateNewButtonVisibility() {
-        if (CodesClientSecurityUtils.canModifyCategorisation(procStatus)) {
+        if (CodesClientSecurityUtils.canCreateCategorisation(procStatus)) {
             newCategorisationButton.show();
         } else {
             newCategorisationButton.hide();
@@ -21,9 +24,15 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
     }
 
     @Override
-    public void showDeleteCategorisationButton() {
-        if (CodesClientSecurityUtils.canModifyCategorisation(procStatus)) {
-            deleteCategorisationButton.show();
+    public boolean canAllCategorisationsBeDeleted(ListGridRecord[] records) {
+        for (ListGridRecord record : records) {
+            if (record instanceof CategorisationRecord) {
+                CategorisationRecord categorisationRecord = (CategorisationRecord) record;
+                if (!CodesClientSecurityUtils.canDeleteCategorisation(procStatus, categorisationRecord.getMaintainer())) {
+                    return false;
+                }
+            }
         }
+        return true;
     }
 }

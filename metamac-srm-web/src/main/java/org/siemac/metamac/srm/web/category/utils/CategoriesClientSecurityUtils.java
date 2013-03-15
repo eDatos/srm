@@ -6,6 +6,8 @@ import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 public class CategoriesClientSecurityUtils {
 
     // CATEGORY SCHEMES
@@ -54,14 +56,13 @@ public class CategoriesClientSecurityUtils {
         return SharedItemsSecurityUtils.canEndItemSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCreateCategorisation(CategorySchemeMetamacDto categorySchemeMetamacDto) {
-        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+    public static boolean canCreateCategorisation(ProcStatusEnum procStatus) {
+        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCategorisation(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, RelatedResourceDto categorisationMaintainer) {
         // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus())
-                && CommonUtils.isDefaultMaintainer(categorySchemeMetamacDto.getMaintainer());
+        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.isDefaultMaintainer(categorisationMaintainer);
     }
 
     // CATEGORIES

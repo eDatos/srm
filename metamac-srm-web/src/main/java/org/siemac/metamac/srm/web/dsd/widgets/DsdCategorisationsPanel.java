@@ -1,9 +1,12 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
+
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class DsdCategorisationsPanel extends CategorisationsPanel {
 
@@ -17,7 +20,7 @@ public class DsdCategorisationsPanel extends CategorisationsPanel {
 
     @Override
     public void updateNewButtonVisibility() {
-        if (DsdClientSecurityUtils.canModifyCategorisationForDataStructureDefinition(procStatus, operationCode)) {
+        if (DsdClientSecurityUtils.canCreateCategorisationForDataStructureDefinition(procStatus, operationCode)) {
             newCategorisationButton.show();
         } else {
             newCategorisationButton.hide();
@@ -25,9 +28,15 @@ public class DsdCategorisationsPanel extends CategorisationsPanel {
     }
 
     @Override
-    public void showDeleteCategorisationButton() {
-        if (DsdClientSecurityUtils.canModifyCategorisationForDataStructureDefinition(procStatus, operationCode)) {
-            deleteCategorisationButton.show();
+    public boolean canAllCategorisationsBeDeleted(ListGridRecord[] records) {
+        for (ListGridRecord record : records) {
+            if (record instanceof CategorisationRecord) {
+                CategorisationRecord categorisationRecord = (CategorisationRecord) record;
+                if (!DsdClientSecurityUtils.canDeleteCategorisationForDataStructureDefinition(procStatus, operationCode, categorisationRecord.getMaintainer())) {
+                    return false;
+                }
+            }
         }
+        return true;
     }
 }

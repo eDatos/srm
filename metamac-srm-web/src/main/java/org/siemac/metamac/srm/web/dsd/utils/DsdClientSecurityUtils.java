@@ -5,6 +5,8 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedDsdSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 public class DsdClientSecurityUtils {
 
     // DSD
@@ -125,17 +127,13 @@ public class DsdClientSecurityUtils {
 
     // CATEGORISATIONS
 
-    public static boolean canCreateCategorisationForDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
-        return SharedDsdSecurityUtils
-                .canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode);
+    public static boolean canCreateCategorisationForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode) {
+        return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
     }
 
-    public static boolean canDeleteCategorisationForDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+    public static boolean canDeleteCategorisationForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode, RelatedResourceDto categorisationMaintainer) {
         // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        String operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
-        return SharedDsdSecurityUtils
-                .canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), operationCode)
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(categorisationMaintainer);
     }
 }

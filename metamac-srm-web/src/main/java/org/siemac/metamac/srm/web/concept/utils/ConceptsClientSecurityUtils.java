@@ -7,6 +7,8 @@ import org.siemac.metamac.srm.core.security.shared.SharedConceptsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 public class ConceptsClientSecurityUtils {
 
     // Schemes
@@ -57,17 +59,13 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
-    public static boolean canCreateCategorisation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
-        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
-                operationCode);
+    public static boolean canCreateCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
-    public static boolean canDeleteCategorisation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto categorisationMaintainer) {
         // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
-        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
-                operationCode) && CommonUtils.isDefaultMaintainer(conceptSchemeMetamacDto.getMaintainer());
+        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode) && CommonUtils.isDefaultMaintainer(categorisationMaintainer);
     }
 
     // Concepts

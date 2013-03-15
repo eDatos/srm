@@ -5,6 +5,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.core.security.shared.SharedOrganisationsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public class OrganisationsClientSecurityUtils {
@@ -55,15 +56,14 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canEndOrganisationSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCreateCategorisationFromOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
-                organisationSchemeMetamacDto.getType());
+    public static boolean canCreateCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
+        return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
     }
 
-    public static boolean canDeleteCategorisationFromOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+    public static boolean canDeleteCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type, RelatedResourceDto categorisationMaintainer) {
         // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
-                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
+        return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(categorisationMaintainer);
     }
 
     // ORGANISATIONS

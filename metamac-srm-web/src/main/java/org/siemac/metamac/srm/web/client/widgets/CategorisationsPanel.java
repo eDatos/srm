@@ -111,7 +111,7 @@ public abstract class CategorisationsPanel extends VLayout {
             @Override
             public void onSelectionChanged(SelectionEvent event) {
                 if (categorisationListGrid.getSelectedRecords().length > 0) {
-                    showDeleteCategorisationButton();
+                    showDeleteCategorisationButton(categorisationListGrid.getSelectedRecords());
                 } else {
                     deleteCategorisationButton.hide();
                 }
@@ -237,7 +237,12 @@ public abstract class CategorisationsPanel extends VLayout {
         });
     }
 
-    public abstract void updateNewButtonVisibility();
-    public abstract void showDeleteCategorisationButton();
+    private void showDeleteCategorisationButton(ListGridRecord[] selectedRecords) {
+        if (canAllCategorisationsBeDeleted(selectedRecords)) {
+            deleteCategorisationButton.show();
+        }
+    }
 
+    public abstract void updateNewButtonVisibility();
+    public abstract boolean canAllCategorisationsBeDeleted(ListGridRecord[] records);
 }
