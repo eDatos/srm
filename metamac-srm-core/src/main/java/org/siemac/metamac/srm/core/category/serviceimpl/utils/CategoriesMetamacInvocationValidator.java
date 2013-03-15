@@ -83,6 +83,9 @@ public class CategoriesMetamacInvocationValidator extends CategoriesInvocationVa
         if (categorySchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(categorySchemeVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
         }
+        if (BooleanUtils.isTrue(categorySchemeVersion.getIsPartial())) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL));
+        }
     }
 
     private static void checkCategory(ItemSchemeVersion categorySchemeVersion, CategoryMetamac category, List<MetamacExceptionItem> exceptions) {
