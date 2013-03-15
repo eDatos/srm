@@ -130,13 +130,13 @@ public class CommonUtils {
 
     // MAINTAINER UTILS
 
-    public static boolean isDefaultMaintainer(String maintainerUrn) {
+    private static boolean isDefaultMaintainer(String maintainerUrn) {
         return StringUtils.equals(maintainerUrn, MetamacSrmWeb.getDefaultMaintainer().getUrn());
     }
 
     public static boolean isDefaultMaintainer(RelatedResourceDto maintainer) {
         if (maintainer == null) { // The maintainer is null in the root AgencyScheme
-            return false;
+            return true;
         }
         return isDefaultMaintainer(maintainer.getUrn());
     }
