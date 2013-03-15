@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.criteria;
 
 public enum OrganisationMetamacCriteriaOrderEnum {
 
-    CODE, URN, NAME, ORGANISATION_SCHEME_URN, ORGANISATION_SCHEME_CODE;
+    CODE, URN, NAME, ORGANISATION_SCHEME_URN, ORGANISATION_SCHEME_CODE, LAST_UPDATED;
 
     public String value() {
         return name();

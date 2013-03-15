@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.criteria;
 
 public enum CodeMetamacCriteriaOrderEnum {
 
-    CODE, URN, NAME, CODELIST_URN, CODELIST_CODE;
+    CODE, URN, NAME, CODELIST_URN, CODELIST_CODE, LAST_UPDATED;
 
     public String value() {
         return name();

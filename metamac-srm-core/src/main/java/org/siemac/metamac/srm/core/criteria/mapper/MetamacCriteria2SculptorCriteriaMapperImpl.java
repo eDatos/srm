@@ -382,6 +382,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
         }
+        @SuppressWarnings("unchecked")
         @Override
         public Property<ConceptMetamac> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
             ConceptMetamacCriteriaOrderEnum propertyOrderEnum = ConceptMetamacCriteriaOrderEnum.fromValue(order.getPropertyName());
@@ -396,6 +397,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
                 case CONCEPT_SCHEME_CODE:
                     return ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().code();
+                case LAST_UPDATED:
+                    return getLastUpdatedLeafProperty(ConceptMetamacProperties.nameableArtefact(), ConceptMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
@@ -505,6 +508,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
         }
+        @SuppressWarnings("unchecked")
         @Override
         public Property<OrganisationMetamac> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
             OrganisationMetamacCriteriaOrderEnum propertyOrderEnum = OrganisationMetamacCriteriaOrderEnum.fromValue(order.getPropertyName());
@@ -519,6 +523,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
                 case ORGANISATION_SCHEME_CODE:
                     return OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().code();
+                case LAST_UPDATED:
+                    return getLastUpdatedLeafProperty(OrganisationMetamacProperties.nameableArtefact(), OrganisationMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
@@ -623,6 +629,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
         }
+        @SuppressWarnings("unchecked")
         @Override
         public Property<CategoryMetamac> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
             CategoryMetamacCriteriaOrderEnum propertyOrderEnum = CategoryMetamacCriteriaOrderEnum.fromValue(order.getPropertyName());
@@ -637,6 +644,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
                 case CATEGORY_SCHEME_CODE:
                     return CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().code();
+                case LAST_UPDATED:
+                    return getLastUpdatedLeafProperty(CategoryMetamacProperties.nameableArtefact(), CategoryMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
@@ -750,6 +759,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
         }
+        @SuppressWarnings("unchecked")
         @Override
         public Property<CodeMetamac> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
             CodeMetamacCriteriaOrderEnum propertyOrderEnum = CodeMetamacCriteriaOrderEnum.fromValue(order.getPropertyName());
@@ -764,6 +774,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
                 case CODELIST_CODE:
                     return CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().code();
+                case LAST_UPDATED:
+                    return getLastUpdatedLeafProperty(CodeMetamacProperties.nameableArtefact(), CodeMetamac.class);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
             }
