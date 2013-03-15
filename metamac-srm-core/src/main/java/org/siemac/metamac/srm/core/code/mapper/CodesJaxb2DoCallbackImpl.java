@@ -13,28 +13,18 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ItemSchemeCommonActionsImport;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesJaxb2DoCallback;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ActionToPerformEnum;
 
 @org.springframework.stereotype.Component("codesMetamacJaxb2DoCallback")
 public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements CodesJaxb2DoCallback {
 
-    private final Class                   codeClass     = CodeMetamac.class;
-    private final Class                   codeListClass = CodelistVersionMetamac.class;
-
     @Autowired
-    private CodesMetamacService           codesMetamacService;
-
-    @Autowired
-    @Qualifier("ItemSchemeCommonActionsImport")
-    private ItemSchemeCommonActionsImport itemSchemeCommonActionsImport;
+    private CodesMetamacService codesMetamacService;
 
     /**************************************************************************
      * CREATES
@@ -139,24 +129,4 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
         validateRestrictionsItemSchemeVersion(ctx, source, false);
     }
 
-    /**************************************************************************
-     * IS_FINAL and IS_PARTIAL
-     **************************************************************************/
-    @Override
-    public ActionToPerformEnum performImportationFinalAndPartialActions(ServiceContext ctx, CodelistVersion codelistVersionOld, CodelistVersion codelistVersionNew) throws MetamacException {
-        return itemSchemeCommonActionsImport.performImportationFinalAndPartialActions(ctx, codelistVersionOld, codelistVersionNew);
-    }
-
-    /**************************************************************************
-     * Getters
-     **************************************************************************/
-    @Override
-    public Class getCodeClass() {
-        return codeClass;
-    }
-
-    @Override
-    public Class getCodeListClass() {
-        return codeListClass;
-    }
 }
