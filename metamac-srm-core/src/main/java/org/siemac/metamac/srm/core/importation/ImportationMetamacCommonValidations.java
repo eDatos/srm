@@ -46,7 +46,7 @@ public abstract class ImportationMetamacCommonValidations {
         }
 
         // Check: Unable to import artifacts with value of TRUE in the field isPartial.
-        if (!BooleanUtils.isTrue(source.getIsPartial())) {
+        if (BooleanUtils.isTrue(source.getIsPartial())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL).build();
         }
     }
@@ -103,7 +103,7 @@ public abstract class ImportationMetamacCommonValidations {
         }
 
         // Check: Unable to import artifacts with value of TRUE in the field isExternalReference.
-        if (source.getIsExternalReference()) {
+        if (BooleanUtils.isTrue(source.getIsExternalReference())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
                     .withMessageParameters(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE).build();
         }
