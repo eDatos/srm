@@ -2,16 +2,18 @@ package org.siemac.metamac.srm.web.client.model.record;
 
 import org.siemac.metamac.srm.web.client.model.ds.CategorisationDS;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CategorisationRecord extends ListGridRecord {
 
-    public CategorisationRecord(Long id, String code, String name, String category, String urn) {
+    public CategorisationRecord(Long id, String code, String name, String category, String urn, RelatedResourceDto maintainer) {
         setId(id);
         setCode(code);
         setName(name);
         setCategory(category);
         setUrn(urn);
+        setMaintainer(maintainer);
     }
 
     public void setId(Long id) {
@@ -48,5 +50,13 @@ public class CategorisationRecord extends ListGridRecord {
 
     public String getUrn() {
         return getAttributeAsString(CategorisationDS.URN);
+    }
+
+    public void setMaintainer(RelatedResourceDto maintainer) {
+        setAttribute(CategorisationDS.MAINTAINER, maintainer);
+    }
+
+    public RelatedResourceDto getMaintainer() {
+        return (RelatedResourceDto) getAttributeAsObject(CategorisationDS.MAINTAINER);
     }
 }

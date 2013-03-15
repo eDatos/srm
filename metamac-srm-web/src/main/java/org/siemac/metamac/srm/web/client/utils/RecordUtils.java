@@ -19,7 +19,7 @@ public class RecordUtils {
 
     public static CategorisationRecord getCategorisationRecord(CategorisationDto categorisationDto) {
         CategorisationRecord record = new CategorisationRecord(categorisationDto.getId(), categorisationDto.getCode(), InternationalStringUtils.getLocalisedString(categorisationDto.getName()),
-                RelatedResourceUtils.getRelatedResourceName(categorisationDto.getCategory()), categorisationDto.getUrn());
+                RelatedResourceUtils.getRelatedResourceName(categorisationDto.getCategory()), categorisationDto.getUrn(), categorisationDto.getMaintainer());
         return record;
     }
 
