@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
@@ -227,7 +228,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         conceptSchemeMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
         conceptSchemeMetamacDto.setDescription(MetamacMocks.mockInternationalStringDto());
-        conceptSchemeMetamacDto.setIsPartial(Boolean.TRUE);
+        conceptSchemeMetamacDto.setIsPartial(Boolean.FALSE);
         conceptSchemeMetamacDto.setType(ConceptSchemeTypeEnum.ROLE);
 
         ConceptSchemeMetamacDto conceptSchemeMetamacDtoUpdated = srmCoreServiceFacade.updateConceptScheme(ctx, conceptSchemeMetamacDto);
@@ -259,11 +260,11 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         ConceptSchemeMetamacDto conceptSchemeMetamacDtoSession1 = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), conceptSchemeMetamacDtoSession1.getVersionOptimisticLocking());
-        conceptSchemeMetamacDtoSession1.setIsPartial(Boolean.TRUE);
+        conceptSchemeMetamacDtoSession1.setIsPartial(Boolean.FALSE);
 
         ConceptSchemeMetamacDto conceptSchemeMetamacDtoSession2 = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), conceptSchemeMetamacDtoSession2.getVersionOptimisticLocking());
-        conceptSchemeMetamacDtoSession2.setIsPartial(Boolean.TRUE);
+        conceptSchemeMetamacDtoSession2.setIsPartial(Boolean.FALSE);
 
         // Update by session 1
         ConceptSchemeMetamacDto conceptSchemeMetamacDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeMetamacDtoSession1);
@@ -321,108 +322,181 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
         metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+        {
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-        assertEquals(17, result.getPaginatorResult().getTotalResults().intValue());
-        int i = 0;
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            assertEquals(17, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_5_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_6_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_7_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_7_V2, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_8_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_9_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_10_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_10_V2, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_10_V3, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_11_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_12_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_5_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_6_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_7_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_7_V2, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_8_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_9_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_10_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_10_V2, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_10_V3, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_11_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_12_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
-            assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
-        }
-        assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
-
         // Find by Name
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), "Nombre conceptScheme-1-v1", OperationType.EQ));
 
-            result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
 
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
 
             result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
+        }
+
+        // Find by external publication date > X
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_DATE.name(), new DateTime(2011, 04, 3, 1, 1, 1,
+                    1).toDate(), OperationType.GT));
+
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_10_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_12_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by external publication date < X
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_DATE.name(), new DateTime(2012, 01, 1, 1, 1, 1,
+                    1).toDate(), OperationType.LT));
+
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_7_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by internal publication user
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_USER.name(), "user3", OperationType.EQ));
+
+            MetamacCriteriaResult<ConceptSchemeMetamacDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(5, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_7_V2, conceptSchemeMetamacDto.getUrn());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_10_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_10_V2, conceptSchemeMetamacDto.getUrn());
+            }
+            {
+                ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_12_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
     }
 

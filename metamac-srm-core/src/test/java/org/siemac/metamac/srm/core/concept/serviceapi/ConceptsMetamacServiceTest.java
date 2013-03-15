@@ -656,7 +656,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         conceptSchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         conceptSchemeVersion.setIsTypeUpdated(Boolean.TRUE);
         conceptSchemeVersion.setType(null);
-        conceptSchemeVersion.setIsPartial(Boolean.TRUE);
+        conceptSchemeVersion.setIsPartial(Boolean.FALSE);
         itemSchemeRepository.save(conceptSchemeVersion);
 
         try {
@@ -681,7 +681,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // save to force it is imported
         conceptSchemeVersion.getMaintainableArtefact().setIsImported(Boolean.TRUE);
-        conceptSchemeVersion.setIsPartial(Boolean.TRUE);
+        conceptSchemeVersion.setIsPartial(Boolean.FALSE);
         itemSchemeRepository.save(conceptSchemeVersion);
 
         ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_1);

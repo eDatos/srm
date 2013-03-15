@@ -2,12 +2,12 @@ package org.siemac.metamac.srm.core.criteria.mapper;
 
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
-import org.siemac.metamac.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria.CriteriaCallback;
+import org.siemac.metamac.core.common.criteria.utils.CriteriaUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
@@ -277,15 +277,26 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                case DESCRIPTION:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
                 case LATEST_FINAL:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
                 case LATEST_PUBLIC:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                case INTERNAL_PUBLICATION_DATE:
+                    return new SculptorPropertyCriteria(
+                            getDatetimeLeafPropertyEmbedded(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), ConceptSchemeVersion.class),
+                            propertyRestriction.getDateValue());
+                case INTERNAL_PUBLICATION_USER:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue());
                 case EXTERNAL_PUBLICATION_DATE:
-                    return new SculptorPropertyCriteria(new LeafProperty(((LeafProperty) ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate()).getEmbeddedName(),
-                            CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, ConceptSchemeVersion.class), propertyRestriction.getDateValue());
+                    return new SculptorPropertyCriteria(
+                            getDatetimeLeafPropertyEmbedded(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(), ConceptSchemeVersion.class),
+                            propertyRestriction.getDateValue());
+                case EXTERNAL_PUBLICATION_USER:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -328,6 +339,12 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue());
                 case NAME:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                case DESCRIPTION:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                case DESCRIPTION_SOURCE:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue());
+                case ACRONYM:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.acronym().texts().label(), propertyRestriction.getStringValue());
                 case CONCEPT_PARENT_URN:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue());
                 case CONCEPT_SCHEME_URN:
@@ -850,13 +867,18 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("rawtypes")
     private LeafProperty getLastUpdatedLeafProperty(MaintainableArtefactProperty maintainableArtefactProperty, Class entityClass) {
-        return new LeafProperty(maintainableArtefactProperty.lastUpdated().getName(), CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, entityClass);
+        return CriteriaUtils.getDatetimedLeafProperty(maintainableArtefactProperty.lastUpdated(), entityClass);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("rawtypes")
     private LeafProperty getLastUpdatedLeafProperty(NameableArtefactProperty nameableArtefactProperty, Class entityClass) {
-        return new LeafProperty(nameableArtefactProperty.lastUpdated().getName(), CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, entityClass);
+        return CriteriaUtils.getDatetimedLeafProperty(nameableArtefactProperty.lastUpdated(), entityClass);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private LeafProperty getDatetimeLeafPropertyEmbedded(Property property, Class entityClass) {
+        return CriteriaUtils.getDatetimeLeafPropertyEmbedded(property, entityClass);
     }
 }
