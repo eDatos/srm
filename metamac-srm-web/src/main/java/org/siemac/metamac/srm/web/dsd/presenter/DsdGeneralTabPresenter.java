@@ -150,9 +150,12 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
         if (!StringUtils.isBlank(dsdIdentifier)) {
             // Load DSD completely if it hasn't been loaded previously
+            String dsdUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier);
             if (dsd == null || !dsdIdentifier.equals(UrnUtils.removePrefix(dsd.getUrn()))) {
-                retrieveCompleteDsd(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
+                retrieveCompleteDsd(dsdUrn);
             }
+            // Load categorisations
+            retrieveCategorisations(dsdUrn);
         }
     }
 

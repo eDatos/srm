@@ -190,6 +190,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         String urn = CommonUtils.generateOrganisationSchemeUrn(identifier, type);
         if (!StringUtils.isBlank(urn)) {
             retrieveOrganisationSchemeByUrn(urn);
+            retrieveCategorisations(urn);
         }
     }
 

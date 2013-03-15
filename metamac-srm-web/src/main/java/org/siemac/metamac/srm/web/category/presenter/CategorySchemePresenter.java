@@ -164,6 +164,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CATEGORYSCHEME_PREFIX, identifier);
         if (!StringUtils.isBlank(urn)) {
             retrieveCategorySchemeByUrn(urn);
+            retrieveCategorisations(urn);
         }
     }
 

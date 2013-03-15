@@ -240,6 +240,8 @@ public abstract class CategorisationsPanel extends VLayout {
     private void showDeleteCategorisationButton(ListGridRecord[] selectedRecords) {
         if (canAllCategorisationsBeDeleted(selectedRecords)) {
             deleteCategorisationButton.show();
+        } else {
+            deleteCategorisationButton.hide();
         }
     }
 
