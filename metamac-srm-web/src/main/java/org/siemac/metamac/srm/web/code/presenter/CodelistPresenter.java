@@ -195,6 +195,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CODELIST_PREFIX, identifier);
         if (!StringUtils.isBlank(urn)) {
             retrieveCodelistAndCodesByUrn(urn, null); // Load the codes ordered by the default order
+            retrieveCategorisations(urn);
         }
     }
 
