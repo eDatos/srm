@@ -52,8 +52,6 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
 
     /**************************************************************************
      * EXTENSIONS
-     * 
-     * @throws MetamacException
      **************************************************************************/
     @Override
     public void codeListJaxbToDoExtensionPreCreate(ServiceContext ctx, CodelistType source, CodelistVersion previous, CodelistVersion target) throws MetamacException {

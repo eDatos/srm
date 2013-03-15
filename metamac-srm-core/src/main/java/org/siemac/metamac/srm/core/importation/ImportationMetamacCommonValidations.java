@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.importation;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -42,6 +43,11 @@ public abstract class ImportationMetamacCommonValidations {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_EXIST_NOT_FINAL_VERSION)
                         .withMessageParameters(itemSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
             }
+        }
+
+        // Check: Unable to import artifacts with value of TRUE in the field isPartial.
+        if (!BooleanUtils.isTrue(source.getIsPartial())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL).build();
         }
     }
 
@@ -101,5 +107,6 @@ public abstract class ImportationMetamacCommonValidations {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
                     .withMessageParameters(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE).build();
         }
+
     }
 }
