@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
@@ -119,11 +120,11 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
         CategorySchemeMetamacDto categorySchemeMetamacDtoSession1 = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), categorySchemeMetamacDtoSession1.getVersionOptimisticLocking());
-        categorySchemeMetamacDtoSession1.setIsPartial(Boolean.TRUE);
+        categorySchemeMetamacDtoSession1.setIsPartial(Boolean.FALSE);
 
         CategorySchemeMetamacDto categorySchemeMetamacDtoSession2 = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), categorySchemeMetamacDtoSession2.getVersionOptimisticLocking());
-        categorySchemeMetamacDtoSession2.setIsPartial(Boolean.TRUE);
+        categorySchemeMetamacDtoSession2.setIsPartial(Boolean.FALSE);
 
         // Update by session 1
         CategorySchemeMetamacDto categorySchemeMetamacDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateCategoryScheme(getServiceContextAdministrador(), categorySchemeMetamacDtoSession1);
@@ -254,6 +255,70 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
             result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
+        }
+
+        // Find by external publication date > X
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2011, 01, 31, 1, 1,
+                    1, 1).toDate(), OperationType.GT));
+
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_3_V1, categorySchemeMetamacDto.getUrn());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_7_V1, categorySchemeMetamacDto.getUrn());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_7_V2, categorySchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by external publication date < X
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2011, 12, 1, 1, 1, 1,
+                    1).toDate(), OperationType.LT));
+
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_3_V1, categorySchemeMetamacDto.getUrn());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_7_V1, categorySchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by internal publication user
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_USER.name(), "user3", OperationType.EQ));
+
+            MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_7_V1, categorySchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
     }
 

@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
@@ -121,11 +122,11 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
         OrganisationSchemeMetamacDto organisationSchemeMetamacDtoSession1 = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), organisationSchemeMetamacDtoSession1.getVersionOptimisticLocking());
-        organisationSchemeMetamacDtoSession1.setIsPartial(Boolean.TRUE);
+        organisationSchemeMetamacDtoSession1.setIsPartial(Boolean.FALSE);
 
         OrganisationSchemeMetamacDto organisationSchemeMetamacDtoSession2 = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), organisationSchemeMetamacDtoSession2.getVersionOptimisticLocking());
-        organisationSchemeMetamacDtoSession2.setIsPartial(Boolean.TRUE);
+        organisationSchemeMetamacDtoSession2.setIsPartial(Boolean.FALSE);
 
         // Update by session 1
         OrganisationSchemeMetamacDto organisationSchemeMetamacDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateOrganisationScheme(getServiceContextAdministrador(),
@@ -307,6 +308,85 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
             result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
+        }
+
+        // Find by internal publication date > X, Organisation Unit
+        {
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2011, 01, 31, 1, 1, 1, 1).toDate(),
+                            OperationType.GT));
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.TYPE.name(), OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, OperationType.EQ));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+
+            MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeMetamacDto.getUrn());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_7_V1, organisationSchemeMetamacDto.getUrn());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_7_V2, organisationSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by internal publication date < X, Organisation Unit
+        {
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2011, 06, 1, 1, 1, 1, 1).toDate(),
+                            OperationType.LT));
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.TYPE.name(), OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, OperationType.EQ));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+
+            MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeMetamacDto.getUrn());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_3_V1, organisationSchemeMetamacDto.getUrn());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_7_V1, organisationSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by internal publication user, Organisation Unit
+        {
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_USER.name(), "user3", OperationType.EQ));
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.TYPE.name(), OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, OperationType.EQ));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+
+            MetamacCriteriaResult<OrganisationSchemeMetamacDto> result = srmCoreServiceFacade.findOrganisationSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeMetamacDto.getUrn());
+            }
+            {
+                OrganisationSchemeMetamacDto organisationSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(ORGANISATION_SCHEME_7_V1, organisationSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
     }
 
@@ -1075,53 +1155,44 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         assertEquals(4, organisations.size());
         {
             // Organisation 01
-            ItemHierarchyDto organisation = organisations.get(0);
+            ItemHierarchyDto organisation = assertListContainsItemHierarchy(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
             assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
-            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getItem().getUrn());
             assertEquals(0, organisation.getChildren().size());
         }
         {
             // Organisation 02
-            ItemHierarchyDto organisation = organisations.get(1);
+            ItemHierarchyDto organisation = assertListContainsItemHierarchy(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
             assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
-            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getItem().getUrn());
             assertEquals(1, organisation.getChildren().size());
             {
                 // Organisation 02 01
-                ItemHierarchyDto organisationChild = organisation.getChildren().get(0);
-                assertTrue(organisationChild.getItem() instanceof OrganisationMetamacDto);
-                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisationChild.getItem().getUrn());
+                ItemHierarchyDto organisationChild = assertListContainsItemHierarchy(organisation.getChildren(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
                 assertEquals(1, organisationChild.getChildren().size());
                 {
                     // Organisation 02 01 01
-                    ItemHierarchyDto organisationChildChild = organisationChild.getChildren().get(0);
-                    assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisationChildChild.getItem().getUrn());
+                    ItemHierarchyDto organisationChildChild = assertListContainsItemHierarchy(organisationChild.getChildren(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
                     assertEquals(0, organisationChildChild.getChildren().size());
                 }
             }
         }
         {
             // Organisation 03
-            ItemHierarchyDto organisation = organisations.get(2);
+            ItemHierarchyDto organisation = assertListContainsItemHierarchy(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
             assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
-            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisation.getItem().getUrn());
             assertEquals(0, organisation.getChildren().size());
         }
         {
             // Organisation 04
-            ItemHierarchyDto organisation = organisations.get(3);
+            ItemHierarchyDto organisation = assertListContainsItemHierarchy(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
             assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
-            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisation.getItem().getUrn());
             assertEquals(1, organisation.getChildren().size());
             {
                 // Organisation 04 01
-                ItemHierarchyDto organisationChild = organisation.getChildren().get(0);
-                assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisationChild.getItem().getUrn());
+                ItemHierarchyDto organisationChild = assertListContainsItemHierarchy(organisation.getChildren(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
                 assertEquals(1, organisationChild.getChildren().size());
                 {
                     // Organisation 04 01 01
-                    ItemHierarchyDto organisationChildChild = organisationChild.getChildren().get(0);
-                    assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisationChildChild.getItem().getUrn());
+                    ItemHierarchyDto organisationChildChild = assertListContainsItemHierarchy(organisationChild.getChildren(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
                     assertEquals(0, organisationChildChild.getChildren().size());
                 }
             }

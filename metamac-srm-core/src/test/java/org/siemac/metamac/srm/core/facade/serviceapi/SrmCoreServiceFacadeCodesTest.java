@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
@@ -168,11 +169,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         CodelistMetamacDto codelistMetamacDtoSession1 = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), codelistMetamacDtoSession1.getVersionOptimisticLocking());
-        codelistMetamacDtoSession1.setIsPartial(Boolean.TRUE);
+        codelistMetamacDtoSession1.setIsPartial(Boolean.FALSE);
 
         CodelistMetamacDto codelistMetamacDtoSession2 = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), codelistMetamacDtoSession2.getVersionOptimisticLocking());
-        codelistMetamacDtoSession2.setIsPartial(Boolean.TRUE);
+        codelistMetamacDtoSession2.setIsPartial(Boolean.FALSE);
 
         // Update by session 1
         CodelistMetamacDto codelistMetamacDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateCodelist(getServiceContextAdministrador(), codelistMetamacDtoSession1);
@@ -229,108 +230,186 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
         metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
-        MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+        {
+            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-        assertEquals(17, result.getPaginatorResult().getTotalResults().intValue());
-        int i = 0;
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_1_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            assertEquals(17, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_1_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_1_V2, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_2_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_3_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_4_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_5_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_6_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_7_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_7_V2, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_8_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_9_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_10_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_10_V2, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_10_V3, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_11_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_12_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_13_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_1_V2, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_2_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_3_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_4_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_5_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_6_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_7_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_7_V2, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_8_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_9_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_10_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_10_V2, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_10_V3, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_11_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_12_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        {
-            CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
-            assertEquals(CODELIST_13_V1, codelistMetamacDto.getUrn());
-            assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
-        }
-        assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
 
         // Find by Name
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "Nombre codelist-1-v1", OperationType.EQ));
 
-            result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
 
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
 
             result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
+        }
+
+        // Find by internal publication date > X
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2012, 01, 1, 1, 1, 1, 1)
+                    .toDate(), OperationType.GT));
+
+            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_7_V1, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_7_V2, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_10_V2, codeSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by internal publication date < X
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2011, 12, 1, 1, 1, 1, 1)
+                    .toDate(), OperationType.LT));
+
+            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(5, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_1_V1, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_3_V1, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_10_V1, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_12_V1, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_13_V1, codeSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+
+        // Find by internal publication user
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_USER.name(), "user4", OperationType.EQ));
+
+            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_7_V1, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_10_V1, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_13_V1, codeSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
     }
 
