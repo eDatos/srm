@@ -48,7 +48,7 @@ Application ConceptsMetamac {
 	    	"Rejects diffusion validation of concept scheme"
 	    	@ConceptSchemeVersionMetamac rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException;
 	    	"Publish internally a concept scheme"
-	    	@ConceptSchemeVersionMetamac publishInternallyConceptScheme(String urn) throws MetamacException;
+	    	@ConceptSchemeVersionMetamac publishInternallyConceptScheme(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publish externally a concept scheme"
 	    	@ConceptSchemeVersionMetamac publishExternallyConceptScheme(String urn) throws MetamacException;
 			"Deletes concept scheme version. This must be last version and no published"

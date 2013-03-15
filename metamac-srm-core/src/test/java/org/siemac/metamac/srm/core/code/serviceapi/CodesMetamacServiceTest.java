@@ -1170,7 +1170,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Publish internally
-        CodelistVersionMetamac codelistVersion = codesService.publishInternallyCodelist(ctx, urn);
+        CodelistVersionMetamac codelistVersion = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE);
 
         // Validate response
         {
@@ -1256,7 +1256,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Publish internally
-        codelistVersion = codesService.publishInternallyCodelist(ctx, urn);
+        codelistVersion = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE);
 
         // After
         entityManager.clear();
@@ -1309,7 +1309,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testPublishInternallyCodelistErrorRequiredMetadata() throws Exception {
         String urn = CODELIST_11_V1;
         try {
-            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn);
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("codelist cannot be publish without an access type defined and with an associated variable and others...");
         } catch (MetamacException e) {
             assertEquals(3, e.getExceptionItems().size());
@@ -1323,7 +1323,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testPublishInternallyCodelistErrorNotExists() throws Exception {
         String urn = NOT_EXISTS;
         try {
-            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn);
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("Codelist not exists");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -1339,7 +1339,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         try {
-            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn);
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("Codelist wrong proc status");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());

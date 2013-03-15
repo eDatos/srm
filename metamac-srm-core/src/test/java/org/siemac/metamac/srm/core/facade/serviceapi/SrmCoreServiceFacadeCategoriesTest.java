@@ -433,7 +433,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         String urn = CATEGORY_SCHEME_6_V1;
 
         // Publish
-        CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.publishCategorySchemeInternally(getServiceContextAdministrador(), urn);
+        CategorySchemeMetamacDto categorySchemeDto = srmCoreServiceFacade.publishCategorySchemeInternally(getServiceContextAdministrador(), urn, Boolean.FALSE);
 
         // Validation
         categorySchemeDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);

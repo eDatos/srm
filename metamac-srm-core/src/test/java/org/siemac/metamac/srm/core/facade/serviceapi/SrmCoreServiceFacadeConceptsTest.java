@@ -773,7 +773,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         }
 
         // Publish internally
-        ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.publishConceptSchemeInternally(ctx, urn);
+        ConceptSchemeMetamacDto conceptSchemeDto = srmCoreServiceFacade.publishConceptSchemeInternally(ctx, urn, Boolean.FALSE);
 
         // Validate response
         {

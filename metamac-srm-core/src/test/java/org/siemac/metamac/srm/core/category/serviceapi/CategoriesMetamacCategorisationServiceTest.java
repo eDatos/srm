@@ -42,8 +42,8 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
     private ConceptsMetamacService   conceptsService;
 
     // Categorisations
-    private String                   CATEGORISATION_4 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)";
-    private String                   CATEGORISATION_5 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)";
+    private final String             CATEGORISATION_4 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)";
+    private final String             CATEGORISATION_5 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)";
 
     @Test
     public void testCreateCategorisationAutomaticallyPublished() throws Exception {
@@ -148,7 +148,7 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
         }
 
         // PUBLISH INTERNALLY artefact to check categorisations are "final" now
-        conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn);
+        conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
 
         // Check categorisations are published
         {

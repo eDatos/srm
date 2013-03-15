@@ -974,7 +974,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
 
         // Publish internally
-        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.publishInternallyConceptScheme(ctx, urn);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.publishInternallyConceptScheme(ctx, urn, Boolean.FALSE);
 
         // Validate response
         {
@@ -1016,7 +1016,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         String urn = NOT_EXISTS;
         try {
-            conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn);
+            conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("ConceptScheme not exists");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -1037,7 +1037,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
 
         try {
-            conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn);
+            conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("ConceptScheme wrong proc status");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());

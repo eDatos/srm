@@ -148,7 +148,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
     }
 
     @Override
-    public Object publishInternally(ServiceContext ctx, String urn) throws MetamacException {
+    public Object publishInternally(ServiceContext ctx, String urn, Boolean forceLastestFinal) throws MetamacException {
 
         // Validation
         checkInvocation(urn);
@@ -170,7 +170,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         maintainableArtefact.setFinalLogicClient(Boolean.TRUE);
         srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
         srmResourceVersion = callback.publishInternallyConcreteResource(ctx, srmResourceVersion);
-        srmResourceVersion = callback.markSrmResourceAsFinal(ctx, srmResourceVersion);
+        srmResourceVersion = callback.markSrmResourceAsFinal(ctx, srmResourceVersion, forceLastestFinal);
 
         // Mark categorisations as final
         if (callback.canHaveCategorisations()) {
@@ -397,7 +397,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Validity, final, public, additional actions
         public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion);
-        public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
+        public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion, Boolean forceLastestFinal) throws MetamacException;
         public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
         public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;

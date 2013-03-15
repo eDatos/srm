@@ -402,7 +402,7 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
 
     @Test
     public void testPublishInternallyCodelist() throws Exception {
-        srmCoreServiceFacade.publishCodelistInternally(getServiceContextJefeNormalizacion(), CODELIST_6_V1);
+        srmCoreServiceFacade.publishCodelistInternally(getServiceContextJefeNormalizacion(), CODELIST_6_V1, Boolean.FALSE);
     }
 
     @Test
@@ -413,7 +413,7 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.publishCodelistInternally(ctx, CODELIST_6_V1);
+                srmCoreServiceFacade.publishCodelistInternally(ctx, CODELIST_6_V1, Boolean.FALSE);
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

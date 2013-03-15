@@ -56,7 +56,7 @@ Application CodesMetamac {
 	    	"Rejects diffusion validation of codelist"
 	    	@CodelistVersionMetamac rejectCodelistDiffusionValidation(String urn) throws MetamacException;
 	    	"Publish internally a codelist"
-	    	@CodelistVersionMetamac publishInternallyCodelist(String urn) throws MetamacException;
+	    	@CodelistVersionMetamac publishInternallyCodelist(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publish externally a codelist"
 	    	@CodelistVersionMetamac publishExternallyCodelist(String urn) throws MetamacException;
 			"Deletes codelist version. This must be last version and no published"

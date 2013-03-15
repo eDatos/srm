@@ -750,7 +750,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
 
         // Publish internally
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishInternallyOrganisationScheme(ctx, urn);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishInternallyOrganisationScheme(ctx, urn, Boolean.FALSE);
 
         // Validate response
         {
@@ -802,7 +802,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
 
         // Publish internally
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishInternallyOrganisationScheme(ctx, urn);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishInternallyOrganisationScheme(ctx, urn, Boolean.FALSE);
 
         // Validate response
         {
@@ -818,7 +818,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         String urn = NOT_EXISTS;
         try {
-            organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn);
+            organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("OrganisationScheme not exists");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -839,7 +839,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
 
         try {
-            organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn);
+            organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("OrganisationScheme wrong proc status");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -952,7 +952,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getPublicLogic());
-            assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestPublic());
+            assertFalse(organisationSchemeVersion.getMaintainableArtefact().getLatestPublic()); // neve marked as latest. They only has one version
         }
 
     }

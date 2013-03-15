@@ -215,8 +215,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public CodelistVersionMetamac publishInternallyCodelist(ServiceContext ctx, String urn) throws MetamacException {
-        return (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn);
+    public CodelistVersionMetamac publishInternallyCodelist(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
+        return (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
     }
 
     @Override

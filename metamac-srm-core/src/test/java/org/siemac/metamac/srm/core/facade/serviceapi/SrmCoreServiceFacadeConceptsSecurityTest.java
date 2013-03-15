@@ -654,7 +654,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testPublishInternallyConceptScheme() throws Exception {
-        srmCoreServiceFacade.publishConceptSchemeInternally(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_11_V1);
+        srmCoreServiceFacade.publishConceptSchemeInternally(getServiceContextJefeNormalizacion(), CONCEPT_SCHEME_11_V1, Boolean.FALSE);
     }
 
     @Test
@@ -665,7 +665,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.publishConceptSchemeInternally(ctx, CONCEPT_SCHEME_11_V1);
+                srmCoreServiceFacade.publishConceptSchemeInternally(ctx, CONCEPT_SCHEME_11_V1, Boolean.FALSE);
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

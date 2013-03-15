@@ -40,7 +40,7 @@ Application OrganisationsMetamac {
 	    	"Rejects diffusion validation of organisation scheme"
 	    	@OrganisationSchemeVersionMetamac rejectOrganisationSchemeDiffusionValidation(String urn) throws MetamacException;
 	    	"Publish internally a organisation scheme"
-	    	@OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(String urn) throws MetamacException;
+	    	@OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publish externally a organisation scheme"
 	    	@OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(String urn) throws MetamacException;
 			"Deletes organisation scheme version. This must be last version and no published"

@@ -51,7 +51,7 @@ Application DsdsMetamac {
 	    	"Rejects diffusion validation of data structure definition"
 	    	@DataStructureDefinitionVersionMetamac rejectDataStructureDefinitionDiffusionValidation(String urn) throws MetamacException;
 	    	"Publish internally a data structure definition"
-	    	@DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(String urn) throws MetamacException;
+	    	@DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publish externally a data structure definition"
 	    	@DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(String urn) throws MetamacException;
 			"Deletes data structure definition version. This must be last version and no published"

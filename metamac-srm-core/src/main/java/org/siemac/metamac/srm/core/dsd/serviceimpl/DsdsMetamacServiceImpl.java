@@ -324,10 +324,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
-    public DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
-        return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishInternally(ctx, urn);
+    public DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
+        return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
     }
-
     @Override
     public DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishExternally(ctx, urn);

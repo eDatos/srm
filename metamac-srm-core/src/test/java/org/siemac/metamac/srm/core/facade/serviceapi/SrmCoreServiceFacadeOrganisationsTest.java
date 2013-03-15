@@ -489,7 +489,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         String urn = ORGANISATION_SCHEME_6_V1;
 
         // Publish
-        OrganisationSchemeMetamacDto organisationSchemeDto = srmCoreServiceFacade.publishOrganisationSchemeInternally(getServiceContextAdministrador(), urn);
+        OrganisationSchemeMetamacDto organisationSchemeDto = srmCoreServiceFacade.publishOrganisationSchemeInternally(getServiceContextAdministrador(), urn, Boolean.FALSE);
 
         // Validation
         organisationSchemeDto = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);

@@ -399,7 +399,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
 
     @Test
     public void testPublishInternallyOrganisationScheme() throws Exception {
-        srmCoreServiceFacade.publishOrganisationSchemeInternally(getServiceContextJefeNormalizacion(), ORGANISATION_SCHEME_6_V1);
+        srmCoreServiceFacade.publishOrganisationSchemeInternally(getServiceContextJefeNormalizacion(), ORGANISATION_SCHEME_6_V1, Boolean.FALSE);
     }
 
     @Test
@@ -410,7 +410,7 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.publishOrganisationSchemeInternally(ctx, ORGANISATION_SCHEME_6_V1);
+                srmCoreServiceFacade.publishOrganisationSchemeInternally(ctx, ORGANISATION_SCHEME_6_V1, Boolean.FALSE);
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

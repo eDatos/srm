@@ -708,7 +708,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
 
         // Publish internally
-        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.publishInternallyCategoryScheme(ctx, urn);
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.publishInternallyCategoryScheme(ctx, urn, Boolean.FALSE);
 
         // Validate response
         {
@@ -750,7 +750,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
         String urn = NOT_EXISTS;
         try {
-            categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn);
+            categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("CategoryScheme not exists");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -771,7 +771,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
 
         try {
-            categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn);
+            categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("CategoryScheme wrong proc status");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());

@@ -631,7 +631,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         }
 
         // Publish internally
-        CodelistMetamacDto codelistDto = srmCoreServiceFacade.publishCodelistInternally(ctx, urn);
+        CodelistMetamacDto codelistDto = srmCoreServiceFacade.publishCodelistInternally(ctx, urn, Boolean.FALSE);
 
         // Validate response
         {

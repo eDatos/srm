@@ -398,7 +398,7 @@ public class SrmCoreServiceFacadeCategoriesSecurityTest extends SrmBaseTest {
 
     @Test
     public void testPublishInternallyCategoryScheme() throws Exception {
-        srmCoreServiceFacade.publishCategorySchemeInternally(getServiceContextJefeNormalizacion(), CATEGORY_SCHEME_6_V1);
+        srmCoreServiceFacade.publishCategorySchemeInternally(getServiceContextJefeNormalizacion(), CATEGORY_SCHEME_6_V1, Boolean.FALSE);
     }
 
     @Test
@@ -409,7 +409,7 @@ public class SrmCoreServiceFacadeCategoriesSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.publishCategorySchemeInternally(ctx, CATEGORY_SCHEME_6_V1);
+                srmCoreServiceFacade.publishCategorySchemeInternally(ctx, CATEGORY_SCHEME_6_V1, Boolean.FALSE);
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

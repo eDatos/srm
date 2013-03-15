@@ -127,8 +127,8 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return codesService.markCodelistAsFinal(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion, Boolean forceLastestFinal) throws MetamacException {
+            return codesService.markCodelistAsFinal(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), forceLastestFinal);
         }
 
         @Override

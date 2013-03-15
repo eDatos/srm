@@ -151,8 +151,8 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
-    public CategorySchemeVersionMetamac publishInternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
-        return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishInternally(ctx, urn);
+    public CategorySchemeVersionMetamac publishInternallyCategoryScheme(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
+        return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
     }
 
     @Override

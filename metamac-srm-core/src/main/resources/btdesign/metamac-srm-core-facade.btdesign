@@ -139,7 +139,7 @@ Application SrmFacadeCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-	    	@DataStructureDefinitionMetamacDto publishDataStructureDefinitionInternally(String urn) throws MetamacException;
+	    	@DataStructureDefinitionMetamacDto publishDataStructureDefinitionInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	
 	    	"
 	    	 Publishes externally a dsd  		
@@ -280,7 +280,7 @@ Application SrmFacadeCore {
 	    	"Rejects diffusion validation of organisation scheme"
 	    	@OrganisationSchemeMetamacDto rejectOrganisationSchemeDiffusionValidation(String urn) throws MetamacException; 
 	    	"Publishes internally a organisation scheme"
-	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeInternally(String urn) throws MetamacException;
+	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a organisation scheme"
 	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
@@ -331,7 +331,7 @@ Application SrmFacadeCore {
 	    	"Rejects diffusion validation of concept scheme"
 	    	@ConceptSchemeMetamacDto rejectConceptSchemeDiffusionValidation(String urn) throws MetamacException; 
 	    	"Publishes internally a concept scheme"
-	    	@ConceptSchemeMetamacDto publishConceptSchemeInternally(String urn) throws MetamacException;
+	    	@ConceptSchemeMetamacDto publishConceptSchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
@@ -403,7 +403,7 @@ Application SrmFacadeCore {
 	    	"Rejects diffusion validation of category scheme"
 	    	@CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(String urn) throws MetamacException; 
 	    	"Publishes internally a category scheme"
-	    	@CategorySchemeMetamacDto publishCategorySchemeInternally(String urn) throws MetamacException;
+	    	@CategorySchemeMetamacDto publishCategorySchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a category scheme"
 	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a category scheme, copying metadata from version with provided urn"
@@ -460,7 +460,7 @@ Application SrmFacadeCore {
 	    	"Rejects diffusion validation of Codelist"
 	    	@CodelistMetamacDto rejectCodelistDiffusionValidation(String urn) throws MetamacException; 
 	    	"Publishes internally a Codelist"
-	    	@CodelistMetamacDto publishCodelistInternally(String urn) throws MetamacException;
+	    	@CodelistMetamacDto publishCodelistInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a Codelist"
 	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
     		"Creates a new version of a Codelist, copying metadata from version with provided urn"
