@@ -29,6 +29,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.criteria.OrganisationContactCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaOrderEnum;
@@ -45,6 +46,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
@@ -1199,6 +1201,84 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         }
     }
 
+    @Test
+    public void testFindOrganisationContacts() throws Exception {
+
+        // Find all
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Find
+            MetamacCriteriaResult<ContactDto> contactsPagedResult = srmCoreServiceFacade.findOrganisationContactsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(3, contactsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(3, contactsPagedResult.getResults().size());
+
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-3111"));
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-3112"));
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-4111"));
+        }
+        // Find by organisation
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Restrictions
+            MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction();
+            propertyRestriction.setPropertyName(OrganisationContactCriteriaPropertyEnum.ORGANISATION_URN.name());
+            propertyRestriction.setStringValue(ORGANISATION_SCHEME_3_V1_ORGANISATION_1);
+            propertyRestriction.setOperationType(OperationType.EQ);
+            metamacCriteria.setRestriction(propertyRestriction);
+
+            // Find
+            MetamacCriteriaResult<ContactDto> contactsPagedResult = srmCoreServiceFacade.findOrganisationContactsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(2, contactsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(2, contactsPagedResult.getResults().size());
+
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-3111"));
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-3112"));
+        }
+
+        // Find by name
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            // Pagination
+            metamacCriteria.setPaginator(new MetamacCriteriaPaginator());
+            metamacCriteria.getPaginator().setFirstResult(0);
+            metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
+            metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
+
+            // Restrictions
+            MetamacCriteriaPropertyRestriction propertyRestriction = new MetamacCriteriaPropertyRestriction();
+            propertyRestriction.setPropertyName(OrganisationContactCriteriaPropertyEnum.NAME.name());
+            propertyRestriction.setStringValue("41");
+            propertyRestriction.setOperationType(OperationType.LIKE);
+            metamacCriteria.setRestriction(propertyRestriction);
+
+            // Find
+            MetamacCriteriaResult<ContactDto> contactsPagedResult = srmCoreServiceFacade.findOrganisationContactsByCondition(getServiceContextAdministrador(), metamacCriteria);
+
+            // Validate
+            assertEquals(1, contactsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(1, contactsPagedResult.getResults().size());
+
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-4111"));
+        }
+    }
+
     private OrganisationSchemeMetamacDto getOrganisationSchemeMetamacDto(List<OrganisationSchemeMetamacDto> list, String urn) {
         for (OrganisationSchemeMetamacDto organisationSchemeMetamacDto : list) {
             if (organisationSchemeMetamacDto.getUrn().equals(urn)) {
@@ -1213,6 +1293,16 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         for (OrganisationMetamacDto organisationMetamacDto : list) {
             if (organisationMetamacDto.getUrn().equals(urn)) {
                 return organisationMetamacDto;
+            }
+        }
+        fail("Not found");
+        return null;
+    }
+
+    private ContactDto getContactDto(List<ContactDto> list, String uuid) {
+        for (ContactDto contactDto : list) {
+            if (contactDto.getUuid().equals(uuid)) {
+                return contactDto;
             }
         }
         fail("Not found");

@@ -12,7 +12,9 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 @org.springframework.stereotype.Component("organisationsDo2DtoMapper")
@@ -68,6 +70,15 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
             targets.add(target);
         }
         return targets;
+    }
+
+    @Override
+    public ContactDto contactDoToDto(Contact source) {
+        if (source == null) {
+            return null;
+        }
+        ContactDto target = do2DtoMapperSdmxSrm.contactDoToDto(source);
+        return target;
     }
 
     private ItemHierarchyDto organisationMetamacDoToItemHierarchyDto(OrganisationMetamac organisationMetamac) {

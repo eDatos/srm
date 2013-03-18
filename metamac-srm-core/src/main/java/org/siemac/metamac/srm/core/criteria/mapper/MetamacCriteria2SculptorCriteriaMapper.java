@@ -15,6 +15,8 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
+
 public interface MetamacCriteria2SculptorCriteriaMapper {
 
     public MetamacCriteria2SculptorCriteria<DataStructureDefinitionVersionMetamac> getDataStructureDefinitionCriteriaMapper();
@@ -24,6 +26,7 @@ public interface MetamacCriteria2SculptorCriteriaMapper {
 
     public MetamacCriteria2SculptorCriteria<OrganisationSchemeVersionMetamac> getOrganisationSchemeMetamacCriteriaMapper();
     public MetamacCriteria2SculptorCriteria<OrganisationMetamac> getOrganisationMetamacCriteriaMapper();
+    public MetamacCriteria2SculptorCriteria<Contact> getOrganisationContactCriteriaMapper();
 
     public MetamacCriteria2SculptorCriteria<CategorySchemeVersionMetamac> getCategorySchemeMetamacCriteriaMapper();
     public MetamacCriteria2SculptorCriteria<CategoryMetamac> getCategoryMetamacCriteriaMapper();

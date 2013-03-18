@@ -31,8 +31,10 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportDataDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 
 public interface SculptorCriteria2MetamacCriteriaMapper {
 
@@ -46,6 +48,7 @@ public interface SculptorCriteria2MetamacCriteriaMapper {
 
     public MetamacCriteriaResult<OrganisationSchemeMetamacDto> pageResultToMetamacCriteriaResultOrganisationSchemeVersion(PagedResult<OrganisationSchemeVersionMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<OrganisationMetamacDto> pageResultToMetamacCriteriaResultOrganisation(PagedResult<OrganisationMetamac> source, Integer pageSize);
+    public MetamacCriteriaResult<ContactDto> pageResultToMetamacCriteriaResultOrganisationContact(PagedResult<Contact> source, Integer pageSize);
     public MetamacCriteriaResult<RelatedResourceDto> pageResultOrganisationToMetamacCriteriaResultRelatedResource(PagedResult<OrganisationMetamac> source, Integer pageSize) throws MetamacException;
 
     public MetamacCriteriaResult<CategorySchemeMetamacDto> pageResultToMetamacCriteriaResultCategorySchemeVersion(PagedResult<CategorySchemeVersionMetamac> source, Integer pageSize);

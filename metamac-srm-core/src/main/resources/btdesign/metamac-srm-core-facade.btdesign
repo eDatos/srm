@@ -6,7 +6,7 @@ import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-categories.btdesign"
-
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-organisations.btdesign"
 
 import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
@@ -302,6 +302,9 @@ Application SrmFacadeCore {
             deleteOrganisation(String urn) throws MetamacException;
     		"Retrieves organisations by organisation scheme, in tree structure"
     		List<@ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;       		
+
+            "Finds contacts by criteria"
+            MetamacCriteriaResult<@ContactDto> findOrganisationContactsByCondition(MetamacCriteria criteria) throws MetamacException;
        		
        		/**************************************************************************
 		     * CONCEPTS

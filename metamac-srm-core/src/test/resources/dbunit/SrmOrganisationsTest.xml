@@ -1764,6 +1764,24 @@
                 LAST_UPDATED_TZ="Europe/London"
             />     
     
+                <TB_CONTACTS
+                    ID="4111"
+                    ORGANISATION_FK="411"
+    
+                    NAME_FK="31"
+                    ORGANISATION_UNIT_FK="[null]"
+                    RESPONSIBILITY_FK="[null]"
+    
+                    UUID="contact-4111"
+                    CREATED_DATE_TZ="Europe/London"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_BY="user1"
+                    LAST_UPDATED_TZ="Europe/London"
+                    LAST_UPDATED="2011-01-01 01:02:03"
+                    LAST_UPDATED_BY="user1"
+                    VERSION="1"
+                />
+    
 
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 5 (Organisation Unit)	                                            -->
@@ -3296,6 +3314,28 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="30"
     />
+    
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="31"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="311"
+        LABEL="contacto 41"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="31"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="312"
+        LABEL="contact 41"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="31"
+    />    
     
                         
 </dataset>

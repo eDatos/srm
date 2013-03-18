@@ -33,6 +33,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
@@ -238,6 +239,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     public PagedResult<OrganisationMetamac> findOrganisationsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         PagedResult<Organisation> organisationsPagedResult = organisationsService.findOrganisationsByCondition(ctx, conditions, pagingParameter);
         return pagedResultOrganisationToMetamac(organisationsPagedResult);
+    }
+
+    @Override
+    public PagedResult<Contact> findOrganisationContactsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        return organisationsService.findOrganisationContactsByCondition(ctx, conditions, pagingParameter);
     }
 
     @Override

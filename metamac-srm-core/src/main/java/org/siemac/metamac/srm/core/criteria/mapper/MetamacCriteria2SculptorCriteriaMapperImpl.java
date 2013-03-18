@@ -45,6 +45,8 @@ import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaO
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.OrganisationContactCriteriaOrderEnum;
+import org.siemac.metamac.srm.core.criteria.OrganisationContactCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaOrderEnum;
@@ -69,6 +71,8 @@ import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.ContactProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 
@@ -80,6 +84,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     private MetamacCriteria2SculptorCriteria<ConceptMetamac>                        conceptMetamacCriteriaMapper            = null;
     private MetamacCriteria2SculptorCriteria<OrganisationSchemeVersionMetamac>      organisationSchemeMetamacCriteriaMapper = null;
     private MetamacCriteria2SculptorCriteria<OrganisationMetamac>                   organisationMetamacCriteriaMapper       = null;
+    private MetamacCriteria2SculptorCriteria<Contact>                               organisationContactCriteriaMapper       = null;
     private MetamacCriteria2SculptorCriteria<CategorySchemeVersionMetamac>          categorySchemeMetamacCriteriaMapper     = null;
     private MetamacCriteria2SculptorCriteria<CategoryMetamac>                       categoryMetamacCriteriaMapper           = null;
     private MetamacCriteria2SculptorCriteria<CodelistVersionMetamac>                codelistMetamacCriteriaMapper           = null;
@@ -109,6 +114,9 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
 
         organisationMetamacCriteriaMapper = new MetamacCriteria2SculptorCriteria<OrganisationMetamac>(OrganisationMetamac.class, OrganisationMetamacCriteriaOrderEnum.class,
                 OrganisationMetamacCriteriaPropertyEnum.class, new OrganisationMetamacCriteriaCallback());
+
+        organisationContactCriteriaMapper = new MetamacCriteria2SculptorCriteria<Contact>(Contact.class, OrganisationContactCriteriaOrderEnum.class, OrganisationContactCriteriaPropertyEnum.class,
+                new OrganisationContactCriteriaCallback());
 
         categorySchemeMetamacCriteriaMapper = new MetamacCriteria2SculptorCriteria<CategorySchemeVersionMetamac>(CategorySchemeVersionMetamac.class,
                 CategorySchemeVersionMetamacCriteriaOrderEnum.class, CategorySchemeVersionMetamacCriteriaPropertyEnum.class, new CategorySchemeVersionMetamacCriteriaCallback());
@@ -162,6 +170,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     @Override
     public MetamacCriteria2SculptorCriteria<OrganisationMetamac> getOrganisationMetamacCriteriaMapper() {
         return organisationMetamacCriteriaMapper;
+    }
+
+    @Override
+    public MetamacCriteria2SculptorCriteria<Contact> getOrganisationContactCriteriaMapper() {
+        return organisationContactCriteriaMapper;
     }
 
     @Override
@@ -533,6 +546,42 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         @Override
         public Property<OrganisationMetamac> retrievePropertyOrderDefault() throws MetamacException {
             return OrganisationMetamacProperties.id();
+        }
+    }
+
+    private class OrganisationContactCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+            OrganisationContactCriteriaPropertyEnum propertyEnum = OrganisationContactCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyEnum) {
+                case ORGANISATION_URN:
+                    return new SculptorPropertyCriteria(ContactProperties.organisation().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                case NAME:
+                    return new SculptorPropertyCriteria(ContactProperties.name().texts().label(), propertyRestriction.getStringValue());
+                case ORGANISATION_UNIT:
+                    return new SculptorPropertyCriteria(ContactProperties.organisationUnit().texts().label(), propertyRestriction.getStringValue());
+                case RESPONSIBILITY:
+                    return new SculptorPropertyCriteria(ContactProperties.responsibility().texts().label(), propertyRestriction.getStringValue());
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<Contact> retrievePropertyOrder(MetamacCriteriaOrder order) throws MetamacException {
+            OrganisationContactCriteriaOrderEnum propertyOrderEnum = OrganisationContactCriteriaOrderEnum.fromValue(order.getPropertyName());
+            switch (propertyOrderEnum) {
+                case CODE:
+                    return ContactProperties.code();
+                default:
+                    throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, order.getPropertyName());
+            }
+        }
+
+        @Override
+        public Property<Contact> retrievePropertyOrderDefault() throws MetamacException {
+            return ContactProperties.id();
         }
     }
 

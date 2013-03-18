@@ -1771,6 +1771,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Override
     @Test
+    public void testFindOrganisationContactsByCondition() throws Exception {
+        // In SDMX Module
+    }
+
+    @Override
+    @Test
     public void testRetrieveMaintainerDefault() throws Exception {
         OrganisationMetamac organisation = organisationsService.retrieveMaintainerDefault(getServiceContextAdministrador());
         assertEquals(AGENCY_ROOT_1_V1, organisation.getNameableArtefact().getUrn());

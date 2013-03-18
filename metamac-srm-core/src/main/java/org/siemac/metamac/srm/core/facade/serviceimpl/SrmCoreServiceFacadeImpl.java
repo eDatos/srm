@@ -82,6 +82,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
 import com.arte.statistic.sdmx.srm.core.importation.serviceimpl.utils.ImportationJaxb2DoCallback;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
@@ -91,6 +92,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportDataDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
@@ -2057,6 +2059,22 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         MetamacCriteriaResult<OrganisationMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisation(result,
                 sculptorCriteria.getPageSize());
 
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<ContactDto> findOrganisationContactsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        OrganisationsSecurityUtils.canFindOrganisationContactsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getOrganisationContactCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<Contact> result = getOrganisationsMetamacService().findOrganisationContactsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<ContactDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisationContact(result, sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 

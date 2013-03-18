@@ -141,6 +141,12 @@ public class OrganisationsSecurityUtils extends ItemsSecurityUtils {
         }
     }
 
+    public static void canFindOrganisationContactsByCondition(ServiceContext ctx) throws MetamacException {
+        if (!SharedOrganisationsSecurityUtils.canRetrieveOrFindResource(getMetamacPrincipal(ctx))) {
+            throw new MetamacException(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED, ctx.getUserId());
+        }
+    }
+
     //
     // CATEGORISATIONS
     //

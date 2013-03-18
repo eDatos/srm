@@ -42,8 +42,10 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
 import com.arte.statistic.sdmx.srm.core.importation.mapper.ImportationDo2DtoMapper;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportDataDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 
 @Component
 public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCriteria2MetamacCriteriaMapper {
@@ -177,6 +179,19 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
             target.setResults(new ArrayList<RelatedResourceDto>(source.getValues().size()));
             for (OrganisationMetamac scheme : source.getValues()) {
                 target.getResults().add(organisationsDo2DtoMapper.organisationMetamacDoToRelatedResourceDto(scheme));
+            }
+        }
+        return target;
+    }
+
+    @Override
+    public MetamacCriteriaResult<ContactDto> pageResultToMetamacCriteriaResultOrganisationContact(PagedResult<Contact> source, Integer pageSize) {
+        MetamacCriteriaResult<ContactDto> target = new MetamacCriteriaResult<ContactDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<ContactDto>(source.getValues().size()));
+            for (Contact organisation : source.getValues()) {
+                target.getResults().add(organisationsDo2DtoMapper.contactDoToDto(organisation));
             }
         }
         return target;
