@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sdmx.resources.sdmxml.schemas.v2_1.message.Structure;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
@@ -103,16 +104,69 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(), DataStructureDefinitionMetamacDtoMocks.mockDataStructureDefinitionMetamacDto());
 
         // By Name
-        MetamacCriteria metamacCriteria = new MetamacCriteria();
-        metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), "DSD_01", OperationType.EQ));
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), "DSD_01", OperationType.EQ));
 
-        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
-        assertEquals(1, result.getResults().size());
+            result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getResults().size());
 
-        metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
-        result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
-        assertEquals(0, result.getResults().size());
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
+            result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(0, result.getResults().size());
+        }
+        // By concept in dimension
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+
+            // Concept 1
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.DIMENSION_CONCEPT_URN.name(),
+                    CONCEPT_SCHEME_3_V1_CONCEPT_1, OperationType.EQ));
+            result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getResults().size());
+            assertEquals(DSD_6_V1, result.getResults().get(0).getUrn());
+
+            // Concept 2
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.DIMENSION_CONCEPT_URN.name(),
+                    CONCEPT_SCHEME_3_V1_CONCEPT_2, OperationType.EQ));
+            result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getResults().size());
+            assertEquals(DSD_4_V1, result.getResults().get(0).getUrn());
+        }
+        // By concept in attribute
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+
+            // Concept 1
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(),
+                    CONCEPT_SCHEME_3_V1_CONCEPT_1, OperationType.EQ));
+            result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getResults().size());
+            assertEquals(DSD_4_V1, result.getResults().get(0).getUrn());
+
+            // Concept 2
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(),
+                    CONCEPT_SCHEME_3_V1_CONCEPT_2, OperationType.EQ));
+            result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getResults().size());
+            assertEquals(DSD_6_V1, result.getResults().get(0).getUrn());
+        }
+        // By concept in attribute and name
+        {
+            MetamacCriteria metamacCriteria = new MetamacCriteria();
+
+            MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(), CONCEPT_SCHEME_3_V1_CONCEPT_2, OperationType.EQ));
+            conjunctionRestriction.getRestrictions().add(
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "name-101 en Español", OperationType.EQ));
+            metamacCriteria.setRestriction(conjunctionRestriction);
+            result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getResults().size());
+            assertEquals(DSD_6_V1, result.getResults().get(0).getUrn());
+        }
     }
+
     // @DataStructureDefinitionMetamacDto retrieveDsd(String urn, @TypeDozerCopyMode typeDozerCopyMode) throws MetamacException;
     //
     // @DataStructureDefinitionMetamacDto retrieveDsdByUrn(String urn) throws MetamacException;
@@ -220,7 +274,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
         // dimensionComponentDtoTypeDimensionMock);
         // }
 
-        int kaka = 2;
         // DimensionComponentDto dim02 = DataStructureDefinitionDtoMocks.createDimensionComponentDtoTypeDimensionMock("dim-02");
         // dim02 = (DimensionComponentDto) srmCoreServiceFacade.saveComponentForDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionMetamacDto.getUrn(), dim02);
         //

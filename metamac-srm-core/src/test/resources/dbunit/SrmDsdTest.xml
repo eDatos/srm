@@ -105,6 +105,7 @@
     <TB_ANNOTABLE_ARTEFACTS 
         ID="1001"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        COMPONENT_TYPE="[null]"
         
         CODE="AGENCIES"
         CODE_FULL="[null]"
@@ -2583,6 +2584,8 @@
     	DSD_VERSION_FK="12"
     />
     
+
+    
     <!-- ************************************************************************************** -->
     <!-- DATASTRUCTUREDEFINITION 2                                                              -->
     <!--       - Version 1: no final                                                            -->
@@ -2873,6 +2876,216 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="417"
+        ANNOTABLE_ARTEFACT_TYPE="DataAttribute"
+        COMPONENT_TYPE="DATA_ATTRIBUTE"
+        
+        CODE="dataAttribute-01"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION04(01.000).dataAttribute-01"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION04(01.000).dataAttribute-01"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="[null]"
+        
+        UUID="dsd-04-v1-dataAttribute-01"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+        
+        RELATE_TO="[null]"
+        
+        CONCEPT_IDENTITY_FK="10311"
+        REPRESENTATION_FK="5"
+    />
+ 
+    <TB_DATA_ATTRIBUTES_EI_ROLES
+        TB_DATA_ATTRIBUTES="417"
+        ROLE_FK="10312"/>
+        
+    <TB_DATA_ATTRIBUTES_EI_ROLES 
+        TB_DATA_ATTRIBUTES="417" 
+        ROLE_FK="103121"/>
+ 
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="418"
+        ANNOTABLE_ARTEFACT_TYPE="AttributeDescriptor"
+        
+        CODE="AttributeDescriptor"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=SDMX01:DATASTRUCTUREDEFINITION04(01.000).AttributeDescriptor"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=SDMX01:DATASTRUCTUREDEFINITION04(01.000).AttributeDescriptor"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="[null]"
+        
+        UUID="dsd-04-v1-AttributeDescriptor"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />    
+    
+    <TB_COMPLIST_COMP
+        COMPONENT_FK="417"
+        COMPONENTLIST_FK="418"
+    />
+
+    <TB_STRVERSION_COMPLIST
+        STRUCTUREVERSION_FK="41"
+        COMPONENT_LIST_FK="418"
+    />    
+    
+    <TB_ATTR_RELATIONSHIPS  
+        ID="41"
+        UUID="dsd-04-v1-attr-rel-01"
+        VERSION="0"
+        ATTR_RELATIONSHIPS_TYPE="DIMENSION"
+        GROUP_KEY="[null]"
+    />
+
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="412"
+        ANNOTABLE_ARTEFACT_TYPE="MeasureDimension"
+        COMPONENT_TYPE="DIMENSION_COMPONENT"
+        
+        CODE="measureDimension-01"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION04(01.000).measureDimension-01"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION04(01.000).measureDimension-01"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="[null]"
+        
+        UUID="dsd-04-v1-measureDimension-01"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+        
+        CONCEPT_IDENTITY_FK="10312"
+        REPRESENTATION_FK="6"
+    />
+    
+    <TB_MEASURE_DIMEN_EI_ROLES 
+        TB_MEASURE_DIMENSIONS="412" 
+        ROLE_FK="10312"/>
+        
+    <TB_MEASURE_DIMEN_EI_ROLES 
+        TB_MEASURE_DIMENSIONS="412" 
+        ROLE_FK="103121"/>
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="413"
+        ANNOTABLE_ARTEFACT_TYPE="DimensionDescriptor"
+        
+        CODE="DimensionDescriptor"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION04(01.000).DimensionDescriptor"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.DimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION04(01.000).DimensionDescriptor"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        MAINTAINER_FK="[null]"
+        
+        UUID="dsd-04-v1-DimensionDescriptor"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />    
+    
+    <TB_COMPLIST_COMP
+        COMPONENT_FK="412"
+        COMPONENTLIST_FK="413"
+    />
+    
+    <TB_STRVERSION_COMPLIST
+        STRUCTUREVERSION_FK="41"
+        COMPONENT_LIST_FK="413"
+    />    
+    
     <!-- ************************************************************************************** -->
     <!-- DATASTRUCTUREDEFINITION 5                                                              -->
     <!--       - Version 1: no final                                                            -->
@@ -3070,6 +3283,7 @@
     <TB_ANNOTABLE_ARTEFACTS 
         ID="612"
         ANNOTABLE_ARTEFACT_TYPE="MeasureDimension"
+        COMPONENT_TYPE="DIMENSION_COMPONENT"
         
         CODE="measureDimension-01"
         URI_PROVIDER="[null]"
@@ -3159,6 +3373,7 @@
     <TB_ANNOTABLE_ARTEFACTS 
         ID="614"
         ANNOTABLE_ARTEFACT_TYPE="Dimension"
+        COMPONENT_TYPE="DIMENSION_COMPONENT"
         
         CODE="dim-01"
         URI_PROVIDER="[null]"
@@ -3209,6 +3424,7 @@
     <TB_ANNOTABLE_ARTEFACTS 
         ID="615"
         ANNOTABLE_ARTEFACT_TYPE="TimeDimension"
+        COMPONENT_TYPE="DIMENSION_COMPONENT"
         
         CODE="TIME_PERIOD"
         URI_PROVIDER="[null]"
@@ -3290,6 +3506,7 @@
     <TB_ANNOTABLE_ARTEFACTS 
         ID="617"
         ANNOTABLE_ARTEFACT_TYPE="DataAttribute"
+        COMPONENT_TYPE="DATA_ATTRIBUTE"
         
         CODE="dataAttribute-01"
         URI_PROVIDER="[null]"
@@ -3327,7 +3544,7 @@
         
         RELATE_TO="61"
         
-        CONCEPT_IDENTITY_FK="10311"
+        CONCEPT_IDENTITY_FK="10312"
         REPRESENTATION_FK="[NULL]"
     />
  
@@ -3381,6 +3598,7 @@
     <TB_ANNOTABLE_ARTEFACTS 
         ID="619"
         ANNOTABLE_ARTEFACT_TYPE="PrimaryMeasure"
+        COMPONENT_TYPE="PRIMARY_MEASURE"
         
         CODE="OBS_VALUE"
         URI_PROVIDER="[null]"
@@ -3512,23 +3730,23 @@
     
     
     <TB_STRVERSION_COMPLIST
-    	STRUCTUREVERSION_FK="613"
-    	COMPONENT_LIST_FK="61"
+    	STRUCTUREVERSION_FK="61"
+    	COMPONENT_LIST_FK="613"
     />
     
     <TB_STRVERSION_COMPLIST
-    	STRUCTUREVERSION_FK="616"
-    	COMPONENT_LIST_FK="61"
+    	STRUCTUREVERSION_FK="61"
+    	COMPONENT_LIST_FK="616"
     />
     
     <TB_STRVERSION_COMPLIST
-    	STRUCTUREVERSION_FK="618"
-    	COMPONENT_LIST_FK="61"
+    	STRUCTUREVERSION_FK="61"
+    	COMPONENT_LIST_FK="618"
     />
     
     <TB_STRVERSION_COMPLIST
-    	STRUCTUREVERSION_FK="620"
-    	COMPONENT_LIST_FK="61"
+    	STRUCTUREVERSION_FK="61"
+    	COMPONENT_LIST_FK="620"
     />
     
     <TB_FACETS
@@ -3594,6 +3812,28 @@
         CONCEPT_SCHEME_FK="[null]"
         TEXT_FORMAT_FK="[null]"
     />    
+    
+    <TB_REPRESENTATIONS
+        ID="5"
+        UUID="tb_representations-5"
+        VERSION="0"
+        REPRESENTATION_TYPE="ENUMERATION"
+        CODELIST_FK="2011"
+        CONCEPT_SCHEME_FK="[null]"
+        TEXT_FORMAT_FK="[null]"
+    />
+    
+    <TB_REPRESENTATIONS
+        ID="6"
+        UUID="tb_representations-6"
+        VERSION="0"
+        REPRESENTATION_TYPE="ENUMERATION"
+        CODELIST_FK="2011"
+        CONCEPT_SCHEME_FK="[null]"
+        TEXT_FORMAT_FK="[null]"
+    />
+    
+    
     
     <TB_M_DIMENSION_ORDERS
     	ID="1"

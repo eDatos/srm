@@ -4,7 +4,11 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
+import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
+import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteriaBase;
+import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteriaConjunction;
+import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteriaDisjunction;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.core.common.criteria.utils.CriteriaUtils;
@@ -75,6 +79,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.ContactProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 
 @Component("metamacCriteria2SculptorCriteriaMapperSrm")
 public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriteria2SculptorCriteriaMapper {
@@ -228,7 +233,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     private class DataStructureDefinitionVersionMetamacCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
             DataStructureDefinitionVersionMetamacCriteriaPropertyEnum propertyEnum = DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
@@ -260,11 +265,13 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case EXTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue());
                 case DIMENSION_CONCEPT_URN:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact().urn(),
-                            propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteriaConjunction(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact().urn(),
+                            propertyRestriction.getStringValue(), propertyRestriction.getOperationType(), DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
+                            TypeComponent.DIMENSION_COMPONENT, OperationType.EQ);
                 case ATTRIBUTE_CONCEPT_URN:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact().urn(),
-                            propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteriaConjunction(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact().urn(),
+                            propertyRestriction.getStringValue(), propertyRestriction.getOperationType(), DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
+                            TypeComponent.DATA_ATTRIBUTE, OperationType.EQ);
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -784,7 +791,7 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     private class CodeMetamacCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws MetamacException {
             CodeMetamacCriteriaPropertyEnum propertyEnum = CodeMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
@@ -796,8 +803,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case DESCRIPTION:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue());
                 case SHORT_NAME:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.shortName().texts().label(), CodeMetamacProperties.variableElement().shortName().texts().label(),
-                            propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteriaDisjunction(CodeMetamacProperties.shortName().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType(),
+                            CodeMetamacProperties.variableElement().shortName().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case CODE_PARENT_URN:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue());
                 case CODELIST_URN:
