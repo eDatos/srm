@@ -59,19 +59,22 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case VALID_FROM:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validFrom(), CodelistVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validFrom(), CodelistVersionMetamac.class, false);
                 case VALID_TO:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validTo(), CodelistVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validTo(), CodelistVersionMetamac.class, false);
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
+                case REPLACE_TO:
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.replaceToCodelists().maintainableArtefact().urn(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), CodelistVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), CodelistVersionMetamac.class, true);
                 case INTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(), CodelistVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(), CodelistVersionMetamac.class, true);
                 case EXTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());

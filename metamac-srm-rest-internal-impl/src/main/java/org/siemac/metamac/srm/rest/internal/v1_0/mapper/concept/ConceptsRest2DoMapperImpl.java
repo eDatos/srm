@@ -59,19 +59,21 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case VALID_FROM:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validFrom(), ConceptSchemeVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validFrom(), ConceptSchemeVersionMetamac.class, false);
                 case VALID_TO:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validTo(), ConceptSchemeVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validTo(), ConceptSchemeVersionMetamac.class, false);
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(),
                             propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), ConceptSchemeVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), ConceptSchemeVersionMetamac.class,
+                            true);
                 case INTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(), ConceptSchemeVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(), ConceptSchemeVersionMetamac.class,
+                            true);
                 case EXTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());

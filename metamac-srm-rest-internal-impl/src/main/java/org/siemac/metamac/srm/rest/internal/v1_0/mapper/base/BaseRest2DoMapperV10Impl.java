@@ -33,8 +33,15 @@ public class BaseRest2DoMapperV10Impl implements BaseRest2DoMapperV10 {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static SculptorPropertyCriteria getSculptorPropertyCriteriaDate(MetamacRestQueryPropertyRestriction propertyRestriction, Property propertyEntity, Class entity) {
-        return new SculptorPropertyCriteria(new LeafProperty(propertyEntity.getName(), CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, entity),
+    public static SculptorPropertyCriteria getSculptorPropertyCriteriaDate(MetamacRestQueryPropertyRestriction propertyRestriction, Property propertyEntity, Class entity, boolean embedded) {
+        String propertyName = null;
+        if (embedded) {
+            propertyName = ((LeafProperty) propertyEntity).getEmbeddedName();
+        } else {
+            propertyName = propertyEntity.getName();
+        }
+        return new SculptorPropertyCriteria(new LeafProperty(propertyName, CoreCommonConstants.CRITERIA_DATETIME_COLUMN_DATETIME, true, entity),
                 propertyRestrictionValueToDate(propertyRestriction.getValue()), propertyRestriction.getOperationType());
     }
+
 }

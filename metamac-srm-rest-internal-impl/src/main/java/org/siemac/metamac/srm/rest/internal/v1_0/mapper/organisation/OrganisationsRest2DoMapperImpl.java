@@ -60,21 +60,23 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case VALID_FROM:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validFrom(), OrganisationSchemeVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validFrom(), OrganisationSchemeVersionMetamac.class,
+                            false);
                 case VALID_TO:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validTo(), OrganisationSchemeVersionMetamac.class);
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validTo(), OrganisationSchemeVersionMetamac.class,
+                            false);
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(),
                             propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            OrganisationSchemeVersionMetamac.class);
+                            OrganisationSchemeVersionMetamac.class, true);
                 case INTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
-                            OrganisationSchemeVersionMetamac.class);
+                            OrganisationSchemeVersionMetamac.class, true);
                 case EXTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());

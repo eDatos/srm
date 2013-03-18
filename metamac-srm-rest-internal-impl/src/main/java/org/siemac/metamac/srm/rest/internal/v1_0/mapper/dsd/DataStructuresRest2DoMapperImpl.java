@@ -3,7 +3,10 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.dsd;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
+import org.siemac.metamac.rest.common.query.domain.OperationTypeEnum;
 import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
+import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteriaBase;
+import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteriaConjunction;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
@@ -13,6 +16,8 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
 import org.springframework.stereotype.Component;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 
 @Component
 public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements DataStructuresRest2DoMapper {
@@ -32,7 +37,7 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
     private class DataStructureDefinitionCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
             DataStructureCriteriaPropertyRestriction propertyNameCriteria = DataStructureCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -49,28 +54,45 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
                             propertyRestriction.getOperationType());
                 case VALID_FROM:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().validFrom(),
-                            DataStructureDefinitionVersionMetamac.class);
+                            DataStructureDefinitionVersionMetamac.class, false);
                 case VALID_TO:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().validTo(),
-                            DataStructureDefinitionVersionMetamac.class);
+                            DataStructureDefinitionVersionMetamac.class, false);
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus(),
                             propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            DataStructureDefinitionVersionMetamac.class);
+                            DataStructureDefinitionVersionMetamac.class, true);
                 case INTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
-                            DataStructureDefinitionVersionMetamac.class);
+                            DataStructureDefinitionVersionMetamac.class, true);
                 case EXTERNAL_PUBLICATION_USER:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case LATEST:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
+                case STATISTICAL_OPERATION:
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.statisticalOperation().urn(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
+                case DIMENSION_CONCEPT: {
+                    SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact()
+                            .urn(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
+                            TypeComponent.DIMENSION_COMPONENT, OperationTypeEnum.EQ);
+                    return new SculptorPropertyCriteriaConjunction(propertyCriteria1, propertyCriteria2);
+                }
+                case ATTRIBUTE_CONCEPT: {
+                    SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact()
+                            .urn(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
+                            TypeComponent.DATA_ATTRIBUTE, OperationTypeEnum.EQ);
+                    return new SculptorPropertyCriteriaConjunction(propertyCriteria1, propertyCriteria2);
+                }
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
