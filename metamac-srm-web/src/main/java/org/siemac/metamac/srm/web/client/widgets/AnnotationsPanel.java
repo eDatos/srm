@@ -281,14 +281,12 @@ public class AnnotationsPanel extends VLayout {
     private void setCanAddOrRemoveAnnotations(boolean viewMode, RelatedResourceDto maintainer) {
         annotationImg.hide();
         addAnnotationImg.hide();
-        if (viewMode) {
-            annotationImg.show();
+
+        if (!viewMode && CommonUtils.isDefaultMaintainer(maintainer)) {
+            // Annotations can be created: edition mode is selected and the maintainer is the default one
+            addAnnotationImg.show();
         } else {
-            if (CommonUtils.isDefaultMaintainer(maintainer)) {
-                addAnnotationImg.show();
-            } else {
-                annotationImg.show();
-            }
+            annotationImg.show();
         }
     }
 
