@@ -50,6 +50,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class AnnotationsPanel extends VLayout {
 
+    private static String       REMOVE_FIELD_NAME = "remove-field";
+
     private AnnotationsListGrid listGrid;
     private DynamicForm         form;
     private SelectItem          selectItem;
@@ -155,6 +157,7 @@ public class AnnotationsPanel extends VLayout {
         listGrid.setRemoveFieldTitle(getConstants().actionDelete());
         listGrid.setRemoveIcon(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         listGrid.setRemoveIconSize(14);
+        listGrid.setShowHeaderContextMenu(false); // Do not show menu options (avoid to show remove field column)
         listGrid.addEditCompleteHandler(new EditCompleteHandler() {
 
             @Override
@@ -205,7 +208,10 @@ public class AnnotationsPanel extends VLayout {
         ListGridField isTextEditable = new ListGridField(AnnotationDS.IS_TEXT_EDITABLE, "is-editable");
         isTextEditable.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
-        listGrid.setFields(textField, urlField, isTextEditable);
+        ListGridField removeField = new ListGridField(REMOVE_FIELD_NAME, getConstants().actionDelete());
+        removeField.setIsRemoveField(true);
+
+        listGrid.setFields(textField, urlField, isTextEditable, removeField);
 
         // ListGrid style
 
@@ -222,6 +228,7 @@ public class AnnotationsPanel extends VLayout {
         addMember(imgLayout);
         addMember(listGrid);
     }
+
     public void setAnnotations(Set<AnnotationDto> annotations, RelatedResourceDto maintainer) {
         this.maintainer = maintainer;
 
@@ -285,8 +292,10 @@ public class AnnotationsPanel extends VLayout {
         if (!viewMode && CommonUtils.isDefaultMaintainer(maintainer)) {
             // Annotations can be created: edition mode is selected and the maintainer is the default one
             addAnnotationImg.show();
+            listGrid.showField(REMOVE_FIELD_NAME);
         } else {
             annotationImg.show();
+            listGrid.hideField(REMOVE_FIELD_NAME);
         }
     }
 
