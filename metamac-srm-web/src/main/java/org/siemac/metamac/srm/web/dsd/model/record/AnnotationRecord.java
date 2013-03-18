@@ -10,13 +10,14 @@ public class AnnotationRecord extends ListGridRecord {
     public AnnotationRecord() {
     }
 
-    public AnnotationRecord(Long id, String code, String title, String type, String url, String text, AnnotationDto annotationDto) {
+    public AnnotationRecord(Long id, String code, String title, String type, String url, String text, Boolean isTextEditable, AnnotationDto annotationDto) {
         setId(id);
         setCode(code);
         setTitle(title);
         setType(type);
         setUrl(url);
         setText(text);
+        setIsTextEditable(isTextEditable);
         setAnnotationDto(annotationDto);
     }
 
@@ -76,4 +77,11 @@ public class AnnotationRecord extends ListGridRecord {
         return (AnnotationDto) getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
     }
 
+    public void setIsTextEditable(Boolean value) {
+        setAttribute(AnnotationDS.IS_TEXT_EDITABLE, value);
+    }
+
+    public Boolean getIsTextEditable() {
+        return getAttributeAsBoolean(AnnotationDS.IS_TEXT_EDITABLE);
+    }
 }

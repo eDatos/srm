@@ -6,15 +6,19 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.web.client.model.ds.AnnotationDS;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
+import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.utils.UrlUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
 import com.google.gwt.resources.client.ImageResource;
 import com.smartgwt.client.data.Record;
@@ -46,13 +50,18 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class AnnotationsPanel extends VLayout {
 
-    private ListGrid    listGrid;
-    private DynamicForm form;
-    private SelectItem  selectItem;
-    private boolean     translationsShowed;
+    private AnnotationsListGrid listGrid;
+    private DynamicForm         form;
+    private SelectItem          selectItem;
+    private boolean             translationsShowed;
+
+    private boolean             viewOnly;
+
+    private RelatedResourceDto  maintainer;
 
     public AnnotationsPanel(boolean viewOnly) {
         super();
+        this.viewOnly = viewOnly;
 
         HLayout imgLayout = new HLayout();
         imgLayout.setMembersMargin(10);
@@ -118,21 +127,15 @@ public class AnnotationsPanel extends VLayout {
         form.setFields(selectItem);
         imgLayout.addMember(form);
 
-        listGrid = new ListGrid();
+        listGrid = new AnnotationsListGrid();
         listGrid.setCellHeight(40);
         listGrid.setAutoFitMaxRecords(10);
         listGrid.setAutoFitData(Autofit.VERTICAL);
         listGrid.setShowRowNumbers(true);
-        // grid.setStyleName("annotationGrid");
         listGrid.setLeaveScrollbarGap(false);
-        // grid.setCellPadding(4);
-        // grid.setCellHeight(40);
-        // grid.setNormalCellHeight(40);
         listGrid.setAlternateRecordStyles(false);
-        // grid.setShowRollOverCanvas(true);
         listGrid.setAnimateRollUnder(true);
         listGrid.setSelectionType(SelectionStyle.SIMPLE);
-        // grid.setBaseStyle("annotationCell");
         listGrid.setShowSelectionCanvas(true);
         listGrid.setAnimateSelectionUnder(true);
         listGrid.setWrapCells(true);
@@ -147,16 +150,6 @@ public class AnnotationsPanel extends VLayout {
 
             @Override
             public void onEditComplete(EditCompleteEvent event) {
-                // If title is empty or does not exist, delete the new record
-                // if (event.getOldRecord() == null) {
-                // if (((event.getNewValues().containsKey(AnnotationRecord.TITLE) && ((String) event.getNewValues().get(AnnotationRecord.TITLE) == null)) ||
-                // (!event.getNewValues().containsKey(AnnotationRecord.TITLE)))
-                // || ((event.getNewValues().containsKey(AnnotationRecord.TEXT) && ((String) event.getNewValues().get(AnnotationRecord.TEXT) == null)) ||
-                // (!event.getNewValues().containsKey(AnnotationRecord.TEXT)))) {
-                // Record record = grid.getRecord(event.getRowNum());
-                // grid.removeData(record);
-                // }
-                // } else {
                 if (event.getNewValues() != null && event.getNewValues().size() > 0) {
                     Record record = listGrid.getRecord(event.getRowNum());
                     AnnotationDto annotationDto = new AnnotationDto();
@@ -181,7 +174,6 @@ public class AnnotationsPanel extends VLayout {
                     }
                     listGrid.getRecord(event.getRowNum()).setAttribute(AnnotationDS.ANNOTATION_DTO, annotationDto);
                 }
-                // }
             }
         });
 
@@ -198,7 +190,11 @@ public class AnnotationsPanel extends VLayout {
 
         ListGridField urlField = new ListGridField(AnnotationDS.URL, getConstants().annotationUrl());
         urlField.setType(ListGridFieldType.LINK);
-        listGrid.setFields(textField, urlField);
+
+        ListGridField isTextEditable = new ListGridField(AnnotationDS.IS_TEXT_EDITABLE, "is-editable");
+        isTextEditable.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        listGrid.setFields(textField, urlField, isTextEditable);
 
         Canvas rollUnderCanvasProperties = new Canvas();
         rollUnderCanvasProperties.setAnimateFadeTime(600);
@@ -216,15 +212,20 @@ public class AnnotationsPanel extends VLayout {
         addMember(listGrid);
     }
 
-    public void setAnnotations(Set<AnnotationDto> annotations) {
+    public void setAnnotations(Set<AnnotationDto> annotations, RelatedResourceDto maintainer) {
+        this.maintainer = maintainer;
+
         // Clear annotations
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
         listGrid.deselectAllRecords();
+
         String selectedLocale = ApplicationEditionLanguages.getCurrentLocale();
         if (selectItem.getValueAsString() != null && !selectItem.getValueAsString().isEmpty()) {
             selectedLocale = selectItem.getValueAsString();
         }
+
+        // Set annotations in the selected locale
         for (AnnotationDto annotationDto : annotations) {
             AnnotationRecord record = RecordUtils.getAnnotationRecord(annotationDto, selectedLocale);
             listGrid.addData(record);
@@ -258,9 +259,48 @@ public class AnnotationsPanel extends VLayout {
             if (listGrid.getRecord(i).getAttribute(AnnotationDS.ANNOTATION_DTO) != null) {
                 AnnotationDto annotationDto = (AnnotationDto) listGrid.getRecord(i).getAttributeAsObject(AnnotationDS.ANNOTATION_DTO);
                 listGrid.getRecord(i).setAttribute(AnnotationDS.TEXT, InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale));
+                listGrid.getRecord(i).setAttribute(AnnotationDS.IS_TEXT_EDITABLE, InternationalStringUtils.isLocalisedStringModifiable(annotationDto.getText(), locale));
             }
         }
         listGrid.redraw();
     }
 
+    private class AnnotationsListGrid extends ListGrid {
+
+        @Override
+        protected boolean canEditCell(int rowNum, int colNum) {
+            if (viewOnly) {
+
+                // In view mode, NEVER edit cell values
+                return false;
+
+            } else {
+
+                // In edition mode, if the maintainer is not the default one:
+                // - do not edit the URL
+                // - do not edit the text value if it is marked as unmodifiable
+
+                if (!CommonUtils.isDefaultMaintainer(maintainer)) {
+                    String fieldName = listGrid.getField(colNum) != null ? listGrid.getField(colNum).getName() : null;
+
+                    // URL cell: never update annotations URL if the annotation maintainer is not the default one
+                    if (StringUtils.equals(AnnotationDS.URL, fieldName)) {
+                        return false;
+                    }
+
+                    // Text cell: update text only if the LocalisedString is modifiable
+                    Record record = listGrid.getRecord(rowNum);
+                    if (record != null) {
+                        if (record instanceof AnnotationRecord) {
+                            return ((AnnotationRecord) record).getIsTextEditable();
+                        } else {
+                            // Nothing happens. If the record is not instance of AnnotationRecord is because has been recently created.
+                        }
+                    }
+
+                }
+                return true;
+            }
+        }
+    }
 }

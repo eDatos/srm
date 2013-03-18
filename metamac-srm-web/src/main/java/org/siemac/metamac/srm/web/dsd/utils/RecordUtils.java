@@ -103,8 +103,13 @@ public class RecordUtils {
      * @return
      */
     public static AnnotationRecord getAnnotationRecord(AnnotationDto annotationDto) {
+
+        // Mark the whole record as unmodifiable when the text (localisedString) is unmodifiable. This is possible because in the annotations list only the text and the URL are shown. If the record is
+        // mark as modifiable, maybe the URL can not be edited. This is checked in the AnnotationsPanel.
+        boolean isRecordEditable = InternationalStringUtils.isCurrentLocalisedStringModifiable(annotationDto.getText());
+
         AnnotationRecord record = new AnnotationRecord(annotationDto.getId(), annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(),
-                InternationalStringUtils.getLocalisedString(annotationDto.getText()), annotationDto);
+                InternationalStringUtils.getLocalisedString(annotationDto.getText()), isRecordEditable, annotationDto);
         return record;
     }
 
@@ -115,9 +120,13 @@ public class RecordUtils {
      * @return
      */
     public static AnnotationRecord getAnnotationRecord(AnnotationDto annotationDto, String locale) {
+
+        // Mark the whole record as unmodifiable when the text (localisedString) is unmodifiable. This is possible because in the annotations list only the text and the URL are shown. If the record is
+        // mark as modifiable, maybe the URL can not be edited. This is checked in the AnnotationsPanel.
+        boolean isRecordEdiable = InternationalStringUtils.isLocalisedStringModifiable(annotationDto.getText(), locale);
+
         AnnotationRecord record = new AnnotationRecord(annotationDto.getId(), annotationDto.getCode(), annotationDto.getTitle(), annotationDto.getType(), annotationDto.getUrl(),
-                InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale), annotationDto);
+                InternationalStringUtils.getLocalisedString(annotationDto.getText(), locale), isRecordEdiable, annotationDto);
         return record;
     }
-
 }
