@@ -55,13 +55,16 @@ public class AnnotationsPanel extends VLayout {
     private SelectItem          selectItem;
     private boolean             translationsShowed;
 
-    private boolean             viewOnly;
+    private boolean             viewMode;
+
+    private Img                 annotationImg;
+    private Img                 addAnnotationImg;
 
     private RelatedResourceDto  maintainer;
 
-    public AnnotationsPanel(boolean viewOnly) {
+    public AnnotationsPanel(boolean viewMode) {
         super();
-        this.viewOnly = viewOnly;
+        this.viewMode = viewMode;
 
         HLayout imgLayout = new HLayout();
         imgLayout.setMembersMargin(10);
@@ -70,28 +73,32 @@ public class AnnotationsPanel extends VLayout {
         imgLayout.setLayoutMargin(5);
         imgLayout.setStyleName("annotationPanel");
 
-        if (viewOnly) {
-            Img annotationImg = new Img(GlobalResources.RESOURCE.annotations().getURL());
-            annotationImg.setTooltip(getConstants().annotations());
-            annotationImg.setSize(32);
-            annotationImg.setAlign(Alignment.LEFT);
-            imgLayout.addMember(annotationImg);
-        } else {
-            Img addAnnotationImg = new Img(GlobalResources.RESOURCE.addAnnotation().getURL());
-            addAnnotationImg.setTooltip(getConstants().addAnnotation());
-            addAnnotationImg.setCursor(Cursor.POINTER);
-            addAnnotationImg.setName("note-img");
-            addAnnotationImg.setSize(32);
-            addAnnotationImg.setAlign(Alignment.LEFT);
-            addAnnotationImg.addClickHandler(new ClickHandler() {
+        // Annotation icon
 
-                @Override
-                public void onClick(ClickEvent event) {
-                    listGrid.startEditingNew();
-                }
-            });
-            imgLayout.addMember(addAnnotationImg);
-        }
+        annotationImg = new Img(GlobalResources.RESOURCE.annotations().getURL());
+        annotationImg.setTooltip(getConstants().annotations());
+        annotationImg.setSize(32);
+        annotationImg.setAlign(Alignment.LEFT);
+        imgLayout.addMember(annotationImg);
+
+        // Add annotation icon
+
+        addAnnotationImg = new Img(GlobalResources.RESOURCE.addAnnotation().getURL());
+        addAnnotationImg.setTooltip(getConstants().addAnnotation());
+        addAnnotationImg.setCursor(Cursor.POINTER);
+        addAnnotationImg.setName("note-img");
+        addAnnotationImg.setSize(32);
+        addAnnotationImg.setAlign(Alignment.LEFT);
+        addAnnotationImg.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                listGrid.startEditingNew();
+            }
+        });
+        imgLayout.addMember(addAnnotationImg);
+
+        // Show translations form
 
         form = new DynamicForm();
         form.setAutoHeight();
@@ -127,6 +134,8 @@ public class AnnotationsPanel extends VLayout {
         form.setFields(selectItem);
         imgLayout.addMember(form);
 
+        // Annotations list
+
         listGrid = new AnnotationsListGrid();
         listGrid.setCellHeight(40);
         listGrid.setAutoFitMaxRecords(10);
@@ -141,8 +150,8 @@ public class AnnotationsPanel extends VLayout {
         listGrid.setWrapCells(true);
         listGrid.setBorder("1px solid #A7ABB4");
         listGrid.setEditEvent(ListGridEditEvent.DOUBLECLICK);
-        listGrid.setCanEdit(!viewOnly);
-        listGrid.setCanRemoveRecords(!viewOnly);
+        listGrid.setCanEdit(!viewMode);
+        listGrid.setCanRemoveRecords(!viewMode);
         listGrid.setRemoveFieldTitle(getConstants().actionDelete());
         listGrid.setRemoveIcon(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         listGrid.setRemoveIconSize(14);
@@ -177,6 +186,8 @@ public class AnnotationsPanel extends VLayout {
             }
         });
 
+        // ListGrid fields
+
         ListGridField textField = new ListGridField(AnnotationDS.TEXT, getConstants().annotationText());
         textField.setShowHover(true);
         textField.setHoverCustomizer(new HoverCustomizer() {
@@ -196,14 +207,14 @@ public class AnnotationsPanel extends VLayout {
 
         listGrid.setFields(textField, urlField, isTextEditable);
 
+        // ListGrid style
+
         Canvas rollUnderCanvasProperties = new Canvas();
         rollUnderCanvasProperties.setAnimateFadeTime(600);
-
         rollUnderCanvasProperties.setAnimateShowEffect(AnimationEffect.FADE);
         rollUnderCanvasProperties.setBackgroundColor("#ffe973");
         rollUnderCanvasProperties.setOpacity(50);
         listGrid.setRollUnderCanvasProperties(rollUnderCanvasProperties);
-
         Canvas background = new Canvas();
         background.setBackgroundColor("#FFFFE0");
         listGrid.setBackgroundComponent(background);
@@ -211,7 +222,6 @@ public class AnnotationsPanel extends VLayout {
         addMember(imgLayout);
         addMember(listGrid);
     }
-
     public void setAnnotations(Set<AnnotationDto> annotations, RelatedResourceDto maintainer) {
         this.maintainer = maintainer;
 
@@ -230,6 +240,9 @@ public class AnnotationsPanel extends VLayout {
             AnnotationRecord record = RecordUtils.getAnnotationRecord(annotationDto, selectedLocale);
             listGrid.addData(record);
         }
+
+        // Show/hide Add and Remove icons
+        setCanAddOrRemoveAnnotations(viewMode, maintainer);
     }
 
     public Set<AnnotationDto> getAnnotations() {
@@ -265,11 +278,25 @@ public class AnnotationsPanel extends VLayout {
         listGrid.redraw();
     }
 
+    private void setCanAddOrRemoveAnnotations(boolean viewMode, RelatedResourceDto maintainer) {
+        annotationImg.hide();
+        addAnnotationImg.hide();
+        if (viewMode) {
+            annotationImg.show();
+        } else {
+            if (CommonUtils.isDefaultMaintainer(maintainer)) {
+                addAnnotationImg.show();
+            } else {
+                annotationImg.show();
+            }
+        }
+    }
+
     private class AnnotationsListGrid extends ListGrid {
 
         @Override
         protected boolean canEditCell(int rowNum, int colNum) {
-            if (viewOnly) {
+            if (viewMode) {
 
                 // In view mode, NEVER edit cell values
                 return false;
@@ -297,7 +324,6 @@ public class AnnotationsPanel extends VLayout {
                             // Nothing happens. If the record is not instance of AnnotationRecord is because has been recently created.
                         }
                     }
-
                 }
                 return true;
             }
