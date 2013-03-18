@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Copyright SDMX 2010 - www.sdmx.org -->
+<message:Structure
+	xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"
+	xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"
+	xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message ../statistic-sdmx-v2_1-domain/etc/schema/sdmx21/SDMXMessage.xsd ">
+	<message:Header>
+		<message:ID>SDMX_COG</message:ID>
+		<message:Test>false</message:Test>
+		<message:Prepared>2010-11-13T08:00:33+08:00</message:Prepared>
+		<message:Sender id="SDMX" />
+	</message:Header>
+	<message:Structures>
+		<structure:Codelists>
+			<structure:Codelist id="CODELIST03" agencyID="SDMX01"
+				isFinal="true" version="2.0"
+				urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(2.0)">
+				<common:Name>Code list for Codelist 03</common:Name>
+				<common:Description xml:lang="en">test list
+				</common:Description>
+				<structure:Code id="CODE0203">
+					<common:Name>0201</common:Name>
+					<structure:Parent>
+						<Ref id="CODE02" />
+					</structure:Parent>
+				</structure:Code>		
+				<structure:Code id="CODE020102">
+					<common:Name>00</common:Name>
+					<structure:Parent>
+						<Ref id="CODE0201" />
+					</structure:Parent>
+				</structure:Code>						
+				<structure:Code id="CODE01a">
+					<common:Name>01a</common:Name>
+				</structure:Code>
+				<structure:Code id="CODE0201">
+					<common:Name>0201</common:Name>
+					<structure:Parent>
+						<Ref id="CODE02" />
+					</structure:Parent>
+				</structure:Code>
+				<structure:Code id="CODE020101">
+					<common:Name>020101</common:Name>
+					<structure:Parent>
+						<Ref id="CODE0201" />
+					</structure:Parent>
+				</structure:Code>
+				<structure:Code id="CODE0301">
+					<common:Name>00</common:Name>
+					<structure:Parent>
+						<Ref id="CODE03" />
+					</structure:Parent>
+				</structure:Code>					
+				<structure:Code id="CODE01">
+					<common:Name>01</common:Name>
+				</structure:Code>
+				<structure:Code id="CODE03">
+					<common:Name>03</common:Name>
+				</structure:Code>
+				<structure:Code id="CODE0205">
+					<common:Name>0201</common:Name>
+					<structure:Parent>
+						<Ref id="CODE02" />
+					</structure:Parent>
+				</structure:Code>
+				<structure:Code id="CODE020100">
+					<common:Name>00</common:Name>
+					<structure:Parent>
+						<Ref id="CODE0201" />
+					</structure:Parent>
+				</structure:Code>
+				<structure:Code id="CODE02">
+					<common:Name>02</common:Name>
+				</structure:Code>
+				<structure:Code id="CODE0204">
+					<common:Name>0201</common:Name>
+					<structure:Parent>
+						<Ref id="CODE02" />
+					</structure:Parent>
+				</structure:Code>				
+			</structure:Codelist>
+		</structure:Codelists>
+	</message:Structures>
+</message:Structure>

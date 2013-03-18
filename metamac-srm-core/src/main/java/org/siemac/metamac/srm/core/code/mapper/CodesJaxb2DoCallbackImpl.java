@@ -9,8 +9,10 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -80,22 +82,50 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
         codesMetamacService.preCreateCodelist(ctx, targetMetamac);
 
     }
+
     @Override
     public void codeListJaxbToDoExtensionPostCreate(ServiceContext ctx, CodelistType source, CodelistVersion previousVersion, CodelistVersion target) throws MetamacException {
         CodelistVersionMetamac previousMetamac = (CodelistVersionMetamac) previousVersion;
         CodelistVersionMetamac targetMetamac = (CodelistVersionMetamac) target;
 
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update de codes index.
+            targetMetamac = codesMetamacService.versioningCodelistOpennessVisualisations(ctx, previousMetamac, targetMetamac);
+            // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update de codes index.
+            targetMetamac = codesMetamacService.versioningCodelistOrderVisualisations(ctx, previousMetamac, targetMetamac);
+
+            // Update all codes
+            for (CodelistOrderVisualisation orderVisualization : targetMetamac.getOrderVisualisations()) {
+                if (SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equalsIgnoreCase(orderVisualization.getNameableArtefact().getCode())) {
+                    codesMetamacService.sortCodesInAlphabeticalOrder(ctx, targetMetamac, orderVisualization); // Re calculate alphabetical order
+                } else {
+                    // Re calculate order
+                }
+            }
+            // codesMetamacService.
+
+            // TODO DECIDIR SI SE VAN A HEREDAR LOS ÓRDENES. Después, hablar con San para decidir el algoritmo de copia de órdenes. OJO! No volver a crear el orden alfabético en V2
+            // TODO herencia order visualisations -> recalcular los ordenes de los item
+            // TODO herencia niveles de apertura -> recalcular los niveles de los item
+            // targetMetamac.getOpennessVisualisations().addAll(c);
+            // targetMetamac.setDefaultOpennessVisualisation();
+
+        } else {
+            targetMetamac = codesMetamacService.createCodelistOrderVisualisationAlphabetical(ctx, targetMetamac); // Add alphabetical order
+            targetMetamac = codesMetamacService.createCodelistOpennessVisualisationAllOpened(ctx, targetMetamac); // Add all opened visualisation
+            // TODO en el caso de que sea nuevo se crean sin mas
+            // Haciendo esto, ponerlo como público en el btdesign.
+            // Luego poner el recalculo de los codes al versioanr
+            // Miarar si el postcreate se puede poner al final, para utilizar el if del preiousMetamac != null
+            // Revisar test k fallan en SRM de JenkinS
+            // targetMetamac = codesMetamacService.createCodelistOrderVisualisationAlphabetical(targetMetamac); // Add alphabetical order
+            // targetMetamac = codesMetamacService.createCodelistOpennessVisualisationAllOpened(targetMetamac); // Add all opened visualization
+        }
+
         // Fill metadata
         codesMetamacService.postCreateCodelist(ctx, targetMetamac, (previousVersion != null) ? previousMetamac.getReplaceToCodelists() : new ArrayList<CodelistVersionMetamac>()); // ReplaceToCodelists
-
-        // TODO DECIDIR SI SE VAN A HEREDAR LOS ÓRDENES. Después, hablar con San para decidir el algoritmo de copia de órdenes. OJO! No volver a crear el orden alfabético en V2
-        // TODO herencia order visualisations
-        // TODO herencia default order visualisation
-        // TODO herencia niveles de apertura
-        // TODO herencia todas las columnas de orden de los code
-        // TODO herencia idem para openness
     }
-
     @Override
     public void codeJaxb2DoExtensionPreCreate(ServiceContext ctx, CodeType source, CodelistVersion codelistVersion, Code previous, Code target) throws MetamacException {
         CodeMetamac previousMetamac = (CodeMetamac) previous;

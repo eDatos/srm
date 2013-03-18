@@ -113,8 +113,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion = (CodelistVersionMetamac) codesService.createCodelist(ctx, codelistVersion, SrmConstants.VERSION_PATTERN_METAMAC);
 
         // Post create actions
-        codelistVersion = createCodelistOrderVisualisationAlphabetical(codelistVersion); // Add alphabetical order
-        codelistVersion = createCodelistOpennessVisualisationAllOpened(codelistVersion); // Add all opened visualisation
+        codelistVersion = createCodelistOrderVisualisationAlphabetical(ctx, codelistVersion); // Add alphabetical order
+        codelistVersion = createCodelistOpennessVisualisationAllOpened(ctx, codelistVersion); // Add all opened visualization
         // Execute common actions after creation
         postCreateCodelist(ctx, codelistVersion, replaceTo);
 
@@ -1550,7 +1550,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
-    private CodelistVersionMetamac createCodelistOrderVisualisationAlphabetical(CodelistVersionMetamac codelistVersion) throws MetamacException {
+    @Override
+    public CodelistVersionMetamac createCodelistOrderVisualisationAlphabetical(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         CodelistOrderVisualisation alphabeticalOrderVisualisation = new CodelistOrderVisualisation();
         alphabeticalOrderVisualisation.setNameableArtefact(new NameableArtefact());
         alphabeticalOrderVisualisation.getNameableArtefact().setCode(SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE);
@@ -1566,24 +1567,42 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.addOrderVisualisation(alphabeticalOrderVisualisation);
         codelistVersion = getCodelistVersionMetamacRepository().save(codelistVersion);
 
+        sortCodesInAlphabeticalOrder(ctx, codelistVersion, alphabeticalOrderVisualisation);
+        return codelistVersion;
+    }
+
+    private boolean isCodesSiblings(Item i1, Item i2) {
+        if (i1.getParent() == null && i2.getParent() == null) {
+            return true;
+        } else if (i1.getParent() != null && i2.getParent() != null && i1.getParent().getId().equals(i2.getParent().getId())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void sortCodesInAlphabeticalOrder(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation alphabeticalOrderVisualisation) {
         // Add codes, ordered by semantic identifier
         if (!CollectionUtils.isEmpty(codelistVersion.getItems())) {
             List<Item> codesOrderedAlphabeticalAndByParent = new ArrayList<Item>(codelistVersion.getItems());
+
             Collections.sort(codesOrderedAlphabeticalAndByParent, new Comparator<Item>() {
 
                 @Override
                 public int compare(Item i1, Item i2) {
-                    if (i1.getParent() == null && i2.getParent() == null) {
+                    if (isCodesSiblings(i1, i2)) {
                         return i1.getNameableArtefact().getCode().compareTo(i2.getNameableArtefact().getCode());
-                    } else if (i1.getParent() == null || i2.getParent() == null) {
+                    } else if (i1.getParent() == null) {
+                        return 1;
+                    } else if (i2.getParent() == null) {
                         return -1;
-                    } else if (!i1.getParent().getId().equals(i2.getParent().getId())) {
-                        return i1.getParent().getId().compareTo(i2.getParent().getId());
                     } else {
-                        return i1.getNameableArtefact().getCode().compareTo(i2.getNameableArtefact().getCode());
+                        return i1.getParent().getId().compareTo(i2.getParent().getId());
                     }
                 }
+
             });
+
             String previousParentUrn = null;
             int previousOrder = -1;
             for (Item item : codesOrderedAlphabeticalAndByParent) {
@@ -1599,10 +1618,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 previousOrder = order;
             }
         }
-        return codelistVersion;
     }
 
-    private CodelistVersionMetamac createCodelistOpennessVisualisationAllOpened(CodelistVersionMetamac codelistVersion) throws MetamacException {
+    @Override
+    public CodelistVersionMetamac createCodelistOpennessVisualisationAllOpened(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         CodelistOpennessVisualisation allExpandedOpennessVisualisation = new CodelistOpennessVisualisation();
         allExpandedOpennessVisualisation.setNameableArtefact(new NameableArtefact());
         allExpandedOpennessVisualisation.getNameableArtefact().setCode(SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE);
@@ -1714,7 +1733,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return orderInNewLevel;
     }
 
-    private CodelistVersionMetamac versioningCodelistOrderVisualisations(ServiceContext ctx, CodelistVersionMetamac source, CodelistVersionMetamac target) throws MetamacException {
+    @Override
+    public CodelistVersionMetamac versioningCodelistOrderVisualisations(ServiceContext ctx, CodelistVersionMetamac source, CodelistVersionMetamac target) throws MetamacException {
         for (CodelistOrderVisualisation codelistOrderVisualisationSource : source.getOrderVisualisations()) {
             versioningCodelistOrderVisualisation(codelistOrderVisualisationSource, target);
         }
@@ -1738,7 +1758,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return target;
     }
 
-    private CodelistVersionMetamac versioningCodelistOpennessVisualisations(ServiceContext ctx, CodelistVersionMetamac source, CodelistVersionMetamac target) throws MetamacException {
+    @Override
+    public CodelistVersionMetamac versioningCodelistOpennessVisualisations(ServiceContext ctx, CodelistVersionMetamac source, CodelistVersionMetamac target) throws MetamacException {
         for (CodelistOpennessVisualisation codelistOpennessVisualisationSource : source.getOpennessVisualisations()) {
             versioningCodelistOpennessVisualisation(codelistOpennessVisualisationSource, target);
         }

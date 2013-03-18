@@ -99,6 +99,8 @@ Application CodesMetamac {
     		
     		"Creates order visualisation"
     		@CodelistOrderVisualisation createCodelistOrderVisualisation(String codelistUrn, @CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException;
+    		"Creates alphabetical order visualisation"
+    		@CodelistVersionMetamac createCodelistOrderVisualisationAlphabetical(@CodelistVersionMetamac codelistVersion) throws MetamacException;
 			"Updates order visualisation"
 			@CodelistOrderVisualisation updateCodelistOrderVisualisation(@CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException;
     		"Retrieves order visualisation by identifier"
@@ -107,9 +109,13 @@ Application CodesMetamac {
     		List<@CodelistOrderVisualisation> retrieveCodelistOrderVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
 			"Deletes order visualisation"
     		deleteCodelistOrderVisualisation(String urn) throws MetamacException;
+    		@CodelistVersionMetamac versioningCodelistOrderVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException;
+    		sortCodesInAlphabeticalOrder(@CodelistVersionMetamac codelistVersion, @CodelistOrderVisualisation alphabeticalOrderVisualisation);
 
 			"Creates openness visualisation"
     		@CodelistOpennessVisualisation createCodelistOpennessVisualisation(String codelistUrn, @CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException;
+    		"Creates openness visualisation with all levels opened"
+    		@CodelistVersionMetamac createCodelistOpennessVisualisationAllOpened(@CodelistVersionMetamac codelistVersion) throws MetamacException;
 			"Updates openness visualisation"
 			@CodelistOpennessVisualisation updateCodelistOpennessVisualisation(@CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException;
     		"Retrieves openness visualisation by identifier"
@@ -118,6 +124,7 @@ Application CodesMetamac {
     		List<@CodelistOpennessVisualisation> retrieveCodelistOpennessVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
 			"Deletes openness visualisation"
     		deleteCodelistOpennessVisualisation(String urn) throws MetamacException;
+    		@CodelistVersionMetamac versioningCodelistOpennessVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException
     		
 			// CODELIST FAMILIES
 			

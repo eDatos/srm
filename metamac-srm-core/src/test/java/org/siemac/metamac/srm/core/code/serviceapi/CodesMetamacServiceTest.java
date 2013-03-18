@@ -4693,6 +4693,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Override
+    public void testCreateCodelistOrderVisualisationAlphabetical() throws Exception {
+        // Already tested
+    }
+
+    @Override
     @Test
     public void testUpdateCodelistOrderVisualisation() throws Exception {
         CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
@@ -4934,6 +4939,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check default is null
         codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
         assertNull(codelistVersion.getDefaultOrderVisualisation());
+    }
+
+    @Override
+    public void testVersioningCodelistOrderVisualisations() throws Exception {
+        // Already tested
+    }
+
+    @Override
+    public void testSortCodesInAlphabeticalOrder() throws Exception {
+        // Already tested
     }
 
     @Override
@@ -5439,6 +5454,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Override
+    public void testCreateCodelistOpennessVisualisationAllOpened() throws Exception {
+        // Already tested
+    }
+
+    @Override
     @Test
     public void testUpdateCodelistOpennessVisualisation() throws Exception {
         CodelistOpennessVisualisation codelistOpennessVisualisation = codesService
@@ -5621,6 +5641,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check default is null
         codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V2);
         assertNull(codelistVersion.getDefaultOpennessVisualisation());
+    }
+
+    @Override
+    public void testVersioningCodelistOpennessVisualisations() throws Exception {
+        // Already tested
     }
 
     @Override
@@ -6121,4 +6146,5 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     protected String getDataSetFile() {
         return "dbunit/SrmCodesTest.xml";
     }
+
 }
