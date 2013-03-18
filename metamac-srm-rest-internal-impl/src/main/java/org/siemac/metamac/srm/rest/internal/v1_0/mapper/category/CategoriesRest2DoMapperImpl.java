@@ -61,30 +61,38 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
             CategorySchemeCriteriaPropertyRestriction propertyNameCriteria = CategorySchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
                 case VALID_FROM:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validFrom());
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validFrom(), CategorySchemeVersionMetamac.class);
                 case VALID_TO:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validTo());
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validTo(), CategorySchemeVersionMetamac.class);
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(),
-                            propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()));
+                            propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate());
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
+                            CategorySchemeVersionMetamac.class);
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate());
+                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
+                            CategorySchemeVersionMetamac.class);
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()));
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -116,13 +124,14 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
             CategoryCriteriaPropertyRestriction propertyNameCriteria = CategoryCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().codeFull(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().codeFull(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -154,17 +163,18 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
             CategorisationCriteriaPropertyRestriction propertyNameCriteria = CategorisationCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().code(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case ARTEFACT:
-                    return new SculptorPropertyCriteria(CategorisationProperties.artefactCategorised().urnProvider(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorisationProperties.artefactCategorised().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case CATEGORY:
-                    return new SculptorPropertyCriteria(CategorisationProperties.category().nameableArtefact().urnProvider(), propertyRestriction.getValue());
+                    return new SculptorPropertyCriteria(CategorisationProperties.category().nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case LATEST:
-                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()));
+                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
