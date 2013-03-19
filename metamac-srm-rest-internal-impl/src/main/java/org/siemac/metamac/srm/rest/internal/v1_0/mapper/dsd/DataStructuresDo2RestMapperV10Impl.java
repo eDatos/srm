@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.sdmx.resources.sdmxml.schemas.v2_1.common.URNReferenceType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
@@ -109,7 +110,9 @@ public class DataStructuresDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl
     }
 
     private Dimensions toDimensions(List<DimensionOrder> sources) {
-
+        if (CollectionUtils.isEmpty(sources)) {
+            return null;
+        }
         Dimensions targets = new Dimensions();
         targets.setTotal(BigInteger.valueOf(sources.size()));
 
@@ -123,7 +126,9 @@ public class DataStructuresDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl
     }
 
     private ShowDecimalPrecisions toShowDecimalPrecisions(List<MeasureDimensionPrecision> sources) {
-
+        if (CollectionUtils.isEmpty(sources)) {
+            return null;
+        }
         ShowDecimalPrecisions targets = new ShowDecimalPrecisions();
         targets.setTotal(BigInteger.valueOf(sources.size()));
 
@@ -171,6 +176,9 @@ public class DataStructuresDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl
     }
 
     private AttributeQualifierType toAttributeQualifierType(SpecialAttributeTypeEnum source) {
+        if (source == null) {
+            return null;
+        }
         switch (source) {
             case MEASURE_EXTENDS:
                 return AttributeQualifierType.MEASURE;
