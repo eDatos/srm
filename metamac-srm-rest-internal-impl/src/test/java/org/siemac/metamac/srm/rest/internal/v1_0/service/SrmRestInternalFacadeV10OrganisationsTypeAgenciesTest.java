@@ -492,7 +492,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
     }
 
     @Override
-    protected String getSupathItemSchemes() {
+    protected String getSupathMaintainableArtefacts() {
         return RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES;
     }
 

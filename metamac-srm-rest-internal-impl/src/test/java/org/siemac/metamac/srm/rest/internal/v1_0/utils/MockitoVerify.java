@@ -19,6 +19,8 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionProperties;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -54,36 +56,17 @@ public class MockitoVerify {
         return PagingParameter.pageAccess(1, 1);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes"})
+    public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindStructures(String agencyID, String resourceID, String version, String query, String orderBy, Class entityClass,
+            RestOperationEnum restOperation) {
+        return buildExpectedConditionalCriteriaToFindMaintainableArtefacts(agencyID, resourceID, version, query, orderBy, entityClass, StructureVersionProperties.maintainableArtefact(), restOperation);
+    }
+
+    @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItemSchemes(String agencyID, String resourceID, String version, String query, String orderBy, Class entityClass,
             RestOperationEnum restOperation) {
-        List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
-        if (RestOperationEnum.FIND.equals(restOperation)) {
-            expected.addAll(buildFindItemSchemesExpectedOrder(orderBy, entityClass));
-            expected.addAll(buildFindItemSchemesExpectedQuery(query, entityClass));
-        }
-        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
-        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle());
-        if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
-        }
-        if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemSchemeVersionProperties.maintainableArtefact().code()).eq(resourceID).or()
-                    .withProperty(ItemSchemeVersionProperties.maintainableArtefact().codeFull()).eq(resourceID).rbrace().buildSingle());
-        }
-        if (RestInternalConstants.LATEST.equals(version)) {
-            // AgencyScheme, DataProviderScheme and DataConsumerScheme never are versioned, so they are always with same version
-            if (OrganisationSchemeVersionMetamac.class.equals(entityClass)) {
-                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(OrganisationSchemeVersionProperties.organisationSchemeType())
-                        .in(OrganisationSchemeTypeEnum.AGENCY_SCHEME, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME).or()
-                        .withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).rbrace().buildSingle());
-            } else {
-                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).buildSingle());
-            }
-        } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemSchemeVersionProperties.maintainableArtefact().versionLogic()).eq(version).buildSingle());
-        }
-        return expected;
+        return buildExpectedConditionalCriteriaToFindMaintainableArtefacts(agencyID, resourceID, version, query, orderBy, entityClass, ItemSchemeVersionProperties.maintainableArtefact(),
+                restOperation);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -118,6 +101,38 @@ public class MockitoVerify {
         if (itemID != null) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemProperties.nameableArtefact().code()).eq(itemID).or()
                     .withProperty(ItemProperties.nameableArtefact().codeFull()).eq(itemID).rbrace().buildSingle());
+        }
+        return expected;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindMaintainableArtefacts(String agencyID, String resourceID, String version, String query, String orderBy,
+            Class entityClass, MaintainableArtefactProperty maintainableArtefactProperty, RestOperationEnum restOperation) {
+        List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
+        if (RestOperationEnum.FIND.equals(restOperation)) {
+            expected.addAll(buildFindItemSchemesExpectedOrder(orderBy, entityClass));
+            expected.addAll(buildFindItemSchemesExpectedQuery(query, entityClass));
+        }
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(maintainableArtefactProperty.finalLogicClient()).eq(Boolean.TRUE).buildSingle());
+        if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
+        }
+        if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(maintainableArtefactProperty.code()).eq(resourceID).or()
+                    .withProperty(maintainableArtefactProperty.codeFull()).eq(resourceID).rbrace().buildSingle());
+        }
+        if (RestInternalConstants.LATEST.equals(version)) {
+            // AgencyScheme, DataProviderScheme and DataConsumerScheme never are versioned, so they are always with same version
+            if (OrganisationSchemeVersionMetamac.class.equals(entityClass)) {
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(OrganisationSchemeVersionProperties.organisationSchemeType())
+                        .in(OrganisationSchemeTypeEnum.AGENCY_SCHEME, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME).or()
+                        .withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).rbrace().buildSingle());
+            } else {
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
+            }
+        } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
         return expected;
     }

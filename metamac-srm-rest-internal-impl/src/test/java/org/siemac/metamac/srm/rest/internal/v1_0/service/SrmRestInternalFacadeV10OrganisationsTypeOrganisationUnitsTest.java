@@ -485,7 +485,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     }
 
     @Override
-    protected String getSupathItemSchemes() {
+    protected String getSupathMaintainableArtefacts() {
         return RestInternalConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES;
     }
 

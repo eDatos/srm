@@ -75,9 +75,9 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         return srmRestInternalFacadeClientXml;
     }
 
-    protected String getUriItemSchemes(String agencyID, String resourceID, String version) {
+    protected String getUriMaintainableArtefacts(String agencyID, String resourceID, String version) {
         StringBuilder uri = new StringBuilder();
-        uri.append(baseApi + "/" + getSupathItemSchemes());
+        uri.append(baseApi + "/" + getSupathMaintainableArtefacts());
         if (agencyID != null) {
             uri.append("/" + agencyID);
             if (resourceID != null) {
@@ -88,6 +88,9 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
             }
         }
         return uri.toString();
+    }
+    protected String getUriItemSchemes(String agencyID, String resourceID, String version) {
+        return getUriMaintainableArtefacts(agencyID, resourceID, version);
     }
     protected String getUriItemSchemes(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
         String uri = getUriItemSchemes(agencyID, resourceID, version);
@@ -144,6 +147,6 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
     }
 
     protected abstract void resetMocks() throws MetamacException;
-    protected abstract String getSupathItemSchemes();
+    protected abstract String getSupathMaintainableArtefacts();
     protected abstract String getSupathItems();
 }

@@ -613,7 +613,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     }
 
     @Override
-    protected String getSupathItemSchemes() {
+    protected String getSupathMaintainableArtefacts() {
         return "categoryschemes";
     }
 

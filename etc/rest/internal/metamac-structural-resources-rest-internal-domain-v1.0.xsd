@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:tns="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain"
-    xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain" xmlns:sdmx="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
+    xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain"
+    xmlns:sdmx="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"
+    xmlns:sdmxCommon="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
 
     <xs:import namespace="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" schemaLocation="statistic-sdmx-v2_1-domain:SDMXStructure.xsd" />
+    <xs:import namespace="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" schemaLocation="statistic-sdmx-v2_1-domain:SDMXCommon.xsd" />
     <xs:import namespace="http://www.siemac.org/metamac/rest/common/v1.0/domain" schemaLocation="metamac-rest-api:metamac-rest-common-domain-v1.0.xsd" />
 
     <xs:complexType name="ConceptScheme">
@@ -114,11 +117,34 @@
             <xs:extension base="sdmx:DataStructureType">
                 <xs:sequence>
                     <xs:group ref="tns:StructuralResourcesMaintainableArtefactGroup" />
+                    <xs:element name="statisticalOperation" type="common:Resource" minOccurs="0" />
+                    <xs:element name="autoOpen" type="xs:boolean" minOccurs="0" />
+                    <xs:element name="heading" type="tns:Dimensions" minOccurs="1" />
+                    <xs:element name="stub" type="tns:Dimensions" minOccurs="1" />
+                    <xs:element name="showDecimals" type="xs:integer" minOccurs="0"  />
+                    <xs:element name="showDecimalsPrecisions" type="tns:ShowDecimalPrecisions" minOccurs="0"  />          
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+
+    <xs:complexType name="Attribute">
+        <xs:complexContent>
+            <xs:extension base="sdmx:AttributeType">
+                <xs:sequence>
+                    <xs:element name="type" type="tns:AttributeQualifierType" minOccurs="0"  />          
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="ShowDecimalPrecision">
+        <xs:sequence>
+            <xs:element name="concept" type="sdmxCommon:URNReferenceType" minOccurs="1" />
+            <xs:element name="showDecimals" type="xs:integer" minOccurs="1"  />
+        </xs:sequence>
+    </xs:complexType>    
     
     <!-- Lists -->
     <xs:complexType name="ConceptSchemes">
@@ -418,6 +444,26 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>    
+    
+    <xs:complexType name="Dimensions">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="dimension" type="sdmxCommon:URNReferenceType" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
+    <xs:complexType name="ShowDecimalPrecisions">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="showDecimalPrecision" type="tns:ShowDecimalPrecision" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>       
 
     <xs:complexType name="RelatedConcepts">
         <xs:complexContent>
@@ -484,6 +530,13 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="AttributeQualifierType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="MEASURE" />
+            <xs:enumeration value="SPATIAL" />
+            <xs:enumeration value="TIME" />
+        </xs:restriction>
+    </xs:simpleType>
 
     <!-- Criterias -->
     <xs:simpleType name="ConceptSchemeCriteriaPropertyRestriction">

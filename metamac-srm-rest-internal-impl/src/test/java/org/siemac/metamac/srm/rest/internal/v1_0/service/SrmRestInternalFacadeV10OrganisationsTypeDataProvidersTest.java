@@ -482,7 +482,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     }
 
     @Override
-    protected String getSupathItemSchemes() {
+    protected String getSupathMaintainableArtefacts() {
         return RestInternalConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES;
     }
 
