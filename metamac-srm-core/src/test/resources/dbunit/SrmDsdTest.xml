@@ -146,6 +146,7 @@
         LAST_UPDATED_TZ="Europe/London"
         
         RELATE_TO="[null]"
+        USAGE_STATUS="[null]"
         
         CONCEPT_IDENTITY_FK="[null]"
         REPRESENTATION_FK="[null]"
@@ -2840,7 +2841,7 @@
         ID="41"
         ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
         
-        CODE="DATASTRUCTUREDEFINITION034"
+        CODE="DATASTRUCTUREDEFINITION04"
         URI_PROVIDER="[null]"
         URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION04(01.000)"
         URN="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION04(01.000)"
@@ -2916,6 +2917,7 @@
         LAST_UPDATED_TZ="Europe/London"
         
         RELATE_TO="[null]"
+        USAGE_STATUS="CONDITIONAL"
         
         CONCEPT_IDENTITY_FK="10311"
         REPRESENTATION_FK="5"
@@ -3543,6 +3545,7 @@
         LAST_UPDATED_TZ="Europe/London"
         
         RELATE_TO="61"
+        USAGE_STATUS="CONDITIONAL"
         
         CONCEPT_IDENTITY_FK="10312"
         REPRESENTATION_FK="[NULL]"
