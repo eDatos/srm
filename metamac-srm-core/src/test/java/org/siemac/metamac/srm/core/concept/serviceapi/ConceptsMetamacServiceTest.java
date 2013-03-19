@@ -684,23 +684,17 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         conceptSchemeVersion.setIsPartial(Boolean.FALSE);
         itemSchemeRepository.save(conceptSchemeVersion);
 
-        ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        concept1.setSdmxRelatedArtefact(null);
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+        concept.setSdmxRelatedArtefact(null);
         // save to force incorrect metadata
-        itemRepository.save(concept1);
-
-        ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
-        concept2.setSdmxRelatedArtefact(null);
-        // save to force incorrect metadata
-        itemRepository.save(concept2);
+        itemRepository.save(concept);
 
         try {
             conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(2, e.getExceptionItems().size());
-            MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, 1, new String[]{concept1.getNameableArtefact().getUrn()}, e.getExceptionItems().get(0));
-            MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, 1, new String[]{concept2.getNameableArtefact().getUrn()}, e.getExceptionItems().get(1));
+            assertEquals(1, e.getExceptionItems().size());
+            MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, 1, new String[]{concept.getNameableArtefact().getUrn()}, e.getExceptionItems().get(0));
         }
     }
 
