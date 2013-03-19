@@ -659,7 +659,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         }
 
         // Annotations
-        viewAnnotationsPanel.setAnnotations(dimensionComponentDto.getAnnotations());
+        viewAnnotationsPanel.setAnnotations(dimensionComponentDto.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
 
         form.markForRedraw();
     }
@@ -747,7 +747,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         editionForm.markForRedraw();
 
         // Annotations
-        editionAnnotationsPanel.setAnnotations(dimensionComponentDto.getAnnotations());
+        editionAnnotationsPanel.setAnnotations(dimensionComponentDto.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
     @Override

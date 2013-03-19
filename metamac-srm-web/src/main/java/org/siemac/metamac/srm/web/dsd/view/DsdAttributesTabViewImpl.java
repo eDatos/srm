@@ -627,7 +627,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         }
 
         // Annotations
-        viewAnnotationsPanel.setAnnotations(dataAttributeDto.getAnnotations());
+        viewAnnotationsPanel.setAnnotations(dataAttributeDto.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
     private void setAttributeEditionMode(DataAttributeDto dataAttributeDto) {
@@ -724,7 +724,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionForm.redraw();
 
         // Annotations
-        editionAnnotationsPanel.setAnnotations(dataAttributeDto.getAnnotations());
+        editionAnnotationsPanel.setAnnotations(dataAttributeDto.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
     @Override

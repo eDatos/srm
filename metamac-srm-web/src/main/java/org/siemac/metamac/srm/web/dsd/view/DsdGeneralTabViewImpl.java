@@ -545,7 +545,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         commentsForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(dsd.getAnnotations());
+        annotationsPanel.setAnnotations(dsd.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
     private void setDsdEditionMode(DataStructureDefinitionMetamacDto dsd) {
@@ -597,7 +597,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         commentsEditionForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(dsd.getAnnotations());
+        annotationsEditionPanel.setAnnotations(dsd.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
     }
 
     @Override
