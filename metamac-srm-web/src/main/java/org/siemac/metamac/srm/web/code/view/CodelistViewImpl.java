@@ -669,7 +669,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         commentsForm.setValue(CodelistDS.COMMENTS, RecordUtils.getInternationalStringRecord(codelistDto.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(codelistDto.getAnnotations());
+        annotationsPanel.setAnnotations(codelistDto.getAnnotations(), codelistDto.getMaintainer());
     }
 
     private void setCodelistEditionMode(CodelistMetamacDto codelistDto) {
@@ -733,7 +733,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         commentsEditionForm.setValue(CodelistDS.COMMENTS, RecordUtils.getInternationalStringRecord(codelistDto.getComment()));
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(codelistDto.getAnnotations());
+        annotationsEditionPanel.setAnnotations(codelistDto.getAnnotations(), codelistDto.getMaintainer());
     }
 
     public CodelistMetamacDto getCodelistDto() {
