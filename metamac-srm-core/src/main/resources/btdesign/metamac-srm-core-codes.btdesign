@@ -111,6 +111,7 @@ Application CodesMetamac {
     		deleteCodelistOrderVisualisation(String urn) throws MetamacException;
     		@CodelistVersionMetamac versioningCodelistOrderVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException;
     		sortCodesInAlphabeticalOrder(@CodelistVersionMetamac codelistVersion, @CodelistOrderVisualisation alphabeticalOrderVisualisation);
+    		sortCodesByOrder(@CodelistVersionMetamac codelistVersion, @CodelistOrderVisualisation orderVisualisation);
 
 			"Creates openness visualisation"
     		@CodelistOpennessVisualisation createCodelistOpennessVisualisation(String codelistUrn, @CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException;
@@ -124,8 +125,8 @@ Application CodesMetamac {
     		List<@CodelistOpennessVisualisation> retrieveCodelistOpennessVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
 			"Deletes openness visualisation"
     		deleteCodelistOpennessVisualisation(String urn) throws MetamacException;
-    		@CodelistVersionMetamac versioningCodelistOpennessVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException
-    		
+    		@CodelistVersionMetamac versioningCodelistOpennessVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException;
+    		@CodelistVersionMetamac recreateCodelistOpennessVisualisationAllOpened(@CodelistVersionMetamac codelistVersion, @CodelistOpennessVisualisation allExpandedOpennessVisualisation) throws MetamacException;
 			// CODELIST FAMILIES
 			
 			"Creates codelist family"

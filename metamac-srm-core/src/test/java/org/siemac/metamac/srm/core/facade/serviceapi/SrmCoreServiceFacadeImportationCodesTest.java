@@ -123,7 +123,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
 
     @Test
     @DirtyDatabase
-    public void testImport_CL_CODELIST03() throws Exception {
+    public void testImportOrders_CL_CODELIST03() throws Exception {
         // New Transaction: Because the job needs persisted data
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -158,16 +158,37 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
             assertEquals(Integer.valueOf(3), getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_3).getOrder());
 
         }
-        // codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_FREQ_V1);
-        // assertEquals(8, codelistVersion.getItems().size());
-        // codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_CONF_STATUS_V1);
-        // assertEquals(5, codelistVersion.getItems().size());
-        // codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_OBS_STATUS_V1);
-        // assertEquals(8, codelistVersion.getItems().size());
-        // codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_UNIT_MULT_V1);
-        // assertEquals(9, codelistVersion.getItems().size());
-        // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
+        {
+            CodelistOrderVisualisation visualisation = codesMetamacService.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
+            List<CodeMetamacVisualisationResult> codes = codesMetamacService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistVersion.getMaintainableArtefact().getUrn(), "es",
+                    visualisation.getNameableArtefact().getUrn(), null);
+            assertEquals(Integer.valueOf(1), getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_2).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_2_1).getOrder());
+            assertEquals(Integer.valueOf(0), getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_2_1_1).getOrder());
+        }
+        {
+            String locale = "es";
+            List<CodeMetamacVisualisationResult> codes = codesMetamacService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_CODELIST03_V2, locale, null,
+                    CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED);
+
+            // Validate
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_1).getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_2).getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_2_1).getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_3_V2_CODE_2_1_1).getOpenness());
+
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(2.0).CODE0204").getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(2.0).CODE0203").getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(2.0).CODE0205").getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(2.0).CODE020101").getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(2.0).CODE020100").getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(2.0).CODE020102").getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(2.0).CODE01a").getOpenness());
+            assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(2.0).CODE0301").getOpenness());
+        }
     }
+
     @Test
     @DirtyDatabase
     @Ignore

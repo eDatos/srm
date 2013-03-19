@@ -1580,32 +1580,74 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return false;
     }
 
+    class AlphabeticalByLevelComparator implements Comparator<Item> {
+
+        @Override
+        public int compare(Item i1, Item i2) {
+            if (isCodesSiblings(i1, i2)) {
+                return i1.getNameableArtefact().getCode().compareTo(i2.getNameableArtefact().getCode());
+            } else if (i1.getParent() == null) {
+                return 1;
+            } else if (i2.getParent() == null) {
+                return -1;
+            } else {
+                return i1.getParent().getId().compareTo(i2.getParent().getId());
+            }
+        }
+    }
+
     @Override
     public void sortCodesInAlphabeticalOrder(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation alphabeticalOrderVisualisation) {
         // Add codes, ordered by semantic identifier
-        if (!CollectionUtils.isEmpty(codelistVersion.getItems())) {
-            List<Item> codesOrderedAlphabeticalAndByParent = new ArrayList<Item>(codelistVersion.getItems());
+        sortCodes(ctx, codelistVersion, alphabeticalOrderVisualisation, new AlphabeticalByLevelComparator());
+    }
 
-            Collections.sort(codesOrderedAlphabeticalAndByParent, new Comparator<Item>() {
+    @Override
+    public void sortCodesByOrder(ServiceContext ctx, CodelistVersionMetamac codelistVersion, final CodelistOrderVisualisation orderVisualisation) {
+        // Add codes, ordered by semantic identifier
 
-                @Override
-                public int compare(Item i1, Item i2) {
-                    if (isCodesSiblings(i1, i2)) {
-                        return i1.getNameableArtefact().getCode().compareTo(i2.getNameableArtefact().getCode());
-                    } else if (i1.getParent() == null) {
+        Comparator<Item> comparator = new Comparator<Item>() {
+
+            @Override
+            public int compare(Item i1, Item i2) {
+                CodeMetamac c1 = (CodeMetamac) i1;
+                CodeMetamac c2 = (CodeMetamac) i2;
+                if (isCodesSiblings(i1, i2)) {
+                    // The elements with order set as null will set to the end.
+                    Integer c1Order = SrmServiceUtils.getCodeOrder(c1, orderVisualisation.getColumnIndex());
+                    Integer c2Order = SrmServiceUtils.getCodeOrder(c2, orderVisualisation.getColumnIndex());
+                    if (c1Order == null && c2Order == null) {
+                        return 0;
+                    } else if (c1Order == null) {
                         return 1;
-                    } else if (i2.getParent() == null) {
+                    } else if (c2Order == null) {
                         return -1;
                     } else {
-                        return i1.getParent().getId().compareTo(i2.getParent().getId());
+                        return c1Order.compareTo(c2Order);
                     }
+                } else if (i1.getParent() == null) {
+                    return 1;
+                } else if (i2.getParent() == null) {
+                    return -1;
+                } else {
+                    return i1.getParent().getId().compareTo(i2.getParent().getId());
                 }
+            }
 
-            });
+        };
+
+        sortCodes(ctx, codelistVersion, orderVisualisation, comparator);
+    }
+
+    public void sortCodes(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation orderVisualisation, Comparator<Item> comparator) {
+        if (!CollectionUtils.isEmpty(codelistVersion.getItems())) {
+            List<Item> codesOrdered = new ArrayList<Item>(codelistVersion.getItems());
+
+            Collections.sort(codesOrdered, comparator);
 
             String previousParentUrn = null;
             int previousOrder = -1;
-            for (Item item : codesOrderedAlphabeticalAndByParent) {
+            for (Item item : codesOrdered) {
                 CodeMetamac code = (CodeMetamac) item;
                 String actualParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
                 if (!StringUtils.equals(previousParentUrn, actualParentUrn)) {
@@ -1613,7 +1655,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     previousParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
                 }
                 int order = previousOrder == -1 ? 0 : previousOrder + 1;
-                SrmServiceUtils.setCodeOrder(code, alphabeticalOrderVisualisation.getColumnIndex(), Integer.valueOf(order));
+                SrmServiceUtils.setCodeOrder(code, orderVisualisation.getColumnIndex(), Integer.valueOf(order));
                 getCodeMetamacRepository().save(code);
                 previousOrder = order;
             }
@@ -1637,7 +1679,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.addOpennessVisualisation(allExpandedOpennessVisualisation);
         codelistVersion = getCodelistVersionMetamacRepository().save(codelistVersion);
 
-        // Add codes with expanded = true as default // TODO comprobar en importación que se hace correctamente, para un codelist con sus codes sin persistir
+        // Add codes with expanded = true as default
+        getCodeMetamacRepository().updateCodesOpennessColumnByCodelist(codelistVersion, allExpandedOpennessVisualisation.getColumnIndex(), Boolean.TRUE);
+        return codelistVersion;
+    }
+
+    @Override
+    public CodelistVersionMetamac recreateCodelistOpennessVisualisationAllOpened(ServiceContext ctx, CodelistVersionMetamac codelistVersion,
+            CodelistOpennessVisualisation allExpandedOpennessVisualisation) throws MetamacException {
         getCodeMetamacRepository().updateCodesOpennessColumnByCodelist(codelistVersion, allExpandedOpennessVisualisation.getColumnIndex(), Boolean.TRUE);
         return codelistVersion;
     }

@@ -9,9 +9,11 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,37 +97,31 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
             // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update de codes index.
             targetMetamac = codesMetamacService.versioningCodelistOrderVisualisations(ctx, previousMetamac, targetMetamac);
 
-            // Update all codes
+            // Update all order codes
             for (CodelistOrderVisualisation orderVisualization : targetMetamac.getOrderVisualisations()) {
                 if (SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equalsIgnoreCase(orderVisualization.getNameableArtefact().getCode())) {
                     codesMetamacService.sortCodesInAlphabeticalOrder(ctx, targetMetamac, orderVisualization); // Re calculate alphabetical order
                 } else {
                     // Re calculate order
+                    codesMetamacService.sortCodesByOrder(ctx, targetMetamac, orderVisualization);
                 }
             }
-            // codesMetamacService.
 
-            // TODO DECIDIR SI SE VAN A HEREDAR LOS ÓRDENES. Después, hablar con San para decidir el algoritmo de copia de órdenes. OJO! No volver a crear el orden alfabético en V2
-            // TODO herencia order visualisations -> recalcular los ordenes de los item
-            // TODO herencia niveles de apertura -> recalcular los niveles de los item
-            // targetMetamac.getOpennessVisualisations().addAll(c);
-            // targetMetamac.setDefaultOpennessVisualisation();
-
+            // Update default opened visualization
+            for (CodelistOpennessVisualisation opennessVisualization : targetMetamac.getOpennessVisualisations()) {
+                if (SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE.equalsIgnoreCase(opennessVisualization.getNameableArtefact().getCode())) {
+                    codesMetamacService.recreateCodelistOpennessVisualisationAllOpened(ctx, targetMetamac, opennessVisualization);
+                }
+            }
         } else {
             targetMetamac = codesMetamacService.createCodelistOrderVisualisationAlphabetical(ctx, targetMetamac); // Add alphabetical order
-            targetMetamac = codesMetamacService.createCodelistOpennessVisualisationAllOpened(ctx, targetMetamac); // Add all opened visualisation
-            // TODO en el caso de que sea nuevo se crean sin mas
-            // Haciendo esto, ponerlo como público en el btdesign.
-            // Luego poner el recalculo de los codes al versioanr
-            // Miarar si el postcreate se puede poner al final, para utilizar el if del preiousMetamac != null
-            // Revisar test k fallan en SRM de JenkinS
-            // targetMetamac = codesMetamacService.createCodelistOrderVisualisationAlphabetical(targetMetamac); // Add alphabetical order
-            // targetMetamac = codesMetamacService.createCodelistOpennessVisualisationAllOpened(targetMetamac); // Add all opened visualization
+            targetMetamac = codesMetamacService.createCodelistOpennessVisualisationAllOpened(ctx, targetMetamac); // Add all opened visualization
         }
 
         // Fill metadata
         codesMetamacService.postCreateCodelist(ctx, targetMetamac, (previousVersion != null) ? previousMetamac.getReplaceToCodelists() : new ArrayList<CodelistVersionMetamac>()); // ReplaceToCodelists
     }
+
     @Override
     public void codeJaxb2DoExtensionPreCreate(ServiceContext ctx, CodeType source, CodelistVersion codelistVersion, Code previous, Code target) throws MetamacException {
         CodeMetamac previousMetamac = (CodeMetamac) previous;
@@ -141,8 +137,22 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
                     BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
 
+            // Other metatadata
             targetMetamac.setShortName(BaseVersioningCopyUtils.copy(previousMetamac.getShortName())); // ShortName
             targetMetamac.setVariableElement(previousMetamac.getVariableElement());
+
+            for (int i = 1; i <= SrmConstants.CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {
+                Integer order = SrmServiceUtils.getCodeOrder(previousMetamac, i);
+                if (order != null) {
+                    SrmServiceUtils.setCodeOrder(targetMetamac, i, order);
+                }
+            }
+            for (int i = 1; i <= SrmConstants.CODELIST_OPENNESS_VISUALISATION_MAXIMUM_NUMBER; i++) {
+                Boolean openness = SrmServiceUtils.getCodeOpenness(previousMetamac, i);
+                if (openness != null) {
+                    SrmServiceUtils.setCodeOpenness(targetMetamac, i, openness);
+                }
+            }
         }
 
         // Fill metadata

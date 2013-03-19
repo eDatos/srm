@@ -2996,6 +2996,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Override
+    public void testRecreateCodelistOpennessVisualisationAllOpened() throws Exception {
+        // Already tested
+    }
+
     @Test
     public void testRetrieveCodesByCodelistUrnCheckAllVisualisationsTogether() throws Exception {
         // Retrieve
@@ -4948,6 +4953,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     public void testSortCodesInAlphabeticalOrder() throws Exception {
+        // Already tested
+    }
+
+    @Override
+    public void testSortCodesByOrder() throws Exception {
         // Already tested
     }
 
