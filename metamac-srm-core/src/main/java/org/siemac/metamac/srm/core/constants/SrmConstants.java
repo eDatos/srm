@@ -9,6 +9,11 @@ public class SrmConstants {
     // Configuration
     public static final String             METAMAC_ORGANISATION_URN                                  = "metamac.organisation.urn";
     public static final String             METAMAC_SRM_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN        = "metamac.srm.dsd.primary_measure.default_concept.urn";
+    // Datasource
+    public static final String             DB_URL                                                    = "metamac.srm.db.url";
+    public static final String             DB_USERNAME                                               = "metamac.srm.db.username";
+    public static final String             DB_PASSWORD                                               = "metamac.srm.db.password";
+    public static final String             DB_DIALECT                                                = "metamac.srm.db.dialect";
     public static final String             DB_DRIVER_NAME                                            = "metamac.srm.db.driverName";
     public static final String             DB_DRIVER_NAME_ORACLE                                     = "oracle.jdbc.OracleDriver";
     public static final String             DB_DRIVER_NAME_MSSQL                                      = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
