@@ -1,6 +1,6 @@
 package org.siemac.metamac.soap.criteria.mapper;
 
-import java.util.List;
+import java.util.List; 
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -147,18 +147,7 @@ public class SoapCriteria2SculptorCriteria<T> {
         checkPropertyRestriction(metamacCriteriaPropertyRestriction);
 
         SculptorPropertyCriteria sculptorPropertyCriteria = callback.retrieveProperty(metamacCriteriaPropertyRestriction);
-
-        if (sculptorPropertyCriteria.getProperty1() == null) {
-            throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA);
-        } else if (sculptorPropertyCriteria.getProperty2() == null) {
-            addRestrictionWithProperty(metamacCriteriaPropertyRestriction, criteria, sculptorPropertyCriteria.getProperty1(), sculptorPropertyCriteria.getValue());
-        } else {
-            criteria.lbrace();
-            addRestrictionWithProperty(metamacCriteriaPropertyRestriction, criteria, sculptorPropertyCriteria.getProperty1(), sculptorPropertyCriteria.getValue());
-            criteria.or();
-            addRestrictionWithProperty(metamacCriteriaPropertyRestriction, criteria, sculptorPropertyCriteria.getProperty2(), sculptorPropertyCriteria.getValue());
-            criteria.rbrace();
-        }
+        addRestrictionWithProperty(metamacCriteriaPropertyRestriction, criteria, sculptorPropertyCriteria.getProperty(), sculptorPropertyCriteria.getValue());
     }
 
     private void addRestrictionWithProperty(MetamacCriteriaPropertyRestriction metamacCriteriaPropertyRestriction, ConditionRoot criteria, Property property, Object value) throws ExceptionFault {
