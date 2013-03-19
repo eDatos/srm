@@ -147,7 +147,6 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategory(categorySchemeDto.getLifeCycle().getProcStatus()));
 
         markFormsForRedraw();
-
     }
 
     private void createViewForm() {
@@ -231,7 +230,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         commentsForm.setValue(CategoryDS.COMMENTS, RecordUtils.getInternationalStringRecord(categoryDto.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(categoryDto.getAnnotations());
+        annotationsPanel.setAnnotations(categoryDto.getAnnotations(), categorySchemeDto.getMaintainer());
     }
 
     private void setCategoryEditionMode(CategoryMetamacDto categoryDto) {
@@ -250,7 +249,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         commentsEditionForm.setValue(CategoryDS.COMMENTS, RecordUtils.getInternationalStringRecord(categoryDto.getComment()));
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(categoryDto.getAnnotations());
+        annotationsEditionPanel.setAnnotations(categoryDto.getAnnotations(), categorySchemeDto.getMaintainer());
     }
 
     private void bindMainFormLayoutEvents() {
