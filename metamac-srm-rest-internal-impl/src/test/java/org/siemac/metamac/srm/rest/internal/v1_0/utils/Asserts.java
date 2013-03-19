@@ -60,13 +60,17 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(count, actual.getTexts().size());
     }
 
-    public static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, Resource actual) {
+    public static void assertEqualsResource(MaintainableArtefact expected, String expectedKind, String expectedSelfLink, Resource actual) {
         assertEquals(expectedKind, actual.getKind());
-        assertEquals(expected.getMaintainableArtefact().getCode(), actual.getId());
-        assertEquals(expected.getMaintainableArtefact().getUrn(), actual.getUrn());
+        assertEquals(expected.getCode(), actual.getId());
+        assertEquals(expected.getUrn(), actual.getUrn());
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
-        assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getTitle());
+        assertEqualsInternationalString(expected.getName(), actual.getTitle());
+    }
+
+    public static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, Resource actual) {
+        assertEqualsResource(expected.getMaintainableArtefact(), expectedKind, expectedSelfLink, actual);
     }
 
     public static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, Resource actual) {

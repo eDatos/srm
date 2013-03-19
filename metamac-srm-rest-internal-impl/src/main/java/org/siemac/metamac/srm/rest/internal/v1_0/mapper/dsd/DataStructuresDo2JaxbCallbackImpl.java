@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.dsd;
 import java.util.List;
 
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AttributeListType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AttributeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataStructureType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataStructuresType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DimensionListType;
@@ -11,10 +12,12 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.GroupType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureDimensionType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureListType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.TimeDimensionType;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Attribute;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
@@ -75,5 +78,15 @@ public class DataStructuresDo2JaxbCallbackImpl implements StructureDo2JaxbCallba
     @Override
     public TimeDimensionType createTimeDimensionJaxb(TimeDimension source) {
         return new TimeDimensionType();
+    }
+
+    @Override
+    public AttributeType createAttributeJaxb(DataAttribute source) {
+        return new Attribute();
+    }
+
+    @Override
+    public void fillAttributeJaxb(DataAttribute source, AttributeType target) {
+        dataStructuresDo2RestMapperV10.toAttribute(source, (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Attribute) target);
     }
 }

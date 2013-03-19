@@ -17,8 +17,8 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
@@ -64,7 +64,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
 
-        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
+        String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1);
 
         // Request and validate
         WebClient webClient = WebClient.create(requestUri).accept("application/json");
@@ -180,7 +180,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     public void testRetrieveConceptScheme() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         ConceptScheme conceptScheme = getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
 
         // Validation
@@ -211,7 +211,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         // other metadata are tested in mapper tests
         assertEquals("idAsMaintainer" + agencyID, conceptScheme.getAgencyID());
         assertEquals(resourceID, conceptScheme.getId());
-        assertEquals(ITEM_SCHEME_VERSION_1, conceptScheme.getVersion());
+        assertEquals(VERSION_1, conceptScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
@@ -225,7 +225,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptSchemeXml() throws Exception {
 
-        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
+        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
 
         for (int i = 0; i < requestUris.length; i++) {
@@ -239,7 +239,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     public void testRetrieveConceptsSchemeErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = NOT_EXISTS;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         try {
             getSrmRestInternalFacadeClientXml().retrieveConceptScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
@@ -260,7 +260,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testRetrieveConceptSchemeErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_VERSION_1);
+        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, VERSION_1);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/retrieveConceptScheme.notFound.xml");
 
         // Request and validate
@@ -271,7 +271,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     public void testRetrieveConceptSchemeErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveConceptScheme(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveConceptScheme(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -286,7 +286,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveConceptScheme(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveConceptScheme(AGENCY_1, WILDCARD, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -343,14 +343,14 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
-        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", null, null); // with pagination
-        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindConcepts(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null); // with pagination
+        testFindConcepts(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindConcepts(AGENCY_1, WILDCARD, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
     public void testFindConceptsXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConcepts.xml");
 
         // Request and validate
@@ -361,7 +361,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     public void testRetrieveConcept() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         String conceptID = ITEM_1_CODE;
         Concept concept = getSrmRestInternalFacadeClientXml().retrieveConcept(agencyID, resourceID, version, conceptID);
 
@@ -382,7 +382,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     @Test
     public void testRetrieveConceptXml() throws Exception {
 
-        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
         for (int i = 0; i < requestUris.length; i++) {
             String requestUri = requestUris[i];
@@ -395,7 +395,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     public void testRetrieveConceptErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         String conceptID = NOT_EXISTS;
         try {
             getSrmRestInternalFacadeClientXml().retrieveConcept(agencyID, resourceID, version, conceptID);
@@ -417,7 +417,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testRetrieveConceptErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, NOT_EXISTS);
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, NOT_EXISTS);
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/retrieveConcept.notFound.xml");
 
         // Request and validate
@@ -429,7 +429,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveConcept(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveConcept(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -443,7 +443,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveConcept(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveConcept(AGENCY_1, WILDCARD, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -473,7 +473,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveConcept(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveConcept(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -556,8 +556,8 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                     ConceptSchemeVersionMetamac conceptSchemeVersion = null;
                     if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                         conceptSchemeVersion = null;
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (ITEM_SCHEME_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
-                        conceptSchemeVersion = ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
+                        conceptSchemeVersion = ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1);
                     } else {
                         fail();
                     }
@@ -569,10 +569,10 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                 } else {
                     // any
                     List<ConceptSchemeVersionMetamac> conceptSchemes = new ArrayList<ConceptSchemeVersionMetamac>();
-                    conceptSchemes.add(ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1));
-                    conceptSchemes.add(ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1));
-                    conceptSchemes.add(ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_2));
-                    conceptSchemes.add(ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_VERSION_1));
+                    conceptSchemes.add(ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1));
+                    conceptSchemes.add(ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1));
+                    conceptSchemes.add(ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_2));
+                    conceptSchemes.add(ConceptsDoMocks.mockConceptSchemeWithConcepts(AGENCY_2, ITEM_SCHEME_3_CODE, VERSION_1));
                     return new PagedResult<ConceptSchemeVersionMetamac>(conceptSchemes, conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size(), conceptSchemes.size() * 10, 0);
                 }
             };
@@ -597,8 +597,8 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                     ConceptMetamac concept = null;
                     if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version) || NOT_EXISTS.equals(itemID)) {
                         concept = null;
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
-                        ConceptSchemeVersionMetamac conceptScheme1 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
+                        ConceptSchemeVersionMetamac conceptScheme1 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1);
                         ConceptMetamac parent = ConceptsDoMocks.mockConcept(ITEM_2_CODE, conceptScheme1, null);
                         concept = ConceptsDoMocks.mockConceptWithConceptRelations(ITEM_1_CODE, conceptScheme1, parent);
                     } else {
@@ -611,8 +611,8 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                     return new PagedResult<ConceptMetamac>(concepts, 0, concepts.size(), concepts.size());
                 } else {
                     // any
-                    ConceptSchemeVersionMetamac conceptScheme1 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
-                    ConceptSchemeVersionMetamac conceptScheme2 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1);
+                    ConceptSchemeVersionMetamac conceptScheme1 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1);
+                    ConceptSchemeVersionMetamac conceptScheme2 = ConceptsDoMocks.mockConceptScheme(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1);
 
                     List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
                     concepts.add(ConceptsDoMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null));

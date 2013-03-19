@@ -26,6 +26,7 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
@@ -108,6 +109,17 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     @Override
     public Date toDate(DateTime source) {
         return RestCommonUtil.transformDateTimeToDate(source);
+    }
+
+    protected String getCode(IdentifiableArtefact identifiableArtefact) {
+        if (identifiableArtefact.getCodeFull() != null) {
+            return identifiableArtefact.getCodeFull();
+        } else {
+            return identifiableArtefact.getCode();
+        }
+    }
+    protected String getUrn(IdentifiableArtefact identifiableArtefact) {
+        return identifiableArtefact.getUrnProvider();
     }
 
     protected Resource toResource(NameableArtefact source, String kind, ResourceLink selfLink) {
@@ -207,14 +219,6 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         } else {
             // default SDMX
             return SdmxAlias.SDMX_MAINTAINER;
-        }
-    }
-
-    private String getCode(NameableArtefact nameableArtefact) {
-        if (nameableArtefact.getCodeFull() != null) {
-            return nameableArtefact.getCodeFull();
-        } else {
-            return nameableArtefact.getCode();
         }
     }
 }

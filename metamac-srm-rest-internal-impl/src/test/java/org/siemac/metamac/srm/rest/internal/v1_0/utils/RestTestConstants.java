@@ -14,12 +14,16 @@ public class RestTestConstants {
     public static String ITEM_SCHEME_2_CODE                   = "itemScheme2";
     public static String ITEM_SCHEME_3_CODE                   = "itemScheme3";
 
-    public static String ITEM_SCHEME_VERSION_1                = "01.000";
-    public static String ITEM_SCHEME_VERSION_2                = "02.000";
+    public static String VERSION_1                            = "01.000";
+    public static String VERSION_2                            = "02.000";
 
     public static String ITEM_1_CODE                          = "item1";
     public static String ITEM_2_CODE                          = "item2";
     public static String ITEM_3_CODE                          = "item3";
+
+    public static String ARTEFACT_1_CODE                      = "artefact1";
+    public static String ARTEFACT_2_CODE                      = "artefact2";
+    public static String ARTEFACT_3_CODE                      = "artefact3";
 
     public static String QUERY_ID_LIKE_1                      = "ID " + ComparisonOperator.LIKE + " \"1\"";
     public static String QUERY_ID_LIKE_1_NAME_LIKE_2          = "ID " + ComparisonOperator.LIKE + " \"1\"" + " " + LogicalOperator.AND + " " + "NAME " + ComparisonOperator.LIKE + " \"2\"";

@@ -9,7 +9,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.Organ
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
@@ -153,7 +153,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     public void testRetrieveDataConsumerScheme() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         DataConsumerScheme dataConsumerScheme = getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(agencyID, resourceID, version);
 
         // Validation
@@ -188,7 +188,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     @Test
     public void testRetrieveDataConsumerSchemeXml() throws Exception {
 
-        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, null, null, null);
+        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
 
         for (int i = 0; i < requestUris.length; i++) {
@@ -202,7 +202,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     public void testRetrieveDataConsumerSchemeErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = NOT_EXISTS;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         try {
             getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
@@ -223,7 +223,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
     @Test
     public void testRetrieveDataConsumerSchemeErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_VERSION_1, null, null, null);
+        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, VERSION_1, null, null, null);
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest.class.getResourceAsStream("/responses/organisations/retrieveDataConsumerScheme.notFound.xml");
 
         // Request and validate
@@ -234,7 +234,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     public void testRetrieveDataConsumerSchemeErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -249,7 +249,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(AGENCY_1, WILDCARD, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -305,14 +305,14 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
-        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", null, null); // with pagination
-        testFindDataConsumers(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataConsumers(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null); // with pagination
+        testFindDataConsumers(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataConsumers(AGENCY_1, WILDCARD, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
     public void testFindDataConsumersXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest.class.getResourceAsStream("/responses/organisations/findDataConsumers.xml");
 
         // Request and validate
@@ -323,7 +323,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     public void testRetrieveDataConsumer() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         String organsationID = ITEM_1_CODE;
         DataConsumer dataConsumer = getSrmRestInternalFacadeClientXml().retrieveDataConsumer(agencyID, resourceID, version, organsationID);
 
@@ -344,7 +344,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     @Test
     public void testRetrieveDataConsumerXml() throws Exception {
 
-        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
         for (int i = 0; i < requestUris.length; i++) {
             String requestUri = requestUris[i];
@@ -357,7 +357,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     public void testRetrieveDataConsumerErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         String organisationID = NOT_EXISTS;
         try {
             getSrmRestInternalFacadeClientXml().retrieveDataConsumer(agencyID, resourceID, version, organisationID);
@@ -380,7 +380,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
     @Test
     public void testRetrieveDataConsumerErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, NOT_EXISTS);
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, NOT_EXISTS);
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest.class.getResourceAsStream("/responses/organisations/retrieveDataConsumer.notFound.xml");
 
         // Request and validate
@@ -392,7 +392,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -406,7 +406,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, WILDCARD, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -436,7 +436,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 

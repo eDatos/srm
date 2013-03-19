@@ -9,7 +9,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.Organ
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
@@ -153,7 +153,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
     public void testRetrieveAgencyScheme() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         AgencyScheme agencyScheme = getSrmRestInternalFacadeClientXml().retrieveAgencyScheme(agencyID, resourceID, version);
 
         // Validation
@@ -184,7 +184,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         // other metadata are tested in mapper tests
         assertEquals("idAsMaintainer" + agencyID, agencyScheme.getAgencyID());
         assertEquals(resourceID, agencyScheme.getId());
-        assertEquals(ITEM_SCHEME_VERSION_1, agencyScheme.getVersion());
+        assertEquals(VERSION_1, agencyScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, agencyScheme.getParentLink().getKind());
@@ -198,7 +198,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
     @Test
     public void testRetrieveAgencySchemeXml() throws Exception {
 
-        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, null, null, null);
+        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
 
         for (int i = 0; i < requestUris.length; i++) {
@@ -212,7 +212,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
     public void testRetrieveAgencySchemeErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = NOT_EXISTS;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         try {
             getSrmRestInternalFacadeClientXml().retrieveAgencyScheme(agencyID, resourceID, version);
         } catch (ServerWebApplicationException e) {
@@ -233,7 +233,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
 
     @Test
     public void testRetrieveAgencySchemeErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, ITEM_SCHEME_VERSION_1, null, null, null);
+        String requestUri = getUriItemSchemes(AGENCY_1, NOT_EXISTS, VERSION_1, null, null, null);
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest.class.getResourceAsStream("/responses/organisations/retrieveAgencyScheme.notFound.xml");
 
         // Request and validate
@@ -244,7 +244,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
     public void testRetrieveAgencySchemeErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveAgencyScheme(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveAgencyScheme(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -259,7 +259,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveAgencyScheme(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveAgencyScheme(AGENCY_1, WILDCARD, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -315,14 +315,14 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         testFindAgencies(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
-        testFindAgencies(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", null, null); // with pagination
-        testFindAgencies(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindAgencies(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindAgencies(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null); // with pagination
+        testFindAgencies(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindAgencies(AGENCY_1, WILDCARD, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
     public void testFindAgenciesXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest.class.getResourceAsStream("/responses/organisations/findAgencies.xml");
 
         // Request and validate
@@ -333,7 +333,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
     public void testRetrieveAgency() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         String organsationID = ITEM_1_CODE;
         Agency agency = getSrmRestInternalFacadeClientXml().retrieveAgency(agencyID, resourceID, version, organsationID);
 
@@ -354,7 +354,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
     @Test
     public void testRetrieveAgencyXml() throws Exception {
 
-        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
         for (int i = 0; i < requestUris.length; i++) {
             String requestUri = requestUris[i];
@@ -367,7 +367,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
     public void testRetrieveAgencyErrorNotExists() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = ITEM_SCHEME_VERSION_1;
+        String version = VERSION_1;
         String organisationID = NOT_EXISTS;
         try {
             getSrmRestInternalFacadeClientXml().retrieveAgency(agencyID, resourceID, version, organisationID);
@@ -390,7 +390,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
 
     @Test
     public void testRetrieveAgencyErrorNotExistsXml() throws Exception {
-        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, NOT_EXISTS);
+        String requestUri = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, NOT_EXISTS);
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest.class.getResourceAsStream("/responses/organisations/retrieveAgency.notFound.xml");
 
         // Request and validate
@@ -402,7 +402,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveAgency(WILDCARD, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveAgency(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -416,7 +416,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveAgency(AGENCY_1, WILDCARD, ITEM_SCHEME_VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveAgency(AGENCY_1, WILDCARD, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -446,7 +446,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveAgency(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveAgency(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 

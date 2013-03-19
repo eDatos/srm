@@ -11,8 +11,8 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_VERSION_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 
 import java.util.ArrayList;
@@ -91,16 +91,16 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                             OrganisationSchemeVersionMetamac itemSchemeVersion = null;
                             if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                                 itemSchemeVersion = null;
-                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (ITEM_SCHEME_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
-                                itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, organisationSchemeTypeEnum);
+                            } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
+                                itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, organisationSchemeTypeEnum);
                             } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE.equals(resourceID)
-                                    && (ITEM_SCHEME_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
-                                itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE, ITEM_SCHEME_VERSION_1,
+                                    && (VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
+                                itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE, VERSION_1,
                                         OrganisationSchemeTypeEnum.AGENCY_SCHEME);
                             } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE.equals(resourceID)
-                                    && (ITEM_SCHEME_VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
+                                    && (VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE,
-                                        ITEM_SCHEME_VERSION_1, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
+                                        VERSION_1, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
                             } else {
                                 fail();
                             }
@@ -113,19 +113,19 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                             // any
                             List<OrganisationSchemeVersionMetamac> itemSchemes = new ArrayList<OrganisationSchemeVersionMetamac>();
                             if (organisationSchemeTypeEnum != null) {
-                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1, organisationSchemeTypeEnum));
-                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1, organisationSchemeTypeEnum));
-                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_2, organisationSchemeTypeEnum));
-                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_VERSION_1, organisationSchemeTypeEnum));
+                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, organisationSchemeTypeEnum));
+                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1, organisationSchemeTypeEnum));
+                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_2, organisationSchemeTypeEnum));
+                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_2, ITEM_SCHEME_3_CODE, VERSION_1, organisationSchemeTypeEnum));
                             } else {
                                 // different types
-                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1,
+                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1,
                                         OrganisationSchemeTypeEnum.AGENCY_SCHEME));
-                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1,
+                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1,
                                         OrganisationSchemeTypeEnum.AGENCY_SCHEME));
-                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_2,
+                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_2,
                                         OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME));
-                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_2, ITEM_SCHEME_3_CODE, ITEM_SCHEME_VERSION_1,
+                                itemSchemes.add(OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_2, ITEM_SCHEME_3_CODE, VERSION_1,
                                         OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME));
                             }
                             return new PagedResult<OrganisationSchemeVersionMetamac>(itemSchemes, itemSchemes.size(), itemSchemes.size(), itemSchemes.size(), itemSchemes.size() * 10, 0);
@@ -155,21 +155,21 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                     OrganisationMetamac item = null;
                     if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version) || NOT_EXISTS.equals(itemID)) {
                         item = null;
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
-                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1,
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && VERSION_1.equals(version) && ITEM_1_CODE.equals(itemID)) {
+                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1,
                                 SrmRestInternalUtils.toOrganisationSchemeType(organisationTypeEnum));
                         OrganisationMetamac parent = null;
                         if (OrganisationTypeEnum.ORGANISATION_UNIT.equals(organisationTypeEnum)) {
                             parent = OrganisationsDoMocks.mockOrganisation(ITEM_2_CODE, itemScheme1, null, organisationTypeEnum);;
                         }
                         item = OrganisationsDoMocks.mockOrganisation(ITEM_1_CODE, itemScheme1, parent, organisationTypeEnum);
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_VERSION_1.equals(version) && ITEM_ORGANISATION_TYPE_AGENCY_1_CODE.equals(itemID)) {
-                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1,
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && VERSION_1.equals(version) && ITEM_ORGANISATION_TYPE_AGENCY_1_CODE.equals(itemID)) {
+                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1,
                                 OrganisationSchemeTypeEnum.AGENCY_SCHEME);
                         item = OrganisationsDoMocks.mockOrganisation(ITEM_ORGANISATION_TYPE_AGENCY_1_CODE, itemScheme1, null, OrganisationTypeEnum.AGENCY);
-                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && ITEM_SCHEME_VERSION_1.equals(version)
+                    } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && VERSION_1.equals(version)
                             && ITEM_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE.equals(itemID)) {
-                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1,
+                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1,
                                 OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
                         OrganisationMetamac parent = OrganisationsDoMocks.mockOrganisation(ITEM_2_CODE, itemScheme1, null, organisationTypeEnum);;
                         item = OrganisationsDoMocks.mockOrganisation(ITEM_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE, itemScheme1, parent, OrganisationTypeEnum.ORGANISATION_UNIT);
@@ -185,9 +185,9 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                     // any
                     List<OrganisationMetamac> items = new ArrayList<OrganisationMetamac>();
                     if (organisationTypeEnum != null) {
-                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1,
+                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1,
                                 SrmRestInternalUtils.toOrganisationSchemeType(organisationTypeEnum));
-                        OrganisationSchemeVersionMetamac itemScheme2 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1,
+                        OrganisationSchemeVersionMetamac itemScheme2 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1,
                                 SrmRestInternalUtils.toOrganisationSchemeType(organisationTypeEnum));
 
                         items.add(OrganisationsDoMocks.mockOrganisation(ITEM_1_CODE, itemScheme1, null, organisationTypeEnum));
@@ -196,9 +196,9 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                         items.add(OrganisationsDoMocks.mockOrganisation(ITEM_1_CODE, itemScheme2, null, organisationTypeEnum));
                     } else {
                         // different types
-                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, ITEM_SCHEME_VERSION_1,
+                        OrganisationSchemeVersionMetamac itemScheme1 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1,
                                 OrganisationSchemeTypeEnum.AGENCY_SCHEME);
-                        OrganisationSchemeVersionMetamac itemScheme2 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, ITEM_SCHEME_VERSION_1,
+                        OrganisationSchemeVersionMetamac itemScheme2 = OrganisationsDoMocks.mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1,
                                 OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
 
                         items.add(OrganisationsDoMocks.mockOrganisation(ITEM_1_CODE, itemScheme1, null, OrganisationTypeEnum.AGENCY));
