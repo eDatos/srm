@@ -93,7 +93,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -112,7 +112,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -131,7 +131,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -150,7 +150,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -169,7 +169,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -188,7 +188,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null;
+                return !StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
             }
         };
     }
@@ -203,7 +203,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null;
+                return !StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
             }
         };
     }
@@ -218,7 +218,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -237,7 +237,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -256,7 +256,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -275,7 +275,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -294,7 +294,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -313,7 +313,7 @@ public class FacetFormUtils {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                if (form.getValueAsString(TEXT_TYPE_FIELD_NAME) != null) {
+                if (!StringUtils.isBlank(form.getValueAsString(TEXT_TYPE_FIELD_NAME))) {
                     FacetValueTypeEnum type = FacetValueTypeEnum.valueOf(form.getValueAsString(TEXT_TYPE_FIELD_NAME));
                     return !representsTime(type);
                 }
@@ -321,5 +321,4 @@ public class FacetFormUtils {
             }
         };
     }
-
 }
