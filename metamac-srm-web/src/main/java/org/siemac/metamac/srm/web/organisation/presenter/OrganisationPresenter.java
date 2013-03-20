@@ -83,6 +83,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     public interface OrganisationView extends View, HasUiHandlers<OrganisationUiHandlers> {
 
         void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId);
+        void setOrganisation(OrganisationMetamacDto organisationDto, OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Long contactToShowId);
         void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
     }
 
@@ -148,7 +149,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             @Override
             public void onWaitSuccess(GetOrganisationResult result) {
                 organisationMetamacDto = result.getOrganisationDto();
-                getView().setOrganisation(result.getOrganisationDto(), null);
+                getView().setOrganisation(result.getOrganisationDto(), result.getOrganisationSchemeMetamacDto(), null);
             }
         });
     }

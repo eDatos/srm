@@ -369,6 +369,12 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     @Override
+    public void setOrganisation(OrganisationMetamacDto organisationDto, OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Long contactToShowId) {
+        setOrganisationScheme(organisationSchemeMetamacDto);
+        setOrganisation(organisationDto, contactToShowId);
+    }
+
+    @Override
     public void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId) {
         this.organisationDto = organisationDto;
         this.contactDtos = new ArrayList<ContactDto>();
@@ -391,18 +397,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         markFormsForRedraw();
     }
 
-    @Override
-    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+    private void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         this.organisationSchemeMetamacDto = organisationSchemeMetamacDto;
-        identifiersEditionForm.markForRedraw();
-
-        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
-            organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
-            organisationsTreeGrid.selectItem(organisationDto.getUrn());
-            organisationsTreeGridLayout.show();
-        } else {
-            organisationsTreeGridLayout.hide();
-        }
 
         // Security
         mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
@@ -410,6 +406,17 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canCreateContact(organisationSchemeMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
 
         markFormsForRedraw();
+    }
+
+    @Override
+    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
+            organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
+            organisationsTreeGrid.selectItem(organisationDto.getUrn());
+            organisationsTreeGridLayout.show();
+        } else {
+            organisationsTreeGridLayout.hide();
+        }
     }
 
     private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {
