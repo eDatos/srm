@@ -50,7 +50,8 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
                     scheme = srmCoreServiceFacade.rejectConceptSchemeDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
                 }
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.publishConceptSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
+                scheme = srmCoreServiceFacade.publishConceptSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn(), true); // FIXME Set the forceFinal
+                                                                                                                                                                           // parameter
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 // If the concept scheme type is OPERATION, check that the associated statistical operation is externally published
                 if (ConceptSchemeTypeEnum.OPERATION.equals(action.getConceptSchemeMetamacDto().getType())) {

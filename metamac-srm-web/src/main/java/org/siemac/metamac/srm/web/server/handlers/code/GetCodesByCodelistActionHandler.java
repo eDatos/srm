@@ -32,7 +32,7 @@ public class GetCodesByCodelistActionHandler extends SecurityActionHandler<GetCo
 
             // Codes
             List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(), action.getLocale(),
-                    action.getCodelistOrderUrn());
+                    action.getCodelistOrderUrn(), null); // FIXME Set the openness visualisation
 
             // Order
             CodelistOrderVisualisationDto codelistOrderVisualisationDto = null;

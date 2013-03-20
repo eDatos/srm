@@ -39,7 +39,7 @@ public class UpdateOrganisationSchemeProcStatusActionHandler extends SecurityAct
                     scheme = srmCoreServiceFacade.rejectOrganisationSchemeDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
                 }
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.publishOrganisationSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                scheme = srmCoreServiceFacade.publishOrganisationSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), true); // FIXME Set the forceFinal parameter
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.publishOrganisationSchemeExternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             }
@@ -48,5 +48,4 @@ public class UpdateOrganisationSchemeProcStatusActionHandler extends SecurityAct
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

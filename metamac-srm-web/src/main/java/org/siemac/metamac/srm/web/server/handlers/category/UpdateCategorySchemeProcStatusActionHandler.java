@@ -39,7 +39,7 @@ public class UpdateCategorySchemeProcStatusActionHandler extends SecurityActionH
                     scheme = srmCoreServiceFacade.rejectCategorySchemeDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
                 }
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.publishCategorySchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                scheme = srmCoreServiceFacade.publishCategorySchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), true); // FIXME Set the forceFinal parameter
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.publishCategorySchemeExternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             }
