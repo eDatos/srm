@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers.organisation;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -27,10 +28,11 @@ public class GetOrganisationActionHandler extends SecurityActionHandler<GetOrgan
     public GetOrganisationResult executeSecurityAction(GetOrganisationAction action) throws ActionException {
         try {
             OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            return new GetOrganisationResult(organisationMetamacDto);
+            OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(ServiceContextHolder.getCurrentServiceContext(),
+                    organisationMetamacDto.getItemSchemeVersionUrn());
+            return new GetOrganisationResult(organisationMetamacDto, organisationSchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.shared.category;
 
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -10,9 +11,11 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetCategory {
 
     @In(1)
-    String             urn;
+    String                   urn;
 
     @Out(1)
-    CategoryMetamacDto categoryDto;
+    CategoryMetamacDto       categoryDto;
 
+    @Out(2)
+    CategorySchemeMetamacDto categorySchemeMetamacDto;
 }

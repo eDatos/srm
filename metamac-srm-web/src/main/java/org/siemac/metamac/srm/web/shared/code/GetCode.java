@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.shared.code;
 
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -10,8 +11,11 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetCode {
 
     @In(1)
-    String         urn;
+    String             urn;
 
     @Out(1)
-    CodeMetamacDto codeDto;
+    CodeMetamacDto     codeDto;
+
+    @Out(2)
+    CodelistMetamacDto codelistMetamacDto;
 }

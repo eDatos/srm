@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.server.handlers.category;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.category.GetCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoryResult;
@@ -27,10 +28,11 @@ public class GetCategoryActionHandler extends SecurityActionHandler<GetCategoryA
     public GetCategoryResult executeSecurityAction(GetCategoryAction action) throws ActionException {
         try {
             CategoryMetamacDto categoryMetamacDto = srmCoreServiceFacade.retrieveCategoryByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            return new GetCategoryResult(categoryMetamacDto);
+            CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(ServiceContextHolder.getCurrentServiceContext(),
+                    categoryMetamacDto.getItemSchemeVersionUrn());
+            return new GetCategoryResult(categoryMetamacDto, categorySchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }
