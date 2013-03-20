@@ -119,6 +119,12 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     }
 
     @Override
+    public void setCategory(CategoryMetamacDto categoryDto, CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        setCategoryScheme(categorySchemeMetamacDto);
+        setCategory(categoryDto);
+    }
+
+    @Override
     public void setCategory(CategoryMetamacDto categoryDto) {
         this.categoryDto = categoryDto;
 
@@ -136,17 +142,19 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         markFormsForRedraw();
     }
 
-    @Override
-    public void setCategoryList(CategorySchemeMetamacDto categorySchemeDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        this.categorySchemeDto = categorySchemeDto;
-
-        categoriesTreeGrid.setItems(categorySchemeDto, itemHierarchyDtos);
-        categoriesTreeGrid.selectItem(categoryDto.getUrn());
+    private void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        this.categorySchemeDto = categorySchemeMetamacDto;
 
         // Security
         mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategory(categorySchemeDto.getLifeCycle().getProcStatus()));
 
         markFormsForRedraw();
+    }
+
+    @Override
+    public void setCategoryList(CategorySchemeMetamacDto categorySchemeDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        categoriesTreeGrid.setItems(categorySchemeDto, itemHierarchyDtos);
+        categoriesTreeGrid.selectItem(categoryDto.getUrn());
     }
 
     private void createViewForm() {

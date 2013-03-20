@@ -80,6 +80,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     public interface CategoryView extends View, HasUiHandlers<CategoryUiHandlers> {
 
         void setCategory(CategoryMetamacDto categoryDto);
+        void setCategory(CategoryMetamacDto categoryDto, CategorySchemeMetamacDto categorySchemeMetamacDto);
         void setCategoryList(CategorySchemeMetamacDto categorySchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
     }
 
@@ -138,7 +139,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
             }
             @Override
             public void onWaitSuccess(GetCategoryResult result) {
-                getView().setCategory(result.getCategoryDto());
+                getView().setCategory(result.getCategoryDto(), result.getCategorySchemeMetamacDto());
             }
         });
     }
