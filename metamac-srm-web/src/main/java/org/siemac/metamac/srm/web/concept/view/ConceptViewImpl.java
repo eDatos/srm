@@ -406,7 +406,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     @Override
     public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
+        setConceptScheme(conceptSchemeMetamacDto);
         setConcept(conceptDto, roles, relatedConcepts);
     }
 
@@ -432,18 +432,22 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         markFormsForRedraw();
     }
 
-    @Override
-    public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+    private void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
-        this.itemHierarchyDtos = itemHierarchyDtos;
-        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
-        conceptsTreeGrid.selectItem(conceptDto.getUrn());
 
         // Security
         mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
                 CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
 
         markFormsForRedraw();
+
+    }
+
+    @Override
+    public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+        this.itemHierarchyDtos = itemHierarchyDtos;
+        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
+        conceptsTreeGrid.selectItem(conceptDto.getUrn());
     }
 
     @Override
