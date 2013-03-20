@@ -84,6 +84,12 @@ public class CodesSecurityUtils extends SecurityUtils {
         }
     }
 
+    public static void canUpdateCodeVariableElement(ServiceContext ctx, ProcStatusEnum procStatus) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canUpdateCodeVariableElement(getMetamacPrincipal(ctx), procStatus)) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canAddVariablesToVariableFamily(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canAddVariablesToVariableFamily(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);

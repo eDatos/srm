@@ -1090,7 +1090,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CodeMetamacDto updateCodeVariableElement(ServiceContext ctx, String codeUrn, String variableElementUrn) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
-        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canUpdateCodeVariableElement(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Update
         CodeMetamac conceptUpdated = getCodesMetamacService().updateCodeVariableElement(ctx, codeUrn, variableElementUrn);

@@ -619,6 +619,43 @@ public class SrmCoreServiceFacadeCodesSecurityTest extends SrmBaseTest {
     }
 
     @Test
+    public void testUpdateCodeVariableElement() throws Exception {
+        // 1) CODELIST DRAFT
+        {
+            CodeMetamacDto draftCodeMetamacDto = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+
+            // Access
+            {
+                ServiceContext[] contexts = {getServiceContextTecnicoApoyoNormalizacion(), getServiceContextTecnicoNormalizacion(), getServiceContextJefeNormalizacion()};
+                for (ServiceContext ctx : contexts) {
+                    draftCodeMetamacDto = srmCoreServiceFacade.updateCodeVariableElement(ctx, draftCodeMetamacDto.getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
+                }
+            }
+
+            // Error
+            {
+                ServiceContext[] contexts = {getServiceContextTecnicoApoyoProduccion(), getServiceContextTecnicoProduccion(), getServiceContextJefeProduccion(), getServiceContextWithoutAccesses(),
+                        getServiceContextWithoutAccessToApplication(), getServiceContextWithoutSrmRole()};
+                for (ServiceContext ctx : contexts) {
+                    try {
+                        srmCoreServiceFacade.updateCodeVariableElement(ctx, draftCodeMetamacDto.getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
+                        fail("action not allowed");
+                    } catch (MetamacException e) {
+                        assertEquals(1, e.getExceptionItems().size());
+                        assertEquals(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED.getCode(), e.getExceptionItems().get(0).getCode());
+                    }
+                }
+            }
+        }
+
+        // 2) CODELIST INTERNALLY_PUBLISHED
+        {
+            CodeMetamacDto internallyPublishedCodeMetamacDto = srmCoreServiceFacade.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_7_V2_CODE_1);
+            srmCoreServiceFacade.updateCodeVariableElement(getServiceContextJefeNormalizacion(), internallyPublishedCodeMetamacDto.getUrn(), VARIABLE_5_VARIABLE_ELEMENT_1);
+        }
+    }
+
+    @Test
     public void testCreateCode() throws Exception {
 
         // JefeNormalizacion

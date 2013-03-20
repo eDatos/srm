@@ -61,6 +61,14 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
     }
 
+    public static boolean canUpdateCodeVariableElement(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
+        } else {
+            return SharedItemsSecurityUtils.canModifyItemFromItemScheme(metamacPrincipal, procStatus);
+        }
+    }
+
     public static boolean canAddVariablesToVariableFamily(MetamacPrincipal metamacPrincipal) {
         return canCrudVariableFamily(metamacPrincipal) && canCrudVariable(metamacPrincipal);
     }
