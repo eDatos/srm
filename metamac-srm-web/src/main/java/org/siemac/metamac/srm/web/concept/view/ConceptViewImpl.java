@@ -405,6 +405,12 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
+    public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
+        setConcept(conceptDto, roles, relatedConcepts);
+    }
+
+    @Override
     public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
         this.conceptDto = conceptDto;
 

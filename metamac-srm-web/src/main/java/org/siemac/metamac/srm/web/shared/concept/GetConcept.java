@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
@@ -23,4 +24,7 @@ public class GetConcept {
 
     @Out(3)
     List<ConceptMetamacDto>  relatedConcepts;
+
+    @Out(4)
+    ConceptSchemeMetamacDto  conceptSchemeMetamacDto;
 }

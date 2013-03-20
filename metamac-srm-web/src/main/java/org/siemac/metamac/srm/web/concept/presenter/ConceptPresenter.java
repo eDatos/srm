@@ -101,6 +101,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     public interface ConceptView extends View, HasUiHandlers<ConceptUiHandlers> {
 
+        void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto);
         void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts);
         void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
 
@@ -177,7 +178,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
             @Override
             public void onWaitSuccess(GetConceptResult result) {
-                getView().setConcept(result.getConceptDto(), result.getRoles(), result.getRelatedConcepts());
+                getView().setConcept(result.getConceptDto(), result.getRoles(), result.getRelatedConcepts(), result.getConceptSchemeMetamacDto());
             }
         });
     }
