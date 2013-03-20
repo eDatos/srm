@@ -5,7 +5,6 @@ import java.util.List;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -30,7 +29,7 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
  */
 public class SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWindow extends CustomWindow {
 
-    protected static final String                           FORM_ITEM_CUSTOM_WIDTH = FormItemUtils.FORM_ITEM_WIDTH;
+    protected static final String                           FORM_ITEM_CUSTOM_WIDTH = "500";
 
     protected static final String                           FIELD_SAVE             = "save-ex";
 

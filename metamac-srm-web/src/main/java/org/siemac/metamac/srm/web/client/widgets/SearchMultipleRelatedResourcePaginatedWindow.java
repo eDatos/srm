@@ -37,7 +37,7 @@ public class SearchMultipleRelatedResourcePaginatedWindow extends BaseSearchWind
     }
 
     private void common(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
-        relatedResourcesDragAndDropItem = new SearchRelatedResourcePaginatedDragAndDropItem("list", "title", maxResults, FORM_ITEM_CUSTOM_WIDTH, action);
+        relatedResourcesDragAndDropItem = new SearchRelatedResourcePaginatedDragAndDropItem("list", "title", maxResults, String.valueOf(FORM_ITEM_CUSTOM_WIDTH), action);
         relatedResourcesDragAndDropItem.setShowTitle(false);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());

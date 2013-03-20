@@ -29,7 +29,7 @@ public class NewDsdWindow extends CustomWindow {
     private final static int            OPERATION_LIST_FIRST_RESULT = 0;
     private final static int            OPERATION_LIST_MAX_RESULTS  = 6;
 
-    private static final String         FORM_ITEM_CUSTOM_WIDTH      = FormItemUtils.FORM_ITEM_WIDTH;
+    private static final int            FORM_ITEM_CUSTOM_WIDTH      = 350;
     private static final String         FIELD_SAVE                  = "save-dsd";
 
     private CustomDynamicForm           form;
@@ -46,8 +46,8 @@ public class NewDsdWindow extends CustomWindow {
         RequiredTextItem nameItem = new RequiredTextItem(DataStructureDefinitionDS.NAME, MetamacSrmWeb.getConstants().nameableArtefactName());
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        searchOperationItem = new SearchExternalPaginatedItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation(), FORM_ITEM_CUSTOM_WIDTH + 100, OPERATION_LIST_MAX_RESULTS,
-                new PaginatedAction() {
+        searchOperationItem = new SearchExternalPaginatedItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation(), FormItemUtils.FORM_ITEM_WIDTH,
+                OPERATION_LIST_MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
@@ -63,7 +63,9 @@ public class NewDsdWindow extends CustomWindow {
                 uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, criteria);
             }
         });
-        searchOperationItem.setWidth(FORM_ITEM_CUSTOM_WIDTH + 100);
+        searchOperationItem.getSearchItem().setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        searchOperationItem.getPaginatedCheckListGrid().setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        searchOperationItem.setWidth(FORM_ITEM_CUSTOM_WIDTH + 50);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().dsdCreate());
 

@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class NewConceptSchemeWindow extends CustomWindow {
 
-    private static final String         FORM_ITEM_CUSTOM_WIDTH      = FormItemUtils.FORM_ITEM_WIDTH;
+    private static final int            FORM_ITEM_CUSTOM_WIDTH      = 350;
     private static final String         FIELD_SAVE                  = "save-sch";
 
     private final static int            OPERATION_LIST_FIRST_RESULT = 0;
@@ -69,7 +69,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
             }
         });
 
-        searchOperationItem = new SearchExternalPaginatedItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation(), FORM_ITEM_CUSTOM_WIDTH, OPERATION_LIST_MAX_RESULTS,
+        searchOperationItem = new SearchExternalPaginatedItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation(), FormItemUtils.FORM_ITEM_WIDTH, OPERATION_LIST_MAX_RESULTS,
                 new PaginatedAction() {
 
                     @Override
@@ -86,7 +86,9 @@ public class NewConceptSchemeWindow extends CustomWindow {
                 uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, criteria);
             }
         });
-        searchOperationItem.setWidth(FORM_ITEM_CUSTOM_WIDTH + 100);
+        searchOperationItem.getSearchItem().setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        searchOperationItem.getPaginatedCheckListGrid().setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        searchOperationItem.setWidth(FORM_ITEM_CUSTOM_WIDTH + 50);
         searchOperationItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override

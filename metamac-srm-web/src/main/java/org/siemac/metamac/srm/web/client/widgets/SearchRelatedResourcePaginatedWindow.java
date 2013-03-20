@@ -39,7 +39,7 @@ public class SearchRelatedResourcePaginatedWindow extends BaseSearchWindow {
     }
 
     private void common(String title, int maxResults, FormItem initialSelectionItem, PaginatedAction action) {
-        listGridItem = new SearchRelatedResourcePaginatedItem("list", "title", FORM_ITEM_CUSTOM_WIDTH, maxResults, action);
+        listGridItem = new SearchRelatedResourcePaginatedItem("list", "title", String.valueOf(FORM_ITEM_CUSTOM_WIDTH), maxResults, action);
         listGridItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         listGridItem.setShowTitle(false);
 

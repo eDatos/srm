@@ -11,7 +11,6 @@ import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedD
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.presenter.VariableListPresenter;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableListUiHandlers;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -26,7 +25,7 @@ import com.smartgwt.client.widgets.form.validator.CustomValidator;
 
 public class NewVariableWindow extends CustomWindow {
 
-    private static final String    FORM_ITEM_CUSTOM_WIDTH = FormItemUtils.FORM_ITEM_WIDTH;
+    private static final int       FORM_ITEM_CUSTOM_WIDTH = 300;
     private static final String    FIELD_SAVE             = "save-var";
 
     private CustomDynamicForm      form;
@@ -91,8 +90,8 @@ public class NewVariableWindow extends CustomWindow {
     private SearchRelatedResourcePaginatedDragAndDropItem familyItem;
 
     private SearchRelatedResourcePaginatedDragAndDropItem createFamilyItem() {
-        familyItem = new SearchRelatedResourcePaginatedDragAndDropItem(VariableDS.FAMILIES, getConstants().variableFamily(), VariableListPresenter.FAMILY_LIST_MAX_RESULTS, FORM_ITEM_CUSTOM_WIDTH,
-                new PaginatedAction() {
+        familyItem = new SearchRelatedResourcePaginatedDragAndDropItem(VariableDS.FAMILIES, getConstants().variableFamily(), VariableListPresenter.FAMILY_LIST_MAX_RESULTS,
+                String.valueOf(FORM_ITEM_CUSTOM_WIDTH), new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
