@@ -255,16 +255,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
     @Override
     public void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
-        this.codelistMetamacDto = codelistMetamacDto;
-
         codesTreeGrid.setItems(codelistMetamacDto, codes);
         codesTreeGrid.selectItem(codeDto.getUrn());
-
-        // Security
-        mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
-        mainFormLayout.updateButtonsVisibility(codelistMetamacDto.getLifeCycle().getProcStatus());
-
-        markFormsForRedraw();
     }
 
     @Override
@@ -273,6 +265,12 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
             searchVariableElementWindow.setRelatedResources(result.getRelatedResourceDtos());
             searchVariableElementWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
         }
+    }
+
+    @Override
+    public void setCode(CodeMetamacDto codeDto, CodelistMetamacDto codelistMetamacDto) {
+        setCodelist(codelistMetamacDto);
+        setCode(codeDto);
     }
 
     @Override
@@ -290,6 +288,16 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         setCodeViewMode(codeDto);
         setCodeEditionMode(codeDto);
+
+        markFormsForRedraw();
+    }
+
+    private void setCodelist(CodelistMetamacDto codelistMetamacDto) {
+        this.codelistMetamacDto = codelistMetamacDto;
+
+        // Security
+        mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
+        mainFormLayout.updateButtonsVisibility(codelistMetamacDto.getLifeCycle().getProcStatus());
 
         markFormsForRedraw();
     }

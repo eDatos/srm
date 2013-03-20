@@ -88,6 +88,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     public interface CodeView extends View, HasUiHandlers<CodeUiHandlers> {
 
         void setCode(CodeMetamacDto codeDto);
+        void setCode(CodeMetamacDto codeDto, CodelistMetamacDto codelistMetamacDto);
         void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes);
         void setVariableElements(GetRelatedResourcesResult result);
 
@@ -150,7 +151,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             }
             @Override
             public void onWaitSuccess(GetCodeResult result) {
-                getView().setCode(result.getCodeDto());
+                getView().setCode(result.getCodeDto(), result.getCodelistMetamacDto());
             }
         });
     }
