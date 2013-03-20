@@ -15,6 +15,10 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>org.siemac.metamac.srm.web.external.ApplicationStartup</listener-class>
+    </listener>
+
     <!-- Enable Spring Request Context Holder -->
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>

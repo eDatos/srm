@@ -12,14 +12,6 @@
     <!-- Activates annotation-based bean configuration -->
     <context:annotation-config />
 
-    <!-- if proxy-target-class is false, error in actionHandlers beans (spring cannot find them) -->
-    <aop:aspectj-autoproxy proxy-target-class="true" />
-
-    <!-- Configure externalized logging configuration file -->
-    <bean id="loggingSetup" class="org.siemac.metamac.core.common.logging.LoggingSetup">
-        <property name="logConfigurationFile" value="${environment.metamac.data}/srm/srm-external-web/conf/dynamic/logback-srm-external-web.xml" />
-    </bean>
-
     <!-- METAMAC environment configuration -->
     <bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
         <property name="systemConfigurationFile">

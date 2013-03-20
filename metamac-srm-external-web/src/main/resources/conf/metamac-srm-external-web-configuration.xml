@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Configuration</comment>
+
+    <!--  ********************************************************************************************** -->
+    <!--  **************************** DATASOURCES ***************************************************** -->
+    <!--  ********************************************************************************************** -->
+    
+    <!-- ORACLE -->
+    <entry key="metamac.srm.db.url">jdbc:oracle:thin:@FILL_ME_WITH_HOST:FILL_ME_WITH_PORT:XE</entry>
+    <entry key="metamac.srm.db.driverName">oracle.jdbc.OracleDriver</entry>
+    <entry key="metamac.srm.db.username">FILL_ME_WITH_USERNAME</entry>
+    <entry key="metamac.srm.db.password">FILL_ME_WITH_PASSWORD</entry>
+    <entry key="metamac.srm.db.dialect">org.siemac.metamac.hibernate.dialect.Oracle10gDialectMetamac</entry>
+    <!-- MSSQL -->
+    <!--
+        <entry key="metamac.srm.db.url">jdbc:sqlserver://FILL_ME_WITH_HOST:FILL_ME_WITH_PORT;databaseName=FILL_ME_WITH_DATABASE_NAME</entry>
+        <entry key="metamac.srm.db.driverName">com.microsoft.sqlserver.jdbc.SQLServerDriver</entry>
+        <entry key="metamac.srm.db.username">FILL_ME_WITH_USERNAME</entry>
+        <entry key="metamac.srm.db.password">FILL_ME_WITH_PASSWORD</entry>
+        <entry key="metamac.srm.db.dialect">org.hibernate.dialect.SQLServerDialect</entry>
+    -->
+    
+    <!--  ********************************************************************************************** -->
+    <!--  **************************** APIS ************************************************************ -->
+    <!--  ********************************************************************************************** -->
+    <entry key="metamac.endpoints.statistical.operations.rest.external">http://FILL_ME_WITH_HOST_AND_PORT/FILL_ME_WITH_STATISTICAL_OPERATIONS_EXTERNAL_APP/apis/operations</entry>
+    <entry key="metamac.endpoints.srm.rest.external">http://FILL_ME_WITH_HOST_AND_PORT/FILL_ME_WITH_SRM_EXTERNAL_APP/apis/structural-resources</entry>
+
+</properties>
