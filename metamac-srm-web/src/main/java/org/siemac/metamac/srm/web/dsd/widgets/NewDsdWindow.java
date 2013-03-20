@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -28,7 +29,7 @@ public class NewDsdWindow extends CustomWindow {
     private final static int            OPERATION_LIST_FIRST_RESULT = 0;
     private final static int            OPERATION_LIST_MAX_RESULTS  = 6;
 
-    private static final int            FORM_ITEM_CUSTOM_WIDTH      = 300;
+    private static final String         FORM_ITEM_CUSTOM_WIDTH      = FormItemUtils.FORM_ITEM_WIDTH;
     private static final String         FIELD_SAVE                  = "save-dsd";
 
     private CustomDynamicForm           form;

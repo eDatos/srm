@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistOrderDS;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.TranslateToolStripButton;
@@ -28,7 +29,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 public class EditCodelistOrderWindow extends CustomWindow {
 
-    private static final int              FORM_ITEM_CUSTOM_WIDTH = 300;
+    private static final String           FORM_ITEM_CUSTOM_WIDTH = FormItemUtils.FORM_ITEM_WIDTH;
     private static final String           FIELD_SAVE             = "save-order";
 
     private CustomDynamicForm             form;
@@ -73,7 +74,7 @@ public class EditCodelistOrderWindow extends CustomWindow {
             }
         });
 
-        MultiLanguageTextItem nameItem = new MultiLanguageTextItem(CodelistOrderDS.NAME, getConstants().nameableArtefactName(), FORM_ITEM_CUSTOM_WIDTH - 28);
+        MultiLanguageTextItem nameItem = new MultiLanguageTextItem(CodelistOrderDS.NAME, getConstants().nameableArtefactName(), FORM_ITEM_CUSTOM_WIDTH);
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         nameItem.setRequired(true);
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());

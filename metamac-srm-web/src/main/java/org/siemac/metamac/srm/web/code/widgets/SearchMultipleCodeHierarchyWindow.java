@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -46,7 +47,7 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  */
 public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
-    private static final int                     FORM_ITEM_CUSTOM_WIDTH      = 500;
+    private static final String                  FORM_ITEM_CUSTOM_WIDTH      = FormItemUtils.FORM_ITEM_WIDTH;
 
     private static final int                     FIRST_RESULTS               = 0;
     private static final int                     MAX_RESULTS                 = 6;
@@ -61,8 +62,8 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
     protected CodesCheckboxTreeGrid              codesTreeGrid;
 
-    private CodelistMetamacDto                   complexCodelistToAddCodes;                 // Codelist where the selected codes will be inserted
-    private String                               selectedCodelistUrn;                       // Codelist selected. The codes of this codelist will be inserted in the complex codelist
+    private CodelistMetamacDto                   complexCodelistToAddCodes;                                  // Codelist where the selected codes will be inserted
+    private String                               selectedCodelistUrn;                                        // Codelist selected. The codes of this codelist will be inserted in the complex codelist
     private BaseCodeUiHandlers                   uiHandlers;
 
     private boolean                              cascadeSelection            = true;

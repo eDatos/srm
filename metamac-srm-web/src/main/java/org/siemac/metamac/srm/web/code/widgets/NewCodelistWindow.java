@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistListUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -26,7 +27,7 @@ import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class NewCodelistWindow extends CustomWindow {
 
-    private static final int                   FORM_ITEM_CUSTOM_WIDTH = 300;
+    private static final String                FORM_ITEM_CUSTOM_WIDTH = FormItemUtils.FORM_ITEM_WIDTH;
     private static final String                FIELD_SAVE             = "save-sch";
 
     private static final int                   VARIABLE_FIRST_RESULT  = 0;

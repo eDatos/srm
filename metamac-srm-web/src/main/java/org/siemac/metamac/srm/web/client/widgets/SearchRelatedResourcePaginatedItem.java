@@ -18,7 +18,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class SearchRelatedResourcePaginatedItem extends BaseSearchPaginatedItem {
 
-    public SearchRelatedResourcePaginatedItem(String name, String title, int formItemWidth, int maxResults, PaginatedAction action) {
+    public SearchRelatedResourcePaginatedItem(String name, String title, String formItemWidth, int maxResults, PaginatedAction action) {
         super(name, title, formItemWidth, maxResults, action);
         create(name, title, formItemWidth, maxResults);
     }
@@ -28,7 +28,7 @@ public class SearchRelatedResourcePaginatedItem extends BaseSearchPaginatedItem 
         create(name, title, FormItemUtils.FORM_ITEM_WIDTH, maxResults);
     }
 
-    private void create(String name, String title, int formItemWidth, int maxResults) {
+    private void create(String name, String title, String formItemWidth, int maxResults) {
 
         // Set list grid fields
 
