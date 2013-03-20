@@ -76,6 +76,7 @@ public abstract class BaseAdvancedSearchSectionStack extends BaseSearchSectionSt
 
         CustomTextItem searchItem = new CustomTextItem(SEARCH_ITEM_NAME, "");
         searchItem.setShowTitle(false);
+        searchItem.setWidth(300);
         searchIcon = new FormItemIcon();
         searchIcon.setSrc(GlobalResources.RESOURCE.search().getURL());
         searchIcon.addFormItemClickHandler(new FormItemClickHandler() {
