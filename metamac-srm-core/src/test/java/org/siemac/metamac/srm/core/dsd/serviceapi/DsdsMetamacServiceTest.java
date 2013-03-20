@@ -16,6 +16,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -51,6 +52,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDoMocks;
@@ -328,8 +330,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             }
 
         }
-
     }
+
     @Test
     public void testVersioningDataStructureDefinitionErrorAlreadyExistsDraft() throws Exception {
         // TODO Test dsd
@@ -340,6 +342,74 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         // TODO Test dsd
     }
 
+    @Override
+    @Test
+    public void testCreateTemporalVersionDataStructureDefinition() throws Exception {
+        String urn = DSD_6_V1;
+        String versionExpected = "01.000" + UrnConstants.URN_SDMX_TEMPORAL_SUFFIX;
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
+        String dsd_6_v1temp_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").dim-01";
+        String dsd_6_v1temp_time_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").timeDimension-01";
+        String dsd_6_v1temp_measure_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").measureDimension-01";
+        // String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(" + versionExpected + ").CONCEPT01";
+
+        DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
+        DataStructureDefinitionVersionMetamac dsdNewVersion = dsdsMetamacService.createTemporalVersionDataStructureDefinition(getServiceContextAdministrador(), urn);
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DRAFT, dsdNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, dsdNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, dsdNewVersion.getMaintainableArtefact().getUrn());
+        }
+
+        // Validate retrieving
+        // New version
+        {
+            for (ComponentList componentListNew : dsdNewVersion.getGrouping()) {
+                if (componentListNew instanceof DimensionDescriptor) {
+                    for (Component componentNew : componentListNew.getComponents()) {
+                        if (componentNew.getCode().contains("dim-01")) {
+                            assertEquals(dsd_6_v1temp_dimension_1, componentNew.getUrn());
+                        } else if (componentNew.getCode().contains("timeDimension-01")) {
+                            assertEquals(dsd_6_v1temp_time_dimension_1, componentNew.getUrn());
+                        } else if (componentNew.getCode().contains("measureDimension-01")) {
+                            assertEquals(dsd_6_v1temp_measure_dimension_1, componentNew.getUrn());
+                        }
+                    }
+                }
+            }
+        }
+
+        {
+            // Metamac Metadata
+            assertEquals(dsdToCopy.getAutoOpen(), dsdNewVersion.getAutoOpen());
+            assertEquals(dsdToCopy.getShowDecimals(), dsdNewVersion.getShowDecimals());
+            assertEquals(dsdToCopy.getHeadingDimensions().size(), dsdNewVersion.getHeadingDimensions().size());
+            // heading
+            for (int i = 0; i < dsdToCopy.getHeadingDimensions().size(); i++) {
+                DimensionOrder dimOrderToCopy = dsdToCopy.getHeadingDimensions().get(i);
+                DimensionOrder dimOrderToNewVersion = dsdNewVersion.getHeadingDimensions().get(i);
+                assertEquals(dimOrderToCopy.getDimension().getCode(), dimOrderToNewVersion.getDimension().getCode());
+                assertEquals(dimOrderToCopy.getDimOrder(), dimOrderToNewVersion.getDimOrder());
+            }
+            // Stub
+            for (int i = 0; i < dsdToCopy.getStubDimensions().size(); i++) {
+                DimensionOrder dimOrderToCopy = dsdToCopy.getStubDimensions().get(i);
+                DimensionOrder dimOrderToNewVersion = dsdNewVersion.getStubDimensions().get(i);
+                assertEquals(dimOrderToCopy.getDimension().getCode(), dimOrderToNewVersion.getDimension().getCode());
+                assertEquals(dimOrderToCopy.getDimOrder(), dimOrderToNewVersion.getDimOrder());
+            }
+            // ShowDecimalsPrecisions
+            for (int i = 0; i < dsdToCopy.getShowDecimalsPrecisions().size(); i++) {
+                MeasureDimensionPrecision measureDimensionPrecisionToCopy = dsdToCopy.getShowDecimalsPrecisions().get(i);
+                MeasureDimensionPrecision measureDimensionPrecisionToNewVersion = dsdNewVersion.getShowDecimalsPrecisions().get(i);
+                assertEquals(measureDimensionPrecisionToCopy.getConcept().getNameableArtefact().getUrn(), measureDimensionPrecisionToNewVersion.getConcept().getNameableArtefact().getUrn());
+                assertEquals(measureDimensionPrecisionToCopy.getShowDecimalPrecision(), measureDimensionPrecisionToNewVersion.getShowDecimalPrecision());
+            }
+
+        }
+    }
     @Test
     @Override
     public void testEndDataStructureDefinitionValidity() throws Exception {

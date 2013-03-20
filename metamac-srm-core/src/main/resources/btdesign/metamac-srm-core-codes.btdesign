@@ -63,6 +63,8 @@ Application CodesMetamac {
     		deleteCodelist(String urn) throws MetamacException;
     		"Creates a new version of a codelist, copying metadata from version with provided urn"
     		@CodelistVersionMetamac versioningCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a temporal version of a code list, copying metadata from version with provided urn"
+    		@CodelistVersionMetamac createTemporalCodelist(String urnToCopy) throws MetamacException;
     		"Ends the codelist validity"
     		@CodelistVersionMetamac endCodelistValidity(String urn) throws MetamacException;
     		"Retrieves codelist by code urn"

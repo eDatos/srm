@@ -34,6 +34,10 @@ public class SrmValidationUtils {
         SdmxSrmValidationUtils.checkMaintainableArtefactNotImported(maintainableArtefact);
     }
 
+    public static void checkArtefactCanBeVersionedAsTemporal(MaintainableArtefact maintainableArtefact, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+        checkArtefactProcStatus(lifeCycle, maintainableArtefact.getUrn(), ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+    }
+
     public static void checkArtefactProcStatus(SrmLifeCycleMetadata lifeCycle, String urn, ProcStatusEnum... procStatus) throws MetamacException {
         if (!ArrayUtils.contains(procStatus, lifeCycle.getProcStatus())) {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);

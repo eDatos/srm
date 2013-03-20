@@ -218,19 +218,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public ConceptSchemeVersionMetamac versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        return createVersionOfConceptScheme(ctx, urnToCopy, versionType, false);
+    }
 
-        // Validation
-        ConceptsMetamacInvocationValidator.checkVersioningConceptScheme(urnToCopy, versionType, null, null);
-        checkConceptSchemeToVersioning(ctx, urnToCopy);
-
-        // Versioning
-        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptVersioningCopyCallback);
-
-        // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
-        versioningRelatedConcepts(ctx, conceptSchemeVersionToCopy, conceptSchemeNewVersion);
-
-        return conceptSchemeNewVersion;
+    @Override
+    public ConceptSchemeVersionMetamac createTemporalVersionConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        return createVersionOfConceptScheme(ctx, urnToCopy, null, true);
     }
 
     @Override
@@ -636,11 +629,18 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return new PagedResult<ConceptMetamac>(conceptsMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
     }
 
-    private void checkConceptSchemeToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    private void checkConceptSchemeToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
 
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        // Check version to copy is published and not imported
-        SrmValidationUtils.checkArtefactCanBeVersioned(conceptSchemeVersionToCopy.getMaintainableArtefact(), conceptSchemeVersionToCopy.getLifeCycleMetadata());
+
+        if (isTemporal) {
+            // Check version to copy is published
+            SrmValidationUtils.checkArtefactCanBeVersionedAsTemporal(conceptSchemeVersionToCopy.getMaintainableArtefact(), conceptSchemeVersionToCopy.getLifeCycleMetadata());
+        } else {
+            // Check version to copy is published and not imported
+            SrmValidationUtils.checkArtefactCanBeVersioned(conceptSchemeVersionToCopy.getMaintainableArtefact(), conceptSchemeVersionToCopy.getLifeCycleMetadata());
+        }
+
         // Check does not exist any version 'no final'
         ItemSchemeVersion conceptSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(conceptSchemeVersionToCopy.getItemScheme().getId());
         if (conceptSchemeVersionNoFinal != null) {
@@ -658,6 +658,22 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         for (Item child : relatedConceptToRemove.getChildren()) {
             removeRelatedConceptsBidirectional((ConceptMetamac) child);
         }
+    }
+
+    private ConceptSchemeVersionMetamac createVersionOfConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+
+        // Validation
+        checkConceptSchemeToVersioning(ctx, urnToCopy, isTemporal);
+
+        // Versioning
+        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
+        ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, isTemporal,
+                conceptVersioningCopyCallback);
+
+        // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
+        versioningRelatedConcepts(ctx, conceptSchemeVersionToCopy, conceptSchemeNewVersion);
+
+        return conceptSchemeNewVersion;
     }
 
     private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) {
@@ -786,4 +802,5 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private void checkConceptSchemeCanBeModified(ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn());
     }
+
 }

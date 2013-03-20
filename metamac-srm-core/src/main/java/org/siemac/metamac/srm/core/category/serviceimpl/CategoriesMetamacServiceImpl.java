@@ -174,13 +174,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategorySchemeVersionMetamac versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
 
-        // Validation
-        CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, null, null);
-        checkCategorySchemeToVersioning(ctx, urnToCopy);
-        // Versioning
-        CategorySchemeVersionMetamac categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, categoryVersioningCopyCallback);
+        return createVersionOfCategoryScheme(ctx, urnToCopy, versionType, false);
+    }
 
-        return categorySchemeNewVersion;
+    @Override
+    public CategorySchemeVersionMetamac createTemporalVersionCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        return createVersionOfCategoryScheme(ctx, urnToCopy, null, true);
     }
 
     @Override
@@ -438,6 +437,17 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         checkCategorySchemeCanBeModified(categorySchemeVersion);
     }
 
+    private CategorySchemeVersionMetamac createVersionOfCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+        // Validation
+        CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, isTemporal, null, null);
+        checkCategorySchemeToVersioning(ctx, urnToCopy);
+        // Versioning
+        CategorySchemeVersionMetamac categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, isTemporal,
+                categoryVersioningCopyCallback);
+
+        return categorySchemeNewVersion;
+    }
+
     private void checkCategorySchemeToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = retrieveCategorySchemeByUrn(ctx, urnToCopy);
@@ -454,4 +464,5 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private void checkCategorySchemeCanBeModified(CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(categorySchemeVersion.getLifeCycleMetadata(), categorySchemeVersion.getMaintainableArtefact().getUrn());
     }
+
 }

@@ -47,6 +47,8 @@ Application OrganisationsMetamac {
     		deleteOrganisationScheme(String urn) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
     		@OrganisationSchemeVersionMetamac versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a temporal version of a organisation scheme, copying metadata from version with provided urn"
+    		@OrganisationSchemeVersionMetamac createTemporalOrganisationScheme(String urnToCopy) throws MetamacException;
     		"Ends the organisation scheme validity"
     		@OrganisationSchemeVersionMetamac endOrganisationSchemeValidity(String urn) throws MetamacException;
     		"Retrieves organisations scheme by organisation urn"

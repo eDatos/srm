@@ -240,19 +240,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodelistVersionMetamac versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
-        // Validation
-        CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, null, null);
-        checkCodelistToVersioning(ctx, urnToCopy);
+        return createVersionOfCodelist(ctx, urnToCopy, versioningCodes, versionType, false);
+    }
 
-        // Versioning
-        CodesVersioningCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningCopyWithCodesCallback : codesVersioningCopyWithoutCodesCallback;
-        CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
-        CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, callback);
-
-        // Versioning visualisations // TODO cuando se implementen las versiones dummy, decidir dónde ubicar este código
-        codelistNewVersion = versioningCodelistOrderVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
-        codelistNewVersion = versioningCodelistOpennessVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
-        return codelistNewVersion;
+    @Override
+    public CodelistVersionMetamac createTemporalCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        return createVersionOfCodelist(ctx, urnToCopy, null, null, true);
     }
 
     @Override
@@ -1314,6 +1307,22 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
+    private CodelistVersionMetamac createVersionOfCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, isTemporal, null, null);
+        checkCodelistToVersioning(ctx, urnToCopy);
+
+        // Versioning
+        CodesVersioningCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningCopyWithCodesCallback : codesVersioningCopyWithoutCodesCallback;
+        CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
+        CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, callback);
+
+        // Versioning visualisations // TODO cuando se implementen las versiones dummy, decidir dónde ubicar este código
+        codelistNewVersion = versioningCodelistOrderVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
+        codelistNewVersion = versioningCodelistOpennessVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
+        return codelistNewVersion;
+    }
+
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
         CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
         // Check version to copy is published
@@ -1901,4 +1910,5 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             copyCodeInCodelist(ctx, codelistVersionSource, codelistVersionTarget, codeTarget, child);
         }
     }
+
 }

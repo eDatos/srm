@@ -82,10 +82,8 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         ConceptSchemeVersionMetamac previousMetamac = (ConceptSchemeVersionMetamac) previous;
         ConceptSchemeVersionMetamac targetMetamac = (ConceptSchemeVersionMetamac) target;
 
-        // TODO OJO, con los partial perderíamos herencia, es lo mismo que pasa con los dsd en la herencia de ordenes y niveles
         // Versioning related concepts
         conceptsMetamacService.versioningRelatedConcepts(ctx, previousMetamac, targetMetamac);
-
     }
 
     @Override

@@ -167,13 +167,21 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public OrganisationSchemeVersionMetamac versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+        return createTemporalOrganisationScheme(ctx, urnToCopy, versionType, false);
+    }
 
+    @Override
+    public OrganisationSchemeVersionMetamac createTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        return createTemporalOrganisationScheme(ctx, urnToCopy, null, true);
+    }
+
+    private OrganisationSchemeVersionMetamac createTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
-        OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, null, null);
+        OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, isTemporal, null, null);
         checkOrganisationSchemeToVersioning(ctx, urnToCopy);
 
         // Versioning
-        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType,
+        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal,
                 organisationVersioningCopyCallback);
 
         return organisationSchemeNewVersion;

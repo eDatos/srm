@@ -261,48 +261,14 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Override
     public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        // Validation
-        DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, null, null);
-        checkDataStructureDefinitionToVersioning(ctx, urnToCopy);
-
-        // ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        // ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, conceptCopyCallback);
-
-        // Versioning
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
-                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, structureVersioningCopyCallback);
-
-        // Versioning heading and stub (metadata of Metamac). Note: other relations are copied in copy callback
-        // Map of new dimension
-        Map<String, Component> dimensionOrderMap = new HashMap<String, Component>();
-        for (ComponentList componentList : dataStructureDefinitionVersionMetamacNewVersion.getGrouping()) {
-            if (componentList instanceof DimensionDescriptor) {
-                for (Component component : componentList.getComponents()) {
-                    dimensionOrderMap.put(component.getCode(), component);
-                }
-                break;
-            }
-        }
-        // Heading
-        for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getHeadingDimensions()) {
-            DimensionComponent targetDimension = (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
-            DimensionOrder targetDimensionOrder = new DimensionOrder();
-            targetDimensionOrder.setDimension(targetDimension);
-            targetDimensionOrder.setDimOrder(dimensionOrder.getDimOrder());
-            dataStructureDefinitionVersionMetamacNewVersion.addHeadingDimension(targetDimensionOrder);
-        }
-        // Stub
-        for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getStubDimensions()) {
-            DimensionComponent targetDimension = (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
-            DimensionOrder targetDimensionOrder = new DimensionOrder();
-            targetDimensionOrder.setDimension(targetDimension);
-            targetDimensionOrder.setDimOrder(dimensionOrder.getDimOrder());
-            dataStructureDefinitionVersionMetamacNewVersion.addStubDimension(targetDimensionOrder);
-        }
-
-        return dataStructureDefinitionVersionMetamacNewVersion;
+        return createVersionOfDataStructureDefinition(ctx, urnToCopy, versionType, false);
     }
+
+    @Override
+    public DataStructureDefinitionVersionMetamac createTemporalVersionDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        return createVersionOfDataStructureDefinition(ctx, urnToCopy, null, true);
+    }
+
     @Override
     public DataStructureDefinitionVersionMetamac sendDataStructureDefinitionToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.sendToProductionValidation(ctx, urn);
@@ -327,6 +293,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
     }
+
     @Override
     public DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         return (DataStructureDefinitionVersionMetamac) dsdLifeCycle.publishExternally(ctx, urn);
@@ -556,6 +523,47 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
      */
     private void checkComponentToCreateOrUpdate(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component) throws MetamacException {
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
+    }
+
+    private DataStructureDefinitionVersionMetamac createVersionOfDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, isTemporal, null, null);
+        checkDataStructureDefinitionToVersioning(ctx, urnToCopy);
+
+        // Versioning
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
+                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, structureVersioningCopyCallback);
+
+        // Versioning heading and stub (metadata of Metamac). Note: other relations are copied in copy callback
+        // Map of new dimension
+        Map<String, Component> dimensionOrderMap = new HashMap<String, Component>();
+        for (ComponentList componentList : dataStructureDefinitionVersionMetamacNewVersion.getGrouping()) {
+            if (componentList instanceof DimensionDescriptor) {
+                for (Component component : componentList.getComponents()) {
+                    dimensionOrderMap.put(component.getCode(), component);
+                }
+                break;
+            }
+        }
+        // Heading
+        for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getHeadingDimensions()) {
+            DimensionComponent targetDimension = (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
+            DimensionOrder targetDimensionOrder = new DimensionOrder();
+            targetDimensionOrder.setDimension(targetDimension);
+            targetDimensionOrder.setDimOrder(dimensionOrder.getDimOrder());
+            dataStructureDefinitionVersionMetamacNewVersion.addHeadingDimension(targetDimensionOrder);
+        }
+        // Stub
+        for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getStubDimensions()) {
+            DimensionComponent targetDimension = (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
+            DimensionOrder targetDimensionOrder = new DimensionOrder();
+            targetDimensionOrder.setDimension(targetDimension);
+            targetDimensionOrder.setDimOrder(dimensionOrder.getDimOrder());
+            dataStructureDefinitionVersionMetamacNewVersion.addStubDimension(targetDimensionOrder);
+        }
+
+        return dataStructureDefinitionVersionMetamacNewVersion;
     }
 
     private void checkDataStructureDefinitionToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {

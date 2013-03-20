@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
@@ -54,8 +55,7 @@ public class StructureVersioningCopyCallbackMetamacImpl implements StructureVers
             target.addShowDecimalsPrecision(targetMeasureDimensionPrecion);
         }
 
-        // TODO copy statisticalOperation. create new external item, to set different id in database!!!
-
+        target.setStatisticalOperation(BaseVersioningCopyUtils.copy(source.getStatisticalOperation()));
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // New structure in draft version
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
     }

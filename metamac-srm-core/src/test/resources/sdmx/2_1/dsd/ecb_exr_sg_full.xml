@@ -258,7 +258,7 @@
                <common:Name>Growth rate over previous period</common:Name>
             </structure:Code>
          </structure:Codelist>
-         <structure:Codelist id="CL_CURRENCY" agencyID="ISO" version="1.0" isPartial="true" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISO:CL_CURRENCY(1.0)" isFinal="true">
+         <structure:Codelist id="CL_CURRENCY" agencyID="ISO" version="1.0" isPartial="false" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISO:CL_CURRENCY(1.0)" isFinal="true">
             <common:Name>code list for the exchange rate series variation</common:Name>
             <structure:Code id="CHF">
                <common:Name>Swiss franc</common:Name>
@@ -278,7 +278,7 @@
          </structure:Codelist>
       </structure:Codelists>
       <structure:Concepts>
-         <structure:ConceptScheme id="CROSS_DOMAIN_CONCEPTS" agencyID="SDMX" version="1.0" isPartial="true" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX:CROSS_DOMAIN_CONCEPTS(1.0)" isFinal="true">
+         <structure:ConceptScheme id="CROSS_DOMAIN_CONCEPTS" agencyID="SDMX" version="1.0" isPartial="false" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX:CROSS_DOMAIN_CONCEPTS(1.0)" isFinal="true">
             <common:Name>SDMX Cross Domain Concept Scheme</common:Name>
             <structure:Concept id="COLL_METHOD" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(1.0).COLL_METHOD">
                <common:Annotations>
@@ -432,7 +432,7 @@
                <common:Description xml:lang="en">The unit in which the data values are measured.</common:Description>
             </structure:Concept>
          </structure:ConceptScheme>
-         <structure:ConceptScheme id="ECB_CONCEPTS" agencyID="ECB" version="1.0" isPartial="true" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ECB:ECB_CONCEPTS(1.0)" isFinal="true">
+         <structure:ConceptScheme id="ECB_CONCEPTS" agencyID="ECB" version="1.0" isPartial="false" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=ECB:ECB_CONCEPTS(1.0)" isFinal="true">
             <common:Name>Concepts maintained by the ECB</common:Name>
             <structure:Concept id="CURRENCY_DENOM" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ECB:ECB_CONCEPTS(1.0).CURRENCY_DENOM">
                <common:Name>Currency denominator</common:Name>

@@ -161,6 +161,25 @@ Application SrmFacadeCore {
     		@DataStructureDefinitionMetamacDto versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		
     		"
+	    	 Creates a temporal version of a dsd, copying metadata from version with provided urnn  		
+		     @param ctx
+		     @param urnToCopy Urn of DataStructureDefinition to copy
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+    		@DataStructureDefinitionMetamacDto versioningDataStructureDefinition(String urnToCopy) throws MetamacException;
+    		
+    		"
+	    	 Creates a new version of a dsd, copying metadata from a temporal version with provided urn  		
+		     @param ctx
+		     @param urnToCopy Urn of DataStructureDefinition to copy
+		     @param versionType MAJOR or MINOR version
+		     @return
+		     @throws org.siemac.metamac.core.common.exception.MetamacException
+		    "
+    		@DataStructureDefinitionMetamacDto createVersionFromTemporalDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		
+    		"
 	    	 Ends the dsd scheme validity  		
 		     @param ctx
 		     @param urn Urn of DataStructureDefinition
@@ -339,6 +358,10 @@ Application SrmFacadeCore {
 	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"
+    		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy) throws MetamacException;
+    		"Creates a new version of a concept scheme, copying metadata from a temporal version with provided urn"
+    		@ConceptSchemeMetamacDto createVersionFromTemporalConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the concept scheme validity"
     		@ConceptSchemeMetamacDto endConceptSchemeValidity(String urn) throws MetamacException;
     		
@@ -411,6 +434,10 @@ Application SrmFacadeCore {
 	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a category scheme, copying metadata from version with provided urn"
     		@CategorySchemeMetamacDto versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a temporal version of a category scheme, copying metadata from version with provided urn"
+    		@CategorySchemeMetamacDto versioningCategoryScheme(String urnToCopy) throws MetamacException;
+    		"Creates a new version of a category scheme, copying metadata from a temporal version with provided urn"
+    		@CategorySchemeMetamacDto createVersionFromTemporalCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the category scheme validity"
     		@CategorySchemeMetamacDto endCategorySchemeValidity(String urn) throws MetamacException;
             
@@ -468,6 +495,10 @@ Application SrmFacadeCore {
 	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
     		"Creates a new version of a Codelist, copying metadata from version with provided urn"
     		@CodelistMetamacDto versioningCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a temporal version of a Codelist, copying metadata from version with provided urn"
+    		@CodelistMetamacDto versioningCodelist(String urnToCopy) throws MetamacException;
+    		"Creates a new version of a Codelist, copying metadata from a temporal version with provided urn"
+    		@CodelistMetamacDto createVersionFromTemporalCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the Codelist validity"
     		@CodelistMetamacDto endCodelistValidity(String urn) throws MetamacException;
     		
