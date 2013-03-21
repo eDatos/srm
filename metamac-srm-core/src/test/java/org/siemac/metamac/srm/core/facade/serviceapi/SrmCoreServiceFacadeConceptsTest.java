@@ -121,7 +121,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
         assertEquals("op1", conceptSchemeMetamacDto.getRelatedOperation().getCode());
-        assertEquals("http://op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
+        assertEquals("/operations/op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
         assertEquals("urn:op1", conceptSchemeMetamacDto.getRelatedOperation().getUrn());
         assertEquals("http://app/operations", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
         assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());

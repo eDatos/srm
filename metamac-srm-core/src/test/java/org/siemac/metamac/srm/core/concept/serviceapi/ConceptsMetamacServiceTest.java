@@ -374,7 +374,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeVersion.getType());
         assertEquals("op1", conceptSchemeVersion.getRelatedOperation().getCode());
         assertEquals("urn:op1", conceptSchemeVersion.getRelatedOperation().getUrn());
-        assertEquals("http://op1", conceptSchemeVersion.getRelatedOperation().getUri());
+        assertEquals("/operations/op1", conceptSchemeVersion.getRelatedOperation().getUri());
         assertEquals(TypeExternalArtefactsEnum.STATISTICAL_OPERATION, conceptSchemeVersion.getRelatedOperation().getType());
         assertEquals("http://app/operations", conceptSchemeVersion.getRelatedOperation().getManagementAppUrl());
     }

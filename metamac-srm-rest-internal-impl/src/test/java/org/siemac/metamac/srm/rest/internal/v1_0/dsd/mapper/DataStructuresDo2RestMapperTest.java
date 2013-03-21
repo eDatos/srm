@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.dsd.mapper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
@@ -108,6 +109,9 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals(Boolean.TRUE, target.isAutoOpen());
         assertEquals(3, target.getShowDecimals().intValue());
         assertEquals("urn:operation-resourceID1", target.getStatisticalOperation().getUrn());
+        assertEquals("statisticalOperations#operation", target.getStatisticalOperation().getKind());
+        assertEquals("operation-resourceID1", target.getStatisticalOperation().getId());
+        assertNull(target.getStatisticalOperation().getTitle());
         // show decimals
         assertEquals(2, target.getShowDecimalsPrecisions().getTotal().intValue());
         assertEquals("urn:concept01", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getConcept().getURN());

@@ -65,7 +65,7 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
     public static ExternalItem mockOperationExternalItem(String code) {
         ExternalItem target = new ExternalItem();
         target.setCode(code);
-        target.setUri("http://" + code);
+        target.setUri("/operations/" + code);
         target.setUrn("urn:" + code);
         target.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
         target.setManagementAppUrl("managementAppUrl" + code);

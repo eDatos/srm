@@ -202,10 +202,10 @@
         <cdomain:text xml:lang="es">comment-artefact1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">comment-artefact1v01.000 in English</cdomain:text>
     </sr:comment>
-    <sr:statisticalOperation kind="STATISTICAL_OPERATION">
+    <sr:statisticalOperation kind="statisticalOperations#operation">
         <cdomain:id>operation-artefact1</cdomain:id>
         <cdomain:urn>urn:operation-artefact1</cdomain:urn>
-        <cdomain:selfLink kind="STATISTICAL_OPERATION" href="http://data.istac.es/apis/operations-internal/http://operation-artefact1"/>
+        <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/operations/operation-artefact1"/>
     </sr:statisticalOperation>
     <sr:autoOpen>true</sr:autoOpen>
     <sr:heading total="2">

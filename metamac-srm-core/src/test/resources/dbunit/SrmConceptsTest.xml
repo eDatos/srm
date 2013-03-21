@@ -3827,23 +3827,23 @@
     <TB_EXTERNAL_ITEMS 
         ID="13"
         CODE="op1"
-        URI="http://op1"
+        URI="/operations/op1"
         URN="urn:op1"
         MANAGEMENT_APP_URL="http://app/operations"
         VERSION="1"
         TITLE_FK="[null]"
-        TYPE="STATISTICAL_OPERATION"
+        TYPE="statisticalOperations#operation"
     />
     
     <TB_EXTERNAL_ITEMS 
         ID="82"
         CODE="op1"
-        URI="http://op1"
+        URI="/operations/op1"
         URN="urn:op1"
         MANAGEMENT_APP_URL="http://app/operations"
         VERSION="1"
         TITLE_FK="[null]"
-        TYPE="STATISTICAL_OPERATION"
+        TYPE="statisticalOperations#operation"
     />
 
     <!-- ************************************************************************************** -->

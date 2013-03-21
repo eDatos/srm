@@ -5523,39 +5523,7 @@
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
     <!-- *************************************************************************************  -->
-    
-    <TB_EXTERNAL_ITEMS 
-        ID="13"
-        CODE="op1"
-        URI="http://op1"
-        URN="urn:op1"
-        MANAGEMENT_APP_URL="http://app/operations"
-        VERSION="1"
-        TITLE_FK="[null]"
-        TYPE="STATISTICAL_OPERATION"
-    />
-    
-    <TB_EXTERNAL_ITEMS 
-        ID="82"
-        CODE="op1"
-        URI="http://op1"
-        URN="urn:op1"
-        MANAGEMENT_APP_URL="http://app/operations"
-        VERSION="1"
-        TITLE_FK="[null]"
-        TYPE="STATISTICAL_OPERATION"
-    />
-    
-    <TB_EXTERNAL_ITEMS 
-        ID="121"
-        CODE="CODE_LIST_1"
-        URI="http://data.siemac.org/srm/v1/codeLists/1"
-        URN="urn:sdmx:org.sdmx.infomodel.base.CodeList.1"
-        MANAGEMENT_APP_URL="http://managementCodeList1"
-        VERSION="1"
-        TITLE_FK="36"
-        TYPE="CODELIST"
-    />               
+          
 
     <!-- ************************************************************************************** -->
     <!-- CONCEPTS	                                                                            -->

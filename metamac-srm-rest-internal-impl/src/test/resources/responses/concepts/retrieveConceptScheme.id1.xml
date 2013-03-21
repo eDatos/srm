@@ -159,9 +159,9 @@
         <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
     </sr:comment>
     <sr:type>OPERATION</sr:type>
-    <sr:statisticalOperation kind="STATISTICAL_OPERATION">
+    <sr:statisticalOperation kind="statisticalOperations#operation">
         <cdomain:id>operation-itemScheme1</cdomain:id>
         <cdomain:urn>urn:operation-itemScheme1</cdomain:urn>
-        <cdomain:selfLink kind="STATISTICAL_OPERATION" href="http://data.istac.es/apis/operations-internal/http://operation-itemScheme1"/>
+        <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/operations/operation-itemScheme1"/>
     </sr:statisticalOperation>
 </sr:conceptScheme>
