@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.shared.code;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
@@ -19,6 +20,9 @@ public class GetCodesByCodelist {
     String                               codelistOrderUrn;
 
     @In(3)
+    String                               codelistOpennessLevelUrn;
+
+    @In(4)
     String                               locale;
 
     @Out(1)
@@ -26,4 +30,7 @@ public class GetCodesByCodelist {
 
     @Out(2)
     CodelistOrderVisualisationDto        codelistOrderVisualisationDto;
+
+    @Out(3)
+    CodelistOpennessVisualisationDto     codelistOpennessVisualisationDto;
 }

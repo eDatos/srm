@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
@@ -32,7 +33,7 @@ public class GetCodesByCodelistActionHandler extends SecurityActionHandler<GetCo
 
             // Codes
             List<CodeMetamacVisualisationResult> codes = srmCoreServiceFacade.retrieveCodesByCodelistUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(), action.getLocale(),
-                    action.getCodelistOrderUrn(), null); // FIXME Set the openness visualisation
+                    action.getCodelistOrderUrn(), action.getCodelistOpennessLevelUrn());
 
             // Order
             CodelistOrderVisualisationDto codelistOrderVisualisationDto = null;
@@ -40,7 +41,14 @@ public class GetCodesByCodelistActionHandler extends SecurityActionHandler<GetCo
                 codelistOrderVisualisationDto = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistOrderUrn());
             }
 
-            return new GetCodesByCodelistResult(codes, codelistOrderVisualisationDto);
+            // Openness level
+            CodelistOpennessVisualisationDto codelistOpennessVisualisationDto = null;
+            if (action.getCodelistOpennessLevelUrn() != null) {
+                codelistOpennessVisualisationDto = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(ServiceContextHolder.getCurrentServiceContext(),
+                        action.getCodelistOpennessLevelUrn());
+            }
+
+            return new GetCodesByCodelistResult(codes, codelistOrderVisualisationDto, codelistOpennessVisualisationDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
