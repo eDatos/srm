@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
-import org.siemac.metamac.core.common.constants.CoreCommonConstants;
+import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.constants.RestEndpointsConstants;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
@@ -65,7 +65,7 @@ public class ApplicationStartup implements ServletContextListener {
         }
 
         // Check correctly filled
-        if (!StringUtils.isBlank(propertyValue) && propertyValue.contains(CoreCommonConstants.CONFIGURATION_FILL_ME_PROPERTY)) {
+        if (!StringUtils.isBlank(propertyValue) && propertyValue.contains(ConfigurationConstants.FILL_ME_WITH_VALUE)) {
             String errorMessage = "Property [" + propertyKey + "] is not correctly filled. Aborting application startup";
             LOG.error(errorMessage);
             throw new IllegalArgumentException(errorMessage);
