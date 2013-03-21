@@ -38,6 +38,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistFamilyActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistOpennessLevelsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistOrdersActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistsActionHandler;
@@ -152,6 +153,7 @@ import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistOpennessLevelsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistVersionsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
@@ -376,6 +378,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(UpdateCodeVariableElementAction.class, UpdateCodeVariableElementActionHandler.class);
         bindHandler(GetCodesAction.class, GetCodesActionHandler.class);
         bindHandler(CreateCodesHierarchyAction.class, CreateCodesHierarchyActionHandler.class);
+        bindHandler(GetCodelistOpennessLevelsAction.class, GetCodelistOpennessLevelsActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
