@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.core.code.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
@@ -27,6 +26,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 @org.springframework.stereotype.Component("codesDo2DtoMapper")
@@ -331,7 +331,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         }
         RelatedResourceDto target = new RelatedResourceDto();
         do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getMaintainableArtefact(), target);
-        target.setType(TypeExternalArtefactsEnum.CODELIST);
+        target.setType(RelatedResourceTypeEnum.CODELIST);
         return target;
     }
 

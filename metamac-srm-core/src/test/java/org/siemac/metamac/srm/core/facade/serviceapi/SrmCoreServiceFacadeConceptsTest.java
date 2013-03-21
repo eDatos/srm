@@ -29,7 +29,6 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
@@ -57,6 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -1086,7 +1086,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertEquals(RepresentationTypeEnum.ENUMERATION, conceptMetamacDto.getCoreRepresentation().getRepresentationType());
         assertEquals("CODELIST07", conceptMetamacDto.getCoreRepresentation().getEnumeration().getCode());
         assertEqualsInternationalStringDto(conceptMetamacDto.getCoreRepresentation().getEnumeration().getTitle(), "es", "Comentario codelist-7-v1", "en", "Comment codelist-7-v1");
-        assertEquals(TypeExternalArtefactsEnum.CODELIST, conceptMetamacDto.getCoreRepresentation().getEnumeration().getType());
+        assertEquals(RelatedResourceTypeEnum.CODELIST, conceptMetamacDto.getCoreRepresentation().getEnumeration().getType());
         assertEquals(CODELIST_7_V1, conceptMetamacDto.getCoreRepresentation().getEnumeration().getUrn());
     }
 

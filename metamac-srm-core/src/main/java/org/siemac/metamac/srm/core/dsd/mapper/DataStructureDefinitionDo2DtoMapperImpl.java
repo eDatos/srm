@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.core.dsd.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
@@ -17,6 +16,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 @org.springframework.stereotype.Component("dataStructureDefinitionDo2DtoMapper")
@@ -105,7 +105,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         RelatedResourceDto target = new RelatedResourceDto();
         target.setCode(source.getDimension().getCode());
         target.setTitle(null);
-        target.setType(TypeExternalArtefactsEnum.COMPONENT);
+        target.setType(RelatedResourceTypeEnum.DIMENSION);
         target.setUrn(source.getDimension().getUrn());
         target.setUrnProvider(source.getDimension().getUrnProvider());
 
@@ -120,7 +120,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         MeasureDimensionPrecisionDto target = new MeasureDimensionPrecisionDto();
         target.setCode(source.getConcept().getNameableArtefact().getCode());
         target.setTitle(null);
-        target.setType(TypeExternalArtefactsEnum.CODE);
+        target.setType(RelatedResourceTypeEnum.DIMENSION);
         target.setUrn(source.getConcept().getNameableArtefact().getUrn());
         target.setUrnProvider(source.getConcept().getNameableArtefact().getUrnProvider());
         target.setShowDecimalPrecision(source.getShowDecimalPrecision());

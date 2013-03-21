@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 public class ConceptsMetamacDtoMocks {
@@ -25,7 +26,7 @@ public class ConceptsMetamacDtoMocks {
         ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
 
-        conceptSchemeDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY));
+        conceptSchemeDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, RelatedResourceTypeEnum.AGENCY));
 
         return conceptSchemeDto;
     }
@@ -35,7 +36,7 @@ public class ConceptsMetamacDtoMocks {
         ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.OPERATION);
         conceptSchemeDto.setRelatedOperation(MetamacMocks.mockExternalItemDto("urn:operation", TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
-        RelatedResourceDto maintainerDto = new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY);
+        RelatedResourceDto maintainerDto = new RelatedResourceDto(codeMaintainer, urnMaintainer, RelatedResourceTypeEnum.AGENCY);
         maintainerDto.setUrnProvider(urnMaintainer);
         conceptSchemeDto.setMaintainer(maintainerDto);
 
@@ -59,7 +60,7 @@ public class ConceptsMetamacDtoMocks {
         relatedResourceDto.setCode(code);
         relatedResourceDto.setUrn(urn);
         relatedResourceDto.setUrnProvider(urn);
-        relatedResourceDto.setType(TypeExternalArtefactsEnum.CONCEPT);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CONCEPT);
         return relatedResourceDto;
     }
 

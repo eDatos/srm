@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.core.code.serviceapi.utils;
 import java.util.Date;
 
 import org.siemac.metamac.common.test.utils.MetamacMocks;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -15,6 +14,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 
 public class CodesMetamacDtoMocks {
 
@@ -29,7 +29,7 @@ public class CodesMetamacDtoMocks {
 
         CodesDtoMocks.mockCodelistDto(codelistDto);
 
-        codelistDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, TypeExternalArtefactsEnum.AGENCY));
+        codelistDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, RelatedResourceTypeEnum.AGENCY));
 
         return codelistDto;
     }
@@ -39,7 +39,7 @@ public class CodesMetamacDtoMocks {
         relatedResourceDto.setCode(code);
         relatedResourceDto.setUrn(urn);
         relatedResourceDto.setUrnProvider(urn);
-        relatedResourceDto.setType(TypeExternalArtefactsEnum.CODELIST);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CODELIST);
         return relatedResourceDto;
     }
 

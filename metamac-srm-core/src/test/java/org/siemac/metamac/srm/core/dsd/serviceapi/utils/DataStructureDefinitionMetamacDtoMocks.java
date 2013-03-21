@@ -7,6 +7,7 @@ import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 
 public class DataStructureDefinitionMetamacDtoMocks extends DataStructureDefinitionDtoMocks {
 
@@ -43,7 +44,7 @@ public class DataStructureDefinitionMetamacDtoMocks extends DataStructureDefinit
 
     private static RelatedResourceDto createDimensionRelatedResourceDto(String urn) {
         RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
-        relatedResourceDto.setType(TypeExternalArtefactsEnum.COMPONENT);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.DIMENSION);
         relatedResourceDto.setUrn(urn);
 
         return relatedResourceDto;
@@ -60,7 +61,7 @@ public class DataStructureDefinitionMetamacDtoMocks extends DataStructureDefinit
 
     private static MeasureDimensionPrecisionDto createMeasureDimensionPrecisionDto(String urn, Integer precision) {
         MeasureDimensionPrecisionDto measureDimensionPrecisionDto = new MeasureDimensionPrecisionDto();
-        measureDimensionPrecisionDto.setType(TypeExternalArtefactsEnum.CONCEPT);
+        measureDimensionPrecisionDto.setType(RelatedResourceTypeEnum.CONCEPT);
         measureDimensionPrecisionDto.setUrn(urn);
         measureDimensionPrecisionDto.setShowDecimalPrecision(precision);
 
