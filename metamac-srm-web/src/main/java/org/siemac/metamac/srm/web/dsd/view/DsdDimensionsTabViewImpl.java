@@ -48,6 +48,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
@@ -522,7 +523,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Concept
         dimensionComponentDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                TypeExternalArtefactsEnum.CONCEPT, editionForm.getValueAsString(DimensionDS.CONCEPT)));
+                RelatedResourceTypeEnum.CONCEPT, editionForm.getValueAsString(DimensionDS.CONCEPT)));
 
         // Role
         dimensionComponentDto.getRole().clear();
@@ -545,11 +546,11 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                     dimensionComponentDto.getLocalRepresentation().setEnumeration(
                             StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                    TypeExternalArtefactsEnum.CONCEPT_SCHEME, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)));
+                                    RelatedResourceTypeEnum.CONCEPT_SCHEME, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)));
                 } else {
                     dimensionComponentDto.getLocalRepresentation().setEnumeration(
                             StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                    TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)));
+                                    RelatedResourceTypeEnum.CODELIST, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)));
                 }
                 dimensionComponentDto.getLocalRepresentation().setTextFormat(null);
                 // Facet

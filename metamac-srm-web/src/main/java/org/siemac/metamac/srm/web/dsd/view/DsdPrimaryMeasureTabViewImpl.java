@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.dsd.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
@@ -34,6 +33,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -331,8 +331,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     public ComponentDto getDsdPrimaryMeasure() {
         // Concept
-        primaryMeasure.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                TypeExternalArtefactsEnum.CONCEPT, editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
+        primaryMeasure.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(RelatedResourceTypeEnum.CONCEPT,
+                editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
 
         // Representation
         if (editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue() != null && !editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue().toString().isEmpty()) {
@@ -349,7 +349,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 primaryMeasure.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
                 primaryMeasure.getLocalRepresentation().setEnumeration(
                         StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)));
+                                RelatedResourceTypeEnum.CODELIST, editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)));
                 primaryMeasure.getLocalRepresentation().setTextFormat(null);
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {

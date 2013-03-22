@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -51,6 +50,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
@@ -756,8 +756,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         dataAttributeDto.getRole().addAll(selectedRoles);
 
         // Concept
-        dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                TypeExternalArtefactsEnum.CONCEPT, editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
+        dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(RelatedResourceTypeEnum.CONCEPT,
+                editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
 
         // Usage Status
         dataAttributeDto.setUsageStatus(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.USAGE_STATUS)) ? null : UsageStatus.valueOf(editionForm
@@ -805,7 +805,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 dataAttributeDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
                 dataAttributeDto.getLocalRepresentation().setEnumeration(
                         StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                TypeExternalArtefactsEnum.CODELIST, editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)));
+                                RelatedResourceTypeEnum.CODELIST, editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)));
                 dataAttributeDto.getLocalRepresentation().setTextFormat(null);
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
