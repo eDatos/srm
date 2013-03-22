@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
@@ -16,6 +15,7 @@ import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -70,7 +70,7 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
                 MeasureDimensionPrecisionDto measureDimensionPrecisionDto = new MeasureDimensionPrecisionDto();
                 measureDimensionPrecisionDto.setShowDecimalPrecision(showDecimalsPrecision);
                 measureDimensionPrecisionDto.setCode(record.getAttribute(ItemDS.CODE));
-                measureDimensionPrecisionDto.setType(TypeExternalArtefactsEnum.CONCEPT);
+                measureDimensionPrecisionDto.setType(RelatedResourceTypeEnum.CONCEPT);
                 measureDimensionPrecisionDto.setUrn(record.getAttributeAsString(ItemDS.URN));
                 measureDimensionPrecisionDtos.add(measureDimensionPrecisionDto);
             }
