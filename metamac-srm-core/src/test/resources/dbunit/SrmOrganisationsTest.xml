@@ -3072,30 +3072,10 @@
     />  
     <TB_LOCALISED_STRINGS
         ID="32"
-        LABEL="Name organisationScheme-1-v1"
+        LABEL="Name organisationScheme-1-v2"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="3"
-    />
-    
-    <TB_INTERNATIONAL_STRINGS
-        ID="31"
-        VERSION="1"
-    />  
-    
-    <TB_LOCALISED_STRINGS
-        ID="311"
-        LABEL="Nombre organisationScheme-1-v2"
-        LOCALE="es"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="31"
-    />  
-    <TB_LOCALISED_STRINGS
-        ID="312"
-        LABEL="Name organisationScheme-1-v1"
-        LOCALE="en"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="31"
     />
     
     <TB_INTERNATIONAL_STRINGS
