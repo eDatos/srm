@@ -49,9 +49,7 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
 
     public BaseItemsTreeGrid() {
         setHeight(175);
-        setAutoFitMaxRecords(10);
         setAutoFitData(Autofit.VERTICAL);
-
         setShowOpenIcons(false);
         setShowDropIcons(false);
         setShowSelectedStyle(true);

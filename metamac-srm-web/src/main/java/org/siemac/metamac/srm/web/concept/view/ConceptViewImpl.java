@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -62,6 +61,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -132,6 +132,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         //
 
         conceptsTreeGrid = new ConceptsTreeGrid();
+        conceptsTreeGrid.setAutoFitMaxRecords(10);
 
         CustomVLayout conceptsListGridLayout = new CustomVLayout();
         conceptsListGridLayout.addMember(new TitleLabel(getConstants().conceptSchemeConcepts()));
@@ -614,7 +615,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 conceptDto.getCoreRepresentation().setTextFormat(null);
                 conceptDto.getCoreRepresentation().setEnumeration(
                         StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                TypeExternalArtefactsEnum.CODELIST, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)));
+                                RelatedResourceTypeEnum.CODELIST, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)));
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
                 conceptDto.getCoreRepresentation().setEnumeration(null);
                 conceptDto.getCoreRepresentation().setTextFormat(facetEditionForm.getFacet());
@@ -634,7 +635,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // Relation between concepts
         conceptDto.setConceptExtends(StringUtils.isBlank(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                TypeExternalArtefactsEnum.CONCEPT, relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)));
+                RelatedResourceTypeEnum.CONCEPT, relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)));
         // Related concepts get in getRelatedConcepts method
 
         // Legal acts

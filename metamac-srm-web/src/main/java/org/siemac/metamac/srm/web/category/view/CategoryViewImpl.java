@@ -71,6 +71,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         //
 
         categoriesTreeGrid = new CategoriesTreeGrid();
+        categoriesTreeGrid.setAutoFitMaxRecords(10);
 
         CustomVLayout categoriesListGridLayout = new CustomVLayout();
         categoriesListGridLayout.addMember(new TitleLabel(getConstants().categorySchemeCategories()));

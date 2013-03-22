@@ -105,6 +105,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         //
 
         organisationsTreeGrid = new OrganisationsTreeGrid();
+        organisationsTreeGrid.setAutoFitMaxRecords(10);
 
         organisationsTreeGridLayout = new CustomVLayout();
         organisationsTreeGridLayout.addMember(new TitleLabel(getConstants().organisationSchemeOrganisations()));

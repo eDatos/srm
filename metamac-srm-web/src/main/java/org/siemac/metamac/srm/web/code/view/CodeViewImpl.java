@@ -87,6 +87,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         //
 
         codesTreeGrid = new CodesTreeGrid();
+        codesTreeGrid.setAutoFitMaxRecords(10);
 
         CustomVLayout codesListGridLayout = new CustomVLayout();
         codesListGridLayout.addMember(new TitleLabel(getConstants().codelistCodes()));
