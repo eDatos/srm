@@ -53,6 +53,8 @@ Application OrganisationsMetamac {
     		@OrganisationSchemeVersionMetamac endOrganisationSchemeValidity(String urn) throws MetamacException;
     		"Retrieves organisations scheme by organisation urn"
     		@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(String organisationUrn) throws MetamacException;
+    		"Checks translates for organisation scheme"
+    		List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslates(Long itemSchemeVersionId, String locale);
     		
 			"Creates organisation"
 			@OrganisationMetamac createOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;
@@ -91,6 +93,7 @@ Application OrganisationsMetamac {
 				@OrganisationSchemeVersionMetamac findByUrn(String urn);
 				@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@OrganisationSchemeVersionMetamac findByOrganisation(String urn);
+				List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslates(Long itemSchemeVersionId, String locale);
 			}			
 		}
 		

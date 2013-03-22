@@ -24,4 +24,9 @@ public interface SrmConfiguration {
      */
     public Boolean isDatabaseSqlServer() throws MetamacException;
 
+    /**
+     * Language as default
+     */
+    public String retrieveLanguageDefault() throws MetamacException;
+
 }

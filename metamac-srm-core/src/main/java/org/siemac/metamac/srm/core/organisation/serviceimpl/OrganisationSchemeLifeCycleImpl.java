@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacRepository;
+import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,9 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private OrganisationsService                       organisationsService;
+
+    @Autowired
+    private OrganisationsMetamacService                organisationsMetamacService;
 
     public OrganisationSchemeLifeCycleImpl() {
         this.callback = new OrganisationSchemeLifeCycleCallback();
@@ -96,8 +100,14 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException {
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(targetStatus)) {
+                Long itemSchemeVersionId = getOrganisationSchemeVersionMetamac(srmResourceVersion).getId();
+                String locale = retrieveLanguageDefault();
+                List<MetamacExceptionItem> exceptionItems = organisationsMetamacService.checkOrganisationSchemeVersionTranslates(ctx, itemSchemeVersionId, locale);
+                exceptions.addAll(exceptionItems);
+            }
         }
 
         @Override

@@ -1,11 +1,20 @@
 package org.siemac.metamac.srm.core.organisation.repositoryimpl;
 
+import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getLong;
+import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getString;
+import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.withoutTranslation;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Query;
+
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -21,6 +30,7 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
     public OrganisationSchemeVersionMetamacRepositoryImpl() {
     }
 
+    @Override
     public OrganisationSchemeVersionMetamac findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
@@ -32,6 +42,7 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
         }
     }
 
+    @Override
     public OrganisationSchemeVersionMetamac retrieveOrganisationSchemeVersionByProcStatus(String urn, ProcStatusEnum[] procStatusArray) throws MetamacException {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
@@ -53,6 +64,7 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
         return result.get(0);
     }
 
+    @Override
     public OrganisationSchemeVersionMetamac findByOrganisation(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
@@ -61,5 +73,51 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
             return result.get(0);
         }
         return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslates(Long itemSchemeVersionId, String locale) {
+        // TODO pasar al repositorio ItemSchemeVersion
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT a.CODE, a.NAME_FK as IS_NAME, lsN.LABEL as NAME_LABEL, a.DESCRIPTION_FK as IS_DESCRIPTION, lsD.LABEL as DESCRIPTION_LABEL, a.COMMENT_FK as IS_COMMENT, lsC.LABEL as COMMENT_LABEL ");
+        sb.append("FROM TB_ITEM_SCHEMES_VERSIONS iv ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on iv.MAINTAINABLE_ARTEFACT_FK = a.ID ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsN on lsN.INTERNATIONAL_STRING_FK = a.NAME_FK and lsN.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsD on lsD.INTERNATIONAL_STRING_FK = a.DESCRIPTION_FK and lsD.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsC on lsC.INTERNATIONAL_STRING_FK = a.COMMENT_FK and lsC.LOCALE = :locale ");
+        sb.append("WHERE ");
+        sb.append("iv.ID = :itemSchemeVersionId ");
+        sb.append("AND (a.NAME_FK IS NOT NULL OR a.DESCRIPTION_FK IS NOT NULL OR a.COMMENT_FK IS NOT NULL) ");
+        sb.append("AND (lsN.LABEL IS NULL OR lsD.LABEL IS NULL OR lsC.LABEL IS NULL)");
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        query.setParameter("locale", locale);
+        List resultsSql = query.getResultList();
+
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        for (Object resultSql : resultsSql) {
+            Object[] resultArray = (Object[]) resultSql;
+            int i = 0;
+            String code = getString(resultArray[i++]);
+            Long internationalStringName = getLong(resultArray[i++]);
+            String localisedStringName = getString(resultArray[i++]);
+            Long internationalStringDescription = getLong(resultArray[i++]);
+            String localisedStringDescription = getString(resultArray[i++]);
+            Long internationalStringComment = getLong(resultArray[i++]);
+            String localisedStringComment = getString(resultArray[i++]);
+            if (withoutTranslation(internationalStringName, localisedStringName)) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ARTEFACT_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, code));
+            }
+            if (withoutTranslation(internationalStringDescription, localisedStringDescription)) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ARTEFACT_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code));
+            }
+            if (withoutTranslation(internationalStringComment, localisedStringComment)) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ARTEFACT_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT, code));
+            }
+        }
+        return exceptionItems;
     }
 }

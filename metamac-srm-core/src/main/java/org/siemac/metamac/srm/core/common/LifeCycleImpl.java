@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
@@ -43,6 +44,9 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
     @Autowired
     private CategoriesMetamacService        categoriesService;
+
+    @Autowired
+    private SrmConfiguration                srmConfiguration;
 
     public LifeCycleImpl() {
     }
@@ -159,7 +163,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         ProcStatusEnum targetStatus = ProcStatusEnum.INTERNALLY_PUBLISHED;
 
         // Validate to publish internally
-        checkResourceInInternallyPublished(urn, srmResourceVersion, targetStatus);
+        checkResourceInInternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
 
         // Update life cycle metadata
         SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
@@ -235,6 +239,10 @@ public abstract class LifeCycleImpl implements LifeCycle {
         }
 
         return srmResourceVersion;
+    }
+
+    protected String retrieveLanguageDefault() throws MetamacException {
+        return srmConfiguration.retrieveLanguageDefault();
     }
 
     /**
@@ -313,7 +321,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
     /**
      * Makes validations to publish internally. Also revalidates conditions that were checked to go previous statuses.
      */
-    private void checkResourceInInternallyPublished(String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
+    private void checkResourceInInternallyPublished(ServiceContext ctx, String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
@@ -324,7 +332,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Check other conditions
         checkResourceInDiffusionValidation(urn, srmResourceVersion, targetStatus);
-        callback.checkConcreteResourceInInternallyPublished(srmResourceVersion, targetStatus, exceptions);
+        callback.checkConcreteResourceInInternallyPublished(ctx, srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -349,7 +357,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         }
 
         // Check other conditions
-        checkResourceInInternallyPublished(urn, srmResourceVersion, targetStatus);
+        checkResourceInInternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
         callback.checkConcreteResourceInExternallyPublished(srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
@@ -392,7 +400,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInInternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException;
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
 
         // Validity, final, public, additional actions

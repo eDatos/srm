@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -259,7 +260,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(13, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(14, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -273,6 +274,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ORGANISATION_SCHEME_8_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_9_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_10_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_11_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(organisationSchemeVersionPagedResult.getTotalRows(), i);
         }
@@ -306,7 +308,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     pagingParameter);
 
             // Validate
-            assertEquals(11, organisationSchemeVersionPagedResult.getTotalRows());
+            assertEquals(12, organisationSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(ORGANISATION_SCHEME_1_V2, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_2_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -318,6 +320,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ORGANISATION_SCHEME_8_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_9_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_10_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_11_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_ROOT_1_V1, organisationSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         }
     }
@@ -848,6 +851,29 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Override
+    @Test
+    public void testCheckOrganisationSchemeVersionTranslates() throws Exception {
+        String urn = ORGANISATION_SCHEME_11_V1;
+        String code = "ORGANISATIONSCHEME11";
+
+        try {
+            // Note: publishInternallyOrganisationScheme calls to 'checkOrganisationSchemeVersionTranslates'
+            organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
+            fail("OrganisationScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+
+            // OrganisationScheme
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ARTEFACT_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
+                    new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
+
+            // Organisations
+            assertEquals(e.getExceptionItems().size(), i);
         }
     }
 
@@ -1776,8 +1802,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             PagedResult<OrganisationMetamac> organisationsPagedResult = organisationsService.findOrganisationsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(26, organisationsPagedResult.getTotalRows());
-            assertEquals(26, organisationsPagedResult.getValues().size());
+            assertEquals(27, organisationsPagedResult.getTotalRows());
+            assertEquals(27, organisationsPagedResult.getValues().size());
             assertTrue(organisationsPagedResult.getValues().get(0) instanceof OrganisationMetamac);
 
             int i = 0;
@@ -1805,6 +1831,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ORGANISATION_SCHEME_9_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_9_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_10_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(ORGANISATION_SCHEME_11_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_1, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(ORGANISATION_SCHEME_100_V1_ORGANISATION_2, organisationsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
 

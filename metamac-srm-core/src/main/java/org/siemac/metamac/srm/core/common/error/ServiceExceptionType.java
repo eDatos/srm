@@ -10,6 +10,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType ITEM_SCHEME_WITHOUT_ITEMS                                            = create("exception.srm.item_scheme.without_items");
     public static final CommonServiceExceptionType ITEM_WITH_INCORRECT_METADATA                                         = create("exception.srm.item_scheme.item_with_incorrect_metadata");
     public static final CommonServiceExceptionType STRUCTURE_MODIFICATIONS_NOT_SUPPORTED                                = create("exception.srm.structure_modifications.operation_not_supported");
+    public static final CommonServiceExceptionType ARTEFACT_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE                 = create("exception.srm.artefact.metadata_without_translation_default_locale");
 
     // Concepts
     public static final CommonServiceExceptionType CONCEPT_SCHEME_WRONG_TYPE                                            = create("exception.srm.concepts.concept_scheme.wrong_type");

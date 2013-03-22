@@ -1,5 +1,11 @@
 package org.siemac.metamac.srm.core.code.repositoryimpl;
 
+import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.booleanToBooleanDatabase;
+import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getBoolean;
+import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getInteger;
+import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getLong;
+import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getString;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +43,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     private final static String NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is not null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
     private final static String NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST                  = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_ITEMS i on i.ID = c.TB_CODES LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion and c.SHORT_NAME_FK is not null";
-    private final static String BOOLEAN_TRUE_DATABASE_AS_1                                     = "1";
-    private final static String BOOLEAN_FALSE_DATABASE_AS_0                                    = "0";
 
     public CodeMetamacRepositoryImpl() {
     }
@@ -168,7 +172,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     public void updateCodesOpennessColumnByCodelist(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValude(expanded) + " ");
+        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
@@ -179,7 +183,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     public void updateCodeOpennessColumn(CodelistVersionMetamac codelistVersion, String codeUrn, Integer opennessColumnIndex, Boolean expanded) {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValude(expanded) + " ");
+        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID WHERE a.URN = :codeUrn AND i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
         queryUpdate.setParameter("codeUrn", codeUrn);
@@ -191,7 +195,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     public void updateCodeOpennessColumnToLeafCodes(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValude(expanded) + " ");
+        sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
         sb.append("WHERE ");
         sb.append("TB_CODES IN (SELECT i.ID FROM TB_ITEMS i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         sb.append("AND ");
@@ -414,44 +418,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         return target;
     }
 
-    private String getString(Object source) {
-        return source != null ? (String) source : null;
-    }
-
-    private Long getLong(Object source) {
-        if (source == null) {
-            return null;
-        } else if (source instanceof Long) {
-            return (Long) source;
-        } else {
-            return Long.valueOf(source.toString());
-        }
-    }
-
-    private Integer getInteger(Object source) {
-        if (source == null) {
-            return null;
-        } else if (source instanceof Integer) {
-            return (Integer) source;
-        } else {
-            return Integer.valueOf(source.toString());
-        }
-    }
-
-    private Boolean getBoolean(Object source) throws MetamacException {
-        if (source == null) {
-            return null;
-        } else if (source instanceof Boolean) {
-            return (Boolean) source;
-        } else if (BOOLEAN_TRUE_DATABASE_AS_1.equals(source.toString())) {
-            return Boolean.TRUE;
-        } else if (BOOLEAN_FALSE_DATABASE_AS_0.equals(source.toString())) {
-            return Boolean.FALSE;
-        } else {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Boolean unrecognised: " + source).build();
-        }
-    }
-
     private void internationalStringResultSqltoInternationalStringResult(Object[] source, Map<String, String> target) {
         int i = 1; // 0 is itemId
         String locale = getString(source[i++]);
@@ -470,7 +436,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         return "OPENNESS" + columnIndex;
     }
 
-    private String getOpennessColumnValude(Boolean expanded) {
-        return expanded ? BOOLEAN_TRUE_DATABASE_AS_1 : BOOLEAN_FALSE_DATABASE_AS_0;
+    private String getOpennessColumnValue(Boolean expanded) {
+        return booleanToBooleanDatabase(expanded);
     }
 }

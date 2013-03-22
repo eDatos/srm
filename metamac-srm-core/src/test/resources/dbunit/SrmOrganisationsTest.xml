@@ -2006,6 +2006,8 @@
         REPLACE_TO_VERSION="[null]"
         
         NAME_FK="6"
+        DESCRIPTION_FK="[null]"
+        COMMENT_FK="[null]"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -2851,6 +2853,163 @@
             />  
             
     <!-- ************************************************************************************** -->
+    <!-- ORGANISATION SCHEME 11 (Organisation Unit)                                             -->
+    <!--        - Version 1: diffusion validation                                               -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="11"
+        UUID="itemScheme-11"
+        VERSION="1"
+        VERSION_PATTERN="XX_YYY"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="111"
+        ITEM_SCHEME_FK="11"
+        IS_PARTIAL="0"
+        MAINTAINABLE_ARTEFACT_FK="99111"
+        
+        UUID="organisationScheme-11-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user6"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_ORG_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="111"
+        ORGANISATION_SCHEME_TYPE="ORGANISATION_UNIT_SCHEME"
+    />
+    
+    <TB_M_ORG_SCHEMES_VERSIONS
+        TB_ORG_SCHEMES_VERSIONS="111"
+        PROC_STATUS="DIFFUSION_VALIDATION"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user2"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-01 01:02:03"
+        DIFFUSION_VALIDATION_USER="user3"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="99111"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="ORGANISATIONSCHEME11"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME11(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME11(01.000)"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="32"
+        DESCRIPTION_FK="33"
+        COMMENT_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-99111"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+
+            <!-- ORGANISATIONS -->
+            <!-- -> ORGANISATION01 -->
+            
+            <!-- ORGANISATION01 -->
+            
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="1111"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="1111"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
+            />
+        
+            <TB_ITEMS
+                ID="1111"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="111"
+                ITEM_SCHEME_VERSION_FIRST_FK="111"
+                NAMEABLE_ARTEFACT_FK="991111"
+                      
+                UUID="organisationScheme-11-v1-org-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="991111"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION01"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION01"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+
+                UUID="annotableArtefact-991111"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />  
+            
+            
+    <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
     <!-- *************************************************************************************  -->    
           
@@ -2980,7 +3139,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="61"
-        LABEL="Título organisationScheme-3-v1"
+        LABEL="Título organisationScheme-6-v1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="6"
@@ -3336,6 +3495,40 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="31"
     />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="32"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="321"
+        LABEL="nombre orgScheme11-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="32"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="33"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="331"
+        LABEL="description orgScheme11-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="33"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="332"
+        LABEL="descripcion it orgScheme11-1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="33"
+    />            
     
                         
 </dataset>

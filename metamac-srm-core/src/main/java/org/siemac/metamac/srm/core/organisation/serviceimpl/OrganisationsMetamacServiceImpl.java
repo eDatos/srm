@@ -12,6 +12,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
@@ -294,6 +295,12 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(organisationUrn).build();
         }
         return organisationSchemeVersion;
+    }
+
+    @Override
+    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslates(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+        List<MetamacExceptionItem> exceptionItems = getOrganisationSchemeVersionMetamacRepository().checkOrganisationSchemeVersionTranslates(itemSchemeVersionId, locale);
+        return exceptionItems;
     }
 
     /**
