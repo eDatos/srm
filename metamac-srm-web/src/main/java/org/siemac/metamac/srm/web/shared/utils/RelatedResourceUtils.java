@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
@@ -22,6 +21,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.IdentifiableArtefactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.NameableArtefactDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 
 public class RelatedResourceUtils {
 
@@ -54,7 +54,7 @@ public class RelatedResourceUtils {
 
     public static RelatedResourceDto getDimensionComponentDtoAsRelatedResourceDto(DimensionComponentDto dimensionComponentDto) {
         RelatedResourceDto relatedResourceDto = getIdentifiableArtefactDtoAsRelatedResourceDto(dimensionComponentDto);
-        relatedResourceDto.setType(TypeExternalArtefactsEnum.COMPONENT);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.DIMENSION);
         return relatedResourceDto;
     }
 
@@ -77,7 +77,7 @@ public class RelatedResourceUtils {
             if (organisationMetamacDto != null) {
                 maintainer.setCode(organisationMetamacDto.getCode());
                 maintainer.setUrn(organisationMetamacDto.getUrn());
-                maintainer.setType(TypeExternalArtefactsEnum.AGENCY);
+                maintainer.setType(RelatedResourceTypeEnum.AGENCY);
             }
         }
         return maintainer;
@@ -91,7 +91,7 @@ public class RelatedResourceUtils {
 
     public static RelatedResourceDto getConceptMetamacDtoAsRelatedResourceDto(ConceptMetamacDto concept) {
         RelatedResourceDto relatedResourceDto = getNameableArtefactDtoAsRelatedResourceDto(concept);
-        relatedResourceDto.setType(TypeExternalArtefactsEnum.CONCEPT);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CONCEPT);
         return relatedResourceDto;
     }
 
@@ -111,7 +111,7 @@ public class RelatedResourceUtils {
 
     public static RelatedResourceDto getCategorySchemeMetamacDtoAsRelatedResourceDto(CategorySchemeMetamacDto categorySchemeMetamacDto) {
         RelatedResourceDto relatedResourceDto = getNameableArtefactDtoAsRelatedResourceDto(categorySchemeMetamacDto);
-        relatedResourceDto.setType(TypeExternalArtefactsEnum.CATEGORY_SCHEME);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CATEGORY_SCHEME);
         return relatedResourceDto;
     }
 
@@ -127,7 +127,7 @@ public class RelatedResourceUtils {
 
     public static RelatedResourceDto getCategoryMetamacDtoAsRelatedResourceDto(CategoryMetamacDto categoryMetamacDto) {
         RelatedResourceDto relatedResourceDto = getNameableArtefactDtoAsRelatedResourceDto(categoryMetamacDto);
-        relatedResourceDto.setType(TypeExternalArtefactsEnum.CATEGORY);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CATEGORY);
         return relatedResourceDto;
     }
 
@@ -147,7 +147,7 @@ public class RelatedResourceUtils {
 
     public static RelatedResourceDto getCodelistDtoAsRelatedResourceDto(CodelistMetamacDto codelist) {
         RelatedResourceDto relatedResourceDto = getNameableArtefactDtoAsRelatedResourceDto(codelist);
-        relatedResourceDto.setType(TypeExternalArtefactsEnum.CODELIST);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CODELIST);
         return relatedResourceDto;
     }
 
@@ -219,7 +219,7 @@ public class RelatedResourceUtils {
     // GENERIC RELATED RESOURCES
     // -------------------------------------------------------------------------------------------------------------
 
-    public static RelatedResourceDto createRelatedResourceDto(TypeExternalArtefactsEnum type, String urn) {
+    public static RelatedResourceDto createRelatedResourceDto(RelatedResourceTypeEnum type, String urn) {
         RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
         relatedResourceDto.setType(type);
         relatedResourceDto.setUrn(urn);
