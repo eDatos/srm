@@ -855,8 +855,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Override
+    public void testCheckOrganisationSchemeVersionTranslations() throws Exception {
+        // Tested in testPublishInternallyOrganisationSchemeCheckTranslations
+    }
+
     @Test
-    public void testCheckOrganisationSchemeVersionTranslates() throws Exception {
+    public void testPublishInternallyOrganisationSchemeCheckTranslations() throws Exception {
         String urn = ORGANISATION_SCHEME_11_V1;
         String code = "ORGANISATIONSCHEME11";
 

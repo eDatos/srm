@@ -77,7 +77,7 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslates(Long itemSchemeVersionId, String locale) {
+    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale) {
         // TODO pasar al repositorio ItemSchemeVersion
 
         StringBuilder sb = new StringBuilder();

@@ -105,7 +105,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
             if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(targetStatus)) {
                 Long itemSchemeVersionId = getOrganisationSchemeVersionMetamac(srmResourceVersion).getId();
                 String locale = retrieveLanguageDefault();
-                List<MetamacExceptionItem> exceptionItems = organisationsMetamacService.checkOrganisationSchemeVersionTranslates(ctx, itemSchemeVersionId, locale);
+                List<MetamacExceptionItem> exceptionItems = organisationsMetamacService.checkOrganisationSchemeVersionTranslations(ctx, itemSchemeVersionId, locale);
                 exceptions.addAll(exceptionItems);
             }
         }

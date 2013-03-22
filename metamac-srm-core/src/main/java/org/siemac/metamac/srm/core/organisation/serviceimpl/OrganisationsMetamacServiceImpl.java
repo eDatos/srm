@@ -298,8 +298,8 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslates(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
-        List<MetamacExceptionItem> exceptionItems = getOrganisationSchemeVersionMetamacRepository().checkOrganisationSchemeVersionTranslates(itemSchemeVersionId, locale);
+    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+        List<MetamacExceptionItem> exceptionItems = getOrganisationSchemeVersionMetamacRepository().checkOrganisationSchemeVersionTranslations(itemSchemeVersionId, locale);
         return exceptionItems;
     }
 
