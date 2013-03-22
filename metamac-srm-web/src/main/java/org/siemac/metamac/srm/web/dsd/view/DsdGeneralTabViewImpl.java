@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -26,7 +25,6 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdCategorisationsPanel;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
-import org.siemac.metamac.srm.web.dsd.widgets.DsdVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
@@ -64,8 +62,6 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHandlers> implements DsdGeneralTabPresenter.DsdGeneralTabView {
@@ -73,8 +69,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private VLayout                           panel;
 
     private DsdMainFormLayout                 mainFormLayout;
-
-    private DsdVersionsSectionStack           versionsSectionStack;
 
     // VIEW FORM
 
@@ -111,18 +105,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         super();
         panel = new VLayout();
 
-        // Versions
-
-        versionsSectionStack = new DsdVersionsSectionStack(getConstants().dsdVersions());
-        versionsSectionStack.getListGrid().addRecordClickHandler(new RecordClickHandler() {
-
-            @Override
-            public void onRecordClick(RecordClickEvent event) {
-                String urn = ((DsdRecord) event.getRecord()).getUrn();
-                getUiHandlers().goToDsd(urn);
-            }
-        });
-
         // DSD
 
         mainFormLayout = new DsdMainFormLayout();
@@ -132,7 +114,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         categorisationsPanel = new DsdCategorisationsPanel();
 
-        panel.addMember(versionsSectionStack);
         panel.addMember(mainFormLayout);
         panel.addMember(categorisationsPanel);
     }
@@ -646,12 +627,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     public void onDsdSaved(DataStructureDefinitionMetamacDto dsd) {
         setDsd(dsd);
         mainFormLayout.setViewMode();
-    }
-
-    @Override
-    public void setDsdVersions(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos) {
-        versionsSectionStack.setDataStructureDefinitions(dataStructureDefinitionMetamacDtos);
-        versionsSectionStack.selectDataStructureDefinition(dataStructureDefinitionMetamacDto);
     }
 
     // Visualisation metadata

@@ -50,8 +50,6 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
@@ -114,7 +112,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public interface DsdGeneralTabView extends View, HasUiHandlers<DsdGeneralTabUiHandlers> {
 
         void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
-        void setDsdVersions(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos);
         DataStructureDefinitionMetamacDto getDataStructureDefinitionDto();
         HasClickHandlers getSave();
         void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
@@ -232,7 +229,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
                 dsd = result.getDsd();
                 SelectDsdAndDescriptorsEvent.fire(DsdGeneralTabPresenter.this, dsd, result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(), result.getGroupKeys());
-                retrieveDsdVersions(dsd.getUrn());
             }
         });
     }
@@ -329,21 +325,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             public void onWaitSuccess(VersionDsdResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdVersioned()), MessageTypeEnum.SUCCESS);
                 goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
-            }
-        });
-    }
-
-    @Override
-    public void retrieveDsdVersions(String dsdUrn) {
-        dispatcher.execute(new GetDsdVersionsAction(dsdUrn), new WaitingAsyncCallback<GetDsdVersionsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingVersions()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetDsdVersionsResult result) {
-                getView().setDsdVersions(result.getDataStructureDefinitionMetamacDtos());
             }
         });
     }

@@ -7,7 +7,6 @@ import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 public interface DsdGeneralTabUiHandlers extends CategorisationUiHandlers {
 
     void retrieveCompleteDsd(String urn);
-    void retrieveDsdVersions(String dsdUrn);
     void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
     void goToDsd(String urn);
 

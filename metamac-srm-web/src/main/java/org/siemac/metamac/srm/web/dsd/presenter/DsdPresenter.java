@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
+import java.util.List;
+
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -7,6 +10,8 @@ import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -14,11 +19,17 @@ import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent.Select
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
 import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent.UpdateDsdHandler;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdUiHandlers;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsResult;
+import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -41,6 +52,7 @@ import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 
 public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.DsdProxy> implements DsdUiHandlers, SelectDsdAndDescriptorsHandler, UpdateDsdHandler, SelectViewDsdDescriptorHandler {
 
+    private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
 
     private DataStructureDefinitionMetamacDto         dsd;
@@ -66,6 +78,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     public interface DsdView extends View, HasUiHandlers<DsdUiHandlers> {
 
         void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
+        void setDsdVersions(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos);
+
         TabSet getDsdTabSet();
         HasTabSelectedHandlers getGeneralTab();
         HasTabSelectedHandlers getPrimaryMeasureTab();
@@ -75,9 +89,10 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     }
 
     @Inject
-    public DsdPresenter(EventBus eventBus, DsdView dsdView, DsdProxy dsdProxy, PlaceManager placeManager) {
+    public DsdPresenter(EventBus eventBus, DsdView dsdView, DsdProxy dsdProxy, PlaceManager placeManager, DispatchAsync dispatcher) {
         super(eventBus, dsdView, dsdProxy);
         this.placeManager = placeManager;
+        this.dispatcher = dispatcher;
         getView().setUiHandlers(this);
     }
 
@@ -182,6 +197,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         } else {
             placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdGeneralPage), -1);
         }
+
+        retrieveDsdVersions(dsd.getUrn());
     }
 
     @ProxyEvent
@@ -205,6 +222,27 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
             getView().getDsdTabSet().selectTab(4);
         } else {
             getView().getDsdTabSet().selectTab(0);
+        }
+    }
+
+    public void retrieveDsdVersions(String dsdUrn) {
+        dispatcher.execute(new GetDsdVersionsAction(dsdUrn), new WaitingAsyncCallback<GetDsdVersionsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingVersions()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetDsdVersionsResult result) {
+                getView().setDsdVersions(result.getDataStructureDefinitionMetamacDtos());
+            }
+        });
+    }
+
+    @Override
+    public void goToDsd(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdPlaceRequest(urn));
         }
     }
 }
