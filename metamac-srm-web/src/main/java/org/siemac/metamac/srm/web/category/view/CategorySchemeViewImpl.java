@@ -28,7 +28,6 @@ import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
-import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
@@ -44,7 +43,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -53,9 +51,12 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 
 public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiHandlers> implements CategorySchemePresenter.CategorySchemeView {
 
+    private TitleLabel                         titleLabel;
     private VLayout                            panel;
     private CategorySchemeMainFormLayout       mainFormLayout;
 
@@ -117,24 +118,51 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         createViewForm();
         createEditionForm();
 
+        //
         // CATEGORIES
+        //
 
         categoriesTreeGrid = new CategoriesTreeGrid();
 
-        VLayout categoriesListGridLayout = new VLayout();
-        categoriesListGridLayout.setMargin(15);
-        categoriesListGridLayout.addMember(new TitleLabel(getConstants().categories()));
-        categoriesListGridLayout.addMember(categoriesTreeGrid);
+        VLayout categoriesLayout = new VLayout();
+        categoriesLayout.setMargin(15);
+        categoriesLayout.addMember(categoriesTreeGrid);
+
+        //
+        // CATEGORISATIONS
+        //
 
         categorisationsPanel = new CategorySchemeCategorisationsPanel();
 
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(versionsSectionStack);
-        subPanel.addMember(mainFormLayout);
-        subPanel.addMember(categoriesListGridLayout);
-        subPanel.addMember(categorisationsPanel);
+        // PANEL LAYOUT
 
+        VLayout subPanel = new VLayout();
+        subPanel.setMembersMargin(5);
+        subPanel.addMember(versionsSectionStack);
+        titleLabel = new TitleLabel();
+        TabSet tabSet = new TabSet();
+        tabSet.setStyleName("marginTop15");
+
+        // CategoryScheme tab
+        Tab categorySchemeTab = new Tab(getConstants().categoryScheme());
+        categorySchemeTab.setPane(mainFormLayout);
+        tabSet.addTab(categorySchemeTab);
+
+        // Categories tab
+        Tab categoriesTab = new Tab(getConstants().categories());
+        categoriesTab.setPane(categoriesLayout);
+        tabSet.addTab(categoriesTab);
+
+        // Categorisations tab
+        Tab categorisationsTab = new Tab(getConstants().categorisations());
+        categorisationsTab.setPane(categorisationsPanel);
+        tabSet.addTab(categorisationsTab);
+
+        VLayout tabSubPanel = new VLayout();
+        tabSubPanel.addMember(titleLabel);
+        tabSubPanel.addMember(tabSet);
+        tabSubPanel.setMargin(15);
+        subPanel.addMember(tabSubPanel);
         panel.addMember(subPanel);
     }
 
@@ -428,9 +456,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     public void setCategoryScheme(CategorySchemeMetamacDto categorySchemeDto) {
         this.categorySchemeDto = categorySchemeDto;
 
-        String defaultLocalisedName = InternationalStringUtils.getLocalisedString(categorySchemeDto.getName());
-        String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
-        mainFormLayout.setTitleLabelContents(title);
+        // Set title
+        titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(categorySchemeDto));
 
         // Security
         ProcStatusEnum procStatus = categorySchemeDto.getLifeCycle().getProcStatus();
