@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
@@ -22,10 +23,17 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
 
     // Codes
 
-    void retrieveCodesByCodelist(String orderIdentifier);
+    void retrieveCodes();
+
+    void retrieveCodesWithOrder(String orderIdentifier);
     void retrieveCodelistOrders(String codelistUrn);
     void saveCodelistOrder(CodelistOrderVisualisationDto codelistOrderVisualisationDto);
     void deleteCodelistOrders(List<String> orderIdentifiers);
+
+    void retrieveCodesWithOpennessLevel(String orderIdentifier);
+    void retrieveCodelistOpennessLevels(String codelistUrn);
+    void saveCodelistOpennessLevel(CodelistOpennessVisualisationDto codelistOpennessVisualisationDto);
+    void deleteCodelistOpennessLevel(List<String> levelsIdentifiers);
 
     // Life cycle
 

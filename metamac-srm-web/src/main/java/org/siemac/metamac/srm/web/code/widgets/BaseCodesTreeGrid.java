@@ -1,70 +1,42 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.BaseItemsTreeGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
-import org.siemac.metamac.web.common.client.utils.ListGridUtils;
+import org.siemac.metamac.srm.web.code.view.handlers.BaseCodeUiHandlers;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
-import com.smartgwt.client.data.SortSpecifier;
-import com.smartgwt.client.types.SortDirection;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.TreeModelType;
-import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.events.SortChangedHandler;
-import com.smartgwt.client.widgets.grid.events.SortEvent;
 import com.smartgwt.client.widgets.tree.Tree;
-import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.tree.TreeNode;
 import com.smartgwt.client.widgets.tree.events.FolderContextClickEvent;
 import com.smartgwt.client.widgets.tree.events.FolderContextClickHandler;
+import com.smartgwt.client.widgets.tree.events.FolderDropEvent;
+import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 import com.smartgwt.client.widgets.tree.events.LeafContextClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafContextClickHandler;
 
 public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
-    public BaseCodesTreeGrid() {
+    protected CodelistMetamacDto            codelistMetamacDto;
 
-        // Add order field to treeGrid and disable the option to order by CODE and NAME fields
+    protected HandlerRegistration           folderDropHandlerRegistration;
 
-        // Do not enable the button to order by other fields than order field
-        ListGridField[] itemFields = getFields();
-        for (ListGridField itemField : itemFields) {
-            itemField.setCanSort(false);
-        }
+    protected BaseCodeUiHandlers            uiHandlers;
 
-        // Add the orderField to the previous fields
-        TreeGridField orderField = new TreeGridField(CodeDS.ORDER, getConstants().codeOrder());
-        orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
-        orderField.setCanSort(true);
+    protected CodelistOrderVisualisationDto codelistOrderVisualisationDto; // This field is only filled by the CodesOrderTreeGrid class
 
-        ListGridField[] codeFields = new ListGridField[itemFields.length + 1];
-        System.arraycopy(itemFields, 0, codeFields, 0, itemFields.length);
-        codeFields[codeFields.length - 1] = orderField;
-
-        setFields(codeFields);
-
-        // Do not let to order in descending direction!!
-        addSortChangedHandler(new SortChangedHandler() {
-
-            @Override
-            public void onSortChanged(SortEvent event) {
-                SortSpecifier[] sortSpecifiers = event.getSortSpecifiers();
-                if (sortSpecifiers != null) {
-                    for (SortSpecifier sortSpecifier : sortSpecifiers) {
-                        if (SortDirection.DESCENDING.equals(sortSpecifier.getSortDirection())) {
-                            // Instead of cancel the event (do not know if it is possible), the column is ordered again in ascending order
-                            sort(CodeDS.ORDER, SortDirection.ASCENDING);
-                        }
-                    }
-                }
-            }
-        });
+    public BaseCodesTreeGrid(boolean canStructureBeModified, boolean canOrderBeModified) {
 
         // Bind events
 
@@ -83,9 +55,65 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
             }
         });
 
+        folderDropHandlerRegistration = addFolderDropHandler(new FolderDropHandler() {
+
+            @Override
+            public void onFolderDrop(FolderDropEvent event) {
+                TreeNode dropFolder = event.getFolder();
+                TreeNode droppedNode = event.getNodes().length > 0 ? event.getNodes()[0] : null;
+                int position = event.getIndex(); // Absolute position
+                if (isDroppable(dropFolder)) {
+                    TreeNode[] siblings = getData().getChildren(dropFolder);
+
+                    // We find out the position of the node under the dropFolder
+                    int relativePosition = position; // Used to update position
+                    int pos = -1;
+                    for (int i = 0; i < siblings.length; i++) {
+                        if (siblings[i] == droppedNode) {
+                            pos = i;
+                        }
+                    }
+                    if (pos >= 0 && pos < position) { // If moved node is before final position, the position must be updated
+                        relativePosition--;
+                    }
+
+                    String oldItemParent = droppedNode.getAttribute(CodeDS.ITEM_PARENT_URN);
+                    String newItemParent = SCHEME_NODE_NAME.equals(dropFolder.getName()) ? SCHEME_NODE_NAME : dropFolder.getAttribute(CodeDS.URN);
+
+                    if (!StringUtils.equals(oldItemParent, newItemParent)) {
+
+                        // UPDATE CODE PARENT
+
+                        if (CodesClientSecurityUtils.canUpdateCodeParent(codelistMetamacDto)) {
+
+                            if (SCHEME_NODE_NAME.equals(newItemParent)) {
+                                // The code will be moved to the first level. The parent is null.
+                                newItemParent = null;
+                            }
+                            uiHandlers.updateCodeParent(droppedNode.getAttribute(CodeDS.URN), newItemParent);
+                        }
+                    } else {
+
+                        // UPDATE ORDER
+
+                        if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+
+                            // Only update order if there is an order selected and it is not the alphabetical one
+                            if (codelistOrderVisualisationDto != null && !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistOrderVisualisationDto.getCode())) {
+                                uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), relativePosition);
+                            }
+                        }
+                    }
+                }
+                event.cancel();
+            }
+        });
+
     }
 
     public void setItems(ItemSchemeDto itemSchemeDto, List<CodeMetamacVisualisationResult> itemMetamacResults) {
+        this.codelistMetamacDto = (CodelistMetamacDto) itemSchemeDto;
+
         // Clear filter editor
         setFilterEditorCriteria(null);
 
@@ -105,8 +133,22 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
         getData().openAll();
     }
 
+    @Override
+    public void updateItemScheme(ItemSchemeDto itemSchemeDto) {
+        this.codelistMetamacDto = (CodelistMetamacDto) itemSchemeDto;
+        super.updateItemScheme(itemSchemeDto);
+    }
+
+    public void setUiHandlers(BaseCodeUiHandlers uiHandlers) {
+        this.uiHandlers = uiHandlers;
+    }
+
     protected CodeTreeNode createItemTreeNode(CodeMetamacVisualisationResult item) {
         return CodesTreeGridUtils.createCodeTreeNode(SCHEME_NODE_NAME, item);
+    }
+
+    protected boolean isDroppable(TreeNode dropFolder) {
+        return !("/".equals(getDropFolder().getName()));
     }
 
     protected abstract void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult itemMetamacResult);

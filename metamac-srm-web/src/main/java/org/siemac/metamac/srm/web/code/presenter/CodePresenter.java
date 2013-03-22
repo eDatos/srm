@@ -167,18 +167,19 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             @Override
             public void onWaitSuccess(GetCodelistResult result) {
                 final CodelistMetamacDto codelistMetamacDto = result.getCodelistMetamacDto();
-                String defaultOrder = codelistMetamacDto.getDefaultOrderVisualisation() != null ? codelistMetamacDto.getDefaultOrderVisualisation().getUrn() : null;
-                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, defaultOrder, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+                String defaultOrderUrn = org.siemac.metamac.srm.web.code.utils.CommonUtils.getDefaultCodelistOrderUrn(codelistMetamacDto);
+                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, defaultOrderUrn, null, ApplicationEditionLanguages.getCurrentLocale()),
+                        new WaitingAsyncCallback<GetCodesByCodelistResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetCodesByCodelistResult result) {
-                        getView().setCodes(codelistMetamacDto, result.getCodes());
-                    }
-                });
+                            @Override
+                            public void onWaitFailure(Throwable caught) {
+                                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
+                            }
+                            @Override
+                            public void onWaitSuccess(GetCodesByCodelistResult result) {
+                                getView().setCodes(codelistMetamacDto, result.getCodes());
+                            }
+                        });
             }
         });
     }
@@ -247,7 +248,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
-    public void updateCodeParent(final String codeUrn, String newParentUrn, final String codelistOrderIdentifier) {
+    public void updateCodeParent(final String codeUrn, String newParentUrn) {
         dispatcher.execute(new UpdateCodeParentAction(codeUrn, newParentUrn), new WaitingAsyncCallback<UpdateCodeParentResult>() {
 
             @Override
@@ -304,17 +305,19 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             @Override
             public void onWaitSuccess(GetCodelistResult result) {
                 final CodelistMetamacDto codelistMetamacDto = result.getCodelistMetamacDto();
-                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, null, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+                String defaultOrderUrn = org.siemac.metamac.srm.web.code.utils.CommonUtils.getDefaultCodelistOrderUrn(codelistMetamacDto);
+                dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, defaultOrderUrn, null, ApplicationEditionLanguages.getCurrentLocale()),
+                        new WaitingAsyncCallback<GetCodesByCodelistResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetCodesByCodelistResult result) {
-                        getView().setCodesToCreateComplexCodelist(codelistMetamacDto, result.getCodes());
-                    }
-                });
+                            @Override
+                            public void onWaitFailure(Throwable caught) {
+                                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
+                            }
+                            @Override
+                            public void onWaitSuccess(GetCodesByCodelistResult result) {
+                                getView().setCodesToCreateComplexCodelist(codelistMetamacDto, result.getCodes());
+                            }
+                        });
             }
         });
     }

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
@@ -107,5 +108,13 @@ public class CommonUtils {
 
     public static String getVariableElementOperationTypeName(VariableElementOperationTypeEnum operationTypeEnum) {
         return operationTypeEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().variableElementOperationTypeEnum() + operationTypeEnum.name()) : null;
+    }
+
+    public static String getDefaultCodelistOrderUrn(CodelistMetamacDto codelistMetamacDto) {
+        return codelistMetamacDto.getDefaultOrderVisualisation() != null ? codelistMetamacDto.getDefaultOrderVisualisation().getUrn() : null;
+    }
+
+    public static String getDefaultCodelistOpennessLevelUrn(CodelistMetamacDto codelistMetamacDto) {
+        return codelistMetamacDto.getDefaultOpennessVisualisation() != null ? codelistMetamacDto.getDefaultOpennessVisualisation().getUrn() : null;
     }
 }

@@ -16,13 +16,11 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -43,7 +41,7 @@ public abstract class CategorisationsPanel extends VLayout {
 
     protected ToolStripButton                 newCategorisationButton;
     protected ToolStripButton                 deleteCategorisationButton;
-    private CustomListGrid                    categorisationListGrid;
+    protected CustomListGrid                  categorisationListGrid;
 
     private SearchCategoriesForCategorisation searchCategoriesWindow;
     private DeleteConfirmationWindow          deleteConfirmationWindow;
@@ -98,8 +96,6 @@ public abstract class CategorisationsPanel extends VLayout {
         // ListGrid
 
         categorisationListGrid = new CustomListGrid();
-        categorisationListGrid.setAutoFitMaxRecords(10);
-        categorisationListGrid.setAutoFitData(Autofit.VERTICAL);
 
         ListGridField codeField = new ListGridField(CategorisationDS.CODE, getConstants().identifiableArtefactCode());
         ListGridField categoryField = new ListGridField(CategorisationDS.CATEGORY, getConstants().category());
@@ -118,7 +114,6 @@ public abstract class CategorisationsPanel extends VLayout {
             }
         });
 
-        addMember(new TitleLabel(getConstants().categorisations()));
         addMember(toolStrip);
         addMember(categorisationListGrid);
     }

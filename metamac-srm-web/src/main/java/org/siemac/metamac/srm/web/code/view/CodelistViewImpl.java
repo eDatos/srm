@@ -17,7 +17,6 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
-import org.siemac.metamac.srm.web.client.widgets.CodelistOrdersSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
@@ -31,6 +30,7 @@ import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodelistCategorisationsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
+import org.siemac.metamac.srm.web.code.widgets.CodelistOrdersPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.code.widgets.VersionCodelistWindow;
@@ -62,7 +62,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -73,11 +72,13 @@ import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
-import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
 
+    private TitleLabel                                   titleLabel;
     private VLayout                                      panel;
     private CodelistMainFormLayout                       mainFormLayout;
 
@@ -108,9 +109,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     // Codes
     private VLayout                                      codesLayout;
-    private TitleLabel                                   codesLayoutTitle;
-    private CodelistOrdersSectionStack                   codelistOrdersSectionStack;
     private CodesTreeGrid                                codesTreeGrid;
+
+    // Orders
+    private CodelistOrdersPanel                          codelistOrdersPanel;
+
+    // Categorisations
     private CodelistCategorisationsPanel                 categorisationsPanel;
 
     private CodelistMetamacDto                           codelistDto;
@@ -148,30 +152,63 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // CODES
         //
 
-        codelistOrdersSectionStack = new CodelistOrdersSectionStack();
-
         codesTreeGrid = new CodesTreeGrid();
-
-        HLayout codesHLayout = new HLayout();
-        codesHLayout.setMembersMargin(10);
-        codesHLayout.addMember(codesTreeGrid);
-        codesHLayout.addMember(codelistOrdersSectionStack);
 
         codesLayout = new VLayout();
         codesLayout.setMargin(15);
-        codesLayoutTitle = new TitleLabel(getConstants().codes());
-        codesLayout.addMember(codesLayoutTitle);
-        codesLayout.addMember(codesHLayout);
+        codesLayout.addMember(codesTreeGrid);
+
+        //
+        // ORDERS
+        //
+
+        codelistOrdersPanel = new CodelistOrdersPanel();
+
+        //
+        // CATEGORISATIONS
+        //
 
         categorisationsPanel = new CodelistCategorisationsPanel();
 
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(versionsSectionStack);
-        subPanel.addMember(mainFormLayout);
-        subPanel.addMember(codesLayout);
-        subPanel.addMember(categorisationsPanel);
+        // PANEL LAYOUT
 
+        VLayout subPanel = new VLayout();
+        subPanel.setMembersMargin(5);
+        subPanel.addMember(versionsSectionStack);
+        titleLabel = new TitleLabel();
+        TabSet tabSet = new TabSet();
+        tabSet.setStyleName("marginTop15");
+
+        // Codelist tab
+        Tab codelistTab = new Tab(getConstants().codelist());
+        codelistTab.setPane(mainFormLayout);
+        tabSet.addTab(codelistTab);
+
+        // Codes tab
+        Tab codesTab = new Tab(getConstants().codes());
+        codesTab.setPane(codesLayout);
+        tabSet.addTab(codesTab);
+
+        // Orders tab
+        Tab ordersTab = new Tab(getConstants().codelistOrders());
+        ordersTab.setPane(codelistOrdersPanel);
+        tabSet.addTab(ordersTab);
+
+        // Openness levels tab
+        Tab opennessLevelsTab = new Tab(getConstants().codelistOpennessLevels());
+        // TODO add content
+        tabSet.addTab(opennessLevelsTab);
+
+        // Categorisations tab
+        Tab categorisationsTab = new Tab(getConstants().categorisations());
+        categorisationsTab.setPane(categorisationsPanel);
+        tabSet.addTab(categorisationsTab);
+
+        VLayout tabSubPanel = new VLayout();
+        tabSubPanel.addMember(titleLabel);
+        tabSubPanel.addMember(tabSet);
+        tabSubPanel.setMargin(15);
+        subPanel.addMember(tabSubPanel);
         panel.addMember(subPanel);
     }
 
@@ -348,18 +385,17 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         this.codesTreeGrid.setUiHandlers(uiHandlers);
-        this.codelistOrdersSectionStack.setUiHandlers(uiHandlers);
+        this.codelistOrdersPanel.setUiHandlers(uiHandlers);
+        // TODO openness level
         this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
     @Override
     public void setCodelist(CodelistMetamacDto codelist) {
         this.codelistDto = codelist;
-        this.codelistOrdersSectionStack.setCodelistProcStatus(codelist.getLifeCycle().getProcStatus());
+        this.codelistOrdersPanel.getcodelistCodelistOrdersSectionStack().setCodelistProcStatus(codelist.getLifeCycle().getProcStatus());
 
-        String defaultLocalized = InternationalStringUtils.getLocalisedString(codelist.getName());
-        String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
-        mainFormLayout.setTitleLabelContents(title);
+        setTitle(codelist.getName());
 
         // Security
         ProcStatusEnum procStatus = codelist.getLifeCycle().getProcStatus();
@@ -375,10 +411,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codesTreeGrid.updateItemScheme(codelist);
     }
 
-    @Override
-    public void setCodes(List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
-        updateCodesTitle(codelistOrderVisualisationDto != null ? getMessages().codesWithOrder(CommonUtils.getCodelistOrderVisualisationName(codelistOrderVisualisationDto)) : getConstants().codes());
-        codesTreeGrid.setItems(codelistDto, codes, codelistOrderVisualisationDto);
+    private void setTitle(InternationalStringDto codelistName) {
+        String defaultLocalized = InternationalStringUtils.getLocalisedString(codelistName);
+        String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
+        titleLabel.setContents(title);
     }
 
     @Override
@@ -388,12 +424,30 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
+    public void setCodes(List<CodeMetamacVisualisationResult> codes) {
+        codesTreeGrid.setItems(codelistDto, codes);
+    }
+
+    //
+    // ORDERS
+    //
+
+    @Override
+    public void setCodesWithOrder(List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+        codelistOrdersPanel.setCodes(codelistDto, codes, codelistOrderVisualisationDto);
+    }
+
+    @Override
     public void setCodelistOrders(List<CodelistOrderVisualisationDto> orders) {
-        codelistOrdersSectionStack.setCodelistOrders(orders);
+        codelistOrdersPanel.setOrders(orders);
 
         // Populate the form with the order list (to fill the default order)
         diffusionDescriptorsEditionForm.getItem(CodelistDS.DEFAULT_ORDER).setValueMap(CommonUtils.getCodelistOrdersHashMap(orders));
     }
+
+    //
+    // CATEGORISATIONS
+    //
 
     @Override
     public void setCategorisations(List<CategorisationDto> categorisationDtos) {
@@ -410,6 +464,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         categorisationsPanel.setCategories(result);
     }
 
+    //
+    // COMPLEX CODELISTS
+    //
+
     @Override
     public void setCodelistsToCreateComplexCodelist(GetCodelistsResult result) {
         codesTreeGrid.setCodelistsToCreateComplexCodelist(result);
@@ -420,10 +478,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codesTreeGrid.setCodesToCreateComplexCodelist(codelistMetamacDto, codes);
     }
 
-    @Override
-    public void selectCodelistOrder(String codelistOrderUrn) {
-        codelistOrdersSectionStack.selectCodelistOrder(codelistOrderUrn);
-    }
+    //
+    // RELATED RESOURCES
+    //
 
     @Override
     public void setFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults) {
@@ -450,7 +507,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private void createViewForm() {
-        // Identifiers Form
+        // IDENTIFIERS FORM
         identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(CodelistDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CodelistDS.NAME, getConstants().nameableArtefactName());
@@ -461,7 +518,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem version = new ViewTextItem(CodelistDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         identifiersForm.setFields(code, name, shortName, uri, urn, urnProvider, version);
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
@@ -472,13 +529,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem variable = new ViewTextItem(CodelistDS.VARIABLE_VIEW, getConstants().variable());
         contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, variable);
 
-        // Production descriptors
+        // PRODUCTION DESCRIPTORS
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem agency = new ViewTextItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsForm.setFields(agency, procStatus);
 
-        // Diffusion descriptors
+        // DIFFUSION DESCRIPTORS
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToCodelists = new RelatedResourceListItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists(), false);
         ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
@@ -493,7 +550,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsForm.setFields(replaceToCodelists, replacedByCodelist, accessType, defaultOrder, replacedByVersion, replaceTo, validFrom, validTo, externalPublicationFailed,
                 externalPublicationFailedDate);
 
-        // Version responsibility
+        // VERSION RESPONSIBILITY
         versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
         ViewTextItem productionValidationUser = new ViewTextItem(CodelistDS.PRODUCTION_VALIDATION_USER, getConstants().lifeCycleProductionValidationUser());
         ViewTextItem productionValidationDate = new ViewTextItem(CodelistDS.PRODUCTION_VALIDATION_DATE, getConstants().lifeCycleProductionValidationDate());
@@ -506,12 +563,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         versionResponsibilityForm.setFields(productionValidationUser, productionValidationDate, diffusionValidationUser, diffusionValidationDate, internalPublicationUser, internalPublicationDate,
                 externalPublicationUser, externalPublicationDate);
 
-        // Comments
+        // COMMENTS
         commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
         ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(CodelistDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsForm.setFields(comments);
 
-        // Annotations
+        // ANNOTATIONS
         annotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(identifiersForm);
@@ -768,6 +825,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         return codelistDto;
     }
 
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEMS CREATION
+    // ------------------------------------------------------------------------------------------------------------
+
     private SearchViewTextItem createFamilyItem(String name, String title) {
 
         SearchViewTextItem familyItem = new SearchViewTextItem(name, title);
@@ -912,11 +973,6 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             }
         });
         return variableItem;
-    }
-
-    private void updateCodesTitle(String title) {
-        codesLayoutTitle.setContents(title);
-        codesLayout.markForRedraw();
     }
 
     // ------------------------------------------------------------------------------------------------------------
