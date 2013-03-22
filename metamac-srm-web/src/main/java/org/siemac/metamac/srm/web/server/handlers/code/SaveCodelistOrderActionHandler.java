@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.server.handlers.code;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -34,7 +34,7 @@ public class SaveCodelistOrderActionHandler extends SecurityActionHandler<SaveCo
 
             if (orderToSave.getId() == null) {
                 // Create
-                RelatedResourceDto codelist = RelatedResourceUtils.createRelatedResourceDto(TypeExternalArtefactsEnum.CODELIST, action.getCodelistUrn());
+                RelatedResourceDto codelist = RelatedResourceUtils.createRelatedResourceDto(RelatedResourceTypeEnum.CODELIST, action.getCodelistUrn());
                 orderToSave.setCodelist(codelist);
                 orderSaved = srmCoreServiceFacade.createCodelistOrderVisualisation(ServiceContextHolder.getCurrentServiceContext(), orderToSave);
             } else {
