@@ -3122,7 +3122,7 @@
                 CODE="ORGANISATION02"
                 URI_PROVIDER="[null]"
                 URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION02"
-                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION02 "
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 

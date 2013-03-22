@@ -1,10 +1,10 @@
 package org.siemac.metamac.srm.core.code.repositoryimpl;
 
-import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.booleanToBooleanDatabase;
-import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getBoolean;
-import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getInteger;
-import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getLong;
-import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getString;
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.booleanToBooleanDatabase;
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getBoolean;
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getInteger;
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 
 import java.util.ArrayList;
 import java.util.HashMap;

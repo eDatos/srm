@@ -53,7 +53,7 @@ Application OrganisationsMetamac {
     		@OrganisationSchemeVersionMetamac endOrganisationSchemeValidity(String urn) throws MetamacException;
     		"Retrieves organisations scheme by organisation urn"
     		@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(String organisationUrn) throws MetamacException;
-    		"Checks translates for organisation scheme"
+    		"Checks translations for organisation scheme"
     		List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale);
     		
 			"Creates organisation"

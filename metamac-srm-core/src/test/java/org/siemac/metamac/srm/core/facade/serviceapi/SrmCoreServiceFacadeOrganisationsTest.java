@@ -656,8 +656,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(27, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(27, organisationsPagedResult.getResults().size());
+            assertEquals(30, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(30, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
 
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_100_V1_ORGANISATION_1));
@@ -666,6 +666,9 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_8_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_10_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_1));
+            assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_1_1));
+            assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_2));
+            assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_3));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_2_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_2_V1_ORGANISATION_2));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_9_V1_ORGANISATION_1));
@@ -725,8 +728,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(20, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(20, organisationsPagedResult.getResults().size());
+            assertEquals(22, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(22, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
 
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_100_V1_ORGANISATION_1));
@@ -734,6 +737,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_8_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_10_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_1));
+            assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_2));
+            assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_3));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_2_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_2_V1_ORGANISATION_2));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_9_V1_ORGANISATION_1));
@@ -781,8 +786,8 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<OrganisationMetamacDto> organisationsPagedResult = srmCoreServiceFacade.findOrganisationsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(19, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(19, organisationsPagedResult.getResults().size());
+            assertEquals(22, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(22, organisationsPagedResult.getResults().size());
             assertTrue(organisationsPagedResult.getResults().get(0) instanceof OrganisationMetamacDto);
 
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_1_V1_ORGANISATION_1));
@@ -804,6 +809,9 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_6_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_7_V2_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_1));
+            assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_1_1));
+            assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_2));
+            assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_11_V1_ORGANISATION_3));
         }
 
         // Find by organisation scheme type: agency
