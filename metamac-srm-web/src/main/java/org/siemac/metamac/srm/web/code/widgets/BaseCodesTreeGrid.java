@@ -36,7 +36,13 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
     protected CodelistOrderVisualisationDto codelistOrderVisualisationDto; // This field is only filled by the CodesOrderTreeGrid class
 
-    public BaseCodesTreeGrid(boolean canStructureBeModified, boolean canOrderBeModified) {
+    /**
+     * Create a {@link BaseCodesTreeGrid}. This tree will be extended by {@link CodesTreeGrid} and {@link CodesOrderTreeGrid}.
+     * 
+     * @param canStructureBeModified specifies if the structure of this tree can be modified (mark as <code>true</code> by {@link CodesTreeGrid})
+     * @param canOrderBeModified specified if the order of this tree can be modified (mark as <code>true</code> by {@link CodesOrderTreeGrid})
+     */
+    public BaseCodesTreeGrid(final boolean canStructureBeModified, final boolean canOrderBeModified) {
 
         // Bind events
 
@@ -84,7 +90,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
                         // UPDATE CODE PARENT
 
-                        if (CodesClientSecurityUtils.canUpdateCodeParent(codelistMetamacDto)) {
+                        if (canStructureBeModified && CodesClientSecurityUtils.canUpdateCodeParent(codelistMetamacDto)) {
 
                             if (SCHEME_NODE_NAME.equals(newItemParent)) {
                                 // The code will be moved to the first level. The parent is null.
@@ -96,7 +102,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
                         // UPDATE ORDER
 
-                        if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+                        if (canOrderBeModified && CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
 
                             // Only update order if there is an order selected and it is not the alphabetical one
                             if (codelistOrderVisualisationDto != null && !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistOrderVisualisationDto.getCode())) {

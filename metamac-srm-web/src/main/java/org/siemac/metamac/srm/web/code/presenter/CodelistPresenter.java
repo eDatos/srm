@@ -139,7 +139,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
         // Openness levels
         // TODO
-        
+
         // Complex codelists
         void setCodelistsToCreateComplexCodelist(GetCodelistsResult result);
         void setCodesToCreateComplexCodelist(CodelistMetamacDto codelistDto, List<CodeMetamacVisualisationResult> codes);
@@ -482,7 +482,6 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     @Override
                     public void onWaitSuccess(GetCodesByCodelistResult result) {
                         getView().setCodesWithOrder(result.getCodes(), result.getCodelistOrderVisualisationDto());
-                        // getView().selectCodelistOrder(orderUrn);
                     }
                 });
     }

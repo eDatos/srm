@@ -426,6 +426,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     @Override
     public void setCodes(List<CodeMetamacVisualisationResult> codes) {
         codesTreeGrid.setItems(codelistDto, codes);
+
+        // Every time new codes are set, the visualization of codes order or openness levels should be reset (maybe there are new codes, or its structure has changed)
+        codelistOrdersPanel.hideCodes();
+        // TODO hide openness levels
     }
 
     //
