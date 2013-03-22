@@ -21,6 +21,7 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -508,6 +509,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Retrieve
         return getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersion.getId(), locale, orderColumnIndex, opennessColumnIndex);
+    }
+
+    @Override
+    public List<MetamacExceptionItem> checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        getCodelistVersionMetamacRepository().checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        getCodeMetamacRepository().checkCodeTranslations(itemSchemeVersionId, locale, exceptionItems);
+        return exceptionItems;
     }
 
     // ------------------------------------------------------------------------------------

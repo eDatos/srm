@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import org.apache.commons.collections.CollectionUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -352,6 +353,11 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             ordered.add(code);
         }
         return ordered;
+    }
+
+    @Override
+    public void checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+        // TODO Auto-generated method stub
     }
 
     @SuppressWarnings("rawtypes")

@@ -1303,6 +1303,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             CodeMetamac code = assertListCodesContainsCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1);
             assertOpennessVisualisationColumns(code, Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, null));
         }
+    }
+
+    @Override
+    public void testCheckCodelistVersionTranslations() throws Exception {
+        // TODO Auto-generated method stub
 
     }
 

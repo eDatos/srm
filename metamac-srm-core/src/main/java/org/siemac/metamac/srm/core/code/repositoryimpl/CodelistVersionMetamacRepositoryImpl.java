@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
@@ -21,6 +22,7 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
     public CodelistVersionMetamacRepositoryImpl() {
     }
 
+    @Override
     public CodelistVersionMetamac findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
@@ -32,6 +34,7 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
         }
     }
 
+    @Override
     public CodelistVersionMetamac retrieveCodelistVersionByProcStatus(String urn, ProcStatusEnum[] procStatusArray) throws MetamacException {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
@@ -55,6 +58,7 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
     /**
      * Find a codelist by one of its codes (items)
      */
+    @Override
     public CodelistVersionMetamac findByCode(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
@@ -63,5 +67,10 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
             return result.get(0);
         }
         return null;
+    }
+
+    @Override
+    public void checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+        // TODO Auto-generated method stub
     }
 }
