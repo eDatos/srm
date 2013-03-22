@@ -34,7 +34,6 @@ import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
-import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -54,7 +53,6 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -69,11 +67,14 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationSchemeUiHandlers> implements OrganisationSchemePresenter.OrganisationSchemeView {
 
+    private TitleLabel                             titleLabel;
     private VLayout                                panel;
     private OrganisationSchemeMainFormLayout       mainFormLayout;
 
@@ -201,8 +202,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // ListGrid
 
         organisationListGrid = new CustomListGrid();
-        organisationListGrid.setAutoFitMaxRecords(20);
-        organisationListGrid.setAutoFitData(Autofit.VERTICAL);
         ListGridField codeField = new ListGridField(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
         ListGridField nameField = new ListGridField(OrganisationDS.NAME, getConstants().nameableArtefactName());
         organisationListGrid.setFields(codeField, nameField);
@@ -236,17 +235,44 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         VLayout organisationsLayout = new VLayout();
         organisationsLayout.setMargin(15);
-        organisationsLayout.addMember(new TitleLabel(getConstants().organisations()));
         organisationsLayout.addMember(toolStrip);
         organisationsLayout.addMember(organisationListGrid);
         organisationsLayout.addMember(organisationsTreeGrid);
 
+        // CATEGORISATIONS
+
         categorisationsPanel = new OrganisationSchemeCategorisationsPanel();
 
-        panel.addMember(versionsSectionStack);
-        panel.addMember(mainFormLayout);
-        panel.addMember(organisationsLayout);
-        panel.addMember(categorisationsPanel);
+        // PANEL LAYOUT
+
+        VLayout subPanel = new VLayout();
+        subPanel.setMembersMargin(5);
+        subPanel.addMember(versionsSectionStack);
+        titleLabel = new TitleLabel();
+        TabSet tabSet = new TabSet();
+        tabSet.setStyleName("marginTop15");
+
+        // OrganisationScheme tab
+        Tab organisationSchemeTab = new Tab(getConstants().organisationScheme());
+        organisationSchemeTab.setPane(mainFormLayout);
+        tabSet.addTab(organisationSchemeTab);
+
+        // Organisations tab
+        Tab organisationsTab = new Tab(getConstants().organisations());
+        organisationsTab.setPane(organisationsLayout);
+        tabSet.addTab(organisationsTab);
+
+        // Categorisations tab
+        Tab categorisationsTab = new Tab(getConstants().categorisations());
+        categorisationsTab.setPane(categorisationsPanel);
+        tabSet.addTab(categorisationsTab);
+
+        VLayout tabSubPanel = new VLayout();
+        tabSubPanel.addMember(titleLabel);
+        tabSubPanel.addMember(tabSet);
+        tabSubPanel.setMargin(15);
+        subPanel.addMember(tabSubPanel);
+        panel.addMember(subPanel);
     }
 
     @Override
@@ -541,9 +567,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     public void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         this.organisationSchemeDto = organisationSchemeMetamacDto;
 
-        String defaultLocalisedName = InternationalStringUtils.getLocalisedString(organisationSchemeMetamacDto.getName());
-        String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
-        mainFormLayout.setTitleLabelContents(title);
+        // Set title
+        titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(organisationSchemeMetamacDto));
 
         // Security
         ProcStatusEnum procStatus = organisationSchemeMetamacDto.getLifeCycle().getProcStatus();
