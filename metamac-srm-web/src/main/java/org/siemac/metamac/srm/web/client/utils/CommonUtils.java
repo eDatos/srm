@@ -11,9 +11,11 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.BooleanItemEnum;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.NameableArtefactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 public class CommonUtils {
@@ -139,5 +141,12 @@ public class CommonUtils {
             return true;
         }
         return isDefaultMaintainer(maintainer.getUrn());
+    }
+
+    // FORMAT UTILS
+
+    public static String getResourceTitle(NameableArtefactDto nameableArtefactDto) {
+        String defaultLocalisedString = InternationalStringUtils.getLocalisedString(nameableArtefactDto.getName());
+        return defaultLocalisedString != null ? defaultLocalisedString : StringUtils.EMPTY;
     }
 }

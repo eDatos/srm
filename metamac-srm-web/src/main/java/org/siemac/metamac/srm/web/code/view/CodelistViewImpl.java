@@ -42,7 +42,6 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
-import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
@@ -395,7 +394,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         this.codelistDto = codelist;
         this.codelistOrdersPanel.getcodelistCodelistOrdersSectionStack().setCodelistProcStatus(codelist.getLifeCycle().getProcStatus());
 
-        setTitle(codelist.getName());
+        // Set title
+        titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(codelist));
 
         // Security
         ProcStatusEnum procStatus = codelist.getLifeCycle().getProcStatus();
@@ -409,12 +409,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Update codelist in tree grid
         codesTreeGrid.updateItemScheme(codelist);
-    }
-
-    private void setTitle(InternationalStringDto codelistName) {
-        String defaultLocalized = InternationalStringUtils.getLocalisedString(codelistName);
-        String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
-        titleLabel.setContents(title);
+        codelistOrdersPanel.updateItemScheme(codelist);
+        // TODO update item scheme in openness level tree?
     }
 
     @Override

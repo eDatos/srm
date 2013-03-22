@@ -34,7 +34,6 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
-import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
@@ -55,7 +54,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -69,9 +67,12 @@ import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 
 public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHandlers> implements ConceptSchemePresenter.ConceptSchemeView {
 
+    private TitleLabel                        titleLabel;
     private VLayout                           panel;
     private ConceptSchemeMainFormLayout       mainFormLayout;
 
@@ -142,11 +143,10 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         conceptsTreeGrid = new ConceptsTreeGrid();
 
-        VLayout conceptsListGridLayout = new VLayout();
-        conceptsListGridLayout.setMargin(15);
-        conceptsListGridLayout.addMember(new TitleLabel(getConstants().concepts()));
-        conceptsListGridLayout.addMember(conceptsNoVisibleInfoMessage);
-        conceptsListGridLayout.addMember(conceptsTreeGrid);
+        VLayout conceptsLayout = new VLayout();
+        conceptsLayout.setMargin(15);
+        conceptsLayout.addMember(conceptsNoVisibleInfoMessage);
+        conceptsLayout.addMember(conceptsTreeGrid);
 
         //
         // CATEGORISATIONS
@@ -159,12 +159,32 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         //
 
         VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.setMembersMargin(5);
         subPanel.addMember(versionsSectionStack);
-        subPanel.addMember(mainFormLayout);
-        subPanel.addMember(conceptsListGridLayout);
-        subPanel.addMember(categorisationsPanel);
+        titleLabel = new TitleLabel();
+        TabSet tabSet = new TabSet();
+        tabSet.setStyleName("marginTop15");
 
+        // ConceptScheme tab
+        Tab conceptSchemeTab = new Tab(getConstants().conceptScheme());
+        conceptSchemeTab.setPane(mainFormLayout);
+        tabSet.addTab(conceptSchemeTab);
+
+        // Concepts tab
+        Tab codesTab = new Tab(getConstants().concept());
+        codesTab.setPane(conceptsLayout);
+        tabSet.addTab(codesTab);
+
+        // Categorisations tab
+        Tab categorisationsTab = new Tab(getConstants().categorisations());
+        categorisationsTab.setPane(categorisationsPanel);
+        tabSet.addTab(categorisationsTab);
+
+        VLayout tabSubPanel = new VLayout();
+        tabSubPanel.addMember(titleLabel);
+        tabSubPanel.addMember(tabSet);
+        tabSubPanel.setMargin(15);
+        subPanel.addMember(tabSubPanel);
         panel.addMember(subPanel);
     }
 
@@ -327,9 +347,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         this.conceptSchemeDto = conceptScheme;
         this.relatedOperation = conceptScheme.getRelatedOperation();
 
-        String defaultLocalized = InternationalStringUtils.getLocalisedString(conceptScheme.getName());
-        String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
-        mainFormLayout.setTitleLabelContents(title);
+        // Set title
+        titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(conceptScheme));
 
         // Security
         mainFormLayout.updatePublishSection(conceptScheme);

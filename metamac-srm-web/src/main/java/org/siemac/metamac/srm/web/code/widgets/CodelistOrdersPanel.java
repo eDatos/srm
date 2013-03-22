@@ -63,6 +63,10 @@ public class CodelistOrdersPanel extends VLayout {
         return codesOrderTreeGrid;
     }
 
+    public void updateItemScheme(CodelistMetamacDto codelistMetamacDto) {
+        codesOrderTreeGrid.updateItemScheme(codelistMetamacDto);
+    }
+
     public void showCodes() {
         orderTitle.show();
         codesOrderTreeGrid.show();
