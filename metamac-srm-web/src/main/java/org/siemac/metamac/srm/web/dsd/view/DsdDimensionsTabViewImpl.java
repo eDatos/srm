@@ -241,6 +241,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Title
 
         mainFormLayout = new InternationalMainFormLayout();
+        mainFormLayout.getTitleLabel().setStyleName("subsectionTitleWithNoLeftMargin");
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override

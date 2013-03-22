@@ -244,6 +244,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // ··············
 
         mainFormLayout = new InternationalMainFormLayout();
+        mainFormLayout.getTitleLabel().setStyleName("subsectionTitleWithNoLeftMargin");
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override

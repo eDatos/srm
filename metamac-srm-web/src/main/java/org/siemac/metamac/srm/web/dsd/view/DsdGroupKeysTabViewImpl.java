@@ -177,6 +177,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         // ··············
 
         mainFormLayout = new InternationalMainFormLayout();
+        mainFormLayout.getTitleLabel().setStyleName("subsectionTitleWithNoLeftMargin");
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
