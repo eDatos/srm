@@ -11,6 +11,7 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -443,6 +444,22 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Populate the form with the order list (to fill the default order)
         diffusionDescriptorsEditionForm.getItem(CodelistDS.DEFAULT_ORDER).setValueMap(CommonUtils.getCodelistOrdersHashMap(orders));
+    }
+
+    //
+    // OPENNESS LEVELS
+    //
+
+    @Override
+    public void setCodesWithOpennessLevel(List<CodeMetamacVisualisationResult> codes, CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setCodelistOpennessLevels(List<CodelistOpennessVisualisationDto> opennessLevels) {
+        // TODO Auto-generated method stub
+
     }
 
     //

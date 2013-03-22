@@ -43,11 +43,15 @@ import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOpennessLevelsAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOpennessLevelsResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOrdersResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistOpennessLevelsAction;
+import org.siemac.metamac.srm.web.shared.code.GetCodelistOpennessLevelsResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistOrdersResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistResult;
@@ -62,6 +66,8 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.SaveCodelistOpennessLevelAction;
+import org.siemac.metamac.srm.web.shared.code.SaveCodelistOpennessLevelResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
@@ -138,7 +144,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setCodelistOrders(List<CodelistOrderVisualisationDto> orders);
 
         // Openness levels
-        // TODO
+        void setCodesWithOpennessLevel(List<CodeMetamacVisualisationResult> codes, CodelistOpennessVisualisationDto codelistOpennessVisualisationDto);
+        void setCodelistOpennessLevels(List<CodelistOpennessVisualisationDto> opennessLevels);
 
         // Complex codelists
         void setCodelistsToCreateComplexCodelist(GetCodelistsResult result);
@@ -514,7 +521,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(DeleteCodelistOrdersResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistOrderDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveCodelistAndCodesByUrn(codelistMetamacDto.getUrn());
+                retrieveCodelistOrders(codelistMetamacDto.getUrn());
             }
         });
     }
@@ -539,27 +546,67 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     //
 
     @Override
-    public void retrieveCodesWithOpennessLevel(String orderIdentifier) {
-        // TODO Auto-generated method stub
+    public void retrieveCodesWithOpennessLevel(String opennessLevelUrn) {
+        dispatcher.execute(new GetCodesByCodelistAction(codelistMetamacDto.getUrn(), null, opennessLevelUrn, ApplicationEditionLanguages.getCurrentLocale()),
+                new WaitingAsyncCallback<GetCodesByCodelistResult>() {
 
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetCodesByCodelistResult result) {
+                        getView().setCodesWithOpennessLevel(result.getCodes(), result.getCodelistOpennessVisualisationDto());
+                    }
+                });
     }
 
     @Override
     public void retrieveCodelistOpennessLevels(String codelistUrn) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new GetCodelistOpennessLevelsAction(codelistUrn), new WaitingAsyncCallback<GetCodelistOpennessLevelsResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistOpennessLevelErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistOpennessLevelsResult result) {
+                getView().setCodelistOpennessLevels(result.getCodelistOpennessVisualisationDtos());
+            }
+        });
     }
 
     @Override
     public void saveCodelistOpennessLevel(CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) {
-        // TODO Auto-generated method stub
+        dispatcher.execute(new SaveCodelistOpennessLevelAction(codelistMetamacDto.getUrn(), codelistOpennessVisualisationDto), new WaitingAsyncCallback<SaveCodelistOpennessLevelResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistOpennessLevelErrorSave()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(SaveCodelistOpennessLevelResult result) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistOpennessLevelSaved()), MessageTypeEnum.SUCCESS);
+                retrieveCodelistOpennessLevels(codelistMetamacDto.getUrn());
+                retrieveCodesWithOpennessLevel(result.getCodelistOpennessVisualisationSaved().getUrn());
+            }
+        });
     }
 
     @Override
-    public void deleteCodelistOpennessLevel(List<String> levelsIdentifiers) {
-        // TODO Auto-generated method stub
+    public void deleteCodelistOpennessLevel(List<String> levelsUrns) {
+        dispatcher.execute(new DeleteCodelistOpennessLevelsAction(levelsUrns), new WaitingAsyncCallback<DeleteCodelistOpennessLevelsResult>() {
 
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistOpennessLevelErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCodelistOpennessLevelsResult result) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistOpennessLevelDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveCodelistOpennessLevels(codelistMetamacDto.getUrn());
+            }
+        });
     }
 
     //

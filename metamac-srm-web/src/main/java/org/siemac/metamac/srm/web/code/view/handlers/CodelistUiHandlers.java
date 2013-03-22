@@ -30,10 +30,10 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void saveCodelistOrder(CodelistOrderVisualisationDto codelistOrderVisualisationDto);
     void deleteCodelistOrders(List<String> orderIdentifiers);
 
-    void retrieveCodesWithOpennessLevel(String orderIdentifier);
+    void retrieveCodesWithOpennessLevel(String opennessLevelUrn);
     void retrieveCodelistOpennessLevels(String codelistUrn);
     void saveCodelistOpennessLevel(CodelistOpennessVisualisationDto codelistOpennessVisualisationDto);
-    void deleteCodelistOpennessLevel(List<String> levelsIdentifiers);
+    void deleteCodelistOpennessLevel(List<String> opennessLevelsUrns);
 
     // Life cycle
 
