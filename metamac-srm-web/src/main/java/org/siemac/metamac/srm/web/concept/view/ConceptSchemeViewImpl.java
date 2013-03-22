@@ -54,7 +54,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.ViewImpl;
+import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -70,9 +70,7 @@ import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePresenter.ConceptSchemeView {
-
-    private ConceptSchemeUiHandlers           uiHandlers;
+public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHandlers> implements ConceptSchemePresenter.ConceptSchemeView {
 
     private VLayout                           panel;
     private ConceptSchemeMainFormLayout       mainFormLayout;
@@ -122,7 +120,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 String urn = ((ConceptSchemeRecord) event.getRecord()).getUrn();
-                uiHandlers.goToConceptScheme(urn);
+                getUiHandlers().goToConceptScheme(urn);
             }
         });
 
@@ -150,7 +148,15 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
         conceptsListGridLayout.addMember(conceptsNoVisibleInfoMessage);
         conceptsListGridLayout.addMember(conceptsTreeGrid);
 
+        //
+        // CATEGORISATIONS
+        //
+
         categorisationsPanel = new ConceptSchemeCategorisationsPanel();
+
+        //
+        // PANEL LAYOUT
+        //
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
@@ -218,7 +224,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false)
                         && productionDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
-                    uiHandlers.saveConceptScheme(getConceptSchemeDto());
+                    getUiHandlers().saveConceptScheme(getConceptSchemeDto());
                 }
             }
         });
@@ -228,35 +234,35 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToProductionValidation(conceptSchemeDto);
+                getUiHandlers().sendToProductionValidation(conceptSchemeDto);
             }
         });
         mainFormLayout.getSendToDiffusionValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.sendToDiffusionValidation(conceptSchemeDto);
+                getUiHandlers().sendToDiffusionValidation(conceptSchemeDto);
             }
         });
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.rejectValidation(conceptSchemeDto);
+                getUiHandlers().rejectValidation(conceptSchemeDto);
             }
         });
         mainFormLayout.getPublishInternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.publishInternally(conceptSchemeDto);
+                getUiHandlers().publishInternally(conceptSchemeDto);
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.publishExternally(conceptSchemeDto);
+                getUiHandlers().publishExternally(conceptSchemeDto);
             }
         });
         mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
@@ -269,7 +275,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         if (versionWindow.validateForm()) {
-                            uiHandlers.versioning(conceptSchemeDto.getUrn(), versionWindow.getSelectedVersion());
+                            getUiHandlers().versioning(conceptSchemeDto.getUrn(), versionWindow.getSelectedVersion());
                             versionWindow.destroy();
                         }
                     }
@@ -280,7 +286,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.cancelValidity(conceptSchemeDto.getUrn());
+                getUiHandlers().cancelValidity(conceptSchemeDto.getUrn());
             }
         });
     }
@@ -305,7 +311,7 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
     @Override
     public void setUiHandlers(ConceptSchemeUiHandlers uiHandlers) {
-        this.uiHandlers = uiHandlers;
+        super.setUiHandlers(uiHandlers);
         this.conceptsTreeGrid.setUiHandlers(uiHandlers);
         this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
@@ -721,16 +727,16 @@ public class ConceptSchemeViewImpl extends ViewImpl implements ConceptSchemePres
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, searchOperationsWindow.getSearchCriteria());
+                        getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, searchOperationsWindow.getSearchCriteria());
                     }
                 });
-                uiHandlers.retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
+                getUiHandlers().retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
                 searchOperationsWindow.getListGrid().setSelectionType(SelectionStyle.SINGLE); // Only one statistical operation can be selected
                 searchOperationsWindow.getExternalListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String code) {
-                        uiHandlers.retrieveStatisticalOperations(firstResult, maxResults, code);
+                        getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, code);
                     }
                 });
                 searchOperationsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
