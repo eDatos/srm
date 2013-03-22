@@ -204,6 +204,12 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
+            // TODO comprobar traducciones
+            return new ArrayList<MetamacExceptionItem>();
+        }
+
+        @Override
         public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
             // nothing
             return srmResourceVersion;

@@ -122,6 +122,11 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
+            // TODO comprobar traducciones
+            return new ArrayList<MetamacExceptionItem>();
+        }
+        @Override
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
         }

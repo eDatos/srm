@@ -69,7 +69,9 @@ Application CodesMetamac {
     		@CodelistVersionMetamac endCodelistValidity(String urn) throws MetamacException;
     		"Retrieves codelist by code urn"
     		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
-
+			"Checks translations for codelist"
+    		List<MetamacExceptionItem> checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale);
+    		
 			// CODES
 
 			"Creates code"
@@ -252,6 +254,7 @@ Application CodesMetamac {
 				@CodelistVersionMetamac findByUrn(String urn);
 				@CodelistVersionMetamac retrieveCodelistVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@CodelistVersionMetamac findByCode(String urn);
+				checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}			
 		}
 
@@ -314,6 +317,7 @@ Application CodesMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) throws MetamacException;
+				checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 				
 				clearCodesVariableElementByCodelist(@CodelistVersionMetamac codelistVersion);
 				

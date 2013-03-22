@@ -100,14 +100,14 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException {
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(targetStatus)) {
-                Long itemSchemeVersionId = getOrganisationSchemeVersionMetamac(srmResourceVersion).getId();
-                String locale = retrieveLanguageDefault();
-                List<MetamacExceptionItem> exceptionItems = organisationsMetamacService.checkOrganisationSchemeVersionTranslations(ctx, itemSchemeVersionId, locale);
-                exceptions.addAll(exceptionItems);
-            }
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+            // nothing
+        }
+
+        @Override
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
+            Long itemSchemeVersionId = getOrganisationSchemeVersionMetamac(srmResourceVersion).getId();
+            return organisationsMetamacService.checkOrganisationSchemeVersionTranslations(ctx, itemSchemeVersionId, locale);
         }
 
         @Override

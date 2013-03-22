@@ -241,10 +241,6 @@ public abstract class LifeCycleImpl implements LifeCycle {
         return srmResourceVersion;
     }
 
-    protected String retrieveLanguageDefault() throws MetamacException {
-        return srmConfiguration.retrieveLanguageDefault();
-    }
-
     /**
      * Makes validations to sent to production validation. Also revalidates conditions that were checked to go previous statuses.
      */
@@ -328,6 +324,13 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // Check current proc status if target status is publish internally
         if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(targetStatus)) {
             checkProcStatus(srmResourceVersion, procStatusToPublishInternally);
+
+            // Check translations
+            String locale = srmConfiguration.retrieveLanguageDefault();
+            List<MetamacExceptionItem> exceptionItems = callback.checkConcreteResourceTranslations(ctx, srmResourceVersion, locale);
+            if (exceptionItems != null) {
+                exceptions.addAll(exceptionItems);
+            }
         }
 
         // Check other conditions
@@ -400,9 +403,9 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException;
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale);
 
         // Validity, final, public, additional actions
         public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion);
