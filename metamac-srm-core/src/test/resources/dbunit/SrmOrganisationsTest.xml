@@ -2951,11 +2951,37 @@
         LAST_UPDATED_TZ="Europe/London"
     />
 
+            <TB_ANNOTATIONS
+                ID="991111"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation991111"
+                TYPE="type-annotation991111"    
+                URL="http://annotation991111"
+                UUID="annotation-991111"
+                VERSION="1"
+                TEXT_FK="34"
+                ANNOTABLE_ARTEFACT_FK="99111"
+            />
+            
+            <TB_ANNOTATIONS
+                ID="991112"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation991112"
+                TYPE="type-annotation991112"    
+                URL="http://annotation991112"
+                UUID="annotation-991112"
+                VERSION="1"
+                TEXT_FK="35"
+                ANNOTABLE_ARTEFACT_FK="99111"
+            />            
+            
             <!-- ORGANISATIONS -->
             <!-- -> ORGANISATION01 -->
+                <!-- -> ORGANISATION0101 -->
+            <!-- -> ORGANISATION02 -->
+            <!-- -> ORGANISATION03 -->
             
             <!-- ORGANISATION01 -->
-            
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="1111"
             />
@@ -2994,9 +3020,9 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
-                NAME_FK="[null]"
-                DESCRIPTION_FK="[null]"
-                COMMENT_FK="[null]"
+                NAME_FK="36"
+                DESCRIPTION_FK="37"
+                COMMENT_FK="38"
 
                 UUID="annotableArtefact-991111"
                 VERSION="1"
@@ -3006,7 +3032,214 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
+            /> 
+            
+                    <!-- ORGANISATION0101 -->
+                    <TB_M_ORGANISATIONS
+                        TB_ORGANISATIONS="11111"
+                    />
+                    
+                    <TB_ORGANISATIONS
+                        TB_ITEMS="11111"
+                        ORGANISATION_TYPE="ORGANISATION_UNIT"
+                        ID_AS_MAINTAINER="[null]"
+                    />
+                
+                    <TB_ITEMS
+                        ID="11111"
+                        PARENT_FK="1111"
+                        ITEM_SCHEME_VERSION_FK="111"
+                        ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                        NAMEABLE_ARTEFACT_FK="9911111"
+                              
+                        UUID="organisationScheme-11-v1-org-11"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="2011-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="2011-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"  
+                    />
+        
+                    <TB_ANNOTABLE_ARTEFACTS 
+                        ID="9911111"
+                        ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+        
+                        CODE="ORGANISATION0101"
+                        URI_PROVIDER="[null]"
+                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION0101"
+                        URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION0101"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
+        
+                        NAME_FK="39"
+                        DESCRIPTION_FK="40"
+                        COMMENT_FK="41"
+        
+                        UUID="annotableArtefact-9911111"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="2011-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="2011-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"
+                    />  
+            
+            <!-- ORGANISATION02 -->
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="1112"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="1112"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
+            />
+        
+            <TB_ITEMS
+                ID="1112"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="111"
+                ITEM_SCHEME_VERSION_FIRST_FK="111"
+                NAMEABLE_ARTEFACT_FK="991112"
+                      
+                UUID="organisationScheme-11-v1-org-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="991112"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION02"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION02 "
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="42"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+
+                UUID="annotableArtefact-991112"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
             />  
+            
+                <TB_ANNOTATIONS
+                    ID="9911121"
+                    CODE="ANNOTATION01"
+                    TITLE="title-annotation9911121"
+                    TYPE="type-annotation9911121"    
+                    URL="http://annotation9911121"
+                    UUID="annotation-9911121"
+                    VERSION="1"
+                    TEXT_FK="46"
+                    ANNOTABLE_ARTEFACT_FK="991112"
+                />
+
+                <TB_ANNOTATIONS
+                    ID="9911122"
+                    CODE="ANNOTATION02"
+                    TITLE="title-annotation9911122"
+                    TYPE="type-annotation9911122"    
+                    URL="http://annotation9911122"
+                    UUID="annotation-9911122"
+                    VERSION="1"
+                    TEXT_FK="47"
+                    ANNOTABLE_ARTEFACT_FK="991112"
+                />
+            
+            <!-- ORGANISATION03 -->
+            <TB_M_ORGANISATIONS
+                TB_ORGANISATIONS="1113"
+            />
+            
+            <TB_ORGANISATIONS
+                TB_ITEMS="1113"
+                ORGANISATION_TYPE="ORGANISATION_UNIT"
+                ID_AS_MAINTAINER="[null]"
+            />
+        
+            <TB_ITEMS
+                ID="1113"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="111"
+                ITEM_SCHEME_VERSION_FIRST_FK="111"
+                NAMEABLE_ARTEFACT_FK="991113"
+                      
+                UUID="organisationScheme-11-v1-org-3"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="991113"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="ORGANISATION03"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION03"
+                URN="urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION03"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="43"
+                DESCRIPTION_FK="44"
+                COMMENT_FK="45"
+
+                UUID="annotableArtefact-991113"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />                   
+            
+                <TB_ANNOTATIONS
+                    ID="9911131"
+                    CODE="ANNOTATION01"
+                    TITLE="title-annotation9911131"
+                    TYPE="type-annotation9911131"    
+                    URL="http://annotation9911131"
+                    UUID="annotation-9911131"
+                    VERSION="1"
+                    TEXT_FK="48"
+                    ANNOTABLE_ARTEFACT_FK="991113"
+                />
+
+                <TB_ANNOTATIONS
+                    ID="9911132"
+                    CODE="ANNOTATION02"
+                    TITLE="title-annotation9911132"
+                    TYPE="type-annotation9911132"    
+                    URL="http://annotation9911132"
+                    UUID="annotation-9911132"
+                    VERSION="1"
+                    TEXT_FK="49"
+                    ANNOTABLE_ARTEFACT_FK="991113"
+                />                   
             
             
     <!-- ************************************************************************************** -->
@@ -3508,7 +3741,230 @@
         LOCALE="it"
         VERSION="1"
         INTERNATIONAL_STRING_FK="33"
-    />            
+    />      
     
+    <TB_INTERNATIONAL_STRINGS
+        ID="34"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="341"
+        LABEL="anotación 1 orgScheme11-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="34"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="35"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="351"
+        LABEL="annotation 2 orgScheme11-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="35"
+    />           
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="36"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="361"
+        LABEL="name org1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="36"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="362"
+        LABEL="nombre it org1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="36"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="37"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="371"
+        LABEL="descripción org1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="37"
+    />  
+
+    <TB_LOCALISED_STRINGS
+        ID="372"
+        LABEL="descripción it org1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="37"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="38"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="381"
+        LABEL="comment org1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="38"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="39"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="394"
+        LABEL="nombre org11"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="39"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="40"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="401"
+        LABEL="description org11"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="40"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="41"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="411"
+        LABEL="comentario org11"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="41"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="42"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="421"
+        LABEL="name org2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="42"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="43"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="431"
+        LABEL="nombre org3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="43"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="44"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="441"
+        LABEL="descripción org3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="44"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="45"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="451"
+        LABEL="comentario org3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="45"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="46"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="461"
+        LABEL="comentario ann"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="46"
+    />  
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="47"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="471"
+        LABEL="comentario ann"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="47"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="48"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="481"
+        LABEL="comentario ann"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="48"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="49"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="491"
+        LABEL="comentario ann"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="49"
+    />                  
                         
 </dataset>

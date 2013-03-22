@@ -4,13 +4,13 @@ import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryU
 import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.getString;
 import static org.siemac.metamac.srm.core.common.repository.utils.SrmRepositoryUtils.withoutTranslation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
@@ -75,10 +75,20 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
         return null;
     }
 
-    @SuppressWarnings("rawtypes")
+    // TODO pasar al repositorio ItemSchemeVersion
     @Override
-    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale) {
-        // TODO pasar al repositorio ItemSchemeVersion
+    public void checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+        // name, description and comment
+        checkOrganisationSchemeVersionMaintainableArtefactTranslations(itemSchemeVersionId, locale, exceptionItems);
+        // annotations
+        checkOrganisationSchemeVersionAnnotationsTranslations(itemSchemeVersionId, locale, exceptionItems);
+    }
+
+    /**
+     * Checks name, description and comment of MaintainableArtefact
+     */
+    @SuppressWarnings("rawtypes")
+    private void checkOrganisationSchemeVersionMaintainableArtefactTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT a.CODE, a.NAME_FK as IS_NAME, lsN.LABEL as NAME_LABEL, a.DESCRIPTION_FK as IS_DESCRIPTION, lsD.LABEL as DESCRIPTION_LABEL, a.COMMENT_FK as IS_COMMENT, lsC.LABEL as COMMENT_LABEL ");
@@ -97,7 +107,6 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
         query.setParameter("locale", locale);
         List resultsSql = query.getResultList();
 
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         for (Object resultSql : resultsSql) {
             Object[] resultArray = (Object[]) resultSql;
             int i = 0;
@@ -109,15 +118,44 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
             Long internationalStringComment = getLong(resultArray[i++]);
             String localisedStringComment = getString(resultArray[i++]);
             if (withoutTranslation(internationalStringName, localisedStringName)) {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ARTEFACT_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, code));
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, code));
             }
             if (withoutTranslation(internationalStringDescription, localisedStringDescription)) {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ARTEFACT_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code));
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION,
+                        code));
             }
             if (withoutTranslation(internationalStringComment, localisedStringComment)) {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ARTEFACT_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT, code));
+                exceptionItems
+                        .add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT, code));
             }
         }
-        return exceptionItems;
     }
+
+    /**
+     * Checks text of Annotations
+     */
+    @SuppressWarnings("rawtypes")
+    private void checkOrganisationSchemeVersionAnnotationsTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT distinct(a.CODE) ");
+        sb.append("FROM TB_ITEM_SCHEMES_VERSIONS iv ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on iv.MAINTAINABLE_ARTEFACT_FK = a.ID ");
+        sb.append("INNER JOIN TB_ANNOTATIONS ann on ann.ANNOTABLE_ARTEFACT_FK = a.ID ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ann.TEXT_FK and ls.LOCALE = :locale ");
+        sb.append("WHERE ");
+        sb.append("iv.ID = :itemSchemeVersionId ");
+        sb.append("AND ann.TEXT_FK IS NOT NULL ");
+        sb.append("AND ls.LABEL IS NULL ");
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        query.setParameter("locale", locale);
+        List resultsSql = query.getResultList();
+        if (!CollectionUtils.isEmpty(resultsSql)) {
+            String code = getString(resultsSql.get(0));
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, code));
+        }
+    }
+
 }
