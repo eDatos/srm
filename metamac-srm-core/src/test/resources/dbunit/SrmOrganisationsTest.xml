@@ -3033,7 +3033,42 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             /> 
+                    
+                        <TB_CONTACTS
+                            ID="11111"
+                            ORGANISATION_FK="1111"
             
+                            NAME_FK="50"
+                            ORGANISATION_UNIT_FK="[null]"
+                            RESPONSIBILITY_FK="[null]"
+            
+                            UUID="contact-11111"
+                            CREATED_DATE_TZ="Europe/London"
+                            CREATED_DATE="2011-01-01 01:02:03"
+                            CREATED_BY="user1"
+                            LAST_UPDATED_TZ="Europe/London"
+                            LAST_UPDATED="2011-01-01 01:02:03"
+                            LAST_UPDATED_BY="user1"
+                            VERSION="1"
+                        />
+                        <TB_CONTACTS
+                            ID="11112"
+                            ORGANISATION_FK="1111"
+            
+                            NAME_FK="51"
+                            ORGANISATION_UNIT_FK="[null]"
+                            RESPONSIBILITY_FK="52"
+            
+                            UUID="contact-11112"
+                            CREATED_DATE_TZ="Europe/London"
+                            CREATED_DATE="2011-01-01 01:02:03"
+                            CREATED_BY="user1"
+                            LAST_UPDATED_TZ="Europe/London"
+                            LAST_UPDATED="2011-01-01 01:02:03"
+                            LAST_UPDATED_BY="user1"
+                            VERSION="1"
+                        />
+                                    
                     <!-- ORGANISATION0101 -->
                     <TB_M_ORGANISATIONS
                         TB_ORGANISATIONS="11111"
@@ -3086,6 +3121,41 @@
                         LAST_UPDATED="2011-01-22 01:02:03"
                         LAST_UPDATED_TZ="Europe/London"
                     />  
+                    
+                        <TB_CONTACTS
+                            ID="111111"
+                            ORGANISATION_FK="11111"
+            
+                            NAME_FK="[null]"
+                            ORGANISATION_UNIT_FK="[null]"
+                            RESPONSIBILITY_FK="[null]"
+            
+                            UUID="contact-111111"
+                            CREATED_DATE_TZ="Europe/London"
+                            CREATED_DATE="2011-01-01 01:02:03"
+                            CREATED_BY="user1"
+                            LAST_UPDATED_TZ="Europe/London"
+                            LAST_UPDATED="2011-01-01 01:02:03"
+                            LAST_UPDATED_BY="user1"
+                            VERSION="1"
+                        />
+                        <TB_CONTACTS
+                            ID="111112"
+                            ORGANISATION_FK="11111"
+            
+                            NAME_FK="53"
+                            ORGANISATION_UNIT_FK="54"
+                            RESPONSIBILITY_FK="55"
+            
+                            UUID="contact-111112"
+                            CREATED_DATE_TZ="Europe/London"
+                            CREATED_DATE="2011-01-01 01:02:03"
+                            CREATED_BY="user1"
+                            LAST_UPDATED_TZ="Europe/London"
+                            LAST_UPDATED="2011-01-01 01:02:03"
+                            LAST_UPDATED_BY="user1"
+                            VERSION="1"
+                        />                    
             
             <!-- ORGANISATION02 -->
             <TB_M_ORGANISATIONS
@@ -3163,6 +3233,24 @@
                     TEXT_FK="47"
                     ANNOTABLE_ARTEFACT_FK="991112"
                 />
+                
+                        <TB_CONTACTS
+                            ID="11121"
+                            ORGANISATION_FK="1112"
+            
+                            NAME_FK="56"
+                            ORGANISATION_UNIT_FK="[null]"
+                            RESPONSIBILITY_FK="[null]"
+            
+                            UUID="contact-11121"
+                            CREATED_DATE_TZ="Europe/London"
+                            CREATED_DATE="2011-01-01 01:02:03"
+                            CREATED_BY="user1"
+                            LAST_UPDATED_TZ="Europe/London"
+                            LAST_UPDATED="2011-01-01 01:02:03"
+                            LAST_UPDATED_BY="user1"
+                            VERSION="1"
+                        />                
             
             <!-- ORGANISATION03 -->
             <TB_M_ORGANISATIONS
@@ -3965,6 +4053,96 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="49"
-    />                  
-                        
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="50"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="501"
+        LABEL="contact1 nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="50"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="51"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="511"
+        LABEL="contact2 nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="51"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="52"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="521"
+        LABEL="contact2 responsibility"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="52"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="53"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="531"
+        LABEL="contact11-2 name"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="53"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="54"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="541"
+        LABEL="contact11-2 orgunit it"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="54"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="55"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="551"
+        LABEL="contact11-2 resp en"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="55"
+    />                                
+             
+    <TB_INTERNATIONAL_STRINGS
+        ID="56"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="561"
+        LABEL="contact11-2 nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="56"
+    />                         
 </dataset>

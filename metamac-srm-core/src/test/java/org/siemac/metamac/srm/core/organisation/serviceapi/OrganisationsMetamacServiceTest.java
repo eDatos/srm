@@ -869,7 +869,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("OrganisationScheme wrong proc status");
         } catch (MetamacException e) {
-            assertEquals(8, e.getExceptionItems().size());
+            assertEquals(10, e.getExceptionItems().size());
             int i = 0;
             // OrganisationScheme
             assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
@@ -886,6 +886,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     "ORGANISATION02"}, e.getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"ORGANISATION02"}, e.getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"ORGANISATION03"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ORGANISATION_WITH_CONTACT_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"ORGANISATION01"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ORGANISATION_WITH_CONTACT_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"ORGANISATION0101"}, e.getExceptionItems().get(i++));
 
             assertEquals(e.getExceptionItems().size(), i);
         }
