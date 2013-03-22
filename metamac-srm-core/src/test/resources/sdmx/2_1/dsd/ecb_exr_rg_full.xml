@@ -278,7 +278,7 @@
          </structure:Codelist>
       </structure:Codelists>
       <structure:Concepts>
-         <structure:ConceptScheme id="CROSS_DOMAIN_CONCEPTS" agencyID="SDMX" version="1.0" isPartial=false urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX:CROSS_DOMAIN_CONCEPTS(1.0)" isFinal="true">
+         <structure:ConceptScheme id="CROSS_DOMAIN_CONCEPTS" agencyID="SDMX" version="1.0" isPartial="false" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX:CROSS_DOMAIN_CONCEPTS(1.0)" isFinal="true">
             <common:Name>SDMX Cross Domain Concept Scheme</common:Name>
             <structure:Concept id="COLL_METHOD" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(1.0).COLL_METHOD">
                <common:Annotations>
