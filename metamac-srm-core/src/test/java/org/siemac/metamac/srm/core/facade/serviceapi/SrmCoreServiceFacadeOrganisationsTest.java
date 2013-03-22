@@ -1235,12 +1235,17 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             MetamacCriteriaResult<ContactDto> contactsPagedResult = srmCoreServiceFacade.findOrganisationContactsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(3, contactsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(3, contactsPagedResult.getResults().size());
+            assertEquals(8, contactsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(8, contactsPagedResult.getResults().size());
 
             assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-3111"));
             assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-3112"));
             assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-4111"));
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-11111"));
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-11112"));
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-111111"));
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-111112"));
+            assertNotNull(getContactDto(contactsPagedResult.getResults(), "contact-11121"));
         }
         // Find by organisation
         {
