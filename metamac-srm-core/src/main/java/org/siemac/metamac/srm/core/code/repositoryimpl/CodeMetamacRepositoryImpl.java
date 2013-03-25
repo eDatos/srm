@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
@@ -40,9 +39,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Autowired
     private CodeRepository      codeRepository;
-
-    @Autowired
-    private ItemRepository      itemRepository;
 
     @Autowired
     private SrmConfiguration    srmConfiguration;
@@ -363,7 +359,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     @Override
     public void checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
         // item common metadata
-        itemRepository.checkItemTranslations(itemSchemeVersionId, locale, exceptionItems);
+        codeRepository.checkCodeTranslations(itemSchemeVersionId, locale, exceptionItems);
         // concrete metadata
         checkCodeMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
     }

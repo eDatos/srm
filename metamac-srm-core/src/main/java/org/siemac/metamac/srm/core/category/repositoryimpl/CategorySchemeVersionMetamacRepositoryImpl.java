@@ -6,11 +6,15 @@ import java.util.Map;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersionRepository;
 
 /**
  * Repository implementation for CategorySchemeVersionMetamac
@@ -18,9 +22,13 @@ import org.springframework.stereotype.Repository;
 @Repository("categorySchemeVersionMetamacRepository")
 public class CategorySchemeVersionMetamacRepositoryImpl extends CategorySchemeVersionMetamacRepositoryBase {
 
+    @Autowired
+    private CategorySchemeVersionRepository categorySchemeVersionRepository;
+
     public CategorySchemeVersionMetamacRepositoryImpl() {
     }
 
+    @Override
     public CategorySchemeVersionMetamac findByCategory(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
@@ -43,6 +51,7 @@ public class CategorySchemeVersionMetamacRepositoryImpl extends CategorySchemeVe
         }
     }
 
+    @Override
     public CategorySchemeVersionMetamac retrieveCategorySchemeVersionByProcStatus(String urn, ProcStatusEnum[] procStatusArray) throws MetamacException {
 
         Map<String, Object> parameters = new HashMap<String, Object>();
@@ -64,4 +73,11 @@ public class CategorySchemeVersionMetamacRepositoryImpl extends CategorySchemeVe
         }
         return result.get(0);
     }
+
+    @Override
+    public void checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+        categorySchemeVersionRepository.checkCategorySchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        // no metadata specific in metamac
+    }
+
 }

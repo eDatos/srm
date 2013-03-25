@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacRepository;
+import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -38,6 +39,9 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private CategoriesService                      categoriesService;
+
+    @Autowired
+    private CategoriesMetamacService               categoriesMetamacService;
 
     public CategorySchemeLifeCycleImpl() {
         this.callback = new CategorySchemeLifeCycleCallback();
@@ -101,8 +105,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
-            // TODO comprobar traducciones
-            return new ArrayList<MetamacExceptionItem>();
+            return categoriesMetamacService.checkCategorySchemeVersionTranslations(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getId(), locale);
         }
 
         @Override

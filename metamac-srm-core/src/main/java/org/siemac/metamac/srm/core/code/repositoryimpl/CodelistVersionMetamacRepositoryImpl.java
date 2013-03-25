@@ -19,7 +19,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersionRepository;
 
 /**
  * Repository implementation for CodelistVersionMetamac
@@ -28,7 +28,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamacRepositoryBase {
 
     @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    private CodelistVersionRepository codelistVersionRepository;
 
     public CodelistVersionMetamacRepositoryImpl() {
     }
@@ -83,7 +83,7 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
     @Override
     public void checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
         // item scheme common metadata
-        itemSchemeVersionRepository.checkItemSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        codelistVersionRepository.checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
         // concrete metadata
         checkCodelistVersionMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
     }

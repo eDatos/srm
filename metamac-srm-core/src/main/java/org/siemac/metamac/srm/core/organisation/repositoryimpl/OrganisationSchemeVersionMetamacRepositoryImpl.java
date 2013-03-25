@@ -14,7 +14,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionRepository;
 
 /**
  * Repository implementation for OrganisationSchemeVersionMetamac
@@ -23,7 +23,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 public class OrganisationSchemeVersionMetamacRepositoryImpl extends OrganisationSchemeVersionMetamacRepositoryBase {
 
     @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    private OrganisationSchemeVersionRepository organisationSchemeVersionRepository;
 
     public OrganisationSchemeVersionMetamacRepositoryImpl() {
     }
@@ -75,7 +75,7 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
 
     @Override
     public void checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
-        itemSchemeVersionRepository.checkItemSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        organisationSchemeVersionRepository.checkOrganisationSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
         // no metadata specific in metamac
     }
 

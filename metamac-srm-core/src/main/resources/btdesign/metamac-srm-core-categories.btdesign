@@ -54,6 +54,8 @@ Application CategoriesMetamac {
     		@CategorySchemeVersionMetamac endCategorySchemeValidity(String urn) throws MetamacException;
     		"Retrieves categories scheme by category urn"
     		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
+			"Checks translations for category scheme"
+    		List<MetamacExceptionItem> checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale);
     		
 			"Creates category"
 			@CategoryMetamac createCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
@@ -111,6 +113,7 @@ Application CategoriesMetamac {
 				@CategorySchemeVersionMetamac findByUrn(String urn);
 				@CategorySchemeVersionMetamac retrieveCategorySchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@CategorySchemeVersionMetamac findByCategory(String urn);
+				checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}			
 		}
 		
@@ -123,6 +126,7 @@ Application CategoriesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CategoryMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
+				checkCategoryTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}
 		}
 	}

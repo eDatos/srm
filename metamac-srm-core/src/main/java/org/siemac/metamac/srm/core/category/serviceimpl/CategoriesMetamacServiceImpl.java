@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -277,6 +278,14 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(categoryUrn).build();
         }
         return categorySchemeVersion;
+    }
+
+    @Override
+    public List<MetamacExceptionItem> checkCategorySchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        getCategorySchemeVersionMetamacRepository().checkCategorySchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        getCategoryMetamacRepository().checkCategoryTranslations(itemSchemeVersionId, locale, exceptionItems);
+        return exceptionItems;
     }
 
     @Override

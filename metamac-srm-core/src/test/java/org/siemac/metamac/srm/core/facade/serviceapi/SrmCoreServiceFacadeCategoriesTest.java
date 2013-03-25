@@ -194,7 +194,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         {
             MetamacCriteriaResult<CategorySchemeMetamacDto> result = srmCoreServiceFacade.findCategorySchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(9, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(10, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
@@ -240,6 +240,11 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
                 CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_7_V2, categorySchemeMetamacDto.getUrn());
                 assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CategorySchemeMetamacDto categorySchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CATEGORY_SCHEME_8_V1, categorySchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -585,8 +590,8 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             MetamacCriteriaResult<CategoryMetamacDto> categoriesPagedResult = srmCoreServiceFacade.findCategoriesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(20, categoriesPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(20, categoriesPagedResult.getResults().size());
+            assertEquals(24, categoriesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(24, categoriesPagedResult.getResults().size());
             assertTrue(categoriesPagedResult.getResults().get(0) instanceof CategoryMetamacDto);
             assertEquals(CATEGORY_SCHEME_1_V1, categoriesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -611,6 +616,10 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             assertEquals(CATEGORY_SCHEME_5_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_6_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_7_V2_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CATEGORY_SCHEME_8_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CATEGORY_SCHEME_8_V1_CATEGORY_1_1, categoriesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CATEGORY_SCHEME_8_V1_CATEGORY_2, categoriesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CATEGORY_SCHEME_8_V1_CATEGORY_3, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(categoriesPagedResult.getResults().size(), i);
         }
 
@@ -655,8 +664,8 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             MetamacCriteriaResult<CategoryMetamacDto> categoriesPagedResult = srmCoreServiceFacade.findCategoriesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(13, categoriesPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(13, categoriesPagedResult.getResults().size());
+            assertEquals(16, categoriesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(16, categoriesPagedResult.getResults().size());
             assertTrue(categoriesPagedResult.getResults().get(0) instanceof CategoryMetamacDto);
             assertEquals(CATEGORY_SCHEME_1_V1, categoriesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -674,7 +683,9 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             assertEquals(CATEGORY_SCHEME_5_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_6_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_7_V2_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
-
+            assertEquals(CATEGORY_SCHEME_8_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CATEGORY_SCHEME_8_V1_CATEGORY_2, categoriesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CATEGORY_SCHEME_8_V1_CATEGORY_3, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(categoriesPagedResult.getResults().size(), i);
         }
 

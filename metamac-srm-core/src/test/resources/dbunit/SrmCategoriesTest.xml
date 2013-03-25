@@ -2190,6 +2190,391 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />  
+            
+    <!-- ************************************************************************************** -->
+    <!-- CATEGORY SCHEME 8                                                                      -->
+    <!--        - Version 1: diffusion validation                                               -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="8"
+        UUID="itemScheme-8"
+        VERSION="1"
+        VERSION_PATTERN="XX_YYY"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="81"
+        ITEM_SCHEME_FK="8"
+        IS_PARTIAL="0"
+        MAINTAINABLE_ARTEFACT_FK="81"
+        
+        UUID="categoryScheme-8-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="208-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user6"
+        LAST_UPDATED="208-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_CAT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="81"
+    />
+    
+    <TB_M_CAT_SCHEMES_VERSIONS
+        TB_CAT_SCHEMES_VERSIONS="81"
+        PROC_STATUS="DIFFUSION_VALIDATION"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="208-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user2"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="208-01-01 01:02:03"
+        DIFFUSION_VALIDATION_USER="user3"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="81"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CATEGORYSCHEME08"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME08(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME08(01.000)"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="32"
+        DESCRIPTION_FK="33"
+        COMMENT_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-81"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="208-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="208-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+
+            <TB_ANNOTATIONS
+                ID="811"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation811"
+                TYPE="type-annotation811"    
+                URL="http://annotation811"
+                UUID="annotation-811"
+                VERSION="1"
+                TEXT_FK="34"
+                ANNOTABLE_ARTEFACT_FK="81"
+            />
+            
+            <TB_ANNOTATIONS
+                ID="812"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation812"
+                TYPE="type-annotation812"    
+                URL="http://annotation812"
+                UUID="annotation-812"
+                VERSION="1"
+                TEXT_FK="35"
+                ANNOTABLE_ARTEFACT_FK="81"
+            />            
+            
+            <!-- CATEGORIES -->
+            <!-- -> CATEGORY01 -->
+                <!-- -> CATEGORY0101 -->
+            <!-- -> CATEGORY02 -->
+            <!-- -> CATEGORY03 -->
+            
+            <!-- CATEGORY01 -->
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="811"
+            />
+            
+            <TB_CATEGORIES
+                TB_ITEMS="811"
+            />
+        
+            <TB_ITEMS
+                ID="811"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="81"
+                ITEM_SCHEME_VERSION_FIRST_FK="81"
+                NAMEABLE_ARTEFACT_FK="811"
+                      
+                UUID="categoryScheme-8-v1-cat-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="208-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="208-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="811"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CATEGORY01"
+                CODE_FULL="CATEGORY01"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="36"
+                DESCRIPTION_FK="37"
+                COMMENT_FK="38"
+
+                UUID="annotableArtefact-811"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="208-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="208-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            /> 
+                                    
+                    <!-- CATEGORY0101 -->
+                    <TB_M_CATEGORIES
+                        TB_CATEGORIES="8111"
+                    />
+                    
+                    <TB_CATEGORIES
+                        TB_ITEMS="8111"
+                    />
+                
+                    <TB_ITEMS
+                        ID="8111"
+                        PARENT_FK="811"
+                        ITEM_SCHEME_VERSION_FK="81"
+                        ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                        NAMEABLE_ARTEFACT_FK="8111"
+                              
+                        UUID="categoryScheme-8-v1-cat-1-1"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="208-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="208-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"  
+                    />
+        
+                    <TB_ANNOTABLE_ARTEFACTS 
+                        ID="8111"
+                        ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+        
+                        CODE="CATEGORY0101"
+                        CODE_FULL="CATEGORY01.CATEGORY0101"
+                        URI_PROVIDER="[null]"
+                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01.CATEGORY0101"
+                        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01.CATEGORY0101"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
+        
+                        NAME_FK="39"
+                        DESCRIPTION_FK="40"
+                        COMMENT_FK="41"
+        
+                        UUID="annotableArtefact-8111"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="208-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="208-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"
+                    />  
+                    
+         
+                        <TB_ANNOTATIONS
+                            ID="81111"
+                            CODE="ANNOTATION01"
+                            TITLE="title-annotation81111"
+                            TYPE="type-annotation81111"    
+                            URL="http://annotation81111"
+                            UUID="annotation-81111"
+                            VERSION="1"
+                            TEXT_FK="48"
+                            ANNOTABLE_ARTEFACT_FK="8111"
+                        />                    
+                    
+            <!-- CATEGORY02 -->
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="812"
+            />
+            
+            <TB_CATEGORIES
+                TB_ITEMS="812"
+            />
+        
+            <TB_ITEMS
+                ID="812"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="81"
+                ITEM_SCHEME_VERSION_FIRST_FK="81"
+                NAMEABLE_ARTEFACT_FK="812"
+                      
+                UUID="categoryScheme-8-v1-cat-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="208-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="208-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="812"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CATEGORY02"
+                CODE_FULL="CATEGORY02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY02"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY02"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="42"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+
+                UUID="annotableArtefact-812"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="208-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="208-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />  
+            
+                <TB_ANNOTATIONS
+                    ID="8121"
+                    CODE="ANNOTATION01"
+                    TITLE="title-annotation8121"
+                    TYPE="type-annotation8121"    
+                    URL="http://annotation8121"
+                    UUID="annotation-8121"
+                    VERSION="1"
+                    TEXT_FK="46"
+                    ANNOTABLE_ARTEFACT_FK="812"
+                />
+
+                <TB_ANNOTATIONS
+                    ID="8122"
+                    CODE="ANNOTATION02"
+                    TITLE="title-annotation8122"
+                    TYPE="type-annotation8122"    
+                    URL="http://annotation8122"
+                    UUID="annotation-8122"
+                    VERSION="1"
+                    TEXT_FK="47"
+                    ANNOTABLE_ARTEFACT_FK="812"
+                />  
+            
+            <!-- CATEGORY03 -->
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="813"
+            />
+            
+            <TB_CATEGORIES
+                TB_ITEMS="813"
+            />
+        
+            <TB_ITEMS
+                ID="813"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="81"
+                ITEM_SCHEME_VERSION_FIRST_FK="81"
+                NAMEABLE_ARTEFACT_FK="813"
+                      
+                UUID="categoryScheme-8-v1-cat-3"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="208-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="208-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="813"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CATEGORY03"
+                CODE_FULL="CATEGORY03"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY03"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY03"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="43"
+                DESCRIPTION_FK="44"
+                COMMENT_FK="45"
+
+                UUID="annotableArtefact-813"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="208-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="208-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />          
+
+                <TB_ANNOTATIONS
+                    ID="8131"
+                    CODE="ANNOTATION02"
+                    TITLE="title-annotation8131"
+                    TYPE="type-annotation8131"    
+                    URL="http://annotation8131"
+                    UUID="annotation-8131"
+                    VERSION="1"
+                    TEXT_FK="49"
+                    ANNOTABLE_ARTEFACT_FK="813"
+                />                
 
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
@@ -2527,6 +2912,264 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="26"
-    />                                     
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="32"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="321"
+        LABEL="nombre catScheme8-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="32"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="33"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="331"
+        LABEL="description catScheme8-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="33"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="332"
+        LABEL="descripcion it catScheme8-1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="33"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="34"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="341"
+        LABEL="anotación 1 catScheme8-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="34"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="35"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="351"
+        LABEL="annotation 2 catScheme8-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="35"
+    />           
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="36"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="361"
+        LABEL="name cat1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="36"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="362"
+        LABEL="nombre it cat1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="36"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="37"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="371"
+        LABEL="descripción cat1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="37"
+    />  
+
+    <TB_LOCALISED_STRINGS
+        ID="372"
+        LABEL="descripción it cat1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="37"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="38"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="381"
+        LABEL="comment cat1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="38"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="39"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="394"
+        LABEL="nombre cat11"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="39"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="40"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="401"
+        LABEL="description cat11"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="40"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="41"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="411"
+        LABEL="comentario cat11"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="41"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="42"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="421"
+        LABEL="name cat2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="42"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="43"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="431"
+        LABEL="nombre cat3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="43"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="44"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="441"
+        LABEL="descripción cat3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="44"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="45"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="451"
+        LABEL="comentario cat3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="45"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="46"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="461"
+        LABEL="comentario ann"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="46"
+    />  
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="47"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="471"
+        LABEL="comentario ann"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="47"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="48"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="481"
+        LABEL="comentario ann"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="48"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="49"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="491"
+        LABEL="comentario ann"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="49"
+    />                                           
                         
 </dataset>
