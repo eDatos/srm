@@ -1,23 +1,34 @@
 package org.siemac.metamac.srm.core.code.repositoryimpl;
 
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Query;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 
 /**
  * Repository implementation for CodelistVersionMetamac
  */
 @Repository("codelistVersionMetamacRepository")
 public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamacRepositoryBase {
+
+    @Autowired
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     public CodelistVersionMetamacRepositoryImpl() {
     }
@@ -71,6 +82,36 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
 
     @Override
     public void checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
-        // TODO Auto-generated method stub
+        // item scheme common metadata
+        itemSchemeVersionRepository.checkItemSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        // concrete metadata
+        checkCodelistVersionMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
+    }
+
+    /**
+     * Checks text of Codelist Metamac concrete metadata
+     */
+    @SuppressWarnings("rawtypes")
+    private void checkCodelistVersionMetamacTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT distinct(a.CODE) ");
+        sb.append("FROM TB_ITEM_SCHEMES_VERSIONS iv ");
+        sb.append("INNER JOIN TB_M_CODELISTS_VERSIONS cv on TB_CODELISTS_VERSIONS = iv.ID ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on iv.MAINTAINABLE_ARTEFACT_FK = a.ID ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = cv.SHORT_NAME_FK and ls.LOCALE = :locale ");
+        sb.append("WHERE ");
+        sb.append("iv.ID = :itemSchemeVersionId ");
+        sb.append("AND cv.SHORT_NAME_FK IS NOT NULL AND ls.LABEL IS NULL ");
+        sb.append("ORDER BY a.CODE ASC");
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        query.setParameter("locale", locale);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String code = getString(resultSql);
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.CODELIST_SHORT_NAME, code));
+        }
     }
 }

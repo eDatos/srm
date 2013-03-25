@@ -233,7 +233,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         {
             MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(17, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(18, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
@@ -319,6 +319,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_13_V1, codelistMetamacDto.getUrn());
                 assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+            }
+            {
+                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_14_V1, codelistMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -995,8 +1000,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(29, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(29, codesPagedResult.getResults().size());
+            assertEquals(33, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(33, codesPagedResult.getResults().size());
             assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
             assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -1030,6 +1035,10 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_14_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_14_V1_CODE_1_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_14_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_14_V1_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(codesPagedResult.getResults().size(), i);
         }
 
@@ -1074,8 +1083,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(21, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(21, codesPagedResult.getResults().size());
+            assertEquals(24, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(24, codesPagedResult.getResults().size());
             assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
             assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
@@ -1101,6 +1110,9 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_14_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_14_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_14_V1_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(codesPagedResult.getResults().size(), i);
         }
 

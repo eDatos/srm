@@ -667,7 +667,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagedResult<CodelistVersionMetamac> codelistVersionPagedResult = codesService.findCodelistsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(17, codelistVersionPagedResult.getTotalRows());
+            assertEquals(18, codelistVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(CODELIST_1_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CODELIST_1_V2, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -686,6 +686,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_11_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CODELIST_12_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CODELIST_13_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_14_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(codelistVersionPagedResult.getTotalRows(), i);
         }
 
@@ -715,7 +716,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagedResult<CodelistVersionMetamac> codelistVersionPagedResult = codesService.findCodelistsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(13, codelistVersionPagedResult.getTotalRows());
+            assertEquals(14, codelistVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(CODELIST_1_V2, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CODELIST_2_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -730,6 +731,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_11_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CODELIST_12_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CODELIST_13_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_14_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         }
     }
 
@@ -1307,8 +1309,44 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     public void testCheckCodelistVersionTranslations() throws Exception {
-        // TODO Auto-generated method stub
+        // Tested in testPublishInternallyCodelistCheckTranslations
+    }
 
+    @Test
+    public void testPublishInternallyCodelistCheckTranslations() throws Exception {
+        String urn = CODELIST_14_V1;
+        String code = "CODELIST14";
+
+        try {
+            // Note: publishInternallyCodelist calls to 'checkCodelistVersionTranslates'
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
+            fail("Codelist wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(11, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
+                    ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CODELIST_SHORT_NAME, code},
+                    e.getExceptionItems().get(i++));
+            // Codes
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CODE01"},
+                    e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
+                    new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT, "CODE01"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION,
+                    "CODE0101"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CODE02"},
+                    e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CODE02"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CODE03"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME, "CODE0101"}, e
+                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME, "CODE03"}, e
+                    .getExceptionItems().get(i++));
+
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Test
@@ -2217,7 +2255,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNotNull(code.getItemSchemeVersionFirstLevel());
             assertNull(code.getNameableArtefact().getUriProvider());
             assertNull(code.getShortName());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "en", "name code-3", "it", "nombre it code-3");
+            assertEquals(3, code.getNameableArtefact().getName().getTexts().size());
+            assertEquals("name code-3", code.getNameableArtefact().getName().getLocalisedLabel("en"));
+            assertEquals("nombre it code-3", code.getNameableArtefact().getName().getLocalisedLabel("it"));
+            assertEquals("nombre code-3", code.getNameableArtefact().getName().getLocalisedLabel("es"));
             assertNull(code.getNameableArtefact().getDescription());
             assertEquals(code.getVariableElement().getNameableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_3);
             assertNull(code.getNameableArtefact().getComment());
@@ -2263,7 +2304,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(code04TargetUrn, code.getParent().getNameableArtefact().getUrn());
             assertNull(code.getNameableArtefact().getUriProvider());
             assertNull(code.getShortName());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "en", "Name codelist-1-v2-code-4-1-1", "it", "nombre it codelist-1-v2-code-4-1-1");
+            assertEquals(3, code.getNameableArtefact().getName().getTexts().size());
+            assertEquals("Name codelist-1-v2-code-4-1-1", code.getNameableArtefact().getName().getLocalisedLabel("en"));
+            assertEquals("nombre it codelist-1-v2-code-4-1-1", code.getNameableArtefact().getName().getLocalisedLabel("it"));
+            assertEquals("Nombre codelist-1-v2-code-4-1-1", code.getNameableArtefact().getName().getLocalisedLabel("es"));
             assertNull(code.getNameableArtefact().getDescription());
             assertEquals(code.getVariableElement().getNameableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
             assertNull(code.getNameableArtefact().getComment());
@@ -2786,7 +2830,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 // Code 03
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3);
                 assertEquals(CODELIST_1_V2_CODE_3, code.getUrn());
-                assertEquals(null, code.getName()); // it has name in locale
+                assertEquals("nombre code-3", code.getName());
                 assertEquals(Integer.valueOf(2), code.getOrder());
             }
             {
@@ -2809,7 +2853,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(CODELIST_1_V2_CODE_4_1_1, code.getUrn());
                 assertEquals("CODE0401", code.getParent().getCode());
                 assertEquals(CODELIST_1_V2_CODE_4_1, code.getParent().getUrn());
-                assertEquals(null, code.getName()); // it has name in locale
+                assertEquals("Nombre codelist-1-v2-code-4-1-1", code.getName());
                 assertEquals(Integer.valueOf(0), code.getOrder());
             }
         }
@@ -3079,8 +3123,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(29, codesPagedResult.getTotalRows());
-            assertEquals(29, codesPagedResult.getValues().size());
+            assertEquals(33, codesPagedResult.getTotalRows());
+            assertEquals(33, codesPagedResult.getValues().size());
             assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
 
             int i = 0;
@@ -3113,6 +3157,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_14_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_14_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_14_V1_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_14_V1_CODE_1_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(codesPagedResult.getValues().size(), i);
         }
 

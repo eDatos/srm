@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
+import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -43,6 +44,9 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private CodesService                     codesService;
+
+    @Autowired
+    private CodesMetamacService              codesMetamacService;
 
     public CodelistLifeCycleImpl() {
         this.callback = new CodelistLifeCycleCallback();
@@ -123,9 +127,9 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
-            // TODO comprobar traducciones
-            return new ArrayList<MetamacExceptionItem>();
+            return codesMetamacService.checkCodelistVersionTranslations(ctx, getCodelistVersionMetamac(srmResourceVersion).getId(), locale);
         }
+
         @Override
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing

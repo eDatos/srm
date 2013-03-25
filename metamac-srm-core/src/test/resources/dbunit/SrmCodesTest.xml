@@ -4433,6 +4433,491 @@
                 LAST_UPDATED_TZ="Europe/London"
             />                                 
             
+            
+    <!-- ************************************************************************************** -->
+    <!-- CODELIST 14                                                                            -->
+    <!--        - Version 1: diffusion validation                                               -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="14"
+        UUID="itemScheme-14"
+        VERSION="1"
+        VERSION_PATTERN="XX_YYY"
+    />
+    
+    <!-- **************************************************************************************  -->                
+    <!-- VERSION 1                                                                               -->
+    <!-- **************************************************************************************  -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="141"
+        ITEM_SCHEME_FK="14"
+        IS_PARTIAL="0"
+        MAINTAINABLE_ARTEFACT_FK="99114"
+        
+        UUID="codelist14-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user6"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+
+    <TB_CODELISTS_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="141"
+    />
+    
+    <TB_M_CODELISTS_VERSIONS
+        TB_CODELISTS_VERSIONS="141"
+        PROC_STATUS="DIFFUSION_VALIDATION"
+        VARIABLE_FK="2"
+        ACCESS_TYPE="PUBLIC"
+        DEFAULT_ORDER_VISUAL_FK="1411"
+        DEFAULT_OPENNESS_VISUAL_FK="1411"
+        SHORT_NAME_FK="132"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="Europe/London"
+        PRODUCTION_VALIDATION_DATE="2011-01-01 01:02:03"
+        PRODUCTION_VALIDATION_USER="user2"
+        DIFFUSION_VALIDATION_DATE_TZ="Europe/London"
+        DIFFUSION_VALIDATION_DATE="2011-01-01 01:02:03"
+        DIFFUSION_VALIDATION_USER="user3"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+        IS_EXT_PUBLICATION_FAILED="[null]"
+        EXT_PUBLICATION_FAILED_DATE="[null]"
+    />     
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="99114"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CODELIST14"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST14(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST14(01.000)"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="112"
+        DESCRIPTION_FK="113"
+        COMMENT_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="[null]"
+        VALID_FROM="[null]" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
+        MAINTAINER_FK="10011"
+        
+        UUID="annotableArtefact-99114"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+
+            <TB_ANNOTATIONS
+                ID="991114"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation991114"
+                TYPE="type-annotation991114"    
+                URL="http://annotation991114"
+                UUID="annotation-991114"
+                VERSION="1"
+                TEXT_FK="114"
+                ANNOTABLE_ARTEFACT_FK="99114"
+            />
+            
+            <TB_ANNOTATIONS
+                ID="991112"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation991112"
+                TYPE="type-annotation991112"    
+                URL="http://annotation991112"
+                UUID="annotation-991112"
+                VERSION="1"
+                TEXT_FK="115"
+                ANNOTABLE_ARTEFACT_FK="99114"
+            />          
+            
+                <!-- ORDER VISUALISATIONS -->
+                
+                <!-- ALPHABETICAL -->
+                <TB_M_CODELIST_ORDER_VIS 
+                    ID="1411"
+                    CODELIST_FK="141"
+                    NAMEABLE_ARTEFACT_FK="99971411"
+                    COLUMN_INDEX="1"
+                    
+                    UUID="codelist-order-visualisation-1411"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="99971411"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ALPHABETICAL"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST14(01.000).ALPHABETICAL"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST14(01.000).ALPHABETICAL"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="130"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-99971411"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />   
+                
+                <!-- OPENNESS VISUALISATIONS -->
+                
+                <!-- ALL EXPANDED -->
+                <TB_M_CODELIST_OPENNESS_VIS 
+                    ID="1411"
+                    CODELIST_FK="141"
+                    NAMEABLE_ARTEFACT_FK="99981141"
+                    COLUMN_INDEX="1"
+                    
+                    UUID="codelist-openness-visualisation-1411"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
+                
+                <TB_ANNOTABLE_ARTEFACTS 
+                    ID="99981141"
+                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    
+                    CODE="ALL_EXPANDED"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST14(01.000).ALL_EXPANDED"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST14(01.000).ALL_EXPANDED"
+                    REPLACED_BY_VERSION="[null]"
+                    REPLACE_TO_VERSION="[null]"
+                    
+                    NAME_FK="131"
+                    DESCRIPTION_FK="[null]"
+                    COMMENT_FK="[null]"
+                    
+                    UUID="annotableArtefact-99981141"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                     
+            
+            <!-- CODES -->
+            <!-- -> CODE01 -->
+                <!-- -> CODE0101 -->
+            <!-- -> CODE02 -->
+            <!-- -> CODE03 -->
+            
+            <!-- CODE01 -->
+            <TB_M_CODES
+                TB_CODES="1411"
+                SHORT_NAME_FK="[null]"
+                ORDER1="0"
+                OPENNESS1="1"
+            />
+            
+            <TB_CODES
+                TB_ITEMS="1411"
+            />
+        
+            <TB_ITEMS
+                ID="1411"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="141"
+                ITEM_SCHEME_VERSION_FIRST_FK="141"
+                NAMEABLE_ARTEFACT_FK="991411"
+                      
+                UUID="codelist14-v1-code-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="991411"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CODE01"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE01"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE01"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="116"
+                DESCRIPTION_FK="117"
+                COMMENT_FK="118"
+
+                UUID="annotableArtefact-991411"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            /> 
+                                    
+                    <!-- CODE0101 -->
+                    <TB_M_CODES
+                        TB_CODES="14111"
+                        SHORT_NAME_FK="133"
+                        ORDER1="0"
+                        OPENNESS1="1"
+                    />
+                    
+                    <TB_CODES
+                        TB_ITEMS="14111"
+                    />
+                
+                    <TB_ITEMS
+                        ID="14111"
+                        PARENT_FK="1411"
+                        ITEM_SCHEME_VERSION_FK="141"
+                        ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                        NAMEABLE_ARTEFACT_FK="9914111"
+                              
+                        UUID="codelist14-v1-code-14"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="2011-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="2011-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"  
+                    />
+        
+                    <TB_ANNOTABLE_ARTEFACTS 
+                        ID="9914111"
+                        ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+        
+                        CODE="CODE0101"
+                        URI_PROVIDER="[null]"
+                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE0101"
+                        URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE0101"
+                        REPLACED_BY_VERSION="[null]"
+                        REPLACE_TO_VERSION="[null]"
+        
+                        NAME_FK="119"
+                        DESCRIPTION_FK="120"
+                        COMMENT_FK="121"
+        
+                        UUID="annotableArtefact-9914111"
+                        VERSION="1"
+                        CREATED_BY="user1"
+                        CREATED_DATE="2011-01-01 01:02:03"
+                        CREATED_DATE_TZ="Europe/London"
+                        LAST_UPDATED_BY="user2"
+                        LAST_UPDATED="2011-01-22 01:02:03"
+                        LAST_UPDATED_TZ="Europe/London"
+                    />  
+            
+            <!-- CODE02 -->
+            <TB_M_CODES
+                TB_CODES="1412"
+                SHORT_NAME_FK="134"
+                ORDER1="1"
+                OPENNESS1="1"
+            />
+            
+            <TB_CODES
+                TB_ITEMS="1412"
+            />
+        
+            <TB_ITEMS
+                ID="1412"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="141"
+                ITEM_SCHEME_VERSION_FIRST_FK="141"
+                NAMEABLE_ARTEFACT_FK="991412"
+                      
+                UUID="codelist14-v1-code-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="991412"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CODE02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE02"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE02"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="122"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+
+                UUID="annotableArtefact-991412"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />  
+            
+                <TB_ANNOTATIONS
+                    ID="9914121"
+                    CODE="ANNOTATION01"
+                    TITLE="title-annotation9914121"
+                    TYPE="type-annotation9914121"    
+                    URL="http://annotation9914121"
+                    UUID="annotation-9914121"
+                    VERSION="1"
+                    TEXT_FK="126"
+                    ANNOTABLE_ARTEFACT_FK="991412"
+                />
+
+                <TB_ANNOTATIONS
+                    ID="9914122"
+                    CODE="ANNOTATION02"
+                    TITLE="title-annotation9914122"
+                    TYPE="type-annotation9914122"    
+                    URL="http://annotation9914122"
+                    UUID="annotation-9914122"
+                    VERSION="1"
+                    TEXT_FK="127"
+                    ANNOTABLE_ARTEFACT_FK="991412"
+                />           
+            
+            <!-- CODE03 -->
+            <TB_M_CODES
+                TB_CODES="1413"
+                SHORT_NAME_FK="135"
+                ORDER1="2"
+                OPENNESS1="1"
+            />
+            
+            <TB_CODES
+                TB_ITEMS="1413"
+            />
+        
+            <TB_ITEMS
+                ID="1413"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="141"
+                ITEM_SCHEME_VERSION_FIRST_FK="141"
+                NAMEABLE_ARTEFACT_FK="991413"
+                      
+                UUID="codelist14-v1-code-3"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="991413"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CODE03"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE03"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE03"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="123"
+                DESCRIPTION_FK="124"
+                COMMENT_FK="125"
+
+                UUID="annotableArtefact-991413"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />                   
+            
+                <TB_ANNOTATIONS
+                    ID="9914131"
+                    CODE="ANNOTATION01"
+                    TITLE="title-annotation9914131"
+                    TYPE="type-annotation9914131"    
+                    URL="http://annotation9914131"
+                    UUID="annotation-9914131"
+                    VERSION="1"
+                    TEXT_FK="128"
+                    ANNOTABLE_ARTEFACT_FK="991413"
+                />
+
+                <TB_ANNOTATIONS
+                    ID="9914132"
+                    CODE="ANNOTATION02"
+                    TITLE="title-annotation9914132"
+                    TYPE="type-annotation9914132"    
+                    URL="http://annotation9914132"
+                    UUID="annotation-9914132"
+                    VERSION="1"
+                    TEXT_FK="129"
+                    ANNOTABLE_ARTEFACT_FK="991413"
+                />               
 
     <!-- ************************************************************************************** -->
     <!-- CODELIST FAMILIES                                                                      -->
@@ -6260,7 +6745,15 @@
         LOCALE="it"
         VERSION="1"
         INTERNATIONAL_STRING_FK="38"
-    />                        
+    />    
+                        
+    <TB_LOCALISED_STRINGS
+        ID="383"
+        LABEL="Nombre codelist-1-v2-code-4-1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="38"
+    />                          
 
     <TB_INTERNATIONAL_STRINGS
         ID="39"
@@ -7124,6 +7617,14 @@
         INTERNATIONAL_STRING_FK="95"
     />       
     
+    <TB_LOCALISED_STRINGS
+        ID="953"
+        LABEL="nombre code-3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="95"
+    />   
+        
     <TB_INTERNATIONAL_STRINGS
         ID="96"
         VERSION="1"
@@ -7326,7 +7827,348 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="111"
     />                                   
-                                  
-                               
+          
+    <TB_INTERNATIONAL_STRINGS
+        ID="112"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1121"
+        LABEL="nombre codelist14-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="112"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="113"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1131"
+        LABEL="description codelist14-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="113"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1132"
+        LABEL="descripcion it codelist14-1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="113"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="114"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1141"
+        LABEL="anotación 1 codelist14-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="114"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="115"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1151"
+        LABEL="annotation 2 codelist14-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="115"
+    />           
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="116"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1161"
+        LABEL="name code1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="116"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="1162"
+        LABEL="nombre it code1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="116"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="117"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1171"
+        LABEL="descripción code1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="117"
+    />  
+
+    <TB_LOCALISED_STRINGS
+        ID="1172"
+        LABEL="descripción it code1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="117"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="118"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1181"
+        LABEL="comment code1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="118"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="119"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1191"
+        LABEL="nombre code11"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="119"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="120"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1201"
+        LABEL="description code11"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="120"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="121"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1211"
+        LABEL="comentario code11"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="121"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="122"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1221"
+        LABEL="name code2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="122"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="123"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1231"
+        LABEL="nombre code3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="123"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="124"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1241"
+        LABEL="descripción code3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="124"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="125"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1251"
+        LABEL="comentario code3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="125"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="126"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1261"
+        LABEL="comentario ann"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="126"
+    />  
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="127"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1271"
+        LABEL="comentario ann"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="127"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="128"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1281"
+        LABEL="comentario ann"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="128"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="129"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1291"
+        LABEL="comentario ann"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="129"
+    />   
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="130"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1301"
+        LABEL="alfabético"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="130"
+    />   
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="131"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1311"
+        LABEL="todos abiertos"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="131"
+    />   
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="132"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1321"
+        LABEL="short name codelist14-v1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="132"
+    />             
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="133"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1331"
+        LABEL="short name codelist14-v1-code-1-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="133"
+    />             
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="134"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1341"
+        LABEL="short name codelist14-v1-code-2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="134"
+    />   
+    <TB_LOCALISED_STRINGS
+        ID="1342"
+        LABEL="nombre corto codelist14-v1-code-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="134"
+    />                   
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="135"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1351"
+        LABEL="nombre corto it codelist14-v1-code-3"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="135"
+    />             
                                                                                                   
 </dataset>

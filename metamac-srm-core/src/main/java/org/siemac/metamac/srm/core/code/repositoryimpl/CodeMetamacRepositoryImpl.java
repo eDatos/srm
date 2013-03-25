@@ -21,11 +21,13 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
@@ -38,6 +40,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Autowired
     private CodeRepository      codeRepository;
+
+    @Autowired
+    private ItemRepository      itemRepository;
 
     @Autowired
     private SrmConfiguration    srmConfiguration;
@@ -357,7 +362,10 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Override
     public void checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
-        // TODO Auto-generated method stub
+        // item common metadata
+        itemRepository.checkItemTranslations(itemSchemeVersionId, locale, exceptionItems);
+        // concrete metadata
+        checkCodeMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
     }
 
     @SuppressWarnings("rawtypes")
@@ -444,5 +452,32 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     private String getOpennessColumnValue(Boolean expanded) {
         return booleanToBooleanDatabase(expanded);
+    }
+
+    /**
+     * Checks text of Annotations
+     */
+    @SuppressWarnings("rawtypes")
+    private void checkCodeMetamacTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT distinct(a.CODE) ");
+        sb.append("FROM TB_ITEMS i ");
+        sb.append("INNER JOIN TB_M_CODES c on TB_CODES = i.ID ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK and ls.LOCALE = :locale ");
+        sb.append("WHERE ");
+        sb.append("i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("AND c.SHORT_NAME_FK IS NOT NULL AND ls.LABEL IS NULL ");
+        sb.append("ORDER BY a.CODE ASC");
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        query.setParameter("locale", locale);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String code = getString(resultSql);
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.CODE_SHORT_NAME, code));
+        }
     }
 }
