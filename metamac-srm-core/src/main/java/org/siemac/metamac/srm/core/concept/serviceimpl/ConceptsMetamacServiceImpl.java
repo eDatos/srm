@@ -13,6 +13,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
@@ -373,6 +374,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Typecast
         List<ConceptMetamac> conceptsMetamac = conceptsToConceptMetamac(concepts);
         return conceptsMetamac;
+    }
+
+    @Override
+    public List<MetamacExceptionItem> checkConceptSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        getConceptSchemeVersionMetamacRepository().checkConceptSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        getConceptMetamacRepository().checkConceptTranslations(itemSchemeVersionId, locale, exceptionItems);
+        return exceptionItems;
     }
 
     @Override

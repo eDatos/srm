@@ -6,11 +6,15 @@ import java.util.Map;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersionRepository;
 
 /**
  * Repository implementation for ConceptSchemeVersionMetamac
@@ -18,9 +22,13 @@ import org.springframework.stereotype.Repository;
 @Repository("conceptSchemeVersionMetamacRepository")
 public class ConceptSchemeVersionMetamacRepositoryImpl extends ConceptSchemeVersionMetamacRepositoryBase {
 
+    @Autowired
+    private ConceptSchemeVersionRepository conceptSchemeVersionRepository;
+
     public ConceptSchemeVersionMetamacRepositoryImpl() {
     }
 
+    @Override
     public ConceptSchemeVersionMetamac findByConcept(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
@@ -65,4 +73,11 @@ public class ConceptSchemeVersionMetamacRepositoryImpl extends ConceptSchemeVers
         }
         return result.get(0);
     }
+
+    @Override
+    public void checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+        conceptSchemeVersionRepository.checkConceptSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        // no metadata specific in metamac
+    }
+
 }

@@ -63,6 +63,8 @@ Application ConceptsMetamac {
     		@ConceptSchemeVersionMetamac endConceptSchemeValidity(String urn) throws MetamacException;
     		"Retrieves concepts scheme by concept urn"
     		@ConceptSchemeVersionMetamac retrieveConceptSchemeByConceptUrn(String conceptUrn) throws MetamacException;
+			"Checks translations for concept scheme"
+    		List<MetamacExceptionItem> checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale);
     		
 			"Creates concept"
 			@ConceptMetamac createConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
@@ -127,6 +129,7 @@ Application ConceptsMetamac {
 				@ConceptSchemeVersionMetamac findByUrn(String urn);
 				@ConceptSchemeVersionMetamac retrieveConceptSchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@ConceptSchemeVersionMetamac findByConcept(String urn);
+				checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}			
 		}
 		
@@ -167,6 +170,7 @@ Application ConceptsMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@ConceptMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
+				checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}
 		}
 		

@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
+import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ConceptsService                       conceptsService;
+
+    @Autowired
+    private ConceptsMetamacService                conceptsMetamacService;
 
     public ConceptSchemeLifeCycleImpl() {
         this.callback = new ConceptSchemeLifeCycleCallback();
@@ -126,8 +130,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
-            // TODO comprobar traducciones
-            return new ArrayList<MetamacExceptionItem>();
+            return conceptsMetamacService.checkConceptSchemeVersionTranslations(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getId(), locale);
         }
 
         @Override

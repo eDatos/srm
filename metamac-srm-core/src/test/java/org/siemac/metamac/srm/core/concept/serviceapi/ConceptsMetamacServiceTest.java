@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -391,7 +392,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(17, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(18, conceptSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -410,6 +411,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_11_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_12_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_14_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(conceptSchemeVersionPagedResult.getTotalRows(), i);
         }
 
@@ -440,7 +442,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(13, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(14, conceptSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -455,6 +457,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_11_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_12_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_14_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         }
     }
 
@@ -1040,6 +1043,60 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Override
+    public void testCheckConceptSchemeVersionTranslations() throws Exception {
+        // Tested in testPublishInternallyConceptSchemeCheckTranslations
+    }
+
+    @Test
+    public void testPublishInternallyConceptSchemeCheckTranslations() throws Exception {
+        String urn = CONCEPT_SCHEME_14_V1;
+        String code = "CONCEPTSCHEME14";
+
+        try {
+            // Note: publishInternallyConceptScheme calls to 'checkConceptSchemeVersionTranslates'
+            conceptsService.publishInternallyConceptScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
+            fail("ConceptScheme wrong proc status");
+        } catch (MetamacException e) {
+            assertEquals(16, e.getExceptionItems().size());
+            int i = 0;
+            // ConceptScheme
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
+                    ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
+            // Concepts
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
+                    new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CONCEPT01"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT,
+                    "CONCEPT01"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION,
+                    "CONCEPT0101"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
+                    new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CONCEPT02"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CONCEPT02"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CONCEPT03"}, e.getExceptionItems().get(i++));
+
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_ACRONYM, "CONCEPT01"}, e
+                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DERIVATION, "CONCEPT01"}, e
+                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
+                    new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME, "CONCEPT0101"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_CONTEXT, "CONCEPT0101"}, e
+                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DOC_METHOD, "CONCEPT02"}, e
+                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME, "CONCEPT03"},
+                    e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE,
+                    "CONCEPT03"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, "CONCEPT03"}, e
+                    .getExceptionItems().get(i++));
+
+            assertEquals(e.getExceptionItems().size(), i);
         }
     }
 
@@ -2315,8 +2372,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(29, conceptsPagedResult.getTotalRows());
-            assertEquals(29, conceptsPagedResult.getValues().size());
+            assertEquals(33, conceptsPagedResult.getTotalRows());
+            assertEquals(33, conceptsPagedResult.getValues().size());
             assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
             int i = 0;
@@ -2349,6 +2406,10 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_14_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_14_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_14_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_14_V1_CONCEPT_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(conceptsPagedResult.getValues().size(), i);
         }
 
