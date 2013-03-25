@@ -21,6 +21,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
+import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -1595,6 +1596,26 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         OrganisationsAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
     }
 
+    @Test
+    public void testUpdateOrganisationCodeErrorAgency() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String urn = ORGANISATION_SCHEME_10_V1_ORGANISATION_1;
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, urn);
+        organisation.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(1));
+        organisation.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        // Validation
+        try {
+            organisationsService.updateOrganisation(getServiceContextAdministrador(), organisation);
+            fail("Organisation code can not be changed - agency");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_TYPE_AGENCY_UPDATE_CODE_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     @Override
     @Test
     public void testRetrieveOrganisationByUrn() throws Exception {
@@ -1743,6 +1764,23 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
+    public void testDeleteOrganisationErrorAgency() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_10_V1_ORGANISATION_1;
+
+        // Validation
+        try {
+            organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
+            fail("Organisation can not be deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.ORGANISATION_TYPE_AGENCY_DELETING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 

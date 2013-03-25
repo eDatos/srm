@@ -39,6 +39,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsVersioningCopyUtils.OrganisationVersioningCopyCallback;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 /**
  * Implementation of OrganisationsMetamacService.
@@ -232,6 +233,12 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Validation
         OrganisationsMetamacInvocationValidator.checkUpdateOrganisation(organisation, null);
+        // Check code is not change if it is agency
+        if (organisation.getNameableArtefact().getIsCodeUpdated() && OrganisationTypeEnum.AGENCY.equals(organisation.getOrganisationType())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_TYPE_AGENCY_UPDATE_CODE_NOT_SUPPORTED)
+                    .withMessageParameters(organisation.getNameableArtefact().getUrn()).build();
+        }
+
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, organisation.getNameableArtefact().getUrn());
         checkOrganisationToCreateOrUpdate(ctx, organisationSchemeVersion, organisation);
 
@@ -265,6 +272,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
+        Organisation organisation = retrieveOrganisationByUrn(ctx, urn);
+        if (OrganisationTypeEnum.AGENCY.equals(organisation.getOrganisationType())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_TYPE_AGENCY_DELETING_NOT_SUPPORTED).withMessageParameters(urn).build();
+        }
+
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
         checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
         srmValidation.checkItemsStructureCanBeModified(ctx, organisationSchemeVersion);
@@ -389,6 +401,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         }
     }
 
+    // FIXME al crear dummies hay que revisar esta comprobación. Si está publicado no se podrá modificar el scheme
     private void checkOrganisationSchemeCanBeModified(OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
         if (!SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
             SrmValidationUtils.checkArtefactCanBeModified(organisationSchemeVersion.getLifeCycleMetadata(), organisationSchemeVersion.getMaintainableArtefact().getUrn());

@@ -81,6 +81,7 @@ public class OrganisationsMetamacInvocationValidator extends OrganisationsInvoca
         if (organisation != null) {
             checkOrganisation(organisation.getItemSchemeVersion(), organisation, exceptions);
         }
+        ValidationUtils.checkMetadataRequired(organisation.getNameableArtefact().getIsCodeUpdated(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
