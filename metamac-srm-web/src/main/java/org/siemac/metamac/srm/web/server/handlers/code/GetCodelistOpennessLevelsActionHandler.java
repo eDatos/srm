@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers.code;
 import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistOpennessLevelsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistOpennessLevelsResult;
@@ -28,7 +28,7 @@ public class GetCodelistOpennessLevelsActionHandler extends SecurityActionHandle
     @Override
     public GetCodelistOpennessLevelsResult executeSecurityAction(GetCodelistOpennessLevelsAction action) throws ActionException {
         try {
-            List<CodelistOpennessVisualisationDto> opennessLevels = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationsByCodelist(ServiceContextHolder.getCurrentServiceContext(),
+            List<CodelistVisualisationDto> opennessLevels = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationsByCodelist(ServiceContextHolder.getCurrentServiceContext(),
                     action.getCodelistUrn());
             return new GetCodelistOpennessLevelsResult(opennessLevels);
         } catch (MetamacException e) {

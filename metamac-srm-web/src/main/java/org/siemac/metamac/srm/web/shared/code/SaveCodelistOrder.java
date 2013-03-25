@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.shared.code;
 
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -10,11 +10,11 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class SaveCodelistOrder {
 
     @In(1)
-    String                        codelistUrn;
+    String                   codelistUrn;
 
     @In(2)
-    CodelistOrderVisualisationDto codelistOrderVisualisationDto;
+    CodelistVisualisationDto codelistOrderVisualisationDto;
 
     @Out(1)
-    CodelistOrderVisualisationDto codelistOrderSaved;
+    CodelistVisualisationDto codelistOrderSaved;
 }

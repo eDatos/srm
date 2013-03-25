@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers.code;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOrderResult;
@@ -29,8 +29,8 @@ public class SaveCodelistOrderActionHandler extends SecurityActionHandler<SaveCo
     @Override
     public SaveCodelistOrderResult executeSecurityAction(SaveCodelistOrderAction action) throws ActionException {
         try {
-            CodelistOrderVisualisationDto orderToSave = action.getCodelistOrderVisualisationDto();
-            CodelistOrderVisualisationDto orderSaved = null;
+            CodelistVisualisationDto orderToSave = action.getCodelistOrderVisualisationDto();
+            CodelistVisualisationDto orderSaved = null;
 
             if (orderToSave.getId() == null) {
                 // Create

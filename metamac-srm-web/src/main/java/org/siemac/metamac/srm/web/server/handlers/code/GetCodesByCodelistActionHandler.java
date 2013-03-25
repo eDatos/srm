@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistResult;
@@ -36,13 +35,13 @@ public class GetCodesByCodelistActionHandler extends SecurityActionHandler<GetCo
                     action.getCodelistOrderUrn(), action.getCodelistOpennessLevelUrn());
 
             // Order
-            CodelistOrderVisualisationDto codelistOrderVisualisationDto = null;
+            CodelistVisualisationDto codelistOrderVisualisationDto = null;
             if (action.getCodelistOrderUrn() != null) {
                 codelistOrderVisualisationDto = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistOrderUrn());
             }
 
             // Openness level
-            CodelistOpennessVisualisationDto codelistOpennessVisualisationDto = null;
+            CodelistVisualisationDto codelistOpennessVisualisationDto = null;
             if (action.getCodelistOpennessLevelUrn() != null) {
                 codelistOpennessVisualisationDto = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(ServiceContextHolder.getCurrentServiceContext(),
                         action.getCodelistOpennessLevelUrn());

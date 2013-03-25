@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers.code;
 import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistOrdersResult;
@@ -28,7 +28,7 @@ public class GetCodelistOrdersActionHandler extends SecurityActionHandler<GetCod
     @Override
     public GetCodelistOrdersResult executeSecurityAction(GetCodelistOrdersAction action) throws ActionException {
         try {
-            List<CodelistOrderVisualisationDto> orders = srmCoreServiceFacade.retrieveCodelistOrderVisualisationsByCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn());
+            List<CodelistVisualisationDto> orders = srmCoreServiceFacade.retrieveCodelistOrderVisualisationsByCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn());
             return new GetCodelistOrdersResult(orders);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

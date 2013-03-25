@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers.code;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOpennessLevelAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistOpennessLevelResult;
@@ -29,8 +29,8 @@ public class SaveCodelistOpennessLevelActionHandler extends SecurityActionHandle
     @Override
     public SaveCodelistOpennessLevelResult executeSecurityAction(SaveCodelistOpennessLevelAction action) throws ActionException {
         try {
-            CodelistOpennessVisualisationDto opennessLevelToSave = action.getCodelistOpennessVisualisationDto();
-            CodelistOpennessVisualisationDto opennessLevelSaved = null;
+            CodelistVisualisationDto opennessLevelToSave = action.getCodelistOpennessVisualisationDto();
+            CodelistVisualisationDto opennessLevelSaved = null;
 
             if (opennessLevelToSave.getId() == null) {
                 // Create
