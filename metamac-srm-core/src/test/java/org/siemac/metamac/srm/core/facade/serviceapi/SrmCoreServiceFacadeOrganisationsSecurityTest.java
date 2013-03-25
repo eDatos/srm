@@ -135,13 +135,6 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
     }
 
     @Test
-    public void testUpdatePublishedAgencyScheme() throws Exception {
-        OrganisationSchemeMetamacDto externallyPublishedVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_ROOT_1_V1);
-        externallyPublishedVersion.setName(MetamacMocks.mockInternationalStringDto());
-        srmCoreServiceFacade.updateOrganisationScheme(getServiceContextJefeNormalizacion(), externallyPublishedVersion);
-    }
-
-    @Test
     public void testUpdateOrganisationSchemeError() throws Exception {
         OrganisationSchemeMetamacDto draftSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V2);
         OrganisationSchemeMetamacDto prodValidationSchemeVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_5_V1);
@@ -602,13 +595,6 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
     }
 
     @Test
-    public void testUpdateAgencyInPublishedScheme() throws Exception {
-        // EXTERNALLY PUBLISHED SCHEME
-        OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_8_V1_ORGANISATION_1);
-        srmCoreServiceFacade.updateOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
-    }
-
-    @Test
     public void testUpdateOrganisationInPublishedScheme() throws Exception {
         try {
             OrganisationMetamacDto organisationMetamacDto = srmCoreServiceFacade.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_1_V1_ORGANISATION_1);
@@ -634,14 +620,6 @@ public class SrmCoreServiceFacadeOrganisationsSecurityTest extends SrmBaseTest {
             }
         }
         // Note: no more tests because security is same that update organisation
-    }
-
-    @Test
-    public void testCreateAgencyInPublishedScheme() throws Exception {
-        // EXTERNALLY PUBLISHED SCHEME
-        OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.AGENCY);
-        organisationMetamacDto.setItemSchemeVersionUrn(ORGANISATION_SCHEME_8_V1);
-        srmCoreServiceFacade.createOrganisation(getServiceContextJefeNormalizacion(), organisationMetamacDto);
     }
 
     @Test

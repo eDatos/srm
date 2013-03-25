@@ -92,7 +92,7 @@ public class OrganisationsMetamacInvocationValidator extends OrganisationsInvoca
         if (organisationSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(organisationSchemeVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
         }
-        // AgencyScheme can be partial (example: agency scheme root with maintainer SDMX)
+        // Only AgencyScheme can be partial (example: agency scheme root with maintainer SDMX)
         if (!OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeVersion.getOrganisationSchemeType()) && BooleanUtils.isTrue(organisationSchemeVersion.getIsPartial())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL));
         }
