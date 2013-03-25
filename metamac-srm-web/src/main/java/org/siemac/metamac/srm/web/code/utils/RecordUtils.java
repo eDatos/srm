@@ -7,19 +7,21 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.code.model.record.CodeRecord;
 import org.siemac.metamac.srm.web.code.model.record.CodelistFamilyRecord;
-import org.siemac.metamac.srm.web.code.model.record.CodelistOrderRecord;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
+import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementOperationRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
+
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class RecordUtils {
 
@@ -103,10 +105,20 @@ public class RecordUtils {
     // return records.toArray(new VariableElementOperationRecord[records.size()]);
     // }
 
-    // CODELIST ORDERS
+    // CODELIST VISUALISATIONS
 
-    public static CodelistOrderRecord getCodelistOrderRecord(CodelistOrderVisualisationDto codelistOrder) {
-        CodelistOrderRecord record = new CodelistOrderRecord(codelistOrder.getCode(), getLocalisedString(codelistOrder.getName()), codelistOrder.getUrn(), codelistOrder);
+    public static CodelistVisualisationRecord getCodelistVisualisationRecord(CodelistVisualisationDto codelistVisualisationDto) {
+        CodelistVisualisationRecord record = new CodelistVisualisationRecord(codelistVisualisationDto.getCode(), getLocalisedString(codelistVisualisationDto.getName()),
+                codelistVisualisationDto.getUrn(), codelistVisualisationDto);
         return record;
+    }
+
+    public static ListGridRecord[] getCodelistVisualisationRecords(List<CodelistVisualisationDto> codelistVisualisationDtos) {
+        ListGridRecord[] records = new ListGridRecord[codelistVisualisationDtos.size()];
+        for (int i = 0; i < codelistVisualisationDtos.size(); i++) {
+            records[i] = getCodelistVisualisationRecord(codelistVisualisationDtos.get(i));
+        }
+        return records;
+
     }
 }

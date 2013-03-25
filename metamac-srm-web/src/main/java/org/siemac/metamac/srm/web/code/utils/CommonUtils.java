@@ -6,12 +6,12 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.code.model.record.CodelistOrderRecord;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
+import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementOperationRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
@@ -75,35 +75,35 @@ public class CommonUtils {
         return codes;
     }
 
-    public static List<String> getUrnsFromSelectedCodelistOrders(ListGridRecord[] records) {
+    public static List<String> getUrnsFromSelectedCodelistVisualisations(ListGridRecord[] records) {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : records) {
-            CodelistOrderRecord codelistRecord = (CodelistOrderRecord) record;
+            CodelistVisualisationRecord codelistRecord = (CodelistVisualisationRecord) record;
             urns.add(codelistRecord.getUrn());
         }
         return urns;
     }
 
-    public static List<String> getOrderCodesFromSelectedCodelistOrders(ListGridRecord[] records) {
+    public static List<String> getVisualisationCodesFromSelectedCodelistVisualisations(ListGridRecord[] records) {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : records) {
-            CodelistOrderRecord codelistRecord = (CodelistOrderRecord) record;
+            CodelistVisualisationRecord codelistRecord = (CodelistVisualisationRecord) record;
             urns.add(codelistRecord.getCode());
         }
         return urns;
     }
 
-    public static String getCodelistOrderVisualisationName(CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
-        return CommonWebUtils.getElementName(codelistOrderVisualisationDto.getCode(), codelistOrderVisualisationDto.getName());
+    public static String getCodelistVisualisationName(CodelistVisualisationDto codelistVisualisationDto) {
+        return CommonWebUtils.getElementName(codelistVisualisationDto.getCode(), codelistVisualisationDto.getName());
     }
 
-    public static LinkedHashMap<String, String> getCodelistOrdersHashMap(List<CodelistOrderVisualisationDto> orders) {
-        LinkedHashMap<String, String> ordersHashMap = new LinkedHashMap<String, String>();
-        ordersHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-        for (CodelistOrderVisualisationDto order : orders) {
-            ordersHashMap.put(order.getUrn(), getCodelistOrderVisualisationName(order));
+    public static LinkedHashMap<String, String> getCodelistVisualisationsHashMap(List<CodelistVisualisationDto> visualisations) {
+        LinkedHashMap<String, String> hashMap = new LinkedHashMap<String, String>();
+        hashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (CodelistVisualisationDto visualisation : visualisations) {
+            hashMap.put(visualisation.getUrn(), getCodelistVisualisationName(visualisation));
         }
-        return ordersHashMap;
+        return hashMap;
     }
 
     public static String getVariableElementOperationTypeName(VariableElementOperationTypeEnum operationTypeEnum) {

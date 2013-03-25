@@ -15,7 +15,7 @@ import static com.arte.statistic.sdmx.srm.core.constants.SemanticIdentifierConst
 import static com.arte.statistic.sdmx.srm.core.constants.SemanticIdentifierConstants.ORGANISATION_SCHEME_CODE_PATTERN;
 import static com.arte.statistic.sdmx.srm.core.constants.SemanticIdentifierConstants.PRIMARY_MEASURE_COMPONENT_CODE_PATTERN;
 import static org.siemac.metamac.srm.core.constants.SemanticIdentifierConstants.CODELIST_FAMILY_CODE_PATTERN;
-import static org.siemac.metamac.srm.core.constants.SemanticIdentifierConstants.CODELIST_ORDER_VISUALISATION_CODE_PATTERN;
+import static org.siemac.metamac.srm.core.constants.SemanticIdentifierConstants.CODELIST_VISUALISATION_CODE_PATTERN;
 import static org.siemac.metamac.srm.core.constants.SemanticIdentifierConstants.VARIABLE_CODE_PATTERN;
 import static org.siemac.metamac.srm.core.constants.SemanticIdentifierConstants.VARIABLE_ELEMENT_CODE_PATTERN;
 import static org.siemac.metamac.srm.core.constants.SemanticIdentifierConstants.VARIABLE_FAMILY_CODE_PATTERN;
@@ -370,18 +370,18 @@ public class SemanticIdentifiersUtils {
         return validator;
     }
 
-    // Variable
+    // Visualisation
 
-    private static boolean isCodelistOrderVisualisationIdentifier(String value) {
-        return value != null ? value.matches(CODELIST_ORDER_VISUALISATION_CODE_PATTERN) : false;
+    private static boolean isCodelistVisualisationIdentifier(String value) {
+        return value != null ? value.matches(CODELIST_VISUALISATION_CODE_PATTERN) : false;
     }
 
-    public static CustomValidator getCodelistOrderVisualisationIdentifierCustomValidator() {
+    public static CustomValidator getCodelistVisualisationIdentifierCustomValidator() {
         CustomValidator validator = new CustomValidator() {
 
             @Override
             protected boolean condition(Object value) {
-                return value != null ? isCodelistOrderVisualisationIdentifier(value.toString()) : false;
+                return value != null ? isCodelistVisualisationIdentifier(value.toString()) : false;
             }
         };
         validator.setErrorMessage(MetamacWebCommon.getMessages().errorSemanticIdentifierFormat());
