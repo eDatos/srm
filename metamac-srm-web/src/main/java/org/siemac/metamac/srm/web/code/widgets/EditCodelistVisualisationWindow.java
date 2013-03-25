@@ -3,10 +3,9 @@ package org.siemac.metamac.srm.web.code.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
-import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
-import org.siemac.metamac.srm.web.code.model.ds.CodelistOrderDS;
+import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
@@ -26,16 +25,16 @@ import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
-public class EditCodelistOrderWindow extends CustomWindow {
+public abstract class EditCodelistVisualisationWindow extends CustomWindow {
 
-    private static final int              FORM_ITEM_CUSTOM_WIDTH = 300;
-    private static final String           FIELD_SAVE             = "save-order";
+    private static final int           FORM_ITEM_CUSTOM_WIDTH = 300;
+    private static final String        FIELD_SAVE             = "save-visualisation";
 
-    private CustomDynamicForm             form;
+    private CustomDynamicForm          form;
 
-    private CodelistOrderVisualisationDto codelistOrderVisualisationDto;
+    protected CodelistVisualisationDto codelistVisualisationDto;
 
-    public EditCodelistOrderWindow(String title) {
+    public EditCodelistVisualisationWindow(String title) {
         super(title);
         setAutoSize(true);
 
@@ -53,8 +52,8 @@ public class EditCodelistOrderWindow extends CustomWindow {
         });
 
         // Create form
-        RequiredTextItem codeItem = new RequiredTextItem(CodelistOrderDS.CODE, getConstants().identifiableArtefactCode());
-        codeItem.setValidators(SemanticIdentifiersUtils.getCodelistOrderVisualisationIdentifierCustomValidator());
+        RequiredTextItem codeItem = new RequiredTextItem(CodelistVisualisationDS.CODE, getConstants().identifiableArtefactCode());
+        codeItem.setValidators(SemanticIdentifiersUtils.getCodelistVisualisationIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         codeItem.setShowIfCondition(new FormItemIfFunction() {
 
@@ -64,7 +63,7 @@ public class EditCodelistOrderWindow extends CustomWindow {
             }
         });
 
-        ViewTextItem codeItemView = new ViewTextItem(CodelistOrderDS.CODE_VIEW, getConstants().identifiableArtefactCode());
+        ViewTextItem codeItemView = new ViewTextItem(CodelistVisualisationDS.CODE_VIEW, getConstants().identifiableArtefactCode());
         codeItemView.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -73,7 +72,7 @@ public class EditCodelistOrderWindow extends CustomWindow {
             }
         });
 
-        MultiLanguageTextItem nameItem = new MultiLanguageTextItem(CodelistOrderDS.NAME, getConstants().nameableArtefactName(), String.valueOf(FORM_ITEM_CUSTOM_WIDTH - 28));
+        MultiLanguageTextItem nameItem = new MultiLanguageTextItem(CodelistVisualisationDS.NAME, getConstants().nameableArtefactName(), String.valueOf(FORM_ITEM_CUSTOM_WIDTH - 28));
         nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH - 28);
         nameItem.setRequired(true);
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());
@@ -90,11 +89,11 @@ public class EditCodelistOrderWindow extends CustomWindow {
         show();
     }
 
-    public void setCodelistOrder(CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
-        this.codelistOrderVisualisationDto = codelistOrderVisualisationDto;
-        form.setValue(CodelistOrderDS.CODE, codelistOrderVisualisationDto.getCode());
-        form.setValue(CodelistOrderDS.CODE_VIEW, codelistOrderVisualisationDto.getCode());
-        form.setValue(CodelistOrderDS.NAME, RecordUtils.getInternationalStringRecord(codelistOrderVisualisationDto.getName()));
+    public void setCodelistVisualisation(CodelistVisualisationDto codelistVisualisationDto) {
+        this.codelistVisualisationDto = codelistVisualisationDto;
+        form.setValue(CodelistVisualisationDS.CODE, codelistVisualisationDto.getCode());
+        form.setValue(CodelistVisualisationDS.CODE_VIEW, codelistVisualisationDto.getCode());
+        form.setValue(CodelistVisualisationDS.NAME, RecordUtils.getInternationalStringRecord(codelistVisualisationDto.getName()));
         form.markForRedraw();
     }
 
@@ -106,14 +105,11 @@ public class EditCodelistOrderWindow extends CustomWindow {
         return form.validate(false);
     }
 
-    public CodelistOrderVisualisationDto getCodelistOrderDto() {
-        codelistOrderVisualisationDto.setCode(form.getValueAsString(CodelistOrderDS.CODE));
-        codelistOrderVisualisationDto.setName((InternationalStringDto) form.getValue(CodelistOrderDS.NAME));
-        return codelistOrderVisualisationDto;
+    public CodelistVisualisationDto getCodelistVisualisationDto() {
+        codelistVisualisationDto.setCode(form.getValueAsString(CodelistVisualisationDS.CODE));
+        codelistVisualisationDto.setName((InternationalStringDto) form.getValue(CodelistVisualisationDS.NAME));
+        return codelistVisualisationDto;
     }
 
-    private boolean canCodeBeEdited() {
-        // The code of an order can be edited only when the order is not the alphabetical one
-        return codelistOrderVisualisationDto != null ? !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistOrderVisualisationDto.getCode()) : true;
-    }
+    protected abstract boolean canCodeBeEdited();
 }
