@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsInvocationValidator;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public class OrganisationsMetamacInvocationValidator extends OrganisationsInvocationValidator {
 
@@ -91,7 +92,8 @@ public class OrganisationsMetamacInvocationValidator extends OrganisationsInvoca
         if (organisationSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(organisationSchemeVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
         }
-        if (BooleanUtils.isTrue(organisationSchemeVersion.getIsPartial())) {
+        // AgencyScheme can be partial (example: agency scheme root with maintainer SDMX)
+        if (!OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeVersion.getOrganisationSchemeType()) && BooleanUtils.isTrue(organisationSchemeVersion.getIsPartial())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL));
         }
     }
