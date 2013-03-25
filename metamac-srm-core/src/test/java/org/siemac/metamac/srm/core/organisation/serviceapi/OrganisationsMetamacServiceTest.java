@@ -12,6 +12,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -52,7 +55,6 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.enume.domain.ContactItemTypeEnum;
-import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.OrganisationsAsserts;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.OrganisationsDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
@@ -72,6 +74,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeRepository;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager               entityManager;
 
     @Override
     @Test
@@ -139,35 +144,55 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testUpdateOrganisationSchemeAgencySchemeRoot() throws Exception {
+    public void testUpdateOrganisationSchemeErrorAgencySchemePublished() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_100_V1);
+        String organisationSchemeUrn = ORGANISATION_SCHEME_100_V1;
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
         assertNull(organisationSchemeVersion.getMaintainableArtefact().getMaintainer());
         assertTrue(SdmxSrmUtils.isAgencySchemeSdmx(organisationSchemeVersion.getMaintainableArtefact().getUrn()));
         organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
         organisationSchemeVersion.getMaintainableArtefact().setName(OrganisationsDoMocks.mockInternationalString());
 
-        OrganisationSchemeVersionMetamac organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
-        assertNull(organisationSchemeVersionUpdated.getMaintainableArtefact().getMaintainer());
-        OrganisationsAsserts.assertEqualsOrganisationScheme(organisationSchemeVersion, organisationSchemeVersionUpdated);
+        try {
+            organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
+            fail("published");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(organisationSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
     }
 
     @Test
-    public void testUpdateOrganisationSchemePublishedDataConsumer() throws Exception {
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_9_V1);
+    public void testUpdateOrganisationSchemeErrorDataConsumerPublished() throws Exception {
+        String organisationSchemeUrn = ORGANISATION_SCHEME_9_V1;
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
         assertEquals(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
         organisationSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
         organisationSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
         organisationSchemeVersion.getMaintainableArtefact().setName(OrganisationsMetamacDoMocks.mockInternationalString("name"));
 
-        ServiceContext ctx = getServiceContextAdministrador();
-        OrganisationSchemeVersion organisationSchemeVersionUpdated = organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersion);
-        assertNotNull(organisationSchemeVersionUpdated);
-        assertEquals("user1", organisationSchemeVersionUpdated.getCreatedBy());
-        assertEquals(ctx.getUserId(), organisationSchemeVersionUpdated.getLastUpdatedBy());
+        try {
+            organisationsService.updateOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersion);
+            fail("published");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(organisationSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
     }
 
     @Test
@@ -1526,7 +1551,24 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testCreateOrganisationInDataProviderSchemePublished() throws Exception {
+    public void testCreateOrganisationInAgencySchemeWithoutMaintainer() throws Exception {
+
+        // Force DIFFUSION_VALIDATION procStatus to can test organisations creation
+        String organisationSchemeUrn = ORGANISATION_SCHEME_100_V1;
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        organisationSchemeVersion.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
+        itemSchemeRepository.save(organisationSchemeVersion);
+
+        OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.AGENCY);
+
+        // Create
+        OrganisationMetamac organisationCreated = organisationsService.createOrganisation(getServiceContextAdministrador(), organisationSchemeUrn, organisation);
+        String urn = organisationCreated.getNameableArtefact().getUrn();
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0)." + organisationCreated.getNameableArtefact().getCode(), urn);
+    }
+
+    @Test
+    public void testCreateOrganisationErrorDataProviderSchemePublished() throws Exception {
 
         OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.DATA_PROVIDER);
         organisation.setParent(null);
@@ -1536,15 +1578,23 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, organisationSchemeVersion.getOrganisationSchemeType());
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
 
-        // Create
-        OrganisationMetamac organisationSchemeVersionCreated = organisationsService.createOrganisation(getServiceContextAdministrador(), organisationSchemeUrn, organisation);
-        String urn = organisationSchemeVersionCreated.getNameableArtefact().getUrn();
-        OrganisationMetamac organisationRetrieved = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
-        OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationRetrieved);
+        try {
+            organisationsService.createOrganisation(getServiceContextAdministrador(), organisationSchemeUrn, organisation);
+            fail("published");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(organisationSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
     }
 
     @Test
-    public void testCreateOrganisationErrorOrganisationImported() throws Exception {
+    public void testCreateOrganisationErrorOrganisationSchemeImported() throws Exception {
         OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.ORGANISATION_UNIT);
         String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
 
@@ -1579,21 +1629,29 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testUpdateOrganisationInAgencySchemeRoot() throws Exception {
+    public void testUpdateOrganisationErrorAgencySchemePublished() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
-        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, AGENCY_ROOT_2_V1);
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, ORGANISATION_SCHEME_100_V1_ORGANISATION_2);
         assertNull(organisation.getItemSchemeVersion().getMaintainableArtefact().getMaintainer());
         assertTrue(SdmxSrmUtils.isAgencySchemeSdmx(organisation.getItemSchemeVersion().getMaintainableArtefact().getUrn()));
         organisation.getNameableArtefact().setName(OrganisationsDoMocks.mockInternationalString());
         organisation.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
         // Update
-        OrganisationMetamac organisationUpdated = organisationsService.updateOrganisation(ctx, organisation);
-
-        // Validate
-        assertNull(organisationUpdated.getItemSchemeVersion().getMaintainableArtefact().getMaintainer());
-        OrganisationsAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
+        try {
+            organisationsService.updateOrganisation(ctx, organisation);
+            fail("published");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ORGANISATION_SCHEME_100_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DRAFT, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+        }
     }
 
     @Test
@@ -1614,6 +1672,30 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
+    }
+
+    @Test
+    public void testUpdateOrganisationInAgencySchemeWithoutMaintainer() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Force DIFFUSION_VALIDATION procStatus to can test organisations update
+        String organisationSchemeUrn = ORGANISATION_SCHEME_100_V1;
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
+        organisationSchemeVersion.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
+        itemSchemeRepository.save(organisationSchemeVersion);
+
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, ORGANISATION_SCHEME_100_V1_ORGANISATION_2);
+        assertNull(organisation.getItemSchemeVersion().getMaintainableArtefact().getMaintainer());
+        assertTrue(SdmxSrmUtils.isAgencySchemeSdmx(organisation.getItemSchemeVersion().getMaintainableArtefact().getUrn()));
+        organisation.getNameableArtefact().setName(OrganisationsDoMocks.mockInternationalString());
+        organisation.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        // Update
+        OrganisationMetamac organisationUpdated = organisationsService.updateOrganisation(ctx, organisation);
+
+        // Validate
+        assertNull(organisationUpdated.getItemSchemeVersion().getMaintainableArtefact().getMaintainer());
+        OrganisationsMetamacAsserts.assertEqualsOrganisation(organisation, organisationUpdated);
     }
 
     @Override
