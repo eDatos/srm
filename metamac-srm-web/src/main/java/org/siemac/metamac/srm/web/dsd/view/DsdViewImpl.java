@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter.DsdAttributesTabView;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdCategorisationsTabPresenter.DsdCategorisationsTabView;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter.DsdDimensionsTabView;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter.DsdGeneralTabView;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter.DsdGroupKeysTabView;
@@ -44,12 +45,13 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
     private Tab                               dimensionsTab;
     private Tab                               attributesTab;
     private Tab                               groupKeysTab;
+    private Tab                               categorisationsTab;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
 
     @Inject
     public DsdViewImpl(DsdGeneralTabView dsdGeneralTabView, DsdPrimaryMeasureTabView dsdPrimaryMeasureTabView, DsdDimensionsTabView dsdDimensionsTabView, DsdAttributesTabView dsdAttributesTabView,
-            DsdGroupKeysTabView dsdGroupKeysTabView) {
+            DsdGroupKeysTabView dsdGroupKeysTabView, DsdCategorisationsTabView dsdCategorisationsTabView) {
         super();
         panel = new VLayout();
 
@@ -86,11 +88,15 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
         groupKeysTab = new Tab(MetamacSrmWeb.getConstants().dsdGroupKeys());
         groupKeysTab.setPane((Canvas) dsdGroupKeysTabView.asWidget());
 
+        categorisationsTab = new Tab(MetamacSrmWeb.getConstants().categorisations());
+        categorisationsTab.setPane((Canvas) dsdCategorisationsTabView.asWidget());
+
         tabSet.addTab(generalTab);
         tabSet.addTab(primaryMeasureTab);
         tabSet.addTab(dimensionsTab);
         tabSet.addTab(attributesTab);
         tabSet.addTab(groupKeysTab);
+        tabSet.addTab(categorisationsTab);
 
         //
         // PANEL LAYOUT
@@ -154,5 +160,10 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
     @Override
     public HasTabSelectedHandlers getGroupKeysTab() {
         return groupKeysTab;
+    }
+
+    @Override
+    public HasTabSelectedHandlers getCategorisationsTab() {
+        return categorisationsTab;
     }
 }

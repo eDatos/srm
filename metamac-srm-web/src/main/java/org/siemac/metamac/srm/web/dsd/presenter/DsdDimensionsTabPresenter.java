@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -164,7 +165,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     @Override
     protected void onReveal() {
         super.onReveal();
-        SelectViewDsdDescriptorEvent.fire(this, TypeComponentList.DIMENSION_DESCRIPTOR);
+        SelectViewDsdDescriptorEvent.fire(this, DsdTabTypeEnum.DIMENSIONS);
     }
 
     @ProxyEvent

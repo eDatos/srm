@@ -2,9 +2,10 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 
-public interface DsdGeneralTabUiHandlers extends CategorisationUiHandlers {
+import com.gwtplatform.mvp.client.UiHandlers;
+
+public interface DsdGeneralTabUiHandlers extends UiHandlers {
 
     void retrieveCompleteDsd(String urn);
     void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);

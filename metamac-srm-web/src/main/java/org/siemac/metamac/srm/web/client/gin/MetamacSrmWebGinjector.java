@@ -26,6 +26,7 @@ import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdCategorisationsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
@@ -69,6 +70,7 @@ public interface MetamacSrmWebGinjector extends Ginjector {
     AsyncProvider<DsdDimensionsTabPresenter> getDsdDimensionsTabPresenter();
     AsyncProvider<DsdAttributesTabPresenter> getDsdAttributesTabPresenter();
     AsyncProvider<DsdGroupKeysTabPresenter> getDsdGroupKeysTabPresenter();
+    AsyncProvider<DsdCategorisationsTabPresenter> getDsdCategorisationsTabPresenter();
 
     // Concepts
     AsyncProvider<ConceptSchemeListPresenter> getConceptSchemeListPresenter();

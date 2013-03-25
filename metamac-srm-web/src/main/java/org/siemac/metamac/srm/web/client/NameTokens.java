@@ -17,6 +17,7 @@ public class NameTokens {
     public static final String dsdDimensionsPage          = "dimensions";
     public static final String dsdAttributesPage          = "attributes";
     public static final String dsdGroupKeysPage           = "groupKeys";
+    public static final String dsdCategorisationsPage     = "categorisations";
 
     // Concepts
     public static final String conceptSchemeListPage      = "conceptSchemes";
@@ -49,5 +50,4 @@ public class NameTokens {
     public static final String variablePage               = "variable";
     public static final String variableElementsPage       = "variableElements";
     public static final String variableElementPage        = "variableElement";
-
 }

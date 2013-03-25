@@ -23,11 +23,8 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
-import org.siemac.metamac.srm.web.dsd.widgets.DsdCategorisationsPanel;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -45,7 +42,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
@@ -94,7 +90,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private GroupDynamicForm                  commentsEditionForm;
     private AnnotationsPanel                  annotationsEditionPanel;
 
-    private DsdCategorisationsPanel           categorisationsPanel;
     private SearchExternalItemWindow          searchOperationWindow;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
@@ -112,16 +107,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         createViewForm();
         createEditionForm();
 
-        categorisationsPanel = new DsdCategorisationsPanel();
-
         panel.addMember(mainFormLayout);
-        panel.addMember(categorisationsPanel);
-    }
-
-    @Override
-    public void setUiHandlers(DsdGeneralTabUiHandlers uiHandlers) {
-        super.setUiHandlers(uiHandlers);
-        this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -442,7 +428,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDsd(procStatus, operationCode));
         mainFormLayout.updatePublishSection(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacDto.getValidTo(), operationCode);
         mainFormLayout.setViewMode();
-        categorisationsPanel.updateVisibility(dataStructureDefinitionMetamacDto);
 
         setDsdViewMode(dataStructureDefinitionMetamacDto);
         setDsdEditionMode(dataStructureDefinitionMetamacDto);
@@ -458,21 +443,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             searchOperationWindow.setExternalItems(result.getOperations());
             searchOperationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getOperations().size(), result.getTotalResults());
         }
-    }
-
-    @Override
-    public void setCategorisations(List<CategorisationDto> categorisationDtos) {
-        categorisationsPanel.setCategorisations(categorisationDtos);
-    }
-
-    @Override
-    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
-        categorisationsPanel.setCategorySchemes(result);
-    }
-
-    @Override
-    public void setCategoriesForCategorisations(GetCategoriesResult result) {
-        categorisationsPanel.setCategories(result);
     }
 
     private void setDsdViewMode(DataStructureDefinitionMetamacDto dsd) {

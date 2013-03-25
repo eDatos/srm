@@ -58,6 +58,7 @@ import org.siemac.metamac.srm.web.concept.view.ConceptsViewImpl;
 import org.siemac.metamac.srm.web.concept.widgets.presenter.ConceptsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.concept.widgets.view.ConceptsToolStripViewImpl;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
+import org.siemac.metamac.srm.web.dsd.presenter.DsdCategorisationsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
@@ -65,6 +66,7 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPresenter;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
 import org.siemac.metamac.srm.web.dsd.view.DsdAttributesTabViewImpl;
+import org.siemac.metamac.srm.web.dsd.view.DsdCategorisationsTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdDimensionsTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdGeneralTabViewImpl;
 import org.siemac.metamac.srm.web.dsd.view.DsdGroupKeysTabViewImpl;
@@ -133,6 +135,8 @@ public class ClientModule extends AbstractPresenterModule {
         bindPresenter(DsdDimensionsTabPresenter.class, DsdDimensionsTabPresenter.DsdDimensionsTabView.class, DsdDimensionsTabViewImpl.class, DsdDimensionsTabPresenter.DsdDimensionsTabProxy.class);
         bindPresenter(DsdAttributesTabPresenter.class, DsdAttributesTabPresenter.DsdAttributesTabView.class, DsdAttributesTabViewImpl.class, DsdAttributesTabPresenter.DsdAttributesTabProxy.class);
         bindPresenter(DsdGroupKeysTabPresenter.class, DsdGroupKeysTabPresenter.DsdGroupKeysTabView.class, DsdGroupKeysTabViewImpl.class, DsdGroupKeysTabPresenter.DsdGroupKeysTabProxy.class);
+        bindPresenter(DsdCategorisationsTabPresenter.class, DsdCategorisationsTabPresenter.DsdCategorisationsTabView.class, DsdCategorisationsTabViewImpl.class,
+                DsdCategorisationsTabPresenter.DsdCategorisationsTabProxy.class);
 
         // Concepts
         bindPresenter(ConceptSchemeListPresenter.class, ConceptSchemeListPresenter.ConceptSchemeListView.class, ConceptSchemeListViewImpl.class,

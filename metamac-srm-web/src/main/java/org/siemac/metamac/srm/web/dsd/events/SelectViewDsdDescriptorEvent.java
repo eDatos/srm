@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.events;
 
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
+import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
@@ -19,19 +20,19 @@ public class SelectViewDsdDescriptorEvent extends GwtEvent<SelectViewDsdDescript
         return TYPE;
     }
 
-    public static void fire(HasHandlers source, TypeComponentList descriptorType) {
+    public static void fire(HasHandlers source, DsdTabTypeEnum descriptorType) {
         if (TYPE != null) {
             source.fireEvent(new SelectViewDsdDescriptorEvent(descriptorType));
         }
     }
 
-    private final TypeComponentList descriptorType;
+    private final DsdTabTypeEnum descriptorType;
 
-    public SelectViewDsdDescriptorEvent(TypeComponentList descriptorType) {
-        this.descriptorType = descriptorType;
+    public SelectViewDsdDescriptorEvent(DsdTabTypeEnum tabType) {
+        this.descriptorType = tabType;
     }
 
-    public TypeComponentList getDescriptorType() {
+    public DsdTabTypeEnum getDsdTabType() {
         return descriptorType;
     }
 
@@ -43,5 +44,4 @@ public class SelectViewDsdDescriptorEvent extends GwtEvent<SelectViewDsdDescript
     public static Type<SelectViewDsdDescriptorHandler> getType() {
         return TYPE;
     }
-
 }

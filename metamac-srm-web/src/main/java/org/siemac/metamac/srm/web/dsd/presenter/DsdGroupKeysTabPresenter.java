@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -147,13 +148,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
     @Override
     protected void onReveal() {
         super.onReveal();
-        SelectViewDsdDescriptorEvent.fire(this, TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
-    }
-
-    @Override
-    protected void onReset() {
-        super.onReset();
-
+        SelectViewDsdDescriptorEvent.fire(this, DsdTabTypeEnum.GROUP_KEYS);
     }
 
     @ProxyEvent

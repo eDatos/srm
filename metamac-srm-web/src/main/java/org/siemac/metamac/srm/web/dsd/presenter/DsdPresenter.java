@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -25,7 +26,6 @@ import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -86,6 +86,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         HasTabSelectedHandlers getDimensionsTab();
         HasTabSelectedHandlers getAttributesTab();
         HasTabSelectedHandlers getGroupKeysTab();
+        HasTabSelectedHandlers getCategorisationsTab();
     }
 
     @Inject
@@ -171,6 +172,17 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
                 }
             }
         });
+        getView().getCategorisationsTab().addTabSelectedHandler(new TabSelectedHandler() {
+
+            @Override
+            public void onTabSelected(TabSelectedEvent event) {
+                if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
+                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdCategorisationsPage));
+                } else {
+                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdCategorisationsPage), -1);
+                }
+            }
+        });
     }
 
     @Override
@@ -211,15 +223,17 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     @ProxyEvent
     @Override
     public void onSelectViewDsdDescriptor(SelectViewDsdDescriptorEvent event) {
-        TypeComponentList type = event.getDescriptorType();
-        if (TypeComponentList.MEASURE_DESCRIPTOR.equals(type)) {
+        DsdTabTypeEnum type = event.getDsdTabType();
+        if (DsdTabTypeEnum.PRIMARY_MEASURE.equals(type)) {
             getView().getDsdTabSet().selectTab(1);
-        } else if (TypeComponentList.DIMENSION_DESCRIPTOR.equals(type)) {
+        } else if (DsdTabTypeEnum.DIMENSIONS.equals(type)) {
             getView().getDsdTabSet().selectTab(2);
-        } else if (TypeComponentList.ATTRIBUTE_DESCRIPTOR.equals(type)) {
+        } else if (DsdTabTypeEnum.ATTRIBUTES.equals(type)) {
             getView().getDsdTabSet().selectTab(3);
-        } else if (TypeComponentList.GROUP_DIMENSION_DESCRIPTOR.equals(type)) {
+        } else if (DsdTabTypeEnum.GROUP_KEYS.equals(type)) {
             getView().getDsdTabSet().selectTab(4);
+        } else if (DsdTabTypeEnum.CATEGORISATIONS.equals(type)) {
+            getView().getDsdTabSet().selectTab(5);
         } else {
             getView().getDsdTabSet().selectTab(0);
         }
