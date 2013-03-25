@@ -109,20 +109,12 @@ Application DtosMetamacCodeDomain {
 			Long versionOptimisticLocking;
 		}		
 		
-		"Dto for CodelistOrderVisualisation"		
-		DataTransferObject CodelistOrderVisualisationDto extends @NameableArtefactDto {
+		"Dto for CodelistOrderVisualisation and CodelistOpennessVisualisation"		
+		DataTransferObject CodelistVisualisationDto extends @NameableArtefactDto {
 			"Codelist"
 			- @RelatedResourceDto codelist not nullable;
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}
-		
-		"Dto for CodelistOpennessVisualisation"		
-		DataTransferObject CodelistOpennessVisualisationDto extends @NameableArtefactDto {
-			"Codelist"
-			- @RelatedResourceDto codelist not nullable;
-			"Version to optimistic locking"
-			Long versionOptimisticLocking;
-		}		
 	}
 }

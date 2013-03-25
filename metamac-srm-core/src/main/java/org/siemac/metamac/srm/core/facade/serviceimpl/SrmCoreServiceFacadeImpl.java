@@ -36,8 +36,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
@@ -1223,7 +1222,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // ------------------------------------------------------------------------
 
     @Override
-    public CodelistOrderVisualisationDto retrieveCodelistOrderVisualisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
+    public CodelistVisualisationDto retrieveCodelistOrderVisualisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindCodelistOrderVisualisation(ctx);
 
@@ -1231,12 +1230,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         CodelistOrderVisualisation codelistOrderVisualisation = getCodesMetamacService().retrieveCodelistOrderVisualisationByUrn(ctx, urn);
 
         // Transform
-        CodelistOrderVisualisationDto codelistOrderVisualisationDto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(codelistOrderVisualisation);
+        CodelistVisualisationDto codelistOrderVisualisationDto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(codelistOrderVisualisation);
         return codelistOrderVisualisationDto;
     }
 
     @Override
-    public CodelistOrderVisualisationDto createCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
+    public CodelistVisualisationDto createCodelistOrderVisualisation(ServiceContext ctx, CodelistVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistOrderVisualisationDto.getCodelist().getUrn());
         CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
@@ -1254,7 +1253,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public CodelistOrderVisualisationDto updateCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
+    public CodelistVisualisationDto updateCodelistOrderVisualisation(ServiceContext ctx, CodelistVisualisationDto codelistOrderVisualisationDto) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistOrderVisualisationDto.getCodelist().getUrn());
         CodesSecurityUtils.canCrudCodelistOrderVisualisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
@@ -1281,7 +1280,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<CodelistOrderVisualisationDto> retrieveCodelistOrderVisualisationsByCodelist(ServiceContext ctx, String codelistUrn) throws MetamacException {
+    public List<CodelistVisualisationDto> retrieveCodelistOrderVisualisationsByCodelist(ServiceContext ctx, String codelistUrn) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindCodelistOrderVisualisation(ctx);
 
@@ -1289,7 +1288,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<CodelistOrderVisualisation> codelistOrderVisualisations = getCodesMetamacService().retrieveCodelistOrderVisualisationsByCodelist(ctx, codelistUrn);
 
         // Transform
-        List<CodelistOrderVisualisationDto> codelistOrderVisualisationsDto = codesDo2DtoMapper.codelistOrderVisualisationsDoToDto(codelistOrderVisualisations);
+        List<CodelistVisualisationDto> codelistOrderVisualisationsDto = codesDo2DtoMapper.codelistOrderVisualisationsDoToDto(codelistOrderVisualisations);
         return codelistOrderVisualisationsDto;
     }
 
@@ -1298,7 +1297,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     // ------------------------------------------------------------------------
 
     @Override
-    public CodelistOpennessVisualisationDto retrieveCodelistOpennessVisualisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
+    public CodelistVisualisationDto retrieveCodelistOpennessVisualisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindCodelistOpennessVisualisation(ctx);
 
@@ -1306,12 +1305,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         CodelistOpennessVisualisation codelistOpennessVisualisation = getCodesMetamacService().retrieveCodelistOpennessVisualisationByUrn(ctx, urn);
 
         // Transform
-        CodelistOpennessVisualisationDto codelistOpennessVisualisationDto = codesDo2DtoMapper.codelistOpennessVisualisationDoToDto(codelistOpennessVisualisation);
+        CodelistVisualisationDto codelistOpennessVisualisationDto = codesDo2DtoMapper.codelistOpennessVisualisationDoToDto(codelistOpennessVisualisation);
         return codelistOpennessVisualisationDto;
     }
 
     @Override
-    public CodelistOpennessVisualisationDto createCodelistOpennessVisualisation(ServiceContext ctx, CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) throws MetamacException {
+    public CodelistVisualisationDto createCodelistOpennessVisualisation(ServiceContext ctx, CodelistVisualisationDto codelistOpennessVisualisationDto) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistOpennessVisualisationDto.getCodelist().getUrn());
         CodesSecurityUtils.canCrudCodelistOpennessVisualisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
@@ -1329,7 +1328,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public CodelistOpennessVisualisationDto updateCodelistOpennessVisualisation(ServiceContext ctx, CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) throws MetamacException {
+    public CodelistVisualisationDto updateCodelistOpennessVisualisation(ServiceContext ctx, CodelistVisualisationDto codelistOpennessVisualisationDto) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistOpennessVisualisationDto.getCodelist().getUrn());
         CodesSecurityUtils.canCrudCodelistOpennessVisualisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
@@ -1356,7 +1355,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<CodelistOpennessVisualisationDto> retrieveCodelistOpennessVisualisationsByCodelist(ServiceContext ctx, String codelistUrn) throws MetamacException {
+    public List<CodelistVisualisationDto> retrieveCodelistOpennessVisualisationsByCodelist(ServiceContext ctx, String codelistUrn) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindCodelistOpennessVisualisation(ctx);
 
@@ -1364,7 +1363,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<CodelistOpennessVisualisation> codelistOpennessVisualisations = getCodesMetamacService().retrieveCodelistOpennessVisualisationsByCodelist(ctx, codelistUrn);
 
         // Transform
-        List<CodelistOpennessVisualisationDto> codelistOpennessVisualisationsDto = codesDo2DtoMapper.codelistOpennessVisualisationsDoToDto(codelistOpennessVisualisations);
+        List<CodelistVisualisationDto> codelistOpennessVisualisationsDto = codesDo2DtoMapper.codelistOpennessVisualisationsDoToDto(codelistOpennessVisualisations);
         return codelistOpennessVisualisationsDto;
     }
 

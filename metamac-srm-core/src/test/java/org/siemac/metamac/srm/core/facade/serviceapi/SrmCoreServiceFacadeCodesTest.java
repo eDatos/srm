@@ -40,8 +40,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
@@ -2447,7 +2446,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testRetrieveCodelistOrderVisualisationByUrn() throws Exception {
         // Retrieve
         String urn = CODELIST_1_V2_ORDER_VISUALISATION_01_ALPHABETICAL;
-        CodelistOrderVisualisationDto codelistOrderVisualisation = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), urn);
+        CodelistVisualisationDto codelistOrderVisualisation = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), urn);
 
         // Validate
         assertNotNull(codelistOrderVisualisation);
@@ -2460,21 +2459,21 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         ServiceContext ctx = getServiceContextAdministrador();
 
-        CodelistOrderVisualisationDto codelistOrderVisualisation = CodesMetamacDtoMocks.mockCodelistOrderVisualisationDto();
+        CodelistVisualisationDto codelistOrderVisualisation = CodesMetamacDtoMocks.mockCodelistOrderVisualisationDto();
         codelistOrderVisualisation.setCodelist(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST01", CODELIST_1_V2));
 
         // Create
-        CodelistOrderVisualisationDto codelistOrderVisualisationCreated = srmCoreServiceFacade.createCodelistOrderVisualisation(ctx, codelistOrderVisualisation);
+        CodelistVisualisationDto codelistOrderVisualisationCreated = srmCoreServiceFacade.createCodelistOrderVisualisation(ctx, codelistOrderVisualisation);
         assertEqualsCodelistOrderVisualisationDto(codelistOrderVisualisation, codelistOrderVisualisationCreated);
     }
 
     @Test
     public void testUpdateCodelistOrderVisualisation() throws Exception {
-        CodelistOrderVisualisationDto codelistOrderVisualisation = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
+        CodelistVisualisationDto codelistOrderVisualisation = srmCoreServiceFacade.retrieveCodelistOrderVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_ORDER_VISUALISATION_02);
         codelistOrderVisualisation.setName(MetamacMocks.mockInternationalStringDto());
 
         // Update
-        CodelistOrderVisualisationDto codelistOrderVisualisationUpdated = srmCoreServiceFacade.updateCodelistOrderVisualisation(getServiceContextAdministrador(), codelistOrderVisualisation);
+        CodelistVisualisationDto codelistOrderVisualisationUpdated = srmCoreServiceFacade.updateCodelistOrderVisualisation(getServiceContextAdministrador(), codelistOrderVisualisation);
 
         // Validate
         assertEqualsCodelistOrderVisualisationDto(codelistOrderVisualisation, codelistOrderVisualisationUpdated);
@@ -2501,7 +2500,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testRetrieveCodelistOrderVisualisationsByCodelist() throws Exception {
         String codelistUrn = CODELIST_1_V2;
 
-        List<CodelistOrderVisualisationDto> visualisations = srmCoreServiceFacade.retrieveCodelistOrderVisualisationsByCodelist(getServiceContextAdministrador(), codelistUrn);
+        List<CodelistVisualisationDto> visualisations = srmCoreServiceFacade.retrieveCodelistOrderVisualisationsByCodelist(getServiceContextAdministrador(), codelistUrn);
 
         assertEquals(3, visualisations.size());
         assertContainsCodelistOrderVisualisation(CODELIST_1_V2_ORDER_VISUALISATION_01_ALPHABETICAL, visualisations);
@@ -2545,7 +2544,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testRetrieveCodelistOpennessVisualisationByUrn() throws Exception {
         // Retrieve
         String urn = CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED;
-        CodelistOpennessVisualisationDto codelistOpennessVisualisation = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), urn);
+        CodelistVisualisationDto codelistOpennessVisualisation = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), urn);
 
         // Validate
         assertNotNull(codelistOpennessVisualisation);
@@ -2558,23 +2557,22 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         ServiceContext ctx = getServiceContextAdministrador();
 
-        CodelistOpennessVisualisationDto codelistOpennessVisualisation = CodesMetamacDtoMocks.mockCodelistOpennessVisualisationDto();
+        CodelistVisualisationDto codelistOpennessVisualisation = CodesMetamacDtoMocks.mockCodelistOpennessVisualisationDto();
         codelistOpennessVisualisation.setCodelist(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST01", CODELIST_1_V2));
 
         // Create
-        CodelistOpennessVisualisationDto codelistOpennessVisualisationCreated = srmCoreServiceFacade.createCodelistOpennessVisualisation(ctx, codelistOpennessVisualisation);
+        CodelistVisualisationDto codelistOpennessVisualisationCreated = srmCoreServiceFacade.createCodelistOpennessVisualisation(ctx, codelistOpennessVisualisation);
         assertEqualsCodelistOpennessVisualisationDto(codelistOpennessVisualisation, codelistOpennessVisualisationCreated);
     }
 
     @Test
     public void testUpdateCodelistOpennessVisualisation() throws Exception {
-        CodelistOpennessVisualisationDto codelistOpennessVisualisation = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(),
+        CodelistVisualisationDto codelistOpennessVisualisation = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(),
                 CODELIST_1_V2_OPENNESS_VISUALISATION_02);
         codelistOpennessVisualisation.setName(MetamacMocks.mockInternationalStringDto());
 
         // Update
-        CodelistOpennessVisualisationDto codelistOpennessVisualisationUpdated = srmCoreServiceFacade.updateCodelistOpennessVisualisation(getServiceContextAdministrador(),
-                codelistOpennessVisualisation);
+        CodelistVisualisationDto codelistOpennessVisualisationUpdated = srmCoreServiceFacade.updateCodelistOpennessVisualisation(getServiceContextAdministrador(), codelistOpennessVisualisation);
 
         // Validate
         assertEqualsCodelistOpennessVisualisationDto(codelistOpennessVisualisation, codelistOpennessVisualisationUpdated);
@@ -2601,7 +2599,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testRetrieveCodelistOpennessVisualisationsByCodelist() throws Exception {
         String codelistUrn = CODELIST_1_V2;
 
-        List<CodelistOpennessVisualisationDto> visualisations = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationsByCodelist(getServiceContextAdministrador(), codelistUrn);
+        List<CodelistVisualisationDto> visualisations = srmCoreServiceFacade.retrieveCodelistOpennessVisualisationsByCodelist(getServiceContextAdministrador(), codelistUrn);
 
         assertEquals(3, visualisations.size());
         assertContainsCodelistOpennessVisualisation(CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED, visualisations);
@@ -2640,8 +2638,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         }
     }
 
-    private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationUrnExpected, List<CodelistOrderVisualisationDto> actuals) {
-        for (CodelistOrderVisualisationDto actual : actuals) {
+    private void assertContainsCodelistOrderVisualisation(String codelistOrderVisualisationUrnExpected, List<CodelistVisualisationDto> actuals) {
+        for (CodelistVisualisationDto actual : actuals) {
             if (actual.getUrn().equals(codelistOrderVisualisationUrnExpected)) {
                 return;
             }
@@ -2649,8 +2647,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         fail("order visualisation not found");
     }
 
-    private void assertContainsCodelistOpennessVisualisation(String codelistOpennessVisualisationUrnExpected, List<CodelistOpennessVisualisationDto> actuals) {
-        for (CodelistOpennessVisualisationDto actual : actuals) {
+    private void assertContainsCodelistOpennessVisualisation(String codelistOpennessVisualisationUrnExpected, List<CodelistVisualisationDto> actuals) {
+        for (CodelistVisualisationDto actual : actuals) {
             if (actual.getUrn().equals(codelistOpennessVisualisationUrnExpected)) {
                 return;
             }

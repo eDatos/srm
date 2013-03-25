@@ -16,8 +16,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
@@ -109,7 +108,7 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
     public void testCodelistOrderVisualisationDoToDto() {
         CodelistOrderVisualisation entity = mockCodelistOrderVisualisationWithAllMetadata();
 
-        CodelistOrderVisualisationDto dto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(entity);
+        CodelistVisualisationDto dto = codesDo2DtoMapper.codelistOrderVisualisationDoToDto(entity);
         CodesMetamacAsserts.assertEqualsCodelistOrderVisualisation(entity, dto);
     }
 
@@ -117,7 +116,7 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
     public void testCodelistOpennessVisualisationDoToDto() {
         CodelistOpennessVisualisation entity = mockCodelistOpennessVisualisationWithAllMetadata();
 
-        CodelistOpennessVisualisationDto dto = codesDo2DtoMapper.codelistOpennessVisualisationDoToDto(entity);
+        CodelistVisualisationDto dto = codesDo2DtoMapper.codelistOpennessVisualisationDoToDto(entity);
         CodesMetamacAsserts.assertEqualsCodelistOpennessVisualisation(entity, dto);
     }
 

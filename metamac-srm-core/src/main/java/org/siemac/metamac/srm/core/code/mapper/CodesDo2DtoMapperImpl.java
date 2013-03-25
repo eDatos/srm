@@ -17,8 +17,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
@@ -258,11 +257,11 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
-    public CodelistOrderVisualisationDto codelistOrderVisualisationDoToDto(CodelistOrderVisualisation source) {
+    public CodelistVisualisationDto codelistOrderVisualisationDoToDto(CodelistOrderVisualisation source) {
         if (source == null) {
             return null;
         }
-        CodelistOrderVisualisationDto target = new CodelistOrderVisualisationDto();
+        CodelistVisualisationDto target = new CodelistVisualisationDto();
         do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
         target.setCodelist(codelistDoToRelatedResourceDto(source.getCodelistVersion()));
 
@@ -279,24 +278,24 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
-    public List<CodelistOrderVisualisationDto> codelistOrderVisualisationsDoToDto(List<CodelistOrderVisualisation> sources) {
+    public List<CodelistVisualisationDto> codelistOrderVisualisationsDoToDto(List<CodelistOrderVisualisation> sources) {
         if (sources == null) {
             return null;
         }
-        List<CodelistOrderVisualisationDto> targets = new ArrayList<CodelistOrderVisualisationDto>(sources.size());
+        List<CodelistVisualisationDto> targets = new ArrayList<CodelistVisualisationDto>(sources.size());
         for (CodelistOrderVisualisation source : sources) {
-            CodelistOrderVisualisationDto target = codelistOrderVisualisationDoToDto(source);
+            CodelistVisualisationDto target = codelistOrderVisualisationDoToDto(source);
             targets.add(target);
         }
         return targets;
     }
 
     @Override
-    public CodelistOpennessVisualisationDto codelistOpennessVisualisationDoToDto(CodelistOpennessVisualisation source) {
+    public CodelistVisualisationDto codelistOpennessVisualisationDoToDto(CodelistOpennessVisualisation source) {
         if (source == null) {
             return null;
         }
-        CodelistOpennessVisualisationDto target = new CodelistOpennessVisualisationDto();
+        CodelistVisualisationDto target = new CodelistVisualisationDto();
         do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
         target.setCodelist(codelistDoToRelatedResourceDto(source.getCodelistVersion()));
 
@@ -313,13 +312,13 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
-    public List<CodelistOpennessVisualisationDto> codelistOpennessVisualisationsDoToDto(List<CodelistOpennessVisualisation> sources) {
+    public List<CodelistVisualisationDto> codelistOpennessVisualisationsDoToDto(List<CodelistOpennessVisualisation> sources) {
         if (sources == null) {
             return null;
         }
-        List<CodelistOpennessVisualisationDto> targets = new ArrayList<CodelistOpennessVisualisationDto>(sources.size());
+        List<CodelistVisualisationDto> targets = new ArrayList<CodelistVisualisationDto>(sources.size());
         for (CodelistOpennessVisualisation source : sources) {
-            CodelistOpennessVisualisationDto target = codelistOpennessVisualisationDoToDto(source);
+            CodelistVisualisationDto target = codelistOpennessVisualisationDoToDto(source);
             targets.add(target);
         }
         return targets;

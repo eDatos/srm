@@ -26,8 +26,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableRepository;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -285,7 +284,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
     }
 
     @Override
-    public CodelistOrderVisualisation codelistOrderVisualisationDtoToDo(CodelistOrderVisualisationDto source) throws MetamacException {
+    public CodelistOrderVisualisation codelistOrderVisualisationDtoToDo(CodelistVisualisationDto source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -312,7 +311,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
     }
 
     @Override
-    public CodelistOpennessVisualisation codelistOpennessVisualisationDtoToDo(CodelistOpennessVisualisationDto source) throws MetamacException {
+    public CodelistOpennessVisualisation codelistOpennessVisualisationDtoToDo(CodelistVisualisationDto source) throws MetamacException {
         if (source == null) {
             return null;
         }

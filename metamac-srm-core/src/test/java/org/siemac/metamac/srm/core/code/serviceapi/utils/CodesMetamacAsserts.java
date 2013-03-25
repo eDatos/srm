@@ -18,8 +18,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
@@ -515,15 +514,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
-    public static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisation expected, CodelistOrderVisualisationDto actual) {
+    public static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisation expected, CodelistVisualisationDto actual) {
         assertEqualsCodelistOrderVisualisation(expected, actual, MapperEnum.DO2DTO);
     }
 
-    public static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisationDto expected, CodelistOrderVisualisation actual) {
+    public static void assertEqualsCodelistOrderVisualisation(CodelistVisualisationDto expected, CodelistOrderVisualisation actual) {
         assertEqualsCodelistOrderVisualisation(actual, expected, MapperEnum.DTO2DO);
     }
 
-    public static void assertEqualsCodelistOrderVisualisationDto(CodelistOrderVisualisationDto expected, CodelistOrderVisualisationDto actual) {
+    public static void assertEqualsCodelistOrderVisualisationDto(CodelistVisualisationDto expected, CodelistVisualisationDto actual) {
         assertEqualsNullability(expected, actual);
         if (expected == null) {
             return;
@@ -532,7 +531,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
     }
 
-    private static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisation entity, CodelistOrderVisualisationDto dto, MapperEnum mapperEnum) {
+    private static void assertEqualsCodelistOrderVisualisation(CodelistOrderVisualisation entity, CodelistVisualisationDto dto, MapperEnum mapperEnum) {
         if (MapperEnum.DO2DTO.equals(mapperEnum)) {
             assertEquals(entity.getId(), dto.getId());
 
@@ -581,15 +580,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
     }
 
-    public static void assertEqualsCodelistOpennessVisualisation(CodelistOpennessVisualisation expected, CodelistOpennessVisualisationDto actual) {
+    public static void assertEqualsCodelistOpennessVisualisation(CodelistOpennessVisualisation expected, CodelistVisualisationDto actual) {
         assertEqualsCodelistOpennessVisualisation(expected, actual, MapperEnum.DO2DTO);
     }
 
-    public static void assertEqualsCodelistOpennessVisualisation(CodelistOpennessVisualisationDto expected, CodelistOpennessVisualisation actual) {
+    public static void assertEqualsCodelistOpennessVisualisation(CodelistVisualisationDto expected, CodelistOpennessVisualisation actual) {
         assertEqualsCodelistOpennessVisualisation(actual, expected, MapperEnum.DTO2DO);
     }
 
-    public static void assertEqualsCodelistOpennessVisualisationDto(CodelistOpennessVisualisationDto expected, CodelistOpennessVisualisationDto actual) {
+    public static void assertEqualsCodelistOpennessVisualisationDto(CodelistVisualisationDto expected, CodelistVisualisationDto actual) {
         assertEqualsNullability(expected, actual);
         if (expected == null) {
             return;
@@ -598,7 +597,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
     }
 
-    private static void assertEqualsCodelistOpennessVisualisation(CodelistOpennessVisualisation entity, CodelistOpennessVisualisationDto dto, MapperEnum mapperEnum) {
+    private static void assertEqualsCodelistOpennessVisualisation(CodelistOpennessVisualisation entity, CodelistVisualisationDto dto, MapperEnum mapperEnum) {
         if (MapperEnum.DO2DTO.equals(mapperEnum)) {
             assertEquals(entity.getId(), dto.getId());
 

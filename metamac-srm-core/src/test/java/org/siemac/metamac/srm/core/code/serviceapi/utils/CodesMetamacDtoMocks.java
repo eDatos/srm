@@ -6,8 +6,7 @@ import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -130,8 +129,8 @@ public class CodesMetamacDtoMocks {
     // -----------------------------------------------------------------------------------
     // ORDER VISUALISATIONS
     // -----------------------------------------------------------------------------------
-    public static CodelistOrderVisualisationDto mockCodelistOrderVisualisationDto() {
-        CodelistOrderVisualisationDto codelistOrderVisualisationDto = new CodelistOrderVisualisationDto();
+    public static CodelistVisualisationDto mockCodelistOrderVisualisationDto() {
+        CodelistVisualisationDto codelistOrderVisualisationDto = new CodelistVisualisationDto();
         codelistOrderVisualisationDto.setCode("code-" + MetamacMocks.mockString(10));
         codelistOrderVisualisationDto.setName(MetamacMocks.mockInternationalStringDto());
         return codelistOrderVisualisationDto;
@@ -149,8 +148,8 @@ public class CodesMetamacDtoMocks {
     // -----------------------------------------------------------------------------------
     // OPENNESS VISUALISATIONS
     // -----------------------------------------------------------------------------------
-    public static CodelistOpennessVisualisationDto mockCodelistOpennessVisualisationDto() {
-        CodelistOpennessVisualisationDto codelistOpennessVisualisationDto = new CodelistOpennessVisualisationDto();
+    public static CodelistVisualisationDto mockCodelistOpennessVisualisationDto() {
+        CodelistVisualisationDto codelistOpennessVisualisationDto = new CodelistVisualisationDto();
         codelistOpennessVisualisationDto.setCode("code-" + MetamacMocks.mockString(10));
         codelistOpennessVisualisationDto.setName(MetamacMocks.mockInternationalStringDto());
         return codelistOpennessVisualisationDto;
