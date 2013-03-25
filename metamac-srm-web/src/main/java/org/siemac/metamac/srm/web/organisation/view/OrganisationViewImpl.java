@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
@@ -23,7 +22,6 @@ import org.siemac.metamac.srm.web.organisation.utils.OrganisationsFormUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.ContactMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
-import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -59,11 +57,14 @@ import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandlers> implements OrganisationPresenter.OrganisationView {
 
+    private TitleLabel                   titleLabel;
     private VLayout                      panel;
     private InternationalMainFormLayout  mainFormLayout;
 
@@ -122,8 +123,6 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         createEditionForm();
 
         // CONTACTS
-
-        TitleLabel titleLabel = new TitleLabel(getConstants().organisationContacts());
 
         // ToolStrip
 
@@ -238,12 +237,35 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         VLayout contactsSectionLayout = new VLayout();
         contactsSectionLayout.setMargin(15);
-        contactsSectionLayout.addMember(titleLabel);
         contactsSectionLayout.addMember(contactLayout);
 
-        panel.addMember(organisationsTreeGridLayout);
-        panel.addMember(mainFormLayout);
-        panel.addMember(contactsSectionLayout);
+        //
+        // PANEL LAYOUT
+        //
+
+        VLayout subPanel = new VLayout();
+        subPanel.setMembersMargin(5);
+        subPanel.addMember(organisationsTreeGridLayout);
+        titleLabel = new TitleLabel();
+        TabSet tabSet = new TabSet();
+        tabSet.setStyleName("marginTop15");
+
+        // Organisation tab
+        Tab organisationTab = new Tab(getConstants().organisation());
+        organisationTab.setPane(mainFormLayout);
+        tabSet.addTab(organisationTab);
+
+        // Contacts tab
+        Tab contactsTab = new Tab(getConstants().organisationContacts());
+        contactsTab.setPane(contactsSectionLayout);
+        tabSet.addTab(contactsTab);
+
+        VLayout tabSubPanel = new VLayout();
+        tabSubPanel.addMember(titleLabel);
+        tabSubPanel.addMember(tabSet);
+        tabSubPanel.setMargin(15);
+        subPanel.addMember(tabSubPanel);
+        panel.addMember(subPanel);
     }
 
     @Override
@@ -383,9 +405,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         getUiHandlers().retrieveOrganisationListByScheme(organisationDto.getItemSchemeVersionUrn());
 
-        String defaultLocalisedName = InternationalStringUtils.getLocalisedString(organisationDto.getName());
-        String title = defaultLocalisedName != null ? defaultLocalisedName : StringUtils.EMPTY;
-        mainFormLayout.setTitleLabelContents(title);
+        // Set title
+        titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(organisationDto));
 
         mainFormLayout.setViewMode();
 
