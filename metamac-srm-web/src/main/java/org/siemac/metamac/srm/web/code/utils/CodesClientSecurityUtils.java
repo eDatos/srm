@@ -116,6 +116,20 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
+    // OPENNESS LEVELS
+
+    public static boolean canCreateCodelistOpennessVisualisation(ProcStatusEnum procStatus) {
+        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
+    public static boolean canUpdateCodelistOpennessVisualisation(ProcStatusEnum procStatus) {
+        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
+    public static boolean canDeleteCodelistOpennessVisualisation(ProcStatusEnum procStatus) {
+        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    }
+
     // CODELIST FAMILY
 
     public static boolean canCreateCodelistFamily() {
