@@ -5,7 +5,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.BaseItemsTreeGrid;
@@ -28,13 +28,13 @@ import com.smartgwt.client.widgets.tree.events.LeafContextClickHandler;
 
 public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
-    protected CodelistMetamacDto            codelistMetamacDto;
+    protected CodelistMetamacDto       codelistMetamacDto;
 
-    protected HandlerRegistration           folderDropHandlerRegistration;
+    protected HandlerRegistration      folderDropHandlerRegistration;
 
-    protected BaseCodeUiHandlers            uiHandlers;
+    protected BaseCodeUiHandlers       uiHandlers;
 
-    protected CodelistOrderVisualisationDto codelistOrderVisualisationDto; // This field is only filled by the CodesOrderTreeGrid class
+    protected CodelistVisualisationDto codelistOrderVisualisationDto; // This field is only filled by the CodesOrderTreeGrid class
 
     /**
      * Create a {@link BaseCodesTreeGrid}. This tree will be extended by {@link CodesTreeGrid} and {@link CodesOrderTreeGrid}.

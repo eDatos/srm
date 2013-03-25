@@ -5,7 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
@@ -83,7 +83,7 @@ public class CodesOrderTreeGrid extends BaseCodesTreeGrid {
         folderDropHandlerRegistration.removeHandler();
     }
 
-    public void setItems(ItemSchemeDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+    public void setItems(ItemSchemeDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrderVisualisationDto) {
         this.codelistOrderVisualisationDto = codelistOrderVisualisationDto;
         setItems(codelistMetamacDto, codes);
     }

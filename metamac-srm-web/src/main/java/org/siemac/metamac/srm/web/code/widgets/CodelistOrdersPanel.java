@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.web.client.widgets.CodelistOrdersSectionStack;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -19,26 +19,27 @@ public class CodelistOrdersPanel extends VLayout {
     private CodesOrderTreeGrid         codesOrderTreeGrid;
 
     public CodelistOrdersPanel() {
+        setMargin(15);
         setMembersMargin(10);
 
         codelistOrdersSectionStack = new CodelistOrdersSectionStack();
         addMember(codelistOrdersSectionStack);
 
         orderTitle = new TitleLabel();
-        orderTitle.setStyleName("subsectionTitle");
+        orderTitle.setStyleName("subsectionTitleWithNoLeftMargin");
         addMember(orderTitle);
 
         codesOrderTreeGrid = new CodesOrderTreeGrid();
         addMember(codesOrderTreeGrid);
     }
 
-    public void setOrders(List<CodelistOrderVisualisationDto> orders) {
-        codelistOrdersSectionStack.setCodelistOrders(orders);
+    public void setOrders(List<CodelistVisualisationDto> orders) {
+        codelistOrdersSectionStack.setCodelistVisualisations(orders);
 
         hideCodes();
     }
 
-    public void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+    public void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrderVisualisationDto) {
         codelistOrdersSectionStack.selectCodelistOrder(codelistOrderVisualisationDto.getUrn());
         orderTitle.setContents(CommonWebUtils.getElementName(codelistOrderVisualisationDto.getCode(), codelistOrderVisualisationDto.getName()));
         codesOrderTreeGrid.setItems(codelistMetamacDto, codes, codelistOrderVisualisationDto);
