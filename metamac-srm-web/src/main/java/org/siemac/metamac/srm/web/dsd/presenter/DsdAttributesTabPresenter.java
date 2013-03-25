@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -12,14 +14,7 @@ import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
-import org.siemac.metamac.srm.web.dsd.events.UpdateDimensionsEvent;
-import org.siemac.metamac.srm.web.dsd.events.UpdateDimensionsEvent.UpdateDimensionsHandler;
-import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
-import org.siemac.metamac.srm.web.dsd.events.UpdateGroupKeysEvent;
-import org.siemac.metamac.srm.web.dsd.events.UpdateGroupKeysEvent.UpdateGroupKeysHandler;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
@@ -30,12 +25,8 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdResult;
-import org.siemac.metamac.srm.web.shared.dsd.FindDescriptorForDsdAction;
-import org.siemac.metamac.srm.web.shared.dsd.FindDescriptorForDsdResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -43,7 +34,6 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -56,7 +46,6 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.TitleFunction;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
@@ -68,18 +57,12 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
-public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresenter.DsdAttributesTabView, DsdAttributesTabPresenter.DsdAttributesTabProxy>
-        implements
-            DsdAttributesTabUiHandlers,
-            SelectDsdAndDescriptorsHandler,
-            UpdateDimensionsHandler,
-            UpdateGroupKeysHandler {
+public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresenter.DsdAttributesTabView, DsdAttributesTabPresenter.DsdAttributesTabProxy> implements DsdAttributesTabUiHandlers {
 
     private final DispatchAsync               dispatcher;
     private final PlaceManager                placeManager;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
-    private boolean                           isNewDescriptor;
     private List<DataAttributeDto>            dataAttributeDtos;
 
     @ProxyCodeSplit
@@ -136,82 +119,6 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         super.onReset();
     }
 
-    @ProxyEvent
-    @Override
-    public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
-        dataStructureDefinitionDto = event.getDataStructureDefinitionDto();
-        DescriptorDto attributesDescriptor = event.getAttributes();
-        isNewDescriptor = attributesDescriptor.getId() == null;
-        dataAttributeDtos = CommonUtils.getAttributeComponents(attributesDescriptor);
-        getView().setDimensions(CommonUtils.getDimensionComponents(event.getDimensions()));
-        getView().setDsdAttributes(dataStructureDefinitionDto, CommonUtils.getAttributeComponents(event.getAttributes()));
-        getView().setGroupKeys(event.getGroupKeys());
-    }
-
-    @ProxyEvent
-    @Override
-    public void onUpdateDimensions(final UpdateDimensionsEvent event) {
-        // Update Attributes
-        dataAttributeDtos = new ArrayList<DataAttributeDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindDescriptorForDsdResult result) {
-                List<DescriptorDto> descriptorDtos = result.getDescriptorDtos();
-                if (!descriptorDtos.isEmpty()) {
-                    DescriptorDto descriptorDto = descriptorDtos.get(0);
-                    if (descriptorDto != null) {
-                        for (ComponentDto componentDto : descriptorDto.getComponents()) {
-                            if (componentDto instanceof DataAttributeDto) {
-                                DataAttributeDto dataAttributeDto = (DataAttributeDto) componentDto;
-                                dataAttributeDtos.add(dataAttributeDto);
-                            }
-                        }
-                    }
-                    getView().setDsdAttributes(dataStructureDefinitionDto, dataAttributeDtos);
-                }
-                // Update Dimensions
-                getView().setDimensions(event.getDimensionComponentDtos());
-            }
-        });
-    }
-
-    @ProxyEvent
-    @Override
-    public void onUpdateGroupKeys(final UpdateGroupKeysEvent event) {
-        // Update Attributes
-        dataAttributeDtos = new ArrayList<DataAttributeDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(FindDescriptorForDsdResult result) {
-                List<DescriptorDto> descriptorDtos = result.getDescriptorDtos();
-                if (!descriptorDtos.isEmpty()) {
-                    DescriptorDto descriptorDto = descriptorDtos.get(0);
-                    if (descriptorDto != null) {
-                        for (ComponentDto componentDto : descriptorDto.getComponents()) {
-                            if (componentDto instanceof DataAttributeDto) {
-                                DataAttributeDto dataAttributeDto = (DataAttributeDto) componentDto;
-                                dataAttributeDtos.add(dataAttributeDto);
-                            }
-                        }
-                    }
-                    getView().setDsdAttributes(dataStructureDefinitionDto, dataAttributeDtos);
-                }
-                // Update Group Keys
-                getView().setGroupKeys(event.getGroupKeys());
-            }
-        });
-    }
-
     @Override
     protected void onBind() {
         super.onBind();
@@ -246,10 +153,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         super.prepareFromRequest(request);
         String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
         if (!StringUtils.isBlank(dsdIdentifier)) {
-            // Load DSD completely if it hasn't been loaded previously
-            if (dataStructureDefinitionDto == null || !dsdIdentifier.equals(UrnUtils.removePrefix(dataStructureDefinitionDto.getUrn()))) {
-                retrieveDsd(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
-            }
+            retrieveAttributes(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
         }
     }
 
@@ -266,13 +170,9 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                     @Override
                     public void onWaitSuccess(SaveComponentForDsdResult result) {
                         ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeSaved()), MessageTypeEnum.SUCCESS);
+                        dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
                         updateAttributeList(false);
                         getView().onAttributeSaved((DataAttributeDto) result.getComponentDtoSaved());
-                        if (isNewDescriptor) {
-                            // The first time a descriptor is saved, the DSD version changes.
-                            isNewDescriptor = false;
-                            updateDsd();
-                        }
                     }
                 });
     }
@@ -294,9 +194,12 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         });
     }
 
-    @Override
-    public void retrieveDsd(String urn) {
-        dispatcher.execute(new GetDsdAndDescriptorsAction(urn), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+    public void retrieveAttributes(String urn) {
+        Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
+        descriptorsToRetrieve.add(TypeComponentList.DIMENSION_DESCRIPTOR);
+        descriptorsToRetrieve.add(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
+        descriptorsToRetrieve.add(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
+        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -304,7 +207,12 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
-                SelectDsdAndDescriptorsEvent.fire(DsdAttributesTabPresenter.this, result.getDsd(), result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(), result.getGroupKeys());
+                dataStructureDefinitionDto = result.getDsd();
+                DescriptorDto attributesDescriptor = result.getAttributes();
+                dataAttributeDtos = CommonUtils.getAttributeComponents(attributesDescriptor);
+                getView().setDimensions(CommonUtils.getDimensionComponents(result.getDimensions()));
+                getView().setDsdAttributes(dataStructureDefinitionDto, CommonUtils.getAttributeComponents(result.getAttributes()));
+                getView().setGroupKeys(result.getGroupKeys());
             }
         });
     }
@@ -398,43 +306,22 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     private void updateAttributeList(final boolean updateView) {
         dataAttributeDtos = new ArrayList<DataAttributeDto>();
-        dispatcher.execute(new FindDescriptorForDsdAction(dataStructureDefinitionDto.getUrn(), TypeComponentList.ATTRIBUTE_DESCRIPTOR), new WaitingAsyncCallback<FindDescriptorForDsdResult>() {
+
+        Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
+        descriptorsToRetrieve.add(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
+        dispatcher.execute(new GetDsdAndDescriptorsAction(dataStructureDefinitionDto.getUrn(), descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(FindDescriptorForDsdResult result) {
-                List<DescriptorDto> descriptorDtos = result.getDescriptorDtos();
-                if (!descriptorDtos.isEmpty()) {
-                    DescriptorDto descriptorDto = descriptorDtos.get(0);
-                    if (descriptorDto != null) {
-                        for (ComponentDto componentDto : descriptorDto.getComponents()) {
-                            if (componentDto instanceof DataAttributeDto) {
-                                DataAttributeDto dataAttributeDto = (DataAttributeDto) componentDto;
-                                dataAttributeDtos.add(dataAttributeDto);
-                            }
-                        }
-                    }
-                    if (updateView) {
-                        getView().setDsdAttributes(dataStructureDefinitionDto, dataAttributeDtos);
-                    }
+            public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
+                dataStructureDefinitionDto = result.getDsd();
+                dataAttributeDtos = CommonUtils.getAttributeComponents(result.getAttributes());
+                if (updateView) {
+                    getView().setDsdAttributes(dataStructureDefinitionDto, dataAttributeDtos);
                 }
-            }
-        });
-    }
-
-    private void updateDsd() {
-        dispatcher.execute(new GetDsdAction(dataStructureDefinitionDto.getUrn()), new WaitingAsyncCallback<GetDsdResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetDsdResult result) {
-                UpdateDsdEvent.fire(DsdAttributesTabPresenter.this, result.getDsd());
             }
         });
     }

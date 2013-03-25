@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
+import java.util.List;
+
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -18,6 +20,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.google.gwt.resources.client.ImageResource;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class RecordUtils {
 
@@ -45,6 +48,14 @@ public class RecordUtils {
         return dimensionRecord;
     }
 
+    public static ListGridRecord[] getDimensionRecords(List<DimensionComponentDto> dimensionComponentDtos) {
+        ListGridRecord[] records = new ListGridRecord[dimensionComponentDtos.size()];
+        for (int i = 0; i < dimensionComponentDtos.size(); i++) {
+            records[i] = RecordUtils.getDimensionRecord(dimensionComponentDtos.get(i));
+        }
+        return records;
+    }
+
     /**
      * Returns {@link AttributeRecord} from {@link DataAttributeDto}
      * 
@@ -58,6 +69,14 @@ public class RecordUtils {
         return record;
     }
 
+    public static ListGridRecord[] getAttributeRecords(List<DataAttributeDto> dataAttributeDtos) {
+        ListGridRecord[] records = new ListGridRecord[dataAttributeDtos.size()];
+        for (int i = 0; i < dataAttributeDtos.size(); i++) {
+            records[i] = RecordUtils.getAttributeRecord(dataAttributeDtos.get(i));
+        }
+        return records;
+    }
+
     /**
      * Returns {@link GroupKeysRecord} from {@link DescriptorDto}
      * 
@@ -67,6 +86,14 @@ public class RecordUtils {
     public static GroupKeysRecord getGroupKeysRecord(DescriptorDto groupKeys) {
         GroupKeysRecord record = new GroupKeysRecord(groupKeys.getId(), groupKeys.getCode(), null, groupKeys);
         return record;
+    }
+
+    public static ListGridRecord[] getGroupKeysRecords(List<DescriptorDto> groupKeys) {
+        ListGridRecord[] records = new ListGridRecord[groupKeys.size()];
+        for (int i = 0; i < groupKeys.size(); i++) {
+            records[i] = RecordUtils.getGroupKeysRecord(groupKeys.get(i));
+        }
+        return records;
     }
 
     /**

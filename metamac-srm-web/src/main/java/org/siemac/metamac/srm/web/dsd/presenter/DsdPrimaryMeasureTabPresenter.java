@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
@@ -9,10 +12,7 @@ import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
-import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
@@ -20,10 +20,8 @@ import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -43,7 +41,6 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.TitleFunction;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
@@ -54,14 +51,12 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView, DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabProxy>
         implements
-            DsdPrimaryMeasureTabUiHandlers,
-            SelectDsdAndDescriptorsHandler {
+            DsdPrimaryMeasureTabUiHandlers {
 
     private final DispatchAsync               dispatcher;
     private final PlaceManager                placeManager;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
-    private boolean                           isNewDescriptor;
     private ComponentDto                      primaryMeasure;
 
     @ProxyCodeSplit
@@ -106,10 +101,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         super.prepareFromRequest(request);
         String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
         if (!StringUtils.isBlank(dsdIdentifier)) {
-            // Load DSD completely if it hasn't been loaded previously
-            if (dataStructureDefinitionDto == null || !dsdIdentifier.equals(UrnUtils.removePrefix(dataStructureDefinitionDto.getUrn()))) {
-                retrieveDsd(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
-            }
+            retrievePrimaryMeasure(UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier));
         }
     }
 
@@ -124,16 +116,6 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
         super.onReset();
     }
 
-    @ProxyEvent
-    @Override
-    public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
-        dataStructureDefinitionDto = event.getDataStructureDefinitionDto();
-        DescriptorDto primaryMeasureDescriptor = event.getPrimaryMeasure();
-        isNewDescriptor = primaryMeasureDescriptor.getId() == null;
-        primaryMeasure = primaryMeasureDescriptor.getComponents().isEmpty() ? new ComponentDto(TypeComponent.PRIMARY_MEASURE, null) : primaryMeasureDescriptor.getComponents().iterator().next();
-        getView().setDsdPrimaryMeasure(dataStructureDefinitionDto, primaryMeasure);
-    }
-
     @Override
     public void savePrimaryMeasure(ComponentDto component) {
         dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), component, TypeComponentList.MEASURE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
@@ -146,32 +128,16 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
             public void onWaitSuccess(SaveComponentForDsdResult result) {
                 ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved()), MessageTypeEnum.SUCCESS);
                 primaryMeasure = result.getComponentDtoSaved();
+                dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
                 getView().onPrimaryMeasureSaved(dataStructureDefinitionDto, primaryMeasure);
-                if (isNewDescriptor) {
-                    // The first time a descriptor is saved, the DSD version changes.
-                    isNewDescriptor = false;
-                    updateDsd();
-                }
             }
         });
     }
 
-    private void updateDsd() {
-        dispatcher.execute(new GetDsdAction(dataStructureDefinitionDto.getUrn()), new WaitingAsyncCallback<GetDsdResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetDsdResult result) {
-                UpdateDsdEvent.fire(DsdPrimaryMeasureTabPresenter.this, result.getDsd());
-            }
-        });
-    }
-
-    public void retrieveDsd(String urn) {
-        dispatcher.execute(new GetDsdAndDescriptorsAction(urn), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+    public void retrievePrimaryMeasure(String urn) {
+        Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
+        descriptorsToRetrieve.add(TypeComponentList.MEASURE_DESCRIPTOR);
+        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -179,8 +145,11 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
-                SelectDsdAndDescriptorsEvent.fire(DsdPrimaryMeasureTabPresenter.this, result.getDsd(), result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(),
-                        result.getGroupKeys());
+                dataStructureDefinitionDto = result.getDsd();
+                DescriptorDto primaryMeasureDescriptor = result.getPrimaryMeasure();
+                primaryMeasure = primaryMeasureDescriptor.getComponents().isEmpty() ? new ComponentDto(TypeComponent.PRIMARY_MEASURE, null) : primaryMeasureDescriptor.getComponents().iterator()
+                        .next();
+                getView().setDsdPrimaryMeasure(dataStructureDefinitionDto, primaryMeasure);
             }
         });
     }

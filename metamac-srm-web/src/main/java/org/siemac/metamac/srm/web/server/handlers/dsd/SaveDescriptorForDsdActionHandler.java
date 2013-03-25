@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers.dsd;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdResult;
@@ -27,7 +28,10 @@ public class SaveDescriptorForDsdActionHandler extends SecurityActionHandler<Sav
     public SaveDescriptorForDsdResult executeSecurityAction(SaveDescriptorForDsdAction action) throws ActionException {
         try {
             DescriptorDto descriptorDto = srmCoreServiceFacade.saveDescriptorForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn(), action.getDescriptorDto());
-            return new SaveDescriptorForDsdResult(descriptorDto);
+            // Load DSD
+            DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(ServiceContextHolder.getCurrentServiceContext(),
+                    action.getDsdUrn());
+            return new SaveDescriptorForDsdResult(descriptorDto, dataStructureDefinitionMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

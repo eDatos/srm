@@ -17,7 +17,6 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
@@ -28,8 +27,6 @@ import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdResult;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
-import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
@@ -165,24 +162,10 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         super.onHide();
     }
 
-    /**
-     * Go to a new DSD
-     */
     @Override
     public void goToDsd(String urn) {
         if (!StringUtils.isBlank(urn)) {
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeDsdPlaceRequest(urn));
-            dispatcher.execute(new GetDsdAndDescriptorsAction(urn), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
-
-                @Override
-                public void onWaitFailure(Throwable caught) {
-                    ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
-                }
-                @Override
-                public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
-                    SelectDsdAndDescriptorsEvent.fire(DsdListPresenter.this, result.getDsd(), result.getPrimaryMeasure(), result.getDimensions(), result.getAttributes(), result.getGroupKeys());
-                }
-            });
         }
     }
 

@@ -444,13 +444,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateDimension(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimension(dataStructureDefinitionMetamacDto));
 
-        dimensionsGrid.selectAllRecords();
-        dimensionsGrid.removeSelectedData();
-        dimensionsGrid.deselectAllRecords();
-        for (DimensionComponentDto dimensionComponentDto : dimensionComponentDtos) {
-            DimensionRecord dimensionRecord = RecordUtils.getDimensionRecord(dimensionComponentDto);
-            dimensionsGrid.addData(dimensionRecord);
-        }
+        dimensionsGrid.setData(RecordUtils.getDimensionRecords(dimensionComponentDtos));
     }
 
     @Override
@@ -591,7 +585,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         return null;
     }
 
-    public void setDimension(DimensionComponentDto dimensionComponentDto) {
+    private void setDimension(DimensionComponentDto dimensionComponentDto) {
         setDimensionViewMode(dimensionComponentDto);
         setDimensionEditionMode(dimensionComponentDto);
     }

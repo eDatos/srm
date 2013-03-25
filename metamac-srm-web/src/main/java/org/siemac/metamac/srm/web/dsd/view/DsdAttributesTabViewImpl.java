@@ -480,19 +480,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     @Override
     public void setDsdAttributes(DataStructureDefinitionMetamacDto dsd, List<DataAttributeDto> dataAttributeDtos) {
         this.dataStructureDefinitionMetamacDto = dsd;
+        deselectAttribute();
 
         // Security
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateAttribute(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateAttribute(dataStructureDefinitionMetamacDto));
 
-        deselectAttribute();
-        attributesGrid.selectAllRecords();
-        attributesGrid.removeSelectedData();
-        attributesGrid.deselectAllRecords();
-        for (DataAttributeDto dataAttributeDto : dataAttributeDtos) {
-            AttributeRecord record = RecordUtils.getAttributeRecord(dataAttributeDto);
-            attributesGrid.addData(record);
-        }
+        attributesGrid.setData(RecordUtils.getAttributeRecords(dataAttributeDtos));
     }
 
     @Override

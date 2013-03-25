@@ -8,7 +8,6 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface DsdDimensionsTabUiHandlers extends UiHandlers {
 
-    void retrieveDsd(String urn);
     void saveDimension(DimensionComponentDto dimensionComponentDto);
     void deleteDimensions(List<DimensionComponentDto> dimensionComponentDtos);
 

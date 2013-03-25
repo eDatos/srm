@@ -7,7 +7,6 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface DsdGroupKeysTabUiHandlers extends UiHandlers {
 
-    void retrieveDsd(String urn);
     void saveGroupKeys(DescriptorDto descriptorDto);
     void deleteGroupKeys(List<DescriptorDto> descriptorDtos);
 }

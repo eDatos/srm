@@ -4,15 +4,16 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdCategorisationsTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
@@ -27,9 +28,12 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
@@ -41,19 +45,20 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.TitleFunction;
 import com.gwtplatform.mvp.client.annotations.UseGatekeeper;
 import com.gwtplatform.mvp.client.proxy.Place;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisationsTabPresenter.DsdCategorisationsTabView, DsdCategorisationsTabPresenter.DsdCategorisationsTabProxy>
         implements
-            DsdCategorisationsTabUiHandlers,
-            SelectDsdAndDescriptorsHandler {
+            DsdCategorisationsTabUiHandlers {
 
     private final DispatchAsync               dispatcher;
+    private final PlaceManager                placeManager;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionDto;
 
@@ -77,9 +82,11 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
     }
 
     @Inject
-    public DsdCategorisationsTabPresenter(EventBus eventBus, DsdCategorisationsTabView categorisationsTabView, DsdCategorisationsTabProxy categorisationsTabProxy, DispatchAsync dispatcher) {
+    public DsdCategorisationsTabPresenter(EventBus eventBus, DsdCategorisationsTabView categorisationsTabView, DsdCategorisationsTabProxy categorisationsTabProxy, DispatchAsync dispatcher,
+            PlaceManager placeManager) {
         super(eventBus, categorisationsTabView, categorisationsTabProxy);
         this.dispatcher = dispatcher;
+        this.placeManager = placeManager;
         getView().setUiHandlers(this);
     }
 
@@ -94,11 +101,29 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
         SelectViewDsdDescriptorEvent.fire(this, DsdTabTypeEnum.CATEGORISATIONS);
     }
 
-    @ProxyEvent
     @Override
-    public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
-        dataStructureDefinitionDto = event.getDataStructureDefinitionDto();
-        retrieveCategorisations(dataStructureDefinitionDto.getUrn());
+    public void prepareFromRequest(PlaceRequest request) {
+        super.prepareFromRequest(request);
+        String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
+        if (!StringUtils.isBlank(dsdIdentifier)) {
+            String dsdUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier);
+            retrieveDsdAndCategorisations(dsdUrn);
+        }
+    }
+
+    private void retrieveDsdAndCategorisations(final String dsdUrn) {
+        dispatcher.execute(new GetDsdAction(dsdUrn), new WaitingAsyncCallback<GetDsdResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetDsdResult result) {
+                dataStructureDefinitionDto = result.getDsd();
+                retrieveCategorisations(dsdUrn);
+            }
+        });
     }
 
     @Override

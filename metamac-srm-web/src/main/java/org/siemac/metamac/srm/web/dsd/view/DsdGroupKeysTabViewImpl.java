@@ -276,22 +276,16 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     @Override
     public void setDsdGroupKeys(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos, List<DescriptorDto> descriptorDtos) {
         this.dataStructureDefinitionMetamacDto = dsd;
+        deselectGroupKeys();
 
         // Security
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateGroupKeys(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateGroupKeys(dataStructureDefinitionMetamacDto));
 
-        deselectGroupKeys();
         this.dimensionComponentDtos = dimensionComponentDtos;
         editionForm.getItem(GroupKeysDS.DIMENSIONS).setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
 
-        groupKeysGrid.selectAllRecords();
-        groupKeysGrid.removeSelectedData();
-        groupKeysGrid.deselectAllRecords();
-        for (DescriptorDto descriptorDto : descriptorDtos) {
-            GroupKeysRecord record = RecordUtils.getGroupKeysRecord(descriptorDto);
-            groupKeysGrid.addData(record);
-        }
+        groupKeysGrid.setData(RecordUtils.getGroupKeysRecords(descriptorDtos));
     }
 
     @Override
@@ -339,8 +333,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         return null;
     }
 
-    @Override
-    public void setGroupKeys(DescriptorDto descriptorDto) {
+    private void setGroupKeys(DescriptorDto descriptorDto) {
         setGroupKeysViewMode(descriptorDto);
         setGroupKeysEditionMode(descriptorDto);
     }
@@ -407,18 +400,21 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
             groupKeysGrid.deselectAllRecords();
             setGroupKeysEditionMode(groupKeysSelected);
             mainFormLayout.setEditionMode();
+
+            selectedDescriptorLayout.show();
+            selectedDescriptorLayout.markForRedraw();
         } else {
             mainFormLayout.setTitleLabelContents(groupKeysSelected.getCode());
             showDeleteToolStripButton();
             setGroupKeys(groupKeysSelected);
             mainFormLayout.setViewMode();
+
+            selectedDescriptorLayout.show();
+            selectedDescriptorLayout.markForRedraw();
         }
 
         // Clear errors
         editionForm.clearErrors(true);
-
-        selectedDescriptorLayout.show();
-        selectedDescriptorLayout.redraw();
     }
 
     /**

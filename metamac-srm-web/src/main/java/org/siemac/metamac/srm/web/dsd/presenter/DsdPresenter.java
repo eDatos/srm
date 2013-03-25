@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -13,17 +14,16 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent;
-import org.siemac.metamac.srm.web.dsd.events.SelectDsdAndDescriptorsEvent.SelectDsdAndDescriptorsHandler;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent.SelectViewDsdDescriptorHandler;
-import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent;
-import org.siemac.metamac.srm.web.dsd.events.UpdateDsdEvent.UpdateDsdHandler;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdUiHandlers;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
@@ -50,12 +50,10 @@ import com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
 import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 
-public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.DsdProxy> implements DsdUiHandlers, SelectDsdAndDescriptorsHandler, UpdateDsdHandler, SelectViewDsdDescriptorHandler {
+public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.DsdProxy> implements DsdUiHandlers, SelectViewDsdDescriptorHandler {
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
-
-    private DataStructureDefinitionMetamacDto         dsd;
 
     /**
      * Use this in leaf presenters, inside their {@link #revealInParent} method.
@@ -190,34 +188,19 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         super.onReveal();
         MainPagePresenter.getMasterHead().setTitleLabel(MetamacSrmWeb.getConstants().dsd());
         SelectMenuButtonEvent.fire(DsdPresenter.this, ToolStripButtonEnum.DSD_LIST);
+
+        // Load DSD
+        String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
+        if (!StringUtils.isBlank(dsdIdentifier)) {
+            String dsdUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier);
+            retrieveDsd(dsdUrn);
+            retrieveDsdVersions(dsdUrn);
+        }
     }
 
     @Override
     protected void onHide() {
         super.onHide();
-    }
-
-    @ProxyEvent
-    @Override
-    public void onSelectDsdAndDescriptors(SelectDsdAndDescriptorsEvent event) {
-        dsd = event.getDataStructureDefinitionDto();
-        getView().setDsd(dsd);
-        // Select general tab
-        getView().getDsdTabSet().selectTab(0);
-        if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdGeneralPage));
-        } else {
-            placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdGeneralPage), -1);
-        }
-
-        retrieveDsdVersions(dsd.getUrn());
-    }
-
-    @ProxyEvent
-    @Override
-    public void onUpdateDsd(UpdateDsdEvent event) {
-        dsd = event.getDataStructureDefinitionDto();
-        getView().setDsd(dsd);
     }
 
     @ProxyEvent
@@ -239,7 +222,21 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         }
     }
 
-    public void retrieveDsdVersions(String dsdUrn) {
+    private void retrieveDsd(String urn) {
+        dispatcher.execute(new GetDsdAction(urn), new WaitingAsyncCallback<GetDsdResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetDsdResult result) {
+                getView().setDsd(result.getDsd());
+            }
+        });
+    }
+
+    private void retrieveDsdVersions(String dsdUrn) {
         dispatcher.execute(new GetDsdVersionsAction(dsdUrn), new WaitingAsyncCallback<GetDsdVersionsResult>() {
 
             @Override

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
-import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -34,9 +33,11 @@ public class GetDsdAndDescriptorsActionHandler extends SecurityActionHandler<Get
 
     @Override
     public GetDsdAndDescriptorsResult executeSecurityAction(GetDsdAndDescriptorsAction action) throws ActionException {
-        List<DescriptorDto> groupKeys = null;
 
+        // ----------------------------------------------------------------------------------------
         // DSD
+        // ----------------------------------------------------------------------------------------
+
         DataStructureDefinitionMetamacDto dsd;
         try {
             dsd = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getDsdUrn());
@@ -45,62 +46,81 @@ public class GetDsdAndDescriptorsActionHandler extends SecurityActionHandler<Get
             throw WebExceptionUtils.createMetamacWebException(e1);
         }
 
+        // ----------------------------------------------------------------------------------------
         // Primary Measure
-        DescriptorDto primaryMeasure = new DescriptorDto();
-        primaryMeasure.setTypeComponentList(TypeComponentList.MEASURE_DESCRIPTOR);
-        try {
-            List<DescriptorDto> measureDescriptorDtos = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsd.getUrn(),
-                    TypeComponentList.MEASURE_DESCRIPTOR);
-            if (!measureDescriptorDtos.isEmpty()) {
-                primaryMeasure = measureDescriptorDtos.get(0);
+        // ----------------------------------------------------------------------------------------
+
+        DescriptorDto primaryMeasure = null;
+        if (action.getDescriptorsToRetrieve().contains(TypeComponentList.MEASURE_DESCRIPTOR)) {
+            primaryMeasure = new DescriptorDto();
+            primaryMeasure.setTypeComponentList(TypeComponentList.MEASURE_DESCRIPTOR);
+            try {
+                List<DescriptorDto> measureDescriptorDtos = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsd.getUrn(),
+                        TypeComponentList.MEASURE_DESCRIPTOR);
+                if (!measureDescriptorDtos.isEmpty()) {
+                    primaryMeasure = measureDescriptorDtos.get(0);
+                }
+            } catch (MetamacException e) {
+                logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + dsd.getId() + " and typeComponentList = " + TypeComponentList.MEASURE_DESCRIPTOR + ". " + e.getMessage());
+                throw WebExceptionUtils.createMetamacWebException(e);
             }
-        } catch (MetamacException e) {
-            logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + dsd.getId() + " and typeComponentList = " + TypeComponentList.MEASURE_DESCRIPTOR + ". " + e.getMessage());
-            throw WebExceptionUtils.createMetamacWebException(e);
         }
 
+        // ----------------------------------------------------------------------------------------
         // Dimensions
-        DescriptorDto dimensions = new DescriptorDto();
-        dimensions.setTypeComponentList(TypeComponentList.DIMENSION_DESCRIPTOR);
-        try {
-            List<DescriptorDto> dimensionDescriptorDtos = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsd.getUrn(),
-                    TypeComponentList.DIMENSION_DESCRIPTOR);
-            if (!dimensionDescriptorDtos.isEmpty()) {
-                dimensions = dimensionDescriptorDtos.get(0);
+        // ----------------------------------------------------------------------------------------
+
+        DescriptorDto dimensions = null;
+        if (action.getDescriptorsToRetrieve().contains(TypeComponentList.DIMENSION_DESCRIPTOR)) {
+            dimensions = new DescriptorDto();
+            dimensions.setTypeComponentList(TypeComponentList.DIMENSION_DESCRIPTOR);
+            try {
+                List<DescriptorDto> dimensionDescriptorDtos = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsd.getUrn(),
+                        TypeComponentList.DIMENSION_DESCRIPTOR);
+                if (!dimensionDescriptorDtos.isEmpty()) {
+                    dimensions = dimensionDescriptorDtos.get(0);
+                }
+            } catch (MetamacException e) {
+                logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + dsd.getId() + " and typeComponentList = " + TypeComponentList.DIMENSION_DESCRIPTOR + ". " + e.getMessage());
+                throw WebExceptionUtils.createMetamacWebException(e);
             }
-        } catch (MetamacException e) {
-            logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + dsd.getId() + " and typeComponentList = " + TypeComponentList.DIMENSION_DESCRIPTOR + ". " + e.getMessage());
-            throw WebExceptionUtils.createMetamacWebException(e);
         }
 
+        // ----------------------------------------------------------------------------------------
         // Attributes
-        DescriptorDto attributes = new DescriptorDto();
-        attributes.setTypeComponentList(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
-        try {
-            List<DescriptorDto> attributeDescriptorDtos = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsd.getUrn(),
-                    TypeComponentList.ATTRIBUTE_DESCRIPTOR);
-            if (!attributeDescriptorDtos.isEmpty()) {
-                attributes = attributeDescriptorDtos.get(0);
+        // ----------------------------------------------------------------------------------------
+
+        DescriptorDto attributes = null;
+        if (action.getDescriptorsToRetrieve().contains(TypeComponentList.ATTRIBUTE_DESCRIPTOR)) {
+            attributes = new DescriptorDto();
+            attributes.setTypeComponentList(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
+            try {
+                List<DescriptorDto> attributeDescriptorDtos = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsd.getUrn(),
+                        TypeComponentList.ATTRIBUTE_DESCRIPTOR);
+                if (!attributeDescriptorDtos.isEmpty()) {
+                    attributes = attributeDescriptorDtos.get(0);
+                }
+            } catch (MetamacException e) {
+                logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + dsd.getId() + " and typeComponentList = " + TypeComponentList.ATTRIBUTE_DESCRIPTOR + ". " + e.getMessage());
+                throw WebExceptionUtils.createMetamacWebException(e);
             }
-        } catch (MetamacException e) {
-            logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + dsd.getId() + " and typeComponentList = " + TypeComponentList.ATTRIBUTE_DESCRIPTOR + ". " + e.getMessage());
-            throw WebExceptionUtils.createMetamacWebException(e);
         }
 
+        // ----------------------------------------------------------------------------------------
         // Group keys
-        try {
-            groupKeys = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsd.getUrn(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
-        } catch (MetamacException e) {
-            logger.log(Level.SEVERE, "Error in findDescriptorForDsd with idDsd =  " + dsd.getId() + " and typeComponentList = " + TypeComponentList.GROUP_DIMENSION_DESCRIPTOR + ". " + e.getMessage());
-            throw WebExceptionUtils.createMetamacWebException(e);
+        // ----------------------------------------------------------------------------------------
+
+        List<DescriptorDto> groupKeys = null;
+        if (action.getDescriptorsToRetrieve().contains(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR)) {
+            try {
+                groupKeys = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), dsd.getUrn(), TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
+            } catch (MetamacException e) {
+                logger.log(Level.SEVERE,
+                        "Error in findDescriptorForDsd with idDsd =  " + dsd.getId() + " and typeComponentList = " + TypeComponentList.GROUP_DIMENSION_DESCRIPTOR + ". " + e.getMessage());
+                throw WebExceptionUtils.createMetamacWebException(e);
+            }
         }
 
         return new GetDsdAndDescriptorsResult(dsd, primaryMeasure, dimensions, attributes, groupKeys);
     }
-
-    @Override
-    public void undo(GetDsdAndDescriptorsAction action, GetDsdAndDescriptorsResult result, ExecutionContext context) throws ActionException {
-
-    }
-
 }
