@@ -62,8 +62,8 @@ Application DsdsMetamac {
     		@DataStructureDefinitionVersionMetamac createTemporalVersionDataStructureDefinition(String urnToCopy) throws MetamacException;
     		"Ends the data structure definition validity"
     		@DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(String urn) throws MetamacException;
-			"Checks translations for data structure definition"
-    		List<MetamacExceptionItem> checkDataStructureDefinitionTranslations(Long structureVersionId, String locale);
+//			"Checks translations for data structure definition"
+//    		List<MetamacExceptionItem> checkDataStructureDefinitionTranslations(Long structureVersionId, String locale);
    		
     		"Find concept schemes with concepts can be primary measure"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
@@ -133,7 +133,7 @@ Application DsdsMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				@DataStructureDefinitionVersionMetamac findByUrn(String urn);
 				@DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(String urn, ArrayProcStatusEnum procStatusArray) throws MetamacException;
-				checkDataStructureDefinitionVersionTranslations(Long structureVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+//				checkDataStructureDefinitionVersionTranslations(Long structureVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}			
 		}
 		
