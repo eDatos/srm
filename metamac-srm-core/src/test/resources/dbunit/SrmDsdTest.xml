@@ -2880,7 +2880,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="417"
-        ANNOTABLE_ARTEFACT_TYPE="DataAttribute"
+        ANNOTABLE_ARTEFACT_TYPE="DATA_ATTRIBUTE"
         COMPONENT_TYPE="DATA_ATTRIBUTE"
         
         CODE="dataAttribute-01"
@@ -2934,7 +2934,7 @@
  
     <TB_ANNOTABLE_ARTEFACTS 
         ID="418"
-        ANNOTABLE_ARTEFACT_TYPE="AttributeDescriptor"
+        ANNOTABLE_ARTEFACT_TYPE="ATTRIBUTE_DESCRIPTOR"
         
         CODE="AttributeDescriptor"
         URI_PROVIDER="[null]"
@@ -2991,7 +2991,7 @@
 
     <TB_ANNOTABLE_ARTEFACTS 
         ID="412"
-        ANNOTABLE_ARTEFACT_TYPE="MeasureDimension"
+        ANNOTABLE_ARTEFACT_TYPE="MEASURE_DIMENSION"
         COMPONENT_TYPE="DIMENSION_COMPONENT"
         
         CODE="measureDimension-01"
@@ -3042,7 +3042,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="413"
-        ANNOTABLE_ARTEFACT_TYPE="DimensionDescriptor"
+        ANNOTABLE_ARTEFACT_TYPE="DIMENSION_DESCRIPTOR"
         
         CODE="DimensionDescriptor"
         URI_PROVIDER="[null]"
@@ -3305,7 +3305,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="612"
-        ANNOTABLE_ARTEFACT_TYPE="MeasureDimension"
+        ANNOTABLE_ARTEFACT_TYPE="MEASURE_DIMENSION"
         COMPONENT_TYPE="DIMENSION_COMPONENT"
         
         CODE="measureDimension-01"
@@ -3356,7 +3356,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="613"
-        ANNOTABLE_ARTEFACT_TYPE="DimensionDescriptor"
+        ANNOTABLE_ARTEFACT_TYPE="DIMENSION_DESCRIPTOR"
         
         CODE="DimensionDescriptor"
         URI_PROVIDER="[null]"
@@ -3395,7 +3395,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="614"
-        ANNOTABLE_ARTEFACT_TYPE="Dimension"
+        ANNOTABLE_ARTEFACT_TYPE="DIMENSION"
         COMPONENT_TYPE="DIMENSION_COMPONENT"
         
         CODE="dim-01"
@@ -3446,7 +3446,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="615"
-        ANNOTABLE_ARTEFACT_TYPE="TimeDimension"
+        ANNOTABLE_ARTEFACT_TYPE="TIME_DIMENSION"
         COMPONENT_TYPE="DIMENSION_COMPONENT"
         
         CODE="TIME_PERIOD"
@@ -3489,7 +3489,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="616"
-        ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
+        ANNOTABLE_ARTEFACT_TYPE="GROUP_DIMENSION_DESCRIPTOR"
         
         CODE="groupDimensionDescriptor01"
         URI_PROVIDER="[null]"
@@ -3528,7 +3528,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="617"
-        ANNOTABLE_ARTEFACT_TYPE="DataAttribute"
+        ANNOTABLE_ARTEFACT_TYPE="DATA_ATTRIBUTE"
         COMPONENT_TYPE="DATA_ATTRIBUTE"
         
         CODE="dataAttribute-01"
@@ -3582,7 +3582,7 @@
  
  	<TB_ANNOTABLE_ARTEFACTS 
         ID="618"
-        ANNOTABLE_ARTEFACT_TYPE="AttributeDescriptor"
+        ANNOTABLE_ARTEFACT_TYPE="ATTRIBUTE_DESCRIPTOR"
         
         CODE="AttributeDescriptor"
         URI_PROVIDER="[null]"
@@ -3621,7 +3621,7 @@
        
     <TB_ANNOTABLE_ARTEFACTS 
         ID="619"
-        ANNOTABLE_ARTEFACT_TYPE="PrimaryMeasure"
+        ANNOTABLE_ARTEFACT_TYPE="PRIMARY_MEASURE"
         COMPONENT_TYPE="PRIMARY_MEASURE"
         
         CODE="OBS_VALUE"
@@ -3664,7 +3664,7 @@
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="620"
-        ANNOTABLE_ARTEFACT_TYPE="MeasureDescriptor"
+        ANNOTABLE_ARTEFACT_TYPE="MEASURE_DESCRIPTOR"
         
         CODE="MeasureDescriptor"
         URI_PROVIDER="[null]"
@@ -4009,7 +4009,7 @@
                 
         <TB_ANNOTABLE_ARTEFACTS 
             ID="712"
-            ANNOTABLE_ARTEFACT_TYPE="MeasureDimension"
+            ANNOTABLE_ARTEFACT_TYPE="MEASURE_DIMENSION"
             COMPONENT_TYPE="DIMENSION_COMPONENT"
         
             CODE="measureDimension-01"
@@ -4060,7 +4060,7 @@
     
         <TB_ANNOTABLE_ARTEFACTS
             ID="713"
-            ANNOTABLE_ARTEFACT_TYPE="DimensionDescriptor"
+            ANNOTABLE_ARTEFACT_TYPE="DIMENSION_DESCRIPTOR"
         
             CODE="DimensionDescriptor"
             URI_PROVIDER="[null]"
@@ -4123,7 +4123,7 @@
     
         <TB_ANNOTABLE_ARTEFACTS 
             ID="714"
-            ANNOTABLE_ARTEFACT_TYPE="Dimension"
+            ANNOTABLE_ARTEFACT_TYPE="DIMENSION"
             COMPONENT_TYPE="DIMENSION_COMPONENT"
             SPECIAL_DIMENSION_TYPE="SPATIAL"
             
@@ -4175,7 +4175,7 @@
     
         <TB_ANNOTABLE_ARTEFACTS 
             ID="715"
-            ANNOTABLE_ARTEFACT_TYPE="TimeDimension"
+            ANNOTABLE_ARTEFACT_TYPE="TIME_DIMENSION"
             COMPONENT_TYPE="DIMENSION_COMPONENT"
             
             CODE="TIME_PERIOD"
@@ -4218,7 +4218,7 @@
         
         <TB_ANNOTABLE_ARTEFACTS 
             ID="716"
-            ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
+            ANNOTABLE_ARTEFACT_TYPE="GROUP_DIMENSION_DESCRIPTOR"
             
             CODE="groupDimensionDescriptor01"
             URI_PROVIDER="[null]"
@@ -4269,7 +4269,7 @@
         
         <TB_ANNOTABLE_ARTEFACTS 
             ID="717"
-            ANNOTABLE_ARTEFACT_TYPE="DataAttribute"
+            ANNOTABLE_ARTEFACT_TYPE="DATA_ATTRIBUTE"
             COMPONENT_TYPE="DATA_ATTRIBUTE"
             
             CODE="dataAttribute-01"
@@ -4323,7 +4323,7 @@
  
         <TB_ANNOTABLE_ARTEFACTS 
             ID="718"
-            ANNOTABLE_ARTEFACT_TYPE="AttributeDescriptor"
+            ANNOTABLE_ARTEFACT_TYPE="ATTRIBUTE_DESCRIPTOR"
             
             CODE="AttributeDescriptor"
             URI_PROVIDER="[null]"
@@ -4374,7 +4374,7 @@
            
         <TB_ANNOTABLE_ARTEFACTS 
             ID="719"
-            ANNOTABLE_ARTEFACT_TYPE="PrimaryMeasure"
+            ANNOTABLE_ARTEFACT_TYPE="PRIMARY_MEASURE"
             COMPONENT_TYPE="PRIMARY_MEASURE"
             
             CODE="OBS_VALUE"
@@ -4417,7 +4417,7 @@
         
         <TB_ANNOTABLE_ARTEFACTS 
             ID="720"
-            ANNOTABLE_ARTEFACT_TYPE="MeasureDescriptor"
+            ANNOTABLE_ARTEFACT_TYPE="MEASURE_DESCRIPTOR"
             
             CODE="MeasureDescriptor"
             URI_PROVIDER="[null]"
@@ -4469,7 +4469,7 @@
             
         <TB_ANNOTABLE_ARTEFACTS 
             ID="721"
-            ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
+            ANNOTABLE_ARTEFACT_TYPE="GROUP_DIMENSION_DESCRIPTOR"
             
             CODE="groupDimensionDescriptor02"
             URI_PROVIDER="[null]"
@@ -4520,7 +4520,7 @@
             
         <TB_ANNOTABLE_ARTEFACTS 
             ID="722"
-            ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
+            ANNOTABLE_ARTEFACT_TYPE="GROUP_DIMENSION_DESCRIPTOR"
             
             CODE="groupDimensionDescriptor03"
             URI_PROVIDER="[null]"
@@ -4571,7 +4571,7 @@
             
         <TB_ANNOTABLE_ARTEFACTS 
             ID="723"
-            ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
+            ANNOTABLE_ARTEFACT_TYPE="GROUP_DIMENSION_DESCRIPTOR"
             
             CODE="groupDimensionDescriptor04"
             URI_PROVIDER="[null]"
