@@ -45,7 +45,7 @@ public abstract class ImportationMetamacCommonValidations {
             }
         }
 
-        // Check: Unable to import artifacts with value of TRUE in the field isPartial. // TODO y los AgencyScheme?
+        // Check: Unable to import artifacts with value of TRUE in the field isPartial.
         if (BooleanUtils.isTrue(source.getIsPartial())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL).build();
         }
