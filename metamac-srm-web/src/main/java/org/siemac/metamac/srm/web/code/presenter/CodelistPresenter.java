@@ -12,8 +12,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOpennessVisualisationDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistOrderVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -140,12 +139,12 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setCodes(List<CodeMetamacVisualisationResult> codes);
 
         // Orders
-        void setCodesWithOrder(List<CodeMetamacVisualisationResult> codes, CodelistOrderVisualisationDto codelistOrder);
-        void setCodelistOrders(List<CodelistOrderVisualisationDto> orders);
+        void setCodesWithOrder(List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrder);
+        void setCodelistOrders(List<CodelistVisualisationDto> orders);
 
         // Openness levels
-        void setCodesWithOpennessLevel(List<CodeMetamacVisualisationResult> codes, CodelistOpennessVisualisationDto codelistOpennessVisualisationDto);
-        void setCodelistOpennessLevels(List<CodelistOpennessVisualisationDto> opennessLevels);
+        void setCodesWithOpennessLevel(List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOpennessVisualisationDto);
+        void setCodelistOpennessLevels(List<CodelistVisualisationDto> opennessLevels);
 
         // Complex codelists
         void setCodelistsToCreateComplexCodelist(GetCodelistsResult result);
@@ -494,7 +493,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void saveCodelistOrder(final CodelistOrderVisualisationDto codelistOrderVisualisationDto) {
+    public void saveCodelistOrder(final CodelistVisualisationDto codelistOrderVisualisationDto) {
         dispatcher.execute(new SaveCodelistOrderAction(codelistMetamacDto.getUrn(), codelistOrderVisualisationDto), new WaitingAsyncCallback<SaveCodelistOrderResult>() {
 
             @Override
@@ -577,7 +576,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void saveCodelistOpennessLevel(CodelistOpennessVisualisationDto codelistOpennessVisualisationDto) {
+    public void saveCodelistOpennessLevel(CodelistVisualisationDto codelistOpennessVisualisationDto) {
         dispatcher.execute(new SaveCodelistOpennessLevelAction(codelistMetamacDto.getUrn(), codelistOpennessVisualisationDto), new WaitingAsyncCallback<SaveCodelistOpennessLevelResult>() {
 
             @Override
