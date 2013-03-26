@@ -291,7 +291,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             dsdsMetamacService.publishInternallyDataStructureDefinition(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("DataStructureDefinition wrong translations");
         } catch (MetamacException e) {
-            assertEquals(6, e.getExceptionItems().size());
+            assertEquals(11, e.getExceptionItems().size());
             int i = 0;
             // DataStructureDefinition
             assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
@@ -306,6 +306,15 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
                     .getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.GROUP_DIMENSION_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"groupDimensionDescriptor03"}, e
                     .getExceptionItems().get(i++));
+            // Components
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.DIMENSION_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"dim-01"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.DIMENSION_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"TIME_PERIOD"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.DATA_ATTRIBUTE_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"dataAttribute-01"}, e.getExceptionItems()
+                    .get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.DATA_ATTRIBUTE_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"dataAttribute-03"}, e.getExceptionItems()
+                    .get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.PRIMARY_MEASURE_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"OBS_VALUE"}, e.getExceptionItems().get(i++));
+
             assertEquals(e.getExceptionItems().size(), i);
         }
     }

@@ -4049,6 +4049,19 @@
             CONCEPT_IDENTITY_FK="10311"
             REPRESENTATION_FK="71"
         />
+        
+            <TB_ANNOTATIONS
+                ID="7121"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7121"
+                TYPE="type-annotation7121"    
+                URL="http://annotation7121"
+                UUID="annotation-7121"
+                VERSION="1"
+                TEXT_FK="134"
+                ANNOTABLE_ARTEFACT_FK="712"
+            />
+        
     
     <!--     <TB_MEASURE_DIMEN_EI_ROLES -->
     <!--         TB_MEASURE_DIMENSIONS="712" -->
@@ -4117,7 +4130,7 @@
                 URL="http://annotation7132"
                 UUID="annotation-7132"
                 VERSION="1"
-                TEXT_FK="126"
+                TEXT_FK="134"
                 ANNOTABLE_ARTEFACT_FK="713"
             />                
     
@@ -4164,6 +4177,18 @@
             CONCEPT_IDENTITY_FK="10311"
             REPRESENTATION_FK="72"
         />
+            
+             <TB_ANNOTATIONS
+                    ID="7141"
+                    CODE="ANNOTATION02"
+                    TITLE="title-annotation7141"
+                    TYPE="type-annotation7141"    
+                    URL="http://annotation7141"
+                    UUID="annotation-7141"
+                    VERSION="1"
+                    TEXT_FK="135"
+                    ANNOTABLE_ARTEFACT_FK="714"
+                />    
     
         <TB_DIMENSIONS_EI_ROLES
             TB_DIMENSIONS="714"
@@ -4180,8 +4205,8 @@
             
             CODE="TIME_PERIOD"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION07(01.000).timeDimension-01"
-            URN="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION07(01.000).timeDimension-01"
+            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION07(01.000).TIME_PERIOD"
+            URN="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION07(01.000).TIME_PERIOD"
             REPLACED_BY_VERSION="[null]"
             REPLACE_TO_VERSION="[null]"
             
@@ -4216,6 +4241,18 @@
             REPRESENTATION_FK="73"
         />
         
+             <TB_ANNOTATIONS
+                    ID="7151"
+                    CODE="ANNOTATION02"
+                    TITLE="title-annotation7151"
+                    TYPE="type-annotation7151"    
+                    URL="http://annotation7151"
+                    UUID="annotation-7151"
+                    VERSION="1"
+                    TEXT_FK="136"
+                    ANNOTABLE_ARTEFACT_FK="715"
+                />            
+                
         <TB_ANNOTABLE_ARTEFACTS 
             ID="716"
             ANNOTABLE_ARTEFACT_TYPE="GROUP_DIMENSION_DESCRIPTOR"
@@ -4312,6 +4349,18 @@
             CONCEPT_IDENTITY_FK="10311"
             REPRESENTATION_FK="[NULL]"
         />
+        
+         <TB_ANNOTATIONS
+                ID="7171"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7171"
+                TYPE="type-annotation7171"    
+                URL="http://annotation7171"
+                UUID="annotation-7171"
+                VERSION="1"
+                TEXT_FK="137"
+                ANNOTABLE_ARTEFACT_FK="717"
+            />  
  
         <TB_DATA_ATTRIBUTES_EI_ROLES
             TB_DATA_ATTRIBUTES="717"
@@ -4414,6 +4463,18 @@
             CONCEPT_IDENTITY_FK="10311"
             REPRESENTATION_FK="74"
         />   
+        
+             <TB_ANNOTATIONS
+                ID="7191"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7191"
+                TYPE="type-annotation7191"    
+                URL="http://annotation7191"
+                UUID="annotation-7191"
+                VERSION="1"
+                TEXT_FK="138"
+                ANNOTABLE_ARTEFACT_FK="719"
+            />              
         
         <TB_ANNOTABLE_ARTEFACTS 
             ID="720"
@@ -4633,6 +4694,123 @@
             />                                       
                                                           
           
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="724"
+            ANNOTABLE_ARTEFACT_TYPE="DATA_ATTRIBUTE"
+            COMPONENT_TYPE="DATA_ATTRIBUTE"
+            
+            CODE="dataAttribute-02"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION07(01.000).dataAttribute-02"
+            URN="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION07(01.000).dataAttribute-02"
+            REPLACED_BY_VERSION="[null]"
+            REPLACE_TO_VERSION="[null]"
+            
+            NAME_FK="[null]"
+            
+            VERSION_LOGIC="[null]"
+            FINAL_LOGIC="[null]"
+            FINAL_LOGIC_CLIENT="[null]"
+            LATEST_FINAL="[null]"
+            PUBLIC_LOGIC="[null]"
+            LATEST_PUBLIC="[null]"
+            VALID_FROM_TZ="[null]"
+            VALID_FROM="[null]" 
+            VALID_TO_TZ="[null]"
+            VALID_TO="[null]"
+            IS_EXTERNAL_REFERENCE="[null]"
+            STRUCTURE_URL="[null]"
+            SERVICE_URL="[null]"
+            IS_LAST_VERSION="1"
+            MAINTAINER_FK="[null]"
+            
+            UUID="dsd-07-v1-dataAttribute-02"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+            
+            RELATE_TO="71"
+            USAGE_STATUS="CONDITIONAL"
+            
+            CONCEPT_IDENTITY_FK="10311"
+            REPRESENTATION_FK="[NULL]"
+        />
+        
+         <TB_ANNOTATIONS
+                ID="7241"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7241"
+                TYPE="type-annotation7241"    
+                URL="http://annotation7241"
+                UUID="annotation-7241"
+                VERSION="1"
+                TEXT_FK="139"
+                ANNOTABLE_ARTEFACT_FK="724"
+            />     
+            
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="725"
+            ANNOTABLE_ARTEFACT_TYPE="DATA_ATTRIBUTE"
+            COMPONENT_TYPE="DATA_ATTRIBUTE"
+            
+            CODE="dataAttribute-03"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION07(01.000).dataAttribute-03"
+            URN="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION07(01.000).dataAttribute-03"
+            REPLACED_BY_VERSION="[null]"
+            REPLACE_TO_VERSION="[null]"
+            
+            NAME_FK="[null]"
+            
+            VERSION_LOGIC="[null]"
+            FINAL_LOGIC="[null]"
+            FINAL_LOGIC_CLIENT="[null]"
+            LATEST_FINAL="[null]"
+            PUBLIC_LOGIC="[null]"
+            LATEST_PUBLIC="[null]"
+            VALID_FROM_TZ="[null]"
+            VALID_FROM="[null]" 
+            VALID_TO_TZ="[null]"
+            VALID_TO="[null]"
+            IS_EXTERNAL_REFERENCE="[null]"
+            STRUCTURE_URL="[null]"
+            SERVICE_URL="[null]"
+            IS_LAST_VERSION="1"
+            MAINTAINER_FK="[null]"
+            
+            UUID="dsd-07-v1-dataAttribute-03"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+            
+            RELATE_TO="71"
+            USAGE_STATUS="CONDITIONAL"
+            
+            CONCEPT_IDENTITY_FK="10311"
+            REPRESENTATION_FK="[NULL]"
+        />
+        
+         <TB_ANNOTATIONS
+                ID="7251"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7251"
+                TYPE="type-annotation7251"    
+                URL="http://annotation7251"
+                UUID="annotation-7251"
+                VERSION="1"
+                TEXT_FK="140"
+                ANNOTABLE_ARTEFACT_FK="725"
+            />            
+                               
+            
         <TB_ATTR_RELATIONSHIPS  
             ID="71"
             UUID="dsd-07-v1-attr-rel-01"
@@ -4665,6 +4843,16 @@
             COMPONENT_FK="717"
             COMPONENT_LIST_FK="718"
         />
+        
+        <TB_COMPONENTLIST_COMPONENT
+            COMPONENT_FK="724"
+            COMPONENT_LIST_FK="718"
+        />
+        
+        <TB_COMPONENTLIST_COMPONENT
+            COMPONENT_FK="725"
+            COMPONENT_LIST_FK="718"
+        />                
         
         <TB_COMPONENTLIST_COMPONENT
             COMPONENT_FK="719"
@@ -5836,13 +6024,119 @@
         INTERNATIONAL_STRING_FK="133"
     />      
     
-    
     <TB_LOCALISED_STRINGS
         ID="1332"
         LABEL="annotation 2 it dsd-7-1 group descriptor 4"
         LOCALE="it"
         VERSION="1"
         INTERNATIONAL_STRING_FK="133"
-    />                         
-                        
+    />        
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="134"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1341"
+        LABEL="annotation 1 es dsd-7-1 measure"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="134"
+    />    
+
+    <TB_LOCALISED_STRINGS
+        ID="1342"
+        LABEL="annotation 1 dsd-7-1 measure"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="134"
+    />            
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="135"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1351"
+        LABEL="annotation 1 it dsd-7-1 dim01"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="135"
+    />    
+
+    <TB_LOCALISED_STRINGS
+        ID="1352"
+        LABEL="annotation 1 dsd-7-1 dim01"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="135"
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="136"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1361"
+        LABEL="annotation 1 en dsd-7-1 time-dim"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="136"
+    />               
+        
+    <TB_INTERNATIONAL_STRINGS
+        ID="137"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1371"
+        LABEL="annotation 1 en dsd-7-1 attr1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="137"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="138"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1381"
+        LABEL="annotation 1 en dsd-7-1 obs-value"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="138"
+    />   
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="139"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1391"
+        LABEL="annotation 1 es dsd-7-1 attr2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="139"
+    /> 
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="140"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1401"
+        LABEL="annotation 1 es dsd-7-1 attr3"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="140"
+    />                             
+                                 
 </dataset>
