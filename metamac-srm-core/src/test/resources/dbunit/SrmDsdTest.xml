@@ -2971,13 +2971,13 @@
         LAST_UPDATED_TZ="Europe/London"
     />    
     
-    <TB_COMPLIST_COMP
+    <TB_COMPONENTLIST_COMPONENT
         COMPONENT_FK="417"
-        COMPONENTLIST_FK="418"
+        COMPONENT_LIST_FK="418"
     />
 
-    <TB_STRVERSION_COMPLIST
-        STRUCTUREVERSION_FK="41"
+    <TB_STRVERSION_COMPONENTLIST
+        STRUCTURE_VERSION_FK="41"
         COMPONENT_LIST_FK="418"
     />    
     
@@ -3079,13 +3079,13 @@
         LAST_UPDATED_TZ="Europe/London"
     />    
     
-    <TB_COMPLIST_COMP
+    <TB_COMPONENTLIST_COMPONENT
         COMPONENT_FK="412"
-        COMPONENTLIST_FK="413"
+        COMPONENT_LIST_FK="413"
     />
     
-    <TB_STRVERSION_COMPLIST
-        STRUCTUREVERSION_FK="41"
+    <TB_STRVERSION_COMPONENTLIST
+        STRUCTURE_VERSION_FK="41"
         COMPONENT_LIST_FK="413"
     />    
     
@@ -3710,34 +3710,34 @@
         GROUP_KEY="[null]"
     />
     
-    <TB_COMPLIST_COMP
+    <TB_COMPONENTLIST_COMPONENT
     	COMPONENT_FK="612"
-    	COMPONENTLIST_FK="613"
+    	COMPONENT_LIST_FK="613"
     />
     
-    <TB_COMPLIST_COMP
+    <TB_COMPONENTLIST_COMPONENT
     	COMPONENT_FK="612"
-    	COMPONENTLIST_FK="616"
+    	COMPONENT_LIST_FK="616"
     />
     
-    <TB_COMPLIST_COMP
+    <TB_COMPONENTLIST_COMPONENT
     	COMPONENT_FK="614"
-    	COMPONENTLIST_FK="613"
+    	COMPONENT_LIST_FK="613"
     />
     
-    <TB_COMPLIST_COMP
+    <TB_COMPONENTLIST_COMPONENT
     	COMPONENT_FK="615"
-    	COMPONENTLIST_FK="613"
+    	COMPONENT_LIST_FK="613"
     />
     
-    <TB_COMPLIST_COMP
+    <TB_COMPONENTLIST_COMPONENT
     	COMPONENT_FK="617"
-    	COMPONENTLIST_FK="618"
+    	COMPONENT_LIST_FK="618"
     />
     
-    <TB_COMPLIST_COMP
+    <TB_COMPONENTLIST_COMPONENT
     	COMPONENT_FK="619"
-    	COMPONENTLIST_FK="620"
+    	COMPONENT_LIST_FK="620"
     />
         
         
@@ -3753,23 +3753,23 @@
     />
     
     
-    <TB_STRVERSION_COMPLIST
-    	STRUCTUREVERSION_FK="61"
+    <TB_STRVERSION_COMPONENTLIST
+    	STRUCTURE_VERSION_FK="61"
     	COMPONENT_LIST_FK="613"
     />
     
-    <TB_STRVERSION_COMPLIST
-    	STRUCTUREVERSION_FK="61"
+    <TB_STRVERSION_COMPONENTLIST
+    	STRUCTURE_VERSION_FK="61"
     	COMPONENT_LIST_FK="616"
     />
     
-    <TB_STRVERSION_COMPLIST
-    	STRUCTUREVERSION_FK="61"
+    <TB_STRVERSION_COMPONENTLIST
+    	STRUCTURE_VERSION_FK="61"
     	COMPONENT_LIST_FK="618"
     />
     
-    <TB_STRVERSION_COMPLIST
-    	STRUCTUREVERSION_FK="61"
+    <TB_STRVERSION_COMPONENTLIST
+    	STRUCTURE_VERSION_FK="61"
     	COMPONENT_LIST_FK="620"
     />
     
@@ -4516,8 +4516,123 @@
                 VERSION="1"
                 TEXT_FK="130"
                 ANNOTABLE_ARTEFACT_FK="721"
-            />                       
-      
+            />         
+            
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="722"
+            ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
+            
+            CODE="groupDimensionDescriptor03"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor03"
+            URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor03"
+            REPLACED_BY_VERSION="[null]"
+            REPLACE_TO_VERSION="[null]"
+            
+            NAME_FK="[null]"
+            
+            VERSION_LOGIC="[null]"
+            FINAL_LOGIC="[null]"
+            FINAL_LOGIC_CLIENT="[null]"
+            LATEST_FINAL="[null]"
+            PUBLIC_LOGIC="[null]"
+            LATEST_PUBLIC="[null]"
+            VALID_FROM_TZ="[null]"
+            VALID_FROM="[null]" 
+            VALID_TO_TZ="[null]"
+            VALID_TO="[null]"
+            IS_EXTERNAL_REFERENCE="[null]"
+            STRUCTURE_URL="[null]"
+            SERVICE_URL="[null]"
+            IS_LAST_VERSION="1"
+            MAINTAINER_FK="[null]"
+            
+            UUID="dsd-07-v1-groupDimensionDescriptor03"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+
+            <TB_ANNOTATIONS
+                ID="7221"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7221"
+                TYPE="type-annotation7221"    
+                URL="http://annotation7221"
+                UUID="annotation-7221"
+                VERSION="1"
+                TEXT_FK="131"
+                ANNOTABLE_ARTEFACT_FK="722"
+            /> 
+            
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="723"
+            ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
+            
+            CODE="groupDimensionDescriptor04"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor04"
+            URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor04"
+            REPLACED_BY_VERSION="[null]"
+            REPLACE_TO_VERSION="[null]"
+            
+            NAME_FK="[null]"
+            
+            VERSION_LOGIC="[null]"
+            FINAL_LOGIC="[null]"
+            FINAL_LOGIC_CLIENT="[null]"
+            LATEST_FINAL="[null]"
+            PUBLIC_LOGIC="[null]"
+            LATEST_PUBLIC="[null]"
+            VALID_FROM_TZ="[null]"
+            VALID_FROM="[null]" 
+            VALID_TO_TZ="[null]"
+            VALID_TO="[null]"
+            IS_EXTERNAL_REFERENCE="[null]"
+            STRUCTURE_URL="[null]"
+            SERVICE_URL="[null]"
+            IS_LAST_VERSION="1"
+            MAINTAINER_FK="[null]"
+            
+            UUID="dsd-07-v1-groupDimensionDescriptor04"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:04"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:04"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+    
+            <TB_ANNOTATIONS
+                ID="7231"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7231"
+                TYPE="type-annotation7231"    
+                URL="http://annotation7231"
+                UUID="annotation-7231"
+                VERSION="1"
+                TEXT_FK="132"
+                ANNOTABLE_ARTEFACT_FK="723"
+            />   
+            
+            <TB_ANNOTATIONS
+                ID="7232"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7232"
+                TYPE="type-annotation7232"    
+                URL="http://annotation7232"
+                UUID="annotation-7232"
+                VERSION="1"
+                TEXT_FK="133"
+                ANNOTABLE_ARTEFACT_FK="723"
+            />                                       
+                                                          
+          
         <TB_ATTR_RELATIONSHIPS  
             ID="71"
             UUID="dsd-07-v1-attr-rel-01"
@@ -4526,34 +4641,34 @@
             GROUP_KEY="[null]"
         />
     
-        <TB_COMPLIST_COMP
+        <TB_COMPONENTLIST_COMPONENT
             COMPONENT_FK="712"
-            COMPONENTLIST_FK="713"
+            COMPONENT_LIST_FK="713"
         />
         
-        <TB_COMPLIST_COMP
+        <TB_COMPONENTLIST_COMPONENT
             COMPONENT_FK="712"
-            COMPONENTLIST_FK="716"
+            COMPONENT_LIST_FK="716"
         />
         
-        <TB_COMPLIST_COMP
+        <TB_COMPONENTLIST_COMPONENT
             COMPONENT_FK="714"
-            COMPONENTLIST_FK="713"
+            COMPONENT_LIST_FK="713"
         />
         
-        <TB_COMPLIST_COMP
+        <TB_COMPONENTLIST_COMPONENT
             COMPONENT_FK="715"
-            COMPONENTLIST_FK="713"
+            COMPONENT_LIST_FK="713"
         />
         
-        <TB_COMPLIST_COMP
+        <TB_COMPONENTLIST_COMPONENT
             COMPONENT_FK="717"
-            COMPONENTLIST_FK="718"
+            COMPONENT_LIST_FK="718"
         />
         
-        <TB_COMPLIST_COMP
+        <TB_COMPONENTLIST_COMPONENT
             COMPONENT_FK="719"
-            COMPONENTLIST_FK="720"
+            COMPONENT_LIST_FK="720"
         />
         
         
@@ -4569,31 +4684,41 @@
         />
     
     
-        <TB_STRVERSION_COMPLIST
-            STRUCTUREVERSION_FK="71"
+        <TB_STRVERSION_COMPONENTLIST
+            STRUCTURE_VERSION_FK="71"
             COMPONENT_LIST_FK="713"
         />
         
-        <TB_STRVERSION_COMPLIST
-            STRUCTUREVERSION_FK="71"
+        <TB_STRVERSION_COMPONENTLIST
+            STRUCTURE_VERSION_FK="71"
             COMPONENT_LIST_FK="716"
         />
         
-        <TB_STRVERSION_COMPLIST
-            STRUCTUREVERSION_FK="71"
+        <TB_STRVERSION_COMPONENTLIST
+            STRUCTURE_VERSION_FK="71"
             COMPONENT_LIST_FK="718"
         />
         
-        <TB_STRVERSION_COMPLIST
-            STRUCTUREVERSION_FK="71"
+        <TB_STRVERSION_COMPONENTLIST
+            STRUCTURE_VERSION_FK="71"
             COMPONENT_LIST_FK="720"
         />
     
-        <TB_STRVERSION_COMPLIST
-            STRUCTUREVERSION_FK="71"
+        <TB_STRVERSION_COMPONENTLIST
+            STRUCTURE_VERSION_FK="71"
             COMPONENT_LIST_FK="721"
         />    
+
+        <TB_STRVERSION_COMPONENTLIST
+            STRUCTURE_VERSION_FK="71"
+            COMPONENT_LIST_FK="722"
+        />    
         
+        <TB_STRVERSION_COMPONENTLIST
+            STRUCTURE_VERSION_FK="71"
+            COMPONENT_LIST_FK="723"
+        />    
+                        
         <TB_REPRESENTATIONS
             ID="71"
             UUID="tb_representations-71"
@@ -5670,6 +5795,54 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="130"
-    />                 
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="131"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1311"
+        LABEL="annotation 1 dsd-7-1 group descriptor 3"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="131"
+    /> 
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="132"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1321"
+        LABEL="annotation 1 dsd-7-1 group descriptor 4"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="132"
+    /> 
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="133"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1331"
+        LABEL="annotation 2 dsd-7-1 group descriptor 4"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="133"
+    />      
+    
+    
+    <TB_LOCALISED_STRINGS
+        ID="1332"
+        LABEL="annotation 2 it dsd-7-1 group descriptor 4"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="133"
+    />                         
                         
 </dataset>

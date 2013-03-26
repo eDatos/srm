@@ -291,18 +291,20 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             dsdsMetamacService.publishInternallyDataStructureDefinition(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("DataStructureDefinition wrong translations");
         } catch (MetamacException e) {
-            assertEquals(5, e.getExceptionItems().size());
+            assertEquals(6, e.getExceptionItems().size());
             int i = 0;
             // DataStructureDefinition
             assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
                     ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
-            // // Components List
+            // Components List
             assertEqualsMetamacExceptionItem(ServiceExceptionType.ATTRIBUTE_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"AttributeDescriptor"}, e
                     .getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.MEASURE_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"MeasureDescriptor"}, e.getExceptionItems()
                     .get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.GROUP_DIMENSION_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"groupDimensionDescriptor02"}, e
+                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.GROUP_DIMENSION_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"groupDimensionDescriptor03"}, e
                     .getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
