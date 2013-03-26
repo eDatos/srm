@@ -177,5 +177,16 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
         filterEditionHandler.removeHandler();
     }
 
+    protected void disableItemSchemeNode() {
+        RecordList recordList = getRecordList();
+        if (recordList != null && itemSchemeDto != null) {
+            Record record = recordList.find(ItemDS.URN, itemSchemeDto.getUrn());
+            if (record != null) {
+                int index = getRecordIndex(record);
+                getRecord(index).setEnabled(false);
+            }
+        }
+    }
+
     protected abstract void onNodeClick(String nodeName, String itemUrn);
 }
