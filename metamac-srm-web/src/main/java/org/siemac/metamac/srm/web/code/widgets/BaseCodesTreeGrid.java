@@ -34,7 +34,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
     protected BaseCodeUiHandlers       uiHandlers;
 
-    protected CodelistVisualisationDto codelistOrderVisualisationDto; // This field is only filled by the CodesOrderTreeGrid class
+    protected CodelistVisualisationDto codelistVisualisationDto;     // This field is only filled by the CodesOrderTreeGrid and CodesOpennessLevel classes
 
     /**
      * Create a {@link BaseCodesTreeGrid}. This tree will be extended by {@link CodesTreeGrid} and {@link CodesOrderTreeGrid}.
@@ -105,8 +105,8 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
                         if (canOrderBeModified && CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
 
                             // Only update order if there is an order selected and it is not the alphabetical one
-                            if (codelistOrderVisualisationDto != null && !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistOrderVisualisationDto.getCode())) {
-                                uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistOrderVisualisationDto.getUrn(), relativePosition);
+                            if (codelistVisualisationDto != null && !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistVisualisationDto.getCode())) {
+                                uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistVisualisationDto.getUrn(), relativePosition);
                             }
                         }
                     }

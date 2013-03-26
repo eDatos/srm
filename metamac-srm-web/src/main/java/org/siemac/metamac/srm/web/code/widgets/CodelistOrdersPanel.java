@@ -40,7 +40,7 @@ public class CodelistOrdersPanel extends VLayout {
     }
 
     public void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrderVisualisationDto) {
-        codelistOrdersSectionStack.selectCodelistOrder(codelistOrderVisualisationDto.getUrn());
+        codelistOrdersSectionStack.selectCodelistVisualisation(codelistOrderVisualisationDto.getUrn());
         orderTitle.setContents(CommonWebUtils.getElementName(codelistOrderVisualisationDto.getCode(), codelistOrderVisualisationDto.getName()));
         codesOrderTreeGrid.setItems(codelistMetamacDto, codes, codelistOrderVisualisationDto);
 
@@ -52,7 +52,7 @@ public class CodelistOrdersPanel extends VLayout {
         codesOrderTreeGrid.setUiHandlers(uiHandlers);
     }
 
-    public CodelistOrdersSectionStack getcodelistCodelistOrdersSectionStack() {
+    public CodelistOrdersSectionStack getCodelistOrdersSectionStack() {
         return codelistOrdersSectionStack;
     }
 

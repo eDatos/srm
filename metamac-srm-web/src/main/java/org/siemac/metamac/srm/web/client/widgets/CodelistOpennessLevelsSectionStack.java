@@ -11,7 +11,7 @@ import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
-import org.siemac.metamac.srm.web.code.widgets.EditCodelistOrderVisualisationWindow;
+import org.siemac.metamac.srm.web.code.widgets.EditCodelistOpennessVisualisationWindow;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 
@@ -20,24 +20,24 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
-public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSectionStack {
+public class CodelistOpennessLevelsSectionStack extends BaseCodelistVisualisationSectionStack {
 
-    public CodelistOrdersSectionStack() {
-        super(new CustomListGrid(), getConstants().codelistOrders());
+    public CodelistOpennessLevelsSectionStack() {
+        super(new CustomListGrid(), getConstants().codelistOpennessLevels());
 
         newCodelistVisualisationButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                final EditCodelistOrderVisualisationWindow newCodelistOrderWindow = new EditCodelistOrderVisualisationWindow(getConstants().codelistOrderCreate());
-                newCodelistOrderWindow.setCodelistVisualisation(new CodelistVisualisationDto());
-                newCodelistOrderWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                final EditCodelistOpennessVisualisationWindow newCodelistOpennessLevelWindow = new EditCodelistOpennessVisualisationWindow(getConstants().codelistOpennessLevelCreate());
+                newCodelistOpennessLevelWindow.setCodelistVisualisation(new CodelistVisualisationDto());
+                newCodelistOpennessLevelWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (newCodelistOrderWindow.validateForm()) {
-                            uiHandlers.saveCodelistOrder(newCodelistOrderWindow.getCodelistVisualisationDto());
-                            newCodelistOrderWindow.destroy();
+                        if (newCodelistOpennessLevelWindow.validateForm()) {
+                            uiHandlers.saveCodelistOpennessLevel(newCodelistOpennessLevelWindow.getCodelistVisualisationDto());
+                            newCodelistOpennessLevelWindow.destroy();
                         }
                     }
                 });
@@ -48,16 +48,16 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
 
             @Override
             public void onClick(ClickEvent event) {
-                CodelistVisualisationDto selectedOrder = getSelectedCodelistVisualisation();
-                final EditCodelistOrderVisualisationWindow editCodelistOrderWindow = new EditCodelistOrderVisualisationWindow(getConstants().codelistOrderEdit());
-                editCodelistOrderWindow.setCodelistVisualisation(selectedOrder);
-                editCodelistOrderWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                CodelistVisualisationDto selectedOpennessLevel = getSelectedCodelistVisualisation();
+                final EditCodelistOpennessVisualisationWindow editCodelistOpennessWindow = new EditCodelistOpennessVisualisationWindow(getConstants().codelistOpennessLevelEdit());
+                editCodelistOpennessWindow.setCodelistVisualisation(selectedOpennessLevel);
+                editCodelistOpennessWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (editCodelistOrderWindow.validateForm()) {
-                            uiHandlers.saveCodelistOrder(editCodelistOrderWindow.getCodelistVisualisationDto());
-                            editCodelistOrderWindow.destroy();
+                        if (editCodelistOpennessWindow.validateForm()) {
+                            uiHandlers.saveCodelistOpennessLevel(editCodelistOpennessWindow.getCodelistVisualisationDto());
+                            editCodelistOpennessWindow.destroy();
                         }
                     }
                 });
@@ -68,9 +68,10 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
 
             @Override
             public void onClick(ClickEvent event) {
-                if (isAlphabeticalOrderSelected()) {
-                    // Alphabetical order can not be deleted
-                    InformationWindow informationWindow = new InformationWindow(getMessages().codelistOrderAlphabeticalInfoDeleteTitle(), getMessages().codelistOrderAlphabeticalInfoDeleteMessage());
+                if (isAllExpandedOpennessLevelSelected()) {
+                    // All expanded openness level can not be deleted
+                    InformationWindow informationWindow = new InformationWindow(getMessages().codelistOpennessLevelAllExpandedInfoDeleteTitle(), getMessages()
+                            .codelistOpennessLevelAllExpandedInfoDeleteMessage());
                     informationWindow.show();
                 } else {
                     deleteConfirmationWindow.show();
@@ -82,7 +83,7 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
 
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.deleteCodelistOrders(CommonUtils.getUrnsFromSelectedCodelistVisualisations(listGrid.getSelectedRecords()));
+                uiHandlers.deleteCodelistOpennessLevel(CommonUtils.getUrnsFromSelectedCodelistVisualisations(listGrid.getSelectedRecords()));
                 deleteConfirmationWindow.hide();
             }
         });
@@ -92,8 +93,8 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String orderUrn = ((CodelistVisualisationRecord) event.getRecord()).getAttribute(CodelistVisualisationDS.URN);
-                    uiHandlers.retrieveCodesWithOrder(orderUrn);
+                    String opennessLevelUrn = ((CodelistVisualisationRecord) event.getRecord()).getAttribute(CodelistVisualisationDS.URN);
+                    uiHandlers.retrieveCodesWithOpennessLevel(opennessLevelUrn);
                 }
             }
         });
@@ -101,7 +102,7 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
 
     @Override
     protected void updateListGridNewButtonVisibility() {
-        if (CodesClientSecurityUtils.canCreateCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canCreateCodelistOpennessVisualisation(codelistProcStatus)) {
             newCodelistVisualisationButton.show();
         } else {
             newCodelistVisualisationButton.hide();
@@ -110,22 +111,22 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
 
     @Override
     protected void showListGridEditButton() {
-        if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canUpdateCodelistOpennessVisualisation(codelistProcStatus)) {
             editCodelistVisualisationButton.show();
         }
     }
 
     @Override
     protected void showListGridDeleteButton() {
-        if (CodesClientSecurityUtils.canDeleteCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canDeleteCodelistOpennessVisualisation(codelistProcStatus)) {
             deleteCodelistVisualisationButton.show();
         }
     }
 
-    private boolean isAlphabeticalOrderSelected() {
-        List<String> orderCodes = CommonUtils.getVisualisationCodesFromSelectedCodelistVisualisations(listGrid.getSelectedRecords());
-        for (String orderCode : orderCodes) {
-            if (SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(orderCode)) {
+    private boolean isAllExpandedOpennessLevelSelected() {
+        List<String> opennessLevelCodes = CommonUtils.getVisualisationCodesFromSelectedCodelistVisualisations(listGrid.getSelectedRecords());
+        for (String code : opennessLevelCodes) {
+            if (SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE.equals(code)) {
                 return true;
             }
         }

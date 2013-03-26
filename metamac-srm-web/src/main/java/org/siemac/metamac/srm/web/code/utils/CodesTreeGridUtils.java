@@ -4,6 +4,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.utils.ItemsTreeGridUtils;
+import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.widgets.CodeTreeNode;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
@@ -29,6 +30,8 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         // Specify the order of the node in its level.
         // Avoid null pointer in CodeTreeNode comparator setting 0 when there is no order defined.
         node.setOrder(item.getOrder() == null ? 0 : item.getOrder());
+        // Specify the openness level
+        node.setAttribute(CodeDS.OPENNESS_LEVEL, item.getOpenness());
         return node;
     }
 }
