@@ -2921,7 +2921,7 @@
         USAGE_STATUS="CONDITIONAL"
         
         CONCEPT_IDENTITY_FK="10311"
-        REPRESENTATION_FK="5"
+        REPRESENTATION_FK="41"
     />
  
     <TB_DATA_ATTRIBUTES_EI_ROLES
@@ -3029,7 +3029,7 @@
         LAST_UPDATED_TZ="Europe/London"
         
         CONCEPT_IDENTITY_FK="10312"
-        REPRESENTATION_FK="6"
+        REPRESENTATION_FK="42"
     />
     
     <TB_MEASURE_DIMEN_EI_ROLES 
@@ -3087,6 +3087,27 @@
     <TB_STRVERSION_COMPLIST
         STRUCTUREVERSION_FK="41"
         COMPONENT_LIST_FK="413"
+    />    
+    
+    
+    <TB_REPRESENTATIONS
+        ID="41"
+        UUID="tb_representations-41"
+        VERSION="0"
+        REPRESENTATION_TYPE="ENUMERATION"
+        CODELIST_FK="2011"
+        CONCEPT_SCHEME_FK="[null]"
+        TEXT_FORMAT_FK="[null]"
+    />
+    
+    <TB_REPRESENTATIONS
+        ID="42"
+        UUID="tb_representations-42"
+        VERSION="0"
+        REPRESENTATION_TYPE="ENUMERATION"
+        CODELIST_FK="2011"
+        CONCEPT_SCHEME_FK="[null]"
+        TEXT_FORMAT_FK="[null]"
     />    
     
     <!-- ************************************************************************************** -->
@@ -3322,7 +3343,7 @@
         LAST_UPDATED_TZ="Europe/London"
         
         CONCEPT_IDENTITY_FK="10311"
-        REPRESENTATION_FK="1"
+        REPRESENTATION_FK="61"
     />
     
     <TB_MEASURE_DIMEN_EI_ROLES 
@@ -3412,7 +3433,7 @@
         LAST_UPDATED_TZ="Europe/London"
         
         CONCEPT_IDENTITY_FK="10311"
-        REPRESENTATION_FK="2"
+        REPRESENTATION_FK="62"
     />
     
     <TB_DIMENSIONS_EI_ROLES
@@ -3463,17 +3484,17 @@
         LAST_UPDATED_TZ="Europe/London"
         
         CONCEPT_IDENTITY_FK="10311"
-        REPRESENTATION_FK="3"
+        REPRESENTATION_FK="63"
     />
     
     <TB_ANNOTABLE_ARTEFACTS 
         ID="616"
         ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
         
-        CODE="groupDimensionDescriptor"
+        CODE="groupDimensionDescriptor01"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).DimensionDescriptor_xW"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).DimensionDescriptor_xW"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).groupDimensionDescriptor01"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).groupDimensionDescriptor01"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3495,7 +3516,7 @@
         IS_LAST_VERSION="1"
         MAINTAINER_FK="[null]"
         
-        UUID="dsd-06-v1-DimensionDescriptor_xW"
+        UUID="dsd-06-v1-groupDimensionDescriptor01"
         VERSION="1"
         CREATED_BY="user1"
         CREATED_DATE="2011-01-01 01:02:03"
@@ -3638,7 +3659,7 @@
         LAST_UPDATED_TZ="Europe/London"
         
         CONCEPT_IDENTITY_FK="10311"
-        REPRESENTATION_FK="4"
+        REPRESENTATION_FK="64"
     />   
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -3753,7 +3774,7 @@
     />
     
     <TB_FACETS
-    	ID="1"
+    	ID="61"
     	IS_SEQUENCE_FT="[null]"
     	INTERVAL_FT="[null]"
     	START_VALUE_FT="[null]"
@@ -3776,8 +3797,8 @@
 
     
     <TB_REPRESENTATIONS
-    	ID="1"
-    	UUID="tb_representations-1"
+    	ID="61"
+    	UUID="tb_representations-61"
     	VERSION="0"
         REPRESENTATION_TYPE="ENUMERATION"
         CODELIST_FK="[null]"
@@ -3786,8 +3807,8 @@
     />
     
     <TB_REPRESENTATIONS
-    	ID="2"
-    	UUID="tb_representations-2"
+    	ID="62"
+    	UUID="tb_representations-62"
     	VERSION="0"
         REPRESENTATION_TYPE="ENUMERATION"
         CODELIST_FK="2011"
@@ -3796,52 +3817,31 @@
     />
     
      <TB_REPRESENTATIONS
-    	ID="3"
-    	UUID="tb_representations-3"
+    	ID="63"
+    	UUID="tb_representations-63"
     	VERSION="0"
         REPRESENTATION_TYPE="TEXT_FORMAT"
         CODELIST_FK="[null]"
         CONCEPT_SCHEME_FK="[null]"
-        TEXT_FORMAT_FK="1"
+        TEXT_FORMAT_FK="61"
         
     />
     
     <TB_REPRESENTATIONS
-    	ID="4"
-    	UUID="tb_representations-4"
+    	ID="64"
+    	UUID="tb_representations-64"
     	VERSION="0"
         REPRESENTATION_TYPE="ENUMERATION"
         CODELIST_FK="2011"
         CONCEPT_SCHEME_FK="[null]"
         TEXT_FORMAT_FK="[null]"
-    />    
-    
-    <TB_REPRESENTATIONS
-        ID="5"
-        UUID="tb_representations-5"
-        VERSION="0"
-        REPRESENTATION_TYPE="ENUMERATION"
-        CODELIST_FK="2011"
-        CONCEPT_SCHEME_FK="[null]"
-        TEXT_FORMAT_FK="[null]"
-    />
-    
-    <TB_REPRESENTATIONS
-        ID="6"
-        UUID="tb_representations-6"
-        VERSION="0"
-        REPRESENTATION_TYPE="ENUMERATION"
-        CODELIST_FK="2011"
-        CONCEPT_SCHEME_FK="[null]"
-        TEXT_FORMAT_FK="[null]"
-    />
-    
+    /> 
     
     
     <TB_M_DIMENSION_ORDERS
-    	ID="1"
+    	ID="61"
     	DIM_ORDER="1"
-    	UUID="dimOrder-01"
+    	UUID="dimOrder-61"
     	VERSION="1"
     	DIM_COMPONENT_FK="614"
     	DSD_VERSION_HEADING_FK="61"
@@ -3849,9 +3849,9 @@
     />
     
     <TB_M_DIMENSION_ORDERS
-    	ID="2"
+    	ID="62"
     	DIM_ORDER="2"
-    	UUID="dimOrder-02"
+    	UUID="dimOrder-62"
     	VERSION="1"
     	DIM_COMPONENT_FK="615"
     	DSD_VERSION_HEADING_FK="61"
@@ -3859,9 +3859,9 @@
     />
     
     <TB_M_DIMENSION_ORDERS
-    	ID="3"
+    	ID="63"
     	DIM_ORDER="1"
-    	UUID="dimOrder-03"
+    	UUID="dimOrder-63"
     	VERSION="1"
     	DIM_COMPONENT_FK="612"
     	DSD_VERSION_HEADING_FK="[null]"
@@ -4047,7 +4047,7 @@
             LAST_UPDATED_TZ="Europe/London"
         
             CONCEPT_IDENTITY_FK="10311"
-            REPRESENTATION_FK="1"
+            REPRESENTATION_FK="71"
         />
     
     <!--     <TB_MEASURE_DIMEN_EI_ROLES -->
@@ -4096,6 +4096,30 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
             />
+            
+            <TB_ANNOTATIONS
+                ID="7131"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7131"
+                TYPE="type-annotation7131"    
+                URL="http://annotation7131"
+                UUID="annotation-7131"
+                VERSION="1"
+                TEXT_FK="125"
+                ANNOTABLE_ARTEFACT_FK="713"
+            />
+            
+            <TB_ANNOTATIONS
+                ID="7132"
+                CODE="ANNOTATION02"
+                TITLE="title-annotation7132"
+                TYPE="type-annotation7132"    
+                URL="http://annotation7132"
+                UUID="annotation-7132"
+                VERSION="1"
+                TEXT_FK="126"
+                ANNOTABLE_ARTEFACT_FK="713"
+            />                
     
         <TB_ANNOTABLE_ARTEFACTS 
             ID="714"
@@ -4138,7 +4162,7 @@
             LAST_UPDATED_TZ="Europe/London"
             
             CONCEPT_IDENTITY_FK="10311"
-            REPRESENTATION_FK="2"
+            REPRESENTATION_FK="72"
         />
     
         <TB_DIMENSIONS_EI_ROLES
@@ -4189,17 +4213,17 @@
             LAST_UPDATED_TZ="Europe/London"
             
             CONCEPT_IDENTITY_FK="10311"
-            REPRESENTATION_FK="3"
+            REPRESENTATION_FK="73"
         />
         
         <TB_ANNOTABLE_ARTEFACTS 
             ID="716"
             ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
             
-            CODE="groupDimensionDescriptor"
+            CODE="groupDimensionDescriptor01"
             URI_PROVIDER="[null]"
-            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).DimensionDescriptor_xW"
-            URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).DimensionDescriptor_xW"
+            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor01"
+            URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor01"
             REPLACED_BY_VERSION="[null]"
             REPLACE_TO_VERSION="[null]"
             
@@ -4221,7 +4245,7 @@
             IS_LAST_VERSION="1"
             MAINTAINER_FK="[null]"
             
-            UUID="dsd-07-v1-DimensionDescriptor_xW"
+            UUID="dsd-07-v1-groupDimensionDescriptor01"
             VERSION="1"
             CREATED_BY="user1"
             CREATED_DATE="2011-01-01 01:02:03"
@@ -4230,6 +4254,18 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
         />
+
+            <TB_ANNOTATIONS
+                ID="7161"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7161"
+                TYPE="type-annotation7161"    
+                URL="http://annotation7161"
+                UUID="annotation-7161"
+                VERSION="1"
+                TEXT_FK="129"
+                ANNOTABLE_ARTEFACT_FK="716"
+            />           
         
         <TB_ANNOTABLE_ARTEFACTS 
             ID="717"
@@ -4273,7 +4309,7 @@
             RELATE_TO="71"
             USAGE_STATUS="CONDITIONAL"
             
-            CONCEPT_IDENTITY_FK="10312"
+            CONCEPT_IDENTITY_FK="10311"
             REPRESENTATION_FK="[NULL]"
         />
  
@@ -4323,6 +4359,18 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
         />
+        
+            <TB_ANNOTATIONS
+                ID="7181"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7181"
+                TYPE="type-annotation7181"    
+                URL="http://annotation7181"
+                UUID="annotation-7181"
+                VERSION="1"
+                TEXT_FK="127"
+                ANNOTABLE_ARTEFACT_FK="718"
+            />        
            
         <TB_ANNOTABLE_ARTEFACTS 
             ID="719"
@@ -4364,7 +4412,7 @@
             LAST_UPDATED_TZ="Europe/London"
             
             CONCEPT_IDENTITY_FK="10311"
-            REPRESENTATION_FK="4"
+            REPRESENTATION_FK="74"
         />   
         
         <TB_ANNOTABLE_ARTEFACTS 
@@ -4406,6 +4454,69 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
         />
+        
+            <TB_ANNOTATIONS
+                ID="7201"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7201"
+                TYPE="type-annotation7201"    
+                URL="http://annotation7201"
+                UUID="annotation-7201"
+                VERSION="1"
+                TEXT_FK="128"
+                ANNOTABLE_ARTEFACT_FK="720"
+            />    
+            
+        <TB_ANNOTABLE_ARTEFACTS 
+            ID="721"
+            ANNOTABLE_ARTEFACT_TYPE="GroupDimensionDescriptor"
+            
+            CODE="groupDimensionDescriptor02"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor02"
+            URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor02"
+            REPLACED_BY_VERSION="[null]"
+            REPLACE_TO_VERSION="[null]"
+            
+            NAME_FK="[null]"
+            
+            VERSION_LOGIC="[null]"
+            FINAL_LOGIC="[null]"
+            FINAL_LOGIC_CLIENT="[null]"
+            LATEST_FINAL="[null]"
+            PUBLIC_LOGIC="[null]"
+            LATEST_PUBLIC="[null]"
+            VALID_FROM_TZ="[null]"
+            VALID_FROM="[null]" 
+            VALID_TO_TZ="[null]"
+            VALID_TO="[null]"
+            IS_EXTERNAL_REFERENCE="[null]"
+            STRUCTURE_URL="[null]"
+            SERVICE_URL="[null]"
+            IS_LAST_VERSION="1"
+            MAINTAINER_FK="[null]"
+            
+            UUID="dsd-07-v1-groupDimensionDescriptor02"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+
+            <TB_ANNOTATIONS
+                ID="7211"
+                CODE="ANNOTATION01"
+                TITLE="title-annotation7211"
+                TYPE="type-annotation7211"    
+                URL="http://annotation7211"
+                UUID="annotation-7211"
+                VERSION="1"
+                TEXT_FK="130"
+                ANNOTABLE_ARTEFACT_FK="721"
+            />                       
       
         <TB_ATTR_RELATIONSHIPS  
             ID="71"
@@ -4478,10 +4589,14 @@
             COMPONENT_LIST_FK="720"
         />
     
+        <TB_STRVERSION_COMPLIST
+            STRUCTUREVERSION_FK="71"
+            COMPONENT_LIST_FK="721"
+        />    
         
         <TB_REPRESENTATIONS
-            ID="1"
-            UUID="tb_representations-1"
+            ID="71"
+            UUID="tb_representations-71"
             VERSION="0"
             REPRESENTATION_TYPE="ENUMERATION"
             CODELIST_FK="[null]"
@@ -4490,8 +4605,8 @@
         />
         
         <TB_REPRESENTATIONS
-            ID="2"
-            UUID="tb_representations-2"
+            ID="72"
+            UUID="tb_representations-72"
             VERSION="0"
             REPRESENTATION_TYPE="ENUMERATION"
             CODELIST_FK="2011"
@@ -4500,8 +4615,8 @@
         />
         
         <TB_REPRESENTATIONS
-            ID="3"
-            UUID="tb_representations-3"
+            ID="73"
+            UUID="tb_representations-73"
             VERSION="0"
             REPRESENTATION_TYPE="ENUMERATION"
             CODELIST_FK="2011"
@@ -4510,41 +4625,21 @@
         />
         
         <TB_REPRESENTATIONS
-            ID="4"
-            UUID="tb_representations-4"
+            ID="74"
+            UUID="tb_representations-74"
             VERSION="0"
             REPRESENTATION_TYPE="ENUMERATION"
             CODELIST_FK="2011"
             CONCEPT_SCHEME_FK="[null]"
             TEXT_FORMAT_FK="[null]"
         />    
-        
-        <TB_REPRESENTATIONS
-            ID="5"
-            UUID="tb_representations-5"
-            VERSION="0"
-            REPRESENTATION_TYPE="ENUMERATION"
-            CODELIST_FK="2011"
-            CONCEPT_SCHEME_FK="[null]"
-            TEXT_FORMAT_FK="[null]"
-        />
-        
-        <TB_REPRESENTATIONS
-            ID="6"
-            UUID="tb_representations-6"
-            VERSION="0"
-            REPRESENTATION_TYPE="ENUMERATION"
-            CODELIST_FK="2011"
-            CONCEPT_SCHEME_FK="[null]"
-            TEXT_FORMAT_FK="[null]"
-        />
     
     
     
         <TB_M_DIMENSION_ORDERS
-            ID="1"
+            ID="71"
             DIM_ORDER="1"
-            UUID="dimOrder-01"
+            UUID="dimOrder-71"
             VERSION="1"
             DIM_COMPONENT_FK="714"
             DSD_VERSION_HEADING_FK="71"
@@ -4552,9 +4647,9 @@
         />
         
         <TB_M_DIMENSION_ORDERS
-            ID="2"
+            ID="72"
             DIM_ORDER="2"
-            UUID="dimOrder-02"
+            UUID="dimOrder-72"
             VERSION="1"
             DIM_COMPONENT_FK="715"
             DSD_VERSION_HEADING_FK="71"
@@ -4562,9 +4657,9 @@
         />
         
         <TB_M_DIMENSION_ORDERS
-            ID="3"
+            ID="73"
             DIM_ORDER="1"
-            UUID="dimOrder-03"
+            UUID="dimOrder-73"
             VERSION="1"
             DIM_COMPONENT_FK="712"
             DSD_VERSION_HEADING_FK="[null]"
@@ -4796,48 +4891,6 @@
     <!-- INTERNATIONAL STRINGS                                                                  -->
     <!-- *************************************************************************************  -->
 
- 	<TB_INTERNATIONAL_STRINGS
-        ID="34"
-        VERSION="1"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="341"
-        LABEL="Directo"
-        LOCALE="es"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="34"
-    />    
-
-    <TB_LOCALISED_STRINGS
-        ID="342"
-        LABEL="Direct"
-        LOCALE="en"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="34"
-    />    
-    
-    <TB_INTERNATIONAL_STRINGS
-        ID="35"
-        VERSION="1"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="351"
-        LABEL="Derivado"
-        LOCALE="es"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="35"
-    />
-    
-    <TB_LOCALISED_STRINGS
-        ID="352"
-        LABEL="Derived"
-        LOCALE="en"
-        VERSION="1"
-        INTERNATIONAL_STRING_FK="35"
-    />    
-    
     <!-- ***************************************************** -->
     <TB_INTERNATIONAL_STRINGS
         ID="1"
@@ -5011,6 +5064,50 @@
         INTERNATIONAL_STRING_FK="8"
     />
     
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="34"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="341"
+        LABEL="Directo"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="34"
+    />    
+
+    <TB_LOCALISED_STRINGS
+        ID="342"
+        LABEL="Direct"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="34"
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="35"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="351"
+        LABEL="Derivado"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="35"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="352"
+        LABEL="Derived"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="35"
+    />    
+    
+        
     <!-- ***************************************************** --> 
     <!-- 100 -->   
     <TB_INTERNATIONAL_STRINGS
@@ -5487,6 +5584,92 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="124"
-    />               
-                 
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="124"
+        LABEL="annotation 2 1 dsd-7-1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="124"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="125"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1251"
+        LABEL="annotation dsd-7-1 dimension descriptor"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="125"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="126"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1261"
+        LABEL="annotation 2 dsd-7-1 dimension descriptor"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="126"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="127"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1271"
+        LABEL="annotation 1 dsd-7-1 attribute descriptor"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="127"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="128"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1281"
+        LABEL="annotation 1 dsd-7-1 measure descriptor"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="128"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="129"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1291"
+        LABEL="annotation 1 dsd-7-1 group descriptor 1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="129"
+    />                 
+     
+    <TB_INTERNATIONAL_STRINGS
+        ID="130"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1301"
+        LABEL="annotation 1 dsd-7-1 group descriptor 2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="130"
+    />                 
+                        
 </dataset>

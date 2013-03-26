@@ -51,6 +51,7 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.ComponentListRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
@@ -100,6 +101,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Autowired
     private StructureVersionRepository            structureVersionRepository;
+
+    @Autowired
+    private ComponentListRepository               componentListRepository;
 
     @Autowired
     private SrmConfiguration                      srmConfiguration;
@@ -318,7 +322,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public List<MetamacExceptionItem> checkDataStructureDefinitionTranslations(ServiceContext ctx, Long structureVersionId, String locale) {
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         getDataStructureDefinitionVersionMetamacRepository().checkDataStructureDefinitionVersionTranslations(structureVersionId, locale, exceptionItems);
-        // TODO translations components, components list
+        componentListRepository.checkComponentListTranslations(structureVersionId, locale, exceptionItems);
+        // TODO translations components
         return exceptionItems;
     }
 

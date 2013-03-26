@@ -52,7 +52,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
@@ -65,21 +64,19 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEn
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
 
-    private static final ComponentDto dimensionComponentDtoTypeDimensionMock = null;
-
     @Autowired
-    protected SrmCoreServiceFacade    srmCoreServiceFacade;
+    protected SrmCoreServiceFacade srmCoreServiceFacade;
 
     // @Autowired
     // private DsdsMetamacService srmCoreServiceFacade;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
-    private Jaxb2Marshaller           marshallerWithValidation;
+    private Jaxb2Marshaller        marshallerWithValidation;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithoutValidation")
-    private CustomJaxb2Marshaller     marshallerWithoutValidation;
+    private CustomJaxb2Marshaller  marshallerWithoutValidation;
 
     // @Autowired
     // @Qualifier("mapperCoreCopyAllMetadataMode")
@@ -123,8 +120,9 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.DIMENSION_CONCEPT_URN.name(),
                     CONCEPT_SCHEME_3_V1_CONCEPT_1, OperationType.EQ));
             result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
-            assertEquals(1, result.getResults().size());
+            assertEquals(2, result.getResults().size());
             assertEquals(DSD_6_V1, result.getResults().get(0).getUrn());
+            assertEquals(DSD_7_V1, result.getResults().get(1).getUrn());
 
             // Concept 2
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.DIMENSION_CONCEPT_URN.name(),
@@ -141,8 +139,9 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(),
                     CONCEPT_SCHEME_3_V1_CONCEPT_1, OperationType.EQ));
             result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
-            assertEquals(1, result.getResults().size());
+            assertEquals(2, result.getResults().size());
             assertEquals(DSD_4_V1, result.getResults().get(0).getUrn());
+            assertEquals(DSD_7_V1, result.getResults().get(1).getUrn());
 
             // Concept 2
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(),

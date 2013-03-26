@@ -291,46 +291,19 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             dsdsMetamacService.publishInternallyDataStructureDefinition(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("DataStructureDefinition wrong translations");
         } catch (MetamacException e) {
-            assertEquals(2, e.getExceptionItems().size());
+            assertEquals(5, e.getExceptionItems().size());
             int i = 0;
             // DataStructureDefinition
             assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
                     ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
-            // // Components TODO components
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
-            // new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CONCEPT01"}, e.getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT,
-            // "CONCEPT01"}, e.getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION,
-            // "CONCEPT0101"}, e.getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
-            // new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CONCEPT02"}, e.getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CONCEPT02"}, e.getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CONCEPT03"}, e.getExceptionItems().get(i++));
-            //
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_ACRONYM, "CONCEPT01"}, e
-            // .getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DERIVATION, "CONCEPT01"},
-            // e
-            // .getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
-            // new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME, "CONCEPT0101"}, e.getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_CONTEXT, "CONCEPT0101"},
-            // e
-            // .getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DOC_METHOD, "CONCEPT02"},
-            // e
-            // .getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME,
-            // "CONCEPT03"},
-            // e.getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE,
-            // "CONCEPT03"}, e.getExceptionItems().get(i++));
-            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, "CONCEPT03"},
-            // e
-            // .getExceptionItems().get(i++));
-
+            // // Components List
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.ATTRIBUTE_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"AttributeDescriptor"}, e
+                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MEASURE_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"MeasureDescriptor"}, e.getExceptionItems()
+                    .get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.GROUP_DIMENSION_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"groupDimensionDescriptor02"}, e
+                    .getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
     }
