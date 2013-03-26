@@ -51,7 +51,7 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
     }
 
     /**************************************************************************
-     * EXTENIONS
+     * EXTENSIONS
      **************************************************************************/
     @Override
     public void conceptSchemeJaxbToDoExtensionPreCreate(ServiceContext ctx, ConceptSchemeType source, ConceptSchemeVersion previous, ConceptSchemeVersion target) throws MetamacException {
@@ -62,9 +62,9 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         if (previousMetamac != null) {
             // Inherit translations (for all international strings)
             targetMetamac.getMaintainableArtefact().setName(
-                    BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
+                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
-                    BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
+                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setType(previousMetamac.getType());
@@ -95,9 +95,9 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         if (previousMetamac != null) {
             // Inherit translations (for all international strings)
             targetMetamac.getNameableArtefact().setName(
-                    BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
+                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
             targetMetamac.getNameableArtefact().setDescription(
-                    BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
+                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setPluralName(BaseVersioningCopyUtils.copy(previousMetamac.getPluralName()));
@@ -115,7 +115,6 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
             targetMetamac.setDerivation(BaseVersioningCopyUtils.copy(previousMetamac.getDerivation()));
             // Extends : can copy "extend" because they are concepts in another concept scheme
             targetMetamac.setConceptExtends(previousMetamac.getConceptExtends());
-            // Related concepts
             targetMetamac.setLegalActs(BaseVersioningCopyUtils.copy(previousMetamac.getLegalActs()));
 
         }

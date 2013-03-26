@@ -11,6 +11,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
@@ -161,6 +162,18 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Boolean canHaveCategorisations() {
+            return Boolean.FALSE;
+        }
+
+        @Override
+        public Boolean mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            CategorySchemeVersionMetamac categorySchemeVersionMetamac = (CategorySchemeVersionMetamac) srmResourceVersion;
+            if (VersionUtil.isTemporalVersion(categorySchemeVersionMetamac.getMaintainableArtefact().getUrn())) {
+                // TODO completar cuando se haga metgeTemporal de categoryScheme
+                throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de categoryScheme");
+                // dataStructureDefinitionService.mergeTemporalVersion(ctx, dataStructureDefinitionVersionMetamac);
+                // return Boolean.TRUE;
+            }
             return Boolean.FALSE;
         }
 

@@ -11,6 +11,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
@@ -177,6 +178,18 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         @Override
         public Boolean canHaveCategorisations() {
             return Boolean.TRUE;
+        }
+
+        @Override
+        public Boolean mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            CodelistVersionMetamac codelistVersionMetamac = (CodelistVersionMetamac) srmResourceVersion;
+            if (VersionUtil.isTemporalVersion(codelistVersionMetamac.getMaintainableArtefact().getUrn())) {
+                // TODO completar cuando se haga metgeTemporal de codelist
+                throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de codelist");
+                // conceptsMetamacService.mergeTemporalVersion(ctx, (ConceptSchemeVersionMetamac) srmResourceVersion);
+                // return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
         }
 
         private CodelistVersionMetamac getCodelistVersionMetamac(Object srmResource) {

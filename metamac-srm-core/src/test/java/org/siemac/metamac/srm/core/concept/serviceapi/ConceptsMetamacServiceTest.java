@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -56,6 +55,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptProperties;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
@@ -1705,6 +1705,54 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(2, allVersions.size());
             assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
             assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Override
+    public void testCreateVersionFromTemporalConceptScheme() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    @Test
+    public void testMergeTemporalVersion() throws Exception {
+        String urn = CONCEPT_SCHEME_3_V1;
+        ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
+
+        // Change temporal version *********************
+
+        // Item scheme: Change Name
+        {
+            LocalisedString localisedString = new LocalisedString("fr", "its - text sample");
+            conceptSchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
+        }
+
+        // Item
+        {
+            ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CONCEPT_SCHEME_3_V1_CONCEPT_1));
+            conceptTemporal.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
+
+            LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
+            conceptTemporal.getPluralName().addText(localisedString);
+        }
+
+        // Merge
+        conceptsService.mergeTemporalVersion(getServiceContextAdministrador(), conceptSchemeVersionTemporal);
+
+        // Assert **************************************
+        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+
+        // Item Scheme
+        assertEquals(2, conceptSchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
+        assertEquals("its - text sample", conceptSchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+
+        // Item
+        {
+            ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_1);
+            assertTrue(ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptTemporal.getSdmxRelatedArtefact()));
+            assertEquals(2, conceptTemporal.getPluralName().getTexts().size());
+            assertEquals("it - text sample", conceptTemporal.getPluralName().getLocalisedLabel("fr"));
         }
     }
 

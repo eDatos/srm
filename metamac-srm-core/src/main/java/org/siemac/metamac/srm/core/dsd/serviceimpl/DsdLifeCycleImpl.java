@@ -14,6 +14,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -269,6 +270,17 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             return Boolean.TRUE;
         }
 
+        @Override
+        public Boolean mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
+            if (VersionUtil.isTemporalVersion(dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn())) {
+                // TODO completar cuando se haga metgeTemporal de dsd
+                throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de dsd");
+                // dataStructureDefinitionService.mergeTemporalVersion(ctx, dataStructureDefinitionVersionMetamac);
+                // return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
+        }
         /**********************************************************************
          * PRIVATES
          **********************************************************************/

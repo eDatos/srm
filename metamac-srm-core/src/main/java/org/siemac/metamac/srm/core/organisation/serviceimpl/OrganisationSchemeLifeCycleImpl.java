@@ -11,6 +11,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -177,6 +178,18 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
             return Boolean.TRUE;
         }
 
+        @Override
+        public Boolean mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            OrganisationSchemeVersionMetamac organisationSchemeVersionMetamac = (OrganisationSchemeVersionMetamac) srmResourceVersion;
+            if (VersionUtil.isTemporalVersion(organisationSchemeVersionMetamac.getMaintainableArtefact().getUrn())) {
+                // TODO completar cuando se haga metgeTemporal de organisation
+                throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de organisation");
+                // conceptsMetamacService.mergeTemporalVersion(ctx, (ConceptSchemeVersionMetamac) srmResourceVersion);
+                // return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
+        }
+
         private OrganisationSchemeVersionMetamac getOrganisationSchemeVersionMetamac(Object srmResource) {
             return (OrganisationSchemeVersionMetamac) srmResource;
         }
@@ -188,5 +201,6 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
             }
             return objects;
         }
+
     }
 }

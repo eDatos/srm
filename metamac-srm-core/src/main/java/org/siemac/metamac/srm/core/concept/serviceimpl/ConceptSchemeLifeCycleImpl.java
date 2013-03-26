@@ -11,6 +11,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -188,6 +189,16 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         @Override
         public Boolean canHaveCategorisations() {
             return Boolean.TRUE;
+        }
+
+        @Override
+        public Boolean mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = (ConceptSchemeVersionMetamac) srmResourceVersion;
+            if (VersionUtil.isTemporalVersion(conceptSchemeVersionMetamac.getMaintainableArtefact().getUrn())) {
+                conceptsMetamacService.mergeTemporalVersion(ctx, (ConceptSchemeVersionMetamac) srmResourceVersion);
+                return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
         }
 
         private ConceptSchemeVersionMetamac getConceptSchemeVersionMetamac(Object srmResource) {

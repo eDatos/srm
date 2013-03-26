@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.concept.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -10,10 +11,13 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
+import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
@@ -41,6 +45,10 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporal;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
@@ -76,6 +84,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Autowired
     @Qualifier("conceptVersioningCopyCallbackMetamac")
     private ConceptVersioningCopyCallback    conceptVersioningCopyCallback;
+
+    @Autowired
+    private InternationalStringRepository    internationalStringRepository;
+
+    @Autowired
+    private ExternalItemRepository           externalItemRepository;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -228,6 +242,16 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
+    public ConceptSchemeVersionMetamac createVersionFromTemporalConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        // TODO lo que hay que hacer es hacer un replace de todas las URNS por la de la nueva versión
+
+        // Luego hay que cambiar el metadato "replaced_by" de la entidad original de la que se hizo la dummy para que apunte a esta nueva versión.
+
+        // En esta nueva versión (ex-dummy) hay que poner el "replace_by" a null.
+        throw new UnsupportedOperationException("createVersionFromTemporalConceptScheme");
+    }
+
+    @Override
     public void versioningRelatedConcepts(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
         // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
         if (conceptSchemeVersionToCopy != null) {
@@ -239,6 +263,99 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
     }
 
+    @Override
+    public ConceptSchemeVersionMetamac mergeTemporalVersion(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeTemporalVersion) throws MetamacException {
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(conceptSchemeTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
+            // TODO lanzar excepcion
+            throw new UnsupportedOperationException("//TODO lanzar excepcion");
+        }
+
+        // Load original version
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn()));
+
+        // Inherit InternationalStrings
+        BaseReplaceFromTemporal.replaceInternationalStringFromTemporalToItemSchemeVersionWithoutItems(conceptSchemeVersion, conceptSchemeTemporalVersion, internationalStringRepository);
+
+        // Merge Metamac metadata of ItemScheme
+        conceptSchemeVersion.setType(conceptSchemeTemporalVersion.getType());
+        conceptSchemeVersion.setRelatedOperation(BaseReplaceFromTemporal.replaceExternalItemFromTemporal(conceptSchemeVersion.getRelatedOperation(),
+                conceptSchemeTemporalVersion.getRelatedOperation(), internationalStringRepository, externalItemRepository));
+
+        // Merge Metamac metadata of Item
+        Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(conceptSchemeTemporalVersion.getItems());
+        for (Item item : conceptSchemeVersion.getItems()) {
+            ConceptMetamac concept = (ConceptMetamac) item;
+            ConceptMetamac conceptTemp = (ConceptMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+
+            // Inherit InternationalStrings
+            BaseReplaceFromTemporal.replaceInternationalStringFromTemporalToItem(concept, conceptTemp, internationalStringRepository);
+
+            // Plural Name
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getPluralName(), conceptTemp.getPluralName())) {
+                concept.setPluralName(BaseMergeAssert.mergeUpdateInternationalString(concept.getPluralName(), conceptTemp.getPluralName(), true, internationalStringRepository));
+            }
+
+            // Acronym
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getAcronym(), conceptTemp.getAcronym())) {
+                concept.setAcronym(BaseMergeAssert.mergeUpdateInternationalString(concept.getAcronym(), conceptTemp.getAcronym(), true, internationalStringRepository));
+            }
+
+            // Description Source
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDescriptionSource(), conceptTemp.getDescriptionSource())) {
+                concept.setDescriptionSource(BaseMergeAssert.mergeUpdateInternationalString(concept.getDescriptionSource(), conceptTemp.getDescriptionSource(), true, internationalStringRepository));
+            }
+
+            // Context
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getContext(), conceptTemp.getContext())) {
+                concept.setContext(BaseMergeAssert.mergeUpdateInternationalString(concept.getContext(), conceptTemp.getContext(), true, internationalStringRepository));
+            }
+
+            // Doc Method
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDocMethod(), conceptTemp.getDocMethod())) {
+                concept.setDocMethod(BaseMergeAssert.mergeUpdateInternationalString(concept.getDocMethod(), conceptTemp.getDocMethod(), true, internationalStringRepository));
+            }
+
+            // Derivation
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDerivation(), conceptTemp.getDerivation())) {
+                concept.setDerivation(BaseMergeAssert.mergeUpdateInternationalString(concept.getDerivation(), conceptTemp.getDerivation(), true, internationalStringRepository));
+            }
+
+            // Legal Acts
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getLegalActs(), conceptTemp.getLegalActs())) {
+                concept.setLegalActs(BaseMergeAssert.mergeUpdateInternationalString(concept.getLegalActs(), conceptTemp.getLegalActs(), true, internationalStringRepository));
+            }
+
+            concept.setSdmxRelatedArtefact(conceptTemp.getSdmxRelatedArtefact());
+            concept.setConceptType(conceptTemp.getConceptType());
+
+            // Roles : can copy "roles" because they are concepts in another concept scheme
+            concept.removeAllRoleConcepts();
+            for (ConceptMetamac conceptRole : conceptTemp.getRoleConcepts()) {
+                concept.addRoleConcept(conceptRole);
+            }
+
+            concept.setVariable(conceptTemp.getVariable());
+
+            // Extends : can copy "extend" because they are concepts in another concept scheme
+            concept.setConceptExtends(conceptTemp.getConceptExtends());
+
+            concept.removeAllRelatedConcepts(); // Clean related concepts, at the final the new related concepts will be added
+        }
+
+        // Versioning related concepts
+        for (Item conceptToCopyRelatedConcepts : conceptSchemeTemporalVersion.getItems()) {
+            versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeVersion);
+        }
+
+        // Delete temporal version
+        deleteConceptScheme(ctx, conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn());
+
+        // TODO restaurarn metadatos que cambiaron al crear la dummy y borrar la dummy
+        conceptSchemeVersion.getMaintainableArtefact().setIsLastVersion(true);
+
+        return conceptSchemeVersion;
+    }
     @Override
     public ConceptSchemeVersionMetamac endConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -707,6 +824,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             throw new RuntimeException("Error copying related concepts to versioning");
         }
     }
+
     /**
      * Common validations to create or update a concept scheme
      */

@@ -359,7 +359,7 @@ Application SrmFacadeCore {
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"
-    		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy) throws MetamacException;
+    		@ConceptSchemeMetamacDto createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from a temporal version with provided urn"
     		@ConceptSchemeMetamacDto createVersionFromTemporalConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the concept scheme validity"

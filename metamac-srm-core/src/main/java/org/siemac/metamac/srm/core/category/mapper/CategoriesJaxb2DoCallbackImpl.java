@@ -79,9 +79,9 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
         if (previousMetamac != null) {
             // Inherit translations (for all international strings)
             targetMetamac.getMaintainableArtefact().setName(
-                    BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
+                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
-                    BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
+                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
         }
 
@@ -100,9 +100,9 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
         if (previousMetamac != null) {
             // Inherit translations (for all international strings)
             targetMetamac.getNameableArtefact().setName(
-                    BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
+                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
             targetMetamac.getNameableArtefact().setDescription(
-                    BaseJaxb2DoInheritUtils.inheritInternationString(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
+                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
         }
 
