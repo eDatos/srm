@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
@@ -272,6 +274,65 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     public void testPublishInternallyDataStructureDefinition() throws Exception {
         // TODO Test dsd
 
+    }
+
+    @Override
+    public void testCheckDataStructureDefinitionTranslations() throws Exception {
+        // Tested in testPublishInternallyDataStructureDefinitionCheckTranslations
+    }
+
+    @Test
+    public void testPublishInternallyDataStructureDefinitionCheckTranslations() throws Exception {
+        String urn = DSD_7_V1;
+        String code = "DATASTRUCTUREDEFINITION07";
+
+        try {
+            // Note: publishInternallyDataStructureDefinition calls to 'testCheckDataStructureDefinitionTranslations'
+            dsdsMetamacService.publishInternallyDataStructureDefinition(getServiceContextAdministrador(), urn, Boolean.FALSE);
+            fail("DataStructureDefinition wrong translations");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+            int i = 0;
+            // DataStructureDefinition
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
+                    ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
+            // // Components TODO components
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
+            // new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CONCEPT01"}, e.getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT,
+            // "CONCEPT01"}, e.getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION,
+            // "CONCEPT0101"}, e.getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
+            // new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CONCEPT02"}, e.getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CONCEPT02"}, e.getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CONCEPT03"}, e.getExceptionItems().get(i++));
+            //
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_ACRONYM, "CONCEPT01"}, e
+            // .getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DERIVATION, "CONCEPT01"},
+            // e
+            // .getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
+            // new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME, "CONCEPT0101"}, e.getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_CONTEXT, "CONCEPT0101"},
+            // e
+            // .getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DOC_METHOD, "CONCEPT02"},
+            // e
+            // .getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME,
+            // "CONCEPT03"},
+            // e.getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE,
+            // "CONCEPT03"}, e.getExceptionItems().get(i++));
+            // assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, "CONCEPT03"},
+            // e
+            // .getExceptionItems().get(i++));
+
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Test

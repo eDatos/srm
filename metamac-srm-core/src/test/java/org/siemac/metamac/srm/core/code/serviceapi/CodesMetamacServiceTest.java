@@ -1320,15 +1320,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         try {
             // Note: publishInternallyCodelist calls to 'checkCodelistVersionTranslates'
             codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
-            fail("Codelist wrong proc status");
+            fail("Codelist wrong translations");
         } catch (MetamacException e) {
             assertEquals(11, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
                     ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CODELIST_SHORT_NAME, code},
-                    e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
+                    ServiceExceptionParameters.CODELIST_SHORT_NAME, code}, e.getExceptionItems().get(i++));
             // Codes
             assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CODE01"},
                     e.getExceptionItems().get(i++));

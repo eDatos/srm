@@ -111,7 +111,8 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
         List resultsSql = query.getResultList();
         for (Object resultSql : resultsSql) {
             String code = getString(resultSql);
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.CODELIST_SHORT_NAME, code));
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.CODELIST_SHORT_NAME,
+                    code));
         }
     }
 }

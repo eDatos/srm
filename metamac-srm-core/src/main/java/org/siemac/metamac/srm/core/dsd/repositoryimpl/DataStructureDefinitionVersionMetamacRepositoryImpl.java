@@ -6,17 +6,24 @@ import java.util.Map;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersionRepository;
 
 /**
  * Repository implementation for DataStructureDefinitionVersionMetamac
  */
 @Repository("dataStructureDefinitionVersionMetamacRepository")
 public class DataStructureDefinitionVersionMetamacRepositoryImpl extends DataStructureDefinitionVersionMetamacRepositoryBase {
+
+    @Autowired
+    private DataStructureDefinitionVersionRepository dataStructureDefinitionVersionRepository;
 
     public DataStructureDefinitionVersionMetamacRepositoryImpl() {
     }
@@ -53,6 +60,11 @@ public class DataStructureDefinitionVersionMetamacRepositoryImpl extends DataStr
             }
         }
         return result.get(0);
+    }
+
+    @Override
+    public void checkDataStructureDefinitionVersionTranslations(Long structureVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+        dataStructureDefinitionVersionRepository.checkDataStructureDefinitionVersionTranslations(structureVersionId, locale, exceptionItems);
     }
 
 }

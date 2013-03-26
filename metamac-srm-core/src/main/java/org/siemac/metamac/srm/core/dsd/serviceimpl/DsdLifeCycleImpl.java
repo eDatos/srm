@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,9 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private DataStructureDefinitionService                  dataStructureDefinitionService;
+
+    @Autowired
+    private DsdsMetamacService                              dataStructureDefinitionMetamacService;
 
     public DsdLifeCycleImpl() {
         this.callback = new DataStructureDefinitionLifeCycleCallback();
@@ -209,8 +213,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
-            // TODO comprobar traducciones
-            return new ArrayList<MetamacExceptionItem>();
+            return dataStructureDefinitionMetamacService.checkDataStructureDefinitionTranslations(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getId(), locale);
         }
 
         @Override
@@ -264,12 +267,6 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         @Override
         public Boolean canHaveCategorisations() {
             return Boolean.TRUE;
-        }
-
-        @Override
-        public void mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            // TODO completar cuando se haga metgeTemporal de dsd
-            throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de dsd");
         }
 
         /**********************************************************************

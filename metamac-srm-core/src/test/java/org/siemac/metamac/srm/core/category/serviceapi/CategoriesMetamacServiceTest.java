@@ -799,13 +799,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         try {
             // Note: publishInternallyCategoryScheme calls to 'checkCategorySchemeVersionTranslates'
             categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
-            fail("CategoryScheme wrong proc status");
+            fail("CategoryScheme wrong translations");
         } catch (MetamacException e) {
             assertEquals(8, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
                     ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
             // Categories
             assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME,
                     "CATEGORY01"}, e.getExceptionItems().get(i++));
