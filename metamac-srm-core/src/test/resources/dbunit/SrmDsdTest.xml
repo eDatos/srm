@@ -122,8 +122,8 @@
         
         VERSION_LOGIC="1.0"
         FINAL_LOGIC="0"
-        FINAL_LOGIC_CLIENT="0"
-        LATEST_FINAL="0"
+        FINAL_LOGIC_CLIENT="1"
+        LATEST_FINAL="1"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
         VALID_FROM_TZ="[null]"
