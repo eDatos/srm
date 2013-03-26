@@ -39,6 +39,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 
 @Service("dsdLifeCycle")
@@ -151,18 +152,21 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                 for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                     if (componentList instanceof AttributeDescriptor) {
                         for (Component component : componentList.getComponents()) {
-                            switch (((DataAttribute) component).getSpecialAttributeType()) {
-                                case MEASURE_EXTENDS:
-                                    foundSpecialAttributeOfMeasure = true;
-                                    break;
-                                case SPATIAL_EXTENDS:
-                                    foundSpecialAttributeOfSpatial = true;
-                                    break;
-                                case TIME_EXTENDS:
-                                    foundSpecialAttributeOfTime = true;
-                                    break;
-                                default:
-                                    break;
+                            SpecialAttributeTypeEnum specialAttributeType = ((DataAttribute) component).getSpecialAttributeType();
+                            if (specialAttributeType != null) {
+                                switch (specialAttributeType) {
+                                    case MEASURE_EXTENDS:
+                                        foundSpecialAttributeOfMeasure = true;
+                                        break;
+                                    case SPATIAL_EXTENDS:
+                                        foundSpecialAttributeOfSpatial = true;
+                                        break;
+                                    case TIME_EXTENDS:
+                                        foundSpecialAttributeOfTime = true;
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
                         }
                         break;
@@ -262,6 +266,12 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             return Boolean.TRUE;
         }
 
+        @Override
+        public void mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            // TODO completar cuando se haga metgeTemporal de dsd
+            throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de dsd");
+        }
+
         /**********************************************************************
          * PRIVATES
          **********************************************************************/
@@ -276,5 +286,6 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             }
             return structureVersions;
         }
+
     }
 }
