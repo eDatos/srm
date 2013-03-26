@@ -9,4 +9,5 @@ public class CodeDS extends ItemDS {
     public static final String VARIABLE_ELEMENT_VIEW = "code-var-elem-view";
     public static final String ORDER                 = "code-order";
     public static final String OPENNESS_LEVEL        = "code-openness-level";
+    public static final String OPENNESS_LEVEL_ICON   = "code-openness-level-icon"; // Stores the URL of the node icon
 }

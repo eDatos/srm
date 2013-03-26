@@ -16,7 +16,7 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
 
     private CodelistOpennessLevelsSectionStack codelistOpennessLevelsSectionStack;
     private TitleLabel                         opennessLevelTitle;
-    private CodesOpennessLevelTreeGrid         codesOpennessLevelTreeGrid;
+    private CodesEditableOpennessLevelTreeGrid codesOpennessLevelTreeGrid;
 
     public CodelistOpennesssLevelsPanel() {
         setMargin(15);
@@ -29,7 +29,7 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
         opennessLevelTitle.setStyleName("subsectionTitleWithNoLeftMargin");
         addMember(opennessLevelTitle);
 
-        codesOpennessLevelTreeGrid = new CodesOpennessLevelTreeGrid();
+        codesOpennessLevelTreeGrid = new CodesEditableOpennessLevelTreeGrid();
         addMember(codesOpennessLevelTreeGrid);
     }
 
@@ -60,7 +60,7 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
         return opennessLevelTitle;
     }
 
-    public CodesOpennessLevelTreeGrid getCodesTreeGrid() {
+    public CodesEditableOpennessLevelTreeGrid getCodesTreeGrid() {
         return codesOpennessLevelTreeGrid;
     }
 

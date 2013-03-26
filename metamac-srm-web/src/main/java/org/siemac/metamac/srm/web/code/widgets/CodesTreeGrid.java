@@ -102,13 +102,6 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
     }
 
     @Override
-    protected void onNodeClick(String nodeName, String codeUrn) {
-        if (!SCHEME_NODE_NAME.equals(nodeName)) {
-            uiHandlers.goToCode(codeUrn);
-        }
-    }
-
-    @Override
     protected void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult code) {
         selectedCode = code;
         createCodeMenuItem.setEnabled(canCreateCode());

@@ -23,6 +23,7 @@ public class CodesOrderTreeGrid extends BaseCodesTreeGrid {
 
     public CodesOrderTreeGrid() {
         super(false, true);
+        setShowFilterEditor(false);
 
         getField(ItemDS.CODE).setWidth("45%");
 
@@ -86,13 +87,9 @@ public class CodesOrderTreeGrid extends BaseCodesTreeGrid {
     public void setItems(ItemSchemeDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrderVisualisationDto) {
         this.codelistVisualisationDto = codelistOrderVisualisationDto;
         setItems(codelistMetamacDto, codes);
-    }
 
-    @Override
-    protected void onNodeClick(String nodeName, String codeUrn) {
-        if (!SCHEME_NODE_NAME.equals(nodeName)) {
-            uiHandlers.goToCode(codeUrn);
-        }
+        // Disable item scheme node
+        disableItemSchemeNode();
     }
 
     @Override

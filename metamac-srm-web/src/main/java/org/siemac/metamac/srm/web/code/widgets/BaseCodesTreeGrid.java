@@ -157,5 +157,12 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
         return !("/".equals(getDropFolder().getName()));
     }
 
+    @Override
+    protected void onNodeClick(String nodeName, String codeUrn) {
+        if (!SCHEME_NODE_NAME.equals(nodeName)) {
+            uiHandlers.goToCode(codeUrn);
+        }
+    }
+
     protected abstract void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult itemMetamacResult);
 }
