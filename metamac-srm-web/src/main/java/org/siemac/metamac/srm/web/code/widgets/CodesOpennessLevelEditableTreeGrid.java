@@ -33,7 +33,7 @@ public class CodesOpennessLevelEditableTreeGrid extends BaseCodesTreeGrid {
 
         // Add a field with the node openness state
 
-        TreeGridField opennessLevelField = new TreeGridField(CodeDS.OPENNESS_LEVEL, getConstants().codelistOpennessLevel());
+        TreeGridField opennessLevelField = new TreeGridField(CodeDS.OPENNESS_LEVEL, getConstants().codelistOpennessLevelOpened());
         opennessLevelField.setEditorType(new CheckboxItem());
         opennessLevelField.setCanEdit(true);
         opennessLevelField.setCanFilter(false);

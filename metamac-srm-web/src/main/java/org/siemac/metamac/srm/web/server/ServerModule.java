@@ -67,6 +67,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeInOrderActionHa
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeParentActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeVariableElementActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodelistProcStatusActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodesInOpennessVisualisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
@@ -182,6 +183,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodesInOpennessVisualisationAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
@@ -382,6 +384,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetCodesAction.class, GetCodesActionHandler.class);
         bindHandler(CreateCodesHierarchyAction.class, CreateCodesHierarchyActionHandler.class);
         bindHandler(GetCodelistOpennessLevelsAction.class, GetCodelistOpennessLevelsActionHandler.class);
+        bindHandler(UpdateCodesInOpennessVisualisationAction.class, UpdateCodesInOpennessVisualisationActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
