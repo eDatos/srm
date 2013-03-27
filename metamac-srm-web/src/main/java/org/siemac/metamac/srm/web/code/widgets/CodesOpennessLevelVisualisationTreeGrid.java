@@ -7,19 +7,21 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
+import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
-import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 
-public class CodesEditableOpennessLevelTreeGrid extends BaseCodesTreeGrid {
+/**
+ * This tree is used to configure the openness levels of the codes of a codelist. All the nodes are shown opened. An editable column lets the user to change the state of a node (opened or closed).
+ */
+public class CodesOpennessLevelVisualisationTreeGrid extends BaseCodesTreeGrid {
 
-    public CodesEditableOpennessLevelTreeGrid() {
+    public CodesOpennessLevelVisualisationTreeGrid() {
         super(false, true);
 
         setShowFilterEditor(false);
-        setAlwaysShowEditors(true);
         setCanReorderRecords(false);
         setCanAcceptDroppedRecords(false);
         setCanDragRecordsOut(false);
@@ -27,28 +29,14 @@ public class CodesEditableOpennessLevelTreeGrid extends BaseCodesTreeGrid {
         setShowDropIcons(false);
         setCanSort(false);
         setCustomIconProperty(CodeDS.OPENNESS_LEVEL_ICON);
+        getTree().setOpenProperty(CodeDS.OPENNESS_LEVEL);
 
-        // Add a field with the node openness status
+        // Add a field with the node openness state
 
         TreeGridField opennessLevelField = new TreeGridField(CodeDS.OPENNESS_LEVEL, getConstants().codelistOpennessLevel());
-        opennessLevelField.setEditorType(new CheckboxItem());
-        opennessLevelField.addChangedHandler(new com.smartgwt.client.widgets.grid.events.ChangedHandler() {
-
-            @Override
-            public void onChanged(com.smartgwt.client.widgets.grid.events.ChangedEvent event) {
-                System.out.println();
-            }
-        });
-        opennessLevelField.setCanEdit(true);
-        opennessLevelField.setCanFilter(false);
+        opennessLevelField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         ListGridField[] itemFields = getFields();
-
-        // Set all fields non editable (except the openness level field)
-        for (ListGridField field : itemFields) {
-            field.setCanEdit(false);
-        }
-
         ListGridField[] codeFields = new ListGridField[itemFields.length + 1];
         System.arraycopy(itemFields, 0, codeFields, 0, itemFields.length);
         codeFields[codeFields.length - 1] = opennessLevelField;

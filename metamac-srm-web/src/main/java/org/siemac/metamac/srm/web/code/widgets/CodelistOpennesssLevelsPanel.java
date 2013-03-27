@@ -14,9 +14,10 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CodelistOpennesssLevelsPanel extends VLayout {
 
-    private CodelistOpennessLevelsSectionStack codelistOpennessLevelsSectionStack;
-    private TitleLabel                         opennessLevelTitle;
-    private CodesEditableOpennessLevelTreeGrid codesOpennessLevelTreeGrid;
+    private CodelistOpennessLevelsSectionStack      codelistOpennessLevelsSectionStack;
+    private TitleLabel                              opennessLevelTitle;
+    private CodesOpennessLevelEditableTreeGrid      codesOpennessLevelTreeGrid;
+    private CodesOpennessLevelVisualisationTreeGrid codesOpennessLevelVisualisationTreeGrid;
 
     public CodelistOpennesssLevelsPanel() {
         setMargin(15);
@@ -29,7 +30,7 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
         opennessLevelTitle.setStyleName("subsectionTitleWithNoLeftMargin");
         addMember(opennessLevelTitle);
 
-        codesOpennessLevelTreeGrid = new CodesEditableOpennessLevelTreeGrid();
+        codesOpennessLevelTreeGrid = new CodesOpennessLevelEditableTreeGrid();
         addMember(codesOpennessLevelTreeGrid);
     }
 
@@ -60,7 +61,7 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
         return opennessLevelTitle;
     }
 
-    public CodesEditableOpennessLevelTreeGrid getCodesTreeGrid() {
+    public CodesOpennessLevelEditableTreeGrid getCodesTreeGrid() {
         return codesOpennessLevelTreeGrid;
     }
 
