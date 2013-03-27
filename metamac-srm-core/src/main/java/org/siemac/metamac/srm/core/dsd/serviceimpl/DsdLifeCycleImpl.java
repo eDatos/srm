@@ -271,15 +271,14 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Boolean mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+        public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
             if (VersionUtil.isTemporalVersion(dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn())) {
                 // TODO completar cuando se haga metgeTemporal de dsd
                 throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de dsd");
-                // dataStructureDefinitionService.mergeTemporalVersion(ctx, dataStructureDefinitionVersionMetamac);
-                // return Boolean.TRUE;
+                // return dataStructureDefinitionService.mergeTemporalVersion(ctx, dataStructureDefinitionVersionMetamac);
             }
-            return Boolean.FALSE;
+            return srmResourceVersion;
         }
         /**********************************************************************
          * PRIVATES

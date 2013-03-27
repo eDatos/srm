@@ -1710,8 +1710,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Override
+    @Test
     public void testCreateVersionFromTemporalConceptScheme() throws Exception {
         // TODO Auto-generated method stub
+        String urn = CONCEPT_SCHEME_3_V1;
+
+        ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
+        conceptsService.createVersionFromTemporalConceptScheme(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
 
     }
 

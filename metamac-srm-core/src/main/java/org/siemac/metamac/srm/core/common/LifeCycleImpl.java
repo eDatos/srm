@@ -165,10 +165,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // Validate to publish internally
         checkResourceInInternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
 
-        // Check if is a temporal version
-        if (callback.mergeTemporal(ctx, srmResourceVersion)) {
-            // TODO Update Metadata
-        }
+        // Merge temporal version if is needed
+        srmResourceVersion = callback.mergeTemporal(ctx, srmResourceVersion);
 
         // Update life cycle metadata
         SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
@@ -191,7 +189,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         return srmResourceVersion;
     }
-
+    
     @Override
     public Object publishExternally(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -422,6 +420,6 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // Other
         public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds);
         public Boolean canHaveCategorisations();
-        public Boolean mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
+        public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
     }
 }

@@ -181,15 +181,14 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Boolean mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+        public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             CodelistVersionMetamac codelistVersionMetamac = (CodelistVersionMetamac) srmResourceVersion;
             if (VersionUtil.isTemporalVersion(codelistVersionMetamac.getMaintainableArtefact().getUrn())) {
                 // TODO completar cuando se haga metgeTemporal de codelist
                 throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de codelist");
-                // conceptsMetamacService.mergeTemporalVersion(ctx, (ConceptSchemeVersionMetamac) srmResourceVersion);
-                // return Boolean.TRUE;
+                // return conceptsMetamacService.mergeTemporalVersion(ctx, (ConceptSchemeVersionMetamac) srmResourceVersion);
             }
-            return Boolean.FALSE;
+            return srmResourceVersion;
         }
 
         private CodelistVersionMetamac getCodelistVersionMetamac(Object srmResource) {

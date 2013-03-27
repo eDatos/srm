@@ -49,6 +49,7 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporal;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
@@ -242,33 +243,36 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public ConceptSchemeVersionMetamac createVersionFromTemporalConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        // TODO lo que hay que hacer es hacer un replace de todas las URNS por la de la nueva versión
+    public String createVersionFromTemporalConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
-        // Luego hay que cambiar el metadato "replaced_by" de la entidad original de la que se hizo la dummy para que apunte a esta nueva versión.
+        ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = retrieveConceptSchemeByUrn(ctx, urnToCopy);
 
-        // En esta nueva versión (ex-dummy) hay que poner el "replace_by" a null.
-        throw new UnsupportedOperationException("createVersionFromTemporalConceptScheme");
-    }
-
-    @Override
-    public void versioningRelatedConcepts(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
-        // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
-        if (conceptSchemeVersionToCopy != null) {
-            for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
-                versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion);
-            }
-        } else if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
-            throw new RuntimeException("Error copying related concepts to versioning");
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(conceptSchemeVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
         }
+
+        // Retrieve the original artifact
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
+
+        // Set the new version in the temporal artifact
+        conceptSchemeVersionTemporal.getMaintainableArtefact().setVersionLogic(
+                SdmxVersionUtils.createNextVersion(conceptSchemeVersion.getMaintainableArtefact().getVersionLogic(), conceptSchemeVersion.getItemScheme().getVersionPattern(), versionTypeEnum));
+
+        conceptSchemeVersionTemporal.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE); // For calculates new urns
+        conceptSchemeVersionTemporal = (ConceptSchemeVersionMetamac) conceptsService.updateConceptScheme(ctx, conceptSchemeVersionTemporal);
+
+        // Set null replacedBy in the original entity
+        conceptSchemeVersion.getMaintainableArtefact().setReplacedByVersion(null);
+
+        return conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn();
     }
 
     @Override
     public ConceptSchemeVersionMetamac mergeTemporalVersion(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeTemporalVersion) throws MetamacException {
         // Check if is a temporal version
         if (!VersionUtil.isTemporalVersion(conceptSchemeTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
-            // TODO lanzar excepcion
-            throw new UnsupportedOperationException("//TODO lanzar excepcion");
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
         }
 
         // Load original version
@@ -351,11 +355,26 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Delete temporal version
         deleteConceptScheme(ctx, conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn());
 
-        // TODO restaurarn metadatos que cambiaron al crear la dummy y borrar la dummy
-        conceptSchemeVersion.getMaintainableArtefact().setIsLastVersion(true);
+        // Set isLastVersion?
+        Boolean isLastVersion = itemSchemeVersionRepository.mustBeLastVersion(conceptSchemeVersion.getId(), conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(),
+                conceptSchemeVersion.getMaintainableArtefact().getCode());
+        conceptSchemeVersion.getMaintainableArtefact().setIsLastVersion(isLastVersion);
 
         return conceptSchemeVersion;
     }
+
+    @Override
+    public void versioningRelatedConcepts(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
+        // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
+        if (conceptSchemeVersionToCopy != null) {
+            for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
+                versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion);
+            }
+        } else if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
+            throw new RuntimeException("Error copying related concepts to versioning");
+        }
+    }
+
     @Override
     public ConceptSchemeVersionMetamac endConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
