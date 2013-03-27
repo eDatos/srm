@@ -16,7 +16,6 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
 
     private CodelistOpennessLevelsSectionStack      codelistOpennessLevelsSectionStack;
     private TitleLabel                              opennessLevelTitle;
-    private CodesOpennessLevelEditableTreeGrid      codesOpennessLevelTreeGrid;
     private CodesOpennessLevelVisualisationTreeGrid codesOpennessLevelVisualisationTreeGrid;
 
     public CodelistOpennesssLevelsPanel() {
@@ -30,8 +29,8 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
         opennessLevelTitle.setStyleName("subsectionTitleWithNoLeftMargin");
         addMember(opennessLevelTitle);
 
-        codesOpennessLevelTreeGrid = new CodesOpennessLevelEditableTreeGrid();
-        addMember(codesOpennessLevelTreeGrid);
+        codesOpennessLevelVisualisationTreeGrid = new CodesOpennessLevelVisualisationTreeGrid();
+        addMember(codesOpennessLevelVisualisationTreeGrid);
     }
 
     public void setOpennessLevels(List<CodelistVisualisationDto> opennessLevels) {
@@ -43,14 +42,14 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
     public void setCodes(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistVisualisationDto) {
         codelistOpennessLevelsSectionStack.selectCodelistVisualisation(codelistVisualisationDto.getUrn());
         opennessLevelTitle.setContents(CommonWebUtils.getElementName(codelistVisualisationDto.getCode(), codelistVisualisationDto.getName()));
-        codesOpennessLevelTreeGrid.setItems(codelistMetamacDto, codes, codelistVisualisationDto);
+        codesOpennessLevelVisualisationTreeGrid.setItems(codelistMetamacDto, codes, codelistVisualisationDto);
 
         showCodes();
     }
 
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
         codelistOpennessLevelsSectionStack.setUiHandlers(uiHandlers);
-        codesOpennessLevelTreeGrid.setUiHandlers(uiHandlers);
+        codesOpennessLevelVisualisationTreeGrid.setUiHandlers(uiHandlers);
     }
 
     public CodelistOpennessLevelsSectionStack getCodelistOpennessLevelsSectionStack() {
@@ -61,21 +60,21 @@ public class CodelistOpennesssLevelsPanel extends VLayout {
         return opennessLevelTitle;
     }
 
-    public CodesOpennessLevelEditableTreeGrid getCodesTreeGrid() {
-        return codesOpennessLevelTreeGrid;
+    public CodesOpennessLevelVisualisationTreeGrid getCodesTreeGrid() {
+        return codesOpennessLevelVisualisationTreeGrid;
     }
 
     public void updateItemScheme(CodelistMetamacDto codelistMetamacDto) {
-        codesOpennessLevelTreeGrid.updateItemScheme(codelistMetamacDto);
+        codesOpennessLevelVisualisationTreeGrid.updateItemScheme(codelistMetamacDto);
     }
 
     public void showCodes() {
         opennessLevelTitle.show();
-        codesOpennessLevelTreeGrid.show();
+        codesOpennessLevelVisualisationTreeGrid.show();
     }
 
     public void hideCodes() {
         opennessLevelTitle.hide();
-        codesOpennessLevelTreeGrid.hide();
+        codesOpennessLevelVisualisationTreeGrid.hide();
     }
 }

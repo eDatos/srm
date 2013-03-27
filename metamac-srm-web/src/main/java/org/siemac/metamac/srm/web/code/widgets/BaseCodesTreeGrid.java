@@ -132,6 +132,10 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
             treeNodes[i + 1] = createItemTreeNode(itemMetamacResults.get(i));
         }
 
+        addTreeNodesToTreeGrid(treeNodes);
+    }
+
+    public void addTreeNodesToTreeGrid(TreeNode[] treeNodes) {
         tree = new Tree();
         tree.setModelType(TreeModelType.PARENT);
         tree.linkNodes(treeNodes);

@@ -183,7 +183,9 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
             Record record = recordList.find(ItemDS.URN, itemSchemeDto.getUrn());
             if (record != null) {
                 int index = getRecordIndex(record);
-                getRecord(index).setEnabled(false);
+                if (index != -1) {
+                    getRecord(index).setEnabled(false);
+                }
             }
         }
     }

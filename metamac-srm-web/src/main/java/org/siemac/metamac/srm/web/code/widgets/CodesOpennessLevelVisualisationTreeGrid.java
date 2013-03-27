@@ -10,8 +10,11 @@ import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
+import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGridField;
+import com.smartgwt.client.widgets.tree.TreeNode;
 
 /**
  * This tree is used to configure the openness levels of the codes of a codelist. All the nodes are shown opened. An editable column lets the user to change the state of a node (opened or closed).
@@ -29,7 +32,6 @@ public class CodesOpennessLevelVisualisationTreeGrid extends BaseCodesTreeGrid {
         setShowDropIcons(false);
         setCanSort(false);
         setCustomIconProperty(CodeDS.OPENNESS_LEVEL_ICON);
-        getTree().setOpenProperty(CodeDS.OPENNESS_LEVEL);
 
         // Add a field with the node openness state
 
@@ -56,9 +58,18 @@ public class CodesOpennessLevelVisualisationTreeGrid extends BaseCodesTreeGrid {
     public void setItems(ItemSchemeDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrderVisualisationDto) {
         this.codelistVisualisationDto = codelistOrderVisualisationDto;
         setItems(codelistMetamacDto, codes);
+    }
 
-        // Disable item scheme node
-        disableItemSchemeNode();
+    @Override
+    public void addTreeNodesToTreeGrid(TreeNode[] treeNodes) {
+        // The root node (codelist) should be always open
+        treeNodes[0].setAttribute(CodeDS.OPENNESS_LEVEL, true);
+
+        tree = new Tree();
+        tree.setOpenProperty(CodeDS.OPENNESS_LEVEL); // Take into account the openness state of the nodes
+        tree.setModelType(TreeModelType.PARENT);
+        tree.linkNodes(treeNodes);
+        setData(tree);
     }
 
     @Override

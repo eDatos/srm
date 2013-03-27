@@ -87,9 +87,6 @@ public class CodesOrderTreeGrid extends BaseCodesTreeGrid {
     public void setItems(ItemSchemeDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrderVisualisationDto) {
         this.codelistVisualisationDto = codelistOrderVisualisationDto;
         setItems(codelistMetamacDto, codes);
-
-        // Disable item scheme node
-        disableItemSchemeNode();
     }
 
     @Override
