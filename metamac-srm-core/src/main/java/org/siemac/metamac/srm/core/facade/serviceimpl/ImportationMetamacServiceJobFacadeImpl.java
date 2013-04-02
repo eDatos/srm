@@ -1,9 +1,12 @@
 package org.siemac.metamac.srm.core.facade.serviceimpl;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,9 +21,10 @@ public class ImportationMetamacServiceJobFacadeImpl extends ImportationMetamacSe
     @Override
     public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
         // Import
-        getCodesMetamacService().importVariableElementsCsv(ctx, variableUrn, csvStream, updateAlreadyExisting);
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
+        getCodesMetamacService().importVariableElementsCsv(ctx, variableUrn, csvStream, updateAlreadyExisting, informationItems);
         // Mark job as completed
-        getImportationMetamacService().markTaskAsFinished(ctx, jobKey);
+        getImportationMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
     }
 
     @Override

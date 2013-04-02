@@ -32,4 +32,8 @@ public class InternationalStringCsv {
     public String getLocale(int position) {
         return locales.get(position);
     }
+
+    public List<String> getLocales() {
+        return locales;
+    }
 }

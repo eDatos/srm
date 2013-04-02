@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -24,6 +25,7 @@ import org.quartz.impl.SchedulerRepository;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.importation.serviceimpl.utils.ImportationMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +89,8 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
 
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
             JobDetail job = newJob(ImportationCsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportationCsvJob.FILE_PATH, file.getAbsolutePath())
-                    .usingJobData(ImportationCsvJob.USER, ctx.getUserId()).usingJobData(ImportationCsvJob.VARIABLE_URN, variableUrn).requestRecovery().build();
+                    .usingJobData(ImportationCsvJob.USER, ctx.getUserId()).usingJobData(ImportationCsvJob.VARIABLE_URN, variableUrn)
+                    .usingJobData(ImportationCsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting).requestRecovery().build();
             SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "importation").startAt(futureDate(1, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
             sched.scheduleJob(job, trigger);
 
@@ -107,8 +110,13 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
     }
 
     @Override
-    public void markTaskAsFinished(ServiceContext ctx, String job) throws MetamacException {
-        importationService.markTaskAsFinished(ctx, job, null);
+    public void markTaskAsFinished(ServiceContext ctx, String job, List<MetamacExceptionItem> informationItems) throws MetamacException {
+        MetamacException metamacException = null;
+        if (!CollectionUtils.isEmpty(informationItems)) {
+            metamacException = new MetamacException(informationItems);
+            metamacException.setLoggedLevel(ExceptionLevelEnum.INFO);
+        }
+        importationService.markTaskAsFinished(ctx, job, metamacException);
     }
 
     @Override

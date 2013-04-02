@@ -5486,7 +5486,7 @@
                 
                 UUID="variable-element-24"
                 CREATED_DATE_TZ="Europe/London"
-                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE="2012-01-01 01:02:03"
                 CREATED_BY="user1"
                 LAST_UPDATED_TZ="Europe/London"
                 LAST_UPDATED="2012-01-01 01:02:03"
@@ -5510,7 +5510,7 @@
                     UUID="annotableArtefact-9999324"
                     VERSION="1"
                     CREATED_BY="user1"
-                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE="2012-01-01 01:02:03"
                     CREATED_DATE_TZ="Europe/London"
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"

@@ -72,7 +72,7 @@ Application CodesMetamac {
 			"Checks translations for codelist"
     		List<MetamacExceptionItem> checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale);
 			"Imports variable elements in csv format"
-    		importVariableElementsCsv(String variableUrn, InputStream csvStream, boolean updateAlreadyExisting) throws MetamacException;
+    		importVariableElementsCsv(String variableUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
     		
 			// CODES
 

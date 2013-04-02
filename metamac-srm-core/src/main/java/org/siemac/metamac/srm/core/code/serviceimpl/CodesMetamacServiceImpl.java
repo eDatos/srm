@@ -1041,14 +1041,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, boolean updateAlreadyExisting) throws MetamacException {
+    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems)
+            throws MetamacException {
 
         // Validation
         CodesMetamacInvocationValidator.checkImportVariableElementsCsv(variableUrn, csvStream, updateAlreadyExisting, null);
 
         // Import
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
         try {
@@ -1128,7 +1128,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 return null;
             } else {
                 infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED, variableElement.getNameableArtefact().getCode()));
-                variableElement.getShortName().removeAllTexts(); // update short name
+                variableElement.setLastUpdated(new DateTime());
             }
         }
         // short name

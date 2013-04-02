@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.core.importation.serviceimpl.utils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
@@ -52,6 +54,8 @@ public class ImportationCsvUtils {
     }
 
     public static InternationalString csvLineToInternationalString(InternationalStringCsv internationalStringCsv, String[] columns, InternationalString target) {
+
+        Set<LocalisedString> localisedStringTargets = new HashSet<LocalisedString>();
         int j = 0;
         for (int i = internationalStringCsv.getStartPosition(); i <= internationalStringCsv.getEndPosition(); i++) {
             String label = columns[i];
@@ -60,9 +64,21 @@ public class ImportationCsvUtils {
                 if (target == null) {
                     target = new InternationalString();
                 }
-                target.addText(new LocalisedString(locale, label));
+                LocalisedString localisedString = target.getLocalisedLabelEntity(locale);
+                if (localisedString == null) {
+                    localisedString = new LocalisedString(locale, label);
+                } else {
+                    localisedString.setLabel(label);
+                }
+                localisedStringTargets.add(localisedString);
             }
             j++;
+        }
+        if (target != null) {
+            target.removeAllTexts();
+            for (LocalisedString localisedString : localisedStringTargets) {
+                target.addText(localisedString);
+            }
         }
         return target;
     }
