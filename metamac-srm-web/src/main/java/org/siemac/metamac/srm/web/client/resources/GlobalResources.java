@@ -11,14 +11,6 @@ public interface GlobalResources extends ClientBundleWithLookup {
     public static final GlobalResources RESOURCE = GWT.create(GlobalResources.class);
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
-    @Source("images/info.png")
-    ImageResource info();
-
-    @ImageOptions(repeatStyle = RepeatStyle.Both)
-    @Source("images/remove.png")
-    ImageResource remove();
-
-    @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/annotations.png")
     ImageResource annotations();
 
