@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -29,6 +30,10 @@ public class SemanticIdentifierValidationUtils extends com.arte.statistic.sdmx.s
 
     public static void checkVariableElementSemanticIdentifier(VariableElement variableElement, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkSemanticIdentifierAsMetamacID(variableElement.getNameableArtefact().getCode(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, exceptions);
+    }
+
+    public static boolean isVariableElementSemanticIdentifier(String code) {
+        return CoreCommonUtil.matchMetamacID(code);
     }
 
     public static void checkCodelistOrderVisualisationSemanticIdentifier(CodelistOrderVisualisation codelistOrderVisualisation, List<MetamacExceptionItem> exceptions) {

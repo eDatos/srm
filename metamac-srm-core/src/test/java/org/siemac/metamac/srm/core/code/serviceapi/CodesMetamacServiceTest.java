@@ -96,6 +96,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
+import com.arte.statistic.sdmx.srm.core.importation.domain.ExceptionImport;
 import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ImportationStatusTypeEnum;
 
@@ -6363,7 +6364,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Import
-        final InputStream stream = this.getClass().getResourceAsStream("/csv/importation-variable-element-01.csv");
+        final String fileName = "importation-variable-element-01.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
         final StringBuilder jobKey = new StringBuilder();
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -6372,7 +6374,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    String jobKeyString = importationService.importVariableElementsCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, "importation-variable-element-01.csv");
+                    String jobKeyString = importationService.importVariableElementsCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, fileName);
                     jobKey.append(jobKeyString);
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -6428,6 +6430,85 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
         }
+    }
+
+    @Test
+    public void testImportVariableElementsCsvWithHeaderIncorrect() throws Exception {
+
+        final String variableUrn = VARIABLE_1;
+
+        // Import
+        final String fileName = "importation-variable-element-02-errors-header.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importVariableElementsCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportData importData = importationService.retrieveImportDataByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importData);
+        assertEquals(ImportationStatusTypeEnum.FAILED, importData.getStatus());
+        assertEquals(3, importData.getExceptionImports().size());
+        int i = 0;
+        assertEqualsExceptionImport(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), null, Boolean.TRUE, importData.getExceptionImports().get(i++));
+        assertEqualsExceptionImport(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, importData
+                .getExceptionImports().get(i++));
+        assertEqualsExceptionImport(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_SHORT_NAME, Boolean.FALSE, importData
+                .getExceptionImports().get(i++));
+        assertEquals(importData.getExceptionImports().size(), i);
+    }
+
+    @Test
+    public void testImportVariableElementsCsvWithBodyIncorrect() throws Exception {
+
+        final String variableUrn = VARIABLE_1;
+
+        // Import
+        final String fileName = "importation-variable-element-03-errors-body.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importVariableElementsCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportData importData = importationService.retrieveImportDataByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importData);
+        assertEquals(ImportationStatusTypeEnum.FAILED, importData.getStatus());
+        assertEquals(5, importData.getExceptionImports().size());
+        int i = 0;
+        assertEqualsExceptionImport(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), null, Boolean.TRUE, importData.getExceptionImports().get(i++));
+        assertEqualsExceptionImport(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "3", Boolean.FALSE, importData.getExceptionImports().get(i++));
+        assertEqualsExceptionImport(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "variableElement4#@#shortName", Boolean.FALSE, importData.getExceptionImports().get(i++));
+        assertEqualsExceptionImport(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#variableElement5#@#code", Boolean.FALSE, importData.getExceptionImports()
+                .get(i++));
+        assertEqualsExceptionImport(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, importData.getExceptionImports().get(i++));
+        assertEquals(importData.getExceptionImports().size(), i);
     }
 
     private VariableElementOperation getVariableElementOperationByCode(List<VariableElementOperation> operations, String code) {
@@ -6491,6 +6572,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(value, SrmServiceUtils.getCodeOpenness(code, columnIndex));
             columnIndex++;
         }
+    }
+
+    private void assertEqualsExceptionImport(String codeExpected, String infoExpected, Boolean isPrincipalExpected, ExceptionImport actual) {
+        assertEquals(codeExpected, actual.getErrorCode());
+        assertEquals(infoExpected, actual.getExceptionInfo());
+        assertEquals(isPrincipalExpected, actual.isPrincipal());
     }
 
     @Override

@@ -1,9 +1,13 @@
 package org.siemac.metamac.srm.core.importation.serviceimpl.utils;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.importation.domain.InternationalStringCsv;
@@ -11,14 +15,14 @@ import org.siemac.metamac.srm.core.importation.domain.VariableElementCsvHeader;
 
 public class ImportationCsvUtils {
 
-    public static VariableElementCsvHeader parseVariableElementHeader(String[] columns) throws MetamacException {
+    public static VariableElementCsvHeader parseVariableElementHeader(String[] columns, List<MetamacExceptionItem> exceptions) throws MetamacException {
         VariableElementCsvHeader header = new VariableElementCsvHeader();
         header.setColumnsSize(columns.length);
         for (int i = 0; i < columns.length; i++) {
             String column = columns[i];
             if (i == 0) {
                 if (!SrmConstants.CSV_HEADER_VARIABLE_ELEMENT_CODE.equals(column)) {
-                    throw new MetamacException(ServiceExceptionType.IMPORT_ERROR); // TODO error
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE));
                 }
                 header.setCodePosition(i);
             } else {
@@ -27,33 +31,30 @@ public class ImportationCsvUtils {
                     header.getShortName().setStartPosition(i);
                     header.getShortName().setEndPosition(columns.length - 1);
                 }
-                String[] shortNameMetadataSplited = column.split("#"); // TODO separador
+                String[] shortNameMetadataSplited = StringUtils.splitPreserveAllTokens(column, SrmConstants.CSV_HEADER_INTERNATIONAL_STRING_SEPARATOR);
+                if (shortNameMetadataSplited.length != 2) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_SHORT_NAME));
+                    break;
+                }
                 String shortNameMetadata = shortNameMetadataSplited[0];
                 String shortNameLocale = shortNameMetadataSplited[1];
-                if (!SrmConstants.CSV_HEADER_VARIABLE_ELEMENT_SHORT_NAME.equals(shortNameMetadata)) {
-                    throw new MetamacException(ServiceExceptionType.IMPORT_ERROR); // TODO error
-                }
-                if (shortNameLocale == null) {
-                    throw new MetamacException(ServiceExceptionType.IMPORT_ERROR); // TODO error
+                if (!SrmConstants.CSV_HEADER_VARIABLE_ELEMENT_SHORT_NAME.equals(shortNameMetadata) || StringUtils.isBlank(shortNameLocale)) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_SHORT_NAME));
+                    break;
                 }
                 header.getShortName().addLocale(shortNameLocale);
             }
         }
         if (header.getShortName() == null) {
-            throw new MetamacException(ServiceExceptionType.IMPORT_ERROR); // TODO error
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_SHORT_NAME));
         }
         return header;
     }
-
-    public static InternationalString csvLineToInternationalString(InternationalStringCsv internationalStringCsv, String[] line) {
+    public static InternationalString csvLineToInternationalString(InternationalStringCsv internationalStringCsv, String[] columns) {
         InternationalString target = null;
         int j = 0;
         for (int i = internationalStringCsv.getStartPosition(); i <= internationalStringCsv.getEndPosition(); i++) {
-            if (i >= line.length) {
-                // maybe last label do not exists, so the array has one less element
-                break;
-            }
-            String label = line[i];
+            String label = columns[i];
             if (!StringUtils.isBlank(label)) {
                 String locale = internationalStringCsv.getLocale(j);
                 if (target == null) {

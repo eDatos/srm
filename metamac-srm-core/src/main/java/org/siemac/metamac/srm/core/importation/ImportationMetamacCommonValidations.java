@@ -40,7 +40,7 @@ public abstract class ImportationMetamacCommonValidations {
             ItemSchemeVersion itemSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
                     .getMaintainableArtefact().getCode());
             if (itemSchemeVersionNoFinal != null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_EXIST_NOT_FINAL_VERSION)
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_EXIST_NOT_FINAL_VERSION)
                         .withMessageParameters(itemSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
             }
         }
@@ -68,7 +68,7 @@ public abstract class ImportationMetamacCommonValidations {
         StructureVersion structureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
                 .getMaintainableArtefact().getCode());
         if (structureVersionNoFinal != null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_EXIST_NOT_FINAL_VERSION)
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_EXIST_NOT_FINAL_VERSION)
                     .withMessageParameters(structureVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
     }

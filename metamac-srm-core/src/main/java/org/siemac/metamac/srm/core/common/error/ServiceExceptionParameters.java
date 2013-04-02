@@ -86,6 +86,10 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String PROC_STATUS_INTERNALLY_PUBLISHED                                   = ProcStatusEnum.INTERNALLY_PUBLISHED.name();
     public static final String PROC_STATUS_EXTERNALLY_PUBLISHED                                   = ProcStatusEnum.EXTERNALLY_PUBLISHED.name();
 
+    // IMPORTATION
+    public static final String IMPORTATION_CSV_COLUMN_CODE                                        = "code";
+    public static final String IMPORTATION_CSV_COLUMN_SHORT_NAME                                  = "shortName";
+
     // MISC
     public static final String STREAM                                                             = "stream";
 }

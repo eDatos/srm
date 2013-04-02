@@ -75,7 +75,7 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
 
             // Validation: There shouldn't be an import processing
             if (sched.getCurrentlyExecutingJobs().size() != 0) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
             }
 
             // Save InputStream (TempFile)
@@ -92,7 +92,7 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
 
             return jobKey;
         } catch (Exception e) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build(); // Error
         } finally {
             IOUtils.closeQuietly(csvStream);

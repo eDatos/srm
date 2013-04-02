@@ -30,6 +30,8 @@ public class SrmConstants {
     public static final Boolean            CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE             = Boolean.TRUE;
 
     // Csv importations
+    public static final String             CSV_SEPARATOR                                             = "\t";
+    public static final String             CSV_HEADER_INTERNATIONAL_STRING_SEPARATOR                 = "#";
     public static final String             CSV_HEADER_VARIABLE_ELEMENT_CODE                          = "code";
     public static final String             CSV_HEADER_VARIABLE_ELEMENT_SHORT_NAME                    = "shortName";
 }
