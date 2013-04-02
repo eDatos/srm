@@ -19,18 +19,19 @@ import org.slf4j.LoggerFactory;
 
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class ImportCsvJob implements Job {
+public class ImportationCsvJob implements Job {
 
-    private static Logger                      logger                             = LoggerFactory.getLogger(ImportCsvJob.class);
+    private static Logger                      logger                             = LoggerFactory.getLogger(ImportationCsvJob.class);
 
     // Job Context Param
     public static final String                 USER                               = "user";
     public static final String                 FILE_PATH                          = "filePath";
     public static final String                 VARIABLE_URN                       = "variableUrn";
+    public static final String                 UPDATE_ALREADY_EXISTING            = "updateAlreadyExisting";
 
     private ImportationMetamacServiceJobFacade importationMetamacServiceJobFacade = null;
 
-    private final ServiceContext               serviceContextDefault              = new ServiceContext("importCsvJob", "importCsvJob", "metamac-srm");
+    private final ServiceContext               serviceContextDefault              = new ServiceContext("importationCsvJob", "importationCsvJob", "metamac-srm");
 
     public ImportationMetamacServiceJobFacade getImportationMetamacServiceJobFacade() {
         if (importationMetamacServiceJobFacade == null) {
@@ -51,19 +52,20 @@ public class ImportCsvJob implements Job {
             String user = data.getString(USER);
             String variableUrn = data.getString(VARIABLE_URN);
             String filePath = data.getString(FILE_PATH);
+            Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
 
             // Execution
             serviceContext = new ServiceContext(user, context.getFireInstanceId(), "sdmx-srm-core");
 
             logger.info("ImportationJob: " + jobKey + " starting at " + new Date());
-            getImportationMetamacServiceJobFacade().importVariableElementsCsv(serviceContext, variableUrn, new FileInputStream(filePath), jobKey.getName());
+            getImportationMetamacServiceJobFacade().importVariableElementsCsv(serviceContext, variableUrn, new FileInputStream(filePath), jobKey.getName(), updateAlreadyExisting);
             logger.info("ImportationJob: " + jobKey + " finished at " + new Date());
         } catch (Exception e) {
             try {
                 if (serviceContext == null) {
                     serviceContext = serviceContextDefault;
                 }
-                getImportationMetamacServiceJobFacade().markJobAsFailed(serviceContext, jobKey.getName(), e);
+                getImportationMetamacServiceJobFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
             } catch (MetamacException e1) {
                 logger.error("ImportationJob: the importation with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
             }

@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
+import com.arte.statistic.sdmx.srm.core.importation.domain.ImportationTask;
 import com.arte.statistic.sdmx.srm.core.importation.serviceapi.ImportationService;
 import com.arte.statistic.sdmx.srm.core.importation.serviceimpl.utils.ImportationJaxb2DoCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ImportationStatusTypeEnum;
@@ -57,10 +57,11 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
     }
 
     @Override
-    public synchronized String importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName) throws MetamacException {
+    public synchronized String importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting)
+            throws MetamacException {
 
         // Validation
-        ImportationMetamacInvocationValidator.checkImportVariableElementsCsvInBackground(variableUrn, csvStream, null);
+        ImportationMetamacInvocationValidator.checkImportVariableElementsCsvInBackground(variableUrn, csvStream, updateAlreadyExisting, null);
 
         // Plan job
         OutputStream os = null;
@@ -85,15 +86,15 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
             IOUtils.copy(csvStream, os);
 
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
-            JobDetail job = newJob(ImportCsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportCsvJob.FILE_PATH, file.getAbsolutePath())
-                    .usingJobData(ImportCsvJob.USER, ctx.getUserId()).usingJobData(ImportCsvJob.VARIABLE_URN, variableUrn).requestRecovery().build();
+            JobDetail job = newJob(ImportationCsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportationCsvJob.FILE_PATH, file.getAbsolutePath())
+                    .usingJobData(ImportationCsvJob.USER, ctx.getUserId()).usingJobData(ImportationCsvJob.VARIABLE_URN, variableUrn).requestRecovery().build();
             SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "importation").startAt(futureDate(1, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
             sched.scheduleJob(job, trigger);
 
             return jobKey;
         } catch (Exception e) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
-                    .build(); // Error
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_ERROR).withMessageParameters(e.getMessage()).withCause(e)
+                    .withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
         } finally {
             IOUtils.closeQuietly(csvStream);
             IOUtils.closeQuietly(os);
@@ -101,29 +102,29 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
     }
 
     @Override
-    public ImportData retrieveImportDataByJob(ServiceContext ctx, String job) throws MetamacException {
-        return importationService.retrieveImportDataByJob(ctx, job);
+    public ImportationTask retrieveImportationTaskByJob(ServiceContext ctx, String job) throws MetamacException {
+        return importationService.retrieveImportationTaskByJob(ctx, job);
     }
 
     @Override
-    public void markJobAsFinished(ServiceContext ctx, String job) throws MetamacException {
-        importationService.markJobAsFinished(ctx, job);
+    public void markTaskAsFinished(ServiceContext ctx, String job) throws MetamacException {
+        importationService.markTaskAsFinished(ctx, job, null);
     }
 
     @Override
-    public void markJobAsFailed(ServiceContext ctx, String job, Exception exception) throws MetamacException {
-        importationService.markJobAsFailed(ctx, job, exception);
+    public void markTaskAsFailed(ServiceContext ctx, String job, Exception exception) throws MetamacException {
+        importationService.markTaskAsFailed(ctx, job, exception);
     }
 
     @Override
-    public PagedResult<ImportData> findImportDataByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-        return importationService.findImportDataByCondition(ctx, conditions, pagingParameter);
+    public PagedResult<ImportationTask> findImportationTasksByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        return importationService.findImportationTasksByCondition(ctx, conditions, pagingParameter);
     }
 
     private void createTaskInProgress(ServiceContext ctx, String jobKey, String fileName) throws MetamacException {
-        ImportData importData = new ImportData(jobKey);
+        ImportationTask importData = new ImportationTask(jobKey);
         importData.setFileName(fileName);
         importData.setStatus(ImportationStatusTypeEnum.IN_PROGRESS);
-        importationService.createImportData(ctx, importData);
+        importationService.createImportationTask(ctx, importData);
     }
 }

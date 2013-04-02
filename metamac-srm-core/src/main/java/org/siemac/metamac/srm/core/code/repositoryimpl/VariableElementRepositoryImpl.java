@@ -27,4 +27,17 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             return result.get(0);
         }
     }
+
+    @Override
+    public VariableElement findByCode(String variableUrn, String code) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("variableUrn", variableUrn);
+        parameters.put("code", code);
+        List<VariableElement> result = findByQuery("from VariableElement where nameableArtefact.code = :code and variable.nameableArtefact.urn = :variableUrn", parameters, 1);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
 }

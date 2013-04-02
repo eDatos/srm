@@ -520,13 +520,14 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkImportVariableElementsCsv(String variableUrn, InputStream csvStream, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkImportVariableElementsCsv(String variableUrn, InputStream csvStream, Boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_CSV_UPDATE_ALREADY_EXISTING, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

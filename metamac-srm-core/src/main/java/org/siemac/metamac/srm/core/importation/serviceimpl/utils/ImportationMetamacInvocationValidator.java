@@ -14,15 +14,16 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 
 public class ImportationMetamacInvocationValidator extends BaseInvocationValidator {
 
-    public static void checkImportVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkImportVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_CSV_UPDATE_ALREADY_EXISTING, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
-
 }

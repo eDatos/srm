@@ -1041,13 +1041,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream) throws MetamacException {
+    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, boolean updateAlreadyExisting) throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkImportVariableElementsCsv(variableUrn, csvStream, null);
+        CodesMetamacInvocationValidator.checkImportVariableElementsCsv(variableUrn, csvStream, updateAlreadyExisting, null);
 
         // Import
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
         try {
@@ -1061,17 +1062,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.CSV_SEPARATOR);
                 if (header == null) {
-                    header = ImportationCsvUtils.parseVariableElementHeader(columns, exceptions);
-                    if (exceptions.size() != 0) {
+                    header = ImportationCsvUtils.parseVariableElementHeader(columns, exceptionItems);
+                    if (exceptionItems.size() != 0) {
                         break;
                     }
                 } else {
                     if (columns.length != header.getColumnsSize()) {
-                        exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
+                        exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
                         continue;
                     }
-                    VariableElement variableElement = csvLineToVariableElement(header, columns, lineNumber, variable, exceptions);
-                    if (exceptions.size() == 0) {
+                    VariableElement variableElement = csvLineToVariableElement(header, columns, lineNumber, variable, updateAlreadyExisting, exceptionItems, informationItems);
+                    if (exceptionItems.size() == 0 && variableElement != null) {
                         getVariableElementRepository().save(variableElement);
                     }
                 }
@@ -1079,7 +1080,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         } catch (IOException e) {
             logger.error("Error importing csv file", e);
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_FILE_PARSE_ERROR, e.getMessage()));
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_FILE_PARSE_ERROR, e.getMessage()));
         } finally {
             try {
                 inputStreamReader.close();
@@ -1089,36 +1090,53 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 logger.error("Error closing streams", e);
             }
         }
-        if (exceptions.size() != 0) {
+        if (exceptionItems.size() != 0) {
             // rollback and inform about errors
             // TODO sistema de avisos
-            throw MetamacExceptionBuilder.builder().withPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR)).withExceptionItems(exceptions).build();
+            throw MetamacExceptionBuilder.builder().withPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR)).withExceptionItems(exceptionItems).build();
         }
     }
 
-    private VariableElement csvLineToVariableElement(VariableElementCsvHeader header, String[] columns, int lineNumber, Variable variable, List<MetamacExceptionItem> exceptions)
-            throws MetamacException {
+    /**
+     * Transforms csv line to VariableElement.
+     * Can update an existing variableElement.
+     * Can return null when errors ocurrs or when variableElement must not be updated
+     * TODO revisar infoItems cuando se implemente el servicio de notificaciones. No deberían ser excepciones
+     */
+    private VariableElement csvLineToVariableElement(VariableElementCsvHeader header, String[] columns, int lineNumber, Variable variable, boolean updateAlreadyExisting,
+            List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems) throws MetamacException {
         // code
         String code = columns[header.getCodePosition()];
         if (StringUtils.isBlank(code)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
             return null;
         }
         if (!SemanticIdentifierValidationUtils.isVariableElementSemanticIdentifier(code)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, code, ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE));
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, code, ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE));
         }
-        VariableElement variableElement = new VariableElement();
-        variableElement.setNameableArtefact(new NameableArtefact());
-        variableElement.getNameableArtefact().setCode(code);
+
+        VariableElement variableElement = getVariableElementRepository().findByCode(variable.getNameableArtefact().getUrn(), code);
+        if (variableElement == null) {
+            variableElement = new VariableElement();
+            variableElement.setVariable(variable);
+            variableElement.setNameableArtefact(new NameableArtefact());
+            variableElement.getNameableArtefact().setCode(code);
+            setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
+        } else {
+            if (!updateAlreadyExisting) {
+                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED, variableElement.getNameableArtefact().getCode()));
+                return null;
+            } else {
+                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED, variableElement.getNameableArtefact().getCode()));
+                variableElement.getShortName().removeAllTexts(); // update short name
+            }
+        }
         // short name
-        variableElement.setShortName(ImportationCsvUtils.csvLineToInternationalString(header.getShortName(), columns));
+        variableElement.setShortName(ImportationCsvUtils.csvLineToInternationalString(header.getShortName(), columns, variableElement.getShortName()));
         if (variableElement.getShortName() == null) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED, variableElement.getNameableArtefact().getCode(),
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED, variableElement.getNameableArtefact().getCode(),
                     ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_SHORT_NAME));
         }
-        // variable and urn
-        variableElement.setVariable(variable);
-        setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
         return variableElement;
     }
 

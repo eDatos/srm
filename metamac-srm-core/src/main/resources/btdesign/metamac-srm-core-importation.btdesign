@@ -13,16 +13,16 @@ Application ImportationMetamac {
 			"Imports file in sdmx format"
 			String importSDMXStructureInBackground(InputStream inputMessage, String fileName) throws MetamacException;
 			"Prepares importation of variable elements in csv format"
-    		String importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName) throws MetamacException;
+    		String importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 
     		"Retrieves job"
-    		@ImportData retrieveImportDataByJob(String job) throws MetamacException;
+    		@ImportationTask retrieveImportationTaskByJob(String job) throws MetamacException;
     		"Marks job as finished"
-    		markJobAsFinished(String job) throws MetamacException;
+    		markTaskAsFinished(String job) throws MetamacException;
     		"Marks job as failed"
-    		markJobAsFailed(String job, java.lang.Exception exception) throws MetamacException;
+    		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
     		"Find information about importations jobs"
-			PagedResult<@ImportData> findImportDataByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
+			PagedResult<@ImportationTask> findImportationTasksByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
 		}
 	}
 }

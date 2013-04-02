@@ -617,7 +617,7 @@ Application SrmFacadeCore {
  			"Retrieves all variable elements operations of one variable element"
  			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
     		"Imports variable elements in csv format"
-    		importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName) throws MetamacException;
+    		importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
     		    		
     		/**************************************************************************
 		     * COMMON
@@ -630,7 +630,7 @@ Application SrmFacadeCore {
 	    	importSDMXStructureMsgInBackground(@ContentInputDto contentDto) throws MetamacException;
 	   		
 	   		"Find information about importations jobs"
-    		MetamacCriteriaResult<@ImportDataDto> findImportDataByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@ImportationTaskDto> findImportationTasksByCondition(MetamacCriteria criteria) throws MetamacException;
     		
 	    	"
 	    	 @param ctx                                                                         
@@ -646,9 +646,9 @@ Application SrmFacadeCore {
        		> @ImportationMetamacService
 
     		"Imports variable elements in csv format"
-    		importVariableElementsCsv(String variableUrn, InputStream csvStream, String jobKey) throws MetamacException;
+    		importVariableElementsCsv(String variableUrn, InputStream csvStream, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Marks job as failed"
-    		markJobAsFailed(String job, java.lang.Exception exception) throws MetamacException;
+    		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
    		}
     }
 

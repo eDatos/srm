@@ -16,16 +16,16 @@ public class ImportationMetamacServiceJobFacadeImpl extends ImportationMetamacSe
     }
 
     @Override
-    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, String jobKey) throws MetamacException {
+    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
         // Import
-        getCodesMetamacService().importVariableElementsCsv(ctx, variableUrn, csvStream);
+        getCodesMetamacService().importVariableElementsCsv(ctx, variableUrn, csvStream, updateAlreadyExisting);
         // Mark job as completed
-        getImportationMetamacService().markJobAsFinished(ctx, jobKey);
+        getImportationMetamacService().markTaskAsFinished(ctx, jobKey);
     }
 
     @Override
-    public void markJobAsFailed(ServiceContext ctx, String job, Exception exception) throws MetamacException {
-        getImportationMetamacService().markJobAsFailed(ctx, job, exception);
+    public void markTaskAsFailed(ServiceContext ctx, String job, Exception exception) throws MetamacException {
+        getImportationMetamacService().markTaskAsFailed(ctx, job, exception);
     }
 
 }

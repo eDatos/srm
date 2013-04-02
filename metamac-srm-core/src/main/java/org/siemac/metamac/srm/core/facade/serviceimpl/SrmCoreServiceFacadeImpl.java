@@ -80,7 +80,7 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
-import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
+import com.arte.statistic.sdmx.srm.core.importation.domain.ImportationTask;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
@@ -90,7 +90,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportDataDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportationTaskDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
@@ -512,7 +512,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<ImportDataDto> findImportDataByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<ImportationTaskDto> findImportationTasksByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         // TODO DataStructureDefinitionSecurityUtils.canFindDataStructureDefinitionByCondition(ctx);
 
@@ -520,10 +520,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ImportData> result = getImportationMetamacService().findImportDataByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<ImportationTask> result = getImportationMetamacService().findImportationTasksByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<ImportDataDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultImportData(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<ImportationTaskDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultImportationTask(result,
+                sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 
@@ -1658,12 +1659,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName) throws MetamacException {
+    public void importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Security
         CodesSecurityUtils.canCrudVariableElement(ctx);
 
         // Import in background
-        getImportationMetamacService().importVariableElementsCsvInBackground(ctx, variableUrn, csvStream, fileName);
+        getImportationMetamacService().importVariableElementsCsvInBackground(ctx, variableUrn, csvStream, fileName, updateAlreadyExisting);
     }
 
     @Override

@@ -50,8 +50,8 @@ public class ImportationCsvUtils {
         }
         return header;
     }
-    public static InternationalString csvLineToInternationalString(InternationalStringCsv internationalStringCsv, String[] columns) {
-        InternationalString target = null;
+
+    public static InternationalString csvLineToInternationalString(InternationalStringCsv internationalStringCsv, String[] columns, InternationalString target) {
         int j = 0;
         for (int i = internationalStringCsv.getStartPosition(); i <= internationalStringCsv.getEndPosition(); i++) {
             String label = columns[i];

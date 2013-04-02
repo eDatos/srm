@@ -40,11 +40,11 @@ import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
+import com.arte.statistic.sdmx.srm.core.importation.domain.ImportationTask;
 import com.arte.statistic.sdmx.srm.core.importation.mapper.ImportationDo2DtoMapper;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportDataDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportationTaskDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 
 @Component
@@ -339,13 +339,13 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     // IMPORTATION
     //
     @Override
-    public MetamacCriteriaResult<ImportDataDto> pageResultToMetamacCriteriaResultImportData(PagedResult<ImportData> source, Integer pageSize) {
-        MetamacCriteriaResult<ImportDataDto> target = new MetamacCriteriaResult<ImportDataDto>();
+    public MetamacCriteriaResult<ImportationTaskDto> pageResultToMetamacCriteriaResultImportationTask(PagedResult<ImportationTask> source, Integer pageSize) {
+        MetamacCriteriaResult<ImportationTaskDto> target = new MetamacCriteriaResult<ImportationTaskDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<ImportDataDto>(source.getValues().size()));
-            for (ImportData importData : source.getValues()) {
-                target.getResults().add(importationDo2DtoMapper.importDataToDto(importData));
+            target.setResults(new ArrayList<ImportationTaskDto>(source.getValues().size()));
+            for (ImportationTask importData : source.getValues()) {
+                target.getResults().add(importationDo2DtoMapper.importationTaskToDto(importData));
             }
         }
         return target;
