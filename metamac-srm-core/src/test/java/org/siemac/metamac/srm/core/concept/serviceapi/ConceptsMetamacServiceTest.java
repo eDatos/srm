@@ -1696,8 +1696,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", conceptSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urn, conceptSchemeVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, conceptSchemeVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
-            assertEquals(versionExpected, conceptSchemeVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(conceptSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
         }
         // All versions

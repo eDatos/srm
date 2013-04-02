@@ -5902,8 +5902,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", codelistVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urn, codelistVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, codelistVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
-            assertEquals(versionExpected, codelistVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(codelistVersionToCopy.getMaintainableArtefact().getIsLastVersion());
         }
         // All versions

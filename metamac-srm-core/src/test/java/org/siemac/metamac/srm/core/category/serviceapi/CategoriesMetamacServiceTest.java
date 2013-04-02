@@ -1258,8 +1258,6 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", categorySchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urn, categorySchemeVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, categorySchemeVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
-            assertEquals(versionExpected, categorySchemeVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(categorySchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
         }
         // All versions

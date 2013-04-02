@@ -1459,8 +1459,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
             assertEquals("01.000", organisationSchemeVersionToCopy.getMaintainableArtefact().getVersionLogic());
             assertEquals(urn, organisationSchemeVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
-            assertEquals(versionExpected, organisationSchemeVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
             assertFalse(organisationSchemeVersionToCopy.getMaintainableArtefact().getIsLastVersion());
         }
         // All versions
