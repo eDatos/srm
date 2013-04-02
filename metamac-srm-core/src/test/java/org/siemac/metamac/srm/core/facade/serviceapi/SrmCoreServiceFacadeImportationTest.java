@@ -9,9 +9,6 @@ import java.io.FileNotFoundException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.SchedulerRepository;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -44,28 +41,7 @@ import com.arte.statistic.sdmx.srm.core.importation.serviceapi.utils.Importation
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
 
-    private static Logger                 logger                                        = LoggerFactory.getLogger(SrmCoreServiceFacadeImportationTest.class);
-
-    // CODELISTS
-    private final String                  CODELIST_SDMX01_CL_DECIMALS_V1                = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(1.0)";
-    private final String                  CODELIST_SDMX01_CL_DECIMALS_V2                = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(2.0)";
-    private final String                  CODELIST_SDMX01_CL_FREQ_V1                    = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_FREQ(1.0)";
-    private final String                  CODELIST_SDMX01_CL_CONF_STATUS_V1             = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_CONF_STATUS(1.0)";
-    private final String                  CODELIST_SDMX01_CL_OBS_STATUS_V1              = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_OBS_STATUS(1.0)";
-    private final String                  CODELIST_SDMX01_CL_UNIT_MULT_V1               = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_UNIT_MULT(1.0)";
-
-    // CONCEPTS SCHEMES
-    private final String                  CONCEPTSCHEME_SDMX01_CROSS_DOMAIN_CONCEPTS_V1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CROSS_DOMAIN_CONCEPTS(1.0)";
-    private final String                  CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V1         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_CONCEPTS(1.0)";
-    private final String                  CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V2         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_CONCEPTS(2.0)";
-    private final String                  CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_MEASURES(1.0)";
-
-    // DSDs
-    private final String                  DSD_SDMX01_V1                                 = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DEMOGRAPHY(1.0)";
-    private final String                  DSD_SDMX01_V2                                 = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DEMOGRAPHY(2.0)";
-
-    // Categories
-    private final String                  CATEGORYSCHEME_SDW_ECONOMIC_CONCEPTS          = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0)";
+    private static Logger                 logger = LoggerFactory.getLogger(SrmCoreServiceFacadeImportationTest.class);
 
     @Autowired
     protected SrmCoreServiceFacade        srmCoreServiceFacade;
@@ -98,7 +74,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_NG_FULL)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_NG_FULL)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -107,7 +83,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_NG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
@@ -125,7 +101,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_SG_FULL)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_SG_FULL)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -134,7 +110,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_SG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
@@ -152,7 +128,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_RG_FULL)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_ECB_EXR_RG_FULL)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -161,7 +137,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_RG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
@@ -180,7 +156,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_DPOP)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_DPOP)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -189,7 +165,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_DPOP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
@@ -208,7 +184,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_EPOP)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_EPOP)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -217,7 +193,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_EPOP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
@@ -236,7 +212,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IDB)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IDB)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -245,7 +221,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IDB_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
@@ -264,7 +240,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IPC)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IPC)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -273,7 +249,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IPC_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
@@ -292,7 +268,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IPCA)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_IPCA)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -301,7 +277,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_IPCA_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
@@ -320,7 +296,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_MNP)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DSD_INE_MNP)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -329,20 +305,10 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = null;
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_INE_MNP_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_INE_MNP_URN, dataStructureDefinitionMetamacDto.getUrn());
     }
-
-    private void WaitUntilJobFinished() throws InterruptedException, SchedulerException {
-        // Wait until the job is finished
-        Thread.sleep(5 * 1000l);
-        Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
-        while (sched.getCurrentlyExecutingJobs().size() != 0) {
-            Thread.sleep(5 * 1000l);
-        }
-    }
-
 }

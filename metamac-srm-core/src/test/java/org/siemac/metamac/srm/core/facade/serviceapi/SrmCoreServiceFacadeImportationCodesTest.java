@@ -9,9 +9,6 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.SchedulerRepository;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -50,7 +47,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
 
     // CODELISTS
     private final String                  CODELIST_SDMX01_CL_DECIMALS_V1    = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(1.0)";
-    private final String                  CODELIST_SDMX01_CL_DECIMALS_V2    = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(2.0)";
+    // private final String CODELIST_SDMX01_CL_DECIMALS_V2 = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_DECIMALS(2.0)";
     private final String                  CODELIST_SDMX01_CL_FREQ_V1        = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_FREQ(1.0)";
     private final String                  CODELIST_SDMX01_CL_CONF_STATUS_V1 = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_CONF_STATUS(1.0)";
     private final String                  CODELIST_SDMX01_CL_OBS_STATUS_V1  = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CL_OBS_STATUS(1.0)";
@@ -97,7 +94,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -106,7 +103,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         CodelistVersionMetamac codelistVersion = null;
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_DECIMALS_V1);
         assertEquals(10, codelistVersion.getItems().size());
@@ -132,7 +129,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.CL_CODELIST03_V2)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.CL_CODELIST03_V2)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -141,7 +138,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         CodelistVersionMetamac codelistVersion = null;
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_CODELIST03_V2);
         assertEquals(12, codelistVersion.getItems().size());
@@ -201,7 +198,8 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_A)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(),
+                            ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_A)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -210,7 +208,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
 
         // New Transaction: Because the job needs persisted data
         final TransactionTemplate tt2 = new TransactionTemplate(transactionManager);
@@ -220,7 +218,8 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_NO_PARTIAL)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(),
+                            ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_NO_PARTIAL)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -229,7 +228,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
 
         CodelistVersionMetamac codelistVersion = null;
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_FREQ_V1);
@@ -248,7 +247,8 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_A)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(),
+                            ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_A)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -257,7 +257,7 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
 
         // New Transaction: Because the job needs persisted data
         final TransactionTemplate tt2 = new TransactionTemplate(transactionManager);
@@ -267,7 +267,8 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_B)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(),
+                            ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CODELIST_FINAL_PARTIAL_B)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -276,20 +277,11 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
 
         CodelistVersionMetamac codelistVersion = null;
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_FREQ_V1);
         assertEquals(7, codelistVersion.getItems().size());
-    }
-
-    private void WaitUntilJobFinished() throws InterruptedException, SchedulerException {
-        // Wait until the job is finished
-        Thread.sleep(5 * 1000l);
-        Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
-        while (sched.getCurrentlyExecutingJobs().size() != 0) {
-            Thread.sleep(5 * 1000l);
-        }
     }
 
 }

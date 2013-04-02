@@ -7,9 +7,6 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.SchedulerRepository;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -49,9 +46,6 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
     private final String                  CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V1         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_CONCEPTS(1.0)";
     private final String                  CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_MEASURES(1.0)";
 
-    // Categories
-    private final String                  CATEGORYSCHEME_SDW_ECONOMIC_CONCEPTS          = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0)";
-
     @Autowired
     protected SrmCoreServiceFacade        srmCoreServiceFacade;
 
@@ -83,7 +77,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -92,7 +86,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         ConceptSchemeVersionMetamac conceptSchemeVersion = null;
         conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_CROSS_DOMAIN_CONCEPTS_V1);
         assertEquals(12, conceptSchemeVersion.getItems().size());
@@ -113,7 +107,8 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.CS_DEMO_1_0_FINAL_NO_PARTIAL)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(),
+                            ImportationsDtoMocks.createContentInput(new File(SdmxResources.CS_DEMO_1_0_FINAL_NO_PARTIAL)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -122,7 +117,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
                 logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
             }
         });
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
         // ConceptSchemeVersionMetamac conceptSchemeVersion = null;
         // conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_CROSS_DOMAIN_CONCEPTS_V1);
         // assertEquals(12, conceptSchemeVersion.getItems().size());
@@ -135,15 +130,6 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
         // assertEquals(2, conceptSchemeVersion.getItemScheme().getVersions().size());
         // conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1);
         // assertEquals(14, conceptSchemeVersion.getItems().size());
-    }
-
-    private void WaitUntilJobFinished() throws InterruptedException, SchedulerException {
-        // Wait until the job is finished
-        Thread.sleep(5 * 1000l);
-        Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
-        while (sched.getCurrentlyExecutingJobs().size() != 0) {
-            Thread.sleep(5 * 1000l);
-        }
     }
 
 }

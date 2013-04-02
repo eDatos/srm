@@ -1,0 +1,28 @@
+import "classpath:/btdesign/statistic-sdmx-core-importation.btdesign"
+
+Application ImportationMetamac {
+	basePackage=unused
+
+	Module domain_importation_metamac {
+		basePackage=org.siemac.metamac.srm.core.importation
+
+		// ----------------------------------------------------------------
+		// 							SERVICES
+		// ----------------------------------------------------------------  
+		Service ImportationMetamacService {
+			"Imports file in sdmx format"
+			String importSDMXStructureInBackground(InputStream inputMessage, String fileName) throws MetamacException;
+			"Prepares importation of variable elements in csv format"
+    		String importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName) throws MetamacException;
+
+    		"Retrieves job"
+    		@ImportData retrieveImportDataByJob(String job) throws MetamacException;
+    		"Marks job as finished"
+    		markJobAsFinished(String job) throws MetamacException;
+    		"Marks job as failed"
+    		markJobAsFailed(String job, java.lang.Exception exception) throws MetamacException;
+    		"Find information about importations jobs"
+			PagedResult<@ImportData> findImportDataByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
+		}
+	}
+}

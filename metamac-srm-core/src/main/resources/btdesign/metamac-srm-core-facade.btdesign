@@ -30,6 +30,8 @@ import "classpath:/btdesign/metamac-srm-core-categories-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
 import "classpath:/btdesign/metamac-srm-core-codes-dtos.btdesign"
 
+import "classpath:/btdesign/metamac-srm-core-importation.btdesign"
+
 Application SrmFacadeCore {
     basePackage=unused
     
@@ -42,7 +44,7 @@ Application SrmFacadeCore {
        		> @OrganisationsMetamacService
        		> @CategoriesMetamacService
        		> @CodesMetamacService
-       		> @ImportationService
+       		> @ImportationMetamacService
 
 			"          
 			 @param ctx  
@@ -614,6 +616,8 @@ Application SrmFacadeCore {
  			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariable(String variableUrn) throws MetamacException;
  			"Retrieves all variable elements operations of one variable element"
  			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
+    		"Imports variable elements in csv format"
+    		importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName) throws MetamacException;
     		    		
     		/**************************************************************************
 		     * COMMON
@@ -623,7 +627,7 @@ Application SrmFacadeCore {
 			 @param contentDto                                                                           
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 	    	"
-	    	importSDMXStructureMsg(@ContentInputDto contentDto) throws MetamacException;
+	    	importSDMXStructureMsgInBackground(@ContentInputDto contentDto) throws MetamacException;
 	   		
 	   		"Find information about importations jobs"
     		MetamacCriteriaResult<@ImportDataDto> findImportDataByCondition(MetamacCriteria criteria) throws MetamacException;
@@ -637,6 +641,15 @@ Application SrmFacadeCore {
 	    	String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
     	}
 
+		Service ImportationMetamacServiceJobFacade {
+       		> @CodesMetamacService
+       		> @ImportationMetamacService
+
+    		"Imports variable elements in csv format"
+    		importVariableElementsCsv(String variableUrn, InputStream csvStream, String jobKey) throws MetamacException;
+    		"Marks job as failed"
+    		markJobAsFailed(String job, java.lang.Exception exception) throws MetamacException;
+   		}
     }
 
 }

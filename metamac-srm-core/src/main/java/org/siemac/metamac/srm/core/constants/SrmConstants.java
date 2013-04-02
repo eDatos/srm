@@ -28,4 +28,8 @@ public class SrmConstants {
     public static final String             CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE         = "ALL_EXPANDED";
     public static final Integer            CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_COLUMN_INDEX = Integer.valueOf(1);
     public static final Boolean            CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE             = Boolean.TRUE;
+
+    // Csv importations
+    public static final String             CSV_HEADER_VARIABLE_ELEMENT_CODE                          = "code";
+    public static final String             CSV_HEADER_VARIABLE_ELEMENT_SHORT_NAME                    = "shortName";
 }

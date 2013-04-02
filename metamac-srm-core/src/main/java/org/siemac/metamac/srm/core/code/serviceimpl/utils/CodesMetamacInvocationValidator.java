@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -515,6 +516,17 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
 
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkImportVariableElementsCsv(String variableUrn, InputStream csvStream, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

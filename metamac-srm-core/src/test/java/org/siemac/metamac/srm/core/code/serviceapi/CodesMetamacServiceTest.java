@@ -19,6 +19,7 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableElement;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableFamily;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -70,6 +71,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.importation.serviceapi.ImportationMetamacService;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +80,12 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -89,6 +96,8 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
+import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ImportationStatusTypeEnum;
 
 /**
  * Spring based transactional test with DbUnit support.
@@ -103,6 +112,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Autowired
     protected CodesMetamacService         codesService;
 
+    @Autowired
+    private ImportationMetamacService     importationService;
+
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager               entityManager;
 
@@ -111,6 +123,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeRepository;
+
+    @Autowired
+    protected PlatformTransactionManager  transactionManager;
 
     // ------------------------------------------------------------------------------------
     // CODELISTS
@@ -6328,6 +6343,92 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertFalse(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getSources()));
                 assertTrue(SrmServiceUtils.isVariableElementInList(variableElementUrn, variableElementOperation.getTargets()));
             }
+        }
+    }
+
+    @Override
+    @Test
+    public void testImportVariableElementsCsv() throws Exception {
+
+        final String variableUrn = VARIABLE_1;
+        // Verify variable elements do not exist
+        List<String> variableElementsCodes = Arrays.asList("variableElement1", "variableElement2", "variableElement3", "variableElement4", "variableElement5");
+        for (String variableElementCode : variableElementsCodes) {
+            String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01." + variableElementCode;
+            try {
+                codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
+                fail("not expected");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
+            }
+        }
+
+        // Import
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/importation-variable-element-01.csv");
+        final StringBuilder jobKey = new StringBuilder();
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importVariableElementsCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, "importation-variable-element-01.csv");
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportData importData = importationService.retrieveImportDataByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importData);
+        assertEquals(ImportationStatusTypeEnum.FINISHED, importData.getStatus());
+        // Validate variable elements
+        {
+            // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement1");
+            assertEquals("variableElement1", variableElement.getNameableArtefact().getCode());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
+            assertEquals(null, variableElement.getValidFrom());
+            assertEquals(null, variableElement.getValidTo());
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+        }
+        {
+            // variableElement2;Nombre corto 2 con ácéntós;;Nombre corto it 2
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement2");
+            assertEquals("variableElement2", variableElement.getNameableArtefact().getCode());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2 con ácéntós", "it", "Nombre corto it 2");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+        }
+        {
+            // variableElement3;Nombre corto 3;;
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement3");
+            assertEquals("variableElement3", variableElement.getNameableArtefact().getCode());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+        }
+        {
+            // variableElement4;Nombre corto 4;Short name 4;Nombre corto it 4
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement4");
+            assertEquals("variableElement4", variableElement.getNameableArtefact().getCode());
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
+        }
+        {
+            // variableElement5;;;Nombre corto it 5
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
+                    "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement5");
+            assertEquals("variableElement5", variableElement.getNameableArtefact().getCode());
+            assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
+            assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
         }
     }
 

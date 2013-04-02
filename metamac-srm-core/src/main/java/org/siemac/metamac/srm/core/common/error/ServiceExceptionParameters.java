@@ -85,4 +85,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String PROC_STATUS_VALIDATION_REJECTED                                    = ProcStatusEnum.VALIDATION_REJECTED.name();
     public static final String PROC_STATUS_INTERNALLY_PUBLISHED                                   = ProcStatusEnum.INTERNALLY_PUBLISHED.name();
     public static final String PROC_STATUS_EXTERNALLY_PUBLISHED                                   = ProcStatusEnum.EXTERNALLY_PUBLISHED.name();
+
+    // MISC
+    public static final String STREAM                                                             = "stream";
 }

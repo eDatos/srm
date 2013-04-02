@@ -9,9 +9,6 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.SchedulerRepository;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -84,7 +81,7 @@ public class SrmCoreServiceFacadeImportationOrganisationTest extends SrmBaseTest
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.EXAMPLE_ORGANISATIONS)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.EXAMPLE_ORGANISATIONS)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -94,7 +91,7 @@ public class SrmCoreServiceFacadeImportationOrganisationTest extends SrmBaseTest
             }
         });
 
-        WaitUntilJobFinished();
+        waitUntilJobFinished();
 
         OrganisationSchemeVersionMetamac organisationSchemeVersion = null;
 
@@ -131,7 +128,7 @@ public class SrmCoreServiceFacadeImportationOrganisationTest extends SrmBaseTest
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.ORG_AGENCYSC_SDMX01)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.ORG_AGENCYSC_SDMX01)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -141,16 +138,7 @@ public class SrmCoreServiceFacadeImportationOrganisationTest extends SrmBaseTest
             }
         });
 
-        WaitUntilJobFinished();
-    }
-
-    private void WaitUntilJobFinished() throws InterruptedException, SchedulerException {
-        // Wait until the job is finished
-        Thread.sleep(5 * 1000l);
-        Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
-        while (sched.getCurrentlyExecutingJobs().size() != 0) {
-            Thread.sleep(5 * 1000l);
-        }
+        waitUntilJobFinished();
     }
 
 }

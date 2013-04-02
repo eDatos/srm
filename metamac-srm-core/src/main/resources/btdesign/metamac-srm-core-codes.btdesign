@@ -71,6 +71,8 @@ Application CodesMetamac {
     		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
 			"Checks translations for codelist"
     		List<MetamacExceptionItem> checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale);
+			"Imports variable elements in csv format"
+    		importVariableElementsCsv(String variableUrn, InputStream csvStream) throws MetamacException;
     		
 			// CODES
 

@@ -1,5 +1,9 @@
 package org.siemac.metamac.srm.core.code.serviceimpl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +23,7 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
+import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
@@ -36,6 +41,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
+import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
@@ -46,6 +52,10 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.importation.domain.VariableElementCsvHeader;
+import org.siemac.metamac.srm.core.importation.serviceimpl.utils.ImportationCsvUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -92,6 +102,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Autowired
     @Qualifier("codesVersioningCopyWithoutCodesCallbackMetamac")
     private CodesVersioningCopyCallback    codesVersioningCopyWithoutCodesCallback;
+
+    private static Logger                  logger = LoggerFactory.getLogger(CodesMetamacService.class);
 
     public CodesMetamacServiceImpl() {
     }
@@ -1028,6 +1040,68 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return getVariableElementOperationRepository().findByVariableElementUrn(variableElementUrn);
     }
 
+    @Override
+    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream) throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkImportVariableElementsCsv(variableUrn, csvStream, null);
+
+        // TODO si ya existe variable element?
+
+        // Import
+        BufferedReader bufferedReader = null;
+        InputStreamReader inputStreamReader = null;
+        try {
+            inputStreamReader = new InputStreamReader(csvStream);
+            bufferedReader = new BufferedReader(inputStreamReader); // TODO charset?
+            Variable variable = retrieveVariableByUrn(variableUrn);
+
+            VariableElementCsvHeader header = null;
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] lineMetadatas = StringUtils.splitPreserveAllTokens(line, ";"); // TODO separador
+                if (header == null) {
+                    header = ImportationCsvUtils.parseVariableElementHeader(lineMetadatas);
+                } else {
+                    if (lineMetadatas.length != header.getColumnsSize()) {
+                        throw new MetamacException(ServiceExceptionType.IMPORT_ERROR); // TODO error
+                    }
+                    VariableElement variableElement = csvLineToVariableElement(header, lineMetadatas, variable);
+                    // CodesMetamacInvocationValidator.checkCreateVariableElement(variableElement, null); // TODO errores? // TODO validaciones
+                    getVariableElementRepository().save(variableElement);
+                }
+            }
+        } catch (Exception e) {
+            if (e instanceof MetamacException) {
+                throw (MetamacException) e;
+            } else {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORT_ERROR).withMessageParameters(e.getMessage()).withCause(e)
+                        .withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
+            }
+        } finally {
+            try {
+                inputStreamReader.close();
+                bufferedReader.close();
+            } catch (IOException e) {
+                // do not relaunch error
+                logger.error("Error closing streams", e);
+            }
+        }
+    }
+
+    private VariableElement csvLineToVariableElement(VariableElementCsvHeader header, String[] line, Variable variable) throws MetamacException {
+        VariableElement variableElement = new VariableElement();
+        variableElement.setNameableArtefact(new NameableArtefact());
+        variableElement.getNameableArtefact().setCode(line[header.getCodePosition()]);
+        variableElement.setShortName(ImportationCsvUtils.csvLineToInternationalString(header.getShortName(), line));
+        if (variableElement.getShortName() == null) {
+            // TODO dar error? acumular errores pero persistir los correctos? hacer test
+        }
+        variableElement.setVariable(variable);
+        setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
+        return variableElement;
+    }
+
     /**
      * Get a column available in Code to store orders
      */
@@ -1460,7 +1534,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      * Common validations to create or update a variable element
      */
     private void checkVariableElementToCreateOrUpdate(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
-        // Check variable doesnt replace self
+        // Check variable element doesnt replace self
         if (SrmServiceUtils.isVariableElementInList(variableElement.getNameableArtefact().getUrn(), variableElement.getReplaceToVariableElements())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variableElement.getNameableArtefact().getUrn())
                     .build();

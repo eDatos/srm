@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.facade.serviceimpl;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.importation.domain.ImportData;
-import com.arte.statistic.sdmx.srm.core.importation.serviceimpl.utils.ImportationJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
@@ -147,10 +147,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Autowired
     private SculptorCriteria2MetamacCriteriaMapper sculptorCriteria2MetamacCriteriaMapper;
-
-    @Autowired
-    @Qualifier("importationMetamacJaxb2DoCallback")
-    private ImportationJaxb2DoCallback             importationJaxb2DoCallback;
 
     public Jaxb2Marshaller getMarshallerWithValidation() {
         return marshallerWithValidation;
@@ -507,12 +503,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      * Import/Export
      **************************************************************************/
     @Override
-    public void importSDMXStructureMsg(ServiceContext ctx, ContentInputDto contentDto) throws MetamacException {
+    public void importSDMXStructureMsgInBackground(ServiceContext ctx, ContentInputDto contentDto) throws MetamacException {
         // Security
         ImportSecurityUtils.canImportStructure(ctx);
 
         // Import
-        getImportationService().importSDMXStructure(ctx, contentDto.getInput(), contentDto.getName(), importationJaxb2DoCallback);
+        getImportationMetamacService().importSDMXStructureInBackground(ctx, contentDto.getInput(), contentDto.getName());
     }
 
     @Override
@@ -524,7 +520,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ImportData> result = getImportationService().findImportDataByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<ImportData> result = getImportationMetamacService().findImportDataByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<ImportDataDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultImportData(result, sculptorCriteria.getPageSize());
@@ -1659,6 +1655,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to DTO
         variableElementDto = codesDo2DtoMapper.variableElementDoToDto(variableElementCreated);
         return variableElementDto;
+    }
+
+    @Override
+    public void importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCrudVariableElement(ctx);
+
+        // Import in background
+        getImportationMetamacService().importVariableElementsCsvInBackground(ctx, variableUrn, csvStream, fileName);
     }
 
     @Override
