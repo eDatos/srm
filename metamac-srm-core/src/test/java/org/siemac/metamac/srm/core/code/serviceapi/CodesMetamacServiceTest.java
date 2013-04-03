@@ -6773,11 +6773,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
         }
         {
-            // variableElement2;Nombre corto 2 con ácéntós;;Nombre corto it 2
+            // variableElement2;Nombre corto 2;;Nombre corto it 2
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement2");
             assertEquals("variableElement2", variableElement.getIdentifiableArtefact().getCode());
-            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2 con ácéntós", "it", "Nombre corto it 2");
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2", "it", "Nombre corto it 2");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
         }
         {

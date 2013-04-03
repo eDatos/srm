@@ -36,8 +36,8 @@
     <sr:variableElement>
         <cdomain:id>variableElement1</cdomain:id>
         <cdomain:title>
-            <cdomain:text xml:lang="es">name-variableElement1 en Español</cdomain:text>
-            <cdomain:text xml:lang="en">name-variableElement1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">shortName-variableElement1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">shortName-variableElement1 in English</cdomain:text>
         </cdomain:title>
     </sr:variableElement>
 </sr:code>

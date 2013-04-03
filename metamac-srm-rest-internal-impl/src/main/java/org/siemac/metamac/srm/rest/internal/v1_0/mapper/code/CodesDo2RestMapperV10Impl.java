@@ -182,8 +182,8 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
             return null;
         }
         Item target = new Item();
-        target.setId(source.getNameableArtefact().getCode());
-        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
+        target.setId(source.getIdentifiableArtefact().getCode());
+        target.setTitle(toInternationalString(source.getShortName()));
         return target;
     }
 
