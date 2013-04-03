@@ -526,6 +526,8 @@ Application SrmFacadeCore {
             deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by code scheme in locale and visualisation requested"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn) throws MetamacException;
+    		"Imports codes in csv format"
+    		importCodesCsvInBackground(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
     		
     		"Creates order visualisation"
     		@CodelistVisualisationDto createCodelistOrderVisualisation(@CodelistVisualisationDto codelistOrderVisualisationDto) throws MetamacException;
@@ -645,6 +647,8 @@ Application SrmFacadeCore {
        		> @CodesMetamacService
        		> @ImportationMetamacService
 
+    		"Imports codes in csv format"
+    		importCodesCsv(String codelistUrn, InputStream csvStream, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Imports variable elements in csv format"
     		importVariableElementsCsv(String variableUrn, InputStream csvStream, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Marks job as failed"

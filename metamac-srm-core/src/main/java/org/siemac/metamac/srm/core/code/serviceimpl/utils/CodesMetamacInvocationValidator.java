@@ -165,6 +165,18 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkImportCodesCsv(String codelistUrn, InputStream csvStream, Boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_CSV_UPDATE_ALREADY_EXISTING, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     private static void checkCode(CodelistVersionMetamac codelistVersion, CodeMetamac code, boolean creating, List<MetamacExceptionItem> exceptions) {
         if (SrmValidationUtils.mustValidateMetadataRequired(codelistVersion, creating)) {
             ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);

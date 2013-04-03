@@ -32,6 +32,10 @@ public class SrmConstants {
     // Csv importations
     public static final String             CSV_SEPARATOR                                             = "\t";
     public static final String             CSV_HEADER_INTERNATIONAL_STRING_SEPARATOR                 = "#";
-    public static final String             CSV_HEADER_VARIABLE_ELEMENT_CODE                          = "code";
-    public static final String             CSV_HEADER_VARIABLE_ELEMENT_SHORT_NAME                    = "shortName";
+    public static final String             CSV_HEADER_CODE                                           = "code";
+    public static final String             CSV_HEADER_PARENT                                         = "parent";
+    public static final String             CSV_HEADER_NAME                                           = "name";
+    public static final String             CSV_HEADER_DESCRIPTION                                    = "description";
+    public static final String             CSV_HEADER_SHORT_NAME                                     = "shortName";
+    public static final String             CSV_HEADER_VARIABLE_ELEMENT                               = "variableElement";
 }

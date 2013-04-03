@@ -3281,6 +3281,352 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Override
+    @Test
+    @DirtyDatabase
+    public void testImportCodesCsv() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        // Verify codes do not exist
+        List<String> codesCodes = Arrays.asList("code1", "code2", "code3", "code4", "code5");
+        for (String codeCode : codesCodes) {
+            String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01." + codeCode;
+            try {
+                codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+                fail("not expected");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
+            }
+        }
+
+        // Import
+        final String fileName = "importation-code-01.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+        final boolean updateAlreadyExisting = false;
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodesCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName, updateAlreadyExisting);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
+        assertEquals(0, importationTask.getImportationTaskResults().size());
+        // Validate codes
+        // {
+        // // code1;Nombre corto 1;Short name 1;Nombre corto it 1
+        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code1");
+        // assertEquals("code1", code.getNameableArtefact().getCode());
+        // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
+        // assertEquals(null, code.getValidFrom());
+        // assertEquals(null, code.getValidTo());
+        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // }
+        // {
+        // // code2;Nombre corto 2 con ácéntós;;Nombre corto it 2
+        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code2");
+        // assertEquals("code2", code.getNameableArtefact().getCode());
+        // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 2 con ácéntós", "it", "Nombre corto it 2");
+        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // }
+        // {
+        // // code3;Nombre corto 3;;
+        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code3");
+        // assertEquals("code3", code.getNameableArtefact().getCode());
+        // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
+        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // }
+        // {
+        // // code4;Nombre corto 4;Short name 4;Nombre corto it 4
+        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code4");
+        // assertEquals("code4", code.getNameableArtefact().getCode());
+        // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
+        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // }
+        // {
+        // // code5;;;Nombre corto it 5
+        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code5");
+        // assertEquals("code5", code.getNameableArtefact().getCode());
+        // assertEqualsInternationalString(code.getShortName(), "it", "Nombre corto it 5", null, null);
+        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // }
+    }
+
+    // TODO import errors
+    //
+    // @Test
+    // @DirtyDatabase
+    // public void testImportCodesCsvUpdatingAlreadyExistingCodes() throws Exception {
+    //
+    // final boolean updateAlreadyExisting = true;
+    //
+    // // Import
+    // final String variableUrn = VARIABLE_2;
+    // final String fileName = "importation-code-04.csv";
+    // final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+    // final StringBuilder jobKey = new StringBuilder();
+    // final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+    // tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+    // tt.execute(new TransactionCallbackWithoutResult() {
+    //
+    // @Override
+    // public void doInTransactionWithoutResult(TransactionStatus status) {
+    // try {
+    // String jobKeyString = importationService.importCodesCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, fileName, updateAlreadyExisting);
+    // jobKey.append(jobKeyString);
+    // } catch (MetamacException e) {
+    // fail("importation failed");
+    // }
+    // }
+    // });
+    // waitUntilJobFinished();
+    //
+    // // Validate
+    // ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+    // assertNotNull(importationTask);
+    // assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
+    // assertEquals(2, importationTask.getImportationTaskResults().size());
+    // int i = 0;
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "VARIABLE_ELEMENT_02", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO,
+    // importationTask.getImportationTaskResults().get(i++));
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "VARIABLE_ELEMENT_04", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO,
+    // importationTask.getImportationTaskResults().get(i++));
+    // assertEquals(importationTask.getImportationTaskResults().size(), i);
+    //
+    // // Validate variable elements
+    // {
+    // // code1;Nombre corto 1;Short name 1;Nombre corto it 1
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.code1");
+    // assertEquals("code1", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
+    // assertEquals(null, code.getValidFrom());
+    // assertEquals(null, code.getValidTo());
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // BaseAsserts.assertEqualsDay(new DateTime(), code.getCreatedDate()); // today
+    // }
+    // {
+    // // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.VARIABLE_ELEMENT_02");
+    // assertEquals("VARIABLE_ELEMENT_02", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 2", "it", "Nombre corto it 2");
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // assertEquals(Long.valueOf(22), code.getId());
+    // BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
+    // BaseAsserts.assertEqualsDay(new DateTime(), code.getLastUpdated()); // today
+    // }
+    // {
+    // // code3;Nombre corto 3;;
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.code3");
+    // assertEquals("code3", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // BaseAsserts.assertEqualsDay(new DateTime(), code.getCreatedDate()); // today
+    // }
+    // {
+    // // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.VARIABLE_ELEMENT_04");
+    // assertEquals("VARIABLE_ELEMENT_04", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // assertEquals(Long.valueOf(24), code.getId());
+    // BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
+    // BaseAsserts.assertEqualsDay(new DateTime(), code.getLastUpdated()); // today
+    // }
+    // {
+    // // code5;;;Nombre corto it 5
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.code5");
+    // assertEquals("code5", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "it", "Nombre corto it 5", null, null);
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // BaseAsserts.assertEqualsDay(new DateTime(), code.getCreatedDate()); // today
+    // }
+    // }
+    //
+    // @Test
+    // @DirtyDatabase
+    // public void testImportCodesCsvNotUpdatingAlreadyExistingCodes() throws Exception {
+    //
+    // final boolean updateAlreadyExisting = false;
+    //
+    // // Import
+    // final String variableUrn = VARIABLE_2;
+    // final String fileName = "importation-code-04.csv";
+    // final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+    // final StringBuilder jobKey = new StringBuilder();
+    // final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+    // tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+    // tt.execute(new TransactionCallbackWithoutResult() {
+    //
+    // @Override
+    // public void doInTransactionWithoutResult(TransactionStatus status) {
+    // try {
+    // String jobKeyString = importationService.importCodesCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, fileName, updateAlreadyExisting);
+    // jobKey.append(jobKeyString);
+    // } catch (MetamacException e) {
+    // fail("importation failed");
+    // }
+    // }
+    // });
+    // waitUntilJobFinished();
+    //
+    // // Validate
+    // ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+    // assertNotNull(importationTask);
+    // assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
+    // assertEquals(2, importationTask.getImportationTaskResults().size());
+    // int i = 0;
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "VARIABLE_ELEMENT_02", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO,
+    // importationTask.getImportationTaskResults().get(i++));
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "VARIABLE_ELEMENT_04", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO,
+    // importationTask.getImportationTaskResults().get(i++));
+    // assertEquals(importationTask.getImportationTaskResults().size(), i);
+    //
+    // // Validate variable elements
+    // {
+    // // code1;Nombre corto 1;Short name 1;Nombre corto it 1
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.code1");
+    // assertEquals("code1", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
+    // assertEquals(null, code.getValidFrom());
+    // assertEquals(null, code.getValidTo());
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // BaseAsserts.assertEqualsDay(new DateTime(), code.getCreatedDate()); // today
+    // }
+    // {
+    // // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.VARIABLE_ELEMENT_02");
+    // assertEquals("VARIABLE_ELEMENT_02", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto code 2-2", "en", "Short name code 2-2");
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // assertEquals(Long.valueOf(22), code.getId());
+    // BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
+    // BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), code.getLastUpdated());
+    // }
+    // {
+    // // code3;Nombre corto 3;;
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.code3");
+    // assertEquals("code3", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // BaseAsserts.assertEqualsDay(new DateTime(), code.getCreatedDate()); // today
+    // }
+    // {
+    // // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.VARIABLE_ELEMENT_04");
+    // assertEquals("VARIABLE_ELEMENT_04", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "es", "nombre corto", null, null);
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // assertEquals(Long.valueOf(24), code.getId());
+    // BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
+    // BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), code.getLastUpdated());
+    // }
+    // {
+    // // code5;;;Nombre corto it 5
+    // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_02.code5");
+    // assertEquals("code5", code.getNameableArtefact().getCode());
+    // assertEqualsInternationalString(code.getShortName(), "it", "Nombre corto it 5", null, null);
+    // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+    // BaseAsserts.assertEqualsDay(new DateTime(), code.getCreatedDate()); // today
+    // }
+    // }
+    //
+    // @Test
+    // @DirtyDatabase
+    // public void testImportCodesCsvWithHeaderIncorrect() throws Exception {
+    //
+    // final String variableUrn = VARIABLE_1;
+    //
+    // // Import
+    // final String fileName = "importation-code-02-errors-header.csv";
+    // final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+    // final StringBuilder jobKey = new StringBuilder();
+    // final boolean updateAlreadyExisting = false;
+    // final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+    // tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+    // tt.execute(new TransactionCallbackWithoutResult() {
+    //
+    // @Override
+    // public void doInTransactionWithoutResult(TransactionStatus status) {
+    // try {
+    // String jobKeyString = importationService.importCodesCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, fileName, updateAlreadyExisting);
+    // jobKey.append(jobKeyString);
+    // } catch (MetamacException e) {
+    // fail("importation failed");
+    // }
+    // }
+    // });
+    // waitUntilJobFinished();
+    //
+    // // Validate
+    // ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+    // assertNotNull(importationTask);
+    // assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
+    // assertEquals(2, importationTask.getImportationTaskResults().size());
+    // int i = 0;
+    // ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), null, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, importationTask
+    // .getImportationTaskResults().get(i++));
+    // assertEquals(importationTask.getImportationTaskResults().size(), i);
+    // }
+    //
+    // @Test
+    // @DirtyDatabase
+    // public void testImportCodesCsvWithBodyIncorrect() throws Exception {
+    //
+    // final String variableUrn = VARIABLE_1;
+    //
+    // // Import
+    // final String fileName = "importation-code-03-errors-body.csv";
+    // final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+    // final StringBuilder jobKey = new StringBuilder();
+    // final boolean updateAlreadyExisting = false;
+    // final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+    // tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+    // tt.execute(new TransactionCallbackWithoutResult() {
+    //
+    // @Override
+    // public void doInTransactionWithoutResult(TransactionStatus status) {
+    // try {
+    // String jobKeyString = importationService.importCodesCsvInBackground(getServiceContextAdministrador(), variableUrn, stream, fileName, updateAlreadyExisting);
+    // jobKey.append(jobKeyString);
+    // } catch (MetamacException e) {
+    // fail("importation failed");
+    // }
+    // }
+    // });
+    // waitUntilJobFinished();
+    //
+    // // Validate
+    // ImportationTask importData = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+    // assertNotNull(importData);
+    // assertEquals(ImportationStatusTypeEnum.FAILED, importData.getStatus());
+    // assertEquals(5, importData.getImportationTaskResults().size());
+    // int i = 0;
+    // ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), null, Boolean.TRUE, type, importData.getImportationTaskResults().get(i++));
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "3", Boolean.FALSE, type, importData.getImportationTaskResults().get(i++));
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "code4#@#shortName", Boolean.FALSE, type, importData.getImportationTaskResults().get(i++));
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#code5#@#code", Boolean.FALSE, type, importData
+    // .getImportationTaskResults().get(i++));
+    // assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, type, importData.getImportationTaskResults().get(i++));
+    // assertEquals(importData.getImportationTaskResults().size(), i);
+    // }
+
     // ------------------------------------------------------------------------------------
     // CODELIST FAMILIES
     // ------------------------------------------------------------------------------------
@@ -6681,14 +7027,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
         assertNotNull(importationTask);
         assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(3, importationTask.getImportationTaskResults().size());
+        assertEquals(2, importationTask.getImportationTaskResults().size());
         int i = 0;
         ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
         assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), null, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
         assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, importationTask
                 .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_SHORT_NAME, Boolean.FALSE, type,
-                importationTask.getImportationTaskResults().get(i++));
         assertEquals(importationTask.getImportationTaskResults().size(), i);
     }
 

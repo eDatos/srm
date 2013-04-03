@@ -62,6 +62,19 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
+    public CodeMetamac findByCode(String codelistUrn, String code) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("code", code);
+        parameters.put("codelistUrn", codelistUrn);
+        List<CodeMetamac> result = findByQuery("from CodeMetamac where nameableArtefact.code = :code and codelistVersion.maintainableArtefact.urn = :codelistUrn", parameters, 1);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
+
+    @Override
     public void clearCodesVariableElementByCodelist(CodelistVersionMetamac codelistVersion) {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set VARIABLE_ELEMENT_FK = null ");

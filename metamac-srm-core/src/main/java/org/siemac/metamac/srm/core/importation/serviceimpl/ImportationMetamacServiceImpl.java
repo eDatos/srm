@@ -18,6 +18,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.quartz.DateBuilder.IntervalUnit;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SimpleTrigger;
@@ -59,11 +60,33 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
     }
 
     @Override
-    public synchronized String importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting)
-            throws MetamacException {
+    public String importCodesCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+        // Validation
+        ImportationMetamacInvocationValidator.checkImportCodesCsvInBackground(codelistUrn, csvStream, updateAlreadyExisting, null);
+
+        // Plan job
+        JobDataMap jobDataAdditional = new JobDataMap();
+        jobDataAdditional.put(ImportationCsvJob.CODELIST_URN, codelistUrn);
+        jobDataAdditional.put(ImportationCsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
+        jobDataAdditional.put(ImportationCsvJob.OPERATION, ImportationCsvJob.OPERATION_IMPORT_CODES);
+        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional, updateAlreadyExisting);
+    }
+
+    @Override
+    public String importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
 
         // Validation
         ImportationMetamacInvocationValidator.checkImportVariableElementsCsvInBackground(variableUrn, csvStream, updateAlreadyExisting, null);
+
+        // Plan job
+        JobDataMap jobDataAdditional = new JobDataMap();
+        jobDataAdditional.put(ImportationCsvJob.VARIABLE_URN, variableUrn);
+        jobDataAdditional.put(ImportationCsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
+        jobDataAdditional.put(ImportationCsvJob.OPERATION, ImportationCsvJob.OPERATION_IMPORT_VARIABLE_ELEMENTS);
+        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional, updateAlreadyExisting);
+    }
+
+    private synchronized String importCsvInBackground(ServiceContext ctx, InputStream csvStream, String fileName, JobDataMap jobDataAdditional, boolean updateAlreadyExisting) throws MetamacException {
 
         // Plan job
         OutputStream os = null;
@@ -89,8 +112,7 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
 
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
             JobDetail job = newJob(ImportationCsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportationCsvJob.FILE_PATH, file.getAbsolutePath())
-                    .usingJobData(ImportationCsvJob.USER, ctx.getUserId()).usingJobData(ImportationCsvJob.VARIABLE_URN, variableUrn)
-                    .usingJobData(ImportationCsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting).requestRecovery().build();
+                    .usingJobData(ImportationCsvJob.USER, ctx.getUserId()).usingJobData(jobDataAdditional).requestRecovery().build();
             SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "importation").startAt(futureDate(1, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
             sched.scheduleJob(job, trigger);
 

@@ -17,11 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository("codelistOrderVisualisationRepository")
 public class CodelistOrderVisualisationRepositoryImpl extends CodelistOrderVisualisationRepositoryBase {
 
-    private final static String SQL_QUERY_GENERATE_URN_ORDER_VISUALIZATION_BY_CODELIST = "UPDATE IdentifiableArtefact ia SET ia.urn = concat(:urnPartial, ia.code) WHERE ia.id IN (SELECT co.nameableArtefact.id FROM CodelistOrderVisualisation co WHERE co.codelistVersion.id = :codelistVersion)";
-
-    // private final static String SQL_QUERY_GENERATE_URN_PROVIDER_ITEMS_BY_ITEM_SCHEME_VERSION =
-    // "UPDATE IdentifiableArtefact ia SET ia.urnProvider = ia.urn WHERE ia.id IN (SELECT nameableArtefact.id FROM Item i WHERE i.itemSchemeVersion.id = :itemSchemeVersion)";
-
     public CodelistOrderVisualisationRepositoryImpl() {
     }
 

@@ -5,9 +5,9 @@ import java.util.List;
 
 public class InternationalStringCsv {
 
-    private int                startPosition;
-    private int                endPosition;
-    private final List<String> locales = new ArrayList<String>();
+    private int                startPosition = -1;
+    private int                endPosition   = -1;
+    private final List<String> locales       = new ArrayList<String>();
 
     public int getStartPosition() {
         return startPosition;
@@ -35,5 +35,9 @@ public class InternationalStringCsv {
 
     public List<String> getLocales() {
         return locales;
+    }
+
+    public boolean isEndPositionSetted() {
+        return endPosition != -1;
     }
 }

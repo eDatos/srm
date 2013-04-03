@@ -73,8 +73,6 @@ Application CodesMetamac {
     		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
 			"Checks translations for codelist"
     		List<MetamacExceptionItem> checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale);
-			"Imports variable elements in csv format"
-    		importVariableElementsCsv(String variableUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
     		
 			// CODES
 
@@ -102,6 +100,8 @@ Application CodesMetamac {
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn, String codelistOpennessVisualisationUrn) throws MetamacException;
 			"Copy codes to another codelist"
 	   		copyCodesInCodelist(String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException;
+			"Imports codes in csv format"
+    		importCodesCsv(String codelistUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
 	   		    		
     		// VISUALISATIONS
     		
@@ -135,6 +135,7 @@ Application CodesMetamac {
     		deleteCodelistOpennessVisualisation(String urn) throws MetamacException;
     		@CodelistVersionMetamac versioningCodelistOpennessVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException;
     		@CodelistVersionMetamac recreateCodelistOpennessVisualisationAllOpened(@CodelistVersionMetamac codelistVersion, @CodelistOpennessVisualisation allExpandedOpennessVisualisation) throws MetamacException;
+
 			// CODELIST FAMILIES
 			
 			"Creates codelist family"
@@ -210,6 +211,8 @@ Application CodesMetamac {
  			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariable(String variableUrn) throws MetamacException;
  			"Retrieves all variable elements operations of one variable element"
  			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
+			"Imports variable elements in csv format"
+    		importVariableElementsCsv(String variableUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -318,6 +321,7 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByQuery(String query, Map<String, Object> parameters);
 				@CodeMetamac findByUrn(String urn);
+				@CodeMetamac findByCode(String codelistUrn, String code);
 				findByCondition(PagingParameter pagingParameter);
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) throws MetamacException;
