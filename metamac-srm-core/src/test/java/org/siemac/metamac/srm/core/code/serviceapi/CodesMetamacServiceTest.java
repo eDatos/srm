@@ -354,11 +354,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codelistVersionUpdated = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnUpdated);
 
         // Assert URN of CodelistOrder
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(01.000).ALPHABETICAL", codelistVersionUpdated.getOrderVisualisations().iterator()
-                .next().getNameableArtefact().getUrn());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:codeNew(01.000).ALPHABETICAL", codelistVersionUpdated.getOrderVisualisations().iterator().next()
+                .getNameableArtefact().getUrn());
 
         // Assert URN of CodelistOpen
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(01.000).ALL_EXPANDED", codelistVersionUpdated.getOpennessVisualisations()
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:codeNew(01.000).ALL_EXPANDED", codelistVersionUpdated.getOpennessVisualisations()
                 .iterator().next().getNameableArtefact().getUrn());
 
     }

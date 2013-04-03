@@ -183,23 +183,26 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             getCodeMetamacRepository().clearCodesVariableElementByCodelist(codelistVersion);
         }
 
+        // Save codelist
+        CodelistVersionMetamac codelistVersionMetamac = (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
+
         // Updates URNs of CodelistOrderVisualisations and CodelistOpenVisualizations
         // If code have been changed, update URN. In metamac not is possible to change the maintainer,
         // if this were not so, the URN will also be updated when the maintainer changes.
-        if (codelistVersion.getMaintainableArtefact().getIsCodeUpdated()) {
+        if (codelistVersionMetamac.getMaintainableArtefact().getIsCodeUpdated()) {
             // IMPORTANT: Update order and open urn efficiently to avoid one update for each code
-            if (!codelistVersion.getOrderVisualisations().isEmpty()) {
-                getCodelistOrderVisualisationRepository().updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(codelistVersion,
-                        codelistVersion.getOrderVisualisations().iterator().next().getNameableArtefact().getUrn());
+            if (!codelistVersionMetamac.getOrderVisualisations().isEmpty()) {
+                getCodelistOrderVisualisationRepository().updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(codelistVersionMetamac,
+                        codelistVersionMetamac.getOrderVisualisations().iterator().next().getNameableArtefact().getUrn());
             }
-            if (!codelistVersion.getOpennessVisualisations().isEmpty()) {
-                getCodelistOpennessVisualisationRepository().updateUrnAllCodelistOpenVisualisationsByCodelistEfficiently(codelistVersion,
-                        codelistVersion.getOpennessVisualisations().iterator().next().getNameableArtefact().getUrn());
+            if (!codelistVersionMetamac.getOpennessVisualisations().isEmpty()) {
+                getCodelistOpennessVisualisationRepository().updateUrnAllCodelistOpenVisualisationsByCodelistEfficiently(codelistVersionMetamac,
+                        codelistVersionMetamac.getOpennessVisualisations().iterator().next().getNameableArtefact().getUrn());
             }
         }
 
         // Save codelist
-        return (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
+        return codelistVersionMetamac;
     }
 
     @Override
