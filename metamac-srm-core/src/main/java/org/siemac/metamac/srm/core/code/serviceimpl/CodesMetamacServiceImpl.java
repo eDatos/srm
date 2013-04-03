@@ -63,6 +63,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -905,7 +906,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         if (CollectionUtils.isNotEmpty(variableToDelete.getVariableElements())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
-                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getVariableElements().get(0).getNameableArtefact().getUrn()).build();
+                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getVariableElements().get(0).getIdentifiableArtefact().getUrn()).build();
         }
 
         // Delete associations with variable families
@@ -993,7 +994,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkVariableElementToCreateOrUpdate(ctx, variableElement);
 
         // If code has been changed, update URN
-        if (variableElement.getNameableArtefact().getIsCodeUpdated()) {
+        if (variableElement.getIdentifiableArtefact().getIsCodeUpdated()) {
             setVariableElementUrnUnique(variableElement.getVariable(), variableElement);
         }
         variableElement.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
@@ -1061,13 +1062,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         VariableElement variableElementToDelete = retrieveVariableElementByUrn(urn);
         if (CollectionUtils.isNotEmpty(variableElementToDelete.getCodes())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_RELATIONS)
-                    .withMessageParameters(variableElementToDelete.getNameableArtefact().getUrn(), variableElementToDelete.getCodes().get(0).getNameableArtefact().getUrn()).build(); // say one
+                    .withMessageParameters(variableElementToDelete.getIdentifiableArtefact().getUrn(), variableElementToDelete.getCodes().get(0).getNameableArtefact().getUrn()).build(); // say one
         }
         // Check variableElement has not operations
         List<VariableElementOperation> variableElementsOperations = getVariableElementOperationRepository().findByVariableElementUrn(urn);
         if (CollectionUtils.isNotEmpty(variableElementsOperations)) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_OPERATIONS)
-                    .withMessageParameters(variableElementToDelete.getNameableArtefact().getUrn()).build();
+                    .withMessageParameters(variableElementToDelete.getIdentifiableArtefact().getUrn()).build();
         }
 
         // Delete
@@ -1085,7 +1086,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             VariableElement variableElement = retrieveVariableElementByUrn(variableElementUrn);
 
             // Do not add the variableElement if it has been associated with the variable previously
-            if (SrmServiceUtils.isVariableElementInList(variableElement.getNameableArtefact().getUrn(), variable.getVariableElements())) {
+            if (SrmServiceUtils.isVariableElementInList(variableElement.getIdentifiableArtefact().getUrn(), variable.getVariableElements())) {
                 continue;
             }
             // Add variableElement to variable
@@ -1300,20 +1301,21 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (variableElement == null) {
             variableElement = new VariableElement();
             variableElement.setVariable(variable);
-            variableElement.setNameableArtefact(new NameableArtefact());
-            variableElement.getNameableArtefact().setCode(code);
+            variableElement.setIdentifiableArtefact(new IdentifiableArtefact());
+            variableElement.getIdentifiableArtefact().setCode(code);
         } else {
             if (!updateAlreadyExisting) {
-                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED, variableElement.getNameableArtefact().getCode()));
+                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED, variableElement.getIdentifiableArtefact().getCode()));
                 return;
             } else {
-                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED, variableElement.getNameableArtefact().getCode()));
+                variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED, variableElement.getIdentifiableArtefact().getCode()));
             }
         }
         // short name
         variableElement.setShortName(ImportationCsvUtils.csvLineToInternationalString(header.getShortName(), columns, variableElement.getShortName()));
         if (variableElement.getShortName() == null) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED, variableElement.getNameableArtefact().getCode(),
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED, variableElement.getIdentifiableArtefact().getCode(),
                     ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_SHORT_NAME));
         }
 
@@ -1760,8 +1762,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      */
     private void checkVariableElementToCreateOrUpdate(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
         // Check variable element doesnt replace self
-        if (SrmServiceUtils.isVariableElementInList(variableElement.getNameableArtefact().getUrn(), variableElement.getReplaceToVariableElements())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variableElement.getNameableArtefact().getUrn())
+        if (SrmServiceUtils.isVariableElementInList(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getReplaceToVariableElements())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variableElement.getIdentifiableArtefact().getUrn())
                     .build();
         }
 
@@ -1769,21 +1771,23 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         for (VariableElement variableElementReplaceTo : variableElement.getReplaceToVariableElements()) {
             if (!variableElement.getVariable().getNameableArtefact().getUrn().equals(variableElementReplaceTo.getVariable().getNameableArtefact().getUrn())) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE)
-                        .withMessageParameters(variableElementReplaceTo.getNameableArtefact().getUrn()).build();
+                        .withMessageParameters(variableElementReplaceTo.getIdentifiableArtefact().getUrn()).build();
             }
         }
 
         // Check do not change variable (do with contains method to be more efficient, instead parse urn)
         if (variableElement.getId() != null) {
-            if (!variableElement.getNameableArtefact().getUrn().contains("=" + variableElement.getVariable().getNameableArtefact().getCode() + ".")) {
+            if (!variableElement.getIdentifiableArtefact().getUrn().contains("=" + variableElement.getVariable().getNameableArtefact().getCode() + ".")) {
                 throw new MetamacException(ServiceExceptionType.METADATA_UNMODIFIABLE, ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE);
             }
         }
 
         // Check any variable element in "replaceTo" was not already replaced by another variable element
         for (VariableElement replaceTo : variableElement.getReplaceToVariableElements()) {
-            if (replaceTo.getReplacedByVariableElement() != null && !replaceTo.getReplacedByVariableElement().getNameableArtefact().getUrn().equals(variableElement.getNameableArtefact().getUrn())) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED).withMessageParameters(replaceTo.getNameableArtefact().getUrn()).build();
+            if (replaceTo.getReplacedByVariableElement() != null
+                    && !replaceTo.getReplacedByVariableElement().getIdentifiableArtefact().getUrn().equals(variableElement.getIdentifiableArtefact().getUrn())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED).withMessageParameters(replaceTo.getIdentifiableArtefact().getUrn())
+                        .build();
             }
         }
     }
@@ -1826,10 +1830,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      */
     private void setVariableElementUrnUnique(Variable variable, VariableElement variableElement) throws MetamacException {
         String urn = GeneratorUrnUtils.generateVariableElementUrn(variable, variableElement);
-        identifiableArtefactRepository.checkUrnUnique(urn, variableElement.getNameableArtefact().getId());
+        identifiableArtefactRepository.checkUrnUnique(urn, variableElement.getIdentifiableArtefact().getId());
 
-        variableElement.getNameableArtefact().setUrn(urn);
-        variableElement.getNameableArtefact().setUrnProvider(urn);
+        variableElement.getIdentifiableArtefact().setUrn(urn);
+        variableElement.getIdentifiableArtefact().setUrnProvider(urn);
     }
 
     /**
@@ -2035,14 +2039,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         for (VariableElement variableElement : variableElements) {
             // ValidTo
             if (variableElement.getValidTo() == null) {
-                throw new MetamacException(ServiceExceptionType.VARIABLE_ELEMENT_MUST_HAVE_VALID_TO_FILLED, variableElement.getNameableArtefact().getUrn());
+                throw new MetamacException(ServiceExceptionType.VARIABLE_ELEMENT_MUST_HAVE_VALID_TO_FILLED, variableElement.getIdentifiableArtefact().getUrn());
             }
             // Variable
             if (variable == null) {
                 variable = variableElement.getVariable();
             } else {
                 if (!variable.getNameableArtefact().getUrn().equals(variableElement.getVariable().getNameableArtefact().getUrn())) {
-                    throw new MetamacException(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE, variableElement.getNameableArtefact().getUrn());
+                    throw new MetamacException(ServiceExceptionType.VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE, variableElement.getIdentifiableArtefact().getUrn());
                 }
             }
         }

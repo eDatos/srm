@@ -450,7 +450,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
         if (variableElement != null) {
-            ValidationUtils.checkMetadataRequired(variableElement.getNameableArtefact().getUrn(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_URN, exceptions);
+            ValidationUtils.checkMetadataRequired(variableElement.getIdentifiableArtefact().getUrn(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_URN, exceptions);
         }
         checkVariableElement(variableElement, exceptions);
 
@@ -552,8 +552,8 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
         // Check required metadata
         ValidationUtils.checkMetadataRequired(variableElement.getVariable(), ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE, exceptions);
-        checkNameableArtefact(variableElement.getNameableArtefact(), exceptions);
-        if (variableElement.getNameableArtefact() != null) {
+        checkIdentifiableArtefact(variableElement.getIdentifiableArtefact(), exceptions);
+        if (variableElement.getIdentifiableArtefact() != null) {
             SemanticIdentifierValidationUtils.checkVariableElementSemanticIdentifier(variableElement, exceptions);
         }
         ValidationUtils.checkMetadataRequired(variableElement.getShortName(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME, exceptions);

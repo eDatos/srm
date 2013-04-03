@@ -89,6 +89,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
@@ -455,15 +456,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(VARIABLE_2, codelistVersion.getVariable().getNameableArtefact().getUrn());
 
         // Check actual element variables of codes
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1).getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_1).getVariableElement().getIdentifiableArtefact().getUrn());
         assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2).getVariableElement());
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1).getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1).getVariableElement().getIdentifiableArtefact().getUrn());
         assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_1_1).getVariableElement());
         assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_2_2).getVariableElement());
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_3).getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_3).getVariableElement().getIdentifiableArtefact().getUrn());
         assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4).getVariableElement());
         assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1).getVariableElement());
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1).getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1).getVariableElement().getIdentifiableArtefact().getUrn());
 
         // Check the variable has no codelists
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
@@ -2257,7 +2258,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-2-1", "en", "Name codelist-1-v2-code-2-1");
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "descripción CODELIST_1_V2_CODE_2_1", null, null);
             assertNull(code.getNameableArtefact().getComment());
-            assertEquals(code.getVariableElement().getNameableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
+            assertEquals(code.getVariableElement().getIdentifiableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
             assertEquals(2, code.getNameableArtefact().getAnnotations().size());
             {
                 Annotation annotation = assertSetAnnotationsContainsAnnotations(code.getNameableArtefact().getAnnotations(), "CODE0201_ANNOTATION211");
@@ -2298,7 +2299,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals("nombre it code-3", code.getNameableArtefact().getName().getLocalisedLabel("it"));
             assertEquals("nombre code-3", code.getNameableArtefact().getName().getLocalisedLabel("es"));
             assertNull(code.getNameableArtefact().getDescription());
-            assertEquals(code.getVariableElement().getNameableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_3);
+            assertEquals(code.getVariableElement().getIdentifiableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_3);
             assertNull(code.getNameableArtefact().getComment());
             assertEquals(0, code.getNameableArtefact().getAnnotations().size());
             assertEquals(Integer.valueOf(0), code.getOrder1());
@@ -2347,7 +2348,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals("nombre it codelist-1-v2-code-4-1-1", code.getNameableArtefact().getName().getLocalisedLabel("it"));
             assertEquals("Nombre codelist-1-v2-code-4-1-1", code.getNameableArtefact().getName().getLocalisedLabel("es"));
             assertNull(code.getNameableArtefact().getDescription());
-            assertEquals(code.getVariableElement().getNameableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
+            assertEquals(code.getVariableElement().getIdentifiableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
             assertNull(code.getNameableArtefact().getComment());
             assertEquals(0, code.getNameableArtefact().getAnnotations().size());
             assertEquals(Integer.valueOf(0), code.getOrder1());
@@ -2575,13 +2576,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String codeUrn = CODELIST_1_V2_CODE_1;
 
         CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getIdentifiableArtefact().getUrn());
 
         // Change variable element
         String variableElementUrnNew = VARIABLE_2_VARIABLE_ELEMENT_1;
         codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), variableElementUrnNew);
         code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
-        assertEquals(variableElementUrnNew, code.getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(variableElementUrnNew, code.getVariableElement().getIdentifiableArtefact().getUrn());
 
         // Reset variable element
         codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), null);
@@ -2601,7 +2602,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String variableElementUrnNew = VARIABLE_2_VARIABLE_ELEMENT_1;
         codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), variableElementUrnNew);
         code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
-        assertEquals(variableElementUrnNew, code.getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(variableElementUrnNew, code.getVariableElement().getIdentifiableArtefact().getUrn());
         assertNull(code.getShortName());
     }
 
@@ -2610,7 +2611,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String codeUrn = CODELIST_1_V2_CODE_1;
 
         CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getIdentifiableArtefact().getUrn());
 
         // Change variable element
         String variableElementUrnNew = VARIABLE_5_VARIABLE_ELEMENT_1;
@@ -2636,7 +2637,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String variableElementUrnNew = VARIABLE_5_VARIABLE_ELEMENT_1;
         codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), variableElementUrnNew);
         code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
-        assertEquals(variableElementUrnNew, code.getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(variableElementUrnNew, code.getVariableElement().getIdentifiableArtefact().getUrn());
     }
 
     @Override
@@ -2648,7 +2649,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
         assertEquals(urn, code.getNameableArtefact().getUrn());
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getIdentifiableArtefact().getUrn());
         assertEquals(null, code.getShortName());
     }
 
@@ -3285,85 +3286,85 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     @DirtyDatabase
     public void testImportCodesCsv() throws Exception {
-
-        final String codelistUrn = CODELIST_1_V2;
-        // Verify codes do not exist
-        List<String> codesCodes = Arrays.asList("code1", "code2", "code3", "code4", "code5");
-        for (String codeCode : codesCodes) {
-            String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01." + codeCode;
-            try {
-                codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
-                fail("not expected");
-            } catch (MetamacException e) {
-                assertEquals(1, e.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
-            }
-        }
-
-        // Import
-        final String fileName = "importation-code-01.csv";
-        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
-        final boolean updateAlreadyExisting = false;
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    String jobKeyString = importationService.importCodesCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName, updateAlreadyExisting);
-                    jobKey.append(jobKeyString);
-                } catch (MetamacException e) {
-                    fail("importation failed");
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
-        assertEquals(0, importationTask.getImportationTaskResults().size());
-        // Validate codes
-        // {
-        // // code1;Nombre corto 1;Short name 1;Nombre corto it 1
-        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code1");
-        // assertEquals("code1", code.getNameableArtefact().getCode());
-        // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
-        // assertEquals(null, code.getValidFrom());
-        // assertEquals(null, code.getValidTo());
-        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        //
+        // final String codelistUrn = CODELIST_1_V2;
+        // // Verify codes do not exist
+        // List<String> codesCodes = Arrays.asList("code1", "code2", "code3", "code4", "code5");
+        // for (String codeCode : codesCodes) {
+        // String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01." + codeCode;
+        // try {
+        // codesService.retrieveCodeByUrn(getServiceContextAdministrador(), urn);
+        // fail("not expected");
+        // } catch (MetamacException e) {
+        // assertEquals(1, e.getExceptionItems().size());
+        // assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND, 1, new String[]{urn}, e.getExceptionItems().get(0));
         // }
-        // {
-        // // code2;Nombre corto 2 con ácéntós;;Nombre corto it 2
-        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code2");
-        // assertEquals("code2", code.getNameableArtefact().getCode());
-        // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 2 con ácéntós", "it", "Nombre corto it 2");
-        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
         // }
-        // {
-        // // code3;Nombre corto 3;;
-        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code3");
-        // assertEquals("code3", code.getNameableArtefact().getCode());
-        // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
-        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        //
+        // // Import
+        // final String fileName = "importation-code-01.csv";
+        // final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        // final StringBuilder jobKey = new StringBuilder();
+        // final boolean updateAlreadyExisting = false;
+        // final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        // tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        // tt.execute(new TransactionCallbackWithoutResult() {
+        //
+        // @Override
+        // public void doInTransactionWithoutResult(TransactionStatus status) {
+        // try {
+        // String jobKeyString = importationService.importCodesCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName, updateAlreadyExisting);
+        // jobKey.append(jobKeyString);
+        // } catch (MetamacException e) {
+        // fail("importation failed");
         // }
-        // {
-        // // code4;Nombre corto 4;Short name 4;Nombre corto it 4
-        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code4");
-        // assertEquals("code4", code.getNameableArtefact().getCode());
-        // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
-        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
         // }
-        // {
-        // // code5;;;Nombre corto it 5
-        // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code5");
-        // assertEquals("code5", code.getNameableArtefact().getCode());
-        // assertEqualsInternationalString(code.getShortName(), "it", "Nombre corto it 5", null, null);
-        // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
-        // }
+        // });
+        // waitUntilJobFinished();
+        //
+        // // Validate
+        // ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        // assertNotNull(importationTask);
+        // assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
+        // assertEquals(0, importationTask.getImportationTaskResults().size());
+        // // Validate codes
+        // // {
+        // // // code1;Nombre corto 1;Short name 1;Nombre corto it 1
+        // // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code1");
+        // // assertEquals("code1", code.getNameableArtefact().getCode());
+        // // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
+        // // assertEquals(null, code.getValidFrom());
+        // // assertEquals(null, code.getValidTo());
+        // // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // // }
+        // // {
+        // // // code2;Nombre corto 2 con ácéntós;;Nombre corto it 2
+        // // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code2");
+        // // assertEquals("code2", code.getNameableArtefact().getCode());
+        // // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 2 con ácéntós", "it", "Nombre corto it 2");
+        // // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // // }
+        // // {
+        // // // code3;Nombre corto 3;;
+        // // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code3");
+        // // assertEquals("code3", code.getNameableArtefact().getCode());
+        // // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
+        // // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // // }
+        // // {
+        // // // code4;Nombre corto 4;Short name 4;Nombre corto it 4
+        // // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code4");
+        // // assertEquals("code4", code.getNameableArtefact().getCode());
+        // // assertEqualsInternationalString(code.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
+        // // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // // }
+        // // {
+        // // // code5;;;Nombre corto it 5
+        // // Code code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Code=VARIABLE_01.code5");
+        // // assertEquals("code5", code.getNameableArtefact().getCode());
+        // // assertEqualsInternationalString(code.getShortName(), "it", "Nombre corto it 5", null, null);
+        // // assertEquals(variableUrn, code.getVariable().getNameableArtefact().getUrn());
+        // // }
     }
 
     // TODO import errors
@@ -4644,7 +4645,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Create
         VariableElement variableElementCreated = codesService.createVariableElement(ctx, variableElement);
-        String urn = variableElementCreated.getNameableArtefact().getUrn();
+        String urn = variableElementCreated.getIdentifiableArtefact().getUrn();
 
         // Validate
         assertNotNull(urn);
@@ -4660,11 +4661,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check replace metadata
         assertEquals(1, variableElementRetrieved.getReplaceToVariableElements().size());
-        assertEquals(variableElementReplaced1.getNameableArtefact().getUrn(), variableElementRetrieved.getReplaceToVariableElements().get(0).getNameableArtefact().getUrn());
+        assertEquals(variableElementReplaced1.getIdentifiableArtefact().getUrn(), variableElementRetrieved.getReplaceToVariableElements().get(0).getIdentifiableArtefact().getUrn());
 
         // Check replaced by metadata
-        variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementReplaced1.getNameableArtefact().getUrn());
-        assertEquals(urn, variableElementReplaced1.getReplacedByVariableElement().getNameableArtefact().getUrn());
+        variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementReplaced1.getIdentifiableArtefact().getUrn());
+        assertEquals(urn, variableElementReplaced1.getReplacedByVariableElement().getIdentifiableArtefact().getUrn());
     }
 
     @Test
@@ -4703,7 +4704,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testCreateVariableElementErrorWrongCode() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
-        variableElement.getNameableArtefact().setCode(" 0 - invalid identifier");
+        variableElement.getIdentifiableArtefact().setCode(" 0 - invalid identifier");
         try {
             codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
             fail("wrong code");
@@ -4717,7 +4718,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testCreateVariableElementErrorDuplicatedCode() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
-        variableElement.getNameableArtefact().setCode("VARIABLE_ELEMENT_01");
+        variableElement.getIdentifiableArtefact().setCode("VARIABLE_ELEMENT_01");
         try {
             codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
             fail("duplicated code");
@@ -4731,19 +4732,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testCreateVariableElementErrorIncorrectMetadata() throws Exception {
         VariableElement variableElement = new VariableElement();
         variableElement.setVariable(null);
-        variableElement.setNameableArtefact(new NameableArtefact());
+        variableElement.setIdentifiableArtefact(new IdentifiableArtefact());
         variableElement.setValidFrom(null);
         variableElement.setValidTo(new DateTime());
         try {
             codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(5, e.getExceptionItems().size());
+            assertEquals(4, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(1));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(2));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME}, e.getExceptionItems().get(3));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO}, e.getExceptionItems().get(4));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO}, e.getExceptionItems().get(3));
         }
     }
 
@@ -4751,9 +4751,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateVariableElement() throws Exception {
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
-        variableElement.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(10));
-        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
-        variableElement.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
+        variableElement.getIdentifiableArtefact().setCode("code-" + MetamacMocks.mockString(10));
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.TRUE);
         variableElement.setShortName(BaseDoMocks.mockInternationalString());
         variableElement.setValidFrom(MetamacMocks.mockDateTime());
         variableElement.setValidTo(null);
@@ -4766,8 +4765,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateVariableElementErrorWrongCode() throws Exception {
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
-        variableElement.getNameableArtefact().setCode(" 0 - invalid identifier");
-        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        variableElement.getIdentifiableArtefact().setCode(" 0 - invalid identifier");
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
             fail("wrong code");
@@ -4780,8 +4779,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateVariableElementErrorDuplicatedCode() throws Exception {
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
-        variableElement.getNameableArtefact().setCode("VARIABLE_ELEMENT_02");
-        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        variableElement.getIdentifiableArtefact().setCode("VARIABLE_ELEMENT_02");
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
             fail("duplicated code");
@@ -4796,7 +4795,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
         assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());
         variableElement.setVariable(codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1));
-        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
         try {
             codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
             fail("variable unmodifiable");
@@ -4817,12 +4816,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Replace to
         variableElement.removeAllReplaceToVariableElements();
         variableElement.addReplaceToVariableElement(codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_3));
-        variableElement.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
         codesService.updateVariableElement(ctx, variableElement);
 
         // Check replaced by metadata
         VariableElement variableElementReplaced2 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_3);
-        assertEquals(urn, variableElementReplaced2.getReplacedByVariableElement().getNameableArtefact().getUrn());
+        assertEquals(urn, variableElementReplaced2.getReplacedByVariableElement().getIdentifiableArtefact().getUrn());
         VariableElement variableElementNotReplaced3 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
         assertEquals(null, variableElementNotReplaced3.getReplacedByVariableElement());
     }
@@ -4831,9 +4830,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testUpdateVariableElementErrorIncorrectMetadata() throws Exception {
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
         variableElement.setVariable(null);
-        variableElement.getNameableArtefact().setCode(null);
-        variableElement.getNameableArtefact().setIsCodeUpdated(null);
-        variableElement.getNameableArtefact().setName(null);
+        variableElement.getIdentifiableArtefact().setCode(null);
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(null);
         variableElement.setShortName(null);
         variableElement.setValidFrom(null);
         variableElement.setValidTo(new DateTime());
@@ -4841,13 +4839,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(6, e.getExceptionItems().size());
+            assertEquals(5, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE}, e.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e.getExceptionItems().get(1));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED}, e.getExceptionItems().get(2));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(3));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME}, e.getExceptionItems().get(4));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO}, e.getExceptionItems().get(5));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_IS_CODE_UPDATED}, e.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME}, e.getExceptionItems().get(3));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO}, e.getExceptionItems().get(4));
         }
     }
 
@@ -4857,15 +4854,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = VARIABLE_2_VARIABLE_ELEMENT_2;
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
 
-        assertEquals(urn, variableElement.getNameableArtefact().getUrn());
-        assertEquals("VARIABLE_ELEMENT_02", variableElement.getNameableArtefact().getCode());
-        assertEqualsInternationalString(variableElement.getNameableArtefact().getName(), "es", "Nombre 2-2", "en", "Name 2-2");
+        assertEquals(urn, variableElement.getIdentifiableArtefact().getUrn());
+        assertEquals("VARIABLE_ELEMENT_02", variableElement.getIdentifiableArtefact().getCode());
         assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto variableElement 2-2", "en", "Short name variableElement 2-2");
         assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidFrom());
         assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidTo());
         assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());
 
-        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, variableElement.getReplacedByVariableElement().getNameableArtefact().getUrn());
+        assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, variableElement.getReplacedByVariableElement().getIdentifiableArtefact().getUrn());
         assertEquals(1, variableElement.getReplaceToVariableElements().size());
         assertTrue(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_1, variableElement.getReplaceToVariableElements()));
 
@@ -4904,31 +4900,31 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testFindVariableElementsByCondition() throws Exception {
         // Find all
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).orderBy(VariableElementProperties.nameableArtefact().urn()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).orderBy(VariableElementProperties.identifiableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableElement> result = codesService.findVariableElementsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             assertEquals(9, result.getTotalRows());
             int i = 0;
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
         }
         // Find by urn
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.nameableArtefact().urn())
-                    .like(VARIABLE_2_VARIABLE_ELEMENT_1).orderBy(VariableElementProperties.nameableArtefact().urn()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.identifiableArtefact().urn())
+                    .like(VARIABLE_2_VARIABLE_ELEMENT_1).orderBy(VariableElementProperties.identifiableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableElement> result = codesService.findVariableElementsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
             assertEquals(1, result.getTotalRows());
             int i = 0;
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
         }
     }
 
@@ -4941,25 +4937,25 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Find all
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).orderBy(VariableElementProperties.nameableArtefact().urn()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).orderBy(VariableElementProperties.identifiableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableElement> result = codesService.findVariableElementsForCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter, codelistUrn);
 
             assertEquals(3, result.getTotalRows());
             int i = 0;
-            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getValues().get(i++).getNameableArtefact().getUrn());
-            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
         }
-        // Find by name
+        // Find by short name
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.nameableArtefact().name().texts().label())
-                    .like("Nombre 5-1").orderBy(VariableElementProperties.nameableArtefact().urn()).build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.shortName().texts().label())
+                    .like("Nombre corto 5-1").orderBy(VariableElementProperties.identifiableArtefact().urn()).build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableElement> result = codesService.findVariableElementsForCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter, codelistUrn);
             assertEquals(1, result.getTotalRows());
             int i = 0;
-            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
         }
     }
 
@@ -6622,7 +6618,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Test variable element is not deleted
-        codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementToCheckIsNotDeleted.getNameableArtefact().getUrn());
+        codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), variableElementToCheckIsNotDeleted.getIdentifiableArtefact().getUrn());
     }
 
     @Override
@@ -6770,7 +6766,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement1");
-            assertEquals("variableElement1", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement1", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
             assertEquals(null, variableElement.getValidFrom());
             assertEquals(null, variableElement.getValidTo());
@@ -6780,7 +6776,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement2;Nombre corto 2 con ácéntós;;Nombre corto it 2
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement2");
-            assertEquals("variableElement2", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement2", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2 con ácéntós", "it", "Nombre corto it 2");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
         }
@@ -6788,7 +6784,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement3;Nombre corto 3;;
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement3");
-            assertEquals("variableElement3", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement3", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
         }
@@ -6796,7 +6792,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement4;Nombre corto 4;Short name 4;Nombre corto it 4
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement4");
-            assertEquals("variableElement4", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement4", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
         }
@@ -6804,7 +6800,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement5;;;Nombre corto it 5
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.variableElement5");
-            assertEquals("variableElement5", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement5", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
         }
@@ -6854,7 +6850,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement1");
-            assertEquals("variableElement1", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement1", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
             assertEquals(null, variableElement.getValidFrom());
             assertEquals(null, variableElement.getValidTo());
@@ -6865,7 +6861,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02");
-            assertEquals("VARIABLE_ELEMENT_02", variableElement.getNameableArtefact().getCode());
+            assertEquals("VARIABLE_ELEMENT_02", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 2", "it", "Nombre corto it 2");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             assertEquals(Long.valueOf(22), variableElement.getId());
@@ -6876,7 +6872,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement3;Nombre corto 3;;
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement3");
-            assertEquals("variableElement3", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement3", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
@@ -6885,7 +6881,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04");
-            assertEquals("VARIABLE_ELEMENT_04", variableElement.getNameableArtefact().getCode());
+            assertEquals("VARIABLE_ELEMENT_04", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 4", "en", "Short name 4", "it", "Nombre corto it 4");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             assertEquals(Long.valueOf(24), variableElement.getId());
@@ -6896,7 +6892,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement5;;;Nombre corto it 5
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement5");
-            assertEquals("variableElement5", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement5", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
@@ -6947,7 +6943,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement1");
-            assertEquals("variableElement1", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement1", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 1", "en", "Short name 1", "it", "Nombre corto it 1");
             assertEquals(null, variableElement.getValidFrom());
             assertEquals(null, variableElement.getValidTo());
@@ -6958,7 +6954,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // VARIABLE_ELEMENT_02;Nombre corto 2;;Nombre corto it 2
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02");
-            assertEquals("VARIABLE_ELEMENT_02", variableElement.getNameableArtefact().getCode());
+            assertEquals("VARIABLE_ELEMENT_02", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto variableElement 2-2", "en", "Short name variableElement 2-2");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             assertEquals(Long.valueOf(22), variableElement.getId());
@@ -6969,7 +6965,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement3;Nombre corto 3;;
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement3");
-            assertEquals("variableElement3", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement3", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto 3", "en", "Short name 3");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today
@@ -6978,7 +6974,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // VARIABLE_ELEMENT_04;Nombre corto 4;Short name 4;Nombre corto it 4
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04");
-            assertEquals("VARIABLE_ELEMENT_04", variableElement.getNameableArtefact().getCode());
+            assertEquals("VARIABLE_ELEMENT_04", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "es", "nombre corto", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             assertEquals(Long.valueOf(24), variableElement.getId());
@@ -6989,7 +6985,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // variableElement5;;;Nombre corto it 5
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(),
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.variableElement5");
-            assertEquals("variableElement5", variableElement.getNameableArtefact().getCode());
+            assertEquals("variableElement5", variableElement.getIdentifiableArtefact().getCode());
             assertEqualsInternationalString(variableElement.getShortName(), "it", "Nombre corto it 5", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             BaseAsserts.assertEqualsDay(new DateTime(), variableElement.getCreatedDate()); // today

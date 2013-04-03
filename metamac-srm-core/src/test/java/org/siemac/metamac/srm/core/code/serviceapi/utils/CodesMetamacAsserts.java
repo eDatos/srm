@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.code.serviceapi.utils;
 
+import static com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts.assertEqualsIdentifiableArtefact;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -112,7 +113,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         // Metamac
         assertEqualsNullability(expected.getVariableElement(), actual.getVariableElement());
         if (expected.getVariableElement() != null) {
-            assertEquals(expected.getVariableElement().getNameableArtefact().getUrn(), actual.getVariableElement().getNameableArtefact().getUrn());
+            assertEquals(expected.getVariableElement().getIdentifiableArtefact().getUrn(), actual.getVariableElement().getIdentifiableArtefact().getUrn());
         }
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
 
@@ -141,7 +142,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         // Metamac
         assertEqualsNullability(entity.getVariableElement(), dto.getVariableElement());
         if (entity.getVariableElement() != null) {
-            assertEquals(entity.getVariableElement().getNameableArtefact().getUrn(), dto.getVariableElement().getUrn());
+            assertEquals(entity.getVariableElement().getIdentifiableArtefact().getUrn(), dto.getVariableElement().getUrn());
         }
         assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
 
@@ -379,7 +380,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
         assertEqualsNullability(expected.getReplacedByVariableElement(), actual.getReplacedByVariableElement());
         if (expected.getReplacedByVariableElement() != null) {
-            assertEquals(expected.getReplacedByVariableElement().getNameableArtefact().getUrn(), actual.getReplacedByVariableElement().getNameableArtefact().getUrn());
+            assertEquals(expected.getReplacedByVariableElement().getIdentifiableArtefact().getUrn(), actual.getReplacedByVariableElement().getIdentifiableArtefact().getUrn());
         }
         // cannot check here due to flush restrictions in create method. we must remove relations before save
         // assertEquals(expected.getReplaceToVariableElements().size(), actual.getReplaceToVariableElements().size());
@@ -388,7 +389,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         // }
 
         // other artefacts
-        assertEqualsNameableArtefact(expected.getNameableArtefact(), actual.getNameableArtefact());
+        assertEqualsIdentifiableArtefact(expected.getIdentifiableArtefact(), actual.getIdentifiableArtefact());
     }
 
     public static void assertEqualsVariableElementDto(VariableElementDto expected, VariableElementDto actual) {
@@ -400,7 +401,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         BaseAsserts.assertEqualsRelatedResourcesDto(expected.getReplaceToVariableElements(), actual.getReplaceToVariableElements());
 
         // other artefacts
-        CodesAsserts.assertEqualsNameableArtefactDto(expected, actual);
+        CodesAsserts.assertEqualsIdentifiableArtefactDto(expected, actual);
     }
 
     public static void assertEqualsVariableElement(VariableElement expected, VariableElementDto actual) {
@@ -441,15 +442,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(entity.getVariable().getNameableArtefact().getUrn(), dto.getVariable().getUrn());
         assertEqualsNullability(entity.getReplacedByVariableElement(), dto.getReplacedByVariableElement());
         if (entity.getReplacedByVariableElement() != null) {
-            assertEquals(entity.getReplacedByVariableElement().getNameableArtefact().getUrn(), dto.getReplacedByVariableElement().getUrn());
+            assertEquals(entity.getReplacedByVariableElement().getIdentifiableArtefact().getUrn(), dto.getReplacedByVariableElement().getUrn());
         }
         assertEquals(entity.getReplaceToVariableElements().size(), dto.getReplaceToVariableElements().size());
         for (int i = 0; i < entity.getReplaceToVariableElements().size(); i++) {
-            assertEquals(entity.getReplaceToVariableElements().get(i).getNameableArtefact().getUrn(), dto.getReplaceToVariableElements().get(i).getUrn());
+            assertEquals(entity.getReplaceToVariableElements().get(i).getIdentifiableArtefact().getUrn(), dto.getReplaceToVariableElements().get(i).getUrn());
         }
 
         // other artefacts
-        assertEqualsNameableArtefact(entity.getNameableArtefact(), dto, mapperEnum);
+        assertEqualsIdentifiableArtefact(entity.getIdentifiableArtefact(), dto, mapperEnum);
     }
 
     public static void assertEqualsVariableElementRelatedResourceDto(VariableElement entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
@@ -457,7 +458,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         if (entity == null) {
             return;
         }
-        assertEquals(entity.getNameableArtefact().getUrn(), dto.getUrn());
+        assertEquals(entity.getIdentifiableArtefact().getUrn(), dto.getUrn());
     }
 
     public static void assertEqualsVariableElementOperation(VariableElementOperation expected, VariableElementOperationDto actual) {
@@ -493,11 +494,11 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(entity.getVariable().getNameableArtefact().getUrn(), dto.getVariable().getUrn());
         assertEquals(entity.getSources().size(), dto.getSources().size());
         for (int i = 0; i < entity.getSources().size(); i++) {
-            assertEquals(entity.getSources().get(i).getNameableArtefact().getUrn(), dto.getSources().get(i).getUrn());
+            assertEquals(entity.getSources().get(i).getIdentifiableArtefact().getUrn(), dto.getSources().get(i).getUrn());
         }
         assertEquals(entity.getTargets().size(), dto.getTargets().size());
         for (int i = 0; i < entity.getTargets().size(); i++) {
-            assertEquals(entity.getTargets().get(i).getNameableArtefact().getUrn(), dto.getTargets().get(i).getUrn());
+            assertEquals(entity.getTargets().get(i).getIdentifiableArtefact().getUrn(), dto.getTargets().get(i).getUrn());
         }
     }
 

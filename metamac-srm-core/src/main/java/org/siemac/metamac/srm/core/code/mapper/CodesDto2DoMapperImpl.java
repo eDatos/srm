@@ -34,6 +34,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
@@ -260,12 +261,13 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         }
 
         if (target.getId() == null) {
-            target.setNameableArtefact(new NameableArtefact());
+            target.setIdentifiableArtefact(new IdentifiableArtefact());
         }
 
         target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME));
         target.setValidFrom(CoreCommonUtil.transformDateToDateTime(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateToDateTime(source.getValidTo()));
+        // note: replacedBy metadata is ignored, because it will be updated by replaceTo metadata
         if (source.getVariable() != null) {
             target.setVariable(retrieveVariable(source.getVariable().getUrn()));
         }
@@ -274,8 +276,7 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
             // note: do not use 'addReplaceToVariableElement' method, to can check in service if any "replaceTo" variable was replaced by another variable
             target.getReplaceToVariableElements().add(retrieveVariableElement(replaceToVariableElement.getUrn()));
         }
-        // note: replacedBy metadata is ignored, because it will be updated by replaceTo metadata
-        target.setNameableArtefact(dto2DoMapperSdmxSrm.nameableArtefactToEntity(source, target.getNameableArtefact()));
+        target.setIdentifiableArtefact(dto2DoMapperSdmxSrm.identifiableArtefactDtoToEntity(source, target.getIdentifiableArtefact()));
 
         // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
         target.setUpdateDate(new DateTime());

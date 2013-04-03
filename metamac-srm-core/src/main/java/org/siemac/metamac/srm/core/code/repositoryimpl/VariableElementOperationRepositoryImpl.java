@@ -33,7 +33,7 @@ public class VariableElementOperationRepositoryImpl extends VariableElementOpera
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("variableElementUrn", variableElementUrn);
         List<VariableElementOperation> result = findByQuery(
-                "select distinct(op) from VariableElementOperation op join op.sources s join op.targets t where s.nameableArtefact.urn = :variableElementUrn or t.nameableArtefact.urn = :variableElementUrn",
+                "select distinct(op) from VariableElementOperation op join op.sources s join op.targets t where s.identifiableArtefact.urn = :variableElementUrn or t.identifiableArtefact.urn = :variableElementUrn",
                 parameters);
         return result;
     }

@@ -29,7 +29,7 @@ public class SemanticIdentifierValidationUtils extends com.arte.statistic.sdmx.s
     }
 
     public static void checkVariableElementSemanticIdentifier(VariableElement variableElement, List<MetamacExceptionItem> exceptions) {
-        ValidationUtils.checkSemanticIdentifierAsMetamacID(variableElement.getNameableArtefact().getCode(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, exceptions);
+        ValidationUtils.checkSemanticIdentifierAsMetamacID(variableElement.getIdentifiableArtefact().getCode(), ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE, exceptions);
     }
 
     public static boolean isVariableElementSemanticIdentifier(String code) {

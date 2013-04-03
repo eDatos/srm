@@ -92,7 +92,7 @@ public class SrmServiceUtils {
      */
     public static boolean isVariableElementInList(String variableElementUrn, List<VariableElement> variableElements) {
         for (VariableElement variableElement : variableElements) {
-            if (StringUtils.equals(variableElementUrn, variableElement.getNameableArtefact().getUrn())) {
+            if (StringUtils.equals(variableElementUrn, variableElement.getIdentifiableArtefact().getUrn())) {
                 return true;
             }
         }

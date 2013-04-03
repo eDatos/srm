@@ -472,8 +472,8 @@ Application CodesMetamac {
 			databaseTable="TB_M_VARIABLE_ELEMENTS"
 			hint="idSequence=M_VARIABLE_ELEMENTS"
 			
-			"Nameable artefact"
-			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
+			"Identifiable artefact"
+			- @IdentifiableArtefact identifiableArtefact databaseColumn="IDENTIFIABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Short name"
 			- @InternationalString shortName not nullable cascade="all" fetch="lazy" databaseColumn="SHORT_NAME_FK";
 			"Date from which the variable element is valid"

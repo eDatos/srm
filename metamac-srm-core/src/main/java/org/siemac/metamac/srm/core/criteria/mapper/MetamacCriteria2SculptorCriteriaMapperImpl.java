@@ -69,6 +69,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactProperties.IdentifiableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
@@ -971,11 +972,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             VariableElementCriteriaPropertyEnum propertyEnum = VariableElementCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(VariableElementProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableElementProperties.identifiableArtefact().code(), propertyRestriction.getStringValue());
                 case URN:
-                    return new SculptorPropertyCriteria(VariableElementProperties.nameableArtefact().urn(), propertyRestriction.getStringValue());
-                case NAME:
-                    return new SculptorPropertyCriteria(VariableElementProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableElementProperties.identifiableArtefact().urn(), propertyRestriction.getStringValue());
+                case SHORT_NAME:
+                    return new SculptorPropertyCriteria(VariableElementProperties.shortName().texts().label(), propertyRestriction.getStringValue());
                 case VARIABLE_URN:
                     return new SculptorPropertyCriteria(VariableElementProperties.variable().nameableArtefact().urn(), propertyRestriction.getStringValue());
                 default:
@@ -989,13 +990,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             VariableElementCriteriaOrderEnum propertyOrderEnum = VariableElementCriteriaOrderEnum.fromValue(order.getPropertyName());
             switch (propertyOrderEnum) {
                 case CODE:
-                    return VariableElementProperties.nameableArtefact().code();
+                    return VariableElementProperties.identifiableArtefact().code();
                 case URN:
-                    return VariableElementProperties.nameableArtefact().urn();
-                case NAME:
-                    return VariableElementProperties.nameableArtefact().name().texts().label();
+                    return VariableElementProperties.identifiableArtefact().urn();
                 case LAST_UPDATED:
-                    return getLastUpdatedLeafProperty(VariableElementProperties.nameableArtefact(), VariableElement.class);
+                    return getLastUpdatedLeafProperty(VariableElementProperties.identifiableArtefact(), VariableElement.class);
                 case VARIABLE_URN:
                     return VariableElementProperties.variable().nameableArtefact().urn();
                 default:
@@ -1017,6 +1016,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
     @SuppressWarnings("rawtypes")
     private LeafProperty getLastUpdatedLeafProperty(NameableArtefactProperty nameableArtefactProperty, Class entityClass) {
         return CriteriaUtils.getDatetimedLeafProperty(nameableArtefactProperty.lastUpdated(), entityClass);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private LeafProperty getLastUpdatedLeafProperty(IdentifiableArtefactProperty identifiableArtefactProperty, Class entityClass) {
+        return CriteriaUtils.getDatetimedLeafProperty(identifiableArtefactProperty.lastUpdated(), entityClass);
     }
 
     @SuppressWarnings("rawtypes")

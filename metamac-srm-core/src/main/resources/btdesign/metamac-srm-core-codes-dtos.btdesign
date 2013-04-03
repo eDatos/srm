@@ -75,7 +75,7 @@ Application DtosMetamacCodeDomain {
 		}
 		
 		"Dto for VariableElement"		
-		DataTransferObject VariableElementDto extends @NameableArtefactDto {
+		DataTransferObject VariableElementDto extends @IdentifiableArtefactDto {
 			"Short name"
 			- @InternationalStringDto shortName nullable;
             "Date from which the variable element is valid"

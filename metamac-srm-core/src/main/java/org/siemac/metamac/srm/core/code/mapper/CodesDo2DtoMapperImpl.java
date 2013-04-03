@@ -189,7 +189,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         target.setValidFrom(CoreCommonUtil.transformDateTimeToDate(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
-        do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
+        do2DtoMapperSdmxSrm.identifiableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getIdentifiableArtefact(), target);
         target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
         target.setReplacedByVariableElement(variableElementDoToRelatedResourceDto(source.getReplacedByVariableElement()));
         for (VariableElement replaceTo : source.getReplaceToVariableElements()) {
@@ -215,7 +215,11 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         RelatedResourceDto target = new RelatedResourceDto();
-        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
+        target.setCode(source.getIdentifiableArtefact().getCode());
+        target.setTitle(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
+        target.setUrn(source.getIdentifiableArtefact().getUrn());
+        target.setUrnProvider(source.getIdentifiableArtefact().getUrnProvider());
+
         target.setType(null);
         return target;
     }

@@ -2076,7 +2076,6 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         VariableElementDto variableElementDto = srmCoreServiceFacade.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
 
         // Update
-        variableElementDto.setName(MetamacMocks.mockInternationalStringDto());
         variableElementDto.setShortName(MetamacMocks.mockInternationalStringDto());
         variableElementDto.setValidTo(new Date());
 
@@ -2094,11 +2093,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         VariableElementDto variableElementDtoSession1 = srmCoreServiceFacade.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), variableElementDtoSession1.getVersionOptimisticLocking());
-        variableElementDtoSession1.setName(MetamacMocks.mockInternationalStringDto());
+        variableElementDtoSession1.setShortName(MetamacMocks.mockInternationalStringDto());
 
         VariableElementDto variableElementDtoSession2 = srmCoreServiceFacade.retrieveVariableElementByUrn(getServiceContextAdministrador(), urn);
         assertEquals(Long.valueOf(1), variableElementDtoSession2.getVersionOptimisticLocking());
-        variableElementDtoSession2.setName(MetamacMocks.mockInternationalStringDto());
+        variableElementDtoSession2.setShortName(MetamacMocks.mockInternationalStringDto());
 
         // Update by session 1
         VariableElementDto variableElementDtoSession1AfterUpdate1 = srmCoreServiceFacade.updateVariableElement(getServiceContextAdministrador(), variableElementDtoSession1);
@@ -2115,7 +2114,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         }
 
         // Session 1 can modify because has last version
-        variableElementDtoSession1AfterUpdate1.setName(MetamacMocks.mockInternationalStringDto());
+        variableElementDtoSession1AfterUpdate1.setShortName(MetamacMocks.mockInternationalStringDto());
         VariableElementDto variableElementDtoSession1AfterUpdate2 = srmCoreServiceFacade.updateVariableElement(getServiceContextAdministrador(), variableElementDtoSession1AfterUpdate1);
         assertTrue(variableElementDtoSession1AfterUpdate2.getVersionOptimisticLocking() > variableElementDtoSession1AfterUpdate1.getVersionOptimisticLocking());
     }
@@ -2172,9 +2171,9 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
-        // Find by Name
+        // Find by short name
         {
-            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), "-1", OperationType.LIKE));
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.SHORT_NAME.name(), "-1", OperationType.LIKE));
 
             MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -2189,7 +2188,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
 
-            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.SHORT_NAME.name(), "NOT FOUND", OperationType.EQ));
 
             result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
@@ -2278,7 +2277,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         }
         // Find by name
         {
-            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), "Nombre 5-1", OperationType.EQ));
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.SHORT_NAME.name(), "Nombre corto 5-1", OperationType.EQ));
             MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findVariableElementsForCodesByCondition(getServiceContextAdministrador(), metamacCriteria, codelistUrn);
             assertEquals(1, result.getResults().size());
             int i = 0;

@@ -20,7 +20,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
     public VariableElement findByUrn(String urn) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
-        List<VariableElement> result = findByQuery("from VariableElement where nameableArtefact.urn = :urn", parameters, 1);
+        List<VariableElement> result = findByQuery("from VariableElement where identifiableArtefact.urn = :urn", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {
@@ -33,7 +33,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("variableUrn", variableUrn);
         parameters.put("code", code);
-        List<VariableElement> result = findByQuery("from VariableElement where nameableArtefact.code = :code and variable.nameableArtefact.urn = :variableUrn", parameters, 1);
+        List<VariableElement> result = findByQuery("from VariableElement where identifiableArtefact.code = :code and variable.nameableArtefact.urn = :variableUrn", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {

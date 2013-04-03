@@ -36,7 +36,7 @@ public class GeneratorUrnUtils extends com.arte.statistic.sdmx.srm.core.common.s
      * Generate variable element urn
      */
     public static String generateVariableElementUrn(Variable variable, VariableElement variableElement) {
-        return generateSiemacStructuralResourcesVariableElementUrn(variable.getNameableArtefact().getCode(), variableElement.getNameableArtefact().getCode());
+        return generateSiemacStructuralResourcesVariableElementUrn(variable.getNameableArtefact().getCode(), variableElement.getIdentifiableArtefact().getCode());
     }
 
     /**

@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
@@ -176,7 +177,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
     public static VariableElement mockVariableElement(Variable variable) {
         VariableElement variableElement = new VariableElement();
-        variableElement.setNameableArtefact(mockNameableArtefact("code-" + MetamacMocks.mockString(5)));
+        variableElement.setIdentifiableArtefact(new IdentifiableArtefact());
+        mockIdentifiableArtefact(variableElement.getIdentifiableArtefact(), "code-" + MetamacMocks.mockString(5));
         variableElement.setShortName(BaseDoMocks.mockInternationalString());
         variableElement.setValidFrom(new DateTime());
         variableElement.setValidTo(new DateTime());
@@ -195,8 +197,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setUpdateDate(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setShortName(mockInternationalStringFixedValues("shortName", resourceID));
         target.setVariable(mockVariableFixedValues("variable01"));
-        target.setNameableArtefact(new NameableArtefact());
-        mockNameableArtefactFixedValues(target.getNameableArtefact(), resourceID, null);
+        target.setIdentifiableArtefact(new IdentifiableArtefact());
+        mockIdentifiableArtefactFixedValues(target.getIdentifiableArtefact(), resourceID, null);
         return target;
     }
 

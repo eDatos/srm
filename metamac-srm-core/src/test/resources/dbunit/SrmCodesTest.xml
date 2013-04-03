@@ -5339,7 +5339,7 @@
     
             <TB_M_VARIABLE_ELEMENTS
                 ID="23"
-                NAMEABLE_ARTEFACT_FK="9999323"
+                IDENTIFIABLE_ARTEFACT_FK="9999323"
                 
                 SHORT_NAME_FK="83"
                 VALID_FROM_TZ="Europe/London"
@@ -5361,7 +5361,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999323"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_03"
                     CODE_FULL="[null]"
@@ -5369,7 +5369,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_03"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_03"
                     
-                    NAME_FK="74"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999323"
@@ -5384,7 +5384,7 @@
                 
             <TB_M_VARIABLE_ELEMENTS
                 ID="22"
-                NAMEABLE_ARTEFACT_FK="9999322"
+                IDENTIFIABLE_ARTEFACT_FK="9999322"
                 
                 SHORT_NAME_FK="73"
                 VALID_FROM_TZ="Europe/London"
@@ -5406,7 +5406,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999322"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_02"
                     CODE_FULL="[null]"
@@ -5414,7 +5414,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02"
                     
-                    NAME_FK="74"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999322"
@@ -5429,7 +5429,7 @@
                             
             <TB_M_VARIABLE_ELEMENTS
                 ID="21"
-                NAMEABLE_ARTEFACT_FK="9999321"
+                IDENTIFIABLE_ARTEFACT_FK="9999321"
                 
                 SHORT_NAME_FK="71"
                 VALID_FROM_TZ="Europe/London"
@@ -5451,7 +5451,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999321"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_01"
                     CODE_FULL="[null]"
@@ -5459,7 +5459,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01"
                     
-                    NAME_FK="72"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999321"
@@ -5474,7 +5474,7 @@
 
             <TB_M_VARIABLE_ELEMENTS
                 ID="24"
-                NAMEABLE_ARTEFACT_FK="9999324"
+                IDENTIFIABLE_ARTEFACT_FK="9999324"
                 
                 SHORT_NAME_FK="84"
                 VALID_FROM_TZ="Europe/London"
@@ -5496,7 +5496,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999324"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_04"
                     CODE_FULL="[null]"
@@ -5504,7 +5504,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04"
                     
-                    NAME_FK="86"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999324"
@@ -5519,7 +5519,7 @@
                 
             <TB_M_VARIABLE_ELEMENTS
                 ID="25"
-                NAMEABLE_ARTEFACT_FK="9999325"
+                IDENTIFIABLE_ARTEFACT_FK="9999325"
                 
                 SHORT_NAME_FK="85"
                 VALID_FROM_TZ="Europe/London"
@@ -5541,7 +5541,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999325"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_05"
                     CODE_FULL="[null]"
@@ -5549,7 +5549,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_05"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_05"
                     
-                    NAME_FK="87"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999325"
@@ -5564,7 +5564,7 @@
                 
             <TB_M_VARIABLE_ELEMENTS
                 ID="26"
-                NAMEABLE_ARTEFACT_FK="9999326"
+                IDENTIFIABLE_ARTEFACT_FK="9999326"
                 
                 SHORT_NAME_FK="92"
                 VALID_FROM_TZ="Europe/London"
@@ -5586,7 +5586,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999326"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_06"
                     CODE_FULL="[null]"
@@ -5594,7 +5594,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_06"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_06"
                     
-                    NAME_FK="93"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999326"
@@ -5746,7 +5746,7 @@
             <!-- VARIABLE ELEMENTS -->
             <TB_M_VARIABLE_ELEMENTS
                 ID="51"
-                NAMEABLE_ARTEFACT_FK="9999351"
+                IDENTIFIABLE_ARTEFACT_FK="9999351"
                 
                 SHORT_NAME_FK="75"
                 VALID_FROM_TZ="Europe/London"
@@ -5768,7 +5768,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999351"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_01"
                     CODE_FULL="[null]"
@@ -5776,7 +5776,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_01"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_01"
                     
-                    NAME_FK="76"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999351"
@@ -5791,7 +5791,7 @@
                 
             <TB_M_VARIABLE_ELEMENTS
                 ID="52"
-                NAMEABLE_ARTEFACT_FK="9999352"
+                IDENTIFIABLE_ARTEFACT_FK="9999352"
                 
                 SHORT_NAME_FK="88"
                 VALID_FROM_TZ="Europe/London"
@@ -5813,7 +5813,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999352"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_02"
                     CODE_FULL="[null]"
@@ -5821,7 +5821,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_02"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_02"
                     
-                    NAME_FK="89"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999352"
@@ -5836,7 +5836,7 @@
                 
             <TB_M_VARIABLE_ELEMENTS
                 ID="53"
-                NAMEABLE_ARTEFACT_FK="9999353"
+                IDENTIFIABLE_ARTEFACT_FK="9999353"
                 
                 SHORT_NAME_FK="90"
                 VALID_FROM_TZ="Europe/London"
@@ -5858,7 +5858,7 @@
             
                <TB_ANNOTABLE_ARTEFACTS 
                     ID="9999353"
-                    ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
                     
                     CODE="VARIABLE_ELEMENT_03"
                     CODE_FULL="[null]"
@@ -5866,7 +5866,7 @@
                     URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_03"
                     URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_03"
                     
-                    NAME_FK="91"
+                    NAME_FK="[null]"
                     DESCRIPTION_FK="[null]"
                     
                     UUID="annotableArtefact-9999353"

@@ -110,7 +110,6 @@ public class CodesMetamacDtoMocks {
     public static VariableElementDto mockVariableElementDto() {
         VariableElementDto variableElementDto = new VariableElementDto();
         variableElementDto.setCode("code-" + MetamacMocks.mockString(10));
-        variableElementDto.setName(MetamacMocks.mockInternationalStringDto());
         variableElementDto.setShortName(MetamacMocks.mockInternationalStringDto("es", "shortName" + MetamacMocks.mockString(10)));
         variableElementDto.setValidFrom(new Date());
         variableElementDto.setValidTo(new Date());
