@@ -97,7 +97,7 @@ public class FileUploadServlet extends HttpServlet {
                 contentInputDto.setName(item.getName());
                 contentInputDto.setInput(item.getInputStream());
 
-                sdmxStructureServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
+                sdmxStructureServiceFacade.importSDMXStructureMsgInBackground(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
             }
 
             response.setContentType("text/html");
