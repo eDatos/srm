@@ -334,14 +334,33 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testUpdateCodelistChangingCode() throws Exception {
-        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_2_V1);
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1);
+
+        // save to force incorrect metadata
+        codelistVersion.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DRAFT);
+        codelistVersion.getMaintainableArtefact().setFinalLogic(false);
+        itemSchemeRepository.save(codelistVersion);
+
         codelistVersion.setIsVariableUpdated(Boolean.FALSE);
 
         // Change code
         codelistVersion.getMaintainableArtefact().setCode("codeNew");
         codelistVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE);
-        CodelistVersion codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
+        CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(getServiceContextAdministrador(), codelistVersion);
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:codeNew(01.000)", codelistVersionUpdated.getMaintainableArtefact().getUrn());
+        String urnUpdated = codelistVersionUpdated.getMaintainableArtefact().getUrn();
+
+        entityManager.clear(); // force update of codes urn
+        codelistVersionUpdated = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnUpdated);
+
+        // Assert URN of CodelistOrder
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(01.000).ALPHABETICAL", codelistVersionUpdated.getOrderVisualisations().iterator()
+                .next().getNameableArtefact().getUrn());
+
+        // Assert URN of CodelistOpen
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(01.000).ALL_EXPANDED", codelistVersionUpdated.getOpennessVisualisations()
+                .iterator().next().getNameableArtefact().getUrn());
+
     }
 
     @Test
