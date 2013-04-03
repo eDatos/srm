@@ -2371,7 +2371,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         ConceptSchemeVersionMetamac conceptSchemeVersioned = getConceptsMetamacService().createTemporalVersionConceptScheme(ctx, urnToCopy);
 
-        // Transform to Dto
+        // Transform to DTO
         ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersioned);
         return conceptSchemeDto;
     }

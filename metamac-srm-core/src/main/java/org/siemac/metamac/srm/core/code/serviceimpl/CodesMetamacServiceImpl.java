@@ -26,6 +26,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -72,6 +73,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 
 /**
  * Implementation of CodesMetamacService.
@@ -183,6 +185,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             getCodeMetamacRepository().clearCodesVariableElementByCodelist(codelistVersion);
         }
 
+        String oldUrn = codelistVersion.getMaintainableArtefact().getUrn();
+
         // Save codelist
         CodelistVersionMetamac codelistVersionMetamac = (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
 
@@ -191,14 +195,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // if this were not so, the URN will also be updated when the maintainer changes.
         if (codelistVersionMetamac.getMaintainableArtefact().getIsCodeUpdated()) {
             // IMPORTANT: Update order and open urn efficiently to avoid one update for each code
-            if (!codelistVersionMetamac.getOrderVisualisations().isEmpty()) {
-                getCodelistOrderVisualisationRepository().updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(codelistVersionMetamac,
-                        codelistVersionMetamac.getOrderVisualisations().iterator().next().getNameableArtefact().getUrn());
-            }
-            if (!codelistVersionMetamac.getOpennessVisualisations().isEmpty()) {
-                getCodelistOpennessVisualisationRepository().updateUrnAllCodelistOpenVisualisationsByCodelistEfficiently(codelistVersionMetamac,
-                        codelistVersionMetamac.getOpennessVisualisations().iterator().next().getNameableArtefact().getUrn());
-            }
+            getCodelistOrderVisualisationRepository().updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(codelistVersionMetamac, oldUrn);
+            getCodelistOpennessVisualisationRepository().updateUrnAllCodelistOpenVisualisationsByCodelistEfficiently(codelistVersionMetamac, oldUrn);
         }
 
         // Save codelist
@@ -277,6 +275,32 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodelistVersionMetamac createTemporalCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfCodelist(ctx, urnToCopy, null, null, true);
+    }
+
+    @Override
+    public String createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+
+        CodelistVersionMetamac codelistVersionTemporal = retrieveCodelistByUrn(ctx, urnToCopy);
+
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(codelistVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
+        }
+
+        // Retrieve the original artifact
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
+
+        // Set the new version in the temporal artifact
+        codelistVersionTemporal.getMaintainableArtefact().setVersionLogic(
+                SdmxVersionUtils.createNextVersion(codelistVersion.getMaintainableArtefact().getVersionLogic(), codelistVersion.getItemScheme().getVersionPattern(), versionTypeEnum));
+
+        codelistVersionTemporal.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE); // For calculates new urns
+        codelistVersionTemporal = (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersionTemporal);
+
+        // Set null replacedBy in the original entity
+        codelistVersion.getMaintainableArtefact().setReplacedByVersion(null);
+
+        return codelistVersionTemporal.getMaintainableArtefact().getUrn();
     }
 
     @Override
@@ -1456,7 +1480,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
         CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, callback);
 
-        // Versioning visualisations // TODO cuando se implementen las versiones dummy, decidir dónde ubicar este código
         codelistNewVersion = versioningCodelistOrderVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
         codelistNewVersion = versioningCodelistOpennessVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
         return codelistNewVersion;
