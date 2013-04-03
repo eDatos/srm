@@ -356,6 +356,7 @@ Application CodesMetamac {
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CodelistOrderVisualisation findByUrn(String orderVisualisationUrn);
+				updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(@CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample);
 			}			
 		}	
 		
@@ -377,6 +378,7 @@ Application CodesMetamac {
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CodelistOpennessVisualisation findByUrn(String opennessVisualisationUrn);
+				updateUrnAllCodelistOpenVisualisationsByCodelistEfficiently(@CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample);
 			}			
 		}						
 
