@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.criteria;
 
 public enum VariableCriteriaOrderEnum {
 
-    CODE, URN, NAME, LAST_UPDATED, VARIABLE_FAMILY_URN;
+    CODE, URN, LAST_UPDATED, VARIABLE_FAMILY_URN;
 
     public String value() {
         return name();

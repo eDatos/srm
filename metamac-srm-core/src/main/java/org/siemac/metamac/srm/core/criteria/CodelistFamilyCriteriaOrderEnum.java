@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.criteria;
 
 public enum CodelistFamilyCriteriaOrderEnum {
 
-    CODE, URN, NAME, LAST_UPDATED;
+    CODE, URN, LAST_UPDATED;
 
     public String value() {
         return name();

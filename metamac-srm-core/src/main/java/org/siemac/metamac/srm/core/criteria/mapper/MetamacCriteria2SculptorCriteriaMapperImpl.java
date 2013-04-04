@@ -289,8 +289,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus();
-                case NAME:
-                    return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact(), DataStructureDefinitionVersionMetamac.class);
                 default:
@@ -357,8 +355,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
-                case NAME:
-                    return ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact(), ConceptSchemeVersionMetamac.class);
                 default:
@@ -412,8 +408,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return ConceptMetamacProperties.nameableArtefact().code();
                 case URN:
                     return ConceptMetamacProperties.nameableArtefact().urn();
-                case NAME:
-                    return ConceptMetamacProperties.nameableArtefact().name().texts().label();
                 case CONCEPT_SCHEME_URN:
                     return ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
                 case CONCEPT_SCHEME_CODE:
@@ -485,8 +479,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
-                case NAME:
-                    return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(OrganisationSchemeVersionMetamacProperties.maintainableArtefact(), OrganisationSchemeVersionMetamac.class);
                 default:
@@ -538,8 +530,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return OrganisationMetamacProperties.nameableArtefact().code();
                 case URN:
                     return OrganisationMetamacProperties.nameableArtefact().urn();
-                case NAME:
-                    return OrganisationMetamacProperties.nameableArtefact().name().texts().label();
                 case ORGANISATION_SCHEME_URN:
                     return OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
                 case ORGANISATION_SCHEME_CODE:
@@ -645,8 +635,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CategorySchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
-                case NAME:
-                    return CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(CategorySchemeVersionMetamacProperties.maintainableArtefact(), CategorySchemeVersionMetamac.class);
                 default:
@@ -695,8 +683,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CategoryMetamacProperties.nameableArtefact().code();
                 case URN:
                     return CategoryMetamacProperties.nameableArtefact().urn();
-                case NAME:
-                    return CategoryMetamacProperties.nameableArtefact().name().texts().label();
                 case CATEGORY_SCHEME_URN:
                     return CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
                 case CATEGORY_SCHEME_CODE:
@@ -772,8 +758,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CodelistVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus();
-                case NAME:
-                    return CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(CodelistVersionMetamacProperties.maintainableArtefact(), CodelistVersionMetamac.class);
                 case CODELIST_FAMILY_URN:
@@ -825,8 +809,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CodeMetamacProperties.nameableArtefact().code();
                 case URN:
                     return CodeMetamacProperties.nameableArtefact().urn();
-                case NAME:
-                    return CodeMetamacProperties.nameableArtefact().name().texts().label();
                 case CODELIST_URN:
                     return CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urn();
                 case CODELIST_CODE:
@@ -868,8 +850,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CodelistFamilyProperties.nameableArtefact().code();
                 case URN:
                     return CodelistFamilyProperties.nameableArtefact().urn();
-                case NAME:
-                    return CodelistFamilyProperties.nameableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(CodelistFamilyProperties.nameableArtefact(), CodelistFamily.class);
                 default:
@@ -907,8 +887,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return VariableFamilyProperties.nameableArtefact().code();
                 case URN:
                     return VariableFamilyProperties.nameableArtefact().urn();
-                case NAME:
-                    return VariableFamilyProperties.nameableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(VariableFamilyProperties.nameableArtefact(), VariableFamily.class);
                 default:
@@ -948,8 +926,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return VariableProperties.nameableArtefact().code();
                 case URN:
                     return VariableProperties.nameableArtefact().urn();
-                case NAME:
-                    return VariableProperties.nameableArtefact().name().texts().label();
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(VariableProperties.nameableArtefact(), Variable.class);
                 case VARIABLE_FAMILY_URN:
