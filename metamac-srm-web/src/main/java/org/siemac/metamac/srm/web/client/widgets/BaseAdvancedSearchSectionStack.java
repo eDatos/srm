@@ -44,7 +44,7 @@ public abstract class BaseAdvancedSearchSectionStack extends BaseSearchSectionSt
 
     public void clearSearchSection() {
         searchForm.clearValues();
-        clearAdvancedSearchSection();
+        hideAdvancedSearchSection();
     }
 
     protected void clearAdvancedSearchSection() {
