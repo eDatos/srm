@@ -70,10 +70,10 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
-    @Override
-    protected void showAnnounceButton() {
-        if (DsdClientSecurityUtils.canAnnounceDsd(operationCode)) {
-            announce.show();
-        }
-    }
+    // @Override
+    // protected void showAnnounceButton() {
+    // if (DsdClientSecurityUtils.canAnnounceDsd(operationCode)) {
+    // announce.show();
+    // }
+    // }
 }

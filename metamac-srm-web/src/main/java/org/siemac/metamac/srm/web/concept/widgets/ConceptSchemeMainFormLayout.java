@@ -79,10 +79,10 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
-    @Override
-    protected void showAnnounceButton() {
-        if (ConceptsClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {
-            announce.show();
-        }
-    }
+    // @Override
+    // protected void showAnnounceButton() {
+    // if (ConceptsClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {
+    // announce.show();
+    // }
+    // }
 }

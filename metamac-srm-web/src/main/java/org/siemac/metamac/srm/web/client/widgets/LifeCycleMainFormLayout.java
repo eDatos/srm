@@ -6,8 +6,6 @@ import java.util.Date;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.widgets.AnnounceToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
@@ -15,17 +13,17 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayout {
 
-    protected MainFormLayoutButton    productionValidation;
-    protected MainFormLayoutButton    diffusionValidation;
-    protected MainFormLayoutButton    rejectValidation;
-    protected MainFormLayoutButton    publishInternally;
-    protected MainFormLayoutButton    publishExternally;
-    protected MainFormLayoutButton    versioning;
-    protected MainFormLayoutButton    cancelValidity;
-    protected AnnounceToolStripButton announce;
+    protected MainFormLayoutButton productionValidation;
+    protected MainFormLayoutButton diffusionValidation;
+    protected MainFormLayoutButton rejectValidation;
+    protected MainFormLayoutButton publishInternally;
+    protected MainFormLayoutButton publishExternally;
+    protected MainFormLayoutButton versioning;
+    protected MainFormLayoutButton cancelValidity;
+    // protected AnnounceToolStripButton announce;
 
-    protected ProcStatusEnum          status;
-    protected Date                    validTo;
+    protected ProcStatusEnum       status;
+    protected Date                 validTo;
 
     public LifeCycleMainFormLayout() {
         super();
@@ -48,7 +46,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         rejectValidation = new MainFormLayoutButton(getConstants().lifeCycleRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
         versioning = new MainFormLayoutButton(getConstants().lifeCycleVersioning(), GlobalResources.RESOURCE.version().getURL());
         cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
-        announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
+        // announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
 
         toolStrip.addButton(productionValidation);
         toolStrip.addButton(diffusionValidation);
@@ -57,7 +55,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         toolStrip.addButton(rejectValidation);
         toolStrip.addButton(versioning);
         toolStrip.addButton(cancelValidity);
-        toolStrip.addButton(announce);
+        // toolStrip.addButton(announce);
     }
 
     @Override
@@ -105,9 +103,9 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         return cancelValidity;
     }
 
-    public HasClickHandlers getAnnounce() {
-        return announce;
-    }
+    // public HasClickHandlers getAnnounce() {
+    // return announce;
+    // }
 
     protected void hideAllLifeCycleButtons() {
         productionValidation.hide();
@@ -117,7 +115,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         publishExternally.hide();
         versioning.hide();
         cancelValidity.hide();
-        announce.hide();
+        // announce.hide();
     }
 
     protected void updateVisibility() {
@@ -145,7 +143,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
             }
         }
         // Announce button (does not depends on the procStatus)
-        showAnnounceButton();
+        // showAnnounceButton();
     }
 
     protected abstract void showSendToProductionValidation();
@@ -162,5 +160,5 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
 
     protected abstract void showCancelValidityButton();
 
-    protected abstract void showAnnounceButton();
+    // protected abstract void showAnnounceButton();
 }

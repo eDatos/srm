@@ -79,10 +79,10 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
-    @Override
-    protected void showAnnounceButton() {
-        if (OrganisationsClientSecurityUtils.canAnnounceOrganisationScheme()) {
-            announce.show();
-        }
-    }
+    // @Override
+    // protected void showAnnounceButton() {
+    // if (OrganisationsClientSecurityUtils.canAnnounceOrganisationScheme()) {
+    // announce.show();
+    // }
+    // }
 }

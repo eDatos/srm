@@ -60,10 +60,10 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
-    @Override
-    protected void showAnnounceButton() {
-        if (CategoriesClientSecurityUtils.canAnnounceCategoryScheme()) {
-            announce.show();
-        }
-    }
+    // @Override
+    // protected void showAnnounceButton() {
+    // if (CategoriesClientSecurityUtils.canAnnounceCategoryScheme()) {
+    // announce.show();
+    // }
+    // }
 }

@@ -97,12 +97,12 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
-    @Override
-    protected void showAnnounceButton() {
-        if (CodesClientSecurityUtils.canAnnounceCodelist()) {
-            announce.show();
-        }
-    }
+    // @Override
+    // protected void showAnnounceButton() {
+    // if (CodesClientSecurityUtils.canAnnounceCodelist()) {
+    // announce.show();
+    // }
+    // }
 
     public HasClickHandlers getAddCodelistToFamily() {
         return addCodelistToFamilyButton;
