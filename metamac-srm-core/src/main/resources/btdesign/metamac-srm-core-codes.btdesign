@@ -101,7 +101,7 @@ Application CodesMetamac {
 			"Copy codes to another codelist"
 	   		copyCodesInCodelist(String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException;
 			"Imports codes in csv format"
-    		importCodesCsv(String codelistUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
+    		importCodesCsv(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
 	   		    		
     		// VISUALISATIONS
     		
@@ -212,7 +212,7 @@ Application CodesMetamac {
  			"Retrieves all variable elements operations of one variable element"
  			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
 			"Imports variable elements in csv format"
-    		importVariableElementsCsv(String variableUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
+    		importVariableElementsCsv(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -498,7 +498,7 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@VariableElement findByUrn(String urn);
-				@VariableElement findByCode(String variableUrn, String code);
+				@VariableElement findByCodeWithoutFlushing(String variableUrn, String code);
 			}
 		}
 		

@@ -152,7 +152,7 @@ public class ImportationCsvUtils {
             target.setStartPosition(headerColumnIndex);
         }
         target.addLocale(locale);
-        if (headerColumnIndex == headerColumns.length - 1 || !headerColumns[headerColumnIndex].startsWith(headerExpected)) {
+        if (headerColumnIndex == headerColumns.length - 1 || !headerColumns[headerColumnIndex + 1].startsWith(headerExpected)) {
             target.setEndPosition(headerColumnIndex);
         }
         return target;

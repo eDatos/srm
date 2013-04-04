@@ -66,7 +66,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("code", code);
         parameters.put("codelistUrn", codelistUrn);
-        List<CodeMetamac> result = findByQuery("from CodeMetamac where nameableArtefact.code = :code and codelistVersion.maintainableArtefact.urn = :codelistUrn", parameters, 1);
+        List<CodeMetamac> result = findByQuery("from CodeMetamac where nameableArtefact.code = :code and itemSchemeVersion.maintainableArtefact.urn = :codelistUrn", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {

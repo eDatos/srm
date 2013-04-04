@@ -1,8 +1,8 @@
 code	parent	variableElement	name#es	name#en	name#it	description#en	description#es
 code1		VARIABLE_ELEMENT_01	Nombre 1	Name 1	Nombre it 1	Description 1	Descripción 1
-code2	code1	VARIABLE_ELEMENT_01	Nombre 2	Name 2		Description 2
-code3		VARIABLE_ELEMENT_02		Name 3	Nombre it 3	
-code4	code2		Nombre 4	name 4	Nombre it 4		Descripción 4
-code5	code1	VARIABLE_ELEMENT_03		Nombre it 5	Description 5	Descripción 5
-code6	code2			Nombre it 5
-code7		VARIABLE_ELEMENT_01	Nombre 7
+code2	code1	VARIABLE_ELEMENT_01	Nombre 2	Name 2		Description 2	
+code3		VARIABLE_ELEMENT_02		Name 3	Nombre it 3		
+code4	CODE40101		Nombre 4	name 4	Nombre it 4		Descripción 4
+code5	code1	VARIABLE_ELEMENT_03			Nombre it 5	Description 5	Descripción 5
+code6	code2				Nombre it 5		
+code7		VARIABLE_ELEMENT_01	Nombre 7				

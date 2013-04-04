@@ -29,7 +29,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
     }
 
     @Override
-    public VariableElement findByCode(String variableUrn, String code) {
+    public VariableElement findByCodeWithoutFlushing(String variableUrn, String code) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("variableUrn", variableUrn);
         parameters.put("code", code);

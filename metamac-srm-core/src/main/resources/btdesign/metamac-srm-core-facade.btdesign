@@ -648,9 +648,9 @@ Application SrmFacadeCore {
        		> @ImportationMetamacService
 
     		"Imports codes in csv format"
-    		importCodesCsv(String codelistUrn, InputStream csvStream, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		importCodesCsv(String codelistUrn, InputStream csvStream, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Imports variable elements in csv format"
-    		importVariableElementsCsv(String variableUrn, InputStream csvStream, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		importVariableElementsCsv(String variableUrn, InputStream csvStream, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Marks job as failed"
     		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
    		}
