@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.code.view.handlers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -33,6 +34,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void retrieveCodelistOpennessLevels(String codelistUrn);
     void saveCodelistOpennessLevel(CodelistVisualisationDto codelistOpennessVisualisationDto);
     void deleteCodelistOpennessLevel(List<String> opennessLevelsUrns);
+    void updateCodesOpennessLevel(String opennessLevelUrn, Map<String, Boolean> opennessLevels);
 
     // Life cycle
 

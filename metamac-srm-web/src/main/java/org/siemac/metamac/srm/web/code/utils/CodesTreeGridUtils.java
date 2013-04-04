@@ -34,9 +34,9 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setOrder(code.getOrder() == null ? 0 : code.getOrder());
         // Specify the openness level
         node.setAttribute(CodeDS.OPENNESS_LEVEL, code.getOpenness());
+        node.setAttribute(CodeDS.OPENNESS_LEVEL_INITIAL, code.getOpenness()); // The value is unmodifiable by the user
         String iconUrl = BooleanUtils.isTrue(code.getOpenness()) ? GlobalResources.RESOURCE.folderOpened().getURL() : GlobalResources.RESOURCE.folderClosed().getURL();
         node.setAttribute(CodeDS.OPENNESS_LEVEL_ICON, iconUrl);
-        node.setAttribute(CodeDS.IS_OPENNESS_LEVEL_MODIFIED, Boolean.FALSE); // By default is FALSE. When the record is modified, this attribute is TRUE
         return node;
     }
 }

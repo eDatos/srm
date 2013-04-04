@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
@@ -76,6 +77,8 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusResult;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodesInOpennessVisualisationAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodesInOpennessVisualisationResult;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
@@ -604,6 +607,21 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(DeleteCodelistOpennessLevelsResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistOpennessLevelDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveCodelistOpennessLevels(codelistMetamacDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void updateCodesOpennessLevel(String opennessLevelUrn, Map<String, Boolean> opennessLevels) {
+        dispatcher.execute(new UpdateCodesInOpennessVisualisationAction(opennessLevelUrn, opennessLevels), new WaitingAsyncCallback<UpdateCodesInOpennessVisualisationResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingOpennessLevel()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateCodesInOpennessVisualisationResult result) {
+                retrieveCodesWithOpennessLevel(result.getCodelistVisualisationDto().getUrn());
             }
         });
     }

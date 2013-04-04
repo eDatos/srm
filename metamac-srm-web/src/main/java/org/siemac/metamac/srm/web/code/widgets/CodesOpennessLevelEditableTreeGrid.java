@@ -9,7 +9,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
-import com.smartgwt.client.widgets.form.fields.CheckboxItem;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 
@@ -30,11 +30,12 @@ public class CodesOpennessLevelEditableTreeGrid extends BaseCodesTreeGrid {
         setShowDropIcons(false);
         setCanSort(false);
         setCustomIconProperty(CodeDS.OPENNESS_LEVEL_ICON);
+        setAutoFitMaxRecords(10);
 
         // Add a field with the node openness state
 
         TreeGridField opennessLevelField = new TreeGridField(CodeDS.OPENNESS_LEVEL, getConstants().codelistOpennessLevelOpened());
-        opennessLevelField.setEditorType(new CheckboxItem());
+        opennessLevelField.setType(ListGridFieldType.BOOLEAN);
         opennessLevelField.setCanEdit(true);
         opennessLevelField.setCanFilter(false);
 
