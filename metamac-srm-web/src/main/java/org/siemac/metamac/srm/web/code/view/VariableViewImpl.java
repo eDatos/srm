@@ -169,9 +169,9 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         });
         ListGridField fieldCode = new ListGridField(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
         fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(VariableElementDS.NAME, getConstants().nameableArtefactName());
+        ListGridField fieldShortName = new ListGridField(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
         ListGridField urn = new ListGridField(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
-        variableElementListGrid.getListGrid().setFields(fieldCode, fieldName, urn);
+        variableElementListGrid.getListGrid().setFields(fieldCode, fieldShortName, urn);
 
         // Remove window
 

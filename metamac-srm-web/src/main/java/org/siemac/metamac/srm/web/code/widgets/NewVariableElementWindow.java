@@ -29,9 +29,6 @@ public class NewVariableElementWindow extends CustomWindow {
         codeItem.setValidators(SemanticIdentifiersUtils.getVariableElementIdentifierCustomValidator());
         codeItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
-        RequiredTextItem nameItem = new RequiredTextItem(VariableElementDS.NAME, getConstants().nameableArtefactName());
-        nameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
-
         RequiredTextItem shortNameItem = new RequiredTextItem(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
         shortNameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
 
@@ -39,7 +36,7 @@ public class NewVariableElementWindow extends CustomWindow {
 
         form = new CustomDynamicForm();
         form.setMargin(5);
-        form.setFields(codeItem, nameItem, shortNameItem, saveItem);
+        form.setFields(codeItem, shortNameItem, saveItem);
 
         addItem(form);
         show();
@@ -56,7 +53,6 @@ public class NewVariableElementWindow extends CustomWindow {
     public VariableElementDto getNewVariableElementDto() {
         VariableElementDto variableDto = new VariableElementDto();
         variableDto.setCode(form.getValueAsString(VariableElementDS.CODE));
-        variableDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(VariableElementDS.NAME)));
         variableDto.setShortName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(VariableElementDS.SHORT_NAME)));
         return variableDto;
     }

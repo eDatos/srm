@@ -7,10 +7,10 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class VariableElementRecord extends ListGridRecord {
 
-    public VariableElementRecord(Long id, String code, String name, String urn, VariableElementDto variableDto) {
+    public VariableElementRecord(Long id, String code, String shortName, String urn, VariableElementDto variableDto) {
         setId(id);
         setCode(code);
-        setName(name);
+        setShortName(shortName);
         setUrn(urn);
         setVariableElementDto(variableDto);
     }
@@ -23,8 +23,8 @@ public class VariableElementRecord extends ListGridRecord {
         setAttribute(VariableElementDS.CODE, code);
     }
 
-    public void setName(String name) {
-        setAttribute(VariableElementDS.NAME, name);
+    public void setShortName(String value) {
+        setAttribute(VariableElementDS.SHORT_NAME, value);
     }
 
     public void setUrn(String value) {

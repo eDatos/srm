@@ -67,7 +67,7 @@ public class RecordUtils {
     // VARIABLE ELEMENTS
 
     public static VariableElementRecord getVariableElementRecord(VariableElementDto variableElementDto) {
-        VariableElementRecord record = new VariableElementRecord(variableElementDto.getId(), variableElementDto.getCode(), getLocalisedString(variableElementDto.getName()),
+        VariableElementRecord record = new VariableElementRecord(variableElementDto.getId(), variableElementDto.getCode(), getLocalisedString(variableElementDto.getShortName()),
                 variableElementDto.getUrn(), variableElementDto);
         return record;
     }

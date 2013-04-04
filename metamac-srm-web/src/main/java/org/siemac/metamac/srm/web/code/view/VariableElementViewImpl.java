@@ -157,7 +157,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     public void setVariableElement(VariableElementDto variableElementDto) {
         this.variableElementDto = variableElementDto;
 
-        String defaultLocalized = InternationalStringUtils.getLocalisedString(variableElementDto.getName());
+        String defaultLocalized = InternationalStringUtils.getLocalisedString(variableElementDto.getShortName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
 
@@ -192,10 +192,9 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Identifiers Form
         identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
-        ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(VariableElementDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem shortName = new ViewMultiLanguageTextItem(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
         ViewTextItem urn = new ViewTextItem(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersForm.setFields(code, name, shortName, urn);
+        identifiersForm.setFields(code, shortName, urn);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -220,12 +219,10 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
         RequiredTextItem code = new RequiredTextItem(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
         code.setValidators(SemanticIdentifiersUtils.getVariableElementIdentifierCustomValidator());
-        MultiLanguageTextItem name = new MultiLanguageTextItem(VariableElementDS.NAME, getConstants().nameableArtefactName());
-        name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
         shortName.setRequired(true);
         ViewTextItem urn = new ViewTextItem(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
-        identifiersEditionForm.setFields(code, name, shortName, urn);
+        identifiersEditionForm.setFields(code, shortName, urn);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -253,7 +250,6 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Identifiers
         identifiersForm.setValue(VariableElementDS.CODE, variableElementDto.getCode());
         identifiersForm.setValue(VariableElementDS.URN, variableElementDto.getUrn());
-        identifiersForm.setValue(VariableElementDS.NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getName()));
         identifiersForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
         // Content descriptors
@@ -270,7 +266,6 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Identifiers
         identifiersEditionForm.setValue(VariableElementDS.CODE, variableElementDto.getCode());
         identifiersEditionForm.setValue(VariableElementDS.URN, variableElementDto.getUrn());
-        identifiersEditionForm.setValue(VariableElementDS.NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getName()));
         identifiersEditionForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
         // Content descriptors
@@ -286,7 +281,6 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     public void saveVariableElement() {
         // Identifiers
         variableElementDto.setCode(identifiersEditionForm.getValueAsString(VariableElementDS.CODE));
-        variableElementDto.setName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.NAME));
         variableElementDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.SHORT_NAME));
 
         // Content descriptors

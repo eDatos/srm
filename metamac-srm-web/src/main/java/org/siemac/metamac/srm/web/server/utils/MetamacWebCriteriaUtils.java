@@ -269,8 +269,6 @@ public class MetamacWebCriteriaUtils {
                 MetamacCriteriaDisjunctionRestriction variableElementCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
                 variableElementCriteriaDisjunction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
-                variableElementCriteriaDisjunction.getRestrictions().add(
-                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
                 // TODO Variable URN
                 conjunctionRestriction.getRestrictions().add(variableElementCriteriaDisjunction);
             }
@@ -279,9 +277,6 @@ public class MetamacWebCriteriaUtils {
 
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
-            }
-            if (StringUtils.isNotBlank(criteria.getName())) {
-                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
             }
             if (StringUtils.isNotBlank(criteria.getUrn())) {
                 // TODO

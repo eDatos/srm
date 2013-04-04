@@ -76,9 +76,9 @@ public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElement
 
         ListGridField fieldCode = new ListGridField(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
         fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(VariableElementDS.NAME, getConstants().nameableArtefactName());
+        ListGridField fieldShortName = new ListGridField(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
         ListGridField urn = new ListGridField(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
-        variableElementsListGrid.getListGrid().setFields(fieldCode, fieldName, urn);
+        variableElementsListGrid.getListGrid().setFields(fieldCode, fieldShortName, urn);
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);

@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.shared.utils;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -15,7 +14,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.shared.RelatedResourceBaseUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -23,7 +22,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.IdentifiableArtefactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.NameableArtefactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 
-public class RelatedResourceUtils {
+public class RelatedResourceUtils extends RelatedResourceBaseUtils {
 
     private static RelatedResourceDto maintainer = null;
 
@@ -204,7 +203,9 @@ public class RelatedResourceUtils {
     // Variable elements
 
     public static RelatedResourceDto getVariableElementDtoAsRelatedResourceDto(VariableElementDto variableElement) {
-        return getNameableArtefactDtoAsRelatedResourceDto(variableElement);
+        RelatedResourceDto relatedResourceDto = getIdentifiableArtefactDtoAsRelatedResourceDto(variableElement);
+        relatedResourceDto.setTitle(variableElement.getShortName());
+        return relatedResourceDto;
     }
 
     public static List<RelatedResourceDto> getVariableElementDtosAsRelatedResourceDtos(List<VariableElementDto> variableElementDtos) {
@@ -232,65 +233,5 @@ public class RelatedResourceUtils {
         } else {
             return null;
         }
-    }
-
-    public static List<String> getUrnsFromRelatedResourceDtos(List<RelatedResourceDto> relatedResourceDtos) {
-        List<String> urns = new ArrayList<String>(relatedResourceDtos.size());
-        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
-            urns.add(relatedResourceDto.getUrn());
-        }
-        return urns;
-    }
-
-    public static List<String> getCodesFromRelatedResourceDtos(List<RelatedResourceDto> relatedResourceDtos) {
-        List<String> codes = new ArrayList<String>(relatedResourceDtos.size());
-        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
-            codes.add(relatedResourceDto.getCode());
-        }
-        return codes;
-    }
-
-    public static boolean isRelatedResourceInList(List<RelatedResourceDto> relatedResourceDtos, RelatedResourceDto relatedResourceDto) {
-        for (RelatedResourceDto r : relatedResourceDtos) {
-            if (StringUtils.equals(relatedResourceDto.getUrn(), r.getUrn())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static List<RelatedResourceDto> substractLists(List<RelatedResourceDto> list1, List<RelatedResourceDto> list2) {
-        List<RelatedResourceDto> result = new ArrayList<RelatedResourceDto>();
-        for (RelatedResourceDto r : list1) {
-            if (!isRelatedResourceInList(list2, r)) {
-                result.add(r);
-            }
-        }
-        return result;
-    }
-
-    public static LinkedHashMap<String, String> getRelatedResourceHashMap(List<RelatedResourceDto> relatedResourceDtos) {
-        LinkedHashMap<String, String> hashMap = new LinkedHashMap<String, String>();
-        hashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
-            hashMap.put(relatedResourceDto.getUrn(), RelatedResourceUtils.getRelatedResourceName(relatedResourceDto));
-        }
-        return hashMap;
-    }
-
-    public static String getRelatedResourceName(RelatedResourceDto relatedResourceDto) {
-        if (relatedResourceDto != null) {
-            return CommonWebUtils.getElementName(relatedResourceDto.getCode(), relatedResourceDto.getTitle());
-        } else {
-            return StringUtils.EMPTY;
-        }
-    }
-
-    public static String getRelatedResourcesName(List<RelatedResourceDto> relatedResourceDtos) {
-        List<String> names = new ArrayList<String>(relatedResourceDtos.size());
-        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
-            names.add(getRelatedResourceName(relatedResourceDto));
-        }
-        return CommonWebUtils.getStringListToString(names);
     }
 }
