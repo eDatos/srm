@@ -102,7 +102,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
                         // UPDATE ORDER
 
-                        if (canOrderBeModified && CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+                        if (canOrderBeModified && CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus())) {
 
                             // Only update order if there is an order selected and it is not the alphabetical one
                             if (codelistVisualisationDto != null && !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistVisualisationDto.getCode())) {

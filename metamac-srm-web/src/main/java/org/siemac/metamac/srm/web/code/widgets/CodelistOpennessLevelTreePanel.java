@@ -7,15 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.widgets.EditCodelistOpennessLevelWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 
+import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -32,6 +36,7 @@ public class CodelistOpennessLevelTreePanel extends VLayout {
     private CodelistUiHandlers                      uiHandlers;
 
     private TitleLabel                              opennessLevelTitle;
+    private ToolStripButton                         editButton;
     private CodesOpennessLevelVisualisationTreeGrid codesOpennessLevelVisualisationTreeGrid;
 
     public CodelistOpennessLevelTreePanel() {
@@ -45,8 +50,7 @@ public class CodelistOpennessLevelTreePanel extends VLayout {
 
         ToolStrip toolStrip = new ToolStrip();
         toolStrip.setWidth100();
-        ToolStripButton editButton = new ToolStripButton(getConstants().actionEdit(), RESOURCE.editListGrid().getURL());
-        // TODO Security editButton.setVisibility(Visibility.HIDDEN);
+        editButton = new ToolStripButton(getConstants().actionEdit(), RESOURCE.editListGrid().getURL());
         editButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -95,6 +99,18 @@ public class CodelistOpennessLevelTreePanel extends VLayout {
 
         opennessLevelTitle.setContents(CommonWebUtils.getElementName(codelistVisualisationDto.getCode(), codelistVisualisationDto.getName()));
         codesOpennessLevelVisualisationTreeGrid.setItems(codelistMetamacDto, codes, codelistVisualisationDto);
+
+        // Security
+        editButton.setVisibility(canCodeOpennessLevelBeModified(codelistMetamacDto, codelistVisualisationDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
+    }
+
+    private boolean canCodeOpennessLevelBeModified(CodelistMetamacDto codelistMetamacDto, CodelistVisualisationDto codelistVisualisationDto) {
+        // Openness level can not be modified if is the ALL_EXPANDED one, or if the user is not allowed
+        if (!StringUtils.equals(SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE, codelistVisualisationDto.getCode())
+                && CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+            return true;
+        }
+        return false;
     }
 
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
