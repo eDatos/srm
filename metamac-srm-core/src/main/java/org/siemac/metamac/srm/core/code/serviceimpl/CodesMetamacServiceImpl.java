@@ -306,7 +306,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return codelistVersionTemporal.getMaintainableArtefact().getUrn();
     }
-    
+
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
@@ -2113,6 +2113,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (!SemanticIdentifierValidationUtils.isCodeSemanticIdentifier(codeIdentifier)) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, codeIdentifier,
                     ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE));
+            return null;
         }
         // parent
         CodeMetamac codeParent = null;
@@ -2125,6 +2126,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
             if (codeParent == null) {
                 exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_PARENT_NOT_FOUND, codeParentIdentifier, codeIdentifier));
+                return null;
             }
         }
         // variable element

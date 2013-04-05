@@ -1,12 +1,3 @@
-code	parent	variableElement	name#es	name#en	name#it	description#en	description#es
+codeee	parent	variableElement	name#es	name#en	name#it	description#en	description#es
 code1		VARIABLE_ELEMENT_01	Nombre 1	Name 1	Nombre it 1	Description 1	Descripción 1
-code2	code1	VARIABLE_ELEMENT_01	Nombre 2	Name 2		Description 2	
-code3		VARIABLE_ELEMENT_02		Name 3	Nombre it 3		
-code3B		VARIABLE_ELEMENT_NOT_EXISTS		Name 3b	Nombre it 3b
-code4	CODE0401		Nombre 4	name 4	Nombre it 4		Descripción 4
-CODE0400	CODE0401		Nombre CODE0400	name CODE0400	Nombre it CODE0400		Descripción CODE0400
-code5	code1	VARIABLE_ELEMENT_03			Nombre it 5	Description 5	Descripción 5
-code6	code2				Nombre it 5		
-code7		VARIABLE_ELEMENT_01	Nombre 7				
-code8	CODE01	VARIABLE_ELEMENT_NOT_EXISTS	Nombre 8				
-%code9			Nombre				
+code2	code1	VARIABLE_ELEMENT_01	Nombre 2	Name 2		Description 2		

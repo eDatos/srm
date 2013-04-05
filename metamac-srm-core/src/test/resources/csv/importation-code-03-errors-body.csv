@@ -1,5 +1,5 @@
 code	parent	variableElement	name#es	name#en	name#it	description#en	description#es
-%code1			Nombre					
-codeParentNotExists	parentNotExists	nombre				
+%code1			Nombre				
+codeParentNotExists	parentNotExists		nombre				
 codeWithoutName							
 codeWithIncorrectColumns		nombre		
