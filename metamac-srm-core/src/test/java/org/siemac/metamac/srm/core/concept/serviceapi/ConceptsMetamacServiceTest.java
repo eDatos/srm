@@ -1718,11 +1718,20 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeNewVersionUrn);
 
-        assertTrue(conceptSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
-        assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestFinal());
-        assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestPublic());
-        assertTrue(conceptSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(" + versionExpected + ")";
 
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DRAFT, conceptSchemeNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, conceptSchemeNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
+
+            assertEquals(null, conceptSchemeNewVersion.getMaintainableArtefact().getReplacedByVersion());
+            assertTrue(conceptSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
+            assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestFinal());
+            assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestPublic());
+        }
     }
 
     @Override
