@@ -288,7 +288,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().dsdErrorRetrievingOperations()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
@@ -311,7 +311,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().dsdErrorRetrievingOperations()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {

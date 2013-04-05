@@ -251,6 +251,11 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         }
     }
 
+    @Override
+    public void setOperationsForSearchSection(GetStatisticalOperationsResult result) {
+        searchSectionStack.setOperations(result);
+    }
+
     private void showListGridDeleteButton(ListGridRecord[] records) {
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
@@ -285,5 +290,4 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
             cancelConceptSchemeValidityButton.hide();
         }
     }
-
 }

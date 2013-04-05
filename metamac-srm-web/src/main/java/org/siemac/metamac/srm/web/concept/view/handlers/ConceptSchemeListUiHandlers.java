@@ -16,4 +16,7 @@ public interface ConceptSchemeListUiHandlers extends UiHandlers {
     void cancelValidity(List<String> urn);
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String operation);
+
+    // Search
+    void retrieveStatisticalOperationsForSearchSection(int firstResult, int maxResults, String criteria);
 }

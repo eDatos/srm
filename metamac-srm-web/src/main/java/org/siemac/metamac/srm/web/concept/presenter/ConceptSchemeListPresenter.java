@@ -86,7 +86,10 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
         void setConceptSchemePaginatedList(GetConceptSchemesResult conceptSchemesPaginatedList);
         void goToConceptSchemeListLastPageAfterCreate();
         void setOperations(GetStatisticalOperationsResult result);
+
+        // Search
         void clearSearchSection();
+        void setOperationsForSearchSection(GetStatisticalOperationsResult result);
     }
 
     @Inject
@@ -213,6 +216,29 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
                 getView().setOperations(result);
+            }
+        });
+    }
+
+    //
+    // SEARCH SECTION CRITERIA
+    //
+
+    @Override
+    public void retrieveStatisticalOperationsForSearchSection(int firstResult, int maxResults, String criteria) {
+
+        StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
+        statisticalOperationWebCriteria.setNoFilterByUserPrincipal(true);
+
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetStatisticalOperationsResult result) {
+                getView().setOperationsForSearchSection(result);
             }
         });
     }

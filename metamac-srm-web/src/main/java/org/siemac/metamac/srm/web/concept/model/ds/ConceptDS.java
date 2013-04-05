@@ -26,4 +26,5 @@ public class ConceptDS extends ItemDS {
     // LEGAL ACTS
     public static final String LEGAL_ACTS            = "con-legal-acts";
 
+    public static final String CONCEPT_SCHEME_TYPE   = "con-sch-type";        // Not mapped in DTO
 }
