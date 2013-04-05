@@ -1351,6 +1351,15 @@
                                         
             
                 <!-- VISUALISATION02 -->
+                    <!-- -> CODE03 -->
+                    <!-- -> CODE01 -->
+                    <!-- -> CODE02 -->
+                    <!--    -> CODE0202 -->
+                    <!--    -> CODE0201 -->
+                    <!--       -> CODE020101 -->
+                    <!-- -> CODE04 -->
+                    <!--    -> CODE0401 -->
+                    <!--        -> CODE040101 -->                
                 <TB_M_CODELIST_ORDER_VIS 
                     ID="123"
                     CODELIST_FK="12"

@@ -252,7 +252,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         sb.append("SELECT COUNT(1) ");
         sb.append("FROM TB_ITEMS i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
-        sb.append("AND a.CODE < '" + code.getNameableArtefact().getCode() + "' ");
+        sb.append("AND lower(a.CODE) < lower('" + code.getNameableArtefact().getCode() + "') ");
         if (parent == null) {
             sb.append("AND i.PARENT_FK is null");
         } else {

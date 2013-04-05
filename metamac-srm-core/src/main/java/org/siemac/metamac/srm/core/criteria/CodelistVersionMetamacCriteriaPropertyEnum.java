@@ -8,7 +8,6 @@ public enum CodelistVersionMetamacCriteriaPropertyEnum {
     DESCRIPTION,
     PROC_STATUS,
     IS_LAST_VERSION,
-    REPLACE_TO_CODELIST_URN,
     ACCESS_TYPE,
     CODELIST_FAMILY_URN,
     LATEST_FINAL,

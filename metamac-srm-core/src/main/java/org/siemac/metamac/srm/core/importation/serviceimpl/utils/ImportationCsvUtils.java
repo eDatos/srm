@@ -128,6 +128,9 @@ public class ImportationCsvUtils {
             }
             j++;
         }
+        if (localisedStringTargets.size() == 0) {
+            return null;
+        }
         if (target != null) {
             target.removeAllTexts();
             for (LocalisedString localisedString : localisedStringTargets) {

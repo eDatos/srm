@@ -722,8 +722,6 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
                 case ACCESS_TYPE:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.accessType(), propertyRestriction.getEnumValue());
-                case REPLACE_TO_CODELIST_URN:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.replaceToCodelists().maintainableArtefact().urn(), propertyRestriction.getStringValue());
                 case IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
                 case LATEST_FINAL:
