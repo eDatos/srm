@@ -87,7 +87,7 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
 
     private SearchViewTextItem createStatisticalOperationItem(String name, String title) {
         SearchViewTextItem operationItem = new SearchViewTextItem(name, title);
-        operationItem.setRequired(true);
+        operationItem.setTitleStyle("formTitle");
         operationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override

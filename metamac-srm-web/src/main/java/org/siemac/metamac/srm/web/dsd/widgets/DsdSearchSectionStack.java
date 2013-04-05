@@ -46,19 +46,16 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
         ViewTextItem statisticalOperationUrn = new ViewTextItem(DataStructureDefinitionDS.STATISTICAL_OPERATION_URN, getConstants().dsdOperation());
         statisticalOperationUrn.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem statisticalOperation = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
-        statisticalOperation.setTitleStyle("formTitle");
 
         // Dimension concept item
         ViewTextItem dimensionConceptUrn = new ViewTextItem(DataStructureDefinitionDS.DIMENSION_CONCEPT_URN, getConstants().dsdDimensionConcept());
         dimensionConceptUrn.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem dimensionConcept = createDimensionConceptItem(DataStructureDefinitionDS.DIMENSION_CONCEPT, getConstants().dsdDimensionConcept());
-        dimensionConcept.setTitleStyle("formTitle");
 
         // Attribute concept item
         ViewTextItem attributeConceptUrn = new ViewTextItem(DataStructureDefinitionDS.ATTRIBUTE_CONCEPT_URN, getConstants().dsdAttributeConcept());
         attributeConceptUrn.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem attributeConcept = createAttributeConceptItem(DataStructureDefinitionDS.ATTRIBUTE_CONCEPT, getConstants().dsdAttributeConcept());
-        attributeConcept.setTitleStyle("formTitle");
 
         // Add items to advanvedSearchForm (before the save button in the advancedSearchFormItems)
         FormItem[] dsdFields = new FormItem[advancedSearchFormItems.length + 6];
@@ -119,7 +116,7 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
 
     private SearchViewTextItem createStatisticalOperationItem(String name, String title) {
         SearchViewTextItem operationItem = new SearchViewTextItem(name, title);
-        operationItem.setRequired(true);
+        operationItem.setTitleStyle("formTitle");
         operationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -161,7 +158,7 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         final SearchViewTextItem dimensionConceptItem = new SearchViewTextItem(name, title);
-        dimensionConceptItem.setRequired(true);
+        dimensionConceptItem.setTitleStyle("formTitle");
         dimensionConceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -207,7 +204,7 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         final SearchViewTextItem attributeConceptItem = new SearchViewTextItem(name, title);
-        attributeConceptItem.setRequired(true);
+        attributeConceptItem.setTitleStyle("formTitle");
         attributeConceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
