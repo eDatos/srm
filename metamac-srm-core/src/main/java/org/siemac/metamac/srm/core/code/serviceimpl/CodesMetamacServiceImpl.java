@@ -351,6 +351,28 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             // Inherit InternationalStrings
             BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(code, codeTemp, internationalStringRepository);
 
+            // ShortName
+            code.setShortName(BaseVersioningCopyUtils.copy(codeTemp.getShortName()));
+
+            // VariableElement
+            code.setVariableElement(codeTemp.getVariableElement());
+
+            // Order Visualization
+            for (int i = 1; i <= SrmConstants.CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {
+                Integer order = SrmServiceUtils.getCodeOrder(codeTemp, i);
+                if (order != null) {
+                    SrmServiceUtils.setCodeOrder(code, i, order);
+                }
+            }
+
+            // Openness Visualization
+            for (int i = 1; i <= SrmConstants.CODELIST_OPENNESS_VISUALISATION_MAXIMUM_NUMBER; i++) {
+                Boolean openness = SrmServiceUtils.getCodeOpenness(codeTemp, i);
+                if (openness != null) {
+                    SrmServiceUtils.setCodeOpenness(code, i, openness);
+                }
+            }
+
         }
 
         // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update de codes index.
