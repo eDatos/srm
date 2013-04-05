@@ -294,6 +294,11 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         }
     }
 
+    @Override
+    public void setOperationsForSearchSection(GetStatisticalOperationsResult result) {
+        searchSectionStack.setOperations(result);
+    }
+
     private void showDeleteToolStripButton() {
         List<DataStructureDefinitionMetamacDto> dsds = getSelectedDsds();
         boolean actionAllowed = true;

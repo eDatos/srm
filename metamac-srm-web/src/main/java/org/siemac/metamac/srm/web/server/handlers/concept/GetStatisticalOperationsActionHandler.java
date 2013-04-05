@@ -47,14 +47,16 @@ public class GetStatisticalOperationsActionHandler extends SecurityActionHandler
 
             int firstResult = action.getFirstResult();
             int maxResults = action.getMaxResults();
-            String criteria = action.getCriteria();
+            String criteria = action.getCriteria().getCriteria();
+            boolean noFilterByUserPrincipal = action.getCriteria().isNoFilterByUserPrincipal();
 
             // Operation that the user can access to. If this list is empty, the user can access to all operations.
             Set<String> userOperationCodes = getUserOperations();
 
             Operations result = null;
 
-            if (SharedSecurityUtils.isAdministrador(SecurityUtils.getMetamacPrincipal(ServiceContextHolder.getCurrentServiceContext())) || (userOperationCodes == null || userOperationCodes.isEmpty())) {
+            if (noFilterByUserPrincipal || SharedSecurityUtils.isAdministrador(SecurityUtils.getMetamacPrincipal(ServiceContextHolder.getCurrentServiceContext()))
+                    || (userOperationCodes == null || userOperationCodes.isEmpty())) {
                 // THE USER CAN ACCESS TO ALL OPERATIONS
                 result = statisticalOperationsRestInternalFacade.findOperations(firstResult, maxResults, null, criteria);
             } else {

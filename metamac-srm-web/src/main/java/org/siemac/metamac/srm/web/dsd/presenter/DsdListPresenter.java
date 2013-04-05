@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
@@ -95,6 +96,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         void clearSearchSection();
 
         void setOperations(GetStatisticalOperationsResult result);
+        void setOperationsForSearchSection(GetStatisticalOperationsResult result);
 
         com.smartgwt.client.widgets.events.HasClickHandlers getDelete();
     }
@@ -274,7 +276,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+        StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -283,6 +286,25 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
                 getView().setOperations(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveStatisticalOperationsForSearchSection(int firstResult, int maxResults, String criteria) {
+
+        StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
+        statisticalOperationWebCriteria.setNoFilterByUserPrincipal(true);
+
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetStatisticalOperationsResult result) {
+                getView().setOperationsForSearchSection(result);
             }
         });
     }

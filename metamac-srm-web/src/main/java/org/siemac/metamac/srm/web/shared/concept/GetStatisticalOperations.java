@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -12,20 +13,20 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetStatisticalOperations {
 
     @In(1)
-    int                   firstResult;
+    int                             firstResult;
 
     @In(2)
-    int                   maxResults;
+    int                             maxResults;
 
     @In(3)
-    String                criteria;
+    StatisticalOperationWebCriteria criteria;
 
     @Out(1)
-    List<ExternalItemDto> operations;
+    List<ExternalItemDto>           operations;
 
     @Out(2)
-    int                   firstResultOut;
+    int                             firstResultOut;
 
     @Out(3)
-    int                   totalResults;
+    int                             totalResults;
 }

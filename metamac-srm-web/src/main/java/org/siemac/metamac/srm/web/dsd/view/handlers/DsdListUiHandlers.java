@@ -15,6 +15,7 @@ public interface DsdListUiHandlers extends UiHandlers {
     void deleteDsds(List<String> urns);
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
+    void retrieveStatisticalOperationsForSearchSection(int firstResult, int maxResults, String criteria);
 
     void dsdSuccessfullyImported(String fileName);
     void dsdImportFailed(String fileName);
