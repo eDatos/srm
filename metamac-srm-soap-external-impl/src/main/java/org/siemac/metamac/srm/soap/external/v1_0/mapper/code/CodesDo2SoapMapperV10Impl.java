@@ -153,6 +153,7 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
             return;
         }
         target.setShortName(toInternationalString(source.getShortName()));
+        target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
         target.setIsRecommended(source.getIsRecommended());
         target.setFamily(toItem(source.getFamily()));
         target.setVariable(toItem(source.getVariable()));

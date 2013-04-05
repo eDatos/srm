@@ -89,6 +89,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         target.setChildLinks(toCodelistChildLinks(source));
 
         target.setShortName(toInternationalString(source.getShortName()));
+        target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setIsRecommended(source.getIsRecommended());
         target.setFamily(toItem(source.getFamily()));

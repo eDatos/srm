@@ -142,6 +142,10 @@
         <cdomain:text xml:lang="en">shortName-itemScheme1v01.000 in English</cdomain:text>
         <cdomain:text xml:lang="es">shortName-itemScheme1v01.000 en Español</cdomain:text>
     </sr:shortName>
+    <sr:descriptionSource>
+        <cdomain:text xml:lang="en">descriptionSource-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">descriptionSource-itemScheme1v01.000 en Español</cdomain:text>
+    </sr:descriptionSource>
     <sr:isRecommended>true</sr:isRecommended>
     <sr:family>
         <cdomain:id>family1</cdomain:id>

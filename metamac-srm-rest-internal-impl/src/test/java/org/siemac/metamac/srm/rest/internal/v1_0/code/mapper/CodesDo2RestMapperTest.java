@@ -115,6 +115,7 @@ public class CodesDo2RestMapperTest {
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/codelists", target.getParentLink().getHref());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         assertEqualsInternationalString("es", "shortName-resourceID1v01.123 en Español", "en", "shortName-resourceID1v01.123 in English", target.getShortName());
+        assertEqualsInternationalString("es", "descriptionSource-resourceID1v01.123 en Español", "en", "descriptionSource-resourceID1v01.123 in English", target.getDescriptionSource());
         assertTrue(target.isIsRecommended());
         assertEquals(AccessType.PUBLIC, target.getAccessType());
         assertEquals("defaultOrderVisualisation1", target.getDefaultOrderVisualisation());
