@@ -195,9 +195,18 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = (ConceptSchemeVersionMetamac) srmResourceVersion;
             if (VersionUtil.isTemporalVersion(conceptSchemeVersionMetamac.getMaintainableArtefact().getUrn())) {
-                return conceptsMetamacService.mergeTemporalVersion(ctx, (ConceptSchemeVersionMetamac) srmResourceVersion);
+                return conceptsMetamacService.mergeTemporalVersion(ctx, conceptSchemeVersionMetamac);
             }
             return srmResourceVersion;
+        }
+
+        @Override
+        public Boolean isTemporalToPublishExternally(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = (ConceptSchemeVersionMetamac) srmResourceVersion;
+            if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
+                return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
         }
 
         private ConceptSchemeVersionMetamac getConceptSchemeVersionMetamac(Object srmResource) {

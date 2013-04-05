@@ -280,6 +280,16 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             }
             return srmResourceVersion;
         }
+
+        @Override
+        public Boolean isTemporalToPublishExternally(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
+            if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dataStructureDefinitionVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
+                return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
+        }
+
         /**********************************************************************
          * PRIVATES
          **********************************************************************/

@@ -1750,6 +1750,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             }
 
             // Merge
+            conceptSchemeVersionTemporal = conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
+            conceptSchemeVersionTemporal = conceptsService.sendConceptSchemeToDiffusionValidation(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
             ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = conceptsService.mergeTemporalVersion(getServiceContextAdministrador(), conceptSchemeVersionTemporal);
 
             // Assert **************************************
@@ -1771,7 +1773,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             // save to force incorrect metadata
             ConceptSchemeVersionMetamac conceptSchemeForce = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_10_V3);
             conceptSchemeForce.getMaintainableArtefact().setFinalLogic(Boolean.TRUE);
-            // conceptSchemeForce.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.INTERNALLY_PUBLISHED);
+            conceptSchemeForce.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
             itemSchemeRepository.save(conceptSchemeForce);
 
             String urn = CONCEPT_SCHEME_10_V1;
@@ -1780,6 +1782,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertTrue(conceptSchemeVersionTemporal.getMaintainableArtefact().getIsLastVersion());
 
             // Merge
+            // save to force incorrect metadata
+            conceptSchemeVersionTemporal.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
+            itemSchemeRepository.save(conceptSchemeVersionTemporal);
             ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = conceptsService.mergeTemporalVersion(getServiceContextAdministrador(), conceptSchemeVersionTemporal);
 
             assertFalse(conceptSchemeVersionMetamac.getMaintainableArtefact().getIsLastVersion());

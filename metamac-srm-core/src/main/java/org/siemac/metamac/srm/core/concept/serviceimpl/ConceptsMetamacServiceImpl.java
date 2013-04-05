@@ -19,6 +19,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
@@ -46,7 +47,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporal;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
@@ -274,16 +274,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (!VersionUtil.isTemporalVersion(conceptSchemeTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
             throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
         }
+        SrmValidationUtils.checkArtefactProcStatus(conceptSchemeTemporalVersion.getLifeCycleMetadata(), conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn(),
+                ProcStatusEnum.DIFFUSION_VALIDATION);
 
         // Load original version
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn()));
 
         // Inherit InternationalStrings
-        BaseReplaceFromTemporal.replaceInternationalStringFromTemporalToItemSchemeVersionWithoutItems(conceptSchemeVersion, conceptSchemeTemporalVersion, internationalStringRepository);
+        BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItemSchemeVersionWithoutItems(conceptSchemeVersion, conceptSchemeTemporalVersion, internationalStringRepository);
 
         // Merge Metamac metadata of ItemScheme
+        conceptSchemeVersion.setLifeCycleMetadata(BaseReplaceFromTemporalMetamac.replaceProductionAndDifussionLifeCycleMetadataFromTemporal(conceptSchemeVersion.getLifeCycleMetadata(),
+                conceptSchemeTemporalVersion.getLifeCycleMetadata()));
         conceptSchemeVersion.setType(conceptSchemeTemporalVersion.getType());
-        conceptSchemeVersion.setRelatedOperation(BaseReplaceFromTemporal.replaceExternalItemFromTemporal(conceptSchemeVersion.getRelatedOperation(),
+        conceptSchemeVersion.setRelatedOperation(BaseReplaceFromTemporalMetamac.replaceExternalItemFromTemporal(conceptSchemeVersion.getRelatedOperation(),
                 conceptSchemeTemporalVersion.getRelatedOperation(), internationalStringRepository, externalItemRepository));
 
         // Merge Metamac metadata of Item
@@ -293,7 +297,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             ConceptMetamac conceptTemp = (ConceptMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
 
             // Inherit InternationalStrings
-            BaseReplaceFromTemporal.replaceInternationalStringFromTemporalToItem(concept, conceptTemp, internationalStringRepository);
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(concept, conceptTemp, internationalStringRepository);
 
             // Plural Name
             if (!BaseMergeAssert.assertEqualsInternationalString(concept.getPluralName(), conceptTemp.getPluralName())) {
@@ -355,13 +359,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Delete temporal version
         deleteConceptScheme(ctx, conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn());
 
-        // Set isLastVersion
-        // ItemSchemeVersion itemSchemeVersionLastVersion = itemSchemeVersionRepository.retrieveLastItemSchemeVersionByItemScheme(conceptSchemeVersion.getItemScheme().getId());
-        // itemSchemeVersionLastVersion.getMaintainableArtefact().setIsLastVersion(Boolean.TRUE);
-
         return conceptSchemeVersion;
     }
-
     @Override
     public void versioningRelatedConcepts(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
         // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback

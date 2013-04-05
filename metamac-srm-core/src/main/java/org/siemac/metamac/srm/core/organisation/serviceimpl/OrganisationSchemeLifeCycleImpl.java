@@ -189,6 +189,15 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
             return srmResourceVersion;
         }
 
+        @Override
+        public Boolean isTemporalToPublishExternally(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            OrganisationSchemeVersionMetamac organisationSchemeVersionMetamac = (OrganisationSchemeVersionMetamac) srmResourceVersion;
+            if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
+                return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
+        }
+
         private OrganisationSchemeVersionMetamac getOrganisationSchemeVersionMetamac(Object srmResource) {
             return (OrganisationSchemeVersionMetamac) srmResource;
         }
@@ -200,6 +209,5 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
             }
             return objects;
         }
-
     }
 }

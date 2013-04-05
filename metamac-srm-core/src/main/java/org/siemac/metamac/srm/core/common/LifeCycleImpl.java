@@ -187,9 +187,15 @@ public abstract class LifeCycleImpl implements LifeCycle {
             }
         }
 
+        // If the artefact to publishInternally is a temporal version (a merge was performed) and if the Proc Status of original version is PublishExternally, then merge changes to publish externally
+        // version
+        if (callback.isTemporalToPublishExternally(ctx, srmResourceVersion)) {
+            publishExternally(ctx, urn);
+        }
+
         return srmResourceVersion;
     }
-    
+
     @Override
     public Object publishExternally(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -421,5 +427,6 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds);
         public Boolean canHaveCategorisations();
         public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
+        public Boolean isTemporalToPublishExternally(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
     }
 }

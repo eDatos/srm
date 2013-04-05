@@ -191,6 +191,15 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
             return srmResourceVersion;
         }
 
+        @Override
+        public Boolean isTemporalToPublishExternally(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            CodelistVersionMetamac codelistVersionMetamac = (CodelistVersionMetamac) srmResourceVersion;
+            if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
+                return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
+        }
+
         private CodelistVersionMetamac getCodelistVersionMetamac(Object srmResource) {
             return (CodelistVersionMetamac) srmResource;
         }
@@ -202,5 +211,6 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
             }
             return objects;
         }
+
     }
 }
