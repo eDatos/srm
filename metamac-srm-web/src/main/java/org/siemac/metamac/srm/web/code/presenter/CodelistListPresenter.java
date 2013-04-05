@@ -83,10 +83,10 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     public interface CodelistListView extends View, HasUiHandlers<CodelistListUiHandlers> {
 
         void setCodelists(GetCodelistsResult codelistsPaginatedList);
-        void setCodelistsForReplaceToInAdvancedSearch(GetCodelistsResult codelistsPaginatedList);
-        void clearSearchSection();
-
         void setVariables(GetVariablesResult result);
+
+        // Search
+        void clearSearchSection();
     }
 
     @Inject
@@ -175,21 +175,6 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
                 getView().setCodelists(result);
-            }
-        });
-    }
-
-    @Override
-    public void retrieveCodelistsForReplaceToInAdvancedSearch(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetCodelistsResult result) {
-                getView().setCodelistsForReplaceToInAdvancedSearch(result);
             }
         });
     }

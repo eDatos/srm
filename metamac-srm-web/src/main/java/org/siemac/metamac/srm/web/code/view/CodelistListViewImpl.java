@@ -213,11 +213,6 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     }
 
     @Override
-    public void setCodelistsForReplaceToInAdvancedSearch(GetCodelistsResult result) {
-        searchSectionStack.setCodelistsForReplaceTo(result);
-    }
-
-    @Override
     public void setVariables(GetVariablesResult result) {
         if (newCodelistWindow != null) {
             newCodelistWindow.setVariables(result);

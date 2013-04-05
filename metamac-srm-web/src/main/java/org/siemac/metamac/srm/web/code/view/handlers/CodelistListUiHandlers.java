@@ -13,7 +13,6 @@ public interface CodelistListUiHandlers extends UiHandlers {
     void createCodelist(CodelistMetamacDto codelistMetamacDto);
     void deleteCodelists(List<String> urns);
     void retrieveCodelists(int firstResult, int maxResults, CodelistWebCriteria criteria);
-    void retrieveCodelistsForReplaceToInAdvancedSearch(int firstResult, int maxResults, CodelistWebCriteria criteria);
     void cancelValidity(List<String> urns);
 
     void retrieveVariables(int firstResult, int maxResults, String criteria);

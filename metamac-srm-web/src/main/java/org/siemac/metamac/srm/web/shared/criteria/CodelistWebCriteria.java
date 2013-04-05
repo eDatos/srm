@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.shared.criteria;
 
-import java.util.List;
-
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 
 public class CodelistWebCriteria extends VersionableResourceWebCriteria {
@@ -11,7 +9,6 @@ public class CodelistWebCriteria extends VersionableResourceWebCriteria {
     private String            conceptUrn;
     private String            codelistFamilyUrn;
     private AccessTypeEnum    accessType;
-    private List<String>      replaceToCodelistUrns;
     private String            isNotCodelistUrn;
 
     public CodelistWebCriteria() {
@@ -46,16 +43,8 @@ public class CodelistWebCriteria extends VersionableResourceWebCriteria {
         return accessType;
     }
 
-    public List<String> getReplaceToCodelistUrns() {
-        return replaceToCodelistUrns;
-    }
-
     public void setAccessType(AccessTypeEnum accessType) {
         this.accessType = accessType;
-    }
-
-    public void setReplaceToCodelistUrns(List<String> replaceToCodelistUrns) {
-        this.replaceToCodelistUrns = replaceToCodelistUrns;
     }
 
     public String getIsNotCodelistUrn() {

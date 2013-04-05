@@ -192,10 +192,8 @@ public class MetamacWebCriteriaUtils {
                         new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODELIST_FAMILY_URN.name(), criteria.getCodelistFamilyUrn(), OperationType.EQ));
             }
             if (criteria.getAccessType() != null) {
-                // TODO
-            }
-            if (criteria.getReplaceToCodelistUrns() != null) {
-                // TODO
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.ACCESS_TYPE.name(), criteria.getAccessType(), OperationType.EQ));
             }
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
@@ -207,23 +205,30 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
             }
             if (StringUtils.isNotBlank(criteria.getDescription())) {
-                // TODO
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.DESCRIPTION.name(), criteria.getDescription(), OperationType.ILIKE));
             }
             if (criteria.getProcStatus() != null) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
             }
             if (criteria.getInternalPublicationDate() != null) {
-                // TODO
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), criteria.getInternalPublicationDate(), OperationType.EQ));
             }
             if (StringUtils.isNotBlank(criteria.getInternalPublicationUser())) {
-                // TODO
+                conjunctionRestriction.getRestrictions()
+                        .add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_USER.name(), criteria.getInternalPublicationUser(),
+                                OperationType.ILIKE));
             }
             if (criteria.getExternalPublicationDate() != null) {
-                // TODO
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_DATE.name(), criteria.getExternalPublicationDate(), OperationType.EQ));
             }
             if (StringUtils.isNotBlank(criteria.getExternalPublicationUser())) {
-                // TODO
+                conjunctionRestriction.getRestrictions()
+                        .add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_USER.name(), criteria.getExternalPublicationUser(),
+                                OperationType.ILIKE));
             }
             if (criteria.getIsLastVersion() != null) {
                 conjunctionRestriction.getRestrictions().add(
@@ -266,7 +271,8 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
             }
             if (StringUtils.isNotBlank(criteria.getDescription())) {
-                // TODO
+                conjunctionRestriction.getRestrictions()
+                        .add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.DESCRIPTION.name(), criteria.getDescription(), OperationType.ILIKE));
             }
             if (criteria.getIsLastVersion() != null) {
                 conjunctionRestriction.getRestrictions().add(
@@ -291,7 +297,8 @@ public class MetamacWebCriteriaUtils {
                 MetamacCriteriaDisjunctionRestriction variableElementCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
                 variableElementCriteriaDisjunction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
-                // TODO Variable URN
+                variableElementCriteriaDisjunction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
                 conjunctionRestriction.getRestrictions().add(variableElementCriteriaDisjunction);
             }
 
@@ -301,8 +308,7 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
             }
             if (StringUtils.isNotBlank(criteria.getUrn())) {
-                // TODO
-                // conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
             }
             if (StringUtils.isNotBlank(criteria.getVariableUrn())) {
                 MetamacCriteriaPropertyRestriction variableElementPropertyRestriction = new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.VARIABLE_URN.name(),
