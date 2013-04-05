@@ -50,11 +50,13 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
 
         // Dimension concept item
         ViewTextItem dimensionConceptUrn = new ViewTextItem(DataStructureDefinitionDS.DIMENSION_CONCEPT_URN, getConstants().dsdDimensionConcept());
+        dimensionConceptUrn.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem dimensionConcept = createDimensionConceptItem(DataStructureDefinitionDS.DIMENSION_CONCEPT, getConstants().dsdDimensionConcept());
         dimensionConcept.setTitleStyle("formTitle");
 
         // Attribute concept item
         ViewTextItem attributeConceptUrn = new ViewTextItem(DataStructureDefinitionDS.ATTRIBUTE_CONCEPT_URN, getConstants().dsdAttributeConcept());
+        attributeConceptUrn.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem attributeConcept = createAttributeConceptItem(DataStructureDefinitionDS.ATTRIBUTE_CONCEPT, getConstants().dsdAttributeConcept());
         attributeConcept.setTitleStyle("formTitle");
 
