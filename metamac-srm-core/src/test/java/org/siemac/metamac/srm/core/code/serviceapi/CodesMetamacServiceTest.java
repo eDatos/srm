@@ -6619,6 +6619,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Override
+    public void testMergeTemporalVersion() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     @Test
     public void testRetrieveCodelistOpennessVisualisationsByCodelist() throws Exception {
         String codelistUrn = CODELIST_1_V2;

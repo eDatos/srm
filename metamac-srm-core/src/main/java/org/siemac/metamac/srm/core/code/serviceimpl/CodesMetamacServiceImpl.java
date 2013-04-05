@@ -22,6 +22,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
+import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -29,6 +30,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
@@ -71,6 +73,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
@@ -108,6 +111,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Autowired
     @Qualifier("codesVersioningCopyWithoutCodesCallbackMetamac")
     private CodesVersioningCopyCallback    codesVersioningCopyWithoutCodesCallback;
+
+    @Autowired
+    private InternationalStringRepository  internationalStringRepository;
 
     private static Logger                  logger = LoggerFactory.getLogger(CodesMetamacService.class);
 
@@ -307,6 +313,56 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistVersionTemporal.getMaintainableArtefact().getUrn();
     }
 
+    @Override
+    public CodelistVersionMetamac mergeTemporalVersion(ServiceContext ctx, CodelistVersionMetamac codelistTemporalVersion) throws MetamacException {
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(codelistTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
+        }
+        SrmValidationUtils.checkArtefactProcStatus(codelistTemporalVersion.getLifeCycleMetadata(), codelistTemporalVersion.getMaintainableArtefact().getUrn(), ProcStatusEnum.DIFFUSION_VALIDATION);
+
+        // Load original version
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(codelistTemporalVersion.getMaintainableArtefact().getUrn()));
+
+        // Inherit InternationalStrings
+        BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItemSchemeVersionWithoutItems(codelistVersion, codelistTemporalVersion, internationalStringRepository);
+
+        // Merge Metamac metadata of ItemScheme
+        codelistVersion.setLifeCycleMetadata(BaseReplaceFromTemporalMetamac.replaceProductionAndDifussionLifeCycleMetadataFromTemporal(codelistVersion.getLifeCycleMetadata(),
+                codelistTemporalVersion.getLifeCycleMetadata()));
+
+        // ShortName
+        codelistVersion.setShortName(BaseVersioningCopyUtils.copy(codelistTemporalVersion.getShortName()));
+        // IsRecommended
+        codelistVersion.setIsRecommended(codelistTemporalVersion.getIsRecommended());
+        // AccesType
+        codelistVersion.setAccessType(codelistTemporalVersion.getAccessType());
+        // CodelistFamily
+        codelistVersion.setFamily(codelistTemporalVersion.getFamily());
+        // Variable
+        codelistVersion.setVariable(codelistTemporalVersion.getVariable());
+
+        // TODO Merge Metamac metadata of Item
+        Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(codelistTemporalVersion.getItems());
+        for (Item item : codelistVersion.getItems()) {
+            CodeMetamac code = (CodeMetamac) item;
+            CodeMetamac codeTemp = (CodeMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+
+            // Inherit InternationalStrings
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(code, codeTemp, internationalStringRepository);
+
+        }
+
+        // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update de codes index.
+        // targetMetamac = codesMetamacService.versioningCodelistOpennessVisualisations(ctx, previousMetamac, targetMetamac);
+        // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update de codes index.
+        // targetMetamac = codesMetamacService.versioningCodelistOrderVisualisations(ctx, previousMetamac, targetMetamac);
+
+        // Delete temporal version
+        deleteCodelist(ctx, codelistTemporalVersion.getMaintainableArtefact().getUrn());
+
+        return codelistVersion;
+    }
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
