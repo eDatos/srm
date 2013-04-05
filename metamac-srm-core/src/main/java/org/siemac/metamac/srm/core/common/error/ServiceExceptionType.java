@@ -52,7 +52,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
 
     // Importation
     public static final CommonServiceExceptionType IMPORTATION_EXIST_NOT_FINAL_VERSION                                  = create("exception.srm.importation.error.there_are_not_final_versions");
-    public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR                                               = create("exception.srm.importation.csv.error");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR                                                = create("exception.srm.importation.csv.error");
     public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_FILE_PARSING                                   = create("exception.srm.importation.csv.error.file_parse");
     public static final CommonServiceExceptionType IMPORTATION_CSV_HEADER_INCORRECT                                     = create("exception.srm.importation.csv.error.header.incorrect");
     public static final CommonServiceExceptionType IMPORTATION_CSV_LINE_INCORRECT                                       = create("exception.srm.importation.csv.error.line.incorrect");
@@ -63,5 +63,6 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED                            = create("info.srm.importation.csv.resource_not_updated");
     public static final CommonServiceExceptionType IMPORTATION_CSV_INFO_RESOURCE_UPDATED                                = create("info.srm.importation.csv.resource_updated");
     public static final CommonServiceExceptionType IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND                      = create("info.srm.importation.csv.error.variable_element_not_found");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_RESOURCE_DUPLICATED                                  = create("exception.srm.importation.csv.error.resource_duplicated");
 
 }

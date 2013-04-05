@@ -62,11 +62,11 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public CodeMetamac findByCode(String codelistUrn, String code) {
+    public CodeMetamac findByCodeWithoutFlushing(Long codelistVersionId, String code) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("code", code);
-        parameters.put("codelistUrn", codelistUrn);
-        List<CodeMetamac> result = findByQuery("from CodeMetamac where nameableArtefact.code = :code and itemSchemeVersion.maintainableArtefact.urn = :codelistUrn", parameters, 1);
+        parameters.put("codelistVersionId", codelistVersionId);
+        List<CodeMetamac> result = findByQuery("from CodeMetamac where nameableArtefact.code = :code and itemSchemeVersion.id = :codelistVersionId", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {

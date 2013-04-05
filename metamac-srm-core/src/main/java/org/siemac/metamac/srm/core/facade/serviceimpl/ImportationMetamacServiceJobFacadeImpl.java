@@ -24,6 +24,7 @@ public class ImportationMetamacServiceJobFacadeImpl extends ImportationMetamacSe
         List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         getCodesMetamacService().importCodesCsv(ctx, codelistUrn, csvStream, fileName, updateAlreadyExisting, informationItems);
         // Mark job as completed
+        // TODO sistema de avisos
         getImportationMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
     }
 

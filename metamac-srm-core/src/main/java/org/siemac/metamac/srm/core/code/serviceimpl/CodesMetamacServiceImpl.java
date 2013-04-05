@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -339,8 +340,19 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac createCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
+
+        // IMPORTANT: If any restriction change, review importation of csv file, because the importation doesnot call to service methods to avoid extra queries, flushing...
+
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-        return createCode(ctx, codelistVersion, code);
+
+        preCreateCode(ctx, codelistVersion, code);
+        srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
+
+        // Save code
+        code = (CodeMetamac) codesService.createCode(ctx, codelistUrn, code);
+        // Add to all visualisations of codelist
+        code = initVisualisationsToCodeCreated(codelistVersion, code);
+        return code;
     }
 
     @Override
@@ -386,6 +398,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
+        List<CodeMetamac> codesToPersist = new ArrayList<CodeMetamac>();
+        Map<String, CodeMetamac> codesPreviousInCodelistByCode = new HashMap<String, CodeMetamac>();
+        for (Item item : codelistVersion.getItems()) {
+            codesPreviousInCodelistByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
+        }
+
+        Map<String, CodeMetamac> codesToPersistByCode = new HashMap<String, CodeMetamac>();
         try {
             inputStreamReader = new InputStreamReader(csvStream); // TODO charset?
             bufferedReader = new BufferedReader(inputStreamReader);
@@ -394,6 +413,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             String line = null;
             int lineNumber = 1;
             while ((line = bufferedReader.readLine()) != null) {
+                if (StringUtils.isBlank(line)) {
+                    continue;
+                }
                 String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.CSV_SEPARATOR);
                 if (header == null) {
                     header = ImportationCsvUtils.parseCodesHeader(columns, exceptionItems);
@@ -406,7 +428,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         continue;
                     }
                     // Transform code and create or update
-                    saveCodeFromCsvLine(ctx, header, columns, lineNumber, codelistVersion, updateAlreadyExisting, exceptionItems, informationItems);
+                    CodeMetamac code = saveCodeFromCsvLine(header, columns, lineNumber, codelistVersion, updateAlreadyExisting, codesPreviousInCodelistByCode, codesToPersistByCode, exceptionItems,
+                            informationItems);
+                    if (code != null) {
+                        codesToPersist.add(code);
+                        codesToPersistByCode.put(code.getNameableArtefact().getCode(), code);
+                    }
                 }
                 lineNumber++;
             }
@@ -424,8 +451,64 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         if (!CollectionUtils.isEmpty(exceptionItems)) {
             // rollback and inform about errors
-            // TODO sistema de avisos
             throw MetamacExceptionBuilder.builder().withPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR, fileName)).withExceptionItems(exceptionItems).build();
+        }
+
+        // Re-calculate all visualisations with new codes
+        List<Item> allItemsToUpdateVisualisations = new ArrayList<Item>(codelistVersion.getItems());
+        for (Item item : codesToPersist) {
+            if (!codesPreviousInCodelistByCode.containsKey(item.getNameableArtefact().getCode())) {
+                allItemsToUpdateVisualisations.add(item);
+            }
+        }
+        recalculateCodesVisualisations(ctx, codelistVersion.getItems(), codelistVersion.getOrderVisualisations(), codelistVersion.getOpennessVisualisations(), false);
+
+        // Persist
+        for (int i = 0; i < codesToPersist.size(); i++) {
+            System.out.println(i); // TODO quitar
+            CodeMetamac codeMetamac = codesToPersist.get(i);
+            if (codeMetamac.getParent() != null) {
+                if (codesToPersistByCode.containsKey(codeMetamac.getParent().getNameableArtefact().getCode())) {
+                    // update reference because it was saved
+                    codeMetamac.setParent(codesToPersistByCode.get(codeMetamac.getParent().getNameableArtefact().getCode()));
+                }
+            }
+            codeMetamac = getCodeMetamacRepository().save(codeMetamac);
+            // update reference after save to assign to children
+            codesToPersistByCode.put(codeMetamac.getNameableArtefact().getCode(), codeMetamac);
+        }
+        // TODO quitar
+        int i = 3;
+        i++;
+    }
+
+    @Override
+    public void recalculateCodesVisualisations(ServiceContext ctx, List<Item> items, List<CodelistOrderVisualisation> orderVisualisations, List<CodelistOpennessVisualisation> opennessVisualisations,
+            boolean executeSave) {
+
+        // Recalculate all order codes
+        Boolean alphabeticalAlreadyUpdated = Boolean.FALSE; // to avoid select to compare code of nameable
+        for (CodelistOrderVisualisation orderVisualization : orderVisualisations) {
+            if (!alphabeticalAlreadyUpdated && SrmServiceUtils.isAlphabeticalOrderVisualisation(orderVisualization)) {
+                sortCodesInAlphabeticalOrder(items, orderVisualization, false);
+                alphabeticalAlreadyUpdated = Boolean.TRUE;
+            } else {
+                sortCodesByOrder(items, orderVisualization, false);
+            }
+        }
+
+        // Fill openness visualisations (only empty)
+        Boolean defaultOpennessValue = SrmConstants.CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE;
+        Boolean allExpandedAlreadyUpdated = Boolean.FALSE; // to avoid select to compare code of nameable
+        for (CodelistOpennessVisualisation opennessVisualisation : opennessVisualisations) {
+            Boolean value = null;
+            if (!allExpandedAlreadyUpdated && SrmServiceUtils.isAllExpandedOpennessVisualisation(opennessVisualisation)) {
+                value = Boolean.TRUE;
+                allExpandedAlreadyUpdated = Boolean.TRUE;
+            } else {
+                value = defaultOpennessValue;
+            }
+            fillCodelistOpennessVisualisationToCodesWithEmptyOpenness(ctx, items, opennessVisualisation, value);
         }
     }
 
@@ -440,6 +523,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac updateCode(ServiceContext ctx, CodeMetamac code) throws MetamacException {
+
+        // IMPORTANT: If any restriction change, review importation of csv file, because the importation doesnot call to service methods to avoid extra queries, flushing...
+
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, code.getNameableArtefact().getUrn());
 
         // Validation
@@ -1118,6 +1204,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             String line = null;
             int lineNumber = 1;
             while ((line = bufferedReader.readLine()) != null) {
+                if (StringUtils.isBlank(line)) {
+                    continue;
+                }
                 String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.CSV_SEPARATOR);
                 if (header == null) {
                     header = ImportationCsvUtils.parseVariableElementsHeader(columns, exceptionItems);
@@ -1148,7 +1237,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         if (!CollectionUtils.isEmpty(exceptionItems)) {
             // rollback and inform about errors
-            // TODO sistema de avisos
             throw MetamacExceptionBuilder.builder().withPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR, fileName)).withExceptionItems(exceptionItems).build();
         }
     }
@@ -1327,17 +1415,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     // ------------------------------------------------------------------------------------
     // PRIVATE METHODS
     // ------------------------------------------------------------------------------------
-
-    private CodeMetamac createCode(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodeMetamac code) throws MetamacException {
-        preCreateCode(ctx, codelistVersion, code);
-        srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
-
-        // Save code
-        code = (CodeMetamac) codesService.createCode(ctx, codelistVersion, code);
-        // Add to all visualisations of codelist
-        code = initVisualisationsToCodeCreated(codelistVersion, code);
-        return code;
-    }
 
     /**
      * Typecast to Metamac type
@@ -1677,98 +1754,62 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.addOrderVisualisation(alphabeticalOrderVisualisation);
         codelistVersion = getCodelistVersionMetamacRepository().save(codelistVersion);
 
-        sortCodesInAlphabeticalOrder(ctx, codelistVersion, alphabeticalOrderVisualisation);
+        sortCodesInAlphabeticalOrder(codelistVersion.getItems(), alphabeticalOrderVisualisation, true);
         return codelistVersion;
     }
 
     private boolean isCodesSiblings(Item i1, Item i2) {
         if (i1.getParent() == null && i2.getParent() == null) {
             return true;
-        } else if (i1.getParent() != null && i2.getParent() != null && i1.getParent().getId().equals(i2.getParent().getId())) {
+            // id can be null when save operation is executed when transaction is closed
+            // } else if (i1.getParent() != null && i2.getParent() != null && i1.getParent().getId().equals(i2.getParent().getId())) {
+        } else if (i1.getParent() != null && i2.getParent() != null && i1.getParent().getUuid().equals(i2.getParent().getUuid())) {
             return true;
         }
         return false;
     }
 
-    class AlphabeticalByLevelComparator implements Comparator<Item> {
+    /**
+     * Sorts all codes, ordered by semantic identifier
+     */
+    private void sortCodesInAlphabeticalOrder(List<Item> items, CodelistOrderVisualisation alphabeticalOrderVisualisation, boolean executeSave) {
+        sortCodes(items, alphabeticalOrderVisualisation, new AlphabeticalByLevelComparator(), executeSave);
+    }
 
-        @Override
-        public int compare(Item i1, Item i2) {
-            if (isCodesSiblings(i1, i2)) {
-                return i1.getNameableArtefact().getCode().compareTo(i2.getNameableArtefact().getCode());
-            } else if (i1.getParent() == null) {
-                return 1;
-            } else if (i2.getParent() == null) {
-                return -1;
-            } else {
-                return i1.getParent().getId().compareTo(i2.getParent().getId());
-            }
+    /**
+     * Sorts all codes, ordered by index. Put codes with null index at the end off level
+     */
+    private void sortCodesByOrder(List<Item> items, final CodelistOrderVisualisation orderVisualisation, boolean executeSave) {
+        sortCodes(items, orderVisualisation, new OrderIndexByLevelComparator(orderVisualisation), executeSave);
+    }
+
+    /**
+     * Sorts all codes by level, sorting codes by comparator
+     */
+    private void sortCodes(List<Item> items, CodelistOrderVisualisation orderVisualisation, Comparator<Item> comparator, boolean executeSave) {
+        if (CollectionUtils.isEmpty(items)) {
+            return;
         }
-    }
 
-    @Override
-    public void sortCodesInAlphabeticalOrder(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation alphabeticalOrderVisualisation) {
-        // Add codes, ordered by semantic identifier
-        sortCodes(ctx, codelistVersion, alphabeticalOrderVisualisation, new AlphabeticalByLevelComparator());
-    }
+        List<Item> codesOrdered = new ArrayList<Item>(items);
+        Collections.sort(codesOrdered, comparator);
 
-    @Override
-    public void sortCodesByOrder(ServiceContext ctx, CodelistVersionMetamac codelistVersion, final CodelistOrderVisualisation orderVisualisation) {
-        // Add codes, ordered by semantic identifier
-
-        Comparator<Item> comparator = new Comparator<Item>() {
-
-            @Override
-            public int compare(Item i1, Item i2) {
-                CodeMetamac c1 = (CodeMetamac) i1;
-                CodeMetamac c2 = (CodeMetamac) i2;
-                if (isCodesSiblings(i1, i2)) {
-                    // The elements with order set as null will set to the end.
-                    Integer c1Order = SrmServiceUtils.getCodeOrder(c1, orderVisualisation.getColumnIndex());
-                    Integer c2Order = SrmServiceUtils.getCodeOrder(c2, orderVisualisation.getColumnIndex());
-                    if (c1Order == null && c2Order == null) {
-                        return 0;
-                    } else if (c1Order == null) {
-                        return 1;
-                    } else if (c2Order == null) {
-                        return -1;
-                    } else {
-                        return c1Order.compareTo(c2Order);
-                    }
-                } else if (i1.getParent() == null) {
-                    return 1;
-                } else if (i2.getParent() == null) {
-                    return -1;
-                } else {
-                    return i1.getParent().getId().compareTo(i2.getParent().getId());
-                }
+        String previousParentUrn = null;
+        int previousOrder = -1;
+        for (Item item : codesOrdered) {
+            CodeMetamac code = (CodeMetamac) item;
+            String actualParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
+            if (!StringUtils.equals(previousParentUrn, actualParentUrn)) {
+                previousOrder = -1; // another level
+                previousParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
             }
-
-        };
-
-        sortCodes(ctx, codelistVersion, orderVisualisation, comparator);
-    }
-
-    public void sortCodes(ServiceContext ctx, CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation orderVisualisation, Comparator<Item> comparator) {
-        if (!CollectionUtils.isEmpty(codelistVersion.getItems())) {
-            List<Item> codesOrdered = new ArrayList<Item>(codelistVersion.getItems());
-
-            Collections.sort(codesOrdered, comparator);
-
-            String previousParentUrn = null;
-            int previousOrder = -1;
-            for (Item item : codesOrdered) {
-                CodeMetamac code = (CodeMetamac) item;
-                String actualParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
-                if (!StringUtils.equals(previousParentUrn, actualParentUrn)) {
-                    previousOrder = -1; // another level
-                    previousParentUrn = code.getParent() != null ? code.getParent().getNameableArtefact().getUrn() : null;
-                }
-                int order = previousOrder == -1 ? 0 : previousOrder + 1;
-                SrmServiceUtils.setCodeOrder(code, orderVisualisation.getColumnIndex(), Integer.valueOf(order));
+            int order = previousOrder == -1 ? 0 : previousOrder + 1;
+            SrmServiceUtils.setCodeOrder(code, orderVisualisation.getColumnIndex(), Integer.valueOf(order));
+            if (executeSave) {
+                // in some operations, save method must not be executed due to efficiency of inserts operations
                 getCodeMetamacRepository().save(code);
-                previousOrder = order;
             }
+            previousOrder = order;
         }
     }
 
@@ -1794,11 +1835,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistVersion;
     }
 
-    @Override
-    public CodelistVersionMetamac recreateCodelistOpennessVisualisationAllOpened(ServiceContext ctx, CodelistVersionMetamac codelistVersion,
-            CodelistOpennessVisualisation allExpandedOpennessVisualisation) throws MetamacException {
-        getCodeMetamacRepository().updateCodesOpennessColumnByCodelist(codelistVersion, allExpandedOpennessVisualisation.getColumnIndex(), Boolean.TRUE);
-        return codelistVersion;
+    private void fillCodelistOpennessVisualisationToCodesWithEmptyOpenness(ServiceContext ctx, List<Item> items, CodelistOpennessVisualisation opennessVisualisation, Boolean value) {
+        for (Item item : items) {
+            CodeMetamac code = (CodeMetamac) item;
+            if (SrmServiceUtils.getCodeOpenness(code, opennessVisualisation.getColumnIndex()) == null) {
+                SrmServiceUtils.setCodeOpenness(code, opennessVisualisation.getColumnIndex(), value);
+            }
+        }
     }
 
     private VariableElement createVariableElement(ServiceContext ctx, VariableElement variableElement, Boolean importingCsv) throws MetamacException {
@@ -2055,89 +2098,114 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     /**
-     * Transforms csv line to Code and saves it. Can update an existing Code.
-     * TODO revisar infoItems cuando se implemente el servicio de notificaciones. No deberían ser excepciones
+     * Transforms csv line to Code. IMPORTANT: Do not execute save or update operation
      */
-    private void saveCodeFromCsvLine(ServiceContext ctx, CodeCsvHeader header, String[] columns, int lineNumber, CodelistVersionMetamac codelistVersion, boolean updateAlreadyExisting,
-            List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems) throws MetamacException {
+    private CodeMetamac saveCodeFromCsvLine(CodeCsvHeader header, String[] columns, int lineNumber, CodelistVersionMetamac codelistVersion, boolean updateAlreadyExisting,
+            Map<String, CodeMetamac> codesPreviousInCodelist, Map<String, CodeMetamac> codesToPersistByCode, List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems)
+            throws MetamacException {
 
-        // code
+        // semantic identifier
         String codeIdentifier = columns[header.getCodePosition()];
         if (StringUtils.isBlank(codeIdentifier)) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
-            return;
+            return null;
         }
-        CodeMetamac code = getCodeMetamacRepository().findByCode(codelistVersion.getMaintainableArtefact().getUrn(), codeIdentifier);
+        if (codesToPersistByCode.containsKey(codeIdentifier)) {
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_RESOURCE_DUPLICATED, codeIdentifier, lineNumber));
+        }
+        if (!SemanticIdentifierValidationUtils.isCodeSemanticIdentifier(codeIdentifier)) {
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, codeIdentifier,
+                    ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE));
+        }
         // parent
         CodeMetamac codeParent = null;
         String codeParentIdentifier = columns[header.getParentPosition()];
         if (!StringUtils.isBlank(codeParentIdentifier)) {
-            codeParent = getCodeMetamacRepository().findByCode(codelistVersion.getMaintainableArtefact().getUrn(), codeParentIdentifier);
+            if (codesToPersistByCode.containsKey(codeParentIdentifier)) {
+                codeParent = codesToPersistByCode.get(codeParentIdentifier);
+            } else {
+                codeParent = codesPreviousInCodelist.get(codeParentIdentifier); // try code already exists in codelist before this importation
+            }
             if (codeParent == null) {
                 exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_PARENT_NOT_FOUND, codeParentIdentifier, codeIdentifier));
             }
         }
-        // variableElement
+        // variable element
         String variableElementIdentifier = columns[header.getVariableElementPosition()];
         VariableElement variableElement = null;
         boolean updateVariableElement = true;
         if (!StringUtils.isBlank(variableElementIdentifier)) {
-            variableElement = getVariableElementRepository().findByCodeWithoutFlushing(codelistVersion.getVariable().getNameableArtefact().getUrn(), variableElementIdentifier);
+            variableElement = getVariableElementRepository().findByCodeWithoutFlushing(codelistVersion.getVariable().getId(), variableElementIdentifier);
             if (variableElement == null) {
                 // do not abort importation. Only inform about this
-                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, variableElementIdentifier, code.getNameableArtefact().getCode()));
+                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, variableElementIdentifier, codeIdentifier));
                 updateVariableElement = false;
             }
 
         }
         // init code
+        CodeMetamac code = codesPreviousInCodelist.get(codeIdentifier);
         if (code == null) {
             code = new CodeMetamac();
             code.setNameableArtefact(new NameableArtefact());
             code.getNameableArtefact().setCode(codeIdentifier);
+            String urn = GeneratorUrnUtils.generateCodeUrn(codelistVersion, code.getNameableArtefact().getCode());
+            code.getNameableArtefact().setUrn(urn);
+            code.getNameableArtefact().setUrnProvider(urn);
             code.setParent(codeParent);
         } else {
             if (!updateAlreadyExisting) {
                 infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED, code.getNameableArtefact().getCode()));
-                return;
+                return null;
             } else {
                 infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED, code.getNameableArtefact().getCode()));
             }
         }
-        if (updateVariableElement) {
-            code.setVariableElement(variableElement);
-        }
         code.getNameableArtefact().setName(ImportationCsvUtils.csvLineToInternationalString(header.getName(), columns, code.getNameableArtefact().getName()));
-        code.getNameableArtefact().setDescription(ImportationCsvUtils.csvLineToInternationalString(header.getDescription(), columns, code.getNameableArtefact().getDescription()));
         if (code.getNameableArtefact().getName() == null) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED, code.getNameableArtefact().getCode(),
                     ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_NAME));
         }
-
-        if (!CollectionUtils.isEmpty(exceptionItems)) {
-            return;
-        }
-        try {
-            if (code.getId() == null) {
-                code = createCode(ctx, codelistVersion, code);
-            } else {
-                code = updateCode(ctx, code);
-                if (SdmxSrmUtils.isItemParentChanged(code.getParent(), codeParent)) {
-                    String codeParentUrn = codeParent != null ? codeParent.getNameableArtefact().getUrn() : null;
-                    updateCodeParent(ctx, code.getNameableArtefact().getUrn(), codeParentUrn);
-                }
+        code.getNameableArtefact().setDescription(ImportationCsvUtils.csvLineToInternationalString(header.getDescription(), columns, code.getNameableArtefact().getDescription()));
+        if (updateVariableElement) {
+            code.setVariableElement(variableElement);
+            if (variableElement != null) {
+                code.setShortName(null);
             }
-        } catch (MetamacException metamacException) {
-            metamacException.printStackTrace();
-            // TODO parsear conocidas: nombre requerido, semantic identifier...
-            // if (!SemanticIdentifierValidationUtils.isCodeSemanticIdentifier(codeIdentifier)) {
-            // exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, code, ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE));
-            // }
         }
+
+        // Do not persist if any error ocurrs
+        if (!CollectionUtils.isEmpty(exceptionItems)) {
+            return null;
+        }
+
+        try {
+            // extra validation to avoid save some incorrect
+            if (code.getId() == null) {
+                CodesMetamacInvocationValidator.checkCreateCode(codelistVersion, code, null);
+            } else {
+                CodesMetamacInvocationValidator.checkUpdateCode(codelistVersion, code, null);
+            }
+        } catch (Exception metamacException) {
+            logger.error("Error importing variable element from csv file", metamacException);
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
+        }
+
+        code.setItemSchemeVersion(codelistVersion);
+        if (codeParent == null) {
+            code.setItemSchemeVersionFirstLevel(codelistVersion);
+        } else {
+            code.setItemSchemeVersionFirstLevel(null);
+        }
+        if (SdmxSrmUtils.isItemParentChanged(code.getParent(), codeParent)) {
+            // Clear all order columns to put at the end of new level
+            SrmServiceUtils.clearCodeOrders(code);
+        }
+
+        return code;
     }
     /**
      * Transforms csv line to VariableElement and saves it. Can update an existing VariableElement.
-     * TODO revisar infoItems cuando se implemente el servicio de notificaciones. No deberían ser excepciones
      */
     private void saveVariableElementFromCsvLine(ServiceContext ctx, VariableElementCsvHeader header, String[] columns, int lineNumber, Variable variable, boolean updateAlreadyExisting,
             List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems) throws MetamacException {
@@ -2152,7 +2220,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, code, ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE));
         }
 
-        VariableElement variableElement = getVariableElementRepository().findByCodeWithoutFlushing(variable.getNameableArtefact().getUrn(), code);
+        VariableElement variableElement = getVariableElementRepository().findByCodeWithoutFlushing(variable.getId(), code);
         if (variableElement == null) {
             variableElement = new VariableElement();
             variableElement.setVariable(variable);
@@ -2177,11 +2245,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (!CollectionUtils.isEmpty(exceptionItems)) {
             return;
         }
-        // TODO TRY catch errors
-        if (variableElement.getId() == null) {
-            variableElement = createVariableElement(ctx, variableElement, Boolean.TRUE);
-        } else {
-            variableElement = updateVariableElement(ctx, variableElement, Boolean.TRUE);
+
+        try {
+            if (variableElement.getId() == null) {
+                variableElement = createVariableElement(ctx, variableElement, Boolean.TRUE);
+            } else {
+                variableElement = updateVariableElement(ctx, variableElement, Boolean.TRUE);
+            }
+        } catch (MetamacException metamacException) {
+            logger.error("Error importing variable element from csv file", metamacException);
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
         }
     }
 
@@ -2232,5 +2305,59 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         return Integer.valueOf(index);
     }
+
+    private class AlphabeticalByLevelComparator implements Comparator<Item> {
+
+        @Override
+        public int compare(Item i1, Item i2) {
+            if (isCodesSiblings(i1, i2)) {
+                return i1.getNameableArtefact().getCode().compareTo(i2.getNameableArtefact().getCode());
+            } else if (i1.getParent() == null) {
+                return 1;
+            } else if (i2.getParent() == null) {
+                return -1;
+            } else {
+                // return i1.getParent().getId().compareTo(i2.getParent().getId()); // id can be null when save operation is executed when transaction is closed
+                return i1.getParent().getUuid().compareTo(i2.getParent().getUuid());
+            }
+        }
+    }
+
+    private class OrderIndexByLevelComparator implements Comparator<Item> {
+
+        private final int columnIndex;
+
+        public OrderIndexByLevelComparator(CodelistOrderVisualisation orderVisualisation) {
+            this.columnIndex = orderVisualisation.getColumnIndex();
+        }
+
+        @Override
+        public int compare(Item i1, Item i2) {
+            CodeMetamac c1 = (CodeMetamac) i1;
+            CodeMetamac c2 = (CodeMetamac) i2;
+            if (isCodesSiblings(i1, i2)) {
+                // The elements with order set as null will set to the end.
+                Integer c1Order = SrmServiceUtils.getCodeOrder(c1, columnIndex);
+                Integer c2Order = SrmServiceUtils.getCodeOrder(c2, columnIndex);
+                if (c1Order == null && c2Order == null) {
+                    return 0;
+                } else if (c1Order == null) {
+                    return 1;
+                } else if (c2Order == null) {
+                    return -1;
+                } else {
+                    return c1Order.compareTo(c2Order);
+                }
+            } else if (i1.getParent() == null) {
+                return 1;
+            } else if (i2.getParent() == null) {
+                return -1;
+            } else {
+                // return i1.getParent().getId().compareTo(i2.getParent().getId()); // id can be null when save operation is executed when transaction is closed
+                return i1.getParent().getUuid().compareTo(i2.getParent().getUuid());
+            }
+        }
+
+    };
 
 }

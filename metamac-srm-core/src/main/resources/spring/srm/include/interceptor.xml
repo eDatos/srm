@@ -46,7 +46,10 @@
         <aop:pointcut id="disableFlushingPointCut" expression="execution(public * org.siemac.metamac.srm..mapper.*2DoMapper.*(..)) or
                                                                execution(public * com.arte.statistic.sdmx.srm..mapper.*2DoMapper.*(..)) or
                                                                execution(public * com.arte.statistic.sdmx.srm..*Repository.findIfExistAPreviousVersion(..)) or
-                                                               execution(public * org.siemac.metamac.srm..*Repository.findByCodeWithoutFlushing(..))"/>
+                                                               execution(public * org.siemac.metamac.srm..*Repository.findByCodeWithoutFlushing(..)) or
+                                                               execution(public * org.siemac.metamac.srm..CodeMetamacRepository.*order*(..)) or
+                                                               execution(public * org.siemac.metamac.srm..CodeMetamacRepository.*Order*(..))
+                                                               "/>
  
         <!-- Pointcut for the advice of jpa eager flush -->
         <aop:pointcut id="updatingServiceFacade"

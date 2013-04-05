@@ -118,8 +118,6 @@ Application CodesMetamac {
 			"Deletes order visualisation"
     		deleteCodelistOrderVisualisation(String urn) throws MetamacException;
     		@CodelistVersionMetamac versioningCodelistOrderVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException;
-    		sortCodesInAlphabeticalOrder(@CodelistVersionMetamac codelistVersion, @CodelistOrderVisualisation alphabeticalOrderVisualisation);
-    		sortCodesByOrder(@CodelistVersionMetamac codelistVersion, @CodelistOrderVisualisation orderVisualisation);
 
 			"Creates openness visualisation"
     		@CodelistOpennessVisualisation createCodelistOpennessVisualisation(String codelistUrn, @CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException;
@@ -134,7 +132,9 @@ Application CodesMetamac {
 			"Deletes openness visualisation"
     		deleteCodelistOpennessVisualisation(String urn) throws MetamacException;
     		@CodelistVersionMetamac versioningCodelistOpennessVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException;
-    		@CodelistVersionMetamac recreateCodelistOpennessVisualisationAllOpened(@CodelistVersionMetamac codelistVersion, @CodelistOpennessVisualisation allExpandedOpennessVisualisation) throws MetamacException;
+
+			"Recalculates all visualisations: order and openness, when new codes are added in codelist"
+    		recalculateCodesVisualisations(List<@Item> items, List<@CodelistOrderVisualisation> orderVisualisations, List<@CodelistOpennessVisualisation> opennessVisualisations, boolean executeSave);
 
 			// CODELIST FAMILIES
 			
@@ -321,7 +321,7 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByQuery(String query, Map<String, Object> parameters);
 				@CodeMetamac findByUrn(String urn);
-				@CodeMetamac findByCode(String codelistUrn, String code);
+				@CodeMetamac findByCodeWithoutFlushing(Long codelistVersionId, String code);
 				findByCondition(PagingParameter pagingParameter);
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) throws MetamacException;
@@ -498,7 +498,7 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@VariableElement findByUrn(String urn);
-				@VariableElement findByCodeWithoutFlushing(String variableUrn, String code);
+				@VariableElement findByCodeWithoutFlushing(Long variableId, String code);
 			}
 		}
 		

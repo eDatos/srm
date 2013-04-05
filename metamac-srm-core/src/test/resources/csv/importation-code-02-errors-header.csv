@@ -9,3 +9,4 @@ code5	code1	VARIABLE_ELEMENT_03			Nombre it 5	Description 5	Descripción 5
 code6	code2				Nombre it 5		
 code7		VARIABLE_ELEMENT_01	Nombre 7				
 code8	CODE01	VARIABLE_ELEMENT_NOT_EXISTS	Nombre 8				
+%code9			Nombre				

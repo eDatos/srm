@@ -69,6 +69,7 @@ public class ImportationCsvJob implements Job {
                     serviceContext = serviceContextDefault;
                 }
                 getImportationMetamacServiceJobFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
+                // TODO sistema de avisos
             } catch (MetamacException e1) {
                 logger.error("ImportationJob: the importation with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
             }

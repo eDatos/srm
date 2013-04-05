@@ -9,8 +9,6 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
-import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
@@ -97,22 +95,8 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
             // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update de codes index.
             targetMetamac = codesMetamacService.versioningCodelistOrderVisualisations(ctx, previousMetamac, targetMetamac);
 
-            // Update all order codes
-            for (CodelistOrderVisualisation orderVisualization : targetMetamac.getOrderVisualisations()) {
-                if (SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equalsIgnoreCase(orderVisualization.getNameableArtefact().getCode())) {
-                    codesMetamacService.sortCodesInAlphabeticalOrder(ctx, targetMetamac, orderVisualization); // Re calculate alphabetical order
-                } else {
-                    // Re calculate order
-                    codesMetamacService.sortCodesByOrder(ctx, targetMetamac, orderVisualization);
-                }
-            }
-
-            // Update default opened visualization
-            for (CodelistOpennessVisualisation opennessVisualization : targetMetamac.getOpennessVisualisations()) {
-                if (SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE.equalsIgnoreCase(opennessVisualization.getNameableArtefact().getCode())) {
-                    codesMetamacService.recreateCodelistOpennessVisualisationAllOpened(ctx, targetMetamac, opennessVisualization);
-                }
-            }
+            // Update all order codes and openness visualisations
+            codesMetamacService.recalculateCodesVisualisations(ctx, targetMetamac.getItems(), targetMetamac.getOrderVisualisations(), targetMetamac.getOpennessVisualisations(), true);
         } else {
             targetMetamac = codesMetamacService.createCodelistOrderVisualisationAlphabetical(ctx, targetMetamac); // Add alphabetical order
             targetMetamac = codesMetamacService.createCodelistOpennessVisualisationAllOpened(ctx, targetMetamac); // Add all opened visualization

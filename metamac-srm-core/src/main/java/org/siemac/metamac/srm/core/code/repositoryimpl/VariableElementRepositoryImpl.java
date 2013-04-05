@@ -29,11 +29,11 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
     }
 
     @Override
-    public VariableElement findByCodeWithoutFlushing(String variableUrn, String code) {
+    public VariableElement findByCodeWithoutFlushing(Long variableId, String code) {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("variableUrn", variableUrn);
+        parameters.put("variableId", variableId);
         parameters.put("code", code);
-        List<VariableElement> result = findByQuery("from VariableElement where identifiableArtefact.code = :code and variable.nameableArtefact.urn = :variableUrn", parameters, 1);
+        List<VariableElement> result = findByQuery("from VariableElement where identifiableArtefact.code = :code and variable.id = :variableId", parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {

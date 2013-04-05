@@ -107,11 +107,83 @@ public class SrmServiceUtils {
         return SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE.equals(opennessVisualisation.getNameableArtefact().getCode());
     }
 
+    /**
+     * Get code order.
+     * Note: can not use reflection because set to null is necessary
+     */
     public static void setCodeOrder(CodeMetamac code, int columnIndex, Integer codeIndex) {
-        try {
-            MethodUtils.invokeExactMethod(code, "setOrder" + columnIndex, codeIndex);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        switch (columnIndex) {
+            case 1:
+                code.setOrder1(codeIndex);
+                break;
+            case 2:
+                code.setOrder2(codeIndex);
+                break;
+            case 3:
+                code.setOrder3(codeIndex);
+                break;
+            case 4:
+                code.setOrder4(codeIndex);
+                break;
+            case 5:
+                code.setOrder5(codeIndex);
+                break;
+            case 6:
+                code.setOrder6(codeIndex);
+                break;
+            case 7:
+                code.setOrder7(codeIndex);
+                break;
+            case 8:
+                code.setOrder8(codeIndex);
+                break;
+            case 9:
+                code.setOrder9(codeIndex);
+                break;
+            case 10:
+                code.setOrder10(codeIndex);
+                break;
+            case 11:
+                code.setOrder11(codeIndex);
+                break;
+            case 12:
+                code.setOrder12(codeIndex);
+                break;
+            case 13:
+                code.setOrder13(codeIndex);
+                break;
+            case 14:
+                code.setOrder14(codeIndex);
+                break;
+            case 15:
+                code.setOrder15(codeIndex);
+                break;
+            case 16:
+                code.setOrder16(codeIndex);
+                break;
+            case 17:
+                code.setOrder17(codeIndex);
+                break;
+            case 18:
+                code.setOrder18(codeIndex);
+                break;
+            case 19:
+                code.setOrder19(codeIndex);
+                break;
+            case 20:
+                code.setOrder20(codeIndex);
+                break;
+            default:
+                throw new IllegalArgumentException("Order not supported: " + columnIndex);
+        }
+    }
+
+    /**
+     * Clear all order columns to put at the end of new level
+     */
+    public static void clearCodeOrders(CodeMetamac code) {
+        for (int i = 0; i < SrmConstants.CODELIST_OPENNESS_VISUALISATION_MAXIMUM_NUMBER; i++) {
+            setCodeOrder(code, i + 1, null);
         }
     }
 
