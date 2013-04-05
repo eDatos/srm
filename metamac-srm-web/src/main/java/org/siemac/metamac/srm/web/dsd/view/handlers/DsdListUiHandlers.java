@@ -15,7 +15,6 @@ public interface DsdListUiHandlers extends UiHandlers {
     void deleteDsds(List<String> urns);
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
-    void retrieveStatisticalOperationsForSearchSection(int firstResult, int maxResults, String criteria);
 
     void dsdSuccessfullyImported(String fileName);
     void dsdImportFailed(String fileName);
@@ -23,4 +22,9 @@ public interface DsdListUiHandlers extends UiHandlers {
     void exportDsd(DataStructureDefinitionMetamacDto dsd);
 
     void cancelValidity(List<String> urns);
+
+    // Search
+    void retrieveStatisticalOperationsForSearchSection(int firstResult, int maxResults, String criteria);
+    void retrieveDimensionConceptsForSearchSection(int firstResult, int maxResults, String criteria);
+    void retrieveAttributeConceptsForSearchSection(int firstResult, int maxResults, String criteria);
 }

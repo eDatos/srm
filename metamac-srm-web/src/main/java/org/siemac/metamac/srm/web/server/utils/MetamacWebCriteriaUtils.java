@@ -476,6 +476,16 @@ public class MetamacWebCriteriaUtils {
                         new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.STATISTICAL_OPERATION_URN.name(), criteria.getStatisticalOperationUrn(),
                                 OperationType.EQ));
             }
+            if (StringUtils.isNotBlank(criteria.getDimensionConceptUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.DIMENSION_CONCEPT_URN.name(), criteria.getDimensionConceptUrn(),
+                                OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getAttributeConceptUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(), criteria.getAttributeConceptUrn(),
+                                OperationType.EQ));
+            }
             if (criteria.getInternalPublicationDate() != null) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), criteria.getInternalPublicationDate(),

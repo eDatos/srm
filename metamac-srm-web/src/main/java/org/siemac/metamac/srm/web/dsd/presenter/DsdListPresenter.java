@@ -18,8 +18,11 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
@@ -93,12 +96,16 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         HasRecordClickHandlers getSelectedDsd();
         List<String> getSelectedDsdUrns();
         void onNewDsdCreated();
-        void clearSearchSection();
-
-        void setOperations(GetStatisticalOperationsResult result);
-        void setOperationsForSearchSection(GetStatisticalOperationsResult result);
 
         com.smartgwt.client.widgets.events.HasClickHandlers getDelete();
+
+        void setOperations(GetStatisticalOperationsResult result);
+
+        // Search section
+        void setOperationsForSearchSection(GetStatisticalOperationsResult result);
+        void setDimensionConceptsForSearchSection(GetConceptsResult result);
+        void setAttributeConceptsForSearchSection(GetConceptsResult result);
+        void clearSearchSection();
     }
 
     @Inject
@@ -290,6 +297,10 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         });
     }
 
+    //
+    // SEARCH SECTION CRITERIA
+    //
+
     @Override
     public void retrieveStatisticalOperationsForSearchSection(int firstResult, int maxResults, String criteria) {
 
@@ -305,6 +316,38 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
                 getView().setOperationsForSearchSection(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveDimensionConceptsForSearchSection(int firstResult, int maxResults, String criteria) {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
+        dispatcher.execute(new GetConceptsAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptsResult result) {
+                getView().setDimensionConceptsForSearchSection(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveAttributeConceptsForSearchSection(int firstResult, int maxResults, String criteria) {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
+        dispatcher.execute(new GetConceptsAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptsResult result) {
+                getView().setAttributeConceptsForSearchSection(result);
             }
         });
     }
