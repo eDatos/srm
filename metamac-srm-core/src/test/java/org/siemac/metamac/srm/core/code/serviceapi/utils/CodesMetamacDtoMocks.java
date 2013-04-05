@@ -23,9 +23,9 @@ public class CodesMetamacDtoMocks {
 
     public static CodelistMetamacDto mockCodelistDto(String codeMaintainer, String urnMaintainer) {
         CodelistMetamacDto codelistDto = new CodelistMetamacDto();
-
+        codelistDto.setIsRecommended(Boolean.TRUE);
         codelistDto.setShortName(MetamacMocks.mockInternationalStringDto());
-
+        codelistDto.setDescriptionSource(MetamacMocks.mockInternationalStringDto());
         CodesDtoMocks.mockCodelistDto(codelistDto);
 
         codelistDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, RelatedResourceTypeEnum.AGENCY));

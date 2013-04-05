@@ -227,6 +227,8 @@ Application CodesMetamac {
 			
 			"Short name"
 			- @InternationalString shortName nullable fetch="lazy" cascade="all" databaseColumn="SHORT_NAME_FK";
+			"Description source"
+			- @InternationalString descriptionSource nullable fetch="lazy" cascade="all" databaseColumn="DESCRIPTION_SOURCE_FK";
 			"Is recommended"
 			Boolean isRecommended nullable;
 			"Access type"

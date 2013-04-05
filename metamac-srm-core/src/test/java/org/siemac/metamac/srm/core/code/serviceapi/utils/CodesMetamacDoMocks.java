@@ -29,6 +29,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         CodelistVersionMetamac codelistVersion = new CodelistVersionMetamac();
 
         codelistVersion.setShortName(mockInternationalString());
+        codelistVersion.setDescriptionSource(mockInternationalString());
         codelistVersion.setIsRecommended(Boolean.FALSE);
         codelistVersion.setAccessType(AccessTypeEnum.RESTRICTED);
 
@@ -43,6 +44,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         // metamac
         target.setLifeCycleMetadata(BaseDoMocks.mockLifeCycleExternallyPublished());
         target.setShortName(mockInternationalStringFixedValues("shortName", getString(resourceID, version)));
+        target.setDescriptionSource(mockInternationalStringFixedValues("descriptionSource", getString(resourceID, version)));
         target.setIsRecommended(Boolean.TRUE);
         target.setAccessType(AccessTypeEnum.PUBLIC);
         target.setFamily(mockCodelistFamilyFixedValues("family1"));

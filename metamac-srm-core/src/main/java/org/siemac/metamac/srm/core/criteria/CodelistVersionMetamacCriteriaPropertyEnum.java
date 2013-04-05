@@ -9,6 +9,7 @@ public enum CodelistVersionMetamacCriteriaPropertyEnum {
     PROC_STATUS,
     IS_LAST_VERSION,
     ACCESS_TYPE,
+    DESCRIPTION_SOURCE,
     CODELIST_FAMILY_URN,
     LATEST_FINAL,
     LATEST_PUBLIC,

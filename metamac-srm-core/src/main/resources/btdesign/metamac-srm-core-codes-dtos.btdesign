@@ -16,6 +16,8 @@ Application DtosMetamacCodeDomain {
 		DataTransferObject CodelistMetamacDto extends @CodelistDto {
 			"Short name"
 			- @InternationalStringDto shortName nullable;
+			"Description source"
+			- @InternationalStringDto descriptionSource nullable;
 			"Is recommended"
 			Boolean isRecommended nullable;
 			"Access type"

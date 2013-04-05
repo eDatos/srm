@@ -42,6 +42,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         CodelistMetamacDto target = new CodelistMetamacDto();
 
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
+        target.setDescriptionSource(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getDescriptionSource()));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
         target.setReplacedByCodelist(codelistDoToRelatedResourceDto(source.getReplacedByCodelist()));

@@ -718,6 +718,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                case DESCRIPTION_SOURCE:
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue());
                 case DESCRIPTION:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
                 case ACCESS_TYPE:

@@ -2395,7 +2395,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             } else if (i2.getParent() == null) {
                 return -1;
             } else {
-                // return i1.getParent().getId().compareTo(i2.getParent().getId()); // id can be null when save operation is executed when transaction is closed
+                // return i1.getParent().getId().compareTo(i2.getParent().getId()); // not used because id can be null when save operation is executed when transaction is closed
                 return i1.getParent().getUuid().compareTo(i2.getParent().getUuid());
             }
         }
@@ -2431,7 +2431,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             } else if (i2.getParent() == null) {
                 return -1;
             } else {
-                // return i1.getParent().getId().compareTo(i2.getParent().getId()); // id can be null when save operation is executed when transaction is closed
+                // return i1.getParent().getId().compareTo(i2.getParent().getId()); // not used because id can be null when save operation is executed when transaction is closed
                 return i1.getParent().getUuid().compareTo(i2.getParent().getUuid());
             }
         }

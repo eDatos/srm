@@ -29,6 +29,7 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         CodelistVersionMetamac source = (CodelistVersionMetamac) sourceSdmx;
         CodelistVersionMetamac target = (CodelistVersionMetamac) targetSdmx;
         target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
+        target.setDescriptionSource(BaseVersioningCopyUtils.copy(source.getDescriptionSource()));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));

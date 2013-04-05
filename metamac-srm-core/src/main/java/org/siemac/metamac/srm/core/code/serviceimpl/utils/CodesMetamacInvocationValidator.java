@@ -60,6 +60,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
     public static void checkCodelist(CodelistVersionMetamac codelistVersion, boolean creating, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, exceptions);
+        ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getDescriptionSource(), ServiceExceptionParameters.CODELIST_DESCRIPTION_SOURCE, exceptions);
         if (codelistVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
         }

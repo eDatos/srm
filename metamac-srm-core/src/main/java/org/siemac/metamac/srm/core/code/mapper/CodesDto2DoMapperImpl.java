@@ -84,6 +84,8 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         }
         // Modifiable attributes
         target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME));
+        target.setDescriptionSource(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getDescriptionSource(), target.getDescriptionSource(),
+                ServiceExceptionParameters.CODELIST_DESCRIPTION_SOURCE));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
 

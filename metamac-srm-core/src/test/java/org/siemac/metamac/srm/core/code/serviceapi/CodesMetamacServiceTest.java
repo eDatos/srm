@@ -567,6 +567,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codelistVersion.setAccessType(AccessTypeEnum.PUBLIC);
 
         codelistVersion.setShortName(com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks.mockInternationalString());
+        codelistVersion.setDescriptionSource(com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks.mockInternationalString());
         codelistVersion.setIsRecommended(Boolean.TRUE);
 
         CodelistVersionMetamac codelistVersionUpdated = codesService.updateCodelist(ctx, codelistVersion);
@@ -661,6 +662,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(AccessTypeEnum.PUBLIC, codelistVersion.getAccessType());
         assertEquals(Boolean.FALSE, codelistVersion.getIsRecommended());
         assertEqualsInternationalString(codelistVersion.getShortName(), "es", "Nombre corto 1-1", "en", "Short name 1-1");
+        assertEqualsInternationalString(codelistVersion.getDescriptionSource(), "es", "descripción fuente codelist11-v1", null, null);
+
         assertEquals(CODELIST_FAMILY_2, codelistVersion.getFamily().getNameableArtefact().getUrn());
         assertEquals(VARIABLE_6, codelistVersion.getVariable().getNameableArtefact().getUrn());
         assertEquals(CODELIST_1_V1_ORDER_VISUALISATION_01_ALPHABETICAL, codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn());
@@ -3738,6 +3741,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         });
         waitUntilJobFinished();
+
+        entityManager.clear();
 
         // Validate
         ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());

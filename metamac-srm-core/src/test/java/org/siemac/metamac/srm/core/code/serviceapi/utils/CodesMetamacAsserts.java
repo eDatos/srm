@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.core.code.serviceapi.utils;
 
-import static com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts.assertEqualsIdentifiableArtefact;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -42,6 +41,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
     public static void assertEqualsCodelistWithoutLifeCycleMetadata(CodelistVersionMetamac expected, CodelistVersionMetamac actual) {
         // Metamac
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
+        assertEqualsInternationalString(expected.getDescriptionSource(), actual.getDescriptionSource());
         assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
         assertEquals(expected.getAccessType(), actual.getAccessType());
         assertEqualsCodelistFamily(expected.getFamily(), actual.getFamily());
@@ -64,6 +64,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
     public static void assertEqualsCodelistMetamacDto(CodelistMetamacDto expected, CodelistMetamacDto actual) {
         // Metamac
         assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
+        assertEqualsInternationalStringDto(expected.getDescriptionSource(), actual.getDescriptionSource());
         assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
         assertEquals(expected.getAccessType(), actual.getAccessType());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getReplacedByCodelist(), actual.getReplacedByCodelist());
@@ -88,6 +89,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
             BaseAsserts.assertEqualsLifeCycle(entity.getLifeCycleMetadata(), dto.getLifeCycle());
         }
         assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
+        assertEqualsInternationalString(entity.getDescriptionSource(), dto.getDescriptionSource());
         assertEquals(entity.getIsRecommended(), dto.getIsRecommended());
         assertEquals(entity.getAccessType(), dto.getAccessType());
         assertEqualsNullability(entity.getReplacedByCodelist(), dto.getReplacedByCodelist());
