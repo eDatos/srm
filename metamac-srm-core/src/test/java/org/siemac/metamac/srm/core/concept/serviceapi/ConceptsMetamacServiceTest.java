@@ -1799,6 +1799,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertFalse(conceptSchemeVersionMetamac.getMaintainableArtefact().getIsLastVersion());
         }
     }
+
     @Override
     @Test
     public void testVersioningRelatedConcepts() throws Exception {
