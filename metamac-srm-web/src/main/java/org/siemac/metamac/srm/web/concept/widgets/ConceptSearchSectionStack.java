@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.apache.commons.lang.StringUtils;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.widgets.ItemSearchSectionStack;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
