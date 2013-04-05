@@ -109,6 +109,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisatio
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetDefaultMaintainerActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationContactsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemeVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationSchemesActionHandler;
@@ -226,6 +227,7 @@ import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeLi
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetDefaultMaintainerAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationContactsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
@@ -315,6 +317,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteOrganisationsAction.class, DeleteOrganisationsActionHandler.class);
         bindHandler(GetOrganisationAction.class, GetOrganisationActionHandler.class);
         bindHandler(GetDefaultMaintainerAction.class, GetDefaultMaintainerActionHandler.class);
+        bindHandler(GetOrganisationContactsAction.class, GetOrganisationContactsActionHandler.class);
 
         // Categories
         bindHandler(GetCategorySchemesAction.class, GetCategorySchemesActionHandler.class);
