@@ -1713,10 +1713,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urn = CONCEPT_SCHEME_3_V1;
 
         ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
-        String conceptSchemeNewVersion = conceptsService.createVersionFromTemporalConceptScheme(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn(),
+        String conceptSchemeNewVersionUrn = conceptsService.createVersionFromTemporalConceptScheme(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn(),
                 VersionTypeEnum.MAJOR);
 
-        int kaka = 2;
+        ConceptSchemeVersionMetamac conceptSchemeNewVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeNewVersionUrn);
+
+        assertTrue(conceptSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
+        assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestFinal());
+        assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestPublic());
+        assertTrue(conceptSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
+
     }
 
     @Override
