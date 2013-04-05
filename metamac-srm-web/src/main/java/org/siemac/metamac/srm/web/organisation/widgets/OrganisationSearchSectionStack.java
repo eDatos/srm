@@ -41,8 +41,13 @@ public class OrganisationSearchSectionStack extends ItemSearchSectionStack {
 
     public OrganisationWebCriteria getOrganisationWebCriteria() {
         OrganisationWebCriteria organisationWebCriteria = (OrganisationWebCriteria) getItemWebCriteria(new OrganisationWebCriteria());
-        organisationWebCriteria.setOrganisationType(!StringUtils.isBlank(advancedSearchForm.getValueAsString(OrganisationDS.TYPE)) ? OrganisationTypeEnum.valueOf(advancedSearchForm
-                .getValueAsString(OrganisationDS.TYPE)) : null);
+
+        OrganisationTypeEnum selectedOrganisationType = !StringUtils.isBlank(advancedSearchForm.getValueAsString(OrganisationDS.TYPE)) ? OrganisationTypeEnum.valueOf(advancedSearchForm
+                .getValueAsString(OrganisationDS.TYPE)) : null;
+        if (selectedOrganisationType != null) {
+            organisationWebCriteria.setOrganisationSchemeType(CommonUtils.getOrganisationSchemeTypeEnum(selectedOrganisationType));
+        }
+
         return organisationWebCriteria;
     }
 
