@@ -1,10 +1,14 @@
 package org.siemac.metamac.srm.web.shared.criteria;
 
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+
 public class ConceptSchemeWebCriteria extends VersionableResourceWebCriteria {
 
-    private static final long serialVersionUID = 1L;
+    private static final long     serialVersionUID = 1L;
 
-    private String            dsdUrn;
+    private String                dsdUrn;
+    private String                statisticalOperationUrn;
+    private ConceptSchemeTypeEnum conceptSchemeTypeEnum;
 
     public ConceptSchemeWebCriteria() {
     }
@@ -24,5 +28,21 @@ public class ConceptSchemeWebCriteria extends VersionableResourceWebCriteria {
 
     public void setDsdUrn(String dsdUrn) {
         this.dsdUrn = dsdUrn;
+    }
+
+    public String getStatisticalOperationUrn() {
+        return statisticalOperationUrn;
+    }
+
+    public ConceptSchemeTypeEnum getConceptSchemeTypeEnum() {
+        return conceptSchemeTypeEnum;
+    }
+
+    public void setStatisticalOperationUrn(String statisticalOperationUrn) {
+        this.statisticalOperationUrn = statisticalOperationUrn;
+    }
+
+    public void setConceptSchemeTypeEnum(ConceptSchemeTypeEnum conceptSchemeTypeEnum) {
+        this.conceptSchemeTypeEnum = conceptSchemeTypeEnum;
     }
 }

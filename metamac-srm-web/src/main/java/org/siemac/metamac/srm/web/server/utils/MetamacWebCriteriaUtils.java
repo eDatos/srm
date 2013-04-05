@@ -73,6 +73,12 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.PROC_STATUS.name(), criteria.getProcStatus(), OperationType.EQ));
             }
+            if (StringUtils.isNotBlank(criteria.getStatisticalOperationUrn())) {
+                // TODO
+            }
+            if (criteria.getConceptSchemeTypeEnum() != null) {
+                // TODO
+            }
             if (criteria.getInternalPublicationDate() != null) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), criteria.getInternalPublicationDate(),
@@ -149,6 +155,10 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.DESCRIPTION_SOURCE.name(), criteria.getDescriptionSource(), OperationType.ILIKE));
             }
+            if (criteria.getConceptSchemeTypeEnum() != null) {
+                // TODO
+            }
+
         }
         return conjunctionRestriction;
     }
