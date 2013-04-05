@@ -355,10 +355,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Delete temporal version
         deleteConceptScheme(ctx, conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn());
 
-        // Set isLastVersion?
-        Boolean isLastVersion = itemSchemeVersionRepository.mustBeLastVersion(conceptSchemeVersion.getId(), conceptSchemeVersion.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(),
-                conceptSchemeVersion.getMaintainableArtefact().getCode());
-        conceptSchemeVersion.getMaintainableArtefact().setIsLastVersion(isLastVersion);
+        // Set isLastVersion
+        // ItemSchemeVersion itemSchemeVersionLastVersion = itemSchemeVersionRepository.retrieveLastItemSchemeVersionByItemScheme(conceptSchemeVersion.getItemScheme().getId());
+        // itemSchemeVersionLastVersion.getMaintainableArtefact().setIsLastVersion(Boolean.TRUE);
 
         return conceptSchemeVersion;
     }

@@ -292,7 +292,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Retrieve the original artifact
-        CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
 
         // Set the new version in the temporal artifact
         codelistVersionTemporal.getMaintainableArtefact().setVersionLogic(
@@ -306,7 +306,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return codelistVersionTemporal.getMaintainableArtefact().getUrn();
     }
-
+    
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation

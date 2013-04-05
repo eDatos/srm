@@ -3611,6 +3611,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // CODELIST FAMILIES
     // ------------------------------------------------------------------------------------
 
+    // ------------------------------------------------------------------------------------
+    // CODELIST FAMILIES
+    // ------------------------------------------------------------------------------------
+
     @Override
     @Test
     public void testRetrieveCodelistFamilyByUrn() throws Exception {
@@ -6255,8 +6259,37 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testCreateVersionFromTemporalCodelist() throws Exception {
-        // TODO Auto-generated method stub
+        String urn = CODELIST_3_V1;
 
+        CodelistVersionMetamac temporalCodelistVersionMetamac = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
+        String codelistNewVersion = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(), temporalCodelistVersionMetamac.getMaintainableArtefact().getUrn(),
+                VersionTypeEnum.MAJOR);
+
+        CodelistVersionMetamac codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistNewVersion);
+
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(" + versionExpected + ")";
+        // String urnExpectedCode1 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(" + versionExpected + ").CODE01";
+        // String urnExpectedCode2 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(" + versionExpected + ").CODE02";
+        // String urnExpectedCode21 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(" + versionExpected + ").CODE0201";
+        // String urnExpectedCode211 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(" + versionExpected + ").CODE020101";
+        // String urnExpectedCode22 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(" + versionExpected + ").CODE0202";
+        // String urnExpectedOrderVisualisation01 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(" + versionExpected + ").ALPHABETICAL";
+        // String urnExpectedOrderVisualisation02 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(" + versionExpected + ").VISUALISATION02";
+        // String urnExpectedOpennessVisualisation01 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(" + versionExpected + ").ALL_EXPANDED";
+        // String urnExpectedOpennessVisualisation02 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(" + versionExpected + ").VISUALISATION02";
+
+        // Validate response
+        {
+            // TODO arreglar y poner los assert que faltan
+            assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
+            assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
+            assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
+
+        }
     }
 
     @Override
