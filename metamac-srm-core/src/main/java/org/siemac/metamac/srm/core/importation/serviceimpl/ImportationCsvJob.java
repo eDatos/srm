@@ -31,6 +31,7 @@ public class ImportationCsvJob implements Job {
     public static final String                 UPDATE_ALREADY_EXISTING            = "updateAlreadyExisting";
     public static final String                 OPERATION                          = "operation";
     public static final String                 OPERATION_IMPORT_CODES             = "importCodes";
+    public static final String                 OPERATION_IMPORT_CODE_ORDERS       = "importCodeOrdes";
     public static final String                 OPERATION_IMPORT_VARIABLE_ELEMENTS = "importVariableElements";
 
     private ImportationMetamacServiceJobFacade importationMetamacServiceJobFacade = null;
@@ -58,6 +59,8 @@ public class ImportationCsvJob implements Job {
             String operation = data.getString(OPERATION);
             if (OPERATION_IMPORT_CODES.equals(operation)) {
                 importCodes(jobKey, data, serviceContext);
+            } else if (OPERATION_IMPORT_CODE_ORDERS.equals(operation)) {
+                importCodeOrders(jobKey, data, serviceContext);
             } else if (OPERATION_IMPORT_VARIABLE_ELEMENTS.equals(operation)) {
                 importVariableElements(jobKey, data, serviceContext);
             } else {
@@ -85,9 +88,9 @@ public class ImportationCsvJob implements Job {
         Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
 
         // Execution
-        logger.info("ImportationJob: " + jobKey + " starting at " + new Date());
+        logger.info("ImportationJob [importVariableElements]: " + jobKey + " starting at " + new Date());
         getImportationMetamacServiceJobFacade().importVariableElementsCsv(serviceContext, variableUrn, new FileInputStream(filePath), fileImportedName, jobKey.getName(), updateAlreadyExisting);
-        logger.info("ImportationJob: " + jobKey + " finished at " + new Date());
+        logger.info("ImportationJob [importVariableElements]: " + jobKey + " finished at " + new Date());
     }
 
     private void importCodes(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
@@ -99,8 +102,21 @@ public class ImportationCsvJob implements Job {
         Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
 
         // Execution
-        logger.info("ImportationJob: " + jobKey + " starting at " + new Date());
+        logger.info("ImportationJob [importCodes]: " + jobKey + " starting at " + new Date());
         getImportationMetamacServiceJobFacade().importCodesCsv(serviceContext, codelistUrn, new FileInputStream(filePath), fileImportedName, jobKey.getName(), updateAlreadyExisting);
-        logger.info("ImportationJob: " + jobKey + " finished at " + new Date());
+        logger.info("ImportationJob [importCodes]: " + jobKey + " finished at " + new Date());
+    }
+
+    private void importCodeOrders(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
+
+        // Parameters
+        String codelistUrn = data.getString(CODELIST_URN);
+        String filePath = data.getString(FILE_PATH);
+        String fileImportedName = data.getString(FILE_IMPORTED_NAME);
+
+        // Execution
+        logger.info("ImportationJob [importCodeOrders]: " + jobKey + " starting at " + new Date());
+        getImportationMetamacServiceJobFacade().importCodeOrdersCsv(serviceContext, codelistUrn, new FileInputStream(filePath), fileImportedName, jobKey.getName());
+        logger.info("ImportationJob [importCodeOrders]: " + jobKey + " finished at " + new Date());
     }
 }

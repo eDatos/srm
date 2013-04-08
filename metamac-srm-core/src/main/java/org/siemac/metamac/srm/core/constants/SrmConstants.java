@@ -38,4 +38,7 @@ public class SrmConstants {
     public static final String             CSV_HEADER_DESCRIPTION                                    = "description";
     public static final String             CSV_HEADER_SHORT_NAME                                     = "shortName";
     public static final String             CSV_HEADER_VARIABLE_ELEMENT                               = "variableElement";
+    public static final String             CSV_HEADER_LABEL                                          = "label";
+    public static final String             CSV_HEADER_LEVEL                                          = "level";
+    public static final String             CSV_HEADER_ORDER                                          = "order";
 }

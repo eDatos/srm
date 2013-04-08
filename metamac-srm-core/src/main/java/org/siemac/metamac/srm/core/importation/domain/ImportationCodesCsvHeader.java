@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.importation.domain;
 
-public class CodeCsvHeader {
+public class ImportationCodesCsvHeader {
 
     private int                    columnsSize;
     private int                    codePosition;

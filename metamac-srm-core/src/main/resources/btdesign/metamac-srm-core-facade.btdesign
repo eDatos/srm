@@ -512,6 +512,8 @@ Application SrmFacadeCore {
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn) throws MetamacException;
     		"Imports codes in csv format"
     		importCodesCsvInBackground(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+			"Imports code orders in csv format"
+    		importCodeOrdersCsvInBackground(String codelistUrn, InputStream csvStream, String fileName) throws MetamacException;
     		
     		"Creates order visualisation"
     		@CodelistVisualisationDto createCodelistOrderVisualisation(@CodelistVisualisationDto codelistOrderVisualisationDto) throws MetamacException;
@@ -633,6 +635,8 @@ Application SrmFacadeCore {
 
     		"Imports codes in csv format"
     		importCodesCsv(String codelistUrn, InputStream csvStream, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+			"Imports code orders in csv format"
+    		importCodeOrdersCsv(String codelistUrn, InputStream csvStream, String fileName, String jobKey) throws MetamacException;
     		"Imports variable elements in csv format"
     		importVariableElementsCsv(String variableUrn, InputStream csvStream, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Marks job as failed"

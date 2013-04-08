@@ -69,7 +69,19 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
         jobDataAdditional.put(ImportationCsvJob.CODELIST_URN, codelistUrn);
         jobDataAdditional.put(ImportationCsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
         jobDataAdditional.put(ImportationCsvJob.OPERATION, ImportationCsvJob.OPERATION_IMPORT_CODES);
-        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional, updateAlreadyExisting);
+        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional);
+    }
+
+    @Override
+    public String importCodeOrdersCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName) throws MetamacException {
+        // Validation
+        ImportationMetamacInvocationValidator.checkImportCodeOrdersCsvInBackground(codelistUrn, csvStream, null);
+
+        // Plan job
+        JobDataMap jobDataAdditional = new JobDataMap();
+        jobDataAdditional.put(ImportationCsvJob.CODELIST_URN, codelistUrn);
+        jobDataAdditional.put(ImportationCsvJob.OPERATION, ImportationCsvJob.OPERATION_IMPORT_CODE_ORDERS);
+        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional);
     }
 
     @Override
@@ -83,10 +95,10 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
         jobDataAdditional.put(ImportationCsvJob.VARIABLE_URN, variableUrn);
         jobDataAdditional.put(ImportationCsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
         jobDataAdditional.put(ImportationCsvJob.OPERATION, ImportationCsvJob.OPERATION_IMPORT_VARIABLE_ELEMENTS);
-        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional, updateAlreadyExisting);
+        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional);
     }
 
-    private synchronized String importCsvInBackground(ServiceContext ctx, InputStream csvStream, String fileName, JobDataMap jobDataAdditional, boolean updateAlreadyExisting) throws MetamacException {
+    private synchronized String importCsvInBackground(ServiceContext ctx, InputStream csvStream, String fileName, JobDataMap jobDataAdditional) throws MetamacException {
 
         // Plan job
         OutputStream os = null;

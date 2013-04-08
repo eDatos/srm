@@ -14,6 +14,8 @@ Application ImportationMetamac {
 			String importSDMXStructureInBackground(InputStream inputMessage, String fileName) throws MetamacException;
 			"Prepares importation of codes in csv format"
     		String importCodesCsvInBackground(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+			"Prepares importation of code orders in csv format"
+    		String importCodeOrdersCsvInBackground(String codelistUrn, InputStream csvStream, String fileName) throws MetamacException;
 			"Prepares importation of variable elements in csv format"
     		String importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 

@@ -104,6 +104,8 @@ Application CodesMetamac {
 	   		copyCodesInCodelist(String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException;
 			"Imports codes in csv format"
     		importCodesCsv(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
+			"Imports code orders in csv format"
+    		importCodeOrdersCsv(String codelistUrn, InputStream csvStream, String fileName) throws MetamacException;
 	   		    		
     		// VISUALISATIONS
     		
@@ -366,6 +368,7 @@ Application CodesMetamac {
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CodelistOrderVisualisation findByUrn(String orderVisualisationUrn);
+				@CodelistOrderVisualisation findByCode(Long codelistId, String orderVisualisationCode);
 				updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(@CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample);
 			}			
 		}	

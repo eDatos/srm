@@ -33,6 +33,20 @@ public class CodelistOrderVisualisationRepositoryImpl extends CodelistOrderVisua
     }
 
     @Override
+    public CodelistOrderVisualisation findByCode(Long codelistId, String orderVisualisationCode) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("codelistId", codelistId);
+        parameters.put("orderVisualisationCode", orderVisualisationCode);
+        List<CodelistOrderVisualisation> result = findByQuery("from CodelistOrderVisualisation where nameableArtefact.code = :orderVisualisationCode and codelistVersion.id = :codelistId", parameters,
+                1);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
+
+    @Override
     public void updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample) {
 
         // Extract versionable Substring

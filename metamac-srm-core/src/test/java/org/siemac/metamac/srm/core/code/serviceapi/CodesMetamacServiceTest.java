@@ -3781,8 +3781,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-1", "en", "Name codelist-1-v2-code-1");
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "Descripción codelist-1-v2-code-1", null, null);
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getIdentifiableArtefact().getUrn());
-            BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
-            BaseAsserts.assertEqualsDay(new DateTime(2011, 1, 22, 01, 02, 03, 0), code.getLastUpdated());
             assertEquals(Integer.valueOf(0), code.getOrder1());
             assertEquals(Integer.valueOf(0), code.getOrder2());
             assertEquals(Integer.valueOf(1), code.getOrder3());
@@ -3804,8 +3802,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(null, code.getNameableArtefact().getDescription());
             assertEquals(null, code.getVariableElement());
             assertEqualsInternationalString(code.getShortName(), "es", "nombre corto code2", "en", "short name code2");
-            BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
-            // BaseAsserts.assertEqualsDay(new DateTime(2011, 1, 22, 01, 02, 03, 0), code.getLastUpdated()); // update date change because a child is moved
             assertEquals(Integer.valueOf(2), code.getOrder1());
             assertEquals(Integer.valueOf(1), code.getOrder2());
             assertEquals(Integer.valueOf(2), code.getOrder3());
@@ -3827,8 +3823,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(null, code.getNameableArtefact().getDescription());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, code.getVariableElement().getIdentifiableArtefact().getUrn());
             assertEquals(null, code.getShortName());
-            BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
-            BaseAsserts.assertEqualsDay(new DateTime(), code.getLastUpdated()); // today
             assertEquals(Integer.valueOf(3), code.getOrder1());
             assertEquals(Integer.valueOf(2), code.getOrder2());
             assertEquals(Integer.valueOf(0), code.getOrder3());
@@ -3850,11 +3844,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-2-1", "en", "Name codelist-1-v2-code-2-1");
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "descripción CODELIST_1_V2_CODE_2_1", null, null);
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, code.getVariableElement().getIdentifiableArtefact().getUrn());
-            BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
-            BaseAsserts.assertEqualsDay(new DateTime(), code.getLastUpdated()); // today
             assertEquals(Integer.valueOf(0), code.getOrder1());
             assertEquals(Integer.valueOf(0), code.getOrder2());
-            assertEquals(Integer.valueOf(0), code.getOrder3());
+            assertEquals(Integer.valueOf(1), code.getOrder3());
             assertEquals(null, code.getOrder4());
             assertEquals(Boolean.TRUE, code.getOpenness1());
             assertEquals(Boolean.TRUE, code.getOpenness2());
@@ -3948,10 +3940,336 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(importData.getImportationTaskResults().size(), i);
     }
 
+    @Override
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersCsv() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        final String fileName = "importation-code-orders-01.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodeOrdersCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
+        assertEquals(0, importationTask.getImportationTaskResults().size());
+
+        // Validate orders
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(3), code.getOrder2());
+            assertEquals(Integer.valueOf(1), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2);
+            assertEquals(Integer.valueOf(1), code.getOrder1());
+            assertEquals(Integer.valueOf(2), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_3);
+            assertEquals(Integer.valueOf(2), code.getOrder1());
+            assertEquals(Integer.valueOf(1), code.getOrder2());
+            assertEquals(Integer.valueOf(3), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_4);
+            assertEquals(Integer.valueOf(3), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(2), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2_1);
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(1), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2_2);
+            assertEquals(Integer.valueOf(1), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(1), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2_1_1);
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_4_1);
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_4_1_1);
+            assertEquals(Integer.valueOf(0), code.getOrder1());
+            assertEquals(Integer.valueOf(0), code.getOrder2());
+            assertEquals(Integer.valueOf(0), code.getOrder3());
+            assertEquals(null, code.getOrder4());
+        }
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersCsvErrorHeaderIncorrectCodeNotFound() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        final String fileName = "importation-code-orders-02-errors-header-01.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodeOrdersCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
+        assertEquals(2, importationTask.getImportationTaskResults().size());
+        int i = 0;
+        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, importationTask
+                .getImportationTaskResults().get(i++));
+        assertEquals(importationTask.getImportationTaskResults().size(), i);
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersCsvErrorHeaderColumnVisualisationNotFound() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        final String fileName = "importation-code-orders-02-errors-header-02.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodeOrdersCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
+        assertEquals(2, importationTask.getImportationTaskResults().size());
+        int i = 0;
+        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_ORDER, Boolean.FALSE, type,
+                importationTask.getImportationTaskResults().get(i++));
+        assertEquals(importationTask.getImportationTaskResults().size(), i);
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersCsvErrorHeaderIncorrectVisualisationAlphabetical() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        final String fileName = "importation-code-orders-02-errors-header-03-alphabetical.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodeOrdersCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
+        assertEquals(2, importationTask.getImportationTaskResults().size());
+        int i = 0;
+        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED.getCode(), null, Boolean.FALSE, type, importationTask
+                .getImportationTaskResults().get(i++));
+        assertEquals(importationTask.getImportationTaskResults().size(), i);
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersCsvErrorBodyIncorrectNumberCodes() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        final String fileName = "importation-code-orders-03-errors-body-01.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodeOrdersCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
+        assertEquals(2, importationTask.getImportationTaskResults().size());
+        int i = 0;
+        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_INCORRECT_NUMBER_CODES.getCode(), "9#@#6", Boolean.FALSE, type,
+                importationTask.getImportationTaskResults().get(i++));
+        assertEquals(importationTask.getImportationTaskResults().size(), i);
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersCsvErrorBodyVisualisationNotFound() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        final String fileName = "importation-code-orders-03-errors-body-02.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodeOrdersCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
+        assertEquals(2, importationTask.getImportationTaskResults().size());
+        int i = 0;
+        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_ORDER_VISUALISATION_NOT_FOUND.getCode(),
+                "VISUALISATION001#@#urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)", Boolean.FALSE, type, importationTask.getImportationTaskResults().get(i++));
+        assertEquals(importationTask.getImportationTaskResults().size(), i);
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersCsvErrorBodyOrderEmpty() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        final String fileName = "importation-code-orders-03-errors-body-03.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodeOrdersCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
+        assertEquals(3, importationTask.getImportationTaskResults().size());
+        int i = 0;
+        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "CODE0201#@#order", Boolean.FALSE, type,
+                importationTask.getImportationTaskResults().get(i++));
+        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "CODE04#@#order", Boolean.FALSE, type, importationTask.getImportationTaskResults().get(i++));
+        assertEquals(importationTask.getImportationTaskResults().size(), i);
+    }
+
     @DirtyDatabase
     @Test
     public void testClearDirtyDatabaseBecausePreviuosTestCanNotHaveNotTransactionalAnnotation() throws Exception {
-
     }
 
     // ------------------------------------------------------------------------------------

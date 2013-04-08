@@ -9,8 +9,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -56,8 +58,9 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.importation.domain.CodeCsvHeader;
-import org.siemac.metamac.srm.core.importation.domain.VariableElementCsvHeader;
+import org.siemac.metamac.srm.core.importation.domain.ImportationCodeOrdersCsvHeader;
+import org.siemac.metamac.srm.core.importation.domain.ImportationCodesCsvHeader;
+import org.siemac.metamac.srm.core.importation.domain.ImportationVariableElementsCsvHeader;
 import org.siemac.metamac.srm.core.importation.serviceimpl.utils.ImportationCsvUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -492,7 +495,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             inputStreamReader = new InputStreamReader(csvStream); // TODO charset?
             bufferedReader = new BufferedReader(inputStreamReader);
 
-            CodeCsvHeader header = null;
+            ImportationCodesCsvHeader header = null;
             String line = null;
             int lineNumber = 1;
             while ((line = bufferedReader.readLine()) != null) {
@@ -501,7 +504,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 }
                 String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.CSV_SEPARATOR);
                 if (header == null) {
-                    header = ImportationCsvUtils.parseCodesHeader(columns, exceptionItems);
+                    header = ImportationCsvUtils.parseCsvHeaderToImportCodes(columns, exceptionItems);
                     if (!CollectionUtils.isEmpty(exceptionItems)) {
                         break;
                     }
@@ -510,7 +513,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
                         continue;
                     }
-                    // Transform code and create or update
+                    // Transform code and add to list to persist
                     CodeMetamac code = csvLineToCode(header, columns, lineNumber, codelistVersion, updateAlreadyExisting, codesPreviousInCodelistByCode, codesToPersistByCode, exceptionItems,
                             informationItems);
                     if (code != null) {
@@ -519,6 +522,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     }
                 }
                 lineNumber++;
+            }
+            if (header == null) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_FILE_PARSING, "Header is empty"));
             }
         } catch (IOException e) {
             logger.error("Error importing csv file", e);
@@ -562,17 +568,111 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
+    public void importCodeOrdersCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName) throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkImportCodeOrdersCsv(codelistUrn, csvStream, null);
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        checkCodelistCanBeModified(codelistVersion);
+
+        // Import
+        BufferedReader bufferedReader = null;
+        InputStreamReader inputStreamReader = null;
+
+        // Codes in codelist
+        List<Item> codesInCodelist = codelistVersion.getItems();
+        Map<String, CodeMetamac> codesInCodelistByCode = new HashMap<String, CodeMetamac>();
+        for (Item item : codesInCodelist) {
+            codesInCodelistByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
+        }
+        Set<String> codesInCsvToCheckAllCodesAreUpdated = new HashSet<String>();
+        List<CodelistOrderVisualisation> orderVisualisations = null;
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        try {
+            inputStreamReader = new InputStreamReader(csvStream); // TODO charset?
+            bufferedReader = new BufferedReader(inputStreamReader);
+
+            ImportationCodeOrdersCsvHeader header = null;
+            String line = null;
+            int lineNumber = 1;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (StringUtils.isBlank(line)) {
+                    continue;
+                }
+                String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.CSV_SEPARATOR);
+                if (header == null) {
+                    header = ImportationCsvUtils.parseCsvHeaderToImportCodeOrders(columns, exceptionItems);
+                    if (!CollectionUtils.isEmpty(exceptionItems)) {
+                        break;
+                    }
+                    orderVisualisations = csvHeadToOrderVisualisations(codelistVersion, header, exceptionItems);
+                    if (CollectionUtils.isEmpty(orderVisualisations)) {
+                        break;
+                    }
+                } else {
+                    if (columns.length != header.getColumnsSize()) {
+                        exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
+                        continue;
+                    }
+                    // Transform orders, setting value of columns
+                    CodeMetamac code = csvLineToCodeOrder(header, columns, lineNumber, codesInCodelistByCode, orderVisualisations, exceptionItems);
+                    if (code != null) {
+                        if (codesInCsvToCheckAllCodesAreUpdated.contains(code.getNameableArtefact().getCode())) {
+                            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_RESOURCE_DUPLICATED, code.getNameableArtefact().getCode(), lineNumber));
+                        } else {
+                            codesInCsvToCheckAllCodesAreUpdated.add(code.getNameableArtefact().getCode());
+                        }
+                    }
+                }
+                lineNumber++;
+            }
+            if (header == null) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_FILE_PARSING, "Header is empty"));
+            }
+        } catch (IOException e) {
+            logger.error("Error importing csv file", e);
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_FILE_PARSING, e.getMessage()));
+        } finally {
+            try {
+                inputStreamReader.close();
+                bufferedReader.close();
+            } catch (IOException e) {
+                // do not relaunch error
+                logger.error("Error closing streams", e);
+            }
+        }
+        if (CollectionUtils.isEmpty(exceptionItems) && codesInCsvToCheckAllCodesAreUpdated.size() != codesInCodelist.size()) {
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_INCORRECT_NUMBER_CODES, codesInCodelist.size(), codesInCsvToCheckAllCodesAreUpdated.size()));
+        }
+        if (!CollectionUtils.isEmpty(exceptionItems)) {
+            // inform about errors
+            throw MetamacExceptionBuilder.builder().withPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR, fileName)).withExceptionItems(exceptionItems).build();
+        }
+
+        // Re-calculate orders
+        for (CodelistOrderVisualisation orderVisualisation : orderVisualisations) {
+            sortCodesByOrder(codesInCodelist, orderVisualisation, false);
+        }
+
+        // Persist
+        for (Item code : codesInCodelist) {
+            CodeMetamac codeMetamac = (CodeMetamac) code;
+            getCodeMetamacRepository().save(codeMetamac);
+        }
+    }
+
+    @Override
     public void recalculateCodesVisualisations(ServiceContext ctx, List<Item> items, List<CodelistOrderVisualisation> orderVisualisations, List<CodelistOpennessVisualisation> opennessVisualisations,
             boolean executeSave) {
 
         // Recalculate all order codes
         Boolean alphabeticalAlreadyUpdated = Boolean.FALSE; // to avoid select to compare code of nameable
-        for (CodelistOrderVisualisation orderVisualization : orderVisualisations) {
-            if (!alphabeticalAlreadyUpdated && SrmServiceUtils.isAlphabeticalOrderVisualisation(orderVisualization)) {
-                sortCodesInAlphabeticalOrder(items, orderVisualization, false);
+        for (CodelistOrderVisualisation orderVisualisation : orderVisualisations) {
+            if (!alphabeticalAlreadyUpdated && SrmServiceUtils.isAlphabeticalOrderVisualisation(orderVisualisation)) {
+                sortCodesInAlphabeticalOrder(items, orderVisualisation, false);
                 alphabeticalAlreadyUpdated = Boolean.TRUE;
             } else {
-                sortCodesByOrder(items, orderVisualization, false);
+                sortCodesByOrder(items, orderVisualisation, false);
             }
         }
 
@@ -1279,7 +1379,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             inputStreamReader = new InputStreamReader(csvStream);
             bufferedReader = new BufferedReader(inputStreamReader); // TODO charset?
 
-            VariableElementCsvHeader header = null;
+            ImportationVariableElementsCsvHeader header = null;
             String line = null;
             int lineNumber = 1;
             while ((line = bufferedReader.readLine()) != null) {
@@ -1288,7 +1388,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 }
                 String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.CSV_SEPARATOR);
                 if (header == null) {
-                    header = ImportationCsvUtils.parseVariableElementsHeader(columns, exceptionItems);
+                    header = ImportationCsvUtils.parseCsvHeaderToImportVariableElements(columns, exceptionItems);
                     if (!CollectionUtils.isEmpty(exceptionItems)) {
                         break;
                     }
@@ -1301,6 +1401,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     saveVariableElementFromCsvLine(ctx, header, columns, lineNumber, variable, updateAlreadyExisting, exceptionItems, informationItems);
                 }
                 lineNumber++;
+            }
+            if (header == null) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_FILE_PARSING, "Header is empty"));
             }
         } catch (IOException e) {
             logger.error("Error importing csv file", e);
@@ -2179,7 +2282,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     /**
      * Transforms csv line to Code. IMPORTANT: Do not execute save or update operation
      */
-    private CodeMetamac csvLineToCode(CodeCsvHeader header, String[] columns, int lineNumber, CodelistVersionMetamac codelistVersion, boolean updateAlreadyExisting,
+    private CodeMetamac csvLineToCode(ImportationCodesCsvHeader header, String[] columns, int lineNumber, CodelistVersionMetamac codelistVersion, boolean updateAlreadyExisting,
             Map<String, CodeMetamac> codesPreviousInCodelist, Map<String, CodeMetamac> codesToPersistByCode, List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems)
             throws MetamacException {
 
@@ -2287,10 +2390,49 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return code;
     }
+
+    /**
+     * Transforms csv line to Code order. IMPORTANT: Do not execute save or update operation
+     */
+    private CodeMetamac csvLineToCodeOrder(ImportationCodeOrdersCsvHeader header, String[] columns, int lineNumber, Map<String, CodeMetamac> codesInCodelist,
+            List<CodelistOrderVisualisation> orderVisualisations, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
+
+        // semantic identifier
+        String codeIdentifier = columns[header.getCodePosition()];
+        if (StringUtils.isBlank(codeIdentifier)) {
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT, lineNumber));
+            return null;
+        }
+        // update orders
+        CodeMetamac code = codesInCodelist.get(codeIdentifier);
+        if (code == null) {
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_CODE_NOT_FOUND, codeIdentifier));
+        }
+        for (CodelistOrderVisualisation orderVisualisation : orderVisualisations) {
+            int columnIndex = header.getOrderVisualisationColumn(orderVisualisation.getNameableArtefact().getCode());
+            String orderValueString = columns[columnIndex];
+            if (StringUtils.isBlank(orderValueString)) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED, code.getNameableArtefact().getCode(),
+                        ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_ORDER));
+
+                return null;
+            }
+            Integer orderValue = Integer.valueOf(orderValueString);
+            SrmServiceUtils.setCodeOrder(code, orderVisualisation.getColumnIndex(), orderValue);
+        }
+
+        // Do not persist if any error ocurrs
+        if (!CollectionUtils.isEmpty(exceptionItems)) {
+            return null;
+        }
+
+        return code;
+    }
+
     /**
      * Transforms csv line to VariableElement and saves it. Can update an existing VariableElement.
      */
-    private void saveVariableElementFromCsvLine(ServiceContext ctx, VariableElementCsvHeader header, String[] columns, int lineNumber, Variable variable, boolean updateAlreadyExisting,
+    private void saveVariableElementFromCsvLine(ServiceContext ctx, ImportationVariableElementsCsvHeader header, String[] columns, int lineNumber, Variable variable, boolean updateAlreadyExisting,
             List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems) throws MetamacException {
 
         // code
@@ -2447,4 +2589,24 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return i1.getNameableArtefact().getCode().compareToIgnoreCase(i2.getNameableArtefact().getCode());
     }
 
+    private List<CodelistOrderVisualisation> csvHeadToOrderVisualisations(CodelistVersionMetamac codelistVersion, ImportationCodeOrdersCsvHeader header, List<MetamacExceptionItem> exceptionItems) {
+        List<CodelistOrderVisualisation> orderVisualisations = new ArrayList<CodelistOrderVisualisation>();
+        for (String orderVisualisationCode : header.getOrderVisualisations()) {
+            CodelistOrderVisualisation orderVisualisation = getCodelistOrderVisualisationRepository().findByCode(codelistVersion.getId(), orderVisualisationCode);
+            if (orderVisualisation == null) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_ORDER_VISUALISATION_NOT_FOUND, orderVisualisationCode, codelistVersion.getMaintainableArtefact()
+                        .getUrn()));
+                break;
+            } else if (SrmServiceUtils.isAlphabeticalOrderVisualisation(orderVisualisation)) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED));
+                break;
+            } else {
+                orderVisualisations.add(orderVisualisation);
+            }
+        }
+        if (!CollectionUtils.isEmpty(exceptionItems)) {
+            return null;
+        }
+        return orderVisualisations;
+    }
 }

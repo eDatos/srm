@@ -29,6 +29,15 @@ public class ImportationMetamacServiceJobFacadeImpl extends ImportationMetamacSe
     }
 
     @Override
+    public void importCodeOrdersCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName, String jobKey) throws MetamacException {
+        getCodesMetamacService().importCodeOrdersCsv(ctx, codelistUrn, csvStream, fileName);
+        // Mark job as completed
+        // TODO sistema de avisos
+        getImportationMetamacService().markTaskAsFinished(ctx, jobKey, null);
+
+    }
+
+    @Override
     public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
         // Import
         List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();

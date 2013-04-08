@@ -55,14 +55,19 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR                                                = create("exception.srm.importation.csv.error");
     public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_FILE_PARSING                                   = create("exception.srm.importation.csv.error.file_parse");
     public static final CommonServiceExceptionType IMPORTATION_CSV_HEADER_INCORRECT                                     = create("exception.srm.importation.csv.error.header.incorrect");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_HEADER_INCORRECT_COLUMN                              = create("exception.srm.importation.csv.error.header.incorrect_column");
     public static final CommonServiceExceptionType IMPORTATION_CSV_LINE_INCORRECT                                       = create("exception.srm.importation.csv.error.line.incorrect");
     public static final CommonServiceExceptionType IMPORTATION_CSV_METADATA_REQUIRED                                    = create("exception.srm.importation.csv.error.metadata_required");
     public static final CommonServiceExceptionType IMPORTATION_CSV_METADATA_INCORRECT                                   = create("exception.srm.importation.csv.error.metadata_incorrect");
     public static final CommonServiceExceptionType IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER               = create("exception.srm.importation.csv.error.metadata_incorrect_semantic_identifier");
-    public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_PARENT_NOT_FOUND                               = create("exception.srm.importation.csv.error.parent_not_found");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_PARENT_NOT_FOUND                               = create("exception.srm.importation.csv.error.parent.not_found");
     public static final CommonServiceExceptionType IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED                            = create("info.srm.importation.csv.resource_not_updated");
     public static final CommonServiceExceptionType IMPORTATION_CSV_INFO_RESOURCE_UPDATED                                = create("info.srm.importation.csv.resource_updated");
-    public static final CommonServiceExceptionType IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND                      = create("info.srm.importation.csv.error.variable_element_not_found");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND                      = create("info.srm.importation.csv.error.variable_element.not_found");
     public static final CommonServiceExceptionType IMPORTATION_CSV_RESOURCE_DUPLICATED                                  = create("exception.srm.importation.csv.error.resource_duplicated");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_ORDER_VISUALISATION_NOT_FOUND                  = create("exception.srm.importation.csv.error.order_visualisation.not_found");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED       = create("exception.srm.importation.csv.error.order_visualisation.alphabetical_not_supported");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_CODE_NOT_FOUND                                 = create("exception.srm.importation.csv.error.code.not_found");
+    public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_INCORRECT_NUMBER_CODES                         = create("exception.srm.importation.csv.error.incorrect_number_codes");
 
 }

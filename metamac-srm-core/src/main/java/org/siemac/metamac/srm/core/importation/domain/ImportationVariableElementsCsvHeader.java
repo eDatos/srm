@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.importation.domain;
 
-public class VariableElementCsvHeader {
+public class ImportationVariableElementsCsvHeader {
 
     private int                    columnsSize;
     private int                    codePosition;

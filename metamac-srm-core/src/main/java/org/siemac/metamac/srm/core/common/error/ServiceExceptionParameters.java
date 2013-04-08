@@ -96,6 +96,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String IMPORTATION_CSV_COLUMN_SHORT_NAME                                  = "shortName";
     public static final String IMPORTATION_CSV_COLUMN_NAME                                        = "name";
     public static final String IMPORTATION_CSV_COLUMN_DESCRIPTION                                 = "description";
+    public static final String IMPORTATION_CSV_COLUMN_ORDER                                       = "order";
 
     // MISC
     public static final String STREAM                                                             = "stream";

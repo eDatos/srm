@@ -13,16 +13,20 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
-import org.siemac.metamac.srm.core.importation.domain.CodeCsvHeader;
+import org.siemac.metamac.srm.core.importation.domain.ImportationCodeOrdersCsvHeader;
+import org.siemac.metamac.srm.core.importation.domain.ImportationCodesCsvHeader;
+import org.siemac.metamac.srm.core.importation.domain.ImportationVariableElementsCsvHeader;
 import org.siemac.metamac.srm.core.importation.domain.InternationalStringCsv;
-import org.siemac.metamac.srm.core.importation.domain.VariableElementCsvHeader;
 
 public class ImportationCsvUtils {
 
-    public static VariableElementCsvHeader parseVariableElementsHeader(String[] headerColumns, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static ImportationVariableElementsCsvHeader parseCsvHeaderToImportVariableElements(String[] headerColumns, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (headerColumns.length < 2) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, 2));
+        }
         List<String> headersExpected = Arrays.asList(SrmConstants.CSV_HEADER_CODE, SrmConstants.CSV_HEADER_SHORT_NAME);
         int headerExpectedIndex = 0;
-        VariableElementCsvHeader header = new VariableElementCsvHeader();
+        ImportationVariableElementsCsvHeader header = new ImportationVariableElementsCsvHeader();
         header.setColumnsSize(headerColumns.length);
         for (int i = 0; i < headerColumns.length; i++) {
             String column = headerColumns[i];
@@ -55,11 +59,14 @@ public class ImportationCsvUtils {
         return header;
     }
 
-    public static CodeCsvHeader parseCodesHeader(String[] headerColumns, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static ImportationCodesCsvHeader parseCsvHeaderToImportCodes(String[] headerColumns, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (headerColumns.length < 4) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, 4));
+        }
         List<String> headersExpected = Arrays.asList(SrmConstants.CSV_HEADER_CODE, SrmConstants.CSV_HEADER_PARENT, SrmConstants.CSV_HEADER_VARIABLE_ELEMENT, SrmConstants.CSV_HEADER_NAME,
                 SrmConstants.CSV_HEADER_DESCRIPTION);
         int headerExpectedIndex = 0;
-        CodeCsvHeader header = new CodeCsvHeader();
+        ImportationCodesCsvHeader header = new ImportationCodesCsvHeader();
         header.setColumnsSize(headerColumns.length);
         for (int i = 0; i < headerColumns.length; i++) {
             String column = headerColumns[i];
@@ -99,10 +106,50 @@ public class ImportationCsvUtils {
             }
         }
         if (CollectionUtils.isEmpty(exceptions)) {
+            if (header.getColumnsSize() == 0) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_CODE));
+            }
             if (header.getName() == null) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_NAME));
             }
             // description is optional
+        }
+        return header;
+    }
+
+    /**
+     * Imports header of csv to import orders of codes.
+     * Columns "label", "level" and "parent" are optionals.
+     */
+    public static ImportationCodeOrdersCsvHeader parseCsvHeaderToImportCodeOrders(String[] headerColumns, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (headerColumns.length < 2) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, 2));
+        }
+        ImportationCodeOrdersCsvHeader header = new ImportationCodeOrdersCsvHeader();
+        header.setColumnsSize(headerColumns.length);
+        for (int i = 0; i < headerColumns.length; i++) {
+            String columnName = headerColumns[i];
+            if (i == 0) {
+                if (!SrmConstants.CSV_HEADER_CODE.equals(columnName)) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_CODE));
+                    break;
+                }
+                header.setCodePosition(i);
+            } else if (SrmConstants.CSV_HEADER_LABEL.equals(columnName)) {
+                header.setLabelPosition(i);
+            } else if (SrmConstants.CSV_HEADER_LEVEL.equals(columnName)) {
+                header.setLevelPosition(i);
+            } else if (SrmConstants.CSV_HEADER_PARENT.equals(columnName)) {
+                header.setParentPosition(i);
+            } else {
+                // must be a code of order visualisation
+                header.addOrderVisualisations(columnName, i);
+            }
+        }
+        if (CollectionUtils.isEmpty(exceptions)) {
+            if (!header.hasOrderVisualisations()) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_ORDER));
+            }
         }
         return header;
     }

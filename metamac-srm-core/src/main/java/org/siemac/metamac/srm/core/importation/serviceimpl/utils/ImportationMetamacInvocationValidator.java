@@ -26,6 +26,17 @@ public class ImportationMetamacInvocationValidator extends BaseInvocationValidat
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkImportCodeOrdersCsvInBackground(String codelistUrn, InputStream csvStream, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     public static void checkImportVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions)
             throws MetamacException {
         if (exceptions == null) {
