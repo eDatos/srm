@@ -21,9 +21,12 @@ import org.siemac.metamac.srm.web.organisation.enums.OrganisationsToolStripButto
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.shared.criteria.OrganisationContactWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationContactsAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationContactsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
@@ -84,6 +87,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
         void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId);
         void setOrganisation(OrganisationMetamacDto organisationDto, OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Long contactToShowId);
+        void setContacts(List<ContactDto> contactDtos, Long contactToShowId);
         void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
     }
 
@@ -163,6 +167,21 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
         organisationDto.getContacts().addAll(contacts);
 
         saveOrganisation(organisationDto, null);
+    }
+
+    @Override
+    public void retrieveContacts(OrganisationContactWebCriteria criteria) {
+        dispatcher.execute(new GetOrganisationContactsAction(criteria), new WaitingAsyncCallback<GetOrganisationContactsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationContactErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetOrganisationContactsResult result) {
+                getView().setContacts(result.getContactDtos(), null);
+            }
+        });
     }
 
     @Override

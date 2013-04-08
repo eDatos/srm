@@ -129,6 +129,10 @@ public abstract class BaseAdvancedSearchSectionStack extends BaseSearchSectionSt
         searchForm.setFields(searchItem, advancedSearchItem, hideAdvancedSearchItem);
     }
 
+    public GroupDynamicForm getAdvancedSearchForm() {
+        return advancedSearchForm;
+    }
+
     protected abstract void createAdvancedSearchForm();
     protected abstract void retrieveResources();
 }

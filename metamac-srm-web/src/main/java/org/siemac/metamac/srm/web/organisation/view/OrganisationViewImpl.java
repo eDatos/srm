@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurity
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsFormUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.ContactMainFormLayout;
+import org.siemac.metamac.srm.web.organisation.widgets.OrganisationContactSearchSectionStack;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
@@ -64,35 +65,36 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandlers> implements OrganisationPresenter.OrganisationView {
 
-    private TitleLabel                   titleLabel;
-    private VLayout                      panel;
-    private InternationalMainFormLayout  mainFormLayout;
+    private TitleLabel                            titleLabel;
+    private VLayout                               panel;
+    private InternationalMainFormLayout           mainFormLayout;
 
-    private CustomVLayout                organisationsTreeGridLayout;
-    private OrganisationsTreeGrid        organisationsTreeGrid;
+    private CustomVLayout                         organisationsTreeGridLayout;
+    private OrganisationsTreeGrid                 organisationsTreeGrid;
 
     // View forms
-    private GroupDynamicForm             identifiersForm;
-    private GroupDynamicForm             contentDescriptorsForm;
-    private GroupDynamicForm             commentsForm;
-    private AnnotationsPanel             annotationsPanel;
+    private GroupDynamicForm                      identifiersForm;
+    private GroupDynamicForm                      contentDescriptorsForm;
+    private GroupDynamicForm                      commentsForm;
+    private AnnotationsPanel                      annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm             identifiersEditionForm;
-    private GroupDynamicForm             contentDescriptorsEditionForm;
-    private GroupDynamicForm             commentsEditionForm;
-    private AnnotationsPanel             annotationsEditionPanel;
+    private GroupDynamicForm                      identifiersEditionForm;
+    private GroupDynamicForm                      contentDescriptorsEditionForm;
+    private GroupDynamicForm                      commentsEditionForm;
+    private AnnotationsPanel                      annotationsEditionPanel;
 
     // Contacts
-    private CustomListGrid               contactListGrid;
-    private ContactMainFormLayout        contactMainFormLayout;
-    private ToolStripButton              contactNewButton;
-    private ToolStripButton              contactDeleteButton;
-    private DeleteConfirmationWindow     contactDeleteConfirmationWindow;
+    private OrganisationContactSearchSectionStack searchSectionStack;
+    private CustomListGrid                        contactListGrid;
+    private ContactMainFormLayout                 contactMainFormLayout;
+    private ToolStripButton                       contactNewButton;
+    private ToolStripButton                       contactDeleteButton;
+    private DeleteConfirmationWindow              contactDeleteConfirmationWindow;
 
-    private OrganisationSchemeMetamacDto organisationSchemeMetamacDto;
-    private OrganisationMetamacDto       organisationDto;
-    private List<ContactDto>             contactDtos;
+    private OrganisationSchemeMetamacDto          organisationSchemeMetamacDto;
+    private OrganisationMetamacDto                organisationDto;
+    private List<ContactDto>                      contactDtos;
 
     @Inject
     public OrganisationViewImpl() {
@@ -123,6 +125,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         createEditionForm();
 
         // CONTACTS
+
+        // Search section
+
+        searchSectionStack = new OrganisationContactSearchSectionStack();
+        searchSectionStack.getAdvancedSearchForm().setNumCols(2);
 
         // ToolStrip
 
@@ -223,6 +230,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         });
 
         VLayout contactListGridLayout = new VLayout();
+        contactListGridLayout.addMember(searchSectionStack);
         contactListGridLayout.addMember(contactsToolStrip);
         contactListGridLayout.addMember(contactListGrid);
         contactListGridLayout.setWidth("50%");
@@ -272,6 +280,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     public void setUiHandlers(OrganisationUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         organisationsTreeGrid.setUiHandlers(uiHandlers);
+        searchSectionStack.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -395,13 +404,12 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     public void setOrganisation(OrganisationMetamacDto organisationDto, OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Long contactToShowId) {
         setOrganisationScheme(organisationSchemeMetamacDto);
         setOrganisation(organisationDto, contactToShowId);
+        searchSectionStack.setOrganisationMetamacDto(organisationDto);
     }
 
     @Override
     public void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId) {
         this.organisationDto = organisationDto;
-        this.contactDtos = new ArrayList<ContactDto>();
-        this.contactDtos.addAll(organisationDto.getContacts());
 
         getUiHandlers().retrieveOrganisationListByScheme(organisationDto.getItemSchemeVersionUrn());
 
@@ -417,6 +425,33 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         setContacts(organisationDto.getContacts(), contactToShowId);
 
         markFormsForRedraw();
+    }
+
+    @Override
+    public void setContacts(List<ContactDto> contactDtos, Long contactToShowId) {
+        this.contactDtos = new ArrayList<ContactDto>();
+        this.contactDtos.addAll(organisationDto.getContacts());
+
+        // Hide previous contact form
+        contactMainFormLayout.hide();
+
+        ContactRecord[] records = new ContactRecord[contactDtos.size()];
+        for (int i = 0; i < records.length; i++) {
+            records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getContactRecord(contactDtos.get(i));
+        }
+        contactListGrid.setData(records);
+
+        // Select last contact updated (if exists)
+        if (contactToShowId != null) {
+            Record record = contactListGrid.getRecordList().find(ContactDS.ID, contactToShowId);
+            if (record != null) {
+                contactListGrid.selectRecord(record);
+                if (record instanceof ContactRecord) {
+                    contactMainFormLayout.setContact(organisationSchemeMetamacDto, ((ContactRecord) record).getContactDto(), false);
+                    contactMainFormLayout.show();
+                }
+            }
+        }
     }
 
     private void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
@@ -480,29 +515,6 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Annotations
         annotationsEditionPanel.setAnnotations(organisationDto.getAnnotations(), organisationSchemeMetamacDto.getMaintainer());
-    }
-
-    private void setContacts(List<ContactDto> contactDtos, Long contactToShowId) {
-        // Hide previous contact form
-        contactMainFormLayout.hide();
-
-        ContactRecord[] records = new ContactRecord[contactDtos.size()];
-        for (int i = 0; i < records.length; i++) {
-            records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getContactRecord(contactDtos.get(i));
-        }
-        contactListGrid.setData(records);
-
-        // Select last contact updated (if exists)
-        if (contactToShowId != null) {
-            Record record = contactListGrid.getRecordList().find(ContactDS.ID, contactToShowId);
-            if (record != null) {
-                contactListGrid.selectRecord(record);
-                if (record instanceof ContactRecord) {
-                    contactMainFormLayout.setContact(organisationSchemeMetamacDto, ((ContactRecord) record).getContactDto(), false);
-                    contactMainFormLayout.show();
-                }
-            }
-        }
     }
 
     private OrganisationMetamacDto getOrganisationDto() {

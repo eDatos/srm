@@ -4,7 +4,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
-import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourceSearchSectionStack;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.presenter.CodelistListPresenter;
@@ -45,12 +44,6 @@ public class CodelistSearchSectionStack extends VersionableResourceSearchSection
     @Override
     public void retrieveResources() {
         getUiHandlers().retrieveCodelists(CodelistListPresenter.SCHEME_LIST_FIRST_RESULT, CodelistListPresenter.SCHEME_LIST_MAX_RESULTS, getCodelistWebCriteria());
-    }
-
-    @Override
-    protected void clearAdvancedSearchSection() {
-        super.clearAdvancedSearchSection();
-        ((RelatedResourceListItem) advancedSearchForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).clearRelatedResourceList();
     }
 
     public void setUiHandlers(CodelistListUiHandlers uiHandlers) {
