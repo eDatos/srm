@@ -8,6 +8,12 @@ import org.siemac.metamac.sso.utils.SecurityUtils;
 
 public class CodesSecurityUtils extends SecurityUtils {
 
+    public static void canVersioningCodelist(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canVersioningCodelist(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     //
     // NOTE: Only to related entities. Security about codelists and codes is in ItemSecurityUtils
     //

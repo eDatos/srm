@@ -1043,7 +1043,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistMetamacDto versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canVersioningItemScheme(ctx);
+        CodesSecurityUtils.canVersioningCodelist(ctx);
 
         CodelistVersionMetamac codelistVersioned = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {

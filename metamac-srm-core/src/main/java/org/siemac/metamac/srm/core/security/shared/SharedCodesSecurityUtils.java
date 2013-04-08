@@ -9,6 +9,10 @@ import org.siemac.metamac.sso.client.MetamacPrincipal;
 
 public class SharedCodesSecurityUtils extends SharedSecurityUtils {
 
+    public static boolean canVersioningCodelist(MetamacPrincipal metamacPrincipal) {
+        return SharedItemsSecurityUtils.canVersioningItemScheme(metamacPrincipal);
+    }
+
     //
     // NOTE: Only to related entities. Security about codelists and codes is in ItemSecurityUtils
     //
