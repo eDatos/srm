@@ -69,6 +69,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper;
+import org.siemac.metamac.srm.core.security.CategoriesSecurityUtils;
 import org.siemac.metamac.srm.core.security.CodesSecurityUtils;
 import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
@@ -2878,7 +2879,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategorySchemeMetamacDto createTemporalVersionCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canVersioningItemScheme(ctx);
+        CategoriesSecurityUtils.canCreateCategorySchemeTemporalVersion(ctx);
 
         CategorySchemeVersionMetamac categorySchemeVersioned = getCategoriesMetamacService().createTemporalVersionCategoryScheme(ctx, urnToCopy);
 
