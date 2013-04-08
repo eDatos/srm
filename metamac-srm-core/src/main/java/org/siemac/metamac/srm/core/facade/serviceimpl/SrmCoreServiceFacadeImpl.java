@@ -46,6 +46,7 @@ import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -353,7 +354,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         DataStructureDefinitionSecurityUtils.canVersioningDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = null;
+        if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
+            // TODO create Version From Temporal DataStructureDefinition
+            throw new UnsupportedOperationException("TODO create Version From Temporal DataStructureDefinition");
+        } else {
+            dataStructureDefinitionVersionMetamac = getDsdsMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
+        }
 
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -371,12 +378,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         return dataStructureDefinitionMetamacDto;
-    }
-
-    @Override
-    public String createVersionFromTemporalDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        // TODO create Version From Temporal DataStructureDefinition
-        throw new UnsupportedOperationException("TODO create Version From Temporal DataStructureDefinition");
     }
 
     @Override
@@ -1032,7 +1033,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         ItemsSecurityUtils.canVersioningItemScheme(ctx);
 
-        CodelistVersionMetamac codelistVersioned = getCodesMetamacService().versioningCodelist(ctx, urnToCopy, versioningCodes, versionType);
+        CodelistVersionMetamac codelistVersioned = null;
+        if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
+            // TODO create version from temporal codelist
+            throw new UnsupportedOperationException("create version from temporal codelist");
+        } else {
+            codelistVersioned = getCodesMetamacService().versioningCodelist(ctx, urnToCopy, versioningCodes, versionType);
+        }
 
         // Transform to DTO
         CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersioned);
@@ -1049,12 +1056,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to DTO
         CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersioned);
         return codelistDto;
-    }
-
-    @Override
-    public String createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        // TODO create version from temporal codelist
-        throw new UnsupportedOperationException("create version from temporal codelist");
     }
 
     @Override
@@ -2000,7 +2001,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         OrganisationsSecurityUtils.canVersioningOrganisationScheme(ctx);
 
-        OrganisationSchemeVersionMetamac organisationSchemeVersioned = getOrganisationsMetamacService().versioningOrganisationScheme(ctx, urnToCopy, versionType);
+        OrganisationSchemeVersionMetamac organisationSchemeVersioned = null;
+        if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
+            // TODO create version from organisation schemete temporal
+            throw new UnsupportedOperationException("TODO create version from organisation schemete temporal");
+        } else {
+            organisationSchemeVersioned = getOrganisationsMetamacService().versioningOrganisationScheme(ctx, urnToCopy, versionType);
+        }
 
         // Transform to DTO
         OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationSchemeVersioned);
@@ -2366,7 +2373,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);
         ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeVersionToCopy);
 
-        ConceptSchemeVersionMetamac conceptSchemeVersioned = getConceptsMetamacService().versioningConceptScheme(ctx, urnToCopy, versionType);
+        ConceptSchemeVersionMetamac conceptSchemeVersioned = null;
+        if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
+            getConceptsMetamacService().createVersionFromTemporalConceptScheme(ctx, urnToCopy, versionType);
+        } else {
+            conceptSchemeVersioned = getConceptsMetamacService().versioningConceptScheme(ctx, urnToCopy, versionType);
+        }
 
         // Transform to Dto
         ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersioned);
@@ -2384,15 +2396,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to DTO
         ConceptSchemeMetamacDto conceptSchemeDto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(conceptSchemeVersioned);
         return conceptSchemeDto;
-    }
-
-    @Override
-    public String createVersionFromTemporalConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        // Security
-        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeVersionToCopy);
-
-        return getConceptsMetamacService().createVersionFromTemporalConceptScheme(ctx, urnToCopy, versionType);
     }
 
     @Override
@@ -2835,7 +2838,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         ItemsSecurityUtils.canVersioningItemScheme(ctx);
 
-        CategorySchemeVersionMetamac categorySchemeVersioned = getCategoriesMetamacService().versioningCategoryScheme(ctx, urnToCopy, versionType);
+        CategorySchemeVersionMetamac categorySchemeVersioned = null;
+        if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
+            // TODO createVersion form category scheme temporal
+            throw new UnsupportedOperationException("TODO createVersion form category scheme temporal");
+        } else {
+            categorySchemeVersioned = getCategoriesMetamacService().versioningCategoryScheme(ctx, urnToCopy, versionType);
+        }
 
         // Transform to DTO
         CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersioned);
@@ -2852,12 +2861,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to DTO
         CategorySchemeMetamacDto categorySchemeDto = categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(categorySchemeVersioned);
         return categorySchemeDto;
-    }
-
-    @Override
-    public String createVersionFromTemporalCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        // TODO create version from temporal category scheme
-        throw new UnsupportedOperationException("TODO create version from temporal category scheme");
     }
 
     @Override

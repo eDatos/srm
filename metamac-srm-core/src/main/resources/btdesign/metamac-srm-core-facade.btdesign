@@ -170,17 +170,7 @@ Application SrmFacadeCore {
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
     		@DataStructureDefinitionMetamacDto createTemporalVersionDataStructureDefinition(String urnToCopy) throws MetamacException;
-    		
-    		"
-	    	 Creates a new version of a dsd, copying metadata from a temporal version with provided urn  		
-		     @param ctx
-		     @param urnToCopy Urn of DataStructureDefinition to copy
-		     @param versionType MAJOR or MINOR version
-		     @return
-		     @throws org.siemac.metamac.core.common.exception.MetamacException
-		    "
-    		String createVersionFromTemporalDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
-    		
+   		
     		"
 	    	 Ends the dsd scheme validity  		
 		     @param ctx
@@ -362,8 +352,6 @@ Application SrmFacadeCore {
     		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeMetamacDto createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
-    		"Creates a new version of a concept scheme, copying metadata from a temporal version with provided urn"
-    		String createVersionFromTemporalConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the concept scheme validity"
     		@ConceptSchemeMetamacDto endConceptSchemeValidity(String urn) throws MetamacException;
     		
@@ -438,8 +426,6 @@ Application SrmFacadeCore {
     		@CategorySchemeMetamacDto versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a category scheme, copying metadata from version with provided urn"
     		@CategorySchemeMetamacDto createTemporalVersionCategoryScheme(String urnToCopy) throws MetamacException;
-    		"Creates a new version of a category scheme, copying metadata from a temporal version with provided urn"
-    		String createVersionFromTemporalCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the category scheme validity"
     		@CategorySchemeMetamacDto endCategorySchemeValidity(String urn) throws MetamacException;
             
@@ -499,8 +485,6 @@ Application SrmFacadeCore {
     		@CodelistMetamacDto versioningCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a Codelist, copying metadata from version with provided urn"
     		@CodelistMetamacDto createTemporalVersionCodelist(String urnToCopy) throws MetamacException;
-    		"Creates a new version of a Codelist, copying metadata from a temporal version with provided urn"
-    		String createVersionFromTemporalCodelist(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Ends the Codelist validity"
     		@CodelistMetamacDto endCodelistValidity(String urn) throws MetamacException;
     		

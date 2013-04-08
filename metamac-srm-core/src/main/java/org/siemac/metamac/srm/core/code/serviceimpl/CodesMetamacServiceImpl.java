@@ -288,7 +288,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public String createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+    public CodelistVersionMetamac createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
         CodelistVersionMetamac codelistVersionTemporal = retrieveCodelistByUrn(ctx, urnToCopy);
 
@@ -310,7 +310,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Set null replacedBy in the original entity
         codelistVersion.getMaintainableArtefact().setReplacedByVersion(null);
 
-        return codelistVersionTemporal.getMaintainableArtefact().getUrn();
+        return codelistVersionTemporal;
     }
 
     @Override
@@ -342,7 +342,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Variable
         codelistVersion.setVariable(codelistTemporalVersion.getVariable());
 
-        // TODO Merge Metamac metadata of Item
         Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(codelistTemporalVersion.getItems());
         for (Item item : codelistVersion.getItems()) {
             CodeMetamac code = (CodeMetamac) item;
@@ -375,16 +374,22 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         }
 
-        // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update de codes index.
-        // targetMetamac = codesMetamacService.versioningCodelistOpennessVisualisations(ctx, previousMetamac, targetMetamac);
-        // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update de codes index.
-        // targetMetamac = codesMetamacService.versioningCodelistOrderVisualisations(ctx, previousMetamac, targetMetamac);
+        // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update the codes index, this was updates before.
+        codelistVersion.setDefaultOpennessVisualisation(null);
+        codelistVersion.removeAllOpennessVisualisations();
+        codelistVersion = versioningCodelistOpennessVisualisations(ctx, codelistTemporalVersion, codelistVersion);
+
+        // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update the codes index, this was updates before.
+        codelistVersion.setDefaultOrderVisualisation(null);
+        codelistVersion.removeAllOrderVisualisations();
+        codelistVersion = versioningCodelistOrderVisualisations(ctx, codelistTemporalVersion, codelistVersion);
 
         // Delete temporal version
         deleteCodelist(ctx, codelistTemporalVersion.getMaintainableArtefact().getUrn());
 
         return codelistVersion;
     }
+
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
@@ -2105,7 +2110,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Order visualisations
         Boolean alphabeticalAlreadyUpdated = Boolean.FALSE; // to avoid select to compare code of nameable
-        Integer orderInLastPosition = null; // no avoid innecessary extra queries
+        Integer orderInLastPosition = null; // no avoid unnecessary extra queries
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
             if (!alphabeticalAlreadyUpdated && SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
                 setCodeOrderInAlphabeticalPositionAndReorderCodesInLevel(codelistVersion, codelistOrderVisualisation, code.getParent(), code);

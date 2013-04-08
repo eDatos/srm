@@ -58,7 +58,7 @@ Application ConceptsMetamac {
     		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"
     		@ConceptSchemeVersionMetamac createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
     		"Creates a new version of a concept scheme from temporal version with provided urn"
-    		String createVersionFromTemporalConceptScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
+    		@ConceptSchemeVersionMetamac createVersionFromTemporalConceptScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
     		@ConceptSchemeVersionMetamac mergeTemporalVersion(@ConceptSchemeVersionMetamac conceptSchemeTemporalVersion) throws MetamacException;
     		"Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback"

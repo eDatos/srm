@@ -44,6 +44,8 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.ent.domain.InternationalString;
+import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.utils.BaseServiceTestUtils;
@@ -69,6 +71,7 @@ import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -6602,10 +6605,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = CODELIST_3_V1;
 
         CodelistVersionMetamac temporalCodelistVersionMetamac = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
-        String codelistNewVersion = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(), temporalCodelistVersionMetamac.getMaintainableArtefact().getUrn(),
-                VersionTypeEnum.MAJOR);
-
-        CodelistVersionMetamac codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistNewVersion);
+        CodelistVersionMetamac codelistVersionNewVersion = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(), temporalCodelistVersionMetamac.getMaintainableArtefact()
+                .getUrn(), VersionTypeEnum.MAJOR);
 
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(" + versionExpected + ")";
@@ -6624,8 +6625,51 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Override
+    @Test
     public void testMergeTemporalVersion() throws Exception {
-        // TODO Auto-generated method stub
+        {
+            String urn = CODELIST_3_V1;
+            CodelistVersionMetamac createTemporalCodelist = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
+
+            // Change temporal version *********************
+
+            // Item scheme: Change Name
+            {
+                LocalisedString localisedString = new LocalisedString("fr", "its - text sample");
+                createTemporalCodelist.getMaintainableArtefact().getName().addText(localisedString);
+            }
+
+            // Item
+            {
+                CodeMetamac codeTemporal = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CODELIST_3_V1_CODE_1));
+                codeTemporal.setVariableElement(codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1));
+
+                LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
+                InternationalString internationalString = new InternationalString();
+                internationalString.addText(localisedString);
+                codeTemporal.setShortName(internationalString);
+            }
+
+            // Merge
+            createTemporalCodelist = codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
+            createTemporalCodelist = codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
+            CodelistVersionMetamac codelistVersionMetamac = codesService.mergeTemporalVersion(getServiceContextAdministrador(), createTemporalCodelist);
+
+            // Assert **************************************
+
+            // Item Scheme
+            assertEquals(2, codelistVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
+            assertEquals("its - text sample", codelistVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+
+            // Item
+            {
+                CodeMetamac codeTemporal = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_3_V1_CODE_1);
+                assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01", codeTemporal.getVariableElement().getVariable()
+                        .getNameableArtefact().getUrn());
+                assertEquals(2, codeTemporal.getShortName().getTexts().size());
+                assertEquals("it - text sample", codeTemporal.getShortName().getLocalisedLabel("fr"));
+            }
+        }
 
     }
 

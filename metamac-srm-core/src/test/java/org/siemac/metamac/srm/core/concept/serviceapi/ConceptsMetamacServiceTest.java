@@ -1713,10 +1713,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urn = CONCEPT_SCHEME_3_V1;
 
         ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
-        String conceptSchemeNewVersionUrn = conceptsService.createVersionFromTemporalConceptScheme(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn(),
-                VersionTypeEnum.MAJOR);
-
-        ConceptSchemeVersionMetamac conceptSchemeNewVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeNewVersionUrn);
+        ConceptSchemeVersionMetamac conceptSchemeNewVersion = conceptsService.createVersionFromTemporalConceptScheme(getServiceContextAdministrador(), conceptSchemeVersionTemporal
+                .getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
 
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(" + versionExpected + ")";

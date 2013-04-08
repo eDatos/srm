@@ -91,9 +91,9 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update de codes index.
+            // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update the codes index.
             targetMetamac = codesMetamacService.versioningCodelistOpennessVisualisations(ctx, previousMetamac, targetMetamac);
-            // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update de codes index.
+            // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update the codes index.
             targetMetamac = codesMetamacService.versioningCodelistOrderVisualisations(ctx, previousMetamac, targetMetamac);
 
             // Update all order codes and openness visualisations
