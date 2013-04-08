@@ -116,6 +116,10 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         return false;
     }
 
+    public static boolean canCreateConceptSchemeTemporalVersion(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
+        return canVersioningConceptScheme(metamacPrincipal, type, operationCode);
+    }
+
     public static boolean canAnnounceConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
             return canAnnounceItemScheme(metamacPrincipal);

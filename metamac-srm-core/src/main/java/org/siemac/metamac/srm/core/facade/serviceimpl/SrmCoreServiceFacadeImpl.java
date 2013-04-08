@@ -2413,7 +2413,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public ConceptSchemeMetamacDto createTemporalVersionConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeVersionToCopy);
+        ConceptsSecurityUtils.canCreateConceptSchemeTemporalVersion(ctx, conceptSchemeVersionToCopy);
 
         ConceptSchemeVersionMetamac conceptSchemeVersioned = getConceptsMetamacService().createTemporalVersionConceptScheme(ctx, urnToCopy);
 

@@ -87,6 +87,12 @@ public class ConceptsSecurityUtils extends SecurityUtils {
         }
     }
 
+    public static void canCreateConceptSchemeTemporalVersion(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canCreateConceptSchemeTemporalVersion(getMetamacPrincipal(ctx), conceptSchemeMetamac.getType(), getOperationCode(conceptSchemeMetamac))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canAnnounceConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {
         if (!SharedConceptsSecurityUtils.canAnnounceConceptScheme(getMetamacPrincipal(ctx), conceptSchemeMetamac.getType(), getOperationCode(conceptSchemeMetamac))) {
             throwExceptionIfOperationNotAllowed(ctx);
