@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.ent.domain.InternationalString;
+import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
@@ -32,6 +34,7 @@ import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDo
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
@@ -1266,6 +1269,78 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(2, allVersions.size());
             assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
             assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Override
+    @Test
+    public void testCreateVersionFromTemporalCategoryScheme() throws Exception {
+        String urn = CATEGORY_SCHEME_3_V1;
+
+        CategorySchemeVersionMetamac categorySchemeVersionTemporal = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
+        CategorySchemeVersionMetamac categorySchemeNewVersion = categoriesService.createVersionFromTemporalCategoryScheme(getServiceContextAdministrador(), categorySchemeVersionTemporal
+                .getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
+
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME03(" + versionExpected + ")";
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DRAFT, categorySchemeNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, categorySchemeNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, categorySchemeNewVersion.getMaintainableArtefact().getUrn());
+
+            assertEquals(null, categorySchemeNewVersion.getMaintainableArtefact().getReplacedByVersion());
+            assertTrue(categorySchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
+            assertFalse(categorySchemeNewVersion.getMaintainableArtefact().getLatestFinal());
+            assertFalse(categorySchemeNewVersion.getMaintainableArtefact().getLatestPublic());
+        }
+    }
+
+    @Override
+    @Test
+    public void testMergeTemporalVersion() throws Exception {
+        {
+            String urn = CATEGORY_SCHEME_3_V1;
+            CategorySchemeVersionMetamac categorySchemeVersionTemporal = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
+
+            // Change temporal version *********************
+
+            // Item scheme: Change Name
+            {
+                LocalisedString localisedString = new LocalisedString("fr", "its - text sample");
+                categorySchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
+            }
+
+            // Item
+            {
+                CategoryMetamac categoryTemporal = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CATEGORY_SCHEME_3_V1_CATEGORY_1));
+
+                LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
+                InternationalString internationalString = new InternationalString();
+                internationalString.addText(localisedString);
+                categoryTemporal.getNameableArtefact().setName(internationalString);
+            }
+
+            // Merge
+            categorySchemeVersionTemporal = categoriesService.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), categorySchemeVersionTemporal.getMaintainableArtefact()
+                    .getUrn());
+            categorySchemeVersionTemporal = categoriesService.sendCategorySchemeToDiffusionValidation(getServiceContextAdministrador(), categorySchemeVersionTemporal.getMaintainableArtefact()
+                    .getUrn());
+            CategorySchemeVersionMetamac categorySchemeVersionMetamac = categoriesService.mergeTemporalVersion(getServiceContextAdministrador(), categorySchemeVersionTemporal);
+
+            // Assert **************************************
+
+            // Item Scheme
+            assertEquals(3, categorySchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
+            assertEquals("its - text sample", categorySchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+
+            // Item
+            {
+                CategoryMetamac categoryTemporal = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_3_V1_CATEGORY_1);
+                assertEquals(1, categoryTemporal.getNameableArtefact().getName().getTexts().size());
+                assertEquals("it - text sample", categoryTemporal.getNameableArtefact().getName().getLocalisedLabel("fr"));
+            }
         }
     }
 

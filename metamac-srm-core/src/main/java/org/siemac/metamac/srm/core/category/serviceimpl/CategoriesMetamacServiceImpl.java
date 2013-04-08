@@ -2,17 +2,21 @@ package org.siemac.metamac.srm.core.category.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
+import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
@@ -33,6 +37,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
@@ -40,6 +45,8 @@ import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesInvocationValidator;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesVersioningCopyUtils.CategoryVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 
 /**
  * Implementation of CategoriesMetamacService.
@@ -72,6 +79,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Autowired
     private CategorisationRepository       categorisationRepository;
+
+    @Autowired
+    private InternationalStringRepository  internationalStringRepository;
 
     public CategoriesMetamacServiceImpl() {
     }
@@ -174,13 +184,74 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public CategorySchemeVersionMetamac versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-
         return createVersionOfCategoryScheme(ctx, urnToCopy, versionType, false);
     }
 
     @Override
     public CategorySchemeVersionMetamac createTemporalVersionCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfCategoryScheme(ctx, urnToCopy, null, true);
+    }
+
+    @Override
+    public CategorySchemeVersionMetamac createVersionFromTemporalCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+
+        CategorySchemeVersionMetamac categorySchemeVersionTemporal = retrieveCategorySchemeByUrn(ctx, urnToCopy);
+
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(categorySchemeVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
+        }
+
+        // Retrieve the original artifact
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
+
+        // Set the new version in the temporal artifact
+        categorySchemeVersionTemporal.getMaintainableArtefact().setVersionLogic(
+                SdmxVersionUtils.createNextVersion(categorySchemeVersion.getMaintainableArtefact().getVersionLogic(), categorySchemeVersion.getItemScheme().getVersionPattern(), versionTypeEnum));
+
+        categorySchemeVersionTemporal.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE); // For calculates new urns
+        categorySchemeVersionTemporal = (CategorySchemeVersionMetamac) categoriesService.updateCategoryScheme(ctx, categorySchemeVersionTemporal);
+
+        // Set null replacedBy in the original entity
+        categorySchemeVersion.getMaintainableArtefact().setReplacedByVersion(null);
+
+        return categorySchemeVersionTemporal;
+
+    }
+
+    @Override
+    public CategorySchemeVersionMetamac mergeTemporalVersion(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeTemporalVersion) throws MetamacException {
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(categorySchemeTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
+        }
+        SrmValidationUtils.checkArtefactProcStatus(categorySchemeTemporalVersion.getLifeCycleMetadata(), categorySchemeTemporalVersion.getMaintainableArtefact().getUrn(),
+                ProcStatusEnum.DIFFUSION_VALIDATION);
+
+        // Load original version
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(categorySchemeTemporalVersion.getMaintainableArtefact().getUrn()));
+
+        // Inherit InternationalStrings
+        BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItemSchemeVersionWithoutItems(categorySchemeVersion, categorySchemeTemporalVersion, internationalStringRepository);
+
+        // Merge Metamac metadata of ItemScheme
+        categorySchemeVersion.setLifeCycleMetadata(BaseReplaceFromTemporalMetamac.replaceProductionAndDifussionLifeCycleMetadataFromTemporal(categorySchemeVersion.getLifeCycleMetadata(),
+                categorySchemeTemporalVersion.getLifeCycleMetadata()));
+
+        // Merge Metamac metadata of Item
+        Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(categorySchemeTemporalVersion.getItems());
+        for (Item item : categorySchemeVersion.getItems()) {
+            CategoryMetamac category = (CategoryMetamac) item;
+            CategoryMetamac categoryTemp = (CategoryMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+
+            // Inherit InternationalStrings
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(category, categoryTemp, internationalStringRepository);
+        }
+
+        // Delete temporal version
+        deleteCategoryScheme(ctx, categorySchemeTemporalVersion.getMaintainableArtefact().getUrn());
+
+        return categorySchemeVersion;
     }
 
     @Override

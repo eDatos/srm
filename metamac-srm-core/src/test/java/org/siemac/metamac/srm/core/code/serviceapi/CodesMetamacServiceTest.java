@@ -6915,13 +6915,32 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // Item
             {
                 CodeMetamac codeTemporal = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_3_V1_CODE_1);
-                assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01", codeTemporal.getVariableElement().getVariable()
-                        .getNameableArtefact().getUrn());
-                assertEquals(2, codeTemporal.getShortName().getTexts().size());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, codeTemporal.getVariableElement().getIdentifiableArtefact().getUrn());
+                assertEquals(1, codeTemporal.getShortName().getTexts().size());
                 assertEquals("it - text sample", codeTemporal.getShortName().getLocalisedLabel("fr"));
             }
         }
 
+        {
+            // save to force incorrect metadata
+            CodelistVersionMetamac codelistSchemeForce = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_10_V3);
+            codelistSchemeForce.getMaintainableArtefact().setFinalLogic(Boolean.TRUE);
+            codelistSchemeForce.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+            itemSchemeRepository.save(codelistSchemeForce);
+
+            String urn = CODELIST_10_V1;
+            CodelistVersionMetamac codelistVersionTemporal = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
+
+            assertTrue(codelistVersionTemporal.getMaintainableArtefact().getIsLastVersion());
+
+            // Merge
+            // save to force incorrect metadata
+            codelistVersionTemporal.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
+            itemSchemeRepository.save(codelistVersionTemporal);
+            CodelistVersionMetamac codelistVersionMetamac = codesService.mergeTemporalVersion(getServiceContextAdministrador(), codelistVersionTemporal);
+
+            assertFalse(codelistVersionMetamac.getMaintainableArtefact().getIsLastVersion());
+        }
     }
 
     @Override
