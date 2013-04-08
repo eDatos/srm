@@ -177,6 +177,8 @@ public class CodesSoap2DoMapperV10Impl implements CodesSoap2DoMapperV10 {
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
                 case NAME:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                case DESCRIPTION_SOURCE:
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue());
                 case FAMILY_ID:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.family().nameableArtefact().code(), propertyRestriction.getStringValue());
                 case VARIABLE_ID:

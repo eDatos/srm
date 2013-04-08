@@ -169,6 +169,7 @@
             <xs:enumeration value="NAME" />
             <xs:enumeration value="FAMILY_ID" />
             <xs:enumeration value="VARIABLE_ID" />
+            <xs:enumeration value="DESCRIPTION_SOURCE" />
             <xs:enumeration value="LAST_VERSION" />
         </xs:restriction>
     </xs:simpleType>
