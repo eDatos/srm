@@ -412,7 +412,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // Security
         ProcStatusEnum procStatus = codelist.getLifeCycle().getProcStatus();
         mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCodelist(procStatus));
-        mainFormLayout.updatePublishSection(procStatus, codelist.getValidTo());
+        mainFormLayout.updatePublishSection(codelist);
         mainFormLayout.setViewMode();
         categorisationsPanel.updateVisibility(procStatus);
 

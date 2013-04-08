@@ -1,14 +1,24 @@
 package org.siemac.metamac.srm.web.category.widgets;
 
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
+
+    private RelatedResourceDto maintainer;
 
     public CategorySchemeMainFormLayout() {
     }
 
     public CategorySchemeMainFormLayout(boolean canEdit) {
+    }
+
+    public void updatePublishSection(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        super.updatePublishSection(categorySchemeMetamacDto.getLifeCycle().getProcStatus(), categorySchemeMetamacDto.getValidTo());
+        this.maintainer = categorySchemeMetamacDto.getMaintainer();
     }
 
     @Override
@@ -48,7 +58,8 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        if (CategoriesClientSecurityUtils.canVersioningCategoryScheme()) {
+        // Resources from other maintainers can not be version
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CategoriesClientSecurityUtils.canVersioningCategoryScheme()) {
             versioning.show();
         }
     }

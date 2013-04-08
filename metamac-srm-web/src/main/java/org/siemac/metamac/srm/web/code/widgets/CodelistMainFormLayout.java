@@ -2,17 +2,20 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     private MainFormLayoutButton addCodelistToFamilyButton;
+    private RelatedResourceDto   maintainer;
 
     public CodelistMainFormLayout() {
         common();
@@ -20,6 +23,11 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     public CodelistMainFormLayout(boolean canEdit) {
         common();
+    }
+
+    public void updatePublishSection(CodelistMetamacDto codelistMetamacDto) {
+        super.updatePublishSection(codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto.getValidTo());
+        this.maintainer = codelistMetamacDto.getMaintainer();
     }
 
     private void common() {
@@ -85,7 +93,8 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        if (CodesClientSecurityUtils.canVersioningCodelist()) {
+        // Resources from other maintainers can not be version
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist()) {
             versioning.show();
         }
     }

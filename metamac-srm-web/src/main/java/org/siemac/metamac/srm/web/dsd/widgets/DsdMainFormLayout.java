@@ -5,9 +5,12 @@ import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
-    private String operationCode;
+    private String             operationCode;
+    private RelatedResourceDto maintainer;
 
     public DsdMainFormLayout() {
     }
@@ -18,6 +21,7 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     public void updatePublishSection(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
         super.updatePublishSection(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacDto.getValidTo());
         this.operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        this.maintainer = dataStructureDefinitionMetamacDto.getMaintainer();
     }
 
     @Override
@@ -57,7 +61,8 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        if (DsdClientSecurityUtils.canVersioningDsd(operationCode)) {
+        // Resources from other maintainers can not be version
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && DsdClientSecurityUtils.canVersioningDsd(operationCode)) {
             versioning.show();
         }
     }

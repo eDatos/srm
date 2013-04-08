@@ -1,17 +1,17 @@
 package org.siemac.metamac.srm.web.organisation.widgets;
 
-import java.util.Date;
-
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private OrganisationSchemeTypeEnum organisationSchemeType;
+    private RelatedResourceDto         maintainer;
 
     public OrganisationSchemeMainFormLayout() {
     }
@@ -19,9 +19,10 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     public OrganisationSchemeMainFormLayout(boolean canEdit) {
     }
 
-    public void updatePublishSection(ProcStatusEnum status, Date validTo, OrganisationSchemeTypeEnum type) {
-        this.organisationSchemeType = type;
-        super.updatePublishSection(status, validTo);
+    public void updatePublishSection(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        this.organisationSchemeType = organisationSchemeMetamacDto.getType();
+        this.maintainer = organisationSchemeMetamacDto.getMaintainer();
+        super.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo());
     }
 
     @Override
@@ -61,10 +62,13 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        // Agency schemes, data consumer schemes and data provider schemes can not be version
-        if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
-            if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {
-                versioning.show();
+        // Resources from other maintainers can not be version
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
+            // Agency schemes, data consumer schemes and data provider schemes can not be version
+            if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
+                if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {
+                    versioning.show();
+                }
             }
         }
     }

@@ -462,7 +462,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // Security
         ProcStatusEnum procStatus = categorySchemeDto.getLifeCycle().getProcStatus();
         mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategoryScheme(procStatus));
-        mainFormLayout.updatePublishSection(procStatus, categorySchemeDto.getValidTo());
+        mainFormLayout.updatePublishSection(categorySchemeDto);
         mainFormLayout.setViewMode();
         categorisationsPanel.updateVisibility(procStatus);
 

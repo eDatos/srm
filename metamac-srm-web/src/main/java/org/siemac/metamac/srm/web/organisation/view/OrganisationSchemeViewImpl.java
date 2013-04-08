@@ -573,7 +573,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // Security
         ProcStatusEnum procStatus = organisationSchemeMetamacDto.getLifeCycle().getProcStatus();
         mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(procStatus, organisationSchemeMetamacDto.getType()));
-        mainFormLayout.updatePublishSection(procStatus, organisationSchemeMetamacDto.getValidTo(), organisationSchemeMetamacDto.getType());
+        mainFormLayout.updatePublishSection(organisationSchemeMetamacDto);
         mainFormLayout.setViewMode();
         categorisationsPanel.updateVisibility(organisationSchemeMetamacDto);
 

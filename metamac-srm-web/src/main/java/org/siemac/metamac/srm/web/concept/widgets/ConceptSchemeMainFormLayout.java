@@ -6,10 +6,13 @@ import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private ConceptSchemeTypeEnum type;
     private String                relatedOperationCode;
+    private RelatedResourceDto    maintainer;
 
     public ConceptSchemeMainFormLayout() {
         super();
@@ -23,6 +26,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         super.updatePublishSection(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getValidTo());
         this.type = conceptSchemeMetamacDto.getType();
         this.relatedOperationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
+        this.maintainer = conceptSchemeMetamacDto.getMaintainer();
     }
 
     @Override
@@ -67,7 +71,8 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        if (ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode)) {
+        // Resources from other maintainers can not be version
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode)) {
             versioning.show();
         }
     }
