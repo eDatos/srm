@@ -508,7 +508,7 @@ Application SrmFacadeCore {
             MetamacCriteriaResult<@CodeMetamacDto> findCodesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes code"
             deleteCode(String urn) throws MetamacException;
-    		"Retrieves codes by code scheme in locale and visualisation requested"
+    		"Retrieves codes by code scheme in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn) throws MetamacException;
     		"Imports codes in csv format"
     		importCodesCsvInBackground(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;

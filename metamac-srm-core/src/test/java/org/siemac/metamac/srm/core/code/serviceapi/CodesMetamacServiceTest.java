@@ -2831,7 +2831,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(null, code.getParent());
                 assertEquals(null, code.getParentIdDatabase());
                 assertEquals(Integer.valueOf(0), code.getOrder());
-                assertEquals(null, code.getOpenness());
             }
             {
                 // Code 02
@@ -2840,7 +2839,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("CODE02", code.getCode());
                 assertEquals("Nombre codelist-1-v2-code-2", code.getName());
                 assertEquals(Integer.valueOf(1), code.getOrder());
-                assertEquals(null, code.getOpenness());
             }
             {
                 // Code 02 01 (validate parent)
@@ -2915,7 +2913,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1);
                 assertEquals("Name codelist-1-v2-code-1", code.getName());
                 assertEquals(Integer.valueOf(1), code.getOrder());
-                assertEquals(null, code.getOpenness());
             }
             {
                 // Code 02
@@ -2964,70 +2961,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1);
                 assertEquals("Name codelist-1-v2-code-4-1-1", code.getName());
                 assertEquals(Integer.valueOf(0), code.getOrder());
-            }
-        }
-
-        // LOCALE = 'it' and WITHOUT ORDER
-        {
-            String locale = "it";
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, null, null);
-
-            // Validate
-            assertEquals(9, codes.size());
-            {
-                // Code 01
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1);
-                assertEquals(null, code.getName());
-                assertEquals(null, code.getOrder());
-                assertEquals(null, code.getOpenness());
-            }
-            {
-                // Code 02
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2);
-                assertEquals(null, code.getName());
-                assertEquals(null, code.getOrder());
-            }
-            {
-                // Code 02 01 (validate parent)
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1);
-                assertEquals(null, code.getName());
-                assertEquals(null, code.getOrder());
-            }
-            {
-                // Code 02 01 01
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1);
-                assertEquals(null, code.getName());
-                assertEquals(null, code.getOrder());
-            }
-            {
-                // Code 02 02
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2);
-                assertEquals(null, code.getName()); // it has not name
-                assertEquals(null, code.getOrder());
-            }
-            {
-                // Code 03
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3);
-                assertEquals("nombre it code-3", code.getName());
-                assertEquals(null, code.getOrder());
-            }
-            {
-                // Code 04
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4);
-                assertEquals(null, code.getName());
-                assertEquals(null, code.getOrder());
-            }
-            {
-                // Code 04 01
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1);
-                assertEquals(null, code.getName());
-                assertEquals(null, code.getOrder());
-            }
-            {
-                // Code 04 01 01
-                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1);
-                assertEquals("nombre it codelist-1-v2-code-4-1-1", code.getName());
-                assertEquals(null, code.getOrder());
             }
         }
     }

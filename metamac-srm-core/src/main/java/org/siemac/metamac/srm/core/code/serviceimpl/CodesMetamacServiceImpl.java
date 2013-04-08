@@ -866,11 +866,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
         Integer orderColumnIndex = null;
+        if (orderVisualisationUrn == null) {
+            orderVisualisationUrn = codelistVersion.getDefaultOrderVisualisation() != null ? codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn() : null;
+        }
         if (orderVisualisationUrn != null) {
             CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
             orderColumnIndex = codelistOrderVisualisation.getColumnIndex();
         }
+
         Integer opennessColumnIndex = null;
+        if (opennessVisualisationUrn == null) {
+            opennessVisualisationUrn = codelistVersion.getDefaultOpennessVisualisation() != null ? codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getUrn() : null;
+        }
         if (opennessVisualisationUrn != null) {
             CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByUrn(ctx, opennessVisualisationUrn);
             opennessColumnIndex = codelistOpennessVisualisation.getColumnIndex();

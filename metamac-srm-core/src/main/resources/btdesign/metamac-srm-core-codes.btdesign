@@ -98,7 +98,7 @@ Application CodesMetamac {
     		PagedResult<@CodeMetamac> findCodesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes code"
     		deleteCode(String urn) throws MetamacException;
-    		"Retrieves codes by codelist, in tree structure"
+    		"Retrieves codes by code scheme in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn, String codelistOpennessVisualisationUrn) throws MetamacException;
 			"Copy codes to another codelist"
 	   		copyCodesInCodelist(String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException;
