@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.category.utils;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.security.shared.SharedCategoriesSecurityUtils;
 import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
@@ -46,6 +47,10 @@ public class CategoriesClientSecurityUtils {
 
     public static boolean canVersioningCategoryScheme() {
         return SharedItemsSecurityUtils.canVersioningItemScheme(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canCreateCategorySchemeTemporalVersion() {
+        return SharedCategoriesSecurityUtils.canCreateCategorySchemeTemporalVersion(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canAnnounceCategoryScheme() {

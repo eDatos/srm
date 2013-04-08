@@ -25,6 +25,10 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canVersioningDsd(MetamacSrmWeb.getCurrentUser(), operationCode);
     }
 
+    public static boolean canCreateDsdTemporalVersion(String operationCode) {
+        return SharedDsdSecurityUtils.canCreateDsdTemporalVersion(MetamacSrmWeb.getCurrentUser(), operationCode);
+    }
+
     public static boolean canDeleteDsd(ProcStatusEnum procStatus, String operationCode) {
         return SharedDsdSecurityUtils.canDeleteDsd(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
     }

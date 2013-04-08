@@ -46,7 +46,11 @@ public class CodesClientSecurityUtils {
     }
 
     public static boolean canVersioningCodelist() {
-        return SharedItemsSecurityUtils.canVersioningItemScheme(MetamacSrmWeb.getCurrentUser());
+        return SharedCodesSecurityUtils.canVersioningCodelist(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canCreateCodelistTemporalVersion() {
+        return SharedCodesSecurityUtils.canCreateCodelistTemporalVersion(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canAnnounceCodelist() {

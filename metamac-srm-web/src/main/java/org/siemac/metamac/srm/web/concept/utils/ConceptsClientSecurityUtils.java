@@ -4,6 +4,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedConceptsSecurityUtils;
+import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
@@ -14,13 +15,16 @@ public class ConceptsClientSecurityUtils {
     // Schemes
 
     public static boolean canCreateConceptScheme() {
-        return true;
-        // TODO return SharedConceptsSecurityUtils.canCreateConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+        // The method SharedConceptsSecurityUtils.canCreateConceptScheme is not called because web application only need to know if the create button can be shown.
+        return SharedItemsSecurityUtils.canCreateItemScheme(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdateConceptScheme() {
-        return true;
-        // TODO return SharedConceptsSecurityUtils.canUpdateConceptScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
+    public static boolean canUpdateConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        ConceptSchemeTypeEnum type = conceptSchemeMetamacDto.getType();
+        String operationCode = conceptSchemeMetamacDto.getRelatedOperation() != null ? conceptSchemeMetamacDto.getRelatedOperation().getCode() : null;
+        // This method is called with the current concept scheme type in the parameters "type" and "typeOld" (the same with the operationCode parameters). The web application only need to know if the
+        // edit button can be shown (before doing any metadata change)
+        return SharedConceptsSecurityUtils.canUpdateConceptScheme(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), type, operationCode, type, operationCode);
     }
 
     public static boolean canDeleteConceptScheme(ConceptSchemeTypeEnum type, String operationCode) {
@@ -49,6 +53,10 @@ public class ConceptsClientSecurityUtils {
 
     public static boolean canVersioningConceptScheme(ConceptSchemeTypeEnum type, String operationCode) {
         return SharedConceptsSecurityUtils.canVersioningConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+    }
+
+    public static boolean canCreateConceptSchemeTemporalVersion(ConceptSchemeTypeEnum type, String operationCode) {
+        return SharedConceptsSecurityUtils.canCreateConceptSchemeTemporalVersion(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
     public static boolean canAnnounceConceptScheme(ConceptSchemeTypeEnum type, String operationCode) {
