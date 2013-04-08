@@ -9,13 +9,17 @@ import org.siemac.metamac.sso.client.MetamacPrincipal;
 
 public class SharedCodesSecurityUtils extends SharedSecurityUtils {
 
+    //
+    // NOTE: Only to related entities and specific actions. Security about codelists and codes is in ItemSecurityUtils
+    //
+
     public static boolean canVersioningCodelist(MetamacPrincipal metamacPrincipal) {
         return SharedItemsSecurityUtils.canVersioningItemScheme(metamacPrincipal);
     }
 
-    //
-    // NOTE: Only to related entities. Security about codelists and codes is in ItemSecurityUtils
-    //
+    public static boolean canCreateCodelistTemporalVersion(MetamacPrincipal metamacPrincipal) {
+        return canVersioningCodelist(metamacPrincipal);
+    }
 
     public static boolean canRetrieveOrFindCodelistOrderVisualisation(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);

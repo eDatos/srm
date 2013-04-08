@@ -1060,7 +1060,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistMetamacDto createTemporalVersionCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canVersioningItemScheme(ctx);
+        CodesSecurityUtils.canCreateCodelistTemporalVersion(ctx);
 
         CodelistVersionMetamac codelistVersioned = getCodesMetamacService().createTemporalCodelist(ctx, urnToCopy);
 

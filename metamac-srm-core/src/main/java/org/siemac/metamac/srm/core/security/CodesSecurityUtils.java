@@ -8,15 +8,21 @@ import org.siemac.metamac.sso.utils.SecurityUtils;
 
 public class CodesSecurityUtils extends SecurityUtils {
 
+    //
+    // NOTE: Only to related entities and specific actions. Security about codelists and codes is in ItemSecurityUtils
+    //
+
     public static void canVersioningCodelist(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canVersioningCodelist(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
 
-    //
-    // NOTE: Only to related entities. Security about codelists and codes is in ItemSecurityUtils
-    //
+    public static void canCreateCodelistTemporalVersion(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canCreateCodelistTemporalVersion(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
 
     public static void canRetrieveOrFindCodelistOrderVisualisation(ServiceContext ctx) throws MetamacException {
         if (!SharedCodesSecurityUtils.canRetrieveOrFindCodelistOrderVisualisation(getMetamacPrincipal(ctx))) {
