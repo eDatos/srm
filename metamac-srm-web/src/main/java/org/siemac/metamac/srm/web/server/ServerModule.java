@@ -5,6 +5,7 @@ import org.siemac.metamac.srm.web.server.handlers.GetUserGuideUrlActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CancelCategorySchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CreateCategorisationActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.CreateCategorySchemeTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorySchemesActionHandler;
@@ -24,6 +25,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.AddCodelistsToCodelistFam
 import org.siemac.metamac.srm.web.server.handlers.code.AddVariableElementsToVariableActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.AddVariablesToVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CancelCodelistValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.CreateCodelistTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CreateCodesHierarchyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CreateVariableElementOperationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteCodeActionHandler;
@@ -71,6 +73,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodesInOpennessVisu
 import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.CreateConceptSchemeTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptSchemesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.FindAllConceptTypesActionHandler;
@@ -90,6 +93,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActio
 import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptSchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.VersionConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.CancelDsdValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.dsd.CreateDsdTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteAttributesForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDescriptorListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDimensionListForDsdActionHandler;
@@ -123,6 +127,7 @@ import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
+import org.siemac.metamac.srm.web.shared.category.CreateCategorySchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesAction;
@@ -142,6 +147,7 @@ import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction
 import org.siemac.metamac.srm.web.shared.code.AddVariableElementsToVariableAction;
 import org.siemac.metamac.srm.web.shared.code.AddVariablesToVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
+import org.siemac.metamac.srm.web.shared.code.CreateCodelistTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.code.CreateCodesHierarchyAction;
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
@@ -188,6 +194,7 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodesInOpennessVisualisation
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
@@ -208,6 +215,7 @@ import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
+import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDescriptorListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
@@ -279,6 +287,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(VersionDsdAction.class, VersionDsdActionHandler.class);
         bindHandler(GetDsdVersionsAction.class, GetDsdVersionsActionHandler.class);
         bindHandler(CancelDsdValidityAction.class, CancelDsdValidityActionHandler.class);
+        bindHandler(CreateDsdTemporalVersionAction.class, CreateDsdTemporalVersionActionHandler.class);
 
         // Concepts
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
@@ -301,6 +310,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetConceptSchemesWithConceptsCanBeExtendedAction.class, GetConceptSchemesWithConceptsCanBeExtendedActionHandler.class);
         bindHandler(GetConceptsCanBeRoleAction.class, GetConceptsCanBeRoleActionHandler.class);
         bindHandler(GetConceptsCanBeExtendedAction.class, GetConceptsCanBeExtendedActionHandler.class);
+        bindHandler(CreateConceptSchemeTemporalVersionAction.class, CreateConceptSchemeTemporalVersionActionHandler.class);
 
         // Organisations
         bindHandler(GetOrganisationSchemesAction.class, GetOrganisationSchemesActionHandler.class);
@@ -337,6 +347,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(DeleteCategorisationsAction.class, DeleteCategorisationsActionHandler.class);
         bindHandler(GetCategorisationsByArtefactAction.class, GetCategorisationsByArtefactActionHandler.class);
         bindHandler(GetCategoriesAction.class, GetCategoriesActionHandler.class);
+        bindHandler(CreateCategorySchemeTemporalVersionAction.class, CreateCategorySchemeTemporalVersionActionHandler.class);
 
         // Codes
         bindHandler(DeleteCodelistsAction.class, DeleteCodelistsActionHandler.class);
@@ -388,6 +399,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(CreateCodesHierarchyAction.class, CreateCodesHierarchyActionHandler.class);
         bindHandler(GetCodelistOpennessLevelsAction.class, GetCodelistOpennessLevelsActionHandler.class);
         bindHandler(UpdateCodesInOpennessVisualisationAction.class, UpdateCodesInOpennessVisualisationActionHandler.class);
+        bindHandler(CreateCodelistTemporalVersionAction.class, CreateCodelistTemporalVersionActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
