@@ -39,11 +39,11 @@ public class OrganisationsFormUtils {
         if (organisationSchemeDto == null || !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer())) {
             return false;
         }
-        // If organisation type is AGENCY, code can only be edited when organisation is not published
+        // If organisation type is AGENCY, code can never be modified
         if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeDto.getType())) {
-            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(organisationSchemeDto.getLifeCycle().getProcStatus());
+            return false;
         }
-        return true;
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer());
     }
 
     // ---------------------------------------------------------------------------------------------
