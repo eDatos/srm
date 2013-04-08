@@ -108,6 +108,10 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
         return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
     }
 
+    public static boolean canCreateDsdTemporalVersion(MetamacPrincipal metamacPrincipal, String operationCode) {
+        return canVersioningDsd(metamacPrincipal, operationCode);
+    }
+
     public static boolean canAnnounceDsd(MetamacPrincipal metamacPrincipal, String operationCode) {
         SrmRoleEnum[] roles = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
         return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);

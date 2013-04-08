@@ -381,7 +381,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public DataStructureDefinitionMetamacDto createTemporalVersionDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
-        DataStructureDefinitionSecurityUtils.canVersioningDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
+        DataStructureDefinitionSecurityUtils.canCreateDataStructureDefinitionTemporalVersion(ctx, dataStructureDefinitionVersionMetamacOld);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().createTemporalVersionDataStructureDefinition(ctx, urnToCopy);
 
