@@ -340,6 +340,38 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
         }
 
+        // Find by internal publication date == X
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2012, 01, 3, 9, 9, 8, 987)
+                    .toDate(), OperationType.EQ));
+
+            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_7_V1, codeSchemeMetamacDto.getUrn());
+            }
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_10_V2, codeSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+        // Find by internal publication date == X
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2010, 3, 31, 9, 9, 8, 987)
+                    .toDate(), OperationType.EQ));
+
+            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CODELIST_12_V1, codeSchemeMetamacDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
         // Find by internal publication date > X
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2012, 01, 1, 1, 1, 1, 1)
