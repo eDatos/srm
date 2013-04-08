@@ -61,7 +61,6 @@ public class RestInternalConstants {
     public static String KIND_DATA_PROVIDER_SCHEMES             = API_NAME + RestConstants.KIND_SEPARATOR + "dataProviderSchemes";
     public static String KIND_DATA_CONSUMER_SCHEMES             = API_NAME + RestConstants.KIND_SEPARATOR + "dataConsumerSchemes";
 
-    public static String KIND_ORGANISATION_SCHEME               = API_NAME + RestConstants.KIND_SEPARATOR + "organisationScheme";
     public static String KIND_AGENCY_SCHEME                     = API_NAME + RestConstants.KIND_SEPARATOR + "agencyScheme";
     public static String KIND_ORGANISATION_UNIT_SCHEME          = API_NAME + RestConstants.KIND_SEPARATOR + "organisationUnitScheme";
     public static String KIND_DATA_PROVIDER_SCHEME              = API_NAME + RestConstants.KIND_SEPARATOR + "dataProviderScheme";
@@ -73,7 +72,6 @@ public class RestInternalConstants {
     public static String KIND_DATA_PROVIDERS                    = API_NAME + RestConstants.KIND_SEPARATOR + "dataProviders";
     public static String KIND_DATA_CONSUMERS                    = API_NAME + RestConstants.KIND_SEPARATOR + "dataConsumers";
 
-    public static String KIND_ORGANISATION                      = API_NAME + RestConstants.KIND_SEPARATOR + "organisation";
     public static String KIND_AGENCY                            = API_NAME + RestConstants.KIND_SEPARATOR + "agency";
     public static String KIND_ORGANISATION_UNIT                 = API_NAME + RestConstants.KIND_SEPARATOR + "organisationUnit";
     public static String KIND_DATA_PROVIDER                     = API_NAME + RestConstants.KIND_SEPARATOR + "dataProvider";

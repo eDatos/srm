@@ -169,7 +169,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
     @Override
     public void toOrganisationScheme(OrganisationSchemeVersionMetamac source, OrganisationScheme target) {
-        target.setKind(toKindItemScheme(null)); // generic
+        target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
         switch (source.getOrganisationSchemeType()) {
             case AGENCY_SCHEME:
                 target.setAgencyScheme(toAgencyScheme(source));
@@ -396,7 +396,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
             return null;
         }
         Organisation target = new Organisation();
-        target.setKind(toKindItem(null)); // generic
+        target.setKind(toKindItem(source.getOrganisationType()));
 
         switch (source.getOrganisationType()) {
             case AGENCY:
@@ -684,7 +684,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
     private String toKindItemScheme(OrganisationSchemeTypeEnum type) {
         if (type == null) {
-            return RestInternalConstants.KIND_ORGANISATION_SCHEME;
+            throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
         switch (type) {
             case AGENCY_SCHEME:
@@ -702,7 +702,7 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
 
     private String toKindItem(OrganisationTypeEnum type) {
         if (type == null) {
-            return RestInternalConstants.KIND_ORGANISATION;
+            throw new IllegalArgumentException("OrganisationTypeEnum unsuported: " + type);
         }
         switch (type) {
             case AGENCY:

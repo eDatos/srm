@@ -9,12 +9,12 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.Organ
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_LATEST;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 
 import java.io.InputStream;
 
@@ -152,7 +152,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
 
         // Validation
         assertNotNull(organisationScheme);
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_SCHEME, organisationScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, organisationScheme.getKind());
         assertNotNull(organisationScheme.getAgencyScheme());
         assertNull(organisationScheme.getOrganisationUnitScheme());
         assertNull(organisationScheme.getDataConsumerScheme());
@@ -193,7 +193,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
 
         // Validation
         assertNotNull(organisationScheme);
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_SCHEME, organisationScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationScheme.getKind());
         assertNotNull(organisationScheme.getOrganisationUnitScheme());
         assertNull(organisationScheme.getAgencyScheme());
         assertNull(organisationScheme.getDataConsumerScheme());
@@ -366,7 +366,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
 
         // Validation
         assertNotNull(organisation);
-        assertEquals(RestInternalConstants.KIND_ORGANISATION, organisation.getKind());
+        assertEquals(RestInternalConstants.KIND_AGENCY, organisation.getKind());
         assertNotNull(organisation.getAgency());
         assertNull(organisation.getOrganisationUnit());
         assertNull(organisation.getDataConsumer());
@@ -395,7 +395,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
 
         // Validation
         assertNotNull(organisation);
-        assertEquals(RestInternalConstants.KIND_ORGANISATION, organisation.getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, organisation.getKind());
         assertNotNull(organisation.getOrganisationUnit());
         assertNull(organisation.getAgency());
         assertNull(organisation.getDataConsumer());
