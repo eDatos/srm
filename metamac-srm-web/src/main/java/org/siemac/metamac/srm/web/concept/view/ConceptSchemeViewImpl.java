@@ -19,7 +19,6 @@ import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
-import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsFormUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeCategorisationsPanel;
@@ -129,7 +128,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         // CONCEPT SCHEME
         //
 
-        mainFormLayout = new ConceptSchemeMainFormLayout(ConceptsClientSecurityUtils.canUpdateConceptScheme());
+        mainFormLayout = new ConceptSchemeMainFormLayout();
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -351,6 +350,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(conceptScheme));
 
         // Security
+        mainFormLayout.setCanEdit(conceptScheme);
         mainFormLayout.updatePublishSection(conceptScheme);
         mainFormLayout.setViewMode();
         categorisationsPanel.updateVisibility(conceptScheme);
@@ -360,7 +360,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         // Update concept scheme in tree grid
         conceptsTreeGrid.updateItemScheme(conceptScheme);
-        // The concepts scheme type can be null (if have beean imported). Do not show concepts until the concept scheme type is specified.
+        // The concepts scheme type can be null (if have been imported). Do not show concepts until the concept scheme type is specified.
         if (conceptScheme.getType() == null) {
             conceptsNoVisibleInfoMessage.show();
             conceptsTreeGrid.hide();
