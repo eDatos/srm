@@ -52,6 +52,7 @@ import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
@@ -549,13 +550,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // CONTENT DESCRIPTORS
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        ViewMultiLanguageTextItem descriptionSource = new ViewMultiLanguageTextItem(CodelistDS.DESCRIPTION_SOURCE, getConstants().codelistDescriptionSource());
         ViewTextItem partial = new ViewTextItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem isRecommended = new ViewTextItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
         ViewTextItem family = new ViewTextItem(CodelistDS.FAMILY_VIEW, getConstants().codelistFamily());
         ViewTextItem variable = new ViewTextItem(CodelistDS.VARIABLE_VIEW, getConstants().variable());
-        contentDescriptorsForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, variable);
+        contentDescriptorsForm.setFields(description, descriptionSource, partial, isExternalReference, isFinal, isRecommended, family, variable);
 
         // PRODUCTION DESCRIPTORS
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -632,6 +634,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultilanguageRichTextEditorItem descriptionSource = new MultilanguageRichTextEditorItem(CodelistDS.DESCRIPTION_SOURCE, getConstants().codelistDescriptionSource());
         ViewTextItem partial = new ViewTextItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
@@ -642,7 +645,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem variable = new ViewTextItem(CodelistDS.VARIABLE, getConstants().variable());
         variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         SearchViewTextItem variableView = createVariableItem(CodelistDS.VARIABLE_VIEW, getConstants().variable());
-        contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal, isRecommended, family, familyView, variable, variableView);
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, partial, isExternalReference, isFinal, isRecommended, family, familyView, variable, variableView);
 
         // PRODUCTION DESCRIPTORS
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -714,6 +717,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Content descriptors
         contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
+        contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(codelistDto.getDescriptionSource()));
         contentDescriptorsForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
         contentDescriptorsForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
@@ -776,6 +780,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
+        ((MultilanguageRichTextEditorItem) contentDescriptorsEditionForm.getItem(CodelistDS.DESCRIPTION_SOURCE)).setValueInternational(codelistDto.getDescriptionSource());
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference() ? MetamacWebCommon.getConstants()
                 .yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -837,6 +842,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Content descriptors
         codelistDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CodelistDS.DESCRIPTION));
+        codelistDto.setDescriptionSource(((MultilanguageRichTextEditorItem) contentDescriptorsEditionForm.getItem(CodelistDS.DESCRIPTION_SOURCE)).getValue());
         codelistDto.setIsRecommended(((BooleanSelectItem) contentDescriptorsEditionForm.getItem(CodelistDS.IS_RECOMMENDED)).getBooleanValue());
         codelistDto.setFamily(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(CodelistDS.FAMILY)) ? RelatedResourceUtils.createRelatedResourceDto(contentDescriptorsEditionForm
                 .getValueAsString(CodelistDS.FAMILY)) : null);

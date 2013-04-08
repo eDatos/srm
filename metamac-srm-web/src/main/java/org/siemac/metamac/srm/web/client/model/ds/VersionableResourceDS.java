@@ -15,6 +15,7 @@ public class VersionableResourceDS extends DataSource {
     public static final String NAME                             = "lc-name";
     // CONTENT DESCRIPTORS
     public static final String DESCRIPTION                      = "lc-desc";
+    public static final String DESCRIPTION_SOURCE               = "lc-desc-source";
     public static final String IS_EXTERNAL_REFERENCE            = "lc-ext-ref";
     public static final String FINAL                            = "lc-final";
     // CLASS DESCRIPTORS
