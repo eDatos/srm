@@ -2865,8 +2865,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         CategorySchemeVersionMetamac categorySchemeVersioned = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            // TODO createVersion form category scheme temporal
-            throw new UnsupportedOperationException("TODO createVersion form category scheme temporal");
+            categorySchemeVersioned = getCategoriesMetamacService().createVersionFromTemporalCategoryScheme(ctx, urnToCopy, versionType);
         } else {
             categorySchemeVersioned = getCategoriesMetamacService().versioningCategoryScheme(ctx, urnToCopy, versionType);
         }

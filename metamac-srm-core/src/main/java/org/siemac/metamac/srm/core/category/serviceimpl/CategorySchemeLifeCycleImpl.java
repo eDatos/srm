@@ -169,9 +169,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             CategorySchemeVersionMetamac categorySchemeVersionMetamac = (CategorySchemeVersionMetamac) srmResourceVersion;
             if (VersionUtil.isTemporalVersion(categorySchemeVersionMetamac.getMaintainableArtefact().getUrn())) {
-                // TODO completar cuando se haga metgeTemporal de categoryScheme
-                throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de categoryScheme");
-                // return dataStructureDefinitionService.mergeTemporalVersion(ctx, dataStructureDefinitionVersionMetamac);
+                return categoriesMetamacService.mergeTemporalVersion(ctx, categorySchemeVersionMetamac);
             }
             return srmResourceVersion;
         }
