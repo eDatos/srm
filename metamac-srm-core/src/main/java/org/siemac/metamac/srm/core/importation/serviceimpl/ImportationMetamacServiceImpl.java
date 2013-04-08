@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -145,12 +144,7 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
 
     @Override
     public void markTaskAsFinished(ServiceContext ctx, String job, List<MetamacExceptionItem> informationItems) throws MetamacException {
-        MetamacException metamacException = null;
-        if (!CollectionUtils.isEmpty(informationItems)) {
-            metamacException = new MetamacException(informationItems);
-            metamacException.setLoggedLevel(ExceptionLevelEnum.INFO);
-        }
-        importationService.markTaskAsFinished(ctx, job, metamacException);
+        importationService.markTaskAsFinished(ctx, job, informationItems);
     }
 
     @Override
