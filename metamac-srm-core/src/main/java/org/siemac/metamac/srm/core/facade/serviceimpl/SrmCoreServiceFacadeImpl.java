@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.core.facade.serviceimpl;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -80,6 +82,8 @@ import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.importation.domain.ImportationTask;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
@@ -110,44 +114,47 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Autowired
-    private DataStructureDefinitionDo2DtoMapper    dataStructureDefinitionDo2DtoMapper;
+    private DataStructureDefinitionDo2DtoMapper        dataStructureDefinitionDo2DtoMapper;
 
     @Autowired
-    private DataStructureDefinitionDto2DoMapper    dataStructureDefinitionDto2DoMapperDto2DoMapper;
+    private DataStructureDefinitionDto2DoMapper        dataStructureDefinitionDto2DoMapperDto2DoMapper;
 
     @Autowired
-    private ConceptsDo2DtoMapper                   conceptsDo2DtoMapper;
+    private ConceptsDo2DtoMapper                       conceptsDo2DtoMapper;
 
     @Autowired
-    private ConceptsDto2DoMapper                   conceptsDto2DoMapper;
+    private ConceptsDto2DoMapper                       conceptsDto2DoMapper;
 
     @Autowired
-    private OrganisationsDo2DtoMapper              organisationsDo2DtoMapper;
+    private OrganisationsDo2DtoMapper                  organisationsDo2DtoMapper;
 
     @Autowired
-    private OrganisationsDto2DoMapper              organisationsDto2DoMapper;
+    private OrganisationsDto2DoMapper                  organisationsDto2DoMapper;
 
     @Autowired
-    private CategoriesDo2DtoMapper                 categoriesDo2DtoMapper;
+    private CategoriesDo2DtoMapper                     categoriesDo2DtoMapper;
 
     @Autowired
-    private CategoriesDto2DoMapper                 categoriesDto2DoMapper;
+    private CategoriesDto2DoMapper                     categoriesDto2DoMapper;
 
     @Autowired
-    private CodesDo2DtoMapper                      codesDo2DtoMapper;
+    private CodesDo2DtoMapper                          codesDo2DtoMapper;
 
     @Autowired
-    private CodesDto2DoMapper                      codesDto2DoMapper;
+    private CodesDto2DoMapper                          codesDto2DoMapper;
 
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
-    private Jaxb2Marshaller                        marshallerWithValidation;
+    private Jaxb2Marshaller                            marshallerWithValidation;
 
     @Autowired
-    private MetamacCriteria2SculptorCriteriaMapper metamacCriteria2SculptorCriteriaMapper;
+    private MetamacCriteria2SculptorCriteriaMapper     metamacCriteria2SculptorCriteriaMapper;
 
     @Autowired
-    private SculptorCriteria2MetamacCriteriaMapper sculptorCriteria2MetamacCriteriaMapper;
+    private SculptorCriteria2MetamacCriteriaMapper     sculptorCriteria2MetamacCriteriaMapper;
+
+    private final static Comparator<ItemSchemeVersion> ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR = new ItemSchemeCreatedDateDescComparator();
+    private final static Comparator<StructureVersion>  STRUCTURE_CREATED_DATE_DESC_COMPARATOR   = new StructureCreatedDateDescComparator();
 
     public Jaxb2Marshaller getMarshallerWithValidation() {
         return marshallerWithValidation;
@@ -260,12 +267,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         DataStructureDefinitionSecurityUtils.canDataStructureDefinitionVersions(ctx);
 
-        // Retrieve
-        List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs = getDsdsMetamacService().retrieveDataStructureDefinitionVersions(ctx, urn);
+        // Retrieve and sort by date desc
+        List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionVersions(ctx, urn);
+        List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsSortedByCreationDate = new ArrayList<DataStructureDefinitionVersionMetamac>(dataStructureDefinitionVersionsMetamac);
+        Collections.sort(dataStructureDefinitionVersionsSortedByCreationDate, STRUCTURE_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
         List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper
-                .dataStructureDefinitionMetamacDoListToDtoList(dataStructureDefinitionVersionMetamacs);
+                .dataStructureDefinitionMetamacDoListToDtoList(dataStructureDefinitionVersionsSortedByCreationDate);
 
         return dataStructureDefinitionMetamacDto;
     }
@@ -940,11 +949,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
 
-        // Retrieve
-        List<CodelistVersionMetamac> codelistVersionMetamacs = getCodesMetamacService().retrieveCodelistVersions(ctx, urn);
+        // Retrieve and sort by date desc
+        List<CodelistVersionMetamac> codelistVersions = getCodesMetamacService().retrieveCodelistVersions(ctx, urn);
+        List<CodelistVersionMetamac> codelistVersionsSortedByCreationDate = new ArrayList<CodelistVersionMetamac>(codelistVersions);
+        Collections.sort(codelistVersionsSortedByCreationDate, ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<CodelistMetamacDto> codelistMetamacDtos = codesDo2DtoMapper.codelistMetamacDoListToDtoList(codelistVersionMetamacs);
+        List<CodelistMetamacDto> codelistMetamacDtos = codesDo2DtoMapper.codelistMetamacDoListToDtoList(codelistVersionsSortedByCreationDate);
 
         return codelistMetamacDtos;
     }
@@ -1917,11 +1928,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         OrganisationsSecurityUtils.canRetrieveOrganisationSchemeVersions(ctx);
 
-        // Retrieve
-        List<OrganisationSchemeVersionMetamac> organisationSchemeVersionMetamacs = getOrganisationsMetamacService().retrieveOrganisationSchemeVersions(ctx, urn);
+        // Retrieve and sort by date desc
+        List<OrganisationSchemeVersionMetamac> organisationSchemeVersionsMetamac = getOrganisationsMetamacService().retrieveOrganisationSchemeVersions(ctx, urn);
+        List<OrganisationSchemeVersionMetamac> organisationSchemeVersionsSortedByCreationDate = new ArrayList<OrganisationSchemeVersionMetamac>(organisationSchemeVersionsMetamac);
+        Collections.sort(organisationSchemeVersionsSortedByCreationDate, ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos = organisationsDo2DtoMapper.organisationSchemeMetamacDoListToDtoList(organisationSchemeVersionMetamacs);
+        List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos = organisationsDo2DtoMapper.organisationSchemeMetamacDoListToDtoList(organisationSchemeVersionsSortedByCreationDate);
 
         return organisationSchemeMetamacDtos;
     }
@@ -2186,11 +2199,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         ConceptsSecurityUtils.canRetrieveConceptSchemeVersions(ctx);
 
-        // Retrieve
-        List<ConceptSchemeVersionMetamac> conceptSchemeVersionMetamacs = getConceptsMetamacService().retrieveConceptSchemeVersions(ctx, urn);
+        // Retrieve and sort by date desc
+        List<ConceptSchemeVersionMetamac> conceptSchemeVersionsMetamac = getConceptsMetamacService().retrieveConceptSchemeVersions(ctx, urn);
+        List<ConceptSchemeVersionMetamac> conceptSchemeVersionsSortedByCreationDate = new ArrayList<ConceptSchemeVersionMetamac>(conceptSchemeVersionsMetamac);
+        Collections.sort(conceptSchemeVersionsSortedByCreationDate, ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = conceptsDo2DtoMapper.conceptSchemeMetamacDoListToDtoList(conceptSchemeVersionMetamacs);
+        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = conceptsDo2DtoMapper.conceptSchemeMetamacDoListToDtoList(conceptSchemeVersionsSortedByCreationDate);
 
         return conceptSchemeMetamacDtos;
     }
@@ -2754,12 +2769,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
 
-        // Retrieve
-        List<CategorySchemeVersionMetamac> categorySchemeVersionMetamacs = getCategoriesMetamacService().retrieveCategorySchemeVersions(ctx, urn);
+        // Retrieve and sort by date desc
+        List<CategorySchemeVersionMetamac> categorySchemeVersionsMetamac = getCategoriesMetamacService().retrieveCategorySchemeVersions(ctx, urn);
+        List<CategorySchemeVersionMetamac> categorySchemeVersionsSortedByCreationDate = new ArrayList<CategorySchemeVersionMetamac>(categorySchemeVersionsMetamac);
+        Collections.sort(categorySchemeVersionsSortedByCreationDate, ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = categoriesDo2DtoMapper.categorySchemeMetamacDoListToDtoList(categorySchemeVersionMetamacs);
-
+        List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = categoriesDo2DtoMapper.categorySchemeMetamacDoListToDtoList(categorySchemeVersionsSortedByCreationDate);
         return categorySchemeMetamacDtos;
     }
 
@@ -3090,4 +3106,21 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         }
     }
 
+    private static class ItemSchemeCreatedDateDescComparator implements Comparator<ItemSchemeVersion> {
+
+        @Override
+        public int compare(ItemSchemeVersion is1, ItemSchemeVersion is2) {
+            return is1.getCreatedDate().compareTo(is2.getCreatedDate());
+        }
+
+    };
+
+    private static class StructureCreatedDateDescComparator implements Comparator<StructureVersion> {
+
+        @Override
+        public int compare(StructureVersion s1, StructureVersion s2) {
+            return s1.getCreatedDate().compareTo(s2.getCreatedDate());
+        }
+
+    };
 }
