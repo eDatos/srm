@@ -784,7 +784,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     private void showListGridDeleteButton() {
-        if (!ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
+        // Agencies can never be deleted!
+        if (!CommonUtils.isAgencyScheme(organisationSchemeDto.getType()) && !ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
                 && !ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus()) && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto)) {
             deleteButton.show();
         } else {
