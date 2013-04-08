@@ -1,9 +1,8 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
-import java.util.Date;
-
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
+import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 
 public class DsdMainFormLayout extends LifeCycleMainFormLayout {
@@ -16,9 +15,9 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     public DsdMainFormLayout(boolean canEdit) {
     }
 
-    public void updatePublishSection(ProcStatusEnum status, Date validTo, String operationCode) {
-        super.updatePublishSection(status, validTo);
-        this.operationCode = operationCode;
+    public void updatePublishSection(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        super.updatePublishSection(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacDto.getValidTo());
+        this.operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
     }
 
     @Override

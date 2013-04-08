@@ -16,8 +16,9 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canCreateDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), null);
     }
 
-    public static boolean canUpdateDsd(ProcStatusEnum procStatus, String operationCode) {
-        return SharedDsdSecurityUtils.canUpdateDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
+    public static boolean canUpdateDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        return SharedDsdSecurityUtils.canUpdateDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(),
+                org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto));
     }
 
     public static boolean canVersioningDsd(String operationCode) {
