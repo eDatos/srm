@@ -1035,8 +1035,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         CodelistVersionMetamac codelistVersioned = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            // TODO create version from temporal codelist
-            throw new UnsupportedOperationException("create version from temporal codelist");
+            codelistVersioned = getCodesMetamacService().createVersionFromTemporalCodelist(ctx, urnToCopy, versionType);
         } else {
             codelistVersioned = getCodesMetamacService().versioningCodelist(ctx, urnToCopy, versioningCodes, versionType);
         }
@@ -2375,7 +2374,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         ConceptSchemeVersionMetamac conceptSchemeVersioned = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            getConceptsMetamacService().createVersionFromTemporalConceptScheme(ctx, urnToCopy, versionType);
+            conceptSchemeVersioned = getConceptsMetamacService().createVersionFromTemporalConceptScheme(ctx, urnToCopy, versionType);
         } else {
             conceptSchemeVersioned = getConceptsMetamacService().versioningConceptScheme(ctx, urnToCopy, versionType);
         }
