@@ -5,7 +5,8 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 /**
- * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource.
+ * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource and on whether the resource is in a
+ * temporal version or not.
  * Metadata of type {@link InternationalStringDto} are always editable (that's why they are not specified in this class), but only to add new translations.
  */
 public class ConceptsFormUtils {
@@ -21,7 +22,7 @@ public class ConceptsFormUtils {
             return false;
         }
         return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(conceptSchemeDto.getLifeCycle().getProcStatus(), conceptSchemeDto.getVersionLogic())
-                && CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeDto);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -34,7 +35,7 @@ public class ConceptsFormUtils {
         if (conceptSchemeDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeDto);
     }
 
     // REPRESENTATION TYPE
@@ -43,7 +44,7 @@ public class ConceptsFormUtils {
         if (conceptSchemeDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeDto);
     }
 
     // ENUMERATED REPRESENTATION
@@ -52,6 +53,6 @@ public class ConceptsFormUtils {
         if (conceptSchemeDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeDto);
     }
 }

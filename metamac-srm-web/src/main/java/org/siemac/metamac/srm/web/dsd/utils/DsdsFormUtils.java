@@ -5,7 +5,8 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 /**
- * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource.
+ * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource and on whether the resource is in a
+ * temporal version or not.
  * Metadata of type {@link InternationalStringDto} are always editable (that's why they are not specified in this class), but only to add new translations.
  */
 public class DsdsFormUtils {
@@ -22,7 +23,7 @@ public class DsdsFormUtils {
         }
         return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(),
                 dataStructureDefinitionMetamacDto.getVersionLogic())
-                && CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -35,7 +36,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // REPRESENTATION TYPE
@@ -44,7 +45,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // ENUMERATED REPRESENTATION
@@ -53,7 +54,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -68,7 +69,7 @@ public class DsdsFormUtils {
         }
 
         return !org.siemac.metamac.srm.web.dsd.utils.CommonUtils.isDimensionTypeTimeDimension(typeDimensionComponent)
-                && CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // CONCEPT
@@ -77,7 +78,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // ROLE
@@ -86,7 +87,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // REPRESENTATION TYPE
@@ -95,7 +96,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // CODELIST (ENUMERATED REPRESENTATION)
@@ -104,7 +105,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // CONCEPT SCHEME (ENUMERATED REPRESENTATION)
@@ -113,7 +114,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -126,7 +127,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // CONCEPT
@@ -135,7 +136,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // USAGE STATUS
@@ -144,7 +145,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // ROLE
@@ -153,7 +154,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // RELATED TO
@@ -162,7 +163,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // GROUP KEYS FOR DIMENSION RELATIONSHIP
@@ -171,7 +172,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // DIMENSIONS FOR DIMENSION RELATIONSHIP
@@ -180,7 +181,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // GROUP KEYS FOR GROUP RELATIONSHIP
@@ -189,7 +190,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // REPRESENTATION TYPE
@@ -198,7 +199,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // CODELIST (ENUMERATED REPRESENTATION)
@@ -207,7 +208,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -220,7 +221,7 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
     // DIMENSIONS
@@ -229,6 +230,6 @@ public class DsdsFormUtils {
         if (dataStructureDefinitionMetamacDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 }

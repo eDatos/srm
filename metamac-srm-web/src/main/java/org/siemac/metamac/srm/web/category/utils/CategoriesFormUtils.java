@@ -5,7 +5,8 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 /**
- * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource.
+ * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource and on whether the resource is in a
+ * temporal version or not.
  * Metadata of type {@link InternationalStringDto} are always editable (that's why they are not specified in this class), but only to add new translations.
  */
 public class CategoriesFormUtils {
@@ -21,7 +22,7 @@ public class CategoriesFormUtils {
             return false;
         }
         return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(categorySchemeDto.getLifeCycle().getProcStatus(), categorySchemeDto.getVersionLogic())
-                && CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorySchemeDto);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -34,6 +35,6 @@ public class CategoriesFormUtils {
         if (categorySchemeDto == null) {
             return false;
         }
-        return CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer());
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(categorySchemeDto);
     }
 }
