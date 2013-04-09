@@ -61,8 +61,7 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        // Resources from other maintainers can not be version
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && DsdClientSecurityUtils.canVersioningDsd(operationCode)) {
+        if (canVersionDsd()) {
             versioning.show();
         }
     }
@@ -74,10 +73,22 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showVersionSdmxResourceButton() {
+        if (canVersionDsd()) { // TODO Check temporal version
+            versionSdmxResource.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (DsdClientSecurityUtils.canAnnounceDsd(operationCode)) {
     // announce.show();
     // }
     // }
+
+    private boolean canVersionDsd() {
+        // Resources from other maintainers can not be version
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && DsdClientSecurityUtils.canVersioningDsd(operationCode);
+    }
 }

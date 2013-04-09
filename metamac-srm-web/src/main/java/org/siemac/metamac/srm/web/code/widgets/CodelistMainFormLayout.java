@@ -93,8 +93,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        // Resources from other maintainers can not be version
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist()) {
+        if (canVersionCodelist()) {
             versioning.show();
         }
     }
@@ -103,6 +102,13 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     protected void showCancelValidityButton() {
         if (CodesClientSecurityUtils.canCancelCodelistValidity()) {
             cancelValidity.show();
+        }
+    }
+
+    @Override
+    protected void showVersionSdmxResourceButton() {
+        if (canVersionCodelist()) { // TODO Check temporal version
+            versionSdmxResource.show();
         }
     }
 
@@ -115,5 +121,10 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     public HasClickHandlers getAddCodelistToFamily() {
         return addCodelistToFamilyButton;
+    }
+
+    private boolean canVersionCodelist() {
+        // Resources from other maintainers can not be version
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist();
     }
 }

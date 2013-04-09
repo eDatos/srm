@@ -58,16 +58,21 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        // Resources from other maintainers can not be version
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CategoriesClientSecurityUtils.canVersioningCategoryScheme()) {
+        if (canCategorySchemeBeVersion()) {
             versioning.show();
         }
     }
-
     @Override
     protected void showCancelValidityButton() {
         if (CategoriesClientSecurityUtils.canCancelCategorySchemeValidity()) {
             cancelValidity.show();
+        }
+    }
+
+    @Override
+    protected void showVersionSdmxResourceButton() {
+        if (canCategorySchemeBeVersion()) { // TODO Check temporal version
+            versionSdmxResource.show();
         }
     }
 
@@ -77,4 +82,9 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
     // announce.show();
     // }
     // }
+
+    private boolean canCategorySchemeBeVersion() {
+        // Resources from other maintainers can not be version
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CategoriesClientSecurityUtils.canVersioningCategoryScheme();
+    }
 }

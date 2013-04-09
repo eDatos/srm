@@ -78,8 +78,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        // Resources from other maintainers can not be version
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode)) {
+        if (canConceptSchemeBeVersion()) {
             versioning.show();
         }
     }
@@ -91,10 +90,22 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showVersionSdmxResourceButton() {
+        if (canConceptSchemeBeVersion()) { // TODO Check temporal version
+            versionSdmxResource.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (ConceptsClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {
     // announce.show();
     // }
     // }
+
+    private boolean canConceptSchemeBeVersion() {
+        // Resources from other maintainers can not be version
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode);
+    }
 }

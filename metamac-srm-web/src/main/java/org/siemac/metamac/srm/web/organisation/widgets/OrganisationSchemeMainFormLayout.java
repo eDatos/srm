@@ -83,6 +83,12 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showVersionSdmxResourceButton() {
+        // TODO Auto-generated method stub
+
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (OrganisationsClientSecurityUtils.canAnnounceOrganisationScheme()) {
