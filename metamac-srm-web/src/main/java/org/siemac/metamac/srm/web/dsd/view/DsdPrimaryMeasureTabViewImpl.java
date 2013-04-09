@@ -317,8 +317,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 facetStaticEditionForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE),
-                dataStructureDefinitionMetamacDto.getMaintainer());
+        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE), dataStructureDefinitionMetamacDto);
         editionForm.markForRedraw();
 
         // Clear errors
@@ -392,7 +391,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
             @Override
             public void onChanged(ChangedEvent event) {
-                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto.getMaintainer());
+                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto);
             }
         });
         return representationTypeItem;

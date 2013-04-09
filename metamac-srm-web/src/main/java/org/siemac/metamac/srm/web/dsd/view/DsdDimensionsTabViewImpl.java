@@ -738,8 +738,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 facetStaticEditionForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE),
-                dataStructureDefinitionMetamacDto.getMaintainer());
+        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE), dataStructureDefinitionMetamacDto);
         editionForm.markForRedraw();
 
         // Annotations
@@ -850,7 +849,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             public void onChanged(ChangedEvent event) {
                 // Show FacetForm if RepresentationTypeEnum = NON_NUMERATED
-                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto.getMaintainer());
+                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto);
             }
         });
         CustomValidator measureCustomValidator = new CustomValidator() {

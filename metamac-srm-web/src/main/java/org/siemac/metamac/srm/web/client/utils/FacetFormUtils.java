@@ -8,7 +8,7 @@ import org.siemac.metamac.srm.web.client.representation.widgets.BaseFacetForm;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.RepresentationConstraintSharedValidator;
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.MaintainableArtefactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -25,11 +25,11 @@ public class FacetFormUtils {
     /**
      * Shows or hides facetForm and staticFacetForm depending on whether representationType is TEXT_FORMAT or not, and on the maintainer of the resource.
      */
-    public static void setFacetFormVisibility(BaseFacetForm facetForm, StaticFacetForm staticFacetForm, String representationType, RelatedResourceDto maintainer) {
+    public static void setFacetFormVisibility(BaseFacetForm facetForm, StaticFacetForm staticFacetForm, String representationType, MaintainableArtefactDto maintainableArtefactDto) {
         facetForm.hide();
         staticFacetForm.hide();
         if (StringUtils.equals(representationType, RepresentationTypeEnum.TEXT_FORMAT.name())) {
-            if (CommonUtils.isDefaultMaintainer(maintainer)) {
+            if (CommonUtils.canSdmxMetadataAndStructureBeModified(maintainableArtefactDto)) {
                 facetForm.show();
             } else {
                 staticFacetForm.show();

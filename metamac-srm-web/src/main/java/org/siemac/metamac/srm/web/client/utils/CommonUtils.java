@@ -152,6 +152,12 @@ public class CommonUtils {
         return isDefaultMaintainer(maintainer.getUrn());
     }
 
+    /**
+     * Returns true if the artefactDto belongs to the default maintainer, and the version is not a temporal one
+     * 
+     * @param artefactDto
+     * @return
+     */
     public static boolean canSdmxMetadataAndStructureBeModified(MaintainableArtefactDto artefactDto) {
         return isDefaultMaintainer(artefactDto.getMaintainer()) && !VersionUtil.isTemporalVersion(artefactDto.getVersionLogic());
     }

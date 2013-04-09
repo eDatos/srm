@@ -340,7 +340,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             @Override
             public void onChanged(ChangedEvent event) {
                 if (conceptSchemeMetamacDto != null) {
-                    FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationType.getValueAsString(), conceptSchemeMetamacDto.getMaintainer());
+                    FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationType.getValueAsString(), conceptSchemeMetamacDto);
                 }
                 contentDescriptorsEditionForm.markForRedraw();
             }
@@ -566,8 +566,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         facetEditionForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTextFormat() : null);
         facetStaticEditionForm.setFacet(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getTextFormat() : null);
         if (conceptSchemeMetamacDto != null) {
-            FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE),
-                    conceptSchemeMetamacDto.getMaintainer());
+            FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE), conceptSchemeMetamacDto);
         }
 
         // CLASS DESCRIPTORS
@@ -1054,8 +1053,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         annotationsEditionPanel.markForRedraw();
 
         if (conceptSchemeMetamacDto != null) {
-            FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE),
-                    conceptSchemeMetamacDto.getMaintainer());
+            FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE), conceptSchemeMetamacDto);
         }
     }
 

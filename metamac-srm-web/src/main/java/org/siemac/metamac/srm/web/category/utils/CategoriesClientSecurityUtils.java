@@ -7,7 +7,7 @@ import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 
 public class CategoriesClientSecurityUtils {
 
@@ -65,17 +65,18 @@ public class CategoriesClientSecurityUtils {
         return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, RelatedResourceDto categorisationMaintainer) {
-        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.isDefaultMaintainer(categorisationMaintainer);
+    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, CategorisationDto categorisationDto) {
+        // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is a
+        // temporal one
+        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
     // CATEGORIES
 
     public static boolean canCreateCategory(CategorySchemeMetamacDto categorySchemeMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
+        // Maintainer and temporal version is checked because the structure of an imported resource can not be modified
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus())
-                && CommonUtils.isDefaultMaintainer(categorySchemeMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorySchemeMetamacDto);
     }
 
     public static boolean canUpdateCategory(ProcStatusEnum procStatus) {
@@ -83,8 +84,8 @@ public class CategoriesClientSecurityUtils {
     }
 
     public static boolean canDeleteCategory(CategorySchemeMetamacDto categorySchemeMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
+        // Maintainer and temporal version is checked because the structure of an imported resource can not be modified
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus())
-                && CommonUtils.isDefaultMaintainer(categorySchemeMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorySchemeMetamacDto);
     }
 }

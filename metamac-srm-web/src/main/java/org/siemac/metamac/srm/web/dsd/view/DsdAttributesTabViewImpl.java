@@ -714,8 +714,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 facetStaticEditionForm.setFacet(facetDto);
             }
         }
-        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE),
-                dataStructureDefinitionMetamacDto.getMaintainer());
+        FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE), dataStructureDefinitionMetamacDto);
         editionForm.redraw();
 
         // Annotations
@@ -901,7 +900,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
             @Override
             public void onChanged(ChangedEvent event) {
-                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto.getMaintainer());
+                FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto);
             }
         });
         return representationTypeItem;

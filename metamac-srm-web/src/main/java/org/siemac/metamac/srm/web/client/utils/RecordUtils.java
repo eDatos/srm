@@ -12,7 +12,7 @@ public class RecordUtils {
 
     public static CategorisationRecord getCategorisationRecord(CategorisationDto categorisationDto) {
         CategorisationRecord record = new CategorisationRecord(categorisationDto.getId(), categorisationDto.getCode(), InternationalStringUtils.getLocalisedString(categorisationDto.getName()),
-                RelatedResourceUtils.getRelatedResourceName(categorisationDto.getCategory()), categorisationDto.getUrn(), categorisationDto.getMaintainer());
+                RelatedResourceUtils.getRelatedResourceName(categorisationDto.getCategory()), categorisationDto.getUrn(), categorisationDto.getMaintainer(), categorisationDto);
         return record;
     }
 

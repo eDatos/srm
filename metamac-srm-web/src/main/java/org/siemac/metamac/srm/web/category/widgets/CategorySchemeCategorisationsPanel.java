@@ -28,7 +28,7 @@ public class CategorySchemeCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!CategoriesClientSecurityUtils.canDeleteCategorisation(procStatus, categorisationRecord.getMaintainer())) {
+                if (!CategoriesClientSecurityUtils.canDeleteCategorisation(procStatus, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }
