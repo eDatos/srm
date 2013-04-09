@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.BooleanItemEnum;
@@ -15,6 +16,7 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.MaintainableArtefactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.NameableArtefactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
@@ -130,6 +132,13 @@ public class CommonUtils {
         return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(versionLogic);
     }
 
+    // FORMAT UTILS
+
+    public static String getResourceTitle(NameableArtefactDto nameableArtefactDto) {
+        String defaultLocalisedString = InternationalStringUtils.getLocalisedString(nameableArtefactDto.getName());
+        return defaultLocalisedString != null ? defaultLocalisedString : StringUtils.EMPTY;
+    }
+
     // MAINTAINER UTILS
 
     private static boolean isDefaultMaintainer(String maintainerUrn) {
@@ -143,10 +152,7 @@ public class CommonUtils {
         return isDefaultMaintainer(maintainer.getUrn());
     }
 
-    // FORMAT UTILS
-
-    public static String getResourceTitle(NameableArtefactDto nameableArtefactDto) {
-        String defaultLocalisedString = InternationalStringUtils.getLocalisedString(nameableArtefactDto.getName());
-        return defaultLocalisedString != null ? defaultLocalisedString : StringUtils.EMPTY;
+    public static boolean canSdmxMetadataAndStructureBeModified(MaintainableArtefactDto artefactDto) {
+        return isDefaultMaintainer(artefactDto.getMaintainer()) && !VersionUtil.isTemporalVersion(artefactDto.getVersionLogic());
     }
 }
