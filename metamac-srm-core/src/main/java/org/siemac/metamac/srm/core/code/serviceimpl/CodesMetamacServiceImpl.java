@@ -471,8 +471,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void importCodesCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems)
-            throws MetamacException {
+    public void importCodesCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String charset, String fileName, boolean updateAlreadyExisting,
+            List<MetamacExceptionItem> informationItems) throws MetamacException {
 
         // Validation
         CodesMetamacInvocationValidator.checkImportCodesCsv(codelistUrn, csvStream, updateAlreadyExisting, null);
@@ -492,7 +492,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         Map<String, CodeMetamac> codesToPersistByCode = new HashMap<String, CodeMetamac>();
         try {
-            inputStreamReader = new InputStreamReader(csvStream); // TODO charset?
+            inputStreamReader = new InputStreamReader(csvStream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
 
             ImportationCodesCsvHeader header = null;
@@ -568,7 +568,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void importCodeOrdersCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName) throws MetamacException {
+    public void importCodeOrdersCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String charset, String fileName) throws MetamacException {
 
         // Validation
         CodesMetamacInvocationValidator.checkImportCodeOrdersCsv(codelistUrn, csvStream, null);
@@ -589,7 +589,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         List<CodelistOrderVisualisation> orderVisualisations = null;
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         try {
-            inputStreamReader = new InputStreamReader(csvStream); // TODO charset?
+            inputStreamReader = new InputStreamReader(csvStream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
 
             ImportationCodeOrdersCsvHeader header = null;
@@ -1371,8 +1371,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems)
-            throws MetamacException {
+    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, String charset, String fileName, boolean updateAlreadyExisting,
+            List<MetamacExceptionItem> informationItems) throws MetamacException {
 
         // Validation
         CodesMetamacInvocationValidator.checkImportVariableElementsCsv(variableUrn, csvStream, updateAlreadyExisting, null);
@@ -1383,8 +1383,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
         try {
-            inputStreamReader = new InputStreamReader(csvStream);
-            bufferedReader = new BufferedReader(inputStreamReader); // TODO charset?
+            inputStreamReader = new InputStreamReader(csvStream, charset);
+            bufferedReader = new BufferedReader(inputStreamReader);
 
             ImportationVariableElementsCsvHeader header = null;
             String line = null;

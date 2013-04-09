@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.core.importation.serviceimpl;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Date;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -11,6 +13,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.PersistJobDataAfterExecution;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.io.FileUtils;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.ImportationMetamacServiceJobFacade;
 import org.slf4j.Logger;
@@ -87,12 +90,15 @@ public class ImportationCsvJob implements Job {
         String fileImportedName = data.getString(FILE_IMPORTED_NAME);
         Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
 
+        File file = new File(filePath);
+        InputStream stream = new FileInputStream(file);
+        String charset = guessCsvCharset(file);
+
         // Execution
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceJobFacade().importVariableElementsCsv(serviceContext, variableUrn, new FileInputStream(filePath), fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getImportationMetamacServiceJobFacade().importVariableElementsCsv(serviceContext, variableUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " finished at " + new Date());
     }
-
     private void importCodes(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
 
         // Parameters
@@ -101,9 +107,13 @@ public class ImportationCsvJob implements Job {
         String fileImportedName = data.getString(FILE_IMPORTED_NAME);
         Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
 
+        File file = new File(filePath);
+        InputStream stream = new FileInputStream(file);
+        String charset = guessCsvCharset(file);
+
         // Execution
         logger.info("ImportationJob [importCodes]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceJobFacade().importCodesCsv(serviceContext, codelistUrn, new FileInputStream(filePath), fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getImportationMetamacServiceJobFacade().importCodesCsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importCodes]: " + jobKey + " finished at " + new Date());
     }
 
@@ -114,9 +124,20 @@ public class ImportationCsvJob implements Job {
         String filePath = data.getString(FILE_PATH);
         String fileImportedName = data.getString(FILE_IMPORTED_NAME);
 
+        File file = new File(filePath);
+        InputStream stream = new FileInputStream(file);
+        String charset = guessCsvCharset(file);
+
         // Execution
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceJobFacade().importCodeOrdersCsv(serviceContext, codelistUrn, new FileInputStream(filePath), fileImportedName, jobKey.getName());
+        getImportationMetamacServiceJobFacade().importCodeOrdersCsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName());
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " finished at " + new Date());
+    }
+
+    /**
+     * Guess charset of file
+     */
+    private String guessCsvCharset(File file) throws Exception {
+        return FileUtils.guessCharset(file);
     }
 }

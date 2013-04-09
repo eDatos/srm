@@ -3382,14 +3382,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(null, code.getOpenness4());
         }
         {
-            // UPDATE EXISTING: CODE02 VARIABLE_ELEMENT_03 nombre nuevo 2 new name 2 nombre nuevo it 2 descripción nueva 2 description new 2
+            // UPDATE EXISTING: CODE02 VARIABLE_ELEMENT_03 nombre nuevo 2 con ácéntós new name 2 nombre nuevo it 2 descripción nueva 2 description new 2
             String semanticIdentifier = "CODE02";
             CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codelistUrnPart + semanticIdentifier);
             assertEquals(Long.valueOf("122"), code.getId());
             assertEquals(semanticIdentifier, code.getNameableArtefact().getCode());
             assertEquals(code.getNameableArtefact().getUrn(), code.getNameableArtefact().getUrnProvider());
             assertEquals(null, code.getParent());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "nombre nuevo 2", "en", "new name 2", "it", "nombre nuevo it 2");
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "nombre nuevo con ácéntós 2", "en", "new name 2", "it", "nombre nuevo it 2");
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "en", "description new 2", "es", "descripción nueva 2");
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, code.getVariableElement().getIdentifiableArtefact().getUrn());
             assertEquals(null, code.getShortName());
@@ -3650,6 +3650,58 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(Boolean.FALSE, code.getOpenness3());
             assertEquals(null, code.getOpenness4());
         }
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodesCsvCharsetIso() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+        final String fileName = "importation-code-01-charset-iso.csv";
+        final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+        final boolean updateAlreadyExisting = true;
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String jobKeyString = importationService.importCodesCsvInBackground(getServiceContextAdministrador(), codelistUrn, stream, fileName, updateAlreadyExisting);
+                    jobKey.append(jobKeyString);
+                } catch (MetamacException e) {
+                    fail("importation failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(importationTask);
+        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
+        assertEquals(0, importationTask.getImportationTaskResults().size());
+
+        // Validate codes
+        String codelistUrnPart = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).";
+        {
+            String semanticIdentifier = "code1";
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codelistUrnPart + semanticIdentifier);
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "nombre con acéntós 1", null, null);
+        }
+        {
+            String semanticIdentifier = "code2";
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codelistUrnPart + semanticIdentifier);
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "nombre con eñe 2", null, null);
+        }
+        {
+            String semanticIdentifier = "code3";
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codelistUrnPart + semanticIdentifier);
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "nombre con símbolos raros @#~%&12345678 áéíóúÁÉÍÓÚäëïöü 3", null, null);
+        }
+
     }
 
     @Test

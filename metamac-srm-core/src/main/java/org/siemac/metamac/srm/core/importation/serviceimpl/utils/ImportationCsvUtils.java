@@ -155,7 +155,9 @@ public class ImportationCsvUtils {
     }
 
     public static InternationalString csvLineToInternationalString(InternationalStringCsv internationalStringCsv, String[] columns, InternationalString target) {
-
+        if (internationalStringCsv == null) {
+            return null;
+        }
         Set<LocalisedString> localisedStringTargets = new HashSet<LocalisedString>();
         int j = 0;
         for (int i = internationalStringCsv.getStartPosition(); i <= internationalStringCsv.getEndPosition(); i++) {
