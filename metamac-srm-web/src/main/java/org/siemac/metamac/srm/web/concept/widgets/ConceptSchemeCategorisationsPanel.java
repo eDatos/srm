@@ -35,7 +35,7 @@ public class ConceptSchemeCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!ConceptsClientSecurityUtils.canDeleteCategorisation(procStatus, type, operationCode, categorisationRecord.getMaintainer())) {
+                if (!ConceptsClientSecurityUtils.canDeleteCategorisation(procStatus, type, operationCode, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

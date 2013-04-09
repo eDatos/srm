@@ -8,7 +8,7 @@ import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 
 public class ConceptsClientSecurityUtils {
 
@@ -69,18 +69,20 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
     }
 
-    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto categorisationMaintainer) {
-        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode) && CommonUtils.isDefaultMaintainer(categorisationMaintainer);
+    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode, CategorisationDto categorisationDto) {
+        // Maintainer and temporal version are checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is not
+        // the temporal one
+        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode)
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
     // Concepts
 
     public static boolean canCreateConcept(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
+        // Maintainer and temporal version are checked because the structure of an imported resource (or a resource in temporal version) can not be modified
         String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
         return SharedConceptsSecurityUtils.canCreateConcept(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(), operationCode)
-                && CommonUtils.isDefaultMaintainer(conceptSchemeMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeMetamacDto);
     }
 
     public static boolean canUpdateConcept(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
@@ -88,9 +90,9 @@ public class ConceptsClientSecurityUtils {
     }
 
     public static boolean canDeleteConcept(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
+        // Maintainer and temporal version are checked because the structure of an imported resource (or a resource in temporal version) can not be modified
         String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
         return SharedConceptsSecurityUtils.canDeleteConcept(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(), operationCode)
-                && CommonUtils.isDefaultMaintainer(conceptSchemeMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeMetamacDto);
     }
 }
