@@ -17,21 +17,24 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     private MainFormLayoutButton addCodelistToFamilyButton;
 
     public CodelistMainFormLayout() {
-        common();
-    }
-
-    public CodelistMainFormLayout(boolean canEdit) {
-        common();
-    }
-
-    public void updatePublishSection(CodelistMetamacDto codelistMetamacDto) {
-        super.updatePublishSection(codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto);
-    }
-
-    private void common() {
         // Add button to add the codelist to a family (when is published)
         addCodelistToFamilyButton = new MainFormLayoutButton(getConstants().codelistModifyCodelistFamily(), GlobalResources.RESOURCE.editListGrid().getURL());
         toolStrip.addButton(addCodelistToFamilyButton, 1);
+    }
+
+    public void setCodelist(CodelistMetamacDto codelistMetamacDto) {
+        super.updatePublishSection(codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto);
+        setCanEdit();
+    }
+
+    private void setCanEdit() {
+        boolean canEdit = false;
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+            canEdit = CodesClientSecurityUtils.canCreateCodelistTemporalVersion();
+        } else {
+            canEdit = CodesClientSecurityUtils.canUpdateCodelist(status);
+        }
+        super.setCanEdit(canEdit);
     }
 
     @Override

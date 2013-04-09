@@ -41,6 +41,8 @@ import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
+import org.siemac.metamac.srm.web.shared.code.CreateCodelistTemporalVersionAction;
+import org.siemac.metamac.srm.web.shared.code.CreateCodelistTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOpennessLevelsAction;
@@ -136,6 +138,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     public interface CodelistView extends View, HasUiHandlers<CodelistUiHandlers> {
 
         void setCodelist(CodelistMetamacDto codelistMetamacDto);
+        void setCodelistAndStartEdition(CodelistMetamacDto codelistMetamacDto);
         void setCodelistVersions(List<CodelistMetamacDto> codelistMetamacDtos);
 
         // Codes
@@ -245,9 +248,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistSaved()), MessageTypeEnum.SUCCESS);
                 getView().setCodelist(codelistMetamacDto);
 
-                // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
-                placeManager.updateHistory(placeRequest, true);
+                updateUrl();
             }
         });
     }
@@ -351,9 +352,30 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 codelistMetamacDto = result.getCodelistMetamacDto();
                 retrieveCodelistAndCodesByUrn(codelistMetamacDto.getUrn());
 
-                // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
-                placeManager.updateHistory(placeRequest, true);
+                updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void createTemporalVersion(String urn) {
+        dispatcher.execute(new CreateCodelistTemporalVersionAction(urn), new WaitingAsyncCallback<CreateCodelistTemporalVersionResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorEditingPublishedResource()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CreateCodelistTemporalVersionResult result) {
+                CodelistPresenter.this.codelistMetamacDto = result.getCodelistMetamacDto();
+                getView().setCodelistAndStartEdition(result.getCodelistMetamacDto());
+
+                retrieveCodes();
+                retrieveCodelistVersions(result.getCodelistMetamacDto().getUrn());
+                retrieveCodelistOrders(result.getCodelistMetamacDto().getUrn());
+                retrieveCodelistOpennessLevels(result.getCodelistMetamacDto().getUrn());
+
+                updateUrl();
             }
         });
     }
@@ -866,5 +888,10 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 getView().setCodelist(codelistMetamacDto);
             }
         });
+    }
+
+    private void updateUrl() {
+        PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
+        placeManager.updateHistory(placeRequest, true);
     }
 }

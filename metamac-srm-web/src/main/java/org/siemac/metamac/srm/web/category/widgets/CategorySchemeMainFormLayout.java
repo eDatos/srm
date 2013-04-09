@@ -12,10 +12,10 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     public void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto) {
         super.updatePublishSection(categorySchemeMetamacDto.getLifeCycle().getProcStatus(), categorySchemeMetamacDto);
-        setCanEdit(categorySchemeMetamacDto);
+        setCanEdit();
     }
 
-    private void setCanEdit(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+    private void setCanEdit() {
         boolean canEdit = false;
         if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
             canEdit = CategoriesClientSecurityUtils.canCreateCategorySchemeTemporalVersion();

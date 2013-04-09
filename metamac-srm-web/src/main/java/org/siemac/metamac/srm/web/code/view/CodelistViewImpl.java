@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.code.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -24,7 +23,6 @@ import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistPresenter;
-import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CodesFormUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
@@ -44,7 +42,6 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -257,10 +254,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = codelistDto.getLifeCycle().getProcStatus();
-                if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
-                    // Create a new version
-                    final InformationWindow window = new InformationWindow(getMessages().codelistEditionInfo(), getMessages().codelistEditionInfoDetailedMessage());
-                    window.show();
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                    // If the scheme is published, create a temporal version
+                    getUiHandlers().createTemporalVersion(codelistDto.getUrn());
                 } else {
                     // Default behavior
                     setEditionMode();
@@ -320,33 +316,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
             @Override
             public void onClick(ClickEvent event) {
-                final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
-                versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (versionWindow.validateForm()) {
-                            final VersionTypeEnum versionType = versionWindow.getSelectedVersion();
-
-                            VersionCodelistWindow versionCodelistWindow = new VersionCodelistWindow();
-                            versionCodelistWindow.getYesButton().addClickHandler(new ClickHandler() {
-
-                                @Override
-                                public void onClick(ClickEvent event) {
-                                    getUiHandlers().versioning(codelistDto.getUrn(), versionType, true);
-                                }
-                            });
-                            versionCodelistWindow.getNoButton().addClickHandler(new ClickHandler() {
-
-                                @Override
-                                public void onClick(ClickEvent event) {
-                                    getUiHandlers().versioning(codelistDto.getUrn(), versionType, false);
-                                }
-                            });
-                            versionWindow.destroy();
-                        }
-                    }
-                });
+                versionCodelist();
             }
         });
         mainFormLayout.getCancelValidity().addClickHandler(new ClickHandler() {
@@ -369,6 +339,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                         getUiHandlers().addCodelistToFamily(codelistDto.getUrn(), selectedFamily.getUrn());
                     }
                 });
+            }
+        });
+        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                versionCodelist();
             }
         });
     }
@@ -410,11 +387,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(codelist));
 
         // Security
-        ProcStatusEnum procStatus = codelist.getLifeCycle().getProcStatus();
-        mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCodelist(procStatus));
-        mainFormLayout.updatePublishSection(codelist);
+        mainFormLayout.setCodelist(codelist);
         mainFormLayout.setViewMode();
-        categorisationsPanel.updateVisibility(procStatus);
+        categorisationsPanel.updateVisibility(codelist.getLifeCycle().getProcStatus());
 
         setCodelistViewMode(codelist);
         setCodelistEditionMode(codelist);
@@ -423,6 +398,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codesTreeGrid.updateItemScheme(codelist);
         codelistOrdersPanel.updateItemScheme(codelist);
         codelistOpennesssLevelsPanel.updateItemScheme(codelist);
+    }
+
+    @Override
+    public void setCodelistAndStartEdition(CodelistMetamacDto codelist) {
+        setCodelist(codelist);
+        mainFormLayout.setEditionMode();
     }
 
     @Override
@@ -867,6 +848,36 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codelistDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return codelistDto;
+    }
+
+    private void versionCodelist() {
+        final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
+        versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                if (versionWindow.validateForm()) {
+                    final VersionTypeEnum versionType = versionWindow.getSelectedVersion();
+
+                    VersionCodelistWindow versionCodelistWindow = new VersionCodelistWindow();
+                    versionCodelistWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            getUiHandlers().versioning(codelistDto.getUrn(), versionType, true);
+                        }
+                    });
+                    versionCodelistWindow.getNoButton().addClickHandler(new ClickHandler() {
+
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            getUiHandlers().versioning(codelistDto.getUrn(), versionType, false);
+                        }
+                    });
+                    versionWindow.destroy();
+                }
+            }
+        });
     }
 
     // ------------------------------------------------------------------------------------------------------------
