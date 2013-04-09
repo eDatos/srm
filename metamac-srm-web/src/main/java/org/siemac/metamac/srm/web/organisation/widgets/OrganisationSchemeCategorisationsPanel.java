@@ -32,7 +32,7 @@ public class OrganisationSchemeCategorisationsPanel extends CategorisationsPanel
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!OrganisationsClientSecurityUtils.canDeleteCategorisationFromOrganisationScheme(procStatus, type, categorisationRecord.getMaintainer())) {
+                if (!OrganisationsClientSecurityUtils.canDeleteCategorisationFromOrganisationScheme(procStatus, type, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

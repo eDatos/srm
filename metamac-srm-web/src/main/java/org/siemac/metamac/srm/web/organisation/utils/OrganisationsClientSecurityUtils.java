@@ -5,7 +5,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.core.security.shared.SharedOrganisationsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public class OrganisationsClientSecurityUtils {
@@ -60,10 +60,10 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
     }
 
-    public static boolean canDeleteCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type, RelatedResourceDto categorisationMaintainer) {
+    public static boolean canDeleteCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type, CategorisationDto categorisationDto) {
         // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
         return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type)
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(categorisationMaintainer);
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
     // ORGANISATIONS
@@ -71,7 +71,7 @@ public class OrganisationsClientSecurityUtils {
     public static boolean canCreateOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         // Maintainer is checked because the structure of an imported resource can not be modified
         return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
-                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
+                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
     }
 
     public static boolean canUpdateOrganisation(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
@@ -81,7 +81,7 @@ public class OrganisationsClientSecurityUtils {
     public static boolean canDeleteOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         // Maintainer is checked because the structure of an imported resource can not be modified
         return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
-                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
+                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
     }
 
     // CONTACTS
@@ -89,7 +89,7 @@ public class OrganisationsClientSecurityUtils {
     public static boolean canCreateContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         // Maintainer is checked because the structure of an imported resource can not be modified
         return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
     }
 
     public static boolean canUpdateContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
@@ -99,6 +99,6 @@ public class OrganisationsClientSecurityUtils {
     public static boolean canDeleteContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         // Maintainer is checked because the structure of an imported resource can not be modified
         return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
     }
 }
