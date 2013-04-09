@@ -285,17 +285,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
-                versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (versionWindow.validateForm()) {
-                            getUiHandlers().versioning(conceptSchemeDto.getUrn(), versionWindow.getSelectedVersion());
-                            versionWindow.destroy();
-                        }
-                    }
-                });
+                versionConceptScheme();
             }
         });
         mainFormLayout.getCancelValidity().addClickHandler(new ClickHandler() {
@@ -303,6 +293,13 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().cancelValidity(conceptSchemeDto.getUrn());
+            }
+        });
+        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                versionConceptScheme();
             }
         });
     }
@@ -773,6 +770,20 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             }
         });
         return operation;
+    }
+
+    private void versionConceptScheme() {
+        final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
+        versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                if (versionWindow.validateForm()) {
+                    getUiHandlers().versioning(conceptSchemeDto.getUrn(), versionWindow.getSelectedVersion());
+                    versionWindow.destroy();
+                }
+            }
+        });
     }
 
     // ------------------------------------------------------------------------------------------------------------
