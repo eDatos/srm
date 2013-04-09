@@ -15,6 +15,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -389,6 +390,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Override
     @Test
+    @Ignore
     public void testCreateTemporalVersionDataStructureDefinition() throws Exception {
         String urn = DSD_6_V1;
         String versionExpected = "01.000" + UrnConstants.URN_SDMX_TEMPORAL_SUFFIX;
