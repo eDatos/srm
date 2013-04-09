@@ -194,7 +194,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         @Override
         public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = (ConceptSchemeVersionMetamac) srmResourceVersion;
-            if (VersionUtil.isTemporalVersion(conceptSchemeVersionMetamac.getMaintainableArtefact().getUrn())) {
+            if (VersionUtil.isTemporalVersion(conceptSchemeVersionMetamac.getMaintainableArtefact().getVersionLogic())) {
                 return conceptsMetamacService.mergeTemporalVersion(ctx, conceptSchemeVersionMetamac);
             }
             return srmResourceVersion;
