@@ -655,7 +655,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         commentsForm.setValue(ConceptSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(conceptSchemeDto.getAnnotations(), conceptSchemeDto.getMaintainer());
+        annotationsPanel.setAnnotations(conceptSchemeDto.getAnnotations(), conceptSchemeDto);
     }
 
     public void setConceptSchemeEditionMode(ConceptSchemeMetamacDto conceptSchemeDto) {
@@ -712,7 +712,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         commentsEditionForm.setValue(ConceptSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getComment()));
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(conceptSchemeDto.getAnnotations(), conceptSchemeDto.getMaintainer());
+        annotationsEditionPanel.setAnnotations(conceptSchemeDto.getAnnotations(), conceptSchemeDto);
     }
 
     public ConceptSchemeMetamacDto getConceptSchemeDto() {

@@ -365,7 +365,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         form.setValue(GroupKeysDS.DIMENSIONS, getDimensionCodesSeparatedByComma(descriptorDto.getComponents()));
 
         // Annotations
-        viewAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
+        viewAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations(), dataStructureDefinitionMetamacDto);
     }
 
     private void setGroupKeysEditionMode(DescriptorDto descriptorDto) {
@@ -384,7 +384,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         editionForm.setValue(GroupKeysDS.DIMENSIONS_VIEW, getDimensionCodesSeparatedByComma(descriptorDto.getComponents()));
 
         // Annotations
-        editionAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
+        editionAnnotationsPanel.setAnnotations(descriptorDto.getAnnotations(), dataStructureDefinitionMetamacDto);
     }
 
     /**

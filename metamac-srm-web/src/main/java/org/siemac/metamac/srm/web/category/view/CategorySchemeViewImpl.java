@@ -533,7 +533,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         commentsForm.setValue(CategorySchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(categorySchemeDto.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(categorySchemeDto.getAnnotations(), categorySchemeDto.getMaintainer());
+        annotationsPanel.setAnnotations(categorySchemeDto.getAnnotations(), categorySchemeDto);
     }
 
     public void setCategorySchemeEditionMode(CategorySchemeMetamacDto categorySchemeDto) {
@@ -587,7 +587,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         commentsEditionForm.setValue(CategorySchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(categorySchemeDto.getComment()));
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(categorySchemeDto.getAnnotations(), categorySchemeDto.getMaintainer());
+        annotationsEditionPanel.setAnnotations(categorySchemeDto.getAnnotations(), categorySchemeDto);
     }
 
     @Override

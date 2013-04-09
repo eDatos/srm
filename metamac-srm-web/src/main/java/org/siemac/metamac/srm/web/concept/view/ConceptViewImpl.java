@@ -525,7 +525,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         commentsForm.setValue(ConceptDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptDto.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(conceptDto.getAnnotations(), conceptSchemeMetamacDto.getMaintainer());
+        annotationsPanel.setAnnotations(conceptDto.getAnnotations(), conceptSchemeMetamacDto);
     }
 
     private void setConceptEditionMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
@@ -587,7 +587,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         commentsEditionForm.setValue(ConceptDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptDto.getComment()));
 
         // ANNOTATIONS
-        annotationsEditionPanel.setAnnotations(conceptDto.getAnnotations(), conceptSchemeMetamacDto.getMaintainer());
+        annotationsEditionPanel.setAnnotations(conceptDto.getAnnotations(), conceptSchemeMetamacDto);
     }
 
     private ConceptMetamacDto getConceptDto() {

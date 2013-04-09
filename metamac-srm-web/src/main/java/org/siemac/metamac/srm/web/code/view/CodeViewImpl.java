@@ -332,7 +332,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         commentsForm.setValue(CodeDS.COMMENTS, RecordUtils.getInternationalStringRecord(codeDto.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(codeDto.getAnnotations(), codelistMetamacDto.getMaintainer());
+        annotationsPanel.setAnnotations(codeDto.getAnnotations(), codelistMetamacDto);
     }
 
     private void setCodeEditionMode(CodeMetamacDto codeDto) {
@@ -355,7 +355,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         commentsEditionForm.setValue(CodeDS.COMMENTS, RecordUtils.getInternationalStringRecord(codeDto.getComment()));
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(codeDto.getAnnotations(), codelistMetamacDto.getMaintainer());
+        annotationsEditionPanel.setAnnotations(codeDto.getAnnotations(), codelistMetamacDto);
     }
 
     private CodeMetamacDto getCodeDto() {

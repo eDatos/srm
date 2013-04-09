@@ -680,7 +680,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         commentsForm.setValue(OrganisationSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(organisationSchemeDto.getAnnotations(), organisationSchemeDto.getMaintainer());
+        annotationsPanel.setAnnotations(organisationSchemeDto.getAnnotations(), organisationSchemeDto);
     }
 
     public void setOrganisationSchemeEditionMode(OrganisationSchemeMetamacDto organisationSchemeDto) {
@@ -736,7 +736,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         commentsEditionForm.setValue(OrganisationSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getComment()));
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(organisationSchemeDto.getAnnotations(), organisationSchemeDto.getMaintainer());
+        annotationsEditionPanel.setAnnotations(organisationSchemeDto.getAnnotations(), organisationSchemeDto);
     }
 
     public OrganisationSchemeMetamacDto getOrganisationSchemeDto() {

@@ -492,7 +492,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         commentsForm.setValue(OrganisationDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationDto.getComment()));
 
         // Annotations
-        annotationsPanel.setAnnotations(organisationDto.getAnnotations(), organisationSchemeMetamacDto.getMaintainer());
+        annotationsPanel.setAnnotations(organisationDto.getAnnotations(), organisationSchemeMetamacDto);
     }
 
     private void setOrganisationEditionMode(OrganisationMetamacDto organisationDto) {
@@ -514,7 +514,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         commentsEditionForm.setValue(OrganisationDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationDto.getComment()));
 
         // Annotations
-        annotationsEditionPanel.setAnnotations(organisationDto.getAnnotations(), organisationSchemeMetamacDto.getMaintainer());
+        annotationsEditionPanel.setAnnotations(organisationDto.getAnnotations(), organisationSchemeMetamacDto);
     }
 
     private OrganisationMetamacDto getOrganisationDto() {

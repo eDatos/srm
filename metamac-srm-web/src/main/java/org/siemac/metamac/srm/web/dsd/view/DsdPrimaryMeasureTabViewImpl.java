@@ -272,7 +272,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         }
 
         // Annotations
-        viewAnnotationsPanel.setAnnotations(componentDto.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
+        viewAnnotationsPanel.setAnnotations(componentDto.getAnnotations(), dataStructureDefinitionMetamacDto);
     }
 
     private void setPrimaryMeasureEditionMode(ComponentDto componentDto) {
@@ -325,7 +325,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         facetEditionForm.clearErrors(true);
 
         // Annotations
-        editionAnnotationsPanel.setAnnotations(componentDto.getAnnotations(), dataStructureDefinitionMetamacDto.getMaintainer());
+        editionAnnotationsPanel.setAnnotations(componentDto.getAnnotations(), dataStructureDefinitionMetamacDto);
     }
 
     public ComponentDto getDsdPrimaryMeasure() {

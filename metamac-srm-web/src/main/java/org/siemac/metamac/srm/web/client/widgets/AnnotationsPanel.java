@@ -18,8 +18,8 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.utils.UrlUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.MaintainableArtefactDto;
 import com.google.gwt.resources.client.ImageResource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
@@ -50,19 +50,19 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class AnnotationsPanel extends VLayout {
 
-    private static String       REMOVE_FIELD_NAME = "remove-field";
+    private static String           REMOVE_FIELD_NAME = "remove-field";
 
-    private AnnotationsListGrid listGrid;
-    private DynamicForm         form;
-    private SelectItem          selectItem;
-    private boolean             translationsShowed;
+    private AnnotationsListGrid     listGrid;
+    private DynamicForm             form;
+    private SelectItem              selectItem;
+    private boolean                 translationsShowed;
 
-    private boolean             viewMode;
+    private boolean                 viewMode;
 
-    private Img                 annotationImg;
-    private Img                 addAnnotationImg;
+    private Img                     annotationImg;
+    private Img                     addAnnotationImg;
 
-    private RelatedResourceDto  maintainer;
+    private MaintainableArtefactDto maintainableArtefactDto;
 
     public AnnotationsPanel(boolean viewMode) {
         super();
@@ -229,8 +229,8 @@ public class AnnotationsPanel extends VLayout {
         addMember(listGrid);
     }
 
-    public void setAnnotations(Set<AnnotationDto> annotations, RelatedResourceDto maintainer) {
-        this.maintainer = maintainer;
+    public void setAnnotations(Set<AnnotationDto> annotations, MaintainableArtefactDto maintainableArtefactDto) {
+        this.maintainableArtefactDto = maintainableArtefactDto;
 
         // Clear annotations
         listGrid.selectAllRecords();
@@ -249,7 +249,7 @@ public class AnnotationsPanel extends VLayout {
         }
 
         // Show/hide Add and Remove icons
-        setCanAddOrRemoveAnnotations(viewMode, maintainer);
+        setCanAddOrRemoveAnnotations(viewMode, maintainableArtefactDto);
     }
 
     public Set<AnnotationDto> getAnnotations() {
@@ -285,11 +285,11 @@ public class AnnotationsPanel extends VLayout {
         listGrid.redraw();
     }
 
-    private void setCanAddOrRemoveAnnotations(boolean viewMode, RelatedResourceDto maintainer) {
+    private void setCanAddOrRemoveAnnotations(boolean viewMode, MaintainableArtefactDto maintainableArtefactDto) {
         annotationImg.hide();
         addAnnotationImg.hide();
 
-        if (!viewMode && CommonUtils.isDefaultMaintainer(maintainer)) {
+        if (!viewMode && CommonUtils.canSdmxMetadataAndStructureBeModified(maintainableArtefactDto)) {
             // Annotations can be created: edition mode is selected and the maintainer is the default one
             addAnnotationImg.show();
             listGrid.showField(REMOVE_FIELD_NAME);
@@ -314,7 +314,7 @@ public class AnnotationsPanel extends VLayout {
                 // - do not edit the URL
                 // - do not edit the text value if it is marked as unmodifiable
 
-                if (!CommonUtils.isDefaultMaintainer(maintainer)) {
+                if (!CommonUtils.canSdmxMetadataAndStructureBeModified(maintainableArtefactDto)) {
                     String fieldName = listGrid.getField(colNum) != null ? listGrid.getField(colNum).getName() : null;
 
                     // URL cell: never update annotations URL if the annotation maintainer is not the default one
