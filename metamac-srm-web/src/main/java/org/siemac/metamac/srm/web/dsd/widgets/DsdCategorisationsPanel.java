@@ -32,7 +32,7 @@ public class DsdCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!DsdClientSecurityUtils.canDeleteCategorisationForDataStructureDefinition(procStatus, operationCode, categorisationRecord.getMaintainer())) {
+                if (!DsdClientSecurityUtils.canDeleteCategorisationForDataStructureDefinition(procStatus, operationCode, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }
