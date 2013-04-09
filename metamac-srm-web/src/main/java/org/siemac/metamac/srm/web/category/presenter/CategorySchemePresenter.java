@@ -28,6 +28,8 @@ import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAc
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
+import org.siemac.metamac.srm.web.shared.category.CreateCategorySchemeTemporalVersionAction;
+import org.siemac.metamac.srm.web.shared.category.CreateCategorySchemeTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
@@ -106,6 +108,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     public interface CategorySchemeView extends View, HasUiHandlers<CategorySchemeUiHandlers> {
 
         void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto);
+        void setCategorySchemeAndStartEdition(CategorySchemeMetamacDto categorySchemeMetamacDto);
         void setCategorySchemeVersions(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos);
         void setCategoryList(List<ItemHierarchyDto> categoryDtos);
 
@@ -229,9 +232,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                 ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSaved()), MessageTypeEnum.SUCCESS);
                 getView().setCategoryScheme(categorySchemeMetamacDto);
 
-                // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(categorySchemeMetamacDto.getUrn());
-                placeManager.updateHistory(placeRequest, true);
+                updateUrl();
             }
         });
     }
@@ -353,9 +354,27 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                 categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
                 retrieveCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
 
-                // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(categorySchemeMetamacDto.getUrn());
-                placeManager.updateHistory(placeRequest, true);
+                updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void createTemporalVersion(String urn) {
+        dispatcher.execute(new CreateCategorySchemeTemporalVersionAction(urn), new WaitingAsyncCallback<CreateCategorySchemeTemporalVersionResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorEditingPublishedResource()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CreateCategorySchemeTemporalVersionResult result) {
+                CategorySchemePresenter.this.categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
+                getView().setCategorySchemeAndStartEdition(result.getCategorySchemeMetamacDto());
+                retrieveCategoryListByScheme(result.getCategorySchemeMetamacDto().getUrn());
+                retrieveCategorySchemeVersions(result.getCategorySchemeMetamacDto().getUrn());
+
+                updateUrl();
             }
         });
     }
@@ -489,5 +508,10 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         if (!StringUtils.isBlank(urn)) {
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategoryPlaceRequest(urn));
         }
+    }
+
+    private void updateUrl() {
+        PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(categorySchemeMetamacDto.getUrn());
+        placeManager.updateHistory(placeRequest, true);
     }
 }

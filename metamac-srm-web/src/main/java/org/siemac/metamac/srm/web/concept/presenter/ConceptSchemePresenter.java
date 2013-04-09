@@ -182,8 +182,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 setConceptScheme(result.getSavedConceptSchemeDto());
 
                 // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(conceptSchemeDto.getUrn());
-                placeManager.updateHistory(placeRequest, true);
+                updateUrl();
             }
         });
     }

@@ -10,11 +10,19 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
     public CategorySchemeMainFormLayout() {
     }
 
-    public CategorySchemeMainFormLayout(boolean canEdit) {
+    public void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        super.updatePublishSection(categorySchemeMetamacDto.getLifeCycle().getProcStatus(), categorySchemeMetamacDto);
+        setCanEdit(categorySchemeMetamacDto);
     }
 
-    public void updatePublishSection(CategorySchemeMetamacDto categorySchemeMetamacDto) {
-        super.updatePublishSection(categorySchemeMetamacDto.getLifeCycle().getProcStatus(), categorySchemeMetamacDto);
+    private void setCanEdit(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        boolean canEdit = false;
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+            canEdit = CategoriesClientSecurityUtils.canCreateCategorySchemeTemporalVersion();
+        } else {
+            canEdit = CategoriesClientSecurityUtils.canUpdateCategoryScheme(status);
+        }
+        super.setCanEdit(canEdit);
     }
 
     @Override

@@ -21,5 +21,5 @@ public interface CategorySchemeUiHandlers extends BaseCategoryUiHandlers {
     void publishInternally(String urn, ProcStatusEnum currentProcStatus);
     void publishExternally(String urn, ProcStatusEnum currentProcStatus);
     void versioning(String urn, VersionTypeEnum versionType);
-
+    void createTemporalVersion(String urn);
 }

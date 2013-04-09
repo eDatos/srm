@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.category.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
-import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.category.utils.CategoriesFormUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
@@ -29,7 +27,6 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
@@ -207,10 +204,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = categorySchemeDto.getLifeCycle().getProcStatus();
-                if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
-                    // Create a new version
-                    final InformationWindow window = new InformationWindow(getMessages().categorySchemeEditionInfo(), getMessages().categorySchemeEditionInfoDetailedMessage());
-                    window.show();
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                    // If the scheme is published, create a temporal version
+                    getUiHandlers().createTemporalVersion(categorySchemeDto.getUrn());
                 } else {
                     // Default behavior
                     setEditionMode();
@@ -270,17 +266,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public void onClick(ClickEvent event) {
-                final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
-                versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (versionWindow.validateForm()) {
-                            getUiHandlers().versioning(categorySchemeDto.getUrn(), versionWindow.getSelectedVersion());
-                            versionWindow.destroy();
-                        }
-                    }
-                });
+                versionCategoryScheme();
             }
         });
         mainFormLayout.getCancelValidity().addClickHandler(new ClickHandler() {
@@ -288,6 +274,13 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().cancelValidity(categorySchemeDto.getUrn());
+            }
+        });
+        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                versionCategoryScheme();
             }
         });
     }
@@ -460,17 +453,21 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(categorySchemeDto));
 
         // Security
-        ProcStatusEnum procStatus = categorySchemeDto.getLifeCycle().getProcStatus();
-        mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategoryScheme(procStatus));
-        mainFormLayout.updatePublishSection(categorySchemeDto);
+        mainFormLayout.setCategoryScheme(categorySchemeDto);
         mainFormLayout.setViewMode();
-        categorisationsPanel.updateVisibility(procStatus);
+        categorisationsPanel.updateVisibility(categorySchemeDto.getLifeCycle().getProcStatus());
 
         setCategorySchemeViewMode(categorySchemeDto);
         setCategorySchemeEditionMode(categorySchemeDto);
 
         // Update category scheme in tree grid
         categoriesTreeGrid.updateItemScheme(categorySchemeDto);
+    }
+
+    @Override
+    public void setCategorySchemeAndStartEdition(CategorySchemeMetamacDto categoryScheme) {
+        setCategoryScheme(categoryScheme);
+        mainFormLayout.setEditionMode();
     }
 
     @Override
@@ -620,6 +617,20 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         categorySchemeDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return categorySchemeDto;
+    }
+
+    private void versionCategoryScheme() {
+        final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
+        versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                if (versionWindow.validateForm()) {
+                    getUiHandlers().versioning(categorySchemeDto.getUrn(), versionWindow.getSelectedVersion());
+                    versionWindow.destroy();
+                }
+            }
+        });
     }
 
     // ------------------------------------------------------------------------------------------------------------
