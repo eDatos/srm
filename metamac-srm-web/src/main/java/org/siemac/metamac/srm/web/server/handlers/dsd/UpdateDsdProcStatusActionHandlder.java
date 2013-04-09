@@ -51,11 +51,11 @@ public class UpdateDsdProcStatusActionHandlder extends SecurityActionHandler<Upd
                             dsdToUpdateStatus.getUrn());
                 }
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.publishDataStructureDefinitionInternally(ServiceContextHolder.getCurrentServiceContext(), dsdToUpdateStatus.getUrn(), true); // FIXME
-                                                                                                                                                                                                      // Set
-                                                                                                                                                                                                      // the
-                                                                                                                                                                                                      // forceFinal
-                                                                                                                                                                                                      // parameter
+                dataStructureDefinitionMetamacDto = srmCoreServiceFacade.publishDataStructureDefinitionInternally(ServiceContextHolder.getCurrentServiceContext(), dsdToUpdateStatus.getUrn(), false); // FIXME
+                                                                                                                                                                                                       // Set
+                                                                                                                                                                                                       // the
+                                                                                                                                                                                                       // forceFinal
+                                                                                                                                                                                                       // parameter
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 // Check that the associated statistical operation is externally published
                 if (dsdToUpdateStatus.getStatisticalOperation() != null) {
