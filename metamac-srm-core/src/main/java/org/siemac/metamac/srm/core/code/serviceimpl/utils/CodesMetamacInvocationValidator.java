@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesInvocationValidator;
@@ -60,6 +61,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
     public static void checkCodelist(CodelistVersionMetamac codelistVersion, boolean creating, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, exceptions);
+        ValidationUtils.checkInternationalStringMaximumLength(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH, exceptions);
         ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getDescriptionSource(), ServiceExceptionParameters.CODELIST_DESCRIPTION_SOURCE, exceptions);
         if (codelistVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
@@ -197,6 +199,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             ValidationUtils.checkMetadataEmpty(code.getShortName(), ServiceExceptionParameters.CODE_SHORT_NAME, exceptions);
         } else {
             ValidationUtils.checkMetadataOptionalIsValid(code.getShortName(), ServiceExceptionParameters.CODE_SHORT_NAME, exceptions);
+            ValidationUtils.checkInternationalStringMaximumLength(code.getShortName(), ServiceExceptionParameters.CODE_SHORT_NAME, SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH, exceptions);
         }
 
         // common metadata in sdmx are checked in Sdmx module
@@ -438,6 +441,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
 
         ValidationUtils.checkMetadataRequired(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, exceptions);
+        ValidationUtils.checkInternationalStringMaximumLength(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH, exceptions);
 
         // Check dates: validFrom value must be lower than validTo value
         ValidationUtils.checkDateTimeBeforeDateTime(variable.getValidFrom(), variable.getValidTo(), ServiceExceptionParameters.VARIABLE_VALID_TO, exceptions);
@@ -569,6 +573,8 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             SemanticIdentifierValidationUtils.checkVariableElementSemanticIdentifier(variableElement, exceptions);
         }
         ValidationUtils.checkMetadataRequired(variableElement.getShortName(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME, exceptions);
+        ValidationUtils.checkInternationalStringMaximumLength(variableElement.getShortName(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME, SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH,
+                exceptions);
 
         // Check dates: validFrom value must be lower than validTo value
         ValidationUtils.checkDateTimeBeforeDateTime(variableElement.getValidFrom(), variableElement.getValidTo(), ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO, exceptions);

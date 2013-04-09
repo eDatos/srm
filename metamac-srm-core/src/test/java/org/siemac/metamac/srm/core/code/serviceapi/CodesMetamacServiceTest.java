@@ -20,6 +20,7 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableFamily;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -4933,6 +4934,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    public void testCreateVariableErrorMetadataMaximumLength() throws Exception {
+        Variable variable = CodesMetamacDoMocks.mockVariable();
+        variable.addFamily(codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1));
+        variable.getShortName().getLocalisedLabelEntity("es").setLabel(MetamacMocks.mockString(1000));
+        try {
+            codesService.createVariable(getServiceContextAdministrador(), variable);
+            fail("metadata incorrect length");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_MAXIMUM_LENGTH, 2,
+                    new Serializable[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME, Integer.valueOf(SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH)}, e.getExceptionItems().get(0));
+        }
+    }
+
     @Override
     @Test
     public void testUpdateVariable() throws Exception {
@@ -5373,6 +5389,22 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(1));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME}, e.getExceptionItems().get(2));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO}, e.getExceptionItems().get(3));
+        }
+    }
+
+    @Test
+    public void testCreateVariableElementErrorMetadataMaximumLength() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_2);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
+        variableElement.getShortName().getLocalisedLabelEntity("es").setLabel(MetamacMocks.mockString(1000));
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("metadata incorrect length");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_MAXIMUM_LENGTH, 2,
+                    new Serializable[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME, Integer.valueOf(SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH)}, e.getExceptionItems().get(0));
         }
     }
 

@@ -41,4 +41,7 @@ public class SrmConstants {
     public static final String             CSV_HEADER_LABEL                                          = "label";
     public static final String             CSV_HEADER_LEVEL                                          = "level";
     public static final String             CSV_HEADER_ORDER                                          = "order";
+
+    // Misc
+    public static final int                METADATA_SHORT_NAME_MAXIMUM_LENGTH                        = 100;
 }
