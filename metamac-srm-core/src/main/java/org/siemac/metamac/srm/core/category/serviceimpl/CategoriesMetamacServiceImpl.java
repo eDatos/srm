@@ -238,7 +238,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         categorySchemeVersion.setLifeCycleMetadata(BaseReplaceFromTemporalMetamac.replaceProductionAndDifussionLifeCycleMetadataFromTemporal(categorySchemeVersion.getLifeCycleMetadata(),
                 categorySchemeTemporalVersion.getLifeCycleMetadata()));
 
-        // Merge Metamac metadata of Item
+        // Merge metadata of Item
         Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(categorySchemeTemporalVersion.getItems());
         for (Item item : categorySchemeVersion.getItems()) {
             CategoryMetamac category = (CategoryMetamac) item;

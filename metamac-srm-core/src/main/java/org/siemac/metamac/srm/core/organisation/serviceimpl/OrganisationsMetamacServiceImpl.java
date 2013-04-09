@@ -2,18 +2,22 @@ package org.siemac.metamac.srm.core.organisation.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -33,6 +37,9 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
@@ -61,6 +68,9 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Autowired
     private SrmConfiguration                   srmConfiguration;
+
+    @Autowired
+    private InternationalStringRepository      internationalStringRepository;
 
     @Autowired
     @Qualifier("organisationVersioningCopyCallbackMetamac")
@@ -168,24 +178,72 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public OrganisationSchemeVersionMetamac versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        return createTemporalOrganisationScheme(ctx, urnToCopy, versionType, false);
+        return createVersionOfOrganisationScheme(ctx, urnToCopy, versionType, false);
     }
 
     @Override
     public OrganisationSchemeVersionMetamac createTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        return createTemporalOrganisationScheme(ctx, urnToCopy, null, true);
+        return createVersionOfOrganisationScheme(ctx, urnToCopy, null, true);
     }
 
-    private OrganisationSchemeVersionMetamac createTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
-        // Validation
-        OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, isTemporal, null, null);
-        checkOrganisationSchemeToVersioning(ctx, urnToCopy);
+    @Override
+    public OrganisationSchemeVersionMetamac createVersionFromTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
-        // Versioning
-        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal,
-                organisationVersioningCopyCallback);
+        OrganisationSchemeVersionMetamac organisationSchemeVersionTemporal = retrieveOrganisationSchemeByUrn(ctx, urnToCopy);
 
-        return organisationSchemeNewVersion;
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(organisationSchemeVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
+        }
+
+        // Retrieve the original artifact
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
+
+        // Set the new version in the temporal artifact
+        organisationSchemeVersionTemporal.getMaintainableArtefact().setVersionLogic(
+                SdmxVersionUtils.createNextVersion(organisationSchemeVersion.getMaintainableArtefact().getVersionLogic(), organisationSchemeVersion.getItemScheme().getVersionPattern(),
+                        versionTypeEnum));
+
+        organisationSchemeVersionTemporal.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE); // For calculates new urns
+        organisationSchemeVersionTemporal = (OrganisationSchemeVersionMetamac) organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersionTemporal);
+
+        // Set null replacedBy in the original entity
+        organisationSchemeVersion.getMaintainableArtefact().setReplacedByVersion(null);
+
+        return organisationSchemeVersionTemporal;
+    }
+
+    @Override
+    public OrganisationSchemeVersionMetamac mergeTemporalVersion(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeTemporalVersion) throws MetamacException {
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(organisationSchemeTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
+        }
+        SrmValidationUtils.checkArtefactProcStatus(organisationSchemeTemporalVersion.getLifeCycleMetadata(), organisationSchemeTemporalVersion.getMaintainableArtefact().getUrn(),
+                ProcStatusEnum.DIFFUSION_VALIDATION);
+
+        // Load original version
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx,
+                GeneratorUrnUtils.makeUrnFromTemporal(organisationSchemeTemporalVersion.getMaintainableArtefact().getUrn()));
+
+        // Inherit InternationalStrings
+        BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItemSchemeVersionWithoutItems(organisationSchemeVersion, organisationSchemeTemporalVersion,
+                internationalStringRepository);
+
+        // Merge metadata of Item
+        Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(organisationSchemeVersion.getItems());
+        for (Item item : organisationSchemeVersion.getItems()) {
+            OrganisationMetamac organisation = (OrganisationMetamac) item;
+            OrganisationMetamac organisationTemp = (OrganisationMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+
+            // Inherit InternationalStrings
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(organisation, organisationTemp, internationalStringRepository);
+        }
+
+        // Delete temporal version
+        deleteOrganisationScheme(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn());
+
+        return organisationSchemeVersion;
     }
 
     @Override
@@ -403,4 +461,17 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     private void checkOrganisationSchemeCanBeModified(OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(organisationSchemeVersion.getLifeCycleMetadata(), organisationSchemeVersion.getMaintainableArtefact().getUrn());
     }
+
+    private OrganisationSchemeVersionMetamac createVersionOfOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, isTemporal, null, null);
+        checkOrganisationSchemeToVersioning(ctx, urnToCopy);
+
+        // Versioning
+        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = (OrganisationSchemeVersionMetamac) organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal,
+                organisationVersioningCopyCallback);
+
+        return organisationSchemeNewVersion;
+    }
+
 }

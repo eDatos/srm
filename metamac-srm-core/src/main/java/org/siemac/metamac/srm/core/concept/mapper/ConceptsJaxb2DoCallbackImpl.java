@@ -62,9 +62,9 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         if (previousMetamac != null) {
             // Inherit translations (for all international strings)
             targetMetamac.getMaintainableArtefact().setName(
-                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
+                    BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
-                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
+                    BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setType(previousMetamac.getType());
@@ -95,9 +95,9 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         if (previousMetamac != null) {
             // Inherit translations (for all international strings)
             targetMetamac.getNameableArtefact().setName(
-                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
+                    BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getNameableArtefact().getName(), targetMetamac.getNameableArtefact().getName())); // Name
             targetMetamac.getNameableArtefact().setDescription(
-                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
+                    BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setPluralName(BaseVersioningCopyUtils.copy(previousMetamac.getPluralName()));

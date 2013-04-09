@@ -1472,6 +1472,37 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Override
     @Test
+    public void testCreateVersionFromTemporalOrganisationScheme() throws Exception {
+        String urn = ORGANISATION_SCHEME_3_V1;
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersionTemporal = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
+        OrganisationSchemeVersionMetamac organisationSchemeNewVersion = organisationsService.createVersionFromTemporalOrganisationScheme(getServiceContextAdministrador(),
+                organisationSchemeVersionTemporal.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
+
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME03(" + versionExpected + ")";
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DRAFT, organisationSchemeNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, organisationSchemeNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, organisationSchemeNewVersion.getMaintainableArtefact().getUrn());
+
+            assertEquals(null, organisationSchemeNewVersion.getMaintainableArtefact().getReplacedByVersion());
+            assertTrue(organisationSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
+            assertFalse(organisationSchemeNewVersion.getMaintainableArtefact().getLatestFinal());
+            assertFalse(organisationSchemeNewVersion.getMaintainableArtefact().getLatestPublic());
+        }
+    }
+
+    @Override
+    public void testMergeTemporalVersion() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    @Test
     public void testEndOrganisationSchemeValidity() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.endOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
 

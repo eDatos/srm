@@ -143,9 +143,9 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
         // Fill metadata heritable
         if (previousMetamac != null) {
             targetMetamac.getMaintainableArtefact().setName(
-                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
+                    BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getMaintainableArtefact().getName(), targetMetamac.getMaintainableArtefact().getName())); // Name
             targetMetamac.getMaintainableArtefact().setDescription(
-                    BaseJaxb2DoInheritUtils.inheritInternationStringAsNew(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
+                    BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setStatisticalOperation(BaseVersioningCopyUtils.copy(previousMetamac.getStatisticalOperation()));

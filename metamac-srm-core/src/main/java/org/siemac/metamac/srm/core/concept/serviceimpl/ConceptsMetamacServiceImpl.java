@@ -290,7 +290,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion.setRelatedOperation(BaseReplaceFromTemporalMetamac.replaceExternalItemFromTemporal(conceptSchemeVersion.getRelatedOperation(),
                 conceptSchemeTemporalVersion.getRelatedOperation(), internationalStringRepository, externalItemRepository));
 
-        // Merge Metamac metadata of Item
+        // Merge metadata of Item
         Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(conceptSchemeTemporalVersion.getItems());
         for (Item item : conceptSchemeVersion.getItems()) {
             ConceptMetamac concept = (ConceptMetamac) item;
@@ -299,39 +299,40 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             // Inherit InternationalStrings
             BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(concept, conceptTemp, internationalStringRepository);
 
+            // Metamac Metadata
             // Plural Name
             if (!BaseMergeAssert.assertEqualsInternationalString(concept.getPluralName(), conceptTemp.getPluralName())) {
-                concept.setPluralName(BaseMergeAssert.mergeUpdateInternationalString(concept.getPluralName(), conceptTemp.getPluralName(), true, internationalStringRepository));
+                concept.setPluralName(BaseMergeAssert.mergeUpdateInternationalString(concept.getPluralName(), conceptTemp.getPluralName(), internationalStringRepository));
             }
 
             // Acronym
             if (!BaseMergeAssert.assertEqualsInternationalString(concept.getAcronym(), conceptTemp.getAcronym())) {
-                concept.setAcronym(BaseMergeAssert.mergeUpdateInternationalString(concept.getAcronym(), conceptTemp.getAcronym(), true, internationalStringRepository));
+                concept.setAcronym(BaseMergeAssert.mergeUpdateInternationalString(concept.getAcronym(), conceptTemp.getAcronym(), internationalStringRepository));
             }
 
             // Description Source
             if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDescriptionSource(), conceptTemp.getDescriptionSource())) {
-                concept.setDescriptionSource(BaseMergeAssert.mergeUpdateInternationalString(concept.getDescriptionSource(), conceptTemp.getDescriptionSource(), true, internationalStringRepository));
+                concept.setDescriptionSource(BaseMergeAssert.mergeUpdateInternationalString(concept.getDescriptionSource(), conceptTemp.getDescriptionSource(), internationalStringRepository));
             }
 
             // Context
             if (!BaseMergeAssert.assertEqualsInternationalString(concept.getContext(), conceptTemp.getContext())) {
-                concept.setContext(BaseMergeAssert.mergeUpdateInternationalString(concept.getContext(), conceptTemp.getContext(), true, internationalStringRepository));
+                concept.setContext(BaseMergeAssert.mergeUpdateInternationalString(concept.getContext(), conceptTemp.getContext(), internationalStringRepository));
             }
 
             // Doc Method
             if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDocMethod(), conceptTemp.getDocMethod())) {
-                concept.setDocMethod(BaseMergeAssert.mergeUpdateInternationalString(concept.getDocMethod(), conceptTemp.getDocMethod(), true, internationalStringRepository));
+                concept.setDocMethod(BaseMergeAssert.mergeUpdateInternationalString(concept.getDocMethod(), conceptTemp.getDocMethod(), internationalStringRepository));
             }
 
             // Derivation
             if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDerivation(), conceptTemp.getDerivation())) {
-                concept.setDerivation(BaseMergeAssert.mergeUpdateInternationalString(concept.getDerivation(), conceptTemp.getDerivation(), true, internationalStringRepository));
+                concept.setDerivation(BaseMergeAssert.mergeUpdateInternationalString(concept.getDerivation(), conceptTemp.getDerivation(), internationalStringRepository));
             }
 
             // Legal Acts
             if (!BaseMergeAssert.assertEqualsInternationalString(concept.getLegalActs(), conceptTemp.getLegalActs())) {
-                concept.setLegalActs(BaseMergeAssert.mergeUpdateInternationalString(concept.getLegalActs(), conceptTemp.getLegalActs(), true, internationalStringRepository));
+                concept.setLegalActs(BaseMergeAssert.mergeUpdateInternationalString(concept.getLegalActs(), conceptTemp.getLegalActs(), internationalStringRepository));
             }
 
             concept.setSdmxRelatedArtefact(conceptTemp.getSdmxRelatedArtefact());

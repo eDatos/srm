@@ -76,6 +76,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
@@ -335,7 +336,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 codelistTemporalVersion.getLifeCycleMetadata()));
 
         // ShortName
-        codelistVersion.setShortName(BaseVersioningCopyUtils.copy(codelistTemporalVersion.getShortName()));
+        if (!BaseMergeAssert.assertEqualsInternationalString(codelistVersion.getShortName(), codelistTemporalVersion.getShortName())) {
+            codelistVersion.setShortName(BaseMergeAssert.mergeUpdateInternationalString(codelistVersion.getShortName(), codelistTemporalVersion.getShortName(), internationalStringRepository));
+        }
         // IsRecommended
         codelistVersion.setIsRecommended(codelistTemporalVersion.getIsRecommended());
         // AccesType
@@ -345,6 +348,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Variable
         codelistVersion.setVariable(codelistTemporalVersion.getVariable());
 
+        // Merge metadata of Item
         Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(codelistTemporalVersion.getItems());
         for (Item item : codelistVersion.getItems()) {
             CodeMetamac code = (CodeMetamac) item;
@@ -353,8 +357,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             // Inherit InternationalStrings
             BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(code, codeTemp, internationalStringRepository);
 
+            // Metamac Metadata
             // ShortName
-            code.setShortName(BaseVersioningCopyUtils.copy(codeTemp.getShortName()));
+            if (!BaseMergeAssert.assertEqualsInternationalString(code.getShortName(), codeTemp.getShortName())) {
+                code.setShortName(BaseMergeAssert.mergeUpdateInternationalString(code.getShortName(), codeTemp.getShortName(), internationalStringRepository));
+            }
 
             // VariableElement
             code.setVariableElement(codeTemp.getVariableElement());
