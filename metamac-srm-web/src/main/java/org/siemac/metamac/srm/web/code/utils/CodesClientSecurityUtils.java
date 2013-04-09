@@ -7,7 +7,7 @@ import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 
 public class CodesClientSecurityUtils {
 
@@ -65,9 +65,10 @@ public class CodesClientSecurityUtils {
         return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, RelatedResourceDto categorisationMaintainer) {
-        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.isDefaultMaintainer(categorisationMaintainer);
+    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, CategorisationDto categorisationDto) {
+        // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is the
+        // temporal one
+        return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
     public static boolean canAddCodelistToCodelistFamily() {
@@ -81,9 +82,9 @@ public class CodesClientSecurityUtils {
     // CODES
 
     public static boolean canCreateCode(CodelistMetamacDto codelistMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
+        // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
-                && CommonUtils.isDefaultMaintainer(codelistMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistMetamacDto);
     }
 
     public static boolean canUpdateCode(ProcStatusEnum procStatus) {
@@ -91,15 +92,15 @@ public class CodesClientSecurityUtils {
     }
 
     public static boolean canUpdateCodeParent(CodelistMetamacDto codelistMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
+        // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
-                && CommonUtils.isDefaultMaintainer(codelistMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistMetamacDto);
     }
 
     public static boolean canDeleteCode(CodelistMetamacDto codelistMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
+        // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
-                && CommonUtils.isDefaultMaintainer(codelistMetamacDto.getMaintainer());
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistMetamacDto);
     }
 
     public static boolean canUpdateCodeVariableElement(ProcStatusEnum procStatus) {

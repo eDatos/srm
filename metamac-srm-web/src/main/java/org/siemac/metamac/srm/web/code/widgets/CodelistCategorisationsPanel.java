@@ -28,7 +28,7 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!CodesClientSecurityUtils.canDeleteCategorisation(procStatus, categorisationRecord.getMaintainer())) {
+                if (!CodesClientSecurityUtils.canDeleteCategorisation(procStatus, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }
