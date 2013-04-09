@@ -26,12 +26,15 @@ import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.ent.domain.InternationalString;
+import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
@@ -1496,9 +1499,51 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Override
+    @Test
     public void testMergeTemporalVersion() throws Exception {
-        // TODO Auto-generated method stub
+        {
+            String urn = ORGANISATION_SCHEME_3_V1;
+            OrganisationSchemeVersionMetamac organisationSchemeVersionTemporal = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
 
+            // Change temporal version *********************
+
+            // Item scheme: Change Name
+            {
+                LocalisedString localisedString = new LocalisedString("fr", "its - text sample");
+                organisationSchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
+            }
+
+            // Item
+            {
+                OrganisationMetamac organisationTemporal = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(),
+                        GeneratorUrnUtils.makeUrnAsTemporal(ORGANISATION_SCHEME_3_V1_ORGANISATION_1));
+
+                LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
+                InternationalString internationalString = new InternationalString();
+                internationalString.addText(localisedString);
+                organisationTemporal.getNameableArtefact().setName(internationalString);
+            }
+
+            // Merge
+            organisationSchemeVersionTemporal = organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), organisationSchemeVersionTemporal
+                    .getMaintainableArtefact().getUrn());
+            organisationSchemeVersionTemporal = organisationsService.sendOrganisationSchemeToDiffusionValidation(getServiceContextAdministrador(), organisationSchemeVersionTemporal
+                    .getMaintainableArtefact().getUrn());
+            OrganisationSchemeVersionMetamac organisationSchemeVersionMetamac = organisationsService.mergeTemporalVersion(getServiceContextAdministrador(), organisationSchemeVersionTemporal);
+
+            // Assert **************************************
+
+            // Item Scheme
+            assertEquals(3, organisationSchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
+            assertEquals("its - text sample", organisationSchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+
+            // Item
+            {
+                OrganisationMetamac organisationTemporal = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_3_V1_ORGANISATION_1);
+                assertEquals(1, organisationTemporal.getNameableArtefact().getName().getTexts().size());
+                assertEquals("it - text sample", organisationTemporal.getNameableArtefact().getName().getLocalisedLabel("fr"));
+            }
+        }
     }
 
     @Override

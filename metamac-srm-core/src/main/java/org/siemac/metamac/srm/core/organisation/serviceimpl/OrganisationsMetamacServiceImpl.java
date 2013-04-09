@@ -231,7 +231,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
                 internationalStringRepository);
 
         // Merge metadata of Item
-        Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(organisationSchemeVersion.getItems());
+        Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(organisationSchemeTemporalVersion.getItems());
         for (Item item : organisationSchemeVersion.getItems()) {
             OrganisationMetamac organisation = (OrganisationMetamac) item;
             OrganisationMetamac organisationTemp = (OrganisationMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
@@ -241,7 +241,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         }
 
         // Delete temporal version
-        deleteOrganisationScheme(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn());
+        deleteOrganisationScheme(ctx, organisationSchemeTemporalVersion.getMaintainableArtefact().getUrn());
 
         return organisationSchemeVersion;
     }
