@@ -42,11 +42,6 @@
             <!-- Does not include in classpath -->
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.siemac.metamac</groupId>
-            <artifactId>metamac-rest-common</artifactId>
-            <version>${metamac-rest-common.version}</version>
-        </dependency>
         
         <!-- SDMX -->
         <dependency>
