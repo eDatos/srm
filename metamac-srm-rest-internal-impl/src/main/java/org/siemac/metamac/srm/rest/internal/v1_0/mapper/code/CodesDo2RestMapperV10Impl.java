@@ -19,6 +19,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceTo;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -100,6 +101,8 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
         target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
+        target.setReplacedBy(toCodelistReplacedBy(source));
+        target.setReplaceTo(toCodelistReplaceTo(source));
     }
 
     @Override
@@ -278,5 +281,30 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private Resource toCodelistReplacedBy(CodelistVersionMetamac source) {
+        if (source.getReplacedByCodelist() == null || !canResourceBeProvidedByApi(source.getReplacedByCodelist())) {
+            return null;
+        }
+        return toResource(source.getReplacedByCodelist());
+    }
+
+    private ReplaceTo toCodelistReplaceTo(CodelistVersionMetamac source) {
+        ReplaceTo target = null;
+        for (CodelistVersionMetamac replaceToCodelist : source.getReplaceToCodelists()) {
+            if (canResourceBeProvidedByApi(replaceToCodelist)) { // note: this check is not necessary really, because in core is checked. It is added to avoid future problems
+                if (target == null) {
+                    target = new ReplaceTo();
+
+                }
+                target.getReplaceTos().add(toResource(replaceToCodelist));
+            }
+        }
+        if (target != null) {
+            target.setKind(RestInternalConstants.KIND_CODELISTS);
+            target.setTotal(BigInteger.valueOf(target.getReplaceTos().size()));
+        }
+        return target;
     }
 }

@@ -135,8 +135,8 @@
     <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
     <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
     <sr:comment>
-        <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
     </sr:comment>
     <sr:shortName>
         <cdomain:text xml:lang="en">shortName-itemScheme1v01.000 in English</cdomain:text>
@@ -150,8 +150,8 @@
     <sr:family>
         <cdomain:id>family1</cdomain:id>
         <cdomain:title>
-            <cdomain:text xml:lang="es">name-family1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-family1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-family1 en Español</cdomain:text>
         </cdomain:title>
     </sr:family>
     <sr:variable>
@@ -161,6 +161,35 @@
             <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
         </cdomain:title>
     </sr:variable>
+    <sr:replacedBy kind="structuralResources#codelist">
+        <cdomain:id>codelistReplacedBy</cdomain:id>
+        <cdomain:urn>urn:codelistReplacedBy:01.000</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/codelistReplacedBy/01.000"/>
+        <cdomain:title>
+            <cdomain:text xml:lang="es">name-codelistReplacedByv01.000 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-codelistReplacedByv01.000 in English</cdomain:text>
+        </cdomain:title>
+    </sr:replacedBy>
+    <sr:replaceTo kind="structuralResources#codelists" total="2">
+        <sr:replaceTo kind="structuralResources#codelist">
+            <cdomain:id>codelistReplaceTo1</cdomain:id>
+            <cdomain:urn>urn:codelistReplaceTo1:01.000</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/codelistReplaceTo1/01.000"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="en">name-codelistReplaceTo1v01.000 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-codelistReplaceTo1v01.000 en Español</cdomain:text>
+            </cdomain:title>
+        </sr:replaceTo>
+        <sr:replaceTo kind="structuralResources#codelist">
+            <cdomain:id>codelistReplaceTo3</cdomain:id>
+            <cdomain:urn>urn:codelistReplaceTo3:02.000</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/codelistReplaceTo3/02.000"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="es">name-codelistReplaceTo3v02.000 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-codelistReplaceTo3v02.000 in English</cdomain:text>
+            </cdomain:title>
+        </sr:replaceTo>
+    </sr:replaceTo>
     <sr:accessType>PUBLIC</sr:accessType>
     <sr:defaultOrderVisualisation>defaultOrderVisualisation1</sr:defaultOrderVisualisation>
     <sr:defaultOpennessVisualisation>defaultOpennessVisualisation1</sr:defaultOpennessVisualisation>

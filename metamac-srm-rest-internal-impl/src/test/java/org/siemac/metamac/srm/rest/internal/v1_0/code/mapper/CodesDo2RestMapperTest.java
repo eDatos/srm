@@ -126,6 +126,16 @@ public class CodesDo2RestMapperTest {
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
         assertEquals("replaceTo", target.getReplaceToVersion());
         assertEquals("replacedBy", target.getReplacedByVersion());
+
+        assertEquals(RestInternalConstants.KIND_CODELIST, target.getReplacedBy().getKind());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragencyID1/codelistReplacedBy/01.000", target.getReplacedBy().getSelfLink().getHref());
+        assertEquals("urn:codelistReplacedBy:01.000", target.getReplacedBy().getUrn());
+
+        assertEquals(RestInternalConstants.KIND_CODELISTS, target.getReplaceTo().getKind());
+        assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
+        assertEquals("urn:codelistReplaceTo1:01.000", target.getReplaceTo().getReplaceTos().get(0).getUrn());
+        assertEquals("urn:codelistReplaceTo3:02.000", target.getReplaceTo().getReplaceTos().get(1).getUrn());
+
         assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
         assertEqualsDate(new DateTime(2009, 9, 1, 1, 1, 1, 1), target.getLifeCycle().getProductionValidationDate());
         assertEquals("production-user", target.getLifeCycle().getProductionValidationUser());
@@ -155,6 +165,20 @@ public class CodesDo2RestMapperTest {
 
         // Validate
         assertEquals("uriProviderDb", target.getUri());
+    }
+
+    @Test
+    public void testToCodelistReplacedByNotFinal() throws MetamacException {
+
+        CodelistVersionMetamac source = mockCodelist("agencyID1", "resourceID1", "01.123");
+        source.setReplacedByCodelist(mockCodelist("agencyID2", "codelistReplacedBy", "01.000"));
+        source.getReplacedByCodelist().getMaintainableArtefact().setFinalLogicClient(false);
+
+        // Transform
+        Codelist target = do2RestInternalMapper.toCodelist(source);
+
+        // Validate
+        assertEquals(null, target.getReplacedBy());
     }
 
     @Test

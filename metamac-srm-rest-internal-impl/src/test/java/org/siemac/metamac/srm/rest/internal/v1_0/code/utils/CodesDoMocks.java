@@ -23,6 +23,19 @@ public class CodesDoMocks {
     }
 
     public static CodelistVersionMetamac mockCodelistWithCodes(String agencyID, String resourceID, String version) {
-        return CodesMetamacDoMocks.mockCodelistWithCodesFixedValues(agencyID, resourceID, version);
+        CodelistVersionMetamac target = CodesMetamacDoMocks.mockCodelistWithCodesFixedValues(agencyID, resourceID, version);
+
+        target.setReplacedByCodelist(mockCodelist(agencyID, "codelistReplacedBy", "01.000"));
+
+        CodelistVersionMetamac codelistReplaceTo1 = mockCodelist(agencyID, "codelistReplaceTo1", "01.000");
+        codelistReplaceTo1.getMaintainableArtefact().setFinalLogicClient(true);
+        target.addReplaceToCodelist(codelistReplaceTo1);
+        CodelistVersionMetamac codelistReplaceTo2 = mockCodelist(agencyID, "codelistReplaceTo2", "01.000");
+        codelistReplaceTo2.getMaintainableArtefact().setFinalLogicClient(false);
+        target.addReplaceToCodelist(codelistReplaceTo2);
+        CodelistVersionMetamac codelistReplaceTo3 = mockCodelist(agencyID, "codelistReplaceTo3", "02.000");
+        codelistReplaceTo3.getMaintainableArtefact().setFinalLogicClient(true);
+        target.addReplaceToCodelist(codelistReplaceTo3);
+        return target;
     }
 }

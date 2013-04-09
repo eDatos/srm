@@ -122,6 +122,14 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         return identifiableArtefact.getUrnProvider();
     }
 
+    protected boolean canResourceBeProvidedByApi(MaintainableArtefact source) {
+        return source.getFinalLogicClient();
+    }
+
+    protected boolean canResourceBeProvidedByApi(ItemSchemeVersion source) {
+        return canResourceBeProvidedByApi(source.getMaintainableArtefact());
+    }
+
     protected Resource toResource(NameableArtefact source, String kind, ResourceLink selfLink) {
         if (source == null) {
             return null;
