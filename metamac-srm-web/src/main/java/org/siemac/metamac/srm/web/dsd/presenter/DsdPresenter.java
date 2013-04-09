@@ -193,8 +193,9 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
         if (!StringUtils.isBlank(dsdIdentifier)) {
             String dsdUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier);
-            retrieveDsd(dsdUrn);
-            retrieveDsdVersions(dsdUrn);
+
+            // The DSD should be loaded before loading the DSD versions
+            retrieveDsdAndVersions(dsdUrn);
         }
     }
 
@@ -222,7 +223,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         }
     }
 
-    private void retrieveDsd(String urn) {
+    private void retrieveDsdAndVersions(String urn) {
         dispatcher.execute(new GetDsdAction(urn), new WaitingAsyncCallback<GetDsdResult>() {
 
             @Override
@@ -232,6 +233,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
             @Override
             public void onWaitSuccess(GetDsdResult result) {
                 getView().setDsd(result.getDsd());
+                retrieveDsdVersions(result.getDsd().getUrn());
             }
         });
     }
