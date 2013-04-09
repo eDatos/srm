@@ -35,6 +35,8 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
+import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionAction;
+import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
@@ -108,6 +110,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     public interface ConceptSchemeView extends View, HasUiHandlers<ConceptSchemeUiHandlers> {
 
         void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
+        void setConceptSchemeAndStartEdition(ConceptSchemeMetamacDto conceptSchemeDto);
         void setConcepts(List<ItemHierarchyDto> itemHierarchyDtos);
         void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
         void setOperations(GetStatisticalOperationsResult result);
@@ -308,9 +311,27 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 retrieveConceptSchemeByUrn(conceptSchemeDto.getUrn());
 
-                // Update URL
-                PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(conceptSchemeDto.getUrn());
-                placeManager.updateHistory(placeRequest, true);
+                updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void createTemporalVersion(String urn) {
+        dispatcher.execute(new CreateConceptSchemeTemporalVersionAction(urn), new WaitingAsyncCallback<CreateConceptSchemeTemporalVersionResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorEditingPublishedResource()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CreateConceptSchemeTemporalVersionResult result) {
+                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeMetamacDto();
+                getView().setConceptSchemeAndStartEdition(result.getConceptSchemeMetamacDto());
+                retrieveConceptListByScheme(result.getConceptSchemeMetamacDto().getUrn());
+                retrieveConceptSchemeVersions(result.getConceptSchemeMetamacDto().getUrn());
+
+                updateUrl();
             }
         });
     }
@@ -511,5 +532,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         if (!StringUtils.isBlank(urn)) {
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn), -1);
         }
+    }
+
+    private void updateUrl() {
+        PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(conceptSchemeDto.getUrn());
+        placeManager.updateHistory(placeRequest, true);
     }
 }

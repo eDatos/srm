@@ -19,12 +19,10 @@ public class ConceptsClientSecurityUtils {
         return SharedItemsSecurityUtils.canCreateItemScheme(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdateConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        ConceptSchemeTypeEnum type = conceptSchemeMetamacDto.getType();
-        String operationCode = conceptSchemeMetamacDto.getRelatedOperation() != null ? conceptSchemeMetamacDto.getRelatedOperation().getCode() : null;
+    public static boolean canUpdateConceptScheme(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
         // This method is called with the current concept scheme type in the parameters "type" and "typeOld" (the same with the operationCode parameters). The web application only need to know if the
         // edit button can be shown (before doing any metadata change)
-        return SharedConceptsSecurityUtils.canUpdateConceptScheme(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), type, operationCode, type, operationCode);
+        return SharedConceptsSecurityUtils.canUpdateConceptScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode, type, operationCode);
     }
 
     public static boolean canDeleteConceptScheme(ConceptSchemeTypeEnum type, String operationCode) {

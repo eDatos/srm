@@ -18,15 +18,22 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         super();
     }
 
-    public ConceptSchemeMainFormLayout(boolean canEdit) {
-        super(canEdit);
-    }
-
-    public void updatePublishSection(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+    public void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         super.updatePublishSection(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getValidTo());
         this.type = conceptSchemeMetamacDto.getType();
         this.relatedOperationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
         this.maintainer = conceptSchemeMetamacDto.getMaintainer();
+        setCanEdit(conceptSchemeMetamacDto);
+    }
+
+    private void setCanEdit(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        boolean canEdit = false;
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+            canEdit = ConceptsClientSecurityUtils.canCreateConceptSchemeTemporalVersion(type, relatedOperationCode);
+        } else {
+            canEdit = ConceptsClientSecurityUtils.canUpdateConceptScheme(status, type, relatedOperationCode);
+        }
+        super.setCanEdit(canEdit);
     }
 
     @Override

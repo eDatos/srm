@@ -23,4 +23,5 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
     void publishInternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
     void publishExternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
     void versioning(String urn, VersionTypeEnum versionType);
+    void createTemporalVersion(String urn);
 }

@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.concept.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -34,7 +33,6 @@ import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.InformationLabel;
-import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -219,16 +217,15 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             }
         });
 
-        // Edit: Add a custom handler to check scheme status before start editing
+        // Edit: Add a custom edit button handler
         mainFormLayout.getEditToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = conceptSchemeDto.getLifeCycle().getProcStatus();
-                if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
-                    // Create a new version
-                    final InformationWindow window = new InformationWindow(getMessages().conceptSchemeEditionInfo(), getMessages().conceptSchemeEditionInfoDetailedMessage());
-                    window.show();
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                    // If the scheme is published, create a temporal version
+                    getUiHandlers().createTemporalVersion(conceptSchemeDto.getUrn());
                 } else {
                     // Default behavior
                     setEditionMode();
@@ -350,8 +347,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(conceptScheme));
 
         // Security
-        mainFormLayout.setCanEdit(conceptScheme);
-        mainFormLayout.updatePublishSection(conceptScheme);
+        mainFormLayout.setConceptScheme(conceptScheme);
         mainFormLayout.setViewMode();
         categorisationsPanel.updateVisibility(conceptScheme);
 
@@ -368,6 +364,12 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             conceptsNoVisibleInfoMessage.hide();
             conceptsTreeGrid.show();
         }
+    }
+
+    @Override
+    public void setConceptSchemeAndStartEdition(ConceptSchemeMetamacDto conceptScheme) {
+        setConceptScheme(conceptScheme);
+        mainFormLayout.setEditionMode();
     }
 
     @Override
