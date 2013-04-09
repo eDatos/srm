@@ -9,6 +9,8 @@ import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.MaintainableArtefactDto;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayout {
@@ -25,6 +27,8 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
 
     protected ProcStatusEnum       status;
     protected Date                 validTo;
+    protected RelatedResourceDto   maintainer;
+    protected String               versionLogic;
 
     public LifeCycleMainFormLayout() {
         super();
@@ -73,9 +77,11 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         hideAllLifeCycleButtons();
     }
 
-    public void updatePublishSection(ProcStatusEnum status, Date validTo) {
+    public void updatePublishSection(ProcStatusEnum status, MaintainableArtefactDto maintainableArtefactDto) {
         this.status = status;
-        this.validTo = validTo;
+        this.validTo = maintainableArtefactDto.getValidTo();
+        this.maintainer = maintainableArtefactDto.getMaintainer();
+        this.versionLogic = maintainableArtefactDto.getVersionLogic();
     }
 
     public HasClickHandlers getSendToProductionValidation() {

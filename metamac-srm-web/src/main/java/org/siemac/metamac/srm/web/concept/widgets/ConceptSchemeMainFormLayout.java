@@ -1,28 +1,25 @@
 package org.siemac.metamac.srm.web.concept.widgets;
 
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-
 public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private ConceptSchemeTypeEnum type;
     private String                relatedOperationCode;
-    private RelatedResourceDto    maintainer;
 
     public ConceptSchemeMainFormLayout() {
         super();
     }
 
     public void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        super.updatePublishSection(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getValidTo());
+        super.updatePublishSection(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto);
         this.type = conceptSchemeMetamacDto.getType();
         this.relatedOperationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
-        this.maintainer = conceptSchemeMetamacDto.getMaintainer();
         setCanEdit(conceptSchemeMetamacDto);
     }
 
@@ -92,7 +89,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersionSdmxResourceButton() {
-        if (canConceptSchemeBeVersion()) { // TODO Check temporal version
+        if (canConceptSchemeBeVersion() && VersionUtil.isTemporalVersion(versionLogic)) {
             versionSdmxResource.show();
         }
     }

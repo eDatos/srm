@@ -1,16 +1,14 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-
 public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
-    private String             operationCode;
-    private RelatedResourceDto maintainer;
+    private String operationCode;
 
     public DsdMainFormLayout() {
     }
@@ -19,9 +17,8 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     public void updatePublishSection(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        super.updatePublishSection(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacDto.getValidTo());
+        super.updatePublishSection(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacDto);
         this.operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
-        this.maintainer = dataStructureDefinitionMetamacDto.getMaintainer();
     }
 
     @Override
@@ -75,7 +72,7 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersionSdmxResourceButton() {
-        if (canVersionDsd()) { // TODO Check temporal version
+        if (canVersionDsd() && VersionUtil.isTemporalVersion(versionLogic)) {
             versionSdmxResource.show();
         }
     }

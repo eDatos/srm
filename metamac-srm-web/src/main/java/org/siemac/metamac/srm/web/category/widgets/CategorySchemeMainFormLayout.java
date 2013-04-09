@@ -1,14 +1,11 @@
 package org.siemac.metamac.srm.web.category.widgets;
 
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-
 public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
-
-    private RelatedResourceDto maintainer;
 
     public CategorySchemeMainFormLayout() {
     }
@@ -17,8 +14,7 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     public void updatePublishSection(CategorySchemeMetamacDto categorySchemeMetamacDto) {
-        super.updatePublishSection(categorySchemeMetamacDto.getLifeCycle().getProcStatus(), categorySchemeMetamacDto.getValidTo());
-        this.maintainer = categorySchemeMetamacDto.getMaintainer();
+        super.updatePublishSection(categorySchemeMetamacDto.getLifeCycle().getProcStatus(), categorySchemeMetamacDto);
     }
 
     @Override
@@ -71,7 +67,7 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersionSdmxResourceButton() {
-        if (canCategorySchemeBeVersion()) { // TODO Check temporal version
+        if (canCategorySchemeBeVersion() && VersionUtil.isTemporalVersion(versionLogic)) {
             versionSdmxResource.show();
         }
     }

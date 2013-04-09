@@ -5,13 +5,11 @@ import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private OrganisationSchemeTypeEnum organisationSchemeType;
-    private RelatedResourceDto         maintainer;
 
     public OrganisationSchemeMainFormLayout() {
     }
@@ -20,9 +18,8 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     public void updatePublishSection(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        super.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto);
         this.organisationSchemeType = organisationSchemeMetamacDto.getType();
-        this.maintainer = organisationSchemeMetamacDto.getMaintainer();
-        super.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getValidTo());
     }
 
     @Override
