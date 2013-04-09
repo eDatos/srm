@@ -145,7 +145,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         contactDto.setName((InternationalStringDto) editionForm.getValue(ContactDS.NAME));
         contactDto.setOrganisationUnit((InternationalStringDto) editionForm.getValue(ContactDS.ORGANISATION_UNIT));
         contactDto.setResponsibility((InternationalStringDto) editionForm.getValue(ContactDS.RESPONSIBILITY));
-        if (CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
+        if (CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto)) {
             // URLs
             contactDto.getUrls().clear();
             contactDto.getUrls().addAll(((MultiTextItem) editionForm.getItem(ContactDS.URL)).getValues());
