@@ -10,7 +10,6 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
 public interface CodelistUiHandlers extends BaseCodeUiHandlers {
 
-    void retrieveCodelist(String identifier);
     void retrieveCodelistVersions(String codelistUrn);
     void saveCodelist(CodelistMetamacDto codelist);
     void cancelValidity(String urn);

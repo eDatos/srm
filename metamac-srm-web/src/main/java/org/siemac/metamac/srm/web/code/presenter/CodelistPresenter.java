@@ -202,19 +202,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         super.prepareFromRequest(request);
         String identifier = PlaceRequestUtils.getCodelistParamFromUrl(placeManager);
         if (!StringUtils.isBlank(identifier)) {
-            retrieveCodelist(identifier);
+            retrieveCompleteCodelistbyIdentifier(identifier);
         } else {
             MetamacSrmWeb.showErrorPage();
-        }
-    }
-
-    @Override
-    public void retrieveCodelist(String identifier) {
-        // Retrieve codelist by URN
-        String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CODELIST_PREFIX, identifier);
-        if (!StringUtils.isBlank(urn)) {
-            retrieveCodelistAndCodesByUrn(urn);
-            retrieveCategorisations(urn);
         }
     }
 
@@ -234,6 +224,55 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     // CODELIST
     //
 
+    private void retrieveCompleteCodelistbyIdentifier(String identifier) {
+        // Retrieve codelist by URN
+        String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CODELIST_PREFIX, identifier);
+        if (!StringUtils.isBlank(urn)) {
+            retrieveCompleteCodelistByUrn(urn);
+        }
+    }
+
+    private void retrieveCompleteCodelistByUrn(String urn) {
+        retrieveCodelistAndCodesByUrn(urn);
+        retrieveCategorisations(urn);
+    }
+
+    private void retrieveCodelistAndCodesByUrn(String urn) {
+        dispatcher.execute(new GetCodelistAction(urn), new WaitingAsyncCallback<GetCodelistResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistResult result) {
+                codelistMetamacDto = result.getCodelistMetamacDto();
+
+                getView().setCodelist(codelistMetamacDto);
+
+                retrieveCodes();
+                retrieveCodelistVersions(result.getCodelistMetamacDto().getUrn());
+                retrieveCodelistOrders(result.getCodelistMetamacDto().getUrn());
+                retrieveCodelistOpennessLevels(result.getCodelistMetamacDto().getUrn());
+            }
+        });
+    }
+
+    private void retrieveCodelistByUrn(String urn) {
+        dispatcher.execute(new GetCodelistAction(urn), new WaitingAsyncCallback<GetCodelistResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistResult result) {
+                codelistMetamacDto = result.getCodelistMetamacDto();
+                getView().setCodelist(codelistMetamacDto);
+            }
+        });
+    }
+
     @Override
     public void saveCodelist(CodelistMetamacDto codelist) {
         dispatcher.execute(new SaveCodelistAction(codelist), new WaitingAsyncCallback<SaveCodelistResult>() {
@@ -252,6 +291,10 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
         });
     }
+
+    //
+    // CODELIST LIFECYCLE
+    //
 
     @Override
     public void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus) {
@@ -350,7 +393,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(VersionCodelistResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistVersioned()), MessageTypeEnum.SUCCESS);
                 codelistMetamacDto = result.getCodelistMetamacDto();
-                retrieveCodelistAndCodesByUrn(codelistMetamacDto.getUrn());
+                retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn());
 
                 updateUrl();
             }
@@ -368,12 +411,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(CreateCodelistTemporalVersionResult result) {
                 CodelistPresenter.this.codelistMetamacDto = result.getCodelistMetamacDto();
-                getView().setCodelistAndStartEdition(result.getCodelistMetamacDto());
 
-                retrieveCodes();
-                retrieveCodelistVersions(result.getCodelistMetamacDto().getUrn());
-                retrieveCodelistOrders(result.getCodelistMetamacDto().getUrn());
-                retrieveCodelistOpennessLevels(result.getCodelistMetamacDto().getUrn());
+                retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn());
+                // TODO EDITION MODE
 
                 updateUrl();
             }
@@ -851,41 +891,6 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(AddCodelistsToCodelistFamilyResult result) {
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistAddedToFamily()), MessageTypeEnum.SUCCESS);
                 retrieveCodelistByUrn(codelistUrn);
-            }
-        });
-    }
-
-    private void retrieveCodelistAndCodesByUrn(String urn) {
-        dispatcher.execute(new GetCodelistAction(urn), new WaitingAsyncCallback<GetCodelistResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetCodelistResult result) {
-                codelistMetamacDto = result.getCodelistMetamacDto();
-                getView().setCodelist(codelistMetamacDto);
-
-                retrieveCodes();
-                retrieveCodelistVersions(result.getCodelistMetamacDto().getUrn());
-                retrieveCodelistOrders(result.getCodelistMetamacDto().getUrn());
-                retrieveCodelistOpennessLevels(result.getCodelistMetamacDto().getUrn());
-            }
-        });
-    }
-
-    private void retrieveCodelistByUrn(String urn) {
-        dispatcher.execute(new GetCodelistAction(urn), new WaitingAsyncCallback<GetCodelistResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetCodelistResult result) {
-                codelistMetamacDto = result.getCodelistMetamacDto();
-                getView().setCodelist(codelistMetamacDto);
             }
         });
     }
