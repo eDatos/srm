@@ -154,7 +154,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                     getUiHandlers().createTemporalVersion(dataStructureDefinitionMetamacDto.getUrn());
                 } else {
                     // Default behavior
-                    setEditionMode();
+                    startDsdEdition();
                 }
             }
         });
@@ -428,8 +428,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     @Override
-    public void setDsdAndStartEditing(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        setDsd(dataStructureDefinitionMetamacDto);
+    public void startDsdEdition() {
         mainFormLayout.setEditionMode();
     }
 
@@ -621,10 +620,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     public void setConceptsForShowDecimalsPrecision(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> concepts) {
         ((ShowDecimalsPrecisionItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).setConcepts(conceptSchemeMetamacDto, concepts);
         ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).setConcepts(conceptSchemeMetamacDto, concepts);
-    }
-
-    private void setEditionMode() {
-        mainFormLayout.setEditionMode();
     }
 
     private SearchViewTextItem createStatisticalOperationItem(String name, String title) {

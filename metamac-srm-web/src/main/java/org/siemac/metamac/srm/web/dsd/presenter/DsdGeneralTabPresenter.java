@@ -86,7 +86,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public interface DsdGeneralTabView extends View, HasUiHandlers<DsdGeneralTabUiHandlers> {
 
         void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
-        void setDsdAndStartEditing(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
+        void startDsdEdition();
         DataStructureDefinitionMetamacDto getDataStructureDefinitionDto();
         HasClickHandlers getSave();
         void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
@@ -147,7 +147,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         retrieveCompleteDsd(urn, false);
     }
 
-    private void retrieveCompleteDsd(String urn, final boolean editionMode) {
+    private void retrieveCompleteDsd(String urn, final boolean startDsdEdition) {
         Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
         descriptorsToRetrieve.add(TypeComponentList.DIMENSION_DESCRIPTOR);
         dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
@@ -159,10 +159,9 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
 
-                if (editionMode) {
-                    getView().setDsdAndStartEditing(result.getDsd());
-                } else {
-                    getView().setDsd(result.getDsd());
+                getView().setDsd(result.getDsd());
+                if (startDsdEdition) {
+                    getView().startDsdEdition();
                 }
 
                 List<DimensionComponentDto> dimensionComponentDtos = CommonUtils.getDimensionComponents(result.getDimensions());
