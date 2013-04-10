@@ -253,12 +253,12 @@ Application CodesMetamac {
 			"Order visualisations of codelist"
 			- Bag<@CodelistOrderVisualisation> orderVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> codelistVersion;
 			"Default order visualisation"
-			- @CodelistOrderVisualisation defaultOrderVisualisation nullable cascade="none" fetch="lazy" databaseColumn="DEFAULT_ORDER_VISUAL_FK";
+			- @CodelistOrderVisualisation defaultOrderVisualisation nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="DEFAULT_ORDER_VISUAL_FK";
 
 			"Openness visualisations of codelist"
 			- Bag<@CodelistOpennessVisualisation> opennessVisualisations cascade="all-delete-orphan" fetch="lazy" inverse <-> codelistVersion;
 			"Default openness visualisation"
-			- @CodelistOpennessVisualisation defaultOpennessVisualisation nullable cascade="none" fetch="lazy" databaseColumn="DEFAULT_OPENNESS_VISUAL_FK";
+			- @CodelistOpennessVisualisation defaultOpennessVisualisation nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="DEFAULT_OPENNESS_VISUAL_FK";
 			
 			Repository CodelistVersionMetamacRepository {
 				save;

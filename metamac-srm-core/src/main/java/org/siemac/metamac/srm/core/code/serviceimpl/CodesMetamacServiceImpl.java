@@ -1691,7 +1691,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistNewVersion = versioningCodelistOpennessVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
         return codelistNewVersion;
     }
-
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
         CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
         // Check version to copy is published
