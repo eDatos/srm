@@ -259,7 +259,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                     getUiHandlers().createTemporalVersion(codelistDto.getUrn());
                 } else {
                     // Default behavior
-                    setEditionMode();
+                    startCodelistEdition();
                 }
             }
         });
@@ -401,8 +401,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
-    public void setCodelistAndStartEdition(CodelistMetamacDto codelist) {
-        setCodelist(codelist);
+    public void startCodelistEdition() {
         mainFormLayout.setEditionMode();
     }
 
@@ -680,10 +679,6 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
-    }
-
-    private void setEditionMode() {
-        mainFormLayout.setEditionMode();
     }
 
     private void setCodelistViewMode(CodelistMetamacDto codelistDto) {

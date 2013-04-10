@@ -137,9 +137,10 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     public interface CodelistView extends View, HasUiHandlers<CodelistUiHandlers> {
 
+        // Codelist
         void setCodelist(CodelistMetamacDto codelistMetamacDto);
-        void setCodelistAndStartEdition(CodelistMetamacDto codelistMetamacDto);
         void setCodelistVersions(List<CodelistMetamacDto> codelistMetamacDtos);
+        void startCodelistEdition();
 
         // Codes
         void setCodes(List<CodeMetamacVisualisationResult> codes);
@@ -233,11 +234,19 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     private void retrieveCompleteCodelistByUrn(String urn) {
-        retrieveCodelistAndCodesByUrn(urn);
+        retrieveCompleteCodelistByUrn(urn, false);
+    }
+
+    private void retrieveCompleteCodelistByUrn(String urn, boolean startCodelistEdition) {
+        retrieveCodelistAndCodesByUrn(urn, startCodelistEdition);
         retrieveCategorisations(urn);
     }
 
     private void retrieveCodelistAndCodesByUrn(String urn) {
+        retrieveCodelistAndCodesByUrn(urn, false);
+    }
+
+    private void retrieveCodelistAndCodesByUrn(String urn, final boolean startCodelistEdition) {
         dispatcher.execute(new GetCodelistAction(urn), new WaitingAsyncCallback<GetCodelistResult>() {
 
             @Override
@@ -249,6 +258,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 codelistMetamacDto = result.getCodelistMetamacDto();
 
                 getView().setCodelist(codelistMetamacDto);
+                if (startCodelistEdition) {
+                    getView().startCodelistEdition();
+                }
 
                 retrieveCodes();
                 retrieveCodelistVersions(result.getCodelistMetamacDto().getUrn());
@@ -411,10 +423,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(CreateCodelistTemporalVersionResult result) {
                 CodelistPresenter.this.codelistMetamacDto = result.getCodelistMetamacDto();
-
-                retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn());
-                // TODO EDITION MODE
-
+                retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn(), true);
                 updateUrl();
             }
         });
