@@ -108,7 +108,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     public interface CategorySchemeView extends View, HasUiHandlers<CategorySchemeUiHandlers> {
 
         void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto);
-        void setCategorySchemeAndStartEdition(CategorySchemeMetamacDto categorySchemeMetamacDto);
+        void startCategorySchemeEdition();
         void setCategorySchemeVersions(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos);
         void setCategoryList(List<ItemHierarchyDto> categoryDtos);
 
@@ -153,25 +153,40 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String urn = PlaceRequestUtils.getCategorySchemeParamFromUrl(placeManager);
-        if (!StringUtils.isBlank(urn)) {
-            retrieveCategoryScheme(urn);
+        String param = PlaceRequestUtils.getCategorySchemeParamFromUrl(placeManager);
+        if (!StringUtils.isBlank(param)) {
+            retrieveCompleteCategorySchemeByIdentifier(param);
         } else {
             MetamacSrmWeb.showErrorPage();
         }
     }
 
-    @Override
-    public void retrieveCategoryScheme(String identifier) {
+    //
+    // CATEGORY SCHEME
+    //
+
+    private void retrieveCompleteCategorySchemeByIdentifier(String identifier) {
         // Retrieve category scheme by URN
         String urn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_CATEGORYSCHEME_PREFIX, identifier);
         if (!StringUtils.isBlank(urn)) {
-            retrieveCategorySchemeByUrn(urn);
-            retrieveCategorisations(urn);
+            retrieveCompleteCategorySchemeByUrn(urn);
         }
     }
 
+    private void retrieveCompleteCategorySchemeByUrn(String urn) {
+        retrieveCompleteCategorySchemeByUrn(urn, false);
+    }
+
+    private void retrieveCompleteCategorySchemeByUrn(String urn, boolean startEdition) {
+        retrieveCategorySchemeByUrn(urn, startEdition);
+        retrieveCategorisations(urn);
+    }
+
     private void retrieveCategorySchemeByUrn(String urn) {
+        retrieveCategorySchemeByUrn(urn, false);
+    }
+
+    private void retrieveCategorySchemeByUrn(String urn, final boolean startEdition) {
         dispatcher.execute(new GetCategorySchemeAction(urn), new WaitingAsyncCallback<GetCategorySchemeResult>() {
 
             @Override
@@ -181,24 +196,14 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(GetCategorySchemeResult result) {
                 categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
+
                 getView().setCategoryScheme(categorySchemeMetamacDto);
-                retrieveCategoryListByScheme(result.getCategorySchemeMetamacDto().getUrn());
+                if (startEdition) {
+                    getView().startCategorySchemeEdition();
+                }
+
+                retrieveCategoriesByScheme(result.getCategorySchemeMetamacDto().getUrn());
                 retrieveCategorySchemeVersions(result.getCategorySchemeMetamacDto().getUrn());
-            }
-        });
-    }
-
-    @Override
-    public void retrieveCategoryListByScheme(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetCategoriesBySchemeResult result) {
-                getView().setCategoryList(result.getCategories());
             }
         });
     }
@@ -236,6 +241,10 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             }
         });
     }
+
+    //
+    // CATEGORY SCHEME LIFECYLE
+    //
 
     @Override
     public void cancelValidity(final String urn) {
@@ -352,8 +361,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             public void onWaitSuccess(VersionCategorySchemeResult result) {
                 ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeVersioned()), MessageTypeEnum.SUCCESS);
                 categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
-                retrieveCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
-
+                retrieveCompleteCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
                 updateUrl();
             }
         });
@@ -370,11 +378,26 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(CreateCategorySchemeTemporalVersionResult result) {
                 CategorySchemePresenter.this.categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
-                getView().setCategorySchemeAndStartEdition(result.getCategorySchemeMetamacDto());
-                retrieveCategoryListByScheme(result.getCategorySchemeMetamacDto().getUrn());
-                retrieveCategorySchemeVersions(result.getCategorySchemeMetamacDto().getUrn());
-
+                retrieveCompleteCategorySchemeByUrn(result.getCategorySchemeMetamacDto().getUrn(), true);
                 updateUrl();
+            }
+        });
+    }
+
+    //
+    // CATEGORIES
+    //
+
+    private void retrieveCategoriesByScheme(String categorySchemeUrn) {
+        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategoriesBySchemeResult result) {
+                getView().setCategoryList(result.getCategories());
             }
         });
     }
@@ -406,10 +429,12 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(DeleteCategoryResult result) {
                 ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveCategoryListByScheme(categorySchemeMetamacDto.getUrn());
+                retrieveCategoriesByScheme(categorySchemeMetamacDto.getUrn());
             }
         });
     }
+
+    // CATEGORISATIONS
 
     @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {

@@ -209,7 +209,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                     getUiHandlers().createTemporalVersion(categorySchemeDto.getUrn());
                 } else {
                     // Default behavior
-                    setEditionMode();
+                    startCategorySchemeEdition();
                 }
             }
         });
@@ -283,10 +283,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 versionCategoryScheme();
             }
         });
-    }
-
-    private void setEditionMode() {
-        mainFormLayout.setEditionMode();
     }
 
     private void createViewForm() {
@@ -465,8 +461,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     }
 
     @Override
-    public void setCategorySchemeAndStartEdition(CategorySchemeMetamacDto categoryScheme) {
-        setCategoryScheme(categoryScheme);
+    public void startCategorySchemeEdition() {
         mainFormLayout.setEditionMode();
     }
 
