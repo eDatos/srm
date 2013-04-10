@@ -19,10 +19,10 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnit;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
@@ -47,7 +48,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-rest-internal/applicationContext-test.xml"})
@@ -120,8 +120,9 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes", target.getParentLink().getHref());
         assertEqualsInternationalString("es", "comment-resourceID1v01.000 en Español", "en", "comment-resourceID1v01.000 in English", target.getComment());
-        assertEquals("replaceTo", target.getReplaceToVersion());
-        assertEquals("replacedBy", target.getReplacedByVersion());
+        // replaceX no tested, because it is necessary a repository access
+        // assertEquals("replaceTo", target.getReplaceToVersion());
+        // assertEquals("replacedBy", target.getReplacedByVersion());
         assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
         assertEqualsDate(new DateTime(2009, 9, 1, 1, 1, 1, 1), target.getLifeCycle().getProductionValidationDate());
         assertEquals("production-user", target.getLifeCycle().getProductionValidationUser());

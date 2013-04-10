@@ -17,13 +17,13 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_LATEST;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -57,9 +57,13 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+
 public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10BaseTest {
 
-    private ConceptsMetamacService conceptsService;
+    private ConceptsMetamacService      conceptsService;
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
@@ -539,6 +543,17 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         verifyFindConcepts(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
+    private void mockRetrieveItemSchemeVersionByVersion() throws MetamacException {
+        when(itemSchemeVersionRepository.retrieveByVersion(any(Long.class), any(String.class))).thenAnswer(new Answer<ItemSchemeVersion>() {
+
+            @Override
+            public ItemSchemeVersion answer(InvocationOnMock invocation) throws Throwable {
+                String version = (String) invocation.getArguments()[1];
+                return ConceptsDoMocks.mockConceptScheme("agencyID", version, version);
+            };
+        });
+    }
+
     @SuppressWarnings("unchecked")
     private void mockFindConceptSchemesByCondition() throws MetamacException {
         when(conceptsService.findConceptSchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<ConceptSchemeVersionMetamac>>() {
@@ -638,6 +653,10 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     protected void resetMocks() throws MetamacException {
         conceptsService = applicationContext.getBean(ConceptsMetamacService.class);
         reset(conceptsService);
+        itemSchemeVersionRepository = applicationContext.getBean(ItemSchemeVersionRepository.class);
+        reset(itemSchemeVersionRepository);
+
+        mockRetrieveItemSchemeVersionByVersion();
         mockFindConceptSchemesByCondition();
         mockFindConceptsByCondition();
         mockRetrieveConceptTypes();

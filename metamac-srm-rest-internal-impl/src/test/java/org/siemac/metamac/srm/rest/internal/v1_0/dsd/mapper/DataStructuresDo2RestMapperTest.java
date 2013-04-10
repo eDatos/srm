@@ -131,8 +131,9 @@ public class DataStructuresDo2RestMapperTest {
         assertTrue(target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0) instanceof Attribute);
         assertEquals(AttributeQualifierType.SPATIAL, ((Attribute) target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0)).getType());
         // others
-        assertEquals("replaceTo", target.getReplaceToVersion());
-        assertEquals("replacedBy", target.getReplacedByVersion());
+        // replaceX no tested, because it is necessary a repository access
+        // assertEquals("replaceTo", target.getReplaceToVersion());
+        // assertEquals("replacedBy", target.getReplacedByVersion());
         assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
         assertEqualsDate(new DateTime(2009, 9, 1, 1, 1, 1, 1), target.getLifeCycle().getProductionValidationDate());
         assertEquals("production-user", target.getLifeCycle().getProductionValidationUser());

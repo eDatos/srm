@@ -18,13 +18,13 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_LATEST;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -59,14 +59,17 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10BaseTest {
 
-    private CodesMetamacService   codesService;
-    private CodeRepository        codeRepository;
-    private CodeMetamacRepository codeMetamacRepository;
+    private CodesMetamacService         codesService;
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    private CodeRepository              codeRepository;
+    private CodeMetamacRepository       codeMetamacRepository;
 
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
@@ -516,6 +519,17 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         verifyFindCodes(codesService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
+    private void mockRetrieveItemSchemeVersionByVersion() throws MetamacException {
+        when(itemSchemeVersionRepository.retrieveByVersion(any(Long.class), any(String.class))).thenAnswer(new Answer<ItemSchemeVersion>() {
+
+            @Override
+            public ItemSchemeVersion answer(InvocationOnMock invocation) throws Throwable {
+                String version = (String) invocation.getArguments()[1];
+                return CodesDoMocks.mockCodelist("agencyID", version, version);
+            };
+        });
+    }
+
     @SuppressWarnings("unchecked")
     private void mockFindCodelistsByCondition() throws MetamacException {
         when(codesService.findCodelistsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<CodelistVersionMetamac>>() {
@@ -635,10 +649,13 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     protected void resetMocks() throws MetamacException {
         codesService = applicationContext.getBean(CodesMetamacService.class);
         reset(codesService);
+        itemSchemeVersionRepository = applicationContext.getBean(ItemSchemeVersionRepository.class);
+        reset(itemSchemeVersionRepository);
         codeRepository = applicationContext.getBean(CodeRepository.class);
         reset(codeRepository);
         codeMetamacRepository = applicationContext.getBean(CodeMetamacRepository.class);
         reset(codeMetamacRepository);
+        mockRetrieveItemSchemeVersionByVersion();
         mockFindCodelistsByCondition();
         mockFindCodesByCondition();
         mockFindCodesByNativeSqlQuery();

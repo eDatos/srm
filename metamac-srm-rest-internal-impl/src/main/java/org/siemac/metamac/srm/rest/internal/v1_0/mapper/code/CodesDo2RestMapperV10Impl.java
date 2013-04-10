@@ -19,7 +19,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceTo;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToCodelist;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -98,8 +98,8 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         target.setAccessType(toAccessType(source.getAccessType()));
         target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode());
         target.setDefaultOpennessVisualisation(source.getDefaultOpennessVisualisation().getNameableArtefact().getCode());
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
         target.setReplacedBy(toCodelistReplacedBy(source));
         target.setReplaceTo(toCodelistReplaceTo(source));
@@ -179,6 +179,12 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
         target.setId(source.getNameableArtefact().getCode());
         target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;
+    }
+
+    @Override
+    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+        CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) source;
+        return AccessTypeEnum.PUBLIC.equals(codelistVersion.getAccessType());
     }
 
     private Item toItem(VariableElement source) {
@@ -284,18 +290,21 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
     }
 
     private Resource toCodelistReplacedBy(CodelistVersionMetamac source) {
-        if (source.getReplacedByCodelist() == null || !canResourceBeProvidedByApi(source.getReplacedByCodelist())) {
+        if (source.getReplacedByCodelist() == null) {
+            return null;
+        }
+        if (!canResourceBeProvidedByApi(source.getReplacedByCodelist())) {
             return null;
         }
         return toResource(source.getReplacedByCodelist());
     }
 
-    private ReplaceTo toCodelistReplaceTo(CodelistVersionMetamac source) {
-        ReplaceTo target = null;
+    private ReplaceToCodelist toCodelistReplaceTo(CodelistVersionMetamac source) {
+        ReplaceToCodelist target = null;
         for (CodelistVersionMetamac replaceToCodelist : source.getReplaceToCodelists()) {
             if (canResourceBeProvidedByApi(replaceToCodelist)) { // note: this check is not necessary really, because in core is checked. It is added to avoid future problems
                 if (target == null) {
-                    target = new ReplaceTo();
+                    target = new ReplaceToCodelist();
 
                 }
                 target.getReplaceTos().add(toResource(replaceToCodelist));

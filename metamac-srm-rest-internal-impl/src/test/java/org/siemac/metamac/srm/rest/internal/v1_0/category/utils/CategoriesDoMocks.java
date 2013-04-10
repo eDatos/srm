@@ -4,13 +4,16 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 
 public class CategoriesDoMocks {
 
     public static CategorySchemeVersionMetamac mockCategoryScheme(String agencyID, String resourceID, String version) {
-        return CategoriesMetamacDoMocks.mockCategorySchemeFixedValues(agencyID, resourceID, version);
+        CategorySchemeVersionMetamac target = CategoriesMetamacDoMocks.mockCategorySchemeFixedValues(agencyID, resourceID, version);
+        target.setItemScheme(new ItemScheme());
+        return target;
     }
 
     public static CategoryMetamac mockCategory(String resourceID, CategorySchemeVersionMetamac categoryScheme, CategoryMetamac parent) {

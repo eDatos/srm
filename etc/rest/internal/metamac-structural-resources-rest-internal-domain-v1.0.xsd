@@ -90,7 +90,7 @@
                     <xs:element name="family" type="common:Item" minOccurs="0" />
                     <xs:element name="variable" type="common:Item" minOccurs="1" />
                     <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
-                    <xs:element name="replaceTo" type="tns:ReplaceTo" minOccurs="0" />
+                    <xs:element name="replaceTo" type="tns:ReplaceToCodelist" minOccurs="0" />
                     <xs:element name="accessType" type="tns:AccessType" minOccurs="1" />
                     <xs:element name="defaultOrderVisualisation" type="xs:string" minOccurs="1" />
                     <xs:element name="defaultOpennessVisualisation" type="xs:string" minOccurs="1" />
@@ -486,7 +486,7 @@
         </xs:complexContent>
     </xs:complexType>    
 
-    <xs:complexType name="ReplaceTo">
+    <xs:complexType name="ReplaceToCodelist">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>

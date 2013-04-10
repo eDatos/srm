@@ -238,8 +238,8 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
 
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
     }
 
@@ -257,8 +257,8 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
 
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
     }
 
@@ -276,8 +276,8 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
 
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
     }
 
@@ -295,8 +295,8 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
 
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
     }
 
@@ -535,6 +535,11 @@ public class OrganisationsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl 
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(toOrganisationSelfLink(source).getHref());
         }
+    }
+
+    @Override
+    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+        return true; // no additional conditions
     }
 
     private ResourceLink toOrganisationSchemeSelfLink(OrganisationSchemeVersion source) {

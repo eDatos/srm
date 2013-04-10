@@ -4,12 +4,15 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class CodesDoMocks {
 
     public static CodelistVersionMetamac mockCodelist(String agencyID, String resourceID, String version) {
-        return CodesMetamacDoMocks.mockCodelistFixedValues(agencyID, resourceID, version);
+        CodelistVersionMetamac target = CodesMetamacDoMocks.mockCodelistFixedValues(agencyID, resourceID, version);
+        target.setItemScheme(new ItemScheme());
+        return target;
     }
 
     public static CodeMetamac mockCode(String resourceID, CodelistVersionMetamac codelist, CodeMetamac parent) {
@@ -23,7 +26,7 @@ public class CodesDoMocks {
     }
 
     public static CodelistVersionMetamac mockCodelistWithCodes(String agencyID, String resourceID, String version) {
-        CodelistVersionMetamac target = CodesMetamacDoMocks.mockCodelistWithCodesFixedValues(agencyID, resourceID, version);
+        CodelistVersionMetamac target = mockCodelist(agencyID, resourceID, version);
 
         target.setReplacedByCodelist(mockCodelist(agencyID, "codelistReplacedBy", "01.000"));
 

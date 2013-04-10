@@ -124,8 +124,9 @@ public class CodesDo2RestMapperTest {
         assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getTitle());
         assertEquals("variable1", target.getVariable().getId());
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
-        assertEquals("replaceTo", target.getReplaceToVersion());
-        assertEquals("replacedBy", target.getReplacedByVersion());
+        // replaceX no tested, because it is necessary a repository access
+        // assertEquals("replaceTo", target.getReplaceToVersion());
+        // assertEquals("replacedBy", target.getReplacedByVersion());
 
         assertEquals(RestInternalConstants.KIND_CODELIST, target.getReplacedBy().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragencyID1/codelistReplacedBy/01.000", target.getReplacedBy().getSelfLink().getHref());

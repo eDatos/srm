@@ -46,9 +46,13 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+
 public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalFacadeV10BaseTest {
 
-    private DsdsMetamacService dsdsService;
+    private DsdsMetamacService         dsdsService;
+    private StructureVersionRepository structureVersionRepository;
 
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
@@ -319,6 +323,17 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         verifyFindDataStructures(dsdsService, agencyID, resourceID, null, limit, offset, query, orderBy);
     }
 
+    private void mockRetrieveStructureVersionByVersion() throws MetamacException {
+        when(structureVersionRepository.retrieveByVersion(any(Long.class), any(String.class))).thenAnswer(new Answer<StructureVersion>() {
+
+            @Override
+            public StructureVersion answer(InvocationOnMock invocation) throws Throwable {
+                String version = (String) invocation.getArguments()[1];
+                return DataStructuresDoMocks.mockDataStructure("agencyID", version, version);
+            };
+        });
+    }
+
     @SuppressWarnings("unchecked")
     private void mockFindDataStructuresByCondition() throws MetamacException {
         when(dsdsService.findDataStructureDefinitionsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
@@ -364,6 +379,10 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
     protected void resetMocks() throws MetamacException {
         dsdsService = applicationContext.getBean(DsdsMetamacService.class);
         reset(dsdsService);
+        structureVersionRepository = applicationContext.getBean(StructureVersionRepository.class);
+        reset(structureVersionRepository);
+
+        mockRetrieveStructureVersionByVersion();
         mockFindDataStructuresByCondition();
     }
 

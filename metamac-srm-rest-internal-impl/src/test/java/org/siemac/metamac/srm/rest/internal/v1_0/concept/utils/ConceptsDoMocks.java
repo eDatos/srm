@@ -8,10 +8,14 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
+
 public class ConceptsDoMocks {
 
     public static ConceptSchemeVersionMetamac mockConceptScheme(String agencyID, String resourceID, String version) {
-        return ConceptsMetamacDoMocks.mockConceptSchemeFixedValues(agencyID, resourceID, version);
+        ConceptSchemeVersionMetamac target = ConceptsMetamacDoMocks.mockConceptSchemeFixedValues(agencyID, resourceID, version);
+        target.setItemScheme(new ItemScheme());
+        return target;
     }
 
     public static ConceptMetamac mockConcept(String resourceID, ConceptSchemeVersionMetamac conceptScheme, ConceptMetamac parent) {

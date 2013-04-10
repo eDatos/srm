@@ -92,8 +92,8 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
         target.setType(toConceptSchemeTypeEnum(source.getType()));
         target.setStatisticalOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
     }
 
@@ -171,6 +171,11 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
             targets.setTotal(BigInteger.valueOf(sources.size()));
         }
         return targets;
+    }
+
+    @Override
+    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+        return true; // no additional conditions
     }
 
     private ResourceLink toConceptSchemeSelfLink(ConceptSchemeVersionMetamac source) {

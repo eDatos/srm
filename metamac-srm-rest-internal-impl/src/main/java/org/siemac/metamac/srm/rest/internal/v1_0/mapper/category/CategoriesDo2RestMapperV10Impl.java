@@ -76,8 +76,8 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
     }
 
@@ -168,6 +168,11 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
         }
+    }
+
+    @Override
+    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+        return true; // no additional conditions
     }
 
     private ResourceLink toCategorySchemeSelfLink(CategorySchemeVersionMetamac source) {

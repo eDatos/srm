@@ -87,8 +87,8 @@ public class DataStructuresDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl
             target.setUri(target.getSelfLink().getHref());
         }
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(source.getMaintainableArtefact().getReplaceToVersion());
-        target.setReplacedByVersion(source.getMaintainableArtefact().getReplacedByVersion());
+        target.setReplaceToVersion(toStructureReplaceToVersion(source));
+        target.setReplacedByVersion(toStructureReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
 
         target.setStatisticalOperation(toResourceExternalItemStatisticalOperation(source.getStatisticalOperation()));
@@ -107,6 +107,11 @@ public class DataStructuresDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl
             return;
         }
         target.setType(toAttributeQualifierType(source.getSpecialAttributeType()));
+    }
+
+    @Override
+    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+        return true; // no additional conditions
     }
 
     private Dimensions toDimensions(List<DimensionOrder> sources) {

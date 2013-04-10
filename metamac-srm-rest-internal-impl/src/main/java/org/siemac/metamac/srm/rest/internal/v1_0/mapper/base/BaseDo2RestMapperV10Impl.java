@@ -24,24 +24,31 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
-@Component
-public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
+public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
 
     @Autowired
-    private ConfigurationService configurationService;
+    private ConfigurationService        configurationService;
 
-    private String               srmApiInternalEndpointV10;
-    private String               statisticalOperationsApiInternalEndpoint;
+    @Autowired
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+
+    @Autowired
+    private StructureVersionRepository  structureVersionRepository;
+
+    private String                      srmApiInternalEndpointV10;
+    private String                      statisticalOperationsApiInternalEndpoint;
 
     @PostConstruct
     public void init() throws Exception {
@@ -127,7 +134,27 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
     }
 
     protected boolean canResourceBeProvidedByApi(ItemSchemeVersion source) {
-        return canResourceBeProvidedByApi(source.getMaintainableArtefact());
+        return canResourceBeProvidedByApi(source.getMaintainableArtefact()) && canResourceBeProvidedByApiConcreteResource(source);
+    }
+
+    protected boolean canResourceBeProvidedByApi(StructureVersion source) {
+        return canResourceBeProvidedByApi(source.getMaintainableArtefact()) && canResourceBeProvidedByApiConcreteResource(source);
+    }
+
+    protected String toItemSchemeReplaceToVersion(ItemSchemeVersion source) {
+        return toItemSchemeReplaceMetadataIfResourceCanBeProvidedByApi(source.getItemScheme().getId(), source.getMaintainableArtefact().getReplaceToVersion());
+    }
+
+    protected String toItemSchemeReplacedByVersion(ItemSchemeVersion source) {
+        return toItemSchemeReplaceMetadataIfResourceCanBeProvidedByApi(source.getItemScheme().getId(), source.getMaintainableArtefact().getReplacedByVersion());
+    }
+
+    protected String toStructureReplaceToVersion(StructureVersion source) {
+        return toStructureReplaceMetadataIfResourceCanBeProvidedByApi(source.getStructure().getId(), source.getMaintainableArtefact().getReplaceToVersion());
+    }
+
+    protected String toStructureReplacedByVersion(StructureVersion source) {
+        return toStructureReplaceMetadataIfResourceCanBeProvidedByApi(source.getStructure().getId(), source.getMaintainableArtefact().getReplacedByVersion());
     }
 
     protected Resource toResource(NameableArtefact source, String kind, ResourceLink selfLink) {
@@ -229,4 +256,31 @@ public class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
             return SdmxAlias.SDMX_MAINTAINER;
         }
     }
+
+    private String toItemSchemeReplaceMetadataIfResourceCanBeProvidedByApi(Long itemSchemeId, String version) {
+        if (version == null) {
+            return null;
+        }
+        ItemSchemeVersion itemSchemeVersion = itemSchemeVersionRepository.retrieveByVersion(itemSchemeId, version);
+        if (itemSchemeVersion != null && canResourceBeProvidedByApi(itemSchemeVersion)) {
+            return version;
+        } else {
+            return null;
+        }
+    }
+
+    private String toStructureReplaceMetadataIfResourceCanBeProvidedByApi(Long structureId, String version) {
+        if (version == null) {
+            return null;
+        }
+        StructureVersion structureVersion = structureVersionRepository.retrieveByVersion(structureId, version);
+        if (structureVersion != null && canResourceBeProvidedByApi(structureVersion)) {
+            return version;
+        } else {
+            return null;
+        }
+    }
+
+    protected abstract boolean canResourceBeProvidedByApiConcreteResource(Object source);
+
 }
