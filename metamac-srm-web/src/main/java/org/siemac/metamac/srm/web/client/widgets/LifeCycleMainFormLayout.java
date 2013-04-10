@@ -25,7 +25,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected MainFormLayoutButton versionSdmxResource;
     // protected AnnounceToolStripButton announce;
 
-    protected ProcStatusEnum       status;
+    protected ProcStatusEnum       procStatus;
     protected Date                 validTo;
     protected RelatedResourceDto   maintainer;
     protected String               versionLogic;
@@ -78,7 +78,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     }
 
     public void updatePublishSection(ProcStatusEnum status, MaintainableArtefactDto maintainableArtefactDto) {
-        this.status = status;
+        this.procStatus = status;
         this.validTo = maintainableArtefactDto.getValidTo();
         this.maintainer = maintainableArtefactDto.getMaintainer();
         this.versionLogic = maintainableArtefactDto.getVersionLogic();
@@ -136,20 +136,20 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         // Hide all buttons
         hideAllLifeCycleButtons();
         // Show buttons depending on the status
-        if (ProcStatusEnum.DRAFT.equals(status)) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             showSendToProductionValidation();
-        } else if (ProcStatusEnum.VALIDATION_REJECTED.equals(status)) {
+        } else if (ProcStatusEnum.VALIDATION_REJECTED.equals(procStatus)) {
             showSendToProductionValidation();
-        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(status)) {
+        } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             showSendToDiffusionValidation();
             showRejectValidationButton();
-        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(status)) {
+        } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
             showPublishInternallyButton();
             showRejectValidationButton();
-        } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status)) {
+        } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus)) {
             showPublishExternallyButton();
             showVersioningButton();
-        } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
+        } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
             showVersioningButton();
             // Only cancel scheme validity if it has not been canceled previously
             if (validTo == null) {

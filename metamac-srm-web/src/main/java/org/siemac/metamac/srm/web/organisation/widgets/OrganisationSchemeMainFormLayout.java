@@ -38,7 +38,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showRejectValidationButton() {
-        if (OrganisationsClientSecurityUtils.canRejectOrganisationSchemeValidation(status)) {
+        if (OrganisationsClientSecurityUtils.canRejectOrganisationSchemeValidation(procStatus)) {
             rejectValidation.show();
         }
     }

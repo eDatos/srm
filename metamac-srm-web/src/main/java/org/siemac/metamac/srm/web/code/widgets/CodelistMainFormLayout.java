@@ -29,10 +29,10 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     private void setCanEdit() {
         boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus)) {
             canEdit = CodesClientSecurityUtils.canCreateCodelistTemporalVersion();
         } else {
-            canEdit = CodesClientSecurityUtils.canUpdateCodelist(status);
+            canEdit = CodesClientSecurityUtils.canUpdateCodelist(procStatus);
         }
         super.setCanEdit(canEdit);
     }
@@ -46,7 +46,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     @Override
     protected void updateVisibility() {
         super.updateVisibility();
-        if (CommonUtils.isItemSchemePublished(status)) {
+        if (CommonUtils.isItemSchemePublished(procStatus)) {
             showAddCodelistToFamilyButton();
         }
     }
@@ -73,7 +73,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showRejectValidationButton() {
-        if (CodesClientSecurityUtils.canRejectCodelistValidation(status)) {
+        if (CodesClientSecurityUtils.canRejectCodelistValidation(procStatus)) {
             rejectValidation.show();
         }
     }

@@ -17,10 +17,10 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private void setCanEdit() {
         boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus)) {
             canEdit = CategoriesClientSecurityUtils.canCreateCategorySchemeTemporalVersion();
         } else {
-            canEdit = CategoriesClientSecurityUtils.canUpdateCategoryScheme(status);
+            canEdit = CategoriesClientSecurityUtils.canUpdateCategoryScheme(procStatus);
         }
         super.setCanEdit(canEdit);
     }
@@ -41,7 +41,7 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showRejectValidationButton() {
-        if (CategoriesClientSecurityUtils.canRejectCategorySchemeValidation(status)) {
+        if (CategoriesClientSecurityUtils.canRejectCategorySchemeValidation(procStatus)) {
             rejectValidation.show();
         }
     }

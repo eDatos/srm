@@ -21,10 +21,10 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     private void setCanEdit() {
         boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus)) {
             canEdit = DsdClientSecurityUtils.canCreateDsdTemporalVersion(operationCode);
         } else {
-            canEdit = DsdClientSecurityUtils.canUpdateDsd(status, operationCode);
+            canEdit = DsdClientSecurityUtils.canUpdateDsd(procStatus, operationCode);
         }
         super.setCanEdit(canEdit);
     }
@@ -45,7 +45,7 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showRejectValidationButton() {
-        if (DsdClientSecurityUtils.canRejectDsdValidation(status, operationCode)) {
+        if (DsdClientSecurityUtils.canRejectDsdValidation(procStatus, operationCode)) {
             rejectValidation.show();
         }
     }

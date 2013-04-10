@@ -25,10 +25,10 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private void setCanEdit() {
         boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus)) {
             canEdit = ConceptsClientSecurityUtils.canCreateConceptSchemeTemporalVersion(type, relatedOperationCode);
         } else {
-            canEdit = ConceptsClientSecurityUtils.canUpdateConceptScheme(status, type, relatedOperationCode);
+            canEdit = ConceptsClientSecurityUtils.canUpdateConceptScheme(procStatus, type, relatedOperationCode);
         }
         super.setCanEdit(canEdit);
     }
@@ -54,7 +54,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showRejectValidationButton() {
-        if (ConceptsClientSecurityUtils.canRejectConceptSchemeValidation(status, type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canRejectConceptSchemeValidation(procStatus, type, relatedOperationCode)) {
             rejectValidation.show();
         }
     }
