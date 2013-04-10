@@ -135,7 +135,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
      * FILLS
      **************************************************************************/
     @Override
-    public void dataStructureDefinitionJaxbToDoExtension(ServiceContext ctx, DataStructureType source, DataStructureDefinitionVersion previous, DataStructureDefinitionVersion target)
+    public void dataStructureDefinitionJaxbToDoExtensionPreCreate(ServiceContext ctx, DataStructureType source, DataStructureDefinitionVersion previous, DataStructureDefinitionVersion target)
             throws MetamacException {
         DataStructureDefinitionVersionMetamac previousMetamac = (DataStructureDefinitionVersionMetamac) previous;
         DataStructureDefinitionVersionMetamac targetMetamac = (DataStructureDefinitionVersionMetamac) target;
@@ -162,6 +162,26 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
 
         // Validate and complete fill
         dsdsMetamacService.preCreateDataStructureDefinition(ctx, targetMetamac);
+    }
+
+    @Override
+    public void dataStructureDefinitionJaxbToDoExtensionPostCreate(ServiceContext ctx, DataStructureType source, DataStructureDefinitionVersion previous, DataStructureDefinitionVersion target)
+            throws MetamacException {
+        DataStructureDefinitionVersionMetamac previousMetamac = (DataStructureDefinitionVersionMetamac) previous;
+        DataStructureDefinitionVersionMetamac targetMetamac = (DataStructureDefinitionVersionMetamac) target;
+
+        // Fill metadata heritable
+        if (previousMetamac != null) {
+            // Heading
+
+            // Stub
+
+            // ShowDecimalsPRecicions
+
+        }
+
+        // Fill metadata
+        // codesMetamacService.postCreateCodelist(ctx, targetMetamac, (previousVersion != null) ? previousMetamac.getReplaceToCodelists() : new ArrayList<CodelistVersionMetamac>()); //
     }
 
     @Override

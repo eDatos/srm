@@ -164,6 +164,13 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
+    public DataStructureDefinitionVersionMetamac postCreateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionPrevious,
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public DataStructureDefinitionVersionMetamac updateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkUpdateDataStructureDefinition(dataStructureDefinitionVersion, null);
