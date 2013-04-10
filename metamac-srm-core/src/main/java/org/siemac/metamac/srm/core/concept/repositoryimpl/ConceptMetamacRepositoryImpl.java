@@ -63,7 +63,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("c.DOC_METHOD_FK as DOC_METHOD_IS, lsdocme.LABEL as DOC_METHOD_LABEL, ");
         sb.append("c.DERIVATION_FK as DERIVARION_IS, lsderiv.LABEL as DERIVARION_LABEL, ");
         sb.append("c.LEGAL_ACTS_FK as LEGAL_ACTS_IS, lslegal.LABEL as LEGAL_ACTS_LABEL ");
-        sb.append("FROM TB_ITEMS i ");
+        sb.append("FROM TB_ITEMS_BASE i ");
         sb.append("INNER JOIN TB_M_CONCEPTS c on c.TB_CONCEPTS = i.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsplurn on lsplurn.INTERNATIONAL_STRING_FK = c.PLURAL_NAME_FK AND lsplurn.LOCALE = :locale ");

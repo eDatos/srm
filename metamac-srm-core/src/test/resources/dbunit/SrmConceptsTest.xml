@@ -10,7 +10,7 @@
     <TB_SEQUENCES SEQUENCE_NAME="ANNOTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
-    <TB_SEQUENCES SEQUENCE_NAME="ITEMS" SEQUENCE_NEXT_VALUE="100000000" />
+    <TB_SEQUENCES SEQUENCE_NAME="ITEMS_BASE" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="REPRESENTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -149,12 +149,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS="10011"
+                TB_ITEMS_BASE="10011"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX01"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="10011"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
@@ -203,12 +203,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS="10012"
+                TB_ITEMS_BASE="10012"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX02"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="10012"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
@@ -355,7 +355,7 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="111"
+                TB_ITEMS_BASE="111"
                 CORE_REPRESENTATION_FK="[null]"    
             />
 
@@ -374,7 +374,7 @@
               TB_CONCEPTS="111"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="11"
@@ -515,7 +515,7 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="121"
+                TB_ITEMS_BASE="121"
                 CORE_REPRESENTATION_FK="121"    
             />
             
@@ -534,7 +534,7 @@
               TB_CONCEPTS="121"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="121"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
@@ -612,7 +612,7 @@
             
             <!-- CONCEPT02 -->
             <TB_CONCEPTS
-                TB_ITEMS="122"
+                TB_ITEMS_BASE="122"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -630,7 +630,7 @@
               TB_CONCEPTS="122"
              />
                      
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="122"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
@@ -674,7 +674,7 @@
             
             <!-- CONCEPT0201 -->
             <TB_CONCEPTS
-                TB_ITEMS="1221"
+                TB_ITEMS_BASE="1221"
                 CORE_REPRESENTATION_FK="[null]"    
             />
 
@@ -692,7 +692,7 @@
               TB_CONCEPTS="1221"
              />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1221"
                 PARENT_FK="122"
                 ITEM_SCHEME_VERSION_FK="12"
@@ -742,7 +742,7 @@
             
             <!-- CONCEPT020101 -->
             <TB_CONCEPTS
-                TB_ITEMS="12211"
+                TB_ITEMS_BASE="12211"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -760,7 +760,7 @@
               TB_CONCEPTS="12211"
              />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="12211"
                 PARENT_FK="1221"
                 ITEM_SCHEME_VERSION_FK="12"
@@ -814,7 +814,7 @@
                     
             <!-- CONCEPT03 -->
             <TB_CONCEPTS
-                TB_ITEMS="123"
+                TB_ITEMS_BASE="123"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -833,7 +833,7 @@
               TB_CONCEPTS="123"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="123"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
@@ -887,7 +887,7 @@
             
             <!-- CONCEPT04 -->
             <TB_CONCEPTS
-                TB_ITEMS="124"
+                TB_ITEMS_BASE="124"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -905,7 +905,7 @@
               TB_CONCEPTS="124"
              />
                      
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="124"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
@@ -949,7 +949,7 @@
             
             <!-- CONCEPT0401 -->
             <TB_CONCEPTS
-                TB_ITEMS="1241"
+                TB_ITEMS_BASE="1241"
                 CORE_REPRESENTATION_FK="[null]"    
             />
 
@@ -967,7 +967,7 @@
               TB_CONCEPTS="1241"
              />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1241"
                 PARENT_FK="124"
                 ITEM_SCHEME_VERSION_FK="12"
@@ -1011,7 +1011,7 @@
         
             <!-- CONCEPT040101 -->
             <TB_CONCEPTS
-                TB_ITEMS="12411"
+                TB_ITEMS_BASE="12411"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -1029,7 +1029,7 @@
               TB_CONCEPTS="12411"
              />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="12411"
                 PARENT_FK="1241"
                 ITEM_SCHEME_VERSION_FK="12"
@@ -1172,7 +1172,7 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="211"
+                TB_ITEMS_BASE="211"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -1191,7 +1191,7 @@
               TB_CONCEPTS="211"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="211"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
@@ -1245,7 +1245,7 @@
             
             <!-- CONCEPT02 -->
             <TB_CONCEPTS
-                TB_ITEMS="212"
+                TB_ITEMS_BASE="212"
                 CORE_REPRESENTATION_FK="[null]"    
             />
         
@@ -1264,7 +1264,7 @@
               TB_CONCEPTS="212"
              />        
                      
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="212"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
@@ -1425,7 +1425,7 @@
             <!--    -> CONCEPT0202 -->
 
             <TB_CONCEPTS
-                TB_ITEMS="311"
+                TB_ITEMS_BASE="311"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -1444,7 +1444,7 @@
               TB_CONCEPTS="311"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="311"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="31"
@@ -1498,7 +1498,7 @@
             
             <!-- CONCEPT02 -->
             <TB_CONCEPTS
-                TB_ITEMS="312"
+                TB_ITEMS_BASE="312"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -1516,7 +1516,7 @@
               TB_CONCEPTS="312"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="312"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="31"
@@ -1566,7 +1566,7 @@
             
             <!-- CONCEPT0201 -->
             <TB_CONCEPTS
-                TB_ITEMS="3121"
+                TB_ITEMS_BASE="3121"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -1584,7 +1584,7 @@
               TB_CONCEPTS="3121"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="3121"
                 PARENT_FK="312"
                 ITEM_SCHEME_VERSION_FK="31"
@@ -1639,7 +1639,7 @@
             
                     <!-- CONCEPT020101 -->
                     <TB_CONCEPTS
-                        TB_ITEMS="31211"
+                        TB_ITEMS_BASE="31211"
                         CORE_REPRESENTATION_FK="[null]"    
                     />
                     
@@ -1657,7 +1657,7 @@
                       TB_CONCEPTS="31211"
                      />                    
                 
-                    <TB_ITEMS
+                    <TB_ITEMS_BASE
                         ID="31211"
                         PARENT_FK="3121"
                         ITEM_SCHEME_VERSION_FK="31"
@@ -1719,7 +1719,7 @@
             
             <!-- CONCEPT0202 -->
             <TB_CONCEPTS
-                TB_ITEMS="3122"
+                TB_ITEMS_BASE="3122"
                 CORE_REPRESENTATION_FK="[null]"    
             />
         
@@ -1737,7 +1737,7 @@
               TB_CONCEPTS="3122"
              />
                      
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="3122"
                 PARENT_FK="312"
                 ITEM_SCHEME_VERSION_FK="31"
@@ -1889,7 +1889,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="411"
+                TB_ITEMS_BASE="411"
                 CORE_REPRESENTATION_FK="[null]"    
             />
 
@@ -1908,7 +1908,7 @@
               TB_CONCEPTS="411"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="411"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="41"
@@ -2046,7 +2046,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="511"
+                TB_ITEMS_BASE="511"
                 CORE_REPRESENTATION_FK="[null]"    
             />
 
@@ -2065,7 +2065,7 @@
               TB_CONCEPTS="511"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="511"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="51"
@@ -2203,7 +2203,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="611"
+                TB_ITEMS_BASE="611"
                 CORE_REPRESENTATION_FK="[null]"    
             />
 
@@ -2222,7 +2222,7 @@
               TB_CONCEPTS="611"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="611"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="61"
@@ -2363,7 +2363,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="711"
+                TB_ITEMS_BASE="711"
                 CORE_REPRESENTATION_FK="[null]"    
             />
 
@@ -2382,7 +2382,7 @@
               TB_CONCEPTS="711"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="711"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="71"
@@ -2510,7 +2510,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="721"
+                TB_ITEMS_BASE="721"
                 CORE_REPRESENTATION_FK="[null]"    
             />
 
@@ -2529,7 +2529,7 @@
               TB_CONCEPTS="721"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="721"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="72"
@@ -2669,7 +2669,7 @@
 
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="811"
+                TB_ITEMS_BASE="811"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -2688,7 +2688,7 @@
               TB_CONCEPTS="811"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="811"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="81"
@@ -3008,7 +3008,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="1021"
+                TB_ITEMS_BASE="1021"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -3027,7 +3027,7 @@
               TB_CONCEPTS="1021"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1021"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="102"
@@ -3155,7 +3155,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="1031"
+                TB_ITEMS_BASE="1031"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -3174,7 +3174,7 @@
               TB_CONCEPTS="1031"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1031"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="103"
@@ -3314,7 +3314,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="1111"
+                TB_ITEMS_BASE="1111"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -3333,7 +3333,7 @@
               TB_CONCEPTS="1111"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="111"
@@ -3474,7 +3474,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="1211"
+                TB_ITEMS_BASE="1211"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -3493,7 +3493,7 @@
               TB_CONCEPTS="1211"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1211"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="121"
@@ -3633,7 +3633,7 @@
     
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="1311"
+                TB_ITEMS_BASE="1311"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -3652,7 +3652,7 @@
               TB_CONCEPTS="1311"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1311"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="131"
@@ -3696,7 +3696,7 @@
             
            <!-- CONCEPT02 -->
             <TB_CONCEPTS
-                TB_ITEMS="1312"
+                TB_ITEMS_BASE="1312"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -3715,7 +3715,7 @@
               TB_CONCEPTS="1312"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1312"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="131"
@@ -3759,7 +3759,7 @@
             
            <!-- CONCEPT03 -->
             <TB_CONCEPTS
-                TB_ITEMS="1313"
+                TB_ITEMS_BASE="1313"
                 CORE_REPRESENTATION_FK="[null]"    
             />
  
@@ -3778,7 +3778,7 @@
               TB_CONCEPTS="1313"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1313"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="131"
@@ -3966,10 +3966,10 @@
             />
             
             <TB_CONCEPTS
-                TB_ITEMS="1411"
+                TB_ITEMS_BASE="1411"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1411"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="141"
@@ -4028,10 +4028,10 @@
                                     />
                     
                     <TB_CONCEPTS
-                        TB_ITEMS="14111"
+                        TB_ITEMS_BASE="14111"
                     />
                 
-                    <TB_ITEMS
+                    <TB_ITEMS_BASE
                         ID="14111"
                         PARENT_FK="1411"
                         ITEM_SCHEME_VERSION_FK="141"
@@ -4090,10 +4090,10 @@
             />
             
             <TB_CONCEPTS
-                TB_ITEMS="1412"
+                TB_ITEMS_BASE="1412"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1412"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="141"
@@ -4176,10 +4176,10 @@
             />
             
             <TB_CONCEPTS
-                TB_ITEMS="1413"
+                TB_ITEMS_BASE="1413"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="1413"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="141"
@@ -4483,7 +4483,7 @@
     
         <!-- CODE03 -->
             <TB_CODES
-                TB_ITEMS="20111"
+                TB_ITEMS_BASE="20111"
             />
             
             <TB_M_CODES
@@ -4492,7 +4492,7 @@
               TB_CODES="20111"
              />
             
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="20111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="2011"
@@ -4536,7 +4536,7 @@
 
             <!-- CODE04 -->
             <TB_CODES
-                TB_ITEMS="20112"
+                TB_ITEMS_BASE="20112"
             />
             
             <TB_M_CODES
@@ -4545,7 +4545,7 @@
               TB_CODES="20112"
              />
                      
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="20112"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="2011"

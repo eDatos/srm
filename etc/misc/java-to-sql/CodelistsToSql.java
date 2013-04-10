@@ -96,7 +96,7 @@ public class CodelistsToSql {
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'ITEM_SCHEMES_VERSIONS';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'CODELISTS_VERSIONS';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'M_CODELISTS_VERSIONS';");
-        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'ITEMS';");
+        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'ITEMS_BASE';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'CODES';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'M_CODES';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idAnnotableArtefact + " WHERE SEQUENCE_NAME = 'ANNOTABLE_ARTEFACTS';");
@@ -573,7 +573,7 @@ public class CodelistsToSql {
     }
 
     /**
-     * CREATE TABLE TB_ITEMS (
+     * CREATE TABLE TB_ITEMS_BASE (
      * ID NUMBER(19) NOT NULL,
      * UPDATE_DATE_TZ VARCHAR2(50),
      * UPDATE_DATE TIMESTAMP, TODO
@@ -593,21 +593,21 @@ public class CodelistsToSql {
      */
     private static void insertItem(long idCodelist, long idNameableArtefact, long idCode, Long idParent) {
         if (idParent == null) {
-            insertSentences.add("INSERT INTO TB_ITEMS (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, ITEM_SCHEME_VERSION_FK, ITEM_SCHEME_VERSION_FIRST_FK) values (" + idCode + ", " + idCode + ", 1,"
+            insertSentences.add("INSERT INTO TB_ITEMS_BASE (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, ITEM_SCHEME_VERSION_FK, ITEM_SCHEME_VERSION_FIRST_FK) values (" + idCode + ", " + idCode + ", 1,"
                     + idNameableArtefact + ", " + idCodelist + ", " + idCodelist + ");");
         } else {
-            insertSentences.add("INSERT INTO TB_ITEMS (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, ITEM_SCHEME_VERSION_FK, PARENT_FK) values (" + idCode + ", " + idCode + ", 1," + idNameableArtefact
+            insertSentences.add("INSERT INTO TB_ITEMS_BASE (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, ITEM_SCHEME_VERSION_FK, PARENT_FK) values (" + idCode + ", " + idCode + ", 1," + idNameableArtefact
                     + ", " + idCodelist + ", " + idParent + ");");
         }
     }
 
     /**
      * CREATE TABLE TB_CODES (
-     * TB_ITEMS NUMBER(19) NOT NULL
+     * TB_ITEMS_BASE NUMBER(19) NOT NULL
      * );
      */
     private static void insertCode(Long idCode) {
-        insertSentences.add("INSERT INTO TB_CODES (TB_ITEMS) values (" + idCode + ");");
+        insertSentences.add("INSERT INTO TB_CODES (TB_ITEMS_BASE) values (" + idCode + ");");
     }
 
     /**

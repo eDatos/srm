@@ -10,7 +10,7 @@
     <TB_SEQUENCES SEQUENCE_NAME="ANNOTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
-    <TB_SEQUENCES SEQUENCE_NAME="ITEMS" SEQUENCE_NEXT_VALUE="100000000" />
+    <TB_SEQUENCES SEQUENCE_NAME="ITEMS_BASE" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="REPRESENTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -149,12 +149,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS="10011"
+                TB_ITEMS_BASE="10011"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX01"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="10011"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
@@ -203,12 +203,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS="10012"
+                TB_ITEMS_BASE="10012"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX02"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="10012"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
@@ -357,10 +357,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS="111"
+                TB_ITEMS_BASE="111"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="11"
@@ -507,7 +507,7 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="211"
+                TB_ITEMS_BASE="211"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -526,7 +526,7 @@
               TB_CONCEPTS="211"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="211"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
@@ -797,10 +797,10 @@
             />
                         
             <TB_CATEGORIES
-                TB_ITEMS="511"
+                TB_ITEMS_BASE="511"
             />
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="511"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="51"
@@ -1008,7 +1008,7 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS="711"
+                TB_ITEMS_BASE="711"
                 CORE_REPRESENTATION_FK="[null]"    
             />
             
@@ -1027,7 +1027,7 @@
               TB_CONCEPTS="711"
              />            
         
-            <TB_ITEMS
+            <TB_ITEMS_BASE
                 ID="711"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="71"
