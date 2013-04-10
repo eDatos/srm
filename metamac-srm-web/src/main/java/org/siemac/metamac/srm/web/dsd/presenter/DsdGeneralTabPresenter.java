@@ -29,6 +29,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
+import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionAction;
+import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
@@ -84,6 +86,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public interface DsdGeneralTabView extends View, HasUiHandlers<DsdGeneralTabUiHandlers> {
 
         void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
+        void setDsdAndStartEditing(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
         DataStructureDefinitionMetamacDto getDataStructureDefinitionDto();
         HasClickHandlers getSave();
         void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
@@ -140,8 +143,11 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         });
     }
 
-    @Override
-    public void retrieveCompleteDsd(String urn) {
+    private void retrieveCompleteDsd(String urn) {
+        retrieveCompleteDsd(urn, false);
+    }
+
+    private void retrieveCompleteDsd(String urn, final boolean editionMode) {
         Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
         descriptorsToRetrieve.add(TypeComponentList.DIMENSION_DESCRIPTOR);
         dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
@@ -152,7 +158,13 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
-                getView().setDsd(result.getDsd());
+
+                if (editionMode) {
+                    getView().setDsdAndStartEditing(result.getDsd());
+                } else {
+                    getView().setDsd(result.getDsd());
+                }
+
                 List<DimensionComponentDto> dimensionComponentDtos = CommonUtils.getDimensionComponents(result.getDimensions());
                 getView().setDimensionsForStubAndHeading(dimensionComponentDtos);
                 setConceptSchemeOfTheMeasureDimension(dimensionComponentDtos);
@@ -252,6 +264,21 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             public void onWaitSuccess(VersionDsdResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdVersioned()), MessageTypeEnum.SUCCESS);
                 goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void createTemporalVersion(String urn) {
+        dispatcher.execute(new CreateDsdTemporalVersionAction(urn), new WaitingAsyncCallback<CreateDsdTemporalVersionResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorEditingPublishedResource()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CreateDsdTemporalVersionResult result) {
+                retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn(), true);
             }
         });
     }

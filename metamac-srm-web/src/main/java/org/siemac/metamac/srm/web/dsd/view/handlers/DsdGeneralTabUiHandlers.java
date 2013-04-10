@@ -7,7 +7,6 @@ import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface DsdGeneralTabUiHandlers extends UiHandlers {
 
-    void retrieveCompleteDsd(String urn);
     void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
     void goToDsd(String urn);
 
@@ -22,4 +21,5 @@ public interface DsdGeneralTabUiHandlers extends UiHandlers {
     void publishExternally(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
     void versioning(String urn, VersionTypeEnum versionType);
     void cancelValidity(String urn);
+    void createTemporalVersion(String urn);
 }

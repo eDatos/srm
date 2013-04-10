@@ -13,12 +13,20 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     public DsdMainFormLayout() {
     }
 
-    public DsdMainFormLayout(boolean canEdit) {
-    }
-
-    public void updatePublishSection(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+    public void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
         super.updatePublishSection(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacDto);
         this.operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
+        setCanEdit();
+    }
+
+    private void setCanEdit() {
+        boolean canEdit = false;
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+            canEdit = DsdClientSecurityUtils.canCreateDsdTemporalVersion(operationCode);
+        } else {
+            canEdit = DsdClientSecurityUtils.canUpdateDsd(status, operationCode);
+        }
+        super.setCanEdit(canEdit);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ import org.siemac.metamac.srm.web.client.widgets.DimensionsVisualisationItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
-import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
@@ -30,7 +28,6 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -152,10 +149,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus();
-                if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)) {
-                    // Create a new version
-                    final InformationWindow window = new InformationWindow(getMessages().dsdEditionInfo(), getMessages().dsdEditionInfoDetailedMessage());
-                    window.show();
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                    // If the scheme is published, create a temporal version
+                    getUiHandlers().createTemporalVersion(dataStructureDefinitionMetamacDto.getUrn());
                 } else {
                     // Default behavior
                     setEditionMode();
@@ -215,17 +211,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
-                versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (versionWindow.validateForm()) {
-                            getUiHandlers().versioning(dataStructureDefinitionMetamacDto.getUrn(), versionWindow.getSelectedVersion());
-                            versionWindow.destroy();
-                        }
-                    }
-                });
+                versionDsd();
             }
         });
         mainFormLayout.getCancelValidity().addClickHandler(new ClickHandler() {
@@ -233,6 +219,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().cancelValidity(dataStructureDefinitionMetamacDto.getUrn());
+            }
+        });
+        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                versionDsd();
             }
         });
     }
@@ -423,8 +416,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         this.statisticalOperation = dataStructureDefinitionMetamacDto.getStatisticalOperation();
 
         // Security
-        mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDsd(dataStructureDefinitionMetamacDto));
-        mainFormLayout.updatePublishSection(dataStructureDefinitionMetamacDto);
+        mainFormLayout.setDsd(dataStructureDefinitionMetamacDto);
         mainFormLayout.setViewMode();
 
         setDsdViewMode(dataStructureDefinitionMetamacDto);
@@ -433,6 +425,12 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Clear errors
         identifiersEditionForm.clearErrors(true);
         contentDescriptorsEditionForm.clearErrors(true);
+    }
+
+    @Override
+    public void setDsdAndStartEditing(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        setDsd(dataStructureDefinitionMetamacDto);
+        mainFormLayout.setEditionMode();
     }
 
     @Override
@@ -595,6 +593,20 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     public void onDsdSaved(DataStructureDefinitionMetamacDto dsd) {
         setDsd(dsd);
         mainFormLayout.setViewMode();
+    }
+
+    private void versionDsd() {
+        final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
+        versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                if (versionWindow.validateForm()) {
+                    getUiHandlers().versioning(dataStructureDefinitionMetamacDto.getUrn(), versionWindow.getSelectedVersion());
+                    versionWindow.destroy();
+                }
+            }
+        });
     }
 
     // Visualisation metadata
