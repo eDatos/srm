@@ -7,8 +7,6 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
 
     // Schemes
 
-    void retrieveConceptScheme(String conceptSchemeUrn);
-    void retrieveConceptListByScheme(String conceptSchemeUrn);
     void retrieveConceptSchemeVersions(String conceptSchemeUrn);
     void saveConceptScheme(ConceptSchemeMetamacDto conceptScheme);
     void goToConceptScheme(String urn);

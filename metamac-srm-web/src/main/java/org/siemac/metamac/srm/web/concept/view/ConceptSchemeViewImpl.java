@@ -228,7 +228,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
                     getUiHandlers().createTemporalVersion(conceptSchemeDto.getUrn());
                 } else {
                     // Default behavior
-                    setEditionMode();
+                    startConceptSchemeEdition();
                 }
             }
         });
@@ -364,8 +364,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     }
 
     @Override
-    public void setConceptSchemeAndStartEdition(ConceptSchemeMetamacDto conceptScheme) {
-        setConceptScheme(conceptScheme);
+    public void startConceptSchemeEdition() {
         mainFormLayout.setEditionMode();
     }
 
@@ -592,10 +591,6 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         mainFormLayout.addEditionCanvas(versionResponsibilityEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
-    }
-
-    public void setEditionMode() {
-        mainFormLayout.setEditionMode();
     }
 
     public void setConceptSchemeViewMode(ConceptSchemeMetamacDto conceptSchemeDto) {
