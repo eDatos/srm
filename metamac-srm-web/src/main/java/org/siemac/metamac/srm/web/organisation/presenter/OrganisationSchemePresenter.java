@@ -194,6 +194,10 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         }
     }
 
+    //
+    // ORGANISATION SCHEME
+    //
+
     private void retrieveOrganisationSchemeByUrn(String urn) {
         dispatcher.execute(new GetOrganisationSchemeAction(urn), new WaitingAsyncCallback<GetOrganisationSchemeResult>() {
 
@@ -205,23 +209,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             public void onWaitSuccess(GetOrganisationSchemeResult result) {
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
-                retrieveOrganisationListByScheme(result.getOrganisationSchemeMetamacDto().getUrn());
+                retrieveOrganisationsByScheme(result.getOrganisationSchemeMetamacDto().getUrn());
                 retrieveOrganisationSchemeVersions(result.getOrganisationSchemeMetamacDto().getUrn());
-            }
-        });
-    }
-
-    @Override
-    public void retrieveOrganisationListByScheme(String organisationSchemeUrn) {
-        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
-                getView().setOrganisationList(result.getOrganisations());
             }
         });
     }
@@ -259,6 +248,10 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             }
         });
     }
+
+    //
+    // ORGANISATION SCHEME LIFECYCLE
+    //
 
     @Override
     public void cancelValidity(final String urn) {
@@ -389,6 +382,24 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         });
     }
 
+    //
+    // ORGANISATIONS
+    //
+
+    private void retrieveOrganisationsByScheme(String organisationSchemeUrn) {
+        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
+                getView().setOrganisationList(result.getOrganisations());
+            }
+        });
+    }
+
     @Override
     public void createOrganisation(OrganisationMetamacDto organisationDto) {
         dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallback<SaveOrganisationResult>() {
@@ -423,10 +434,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             @Override
             public void onWaitSuccess(DeleteOrganisationsResult result) {
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationListByScheme(organisationSchemeMetamacDto.getUrn());
+                retrieveOrganisationsByScheme(organisationSchemeMetamacDto.getUrn());
             }
         });
     }
+
+    //
+    // CATEGORISATIONS
+    //
 
     @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {
