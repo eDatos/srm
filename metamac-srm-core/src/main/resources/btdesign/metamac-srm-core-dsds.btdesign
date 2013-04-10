@@ -59,7 +59,11 @@ Application DsdsMetamac {
     		"Creates a new version of a data structure definition, copying metadata from version with provided urn"
     		@DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a data structure definition, copying metadata from version with provided urn"
-    		@DataStructureDefinitionVersionMetamac createTemporalVersionDataStructureDefinition(String urnToCopy) throws MetamacException;
+    		@DataStructureDefinitionVersionMetamac createTemporalDataStructureDefinition(String urnToCopy) throws MetamacException;
+     		"Creates a new version of a data structure definition from temporal version with provided urn"
+    		@DataStructureDefinitionVersionMetamac createVersionFromTemporalDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
+    		"Merge temporal version into published version"
+    		@DataStructureDefinitionVersionMetamac mergeTemporalVersion(@DataStructureDefinitionVersionMetamac dataStructureTemporalVersion) throws MetamacException;
     		"Ends the data structure definition validity"
     		@DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(String urn) throws MetamacException;
 			"Checks translations for data structure definition"

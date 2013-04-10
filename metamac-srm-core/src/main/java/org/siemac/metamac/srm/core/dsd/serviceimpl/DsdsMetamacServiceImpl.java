@@ -13,12 +13,16 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
@@ -57,6 +61,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
@@ -111,6 +116,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Autowired
     private SrmConfiguration                      srmConfiguration;
+
+    @Autowired
+    private InternationalStringRepository         internationalStringRepository;
 
     public DsdsMetamacServiceImpl() {
     }
@@ -273,8 +281,56 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     @Override
-    public DataStructureDefinitionVersionMetamac createTemporalVersionDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public DataStructureDefinitionVersionMetamac createTemporalDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfDataStructureDefinition(ctx, urnToCopy, null, true);
+    }
+
+    @Override
+    public DataStructureDefinitionVersionMetamac createVersionFromTemporalDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+        DataStructureDefinitionVersionMetamac dataStructureVersionTemporal = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
+
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(dataStructureVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
+        }
+
+        // Retrieve the original artifact
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = retrieveDataStructureDefinitionByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
+
+        // Set the new version in the temporal artifact
+        dataStructureVersionTemporal.getMaintainableArtefact().setVersionLogic(
+                SdmxVersionUtils.createNextVersion(dataStructureDefinitionVersion.getMaintainableArtefact().getVersionLogic(), dataStructureDefinitionVersion.getStructure().getVersionPattern(),
+                        versionTypeEnum));
+
+        dataStructureVersionTemporal.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE); // For calculates new urns
+        dataStructureVersionTemporal = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.updateDataStructureDefinition(ctx, dataStructureVersionTemporal);
+
+        // Set null replacedBy in the original entity
+        dataStructureDefinitionVersion.getMaintainableArtefact().setReplacedByVersion(null);
+
+        return dataStructureVersionTemporal;
+    }
+
+    @Override
+    public DataStructureDefinitionVersionMetamac mergeTemporalVersion(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureTemporalVersion) throws MetamacException {
+        // Check if is a temporal version
+        if (!VersionUtil.isTemporalVersion(dataStructureTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
+            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
+        }
+        SrmValidationUtils.checkArtefactProcStatus(dataStructureTemporalVersion.getLifeCycleMetadata(), dataStructureTemporalVersion.getMaintainableArtefact().getUrn(),
+                ProcStatusEnum.DIFFUSION_VALIDATION);
+
+        // Load original version
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = retrieveDataStructureDefinitionByUrn(ctx,
+                GeneratorUrnUtils.makeUrnFromTemporal(dataStructureTemporalVersion.getMaintainableArtefact().getUrn()));
+
+        // Inherit InternationalStrings
+        BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToStructureVersionWithoutComponentListsAndComponents(dataStructureDefinitionVersion, dataStructureTemporalVersion,
+                internationalStringRepository);
+
+        // Merge Metamac metadata of ItemScheme
+
+        return dataStructureDefinitionVersion;
     }
 
     @Override

@@ -15,7 +15,6 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -390,18 +389,16 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Override
     @Test
-    @Ignore
-    public void testCreateTemporalVersionDataStructureDefinition() throws Exception {
+    public void testCreateTemporalDataStructureDefinition() throws Exception {
         String urn = DSD_6_V1;
         String versionExpected = "01.000" + UrnConstants.URN_SDMX_TEMPORAL_SUFFIX;
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
         String dsd_6_v1temp_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").dim-01";
         String dsd_6_v1temp_time_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").timeDimension-01";
         String dsd_6_v1temp_measure_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").measureDimension-01";
-        // String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(" + versionExpected + ").CONCEPT01";
 
         DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
-        DataStructureDefinitionVersionMetamac dsdNewVersion = dsdsMetamacService.createTemporalVersionDataStructureDefinition(getServiceContextAdministrador(), urn);
+        DataStructureDefinitionVersionMetamac dsdNewVersion = dsdsMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
 
         // Validate response
         {
@@ -457,6 +454,39 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
         }
     }
+
+    @Override
+    @Test
+    public void testCreateVersionFromTemporalDataStructureDefinition() throws Exception {
+        String urn = DSD_6_V1;
+
+        DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dsdsMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionNewVersion = dsdsMetamacService.createVersionFromTemporalDataStructureDefinition(getServiceContextAdministrador(),
+                temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
+
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
+
+        // Validate response
+        {
+            assertEquals(ProcStatusEnum.DRAFT, dataStructureDefinitionNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, dataStructureDefinitionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, dataStructureDefinitionNewVersion.getMaintainableArtefact().getUrn());
+
+            assertEquals(null, dataStructureDefinitionNewVersion.getMaintainableArtefact().getReplacedByVersion());
+            assertTrue(dataStructureDefinitionNewVersion.getMaintainableArtefact().getIsLastVersion());
+            assertFalse(dataStructureDefinitionNewVersion.getMaintainableArtefact().getLatestFinal());
+            assertFalse(dataStructureDefinitionNewVersion.getMaintainableArtefact().getLatestPublic());
+        }
+    }
+
+    @Override
+    @Test
+    public void testMergeTemporalVersion() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
     @Test
     @Override
     public void testEndDataStructureDefinitionValidity() throws Exception {

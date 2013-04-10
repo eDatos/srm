@@ -149,6 +149,13 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setStatisticalOperation(BaseVersioningCopyUtils.copy(previousMetamac.getStatisticalOperation()));
+
+            // Visualization Metadata
+            targetMetamac.setAutoOpen(previousMetamac.getAutoOpen());
+            targetMetamac.setShowDecimals(previousMetamac.getShowDecimals());
+            // can not copy heading here, because they belong to same dsd, and new dimension in new version must relate to versioned related dimension
+            // can not copy stub here, because they belong to same dsd, and new dimension in new version must relate to versioned related dimension
+            // showDecimalsPrecisions
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
