@@ -108,9 +108,9 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     public interface CategorySchemeView extends View, HasUiHandlers<CategorySchemeUiHandlers> {
 
         void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto);
-        void startCategorySchemeEdition();
         void setCategorySchemeVersions(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos);
-        void setCategoryList(List<ItemHierarchyDto> categoryDtos);
+        void setCategories(List<ItemHierarchyDto> categoryDtos);
+        void startCategorySchemeEdition();
 
         // Categorisations
 
@@ -397,7 +397,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             }
             @Override
             public void onWaitSuccess(GetCategoriesBySchemeResult result) {
-                getView().setCategoryList(result.getCategories());
+                getView().setCategories(result.getCategories());
             }
         });
     }
