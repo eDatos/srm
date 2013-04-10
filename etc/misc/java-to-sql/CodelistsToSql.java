@@ -1,4 +1,4 @@
-package org.siemac.metamac;
+package org.siemac.metamac.srm.core;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -20,8 +20,8 @@ public class CodelistsToSql {
      * 4) Número de códigos en "numCodes"
      * 5) Para muchos códigos, es mejor poner 'separateFiles' a true para que separe el resultado en varios ficheros.
      */
-    private static long                   firstId                         = 200000000;
-    private static int                    numCodes                        = 5000;
+    private static long                   firstId                         = 500000000;
+    private static int                    numCodes                        = 17000;
     private static Boolean                withAnnotations                 = Boolean.TRUE;
     private static Boolean                publishCodelist                 = Boolean.FALSE;
 
@@ -221,10 +221,10 @@ public class CodelistsToSql {
         long id = idVariableElements.longValue();
         String code = "code" + id;
         String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=" + codeVariable + "." + code;
-        long idNameableArtefact = insertNameableArtefact(urn, code, false);
+        long idIdentifiableArtefact = insertIdentifiableArtefact(urn, code, false);
         long shortName = insertInternationalString("shortName_" + id);
-        insertSentences.add("INSERT INTO TB_M_VARIABLE_ELEMENTS (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, SHORT_NAME_FK, VARIABLE_FK) values (" + id + ", '" + id + "', 1, " + idNameableArtefact
-                + ", " + shortName + ", " + idVariable + ");");
+        insertSentences.add("INSERT INTO TB_M_VARIABLE_ELEMENTS (ID, UUID, VERSION, IDENTIFIABLE_ARTEFACT_FK, SHORT_NAME_FK, VARIABLE_FK) values (" + id + ", '" + id + "', 1, "
+                + idIdentifiableArtefact + ", " + shortName + ", " + idVariable + ");");
         idVariableElements.add(1);
         return id;
     }
@@ -556,6 +556,22 @@ public class CodelistsToSql {
         return id;
     }
 
+    private static long insertIdentifiableArtefact(String urn, String code, boolean withAnnotations) {
+        long id = idAnnotableArtefact.toLong();
+
+        insertSentences.add("INSERT INTO TB_ANNOTABLE_ARTEFACTS (ID, UUID, VERSION, ANNOTABLE_ARTEFACT_TYPE, CODE, URN, URN_PROVIDER) values (" + id + ", " + id + ", 1, 'IDENTIFIABLE_ARTEFACT', '"
+                + code + "', '" + urn + "', '" + urn + "');");
+
+        if (withAnnotations) {
+            insertAnnotation(id);
+            insertAnnotation(id);
+            insertAnnotation(id);
+        }
+
+        idAnnotableArtefact.add(1);
+        return id;
+    }
+
     /**
      * CREATE TABLE TB_ITEMS (
      * ID NUMBER(19) NOT NULL,
@@ -604,9 +620,10 @@ public class CodelistsToSql {
     private static void insertCodeMetamac(Long idParent, long idCode, long variableElement) {
         String subcode = String.valueOf(idCode);
         long shortName = insertInternationalString("shortName_" + subcode);
-        MutableLong order = parentsChildrenNumber.get(idParent);
+        MutableLong order1 = parentsChildrenNumber.get(idParent);
         StringBuilder sentenceOrders = new StringBuilder();
         for (int i = 0; i < 20; i++) {
+            long order = order1.longValue() + i;
             sentenceOrders.append(", " + order);
         }
         insertSentences
