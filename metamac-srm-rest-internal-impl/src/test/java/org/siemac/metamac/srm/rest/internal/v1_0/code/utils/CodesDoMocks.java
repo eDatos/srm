@@ -2,16 +2,22 @@ package org.siemac.metamac.srm.rest.internal.v1_0.code.utils;
 
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class CodesDoMocks {
 
     public static CodelistVersionMetamac mockCodelist(String agencyID, String resourceID, String version) {
         CodelistVersionMetamac target = CodesMetamacDoMocks.mockCodelistFixedValues(agencyID, resourceID, version);
-        target.setItemScheme(new ItemScheme());
+        addReplaceMetadatasToCodelist(target, agencyID);
+        return target;
+    }
+
+    public static CodelistVersionMetamac mockCodelistWithCodes(String agencyID, String resourceID, String version) {
+        CodelistVersionMetamac target = CodesMetamacDoMocks.mockCodelistWithCodesFixedValues(agencyID, resourceID, version);
+        addReplaceMetadatasToCodelist(target, agencyID);
         return target;
     }
 
@@ -25,20 +31,20 @@ public class CodesDoMocks {
         return itemResult;
     }
 
-    public static CodelistVersionMetamac mockCodelistWithCodes(String agencyID, String resourceID, String version) {
-        CodelistVersionMetamac target = mockCodelist(agencyID, resourceID, version);
+    private static void addReplaceMetadatasToCodelist(CodelistVersionMetamac target, String agencyID) {
+        target.setReplacedByCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplacedBy", "01.000", AccessTypeEnum.PUBLIC, true, true));
+        target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo1", "01.000", AccessTypeEnum.PUBLIC, true, true));
+        target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo2", "02.000", AccessTypeEnum.PUBLIC, false, false));
+        target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo3", "03.000", AccessTypeEnum.PUBLIC, true, true));
+        target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo4", "04.000", AccessTypeEnum.PUBLIC, false, false));
+        target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo5", "05.000", AccessTypeEnum.RESTRICTED, true, true));
+    }
 
-        target.setReplacedByCodelist(mockCodelist(agencyID, "codelistReplacedBy", "01.000"));
-
-        CodelistVersionMetamac codelistReplaceTo1 = mockCodelist(agencyID, "codelistReplaceTo1", "01.000");
-        codelistReplaceTo1.getMaintainableArtefact().setFinalLogicClient(true);
-        target.addReplaceToCodelist(codelistReplaceTo1);
-        CodelistVersionMetamac codelistReplaceTo2 = mockCodelist(agencyID, "codelistReplaceTo2", "01.000");
-        codelistReplaceTo2.getMaintainableArtefact().setFinalLogicClient(false);
-        target.addReplaceToCodelist(codelistReplaceTo2);
-        CodelistVersionMetamac codelistReplaceTo3 = mockCodelist(agencyID, "codelistReplaceTo3", "02.000");
-        codelistReplaceTo3.getMaintainableArtefact().setFinalLogicClient(true);
-        target.addReplaceToCodelist(codelistReplaceTo3);
-        return target;
+    private static CodelistVersionMetamac mockCodelistToReplaceMetadata(String agencyID, String resourceID, String version, AccessTypeEnum accessType, boolean finalLogic, boolean publicLogic) {
+        CodelistVersionMetamac codelistReplace = CodesMetamacDoMocks.mockCodelistFixedValues(agencyID, resourceID, version);
+        codelistReplace.setAccessType(accessType);
+        codelistReplace.getMaintainableArtefact().setFinalLogicClient(finalLogic);
+        codelistReplace.getMaintainableArtefact().setPublicLogic(publicLogic);
+        return codelistReplace;
     }
 }

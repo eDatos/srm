@@ -89,8 +89,8 @@
                     <xs:element name="isRecommended" type="xs:boolean" minOccurs="0" />
                     <xs:element name="family" type="common:Item" minOccurs="0" />
                     <xs:element name="variable" type="common:Item" minOccurs="1" />
-                    <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
                     <xs:element name="replaceTo" type="tns:ReplaceToCodelist" minOccurs="0" />
+                    <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
                     <xs:element name="accessType" type="tns:AccessType" minOccurs="1" />
                     <xs:element name="defaultOrderVisualisation" type="xs:string" minOccurs="1" />
                     <xs:element name="defaultOpennessVisualisation" type="xs:string" minOccurs="1" />
@@ -746,8 +746,8 @@
         <xs:sequence>
             <xs:group ref="common:ResourceGroup" />
             <xs:element name="lifeCycle" type="tns:LifeCycle" minOccurs="1" />
-            <xs:element name="replacedByVersion" type="xs:string" minOccurs="0" />
             <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
+            <xs:element name="replacedByVersion" type="xs:string" minOccurs="0" />
             <xs:element name="comment" type="common:InternationalString" minOccurs="0" />
         </xs:sequence>
     </xs:group>

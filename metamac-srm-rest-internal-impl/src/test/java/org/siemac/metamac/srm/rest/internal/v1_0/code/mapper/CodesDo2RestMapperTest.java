@@ -8,7 +8,6 @@ import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCAR
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCode;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelist;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelistWithCodes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
@@ -40,6 +39,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesDo2RestMapperV10;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +99,7 @@ public class CodesDo2RestMapperTest {
     @Test
     public void testToCodelist() throws MetamacException {
 
-        CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
+        CodelistVersionMetamac source = mockCodelist("agencyID1", "resourceID1", "01.123");
 
         // Transform
         Codelist target = do2RestInternalMapper.toCodelist(source);
@@ -135,7 +135,7 @@ public class CodesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CODELISTS, target.getReplaceTo().getKind());
         assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
         assertEquals("urn:codelistReplaceTo1:01.000", target.getReplaceTo().getReplaceTos().get(0).getUrn());
-        assertEquals("urn:codelistReplaceTo3:02.000", target.getReplaceTo().getReplaceTos().get(1).getUrn());
+        assertEquals("urn:codelistReplaceTo3:03.000", target.getReplaceTo().getReplaceTos().get(1).getUrn());
 
         assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
         assertEqualsDate(new DateTime(2009, 9, 1, 1, 1, 1, 1), target.getLifeCycle().getProductionValidationDate());
@@ -157,7 +157,7 @@ public class CodesDo2RestMapperTest {
     @Test
     public void testToCodelistImported() throws MetamacException {
 
-        CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
+        CodelistVersionMetamac source = mockCodelist("agencyID1", "resourceID1", "01.123");
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         source.getMaintainableArtefact().setUriProvider("uriProviderDb");
 
@@ -169,17 +169,31 @@ public class CodesDo2RestMapperTest {
     }
 
     @Test
-    public void testToCodelistReplacedByNotFinal() throws MetamacException {
+    public void testToCodelistReplacedBy() throws MetamacException {
 
         CodelistVersionMetamac source = mockCodelist("agencyID1", "resourceID1", "01.123");
         source.setReplacedByCodelist(mockCodelist("agencyID2", "codelistReplacedBy", "01.000"));
-        source.getReplacedByCodelist().getMaintainableArtefact().setFinalLogicClient(false);
 
-        // Transform
-        Codelist target = do2RestInternalMapper.toCodelist(source);
-
-        // Validate
-        assertEquals(null, target.getReplacedBy());
+        {
+            // not final
+            source.getReplacedByCodelist().getMaintainableArtefact().setFinalLogicClient(false);
+            Codelist target = do2RestInternalMapper.toCodelist(source);
+            assertEquals(null, target.getReplacedBy());
+        }
+        {
+            // not public
+            source.getReplacedByCodelist().getMaintainableArtefact().setFinalLogicClient(true);
+            source.getReplacedByCodelist().setAccessType(AccessTypeEnum.RESTRICTED);
+            Codelist target = do2RestInternalMapper.toCodelist(source);
+            assertEquals(null, target.getReplacedBy());
+        }
+        {
+            // can be provided
+            source.getReplacedByCodelist().getMaintainableArtefact().setFinalLogicClient(true);
+            source.getReplacedByCodelist().setAccessType(AccessTypeEnum.PUBLIC);
+            Codelist target = do2RestInternalMapper.toCodelist(source);
+            assertEquals("urn:codelistReplacedBy:01.000", target.getReplacedBy().getUrn());
+        }
     }
 
     @Test

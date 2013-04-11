@@ -16,7 +16,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categor
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
-import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +27,7 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallback;
 
 @Component
-public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements CategoriesDo2RestMapperV10 {
+public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CategoriesDo2RestMapperV10 {
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbMapper categoriesDo2JaxbSdmxMapper;
@@ -171,7 +171,7 @@ public class CategoriesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imp
     }
 
     @Override
-    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+    protected boolean canItemSchemeVersionBeProvidedByApi(ItemSchemeVersion source) {
         return true; // no additional conditions
     }
 

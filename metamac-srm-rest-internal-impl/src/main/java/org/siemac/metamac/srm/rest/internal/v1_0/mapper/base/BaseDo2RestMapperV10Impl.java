@@ -26,29 +26,18 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
-import com.arte.statistic.sdmx.srm.core.base.domain.Item;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
-import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
-import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
-public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
+public abstract class BaseDo2RestMapperV10Impl {
 
     @Autowired
-    private ConfigurationService        configurationService;
+    private ConfigurationService configurationService;
 
-    @Autowired
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;
-
-    @Autowired
-    private StructureVersionRepository  structureVersionRepository;
-
-    private String                      srmApiInternalEndpointV10;
-    private String                      statisticalOperationsApiInternalEndpoint;
+    private String               srmApiInternalEndpointV10;
+    private String               statisticalOperationsApiInternalEndpoint;
 
     @PostConstruct
     public void init() throws Exception {
@@ -68,8 +57,7 @@ public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         return statisticalOperationsApiInternalEndpoint;
     }
 
-    @Override
-    public InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString sources) {
+    protected InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString sources) {
         if (sources == null) {
             return null;
         }
@@ -83,8 +71,7 @@ public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         return targets;
     }
 
-    @Override
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle toLifeCycle(org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata source) {
+    protected org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle toLifeCycle(org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata source) {
         LifeCycle target = new LifeCycle();
         target.setProcStatus(toProcStatus(source.getProcStatus()));
         target.setProductionValidationDate(toDate(source.getProductionValidationDate()));
@@ -100,8 +87,7 @@ public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         return target;
     }
 
-    @Override
-    public ProcStatus toProcStatus(ProcStatusEnum source) {
+    protected ProcStatus toProcStatus(ProcStatusEnum source) {
         switch (source) {
             case INTERNALLY_PUBLISHED:
                 return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus.INTERNALLY_PUBLISHED;
@@ -113,8 +99,7 @@ public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         }
     }
 
-    @Override
-    public Date toDate(DateTime source) {
+    protected Date toDate(DateTime source) {
         return RestCommonUtil.transformDateTimeToDate(source);
     }
 
@@ -131,30 +116,6 @@ public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
 
     protected boolean canResourceBeProvidedByApi(MaintainableArtefact source) {
         return source.getFinalLogicClient();
-    }
-
-    protected boolean canResourceBeProvidedByApi(ItemSchemeVersion source) {
-        return canResourceBeProvidedByApi(source.getMaintainableArtefact()) && canResourceBeProvidedByApiConcreteResource(source);
-    }
-
-    protected boolean canResourceBeProvidedByApi(StructureVersion source) {
-        return canResourceBeProvidedByApi(source.getMaintainableArtefact()) && canResourceBeProvidedByApiConcreteResource(source);
-    }
-
-    protected String toItemSchemeReplaceToVersion(ItemSchemeVersion source) {
-        return toItemSchemeReplaceMetadataIfResourceCanBeProvidedByApi(source.getItemScheme().getId(), source.getMaintainableArtefact().getReplaceToVersion());
-    }
-
-    protected String toItemSchemeReplacedByVersion(ItemSchemeVersion source) {
-        return toItemSchemeReplaceMetadataIfResourceCanBeProvidedByApi(source.getItemScheme().getId(), source.getMaintainableArtefact().getReplacedByVersion());
-    }
-
-    protected String toStructureReplaceToVersion(StructureVersion source) {
-        return toStructureReplaceMetadataIfResourceCanBeProvidedByApi(source.getStructure().getId(), source.getMaintainableArtefact().getReplaceToVersion());
-    }
-
-    protected String toStructureReplacedByVersion(StructureVersion source) {
-        return toStructureReplaceMetadataIfResourceCanBeProvidedByApi(source.getStructure().getId(), source.getMaintainableArtefact().getReplacedByVersion());
     }
 
     protected Resource toResource(NameableArtefact source, String kind, ResourceLink selfLink) {
@@ -214,41 +175,12 @@ public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         }
         return link;
     }
-    protected String toItemSchemeLink(String schemesSubPath, ItemSchemeVersion itemSchemeVersion) {
-        MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
-        return toMaintainableArtefactLink(schemesSubPath, maintainableArtefact);
-    }
 
     protected String toMaintainableArtefactLink(String subPath, MaintainableArtefact maintainableArtefact) {
         return toMaintainableArtefactLink(subPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), getCode(maintainableArtefact), maintainableArtefact.getVersionLogic());
     }
 
-    // API/[ARTEFACT_TYPE]/{agencyID}/{resourceID}/{version}/[SUBARTEFACT_TYPES]
-    protected String toItemsLink(String schemesSubPath, String itemsSubPath, String agencyID, String resourceID, String version) {
-        String link = toMaintainableArtefactLink(schemesSubPath, agencyID, resourceID, version);
-        link = RestUtils.createLink(link, itemsSubPath);
-        return link;
-    }
-    protected String toItemsLink(String schemesSubPath, String itemsSubPath, ItemSchemeVersion itemSchemeVersion) {
-        MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
-        return toItemsLink(schemesSubPath, itemsSubPath, getIdAsMaintainer(maintainableArtefact.getMaintainer()), getCode(maintainableArtefact), maintainableArtefact.getVersionLogic());
-    }
-
-    // API/[ARTEFACT_TYPE]/{agencyID}/{resourceID}/{version}/[SUBARTEFACT_TYPES]/{itemID}
-    protected String toItemLink(String schemesSubPath, String itemsSubPath, Item item) {
-        String link = toItemsLink(schemesSubPath, itemsSubPath, item.getItemSchemeVersion());
-        link = RestUtils.createLink(link, getCode(item.getNameableArtefact()));
-        return link;
-    }
-    private String readProperty(String property) {
-        String propertyValue = configurationService.getProperty(property);
-        if (propertyValue == null) {
-            throw new BeanCreationException("Property not found: " + property);
-        }
-        return propertyValue;
-    }
-
-    private String getIdAsMaintainer(Organisation mantainer) {
+    protected String getIdAsMaintainer(Organisation mantainer) {
         if (mantainer != null) {
             return mantainer.getIdAsMaintainer();
         } else {
@@ -257,30 +189,11 @@ public abstract class BaseDo2RestMapperV10Impl implements BaseDo2RestMapperV10 {
         }
     }
 
-    private String toItemSchemeReplaceMetadataIfResourceCanBeProvidedByApi(Long itemSchemeId, String version) {
-        if (version == null) {
-            return null;
+    private String readProperty(String property) {
+        String propertyValue = configurationService.getProperty(property);
+        if (propertyValue == null) {
+            throw new BeanCreationException("Property not found: " + property);
         }
-        ItemSchemeVersion itemSchemeVersion = itemSchemeVersionRepository.retrieveByVersion(itemSchemeId, version);
-        if (itemSchemeVersion != null && canResourceBeProvidedByApi(itemSchemeVersion)) {
-            return version;
-        } else {
-            return null;
-        }
+        return propertyValue;
     }
-
-    private String toStructureReplaceMetadataIfResourceCanBeProvidedByApi(Long structureId, String version) {
-        if (version == null) {
-            return null;
-        }
-        StructureVersion structureVersion = structureVersionRepository.retrieveByVersion(structureId, version);
-        if (structureVersion != null && canResourceBeProvidedByApi(structureVersion)) {
-            return version;
-        } else {
-            return null;
-        }
-    }
-
-    protected abstract boolean canResourceBeProvidedByApiConcreteResource(Object source);
-
 }

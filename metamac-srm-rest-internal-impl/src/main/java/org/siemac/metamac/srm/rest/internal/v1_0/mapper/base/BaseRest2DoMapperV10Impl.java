@@ -14,10 +14,8 @@ import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
-import org.springframework.stereotype.Component;
 
-@Component
-public class BaseRest2DoMapperV10Impl implements BaseRest2DoMapperV10 {
+public abstract class BaseRest2DoMapperV10Impl {
 
     public static RestException toRestExceptionParameterIncorrect(String parameter) {
         org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameter);

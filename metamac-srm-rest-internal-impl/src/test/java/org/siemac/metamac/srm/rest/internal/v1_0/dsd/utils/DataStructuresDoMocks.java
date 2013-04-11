@@ -8,9 +8,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Structure;
 public class DataStructuresDoMocks {
 
     public static DataStructureDefinitionVersionMetamac mockDataStructure(String agencyID, String resourceID, String version) {
-        DataStructureDefinitionVersionMetamac target = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamacFixedValues(agencyID, resourceID, version);
-        target.setStructure(new Structure());
-        return target;
+        return DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamacFixedValues(agencyID, resourceID, version);
     }
 
     public static DataStructureDefinitionVersionMetamac mockDataStructureWithComponents(String agencyID, String resourceID, String version) {

@@ -13,7 +13,8 @@ import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelist;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelists;
-import org.siemac.metamac.soap.structural_resources.v1_0.domain.ReplaceTo;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.ReplaceToCodelist;
+import org.siemac.metamac.soap.structural_resources.v1_0.domain.ReplaceToVariable;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variable;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily;
@@ -22,7 +23,8 @@ import org.siemac.metamac.soap.structural_resources.v1_0.domain.Variables;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
-import org.siemac.metamac.srm.soap.external.v1_0.mapper.base.BaseDo2SoapMapperV10Impl;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.soap.external.v1_0.mapper.base.ItemSchemeBaseDo2SoapMapperV10Impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -32,7 +34,7 @@ import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @Component
-public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implements CodesDo2SoapMapperV10 {
+public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Impl implements CodesDo2SoapMapperV10 {
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbMapper codesDo2JaxbSdmxMapper;
@@ -157,6 +159,10 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
         target.setIsRecommended(source.getIsRecommended());
         target.setFamily(toItem(source.getFamily()));
         target.setVariable(toItem(source.getVariable()));
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
+        target.setReplaceTo(toCodelistReplaceTo(source));
+        target.setReplacedBy(toCodelistReplacedBy(source));
     }
 
     @Override
@@ -186,11 +192,17 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
         }
     }
 
-    private ReplaceTo toReplaceTo(org.siemac.metamac.srm.core.code.domain.Variable source) {
+    @Override
+    protected boolean canItemSchemeVersionBeProvidedByApi(ItemSchemeVersion source) {
+        CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) source;
+        return AccessTypeEnum.PUBLIC.equals(codelistVersion.getAccessType());
+    }
+
+    private ReplaceToVariable toReplaceTo(org.siemac.metamac.srm.core.code.domain.Variable source) {
         if (CollectionUtils.isEmpty(source.getReplaceToVariables())) {
             return null;
         }
-        ReplaceTo target = new ReplaceTo();
+        ReplaceToVariable target = new ReplaceToVariable();
         target.setTotal(BigInteger.valueOf(source.getReplaceToVariables().size()));
         for (org.siemac.metamac.srm.core.code.domain.Variable replaceToSource : source.getReplaceToVariables()) {
             target.getReplaceTos().add(toItem(replaceToSource));
@@ -248,6 +260,33 @@ public class CodesDo2SoapMapperV10Impl extends BaseDo2SoapMapperV10Impl implemen
         target.setId(getCode(source.getMaintainableArtefact()));
         target.setUrn(getUrn(source.getMaintainableArtefact()));
         target.setTitle(toInternationalString(source.getMaintainableArtefact().getName()));
+        return target;
+    }
+
+    private Resource toCodelistReplacedBy(CodelistVersionMetamac source) {
+        if (source.getReplacedByCodelist() == null) {
+            return null;
+        }
+        if (!canResourceBeProvidedByApi(source.getReplacedByCodelist())) {
+            return null;
+        }
+        return toResource(source.getReplacedByCodelist());
+    }
+
+    private ReplaceToCodelist toCodelistReplaceTo(CodelistVersionMetamac source) {
+        ReplaceToCodelist target = null;
+        for (CodelistVersionMetamac replaceToCodelist : source.getReplaceToCodelists()) {
+            if (canResourceBeProvidedByApi(replaceToCodelist)) { // note: this check is not necessary really, because in core is checked. It is added to avoid future problems
+                if (target == null) {
+                    target = new ReplaceToCodelist();
+
+                }
+                target.getReplaceTos().add(toResource(replaceToCodelist));
+            }
+        }
+        if (target != null) {
+            target.setTotal(BigInteger.valueOf(target.getReplaceTos().size()));
+        }
         return target;
     }
 }

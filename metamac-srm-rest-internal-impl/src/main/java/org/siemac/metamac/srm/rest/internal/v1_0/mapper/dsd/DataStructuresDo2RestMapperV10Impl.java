@@ -26,7 +26,7 @@ import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
-import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.StructureBaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,7 +38,7 @@ import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbCallbac
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 
 @Component
-public class DataStructuresDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements DataStructuresDo2RestMapperV10 {
+public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapperV10Impl implements DataStructuresDo2RestMapperV10 {
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbMapper dataStructuresDo2JaxbSdmxMapper;
@@ -110,7 +110,7 @@ public class DataStructuresDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl
     }
 
     @Override
-    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+    protected boolean canStructureVersionBeProvidedByApi(StructureVersion source) {
         return true; // no additional conditions
     }
 

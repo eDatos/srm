@@ -7,15 +7,13 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.soap.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.soap.common.v1_0.domain.LocalisedString;
-import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 
-@Component
-public class BaseDo2SoapMapperV10Impl implements BaseDo2SoapMapperV10 {
+public abstract class BaseDo2SoapMapperV10Impl {
 
-    @Override
-    public InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString source) {
+    protected InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString source) {
         if (source == null || source.getTexts() == null || source.getTexts().size() == 0) {
             return null;
         }
@@ -29,8 +27,7 @@ public class BaseDo2SoapMapperV10Impl implements BaseDo2SoapMapperV10 {
         return internationalString;
     }
 
-    @Override
-    public InternationalString toInternationalString(Map<String, String> sources) {
+    protected InternationalString toInternationalString(Map<String, String> sources) {
         if (sources == null || sources.size() == 0) {
             return null;
         }
@@ -44,8 +41,7 @@ public class BaseDo2SoapMapperV10Impl implements BaseDo2SoapMapperV10 {
         return internationalString;
     }
 
-    @Override
-    public Date toDate(DateTime source) {
+    protected Date toDate(DateTime source) {
         return CoreCommonUtil.transformDateTimeToDate(source);
     }
 
@@ -65,10 +61,15 @@ public class BaseDo2SoapMapperV10Impl implements BaseDo2SoapMapperV10 {
         }
     }
 
+    protected boolean canResourceBeProvidedByApi(MaintainableArtefact source) {
+        return source.getPublicLogic();
+    }
+
     private LocalisedString localisedStringToLocalisedStringWebService(org.siemac.metamac.core.common.ent.domain.LocalisedString source) {
         LocalisedString localisedString = new LocalisedString();
         localisedString.setLang(source.getLocale());
         localisedString.setValue(source.getLabel());
         return localisedString;
     }
+
 }

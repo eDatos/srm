@@ -27,7 +27,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
-import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 
 @Component
-public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
+public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbMapper conceptsDo2JaxbSdmxMapper;
@@ -174,7 +174,7 @@ public class ConceptsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl imple
     }
 
     @Override
-    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+    protected boolean canItemSchemeVersionBeProvidedByApi(ItemSchemeVersion source) {
         return true; // no additional conditions
     }
 

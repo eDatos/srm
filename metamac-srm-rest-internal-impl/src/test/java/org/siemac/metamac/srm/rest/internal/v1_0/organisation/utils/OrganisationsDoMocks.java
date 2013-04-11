@@ -6,16 +6,13 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDoMocks;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class OrganisationsDoMocks {
 
     public static OrganisationSchemeVersionMetamac mockOrganisationScheme(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
-        OrganisationSchemeVersionMetamac target = OrganisationsMetamacDoMocks.mockOrganisationSchemeFixedValues(agencyID, resourceID, version, type);
-        target.setItemScheme(new ItemScheme());
-        return target;
+        return OrganisationsMetamacDoMocks.mockOrganisationSchemeFixedValues(agencyID, resourceID, version, type);
     }
 
     public static OrganisationMetamac mockOrganisation(String resourceID, OrganisationSchemeVersionMetamac organisationScheme, OrganisationMetamac parent, OrganisationTypeEnum type) {

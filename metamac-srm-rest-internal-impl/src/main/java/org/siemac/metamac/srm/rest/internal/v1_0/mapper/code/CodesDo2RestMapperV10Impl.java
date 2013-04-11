@@ -29,7 +29,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
-import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,7 +40,7 @@ import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @Component
-public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
+public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbMapper codesDo2JaxbSdmxMapper;
@@ -182,7 +182,7 @@ public class CodesDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implemen
     }
 
     @Override
-    protected boolean canResourceBeProvidedByApiConcreteResource(Object source) {
+    protected boolean canItemSchemeVersionBeProvidedByApi(ItemSchemeVersion source) {
         CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) source;
         return AccessTypeEnum.PUBLIC.equals(codelistVersion.getAccessType());
     }

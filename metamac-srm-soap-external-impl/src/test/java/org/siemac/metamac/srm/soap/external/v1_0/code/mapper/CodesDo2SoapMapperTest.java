@@ -5,11 +5,11 @@ import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCode;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelist;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelistFamily;
-import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelistWithCodes;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariable;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
 import static org.siemac.metamac.srm.soap.external.v1_0.utils.Asserts.assertEqualsInternationalString;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +29,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.soap.external.v1_0.mapper.code.CodesDo2SoapMapperV10;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -215,7 +216,7 @@ public class CodesDo2SoapMapperTest {
     @Test
     public void testToCodelist() throws MetamacException {
 
-        CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
+        CodelistVersionMetamac source = mockCodelist("agencyID1", "resourceID1", "01.123");
 
         // Transform
         Codelist target = do2SoapExternalMapper.toCodelist(source);
@@ -229,6 +230,45 @@ public class CodesDo2SoapMapperTest {
         assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getTitle());
         assertEquals("variable1", target.getVariable().getId());
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
+
+        // replaceX no tested, because it is necessary a repository access
+        // assertEquals("replaceTo", target.getReplaceToVersion());
+        // assertEquals("replacedBy", target.getReplacedByVersion());
+
+        assertEquals("urn:codelistReplacedBy:01.000", target.getReplacedBy().getUrn());
+        assertEquals("codelistReplacedBy", target.getReplacedBy().getId());
+
+        assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
+        assertEquals("urn:codelistReplaceTo1:01.000", target.getReplaceTo().getReplaceTos().get(0).getUrn());
+        assertEquals("urn:codelistReplaceTo3:03.000", target.getReplaceTo().getReplaceTos().get(1).getUrn());
+    }
+
+    @Test
+    public void testToCodelistReplacedBy() throws MetamacException {
+
+        CodelistVersionMetamac source = mockCodelist("agencyID1", "resourceID1", "01.123");
+        source.setReplacedByCodelist(mockCodelist("agencyID2", "codelistReplacedBy", "01.000"));
+
+        {
+            // not final
+            source.getReplacedByCodelist().getMaintainableArtefact().setPublicLogic(false);
+            Codelist target = do2SoapExternalMapper.toCodelist(source);
+            assertEquals(null, target.getReplacedBy());
+        }
+        {
+            // not public
+            source.getReplacedByCodelist().getMaintainableArtefact().setPublicLogic(true);
+            source.getReplacedByCodelist().setAccessType(AccessTypeEnum.RESTRICTED);
+            Codelist target = do2SoapExternalMapper.toCodelist(source);
+            assertEquals(null, target.getReplacedBy());
+        }
+        {
+            // can be provided
+            source.getReplacedByCodelist().getMaintainableArtefact().setPublicLogic(true);
+            source.getReplacedByCodelist().setAccessType(AccessTypeEnum.PUBLIC);
+            Codelist target = do2SoapExternalMapper.toCodelist(source);
+            assertEquals("urn:codelistReplacedBy:01.000", target.getReplacedBy().getUrn());
+        }
     }
 
     @Test
