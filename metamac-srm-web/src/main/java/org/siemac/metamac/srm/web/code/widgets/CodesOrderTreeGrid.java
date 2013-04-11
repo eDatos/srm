@@ -32,7 +32,7 @@ public class CodesOrderTreeGrid extends BaseCodesTreeGrid {
 
         // Disable the option to order by CODE and NAME fields (do not enable the button to order by other fields than order field)
 
-        ListGridField[] itemFields = getFields();
+        ListGridField[] itemFields = getAllFields();
         for (ListGridField itemField : itemFields) {
             if (!CodeDS.ORDER.equals(itemField.getName())) {
                 itemField.setCanSort(false);

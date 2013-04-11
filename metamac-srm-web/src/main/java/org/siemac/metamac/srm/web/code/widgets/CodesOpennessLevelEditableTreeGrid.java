@@ -39,7 +39,7 @@ public class CodesOpennessLevelEditableTreeGrid extends BaseCodesTreeGrid {
         opennessLevelField.setCanEdit(true);
         opennessLevelField.setCanFilter(false);
 
-        ListGridField[] itemFields = getFields();
+        ListGridField[] itemFields = getAllFields();
 
         // Set all fields non editable (except the openness level field)
         for (ListGridField field : itemFields) {

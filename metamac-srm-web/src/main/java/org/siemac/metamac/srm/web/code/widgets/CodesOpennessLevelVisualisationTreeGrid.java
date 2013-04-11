@@ -30,7 +30,6 @@ public class CodesOpennessLevelVisualisationTreeGrid extends BaseCodesTreeGrid {
         setCanDragRecordsOut(false);
         setShowOpenIcons(true);
         setShowDropIcons(false);
-        setCanSort(false);
         setCustomIconProperty(CodeDS.OPENNESS_LEVEL_ICON);
 
         // Add a field with the node openness state
@@ -38,7 +37,7 @@ public class CodesOpennessLevelVisualisationTreeGrid extends BaseCodesTreeGrid {
         TreeGridField opennessLevelField = new TreeGridField(CodeDS.OPENNESS_LEVEL, getConstants().codelistOpennessLevel());
         opennessLevelField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
-        ListGridField[] itemFields = getFields();
+        ListGridField[] itemFields = getAllFields();
         ListGridField[] codeFields = new ListGridField[itemFields.length + 1];
         System.arraycopy(itemFields, 0, codeFields, 0, itemFields.length);
         codeFields[codeFields.length - 1] = opennessLevelField;

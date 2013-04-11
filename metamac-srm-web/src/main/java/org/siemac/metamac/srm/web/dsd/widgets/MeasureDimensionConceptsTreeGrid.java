@@ -38,7 +38,7 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
         showDecimalsPrecision.setValueMap(org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getDsdShowDecimalsHashMap());
 
         ListGridField[] fields = new ListGridField[3];
-        System.arraycopy(getFields(), 0, fields, 0, 2);
+        System.arraycopy(getAllFields(), 0, fields, 0, 2);
         fields[fields.length - 1] = showDecimalsPrecision;
 
         fields[0].setCanEdit(false);

@@ -103,8 +103,10 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
         TreeGridField type = new TreeGridField(ConceptDS.TYPE, getConstants().conceptType());
         TreeGridField sdmxRelatedArtefact = new TreeGridField(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
 
-        ListGridField[] fields = new ListGridField[getFields().length + 2];
-        System.arraycopy(getFields(), 0, fields, 0, getFields().length);
+        ListGridField[] initialListGridFields = getAllFields();
+
+        ListGridField[] fields = new ListGridField[initialListGridFields.length + 2];
+        System.arraycopy(initialListGridFields, 0, fields, 0, initialListGridFields.length);
         fields[fields.length - 2] = type;
         fields[fields.length - 1] = sdmxRelatedArtefact;
 

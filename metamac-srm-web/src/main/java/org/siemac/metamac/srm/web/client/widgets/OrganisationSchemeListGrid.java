@@ -20,8 +20,10 @@ public class OrganisationSchemeListGrid extends ItemSchemeListGrid {
 
         ListGridField typeField = new ListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
 
-        ListGridField[] fields = new ListGridField[getFields().length + 1];
-        System.arraycopy(getFields(), 0, fields, 0, getFields().length);
+        ListGridField[] initialListGridFields = getAllFields();
+
+        ListGridField[] fields = new ListGridField[initialListGridFields.length + 1];
+        System.arraycopy(initialListGridFields, 0, fields, 0, initialListGridFields.length);
         fields[fields.length - 1] = typeField;
 
         this.setFields(fields);
