@@ -125,6 +125,10 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         super.onReset();
     }
 
+    //
+    // DSD
+    //
+
     @Override
     public void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto) {
         dispatcher.execute(new SaveDsdAction(dataStructureDefinitionDto), new WaitingAsyncCallback<SaveDsdResult>() {
@@ -170,6 +174,10 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
         });
     }
+
+    //
+    // DSD LIFECYCLE
+    //
 
     @Override
     public void sendToProductionValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
@@ -287,13 +295,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void goToDsd(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeDsdPlaceRequest(urn), -2);
-        }
-    }
-
-    @Override
     public void cancelValidity(final String urn) {
         List<String> urns = new ArrayList<String>();
         urns.add(urn);
@@ -310,6 +311,10 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
         });
     }
+
+    //
+    // RELATED RESOURCES
+    //
 
     @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
@@ -363,6 +368,13 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             retrieveConcepts(conceptSchemeUrn);
         } else {
             conceptSchemeUrn = null;
+        }
+    }
+
+    @Override
+    public void goToDsd(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeDsdPlaceRequest(urn), -2);
         }
     }
 }
