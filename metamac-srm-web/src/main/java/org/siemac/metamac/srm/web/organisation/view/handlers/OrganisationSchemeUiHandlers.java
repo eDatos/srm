@@ -15,7 +15,6 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
     void saveOrganisationScheme(OrganisationSchemeMetamacDto organisationScheme);
     void cancelValidity(String urn);
     void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type);
-    void retrieveOrganisationListByScheme(String organisationSchemeUrn);
     void deleteOrganisations(List<String> urns);
 
     // Life cycle

@@ -316,20 +316,28 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     }
 
     @Override
-    public void publishInternally(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus),
+                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorPublishingInternally()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemePublishedInternally()), MessageTypeEnum.SUCCESS);
-                categorySchemeMetamacDto = result.getCategorySchemeDto();
-                getView().setCategoryScheme(categorySchemeMetamacDto);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorPublishingInternally()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemePublishedInternally()), MessageTypeEnum.SUCCESS);
+                        categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        getView().setCategoryScheme(categorySchemeMetamacDto);
+
+                        // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version
+                        // (the URN changes!).
+                        if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
+                            retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
+                            updateUrl();
+                        }
+                    }
+                });
     }
 
     @Override

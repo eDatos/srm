@@ -294,8 +294,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void publishInternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+    public void publishInternally(final ConceptSchemeMetamacDto conceptSchemeToPublish) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -306,6 +306,13 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemePublishedInternally()), MessageTypeEnum.SUCCESS);
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 getView().setConceptScheme(result.getConceptSchemeDto());
+
+                // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version
+                // (the URN changes!).
+                if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(conceptSchemeToPublish.getUrn())) {
+                    retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
+                    updateUrl();
+                }
             }
         });
     }

@@ -138,7 +138,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSaved()), MessageTypeEnum.SUCCESS);
 
                 // Redirect to the DSD page to update the URL
-                goToDsd(result.getDsdSaved().getUrn());
+                goToDsd(result.getDsdSaved().getUrn()); // To update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
             }
         });
     }
@@ -220,8 +220,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void publishInternally(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+    public void publishInternally(final DataStructureDefinitionMetamacDto dsdToPublish) {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dsdToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -230,7 +230,11 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPublishedInternally()), MessageTypeEnum.SUCCESS);
-                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
+
+                // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version (the
+                // URN changes!).
+                goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn()); // To update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
             }
         });
     }
@@ -262,7 +266,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(VersionDsdResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdVersioned()), MessageTypeEnum.SUCCESS);
-                goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
+                goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn()); // To update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
             }
         });
     }

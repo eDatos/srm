@@ -360,8 +360,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void publishInternally(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
+    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateCodelistProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -372,6 +372,13 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistPublishedInternally()), MessageTypeEnum.SUCCESS);
                 codelistMetamacDto = result.getCodelistMetamacDto();
                 getView().setCodelist(codelistMetamacDto);
+
+                // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version (the
+                // URN changes!).
+                if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
+                    retrieveCodelistVersions(codelistMetamacDto.getUrn());
+                    updateUrl();
+                }
             }
         });
     }

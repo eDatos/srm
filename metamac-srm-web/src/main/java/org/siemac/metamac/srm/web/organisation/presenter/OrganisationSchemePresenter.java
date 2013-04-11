@@ -328,8 +328,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void publishInternally(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus),
+    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus),
                 new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
                     @Override
@@ -341,6 +341,13 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                         ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemePublishedInternally()), MessageTypeEnum.SUCCESS);
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
+
+                        // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version
+                        // (the URN changes!).
+                        if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
+                            retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
+                            updateUrl();
+                        }
                     }
                 });
     }
