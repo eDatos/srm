@@ -130,6 +130,16 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="Dimension">
+        <xs:complexContent>
+            <xs:extension base="sdmx:DimensionType">
+                <xs:sequence>
+                    <xs:element name="isSpatial" type="xs:boolean" minOccurs="0"  />          
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <xs:complexType name="Attribute">
         <xs:complexContent>
             <xs:extension base="sdmx:AttributeType">
@@ -530,7 +540,7 @@
             <xs:enumeration value="RESTRICTED" />
         </xs:restriction>
     </xs:simpleType>
-
+    
     <xs:simpleType name="AttributeQualifierType">
         <xs:restriction base="xs:token">
             <xs:enumeration value="MEASURE" />

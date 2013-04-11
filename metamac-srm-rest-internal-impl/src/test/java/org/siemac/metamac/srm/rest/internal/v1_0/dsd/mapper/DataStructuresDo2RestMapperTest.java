@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.dsd.mapper;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresAsserts.assertEqualsResource;
@@ -20,6 +21,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -37,6 +39,11 @@ import org.siemac.metamac.srm.rest.internal.v1_0.mapper.dsd.DataStructuresDo2Res
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-rest-internal/applicationContext-test.xml"})
@@ -161,6 +168,51 @@ public class DataStructuresDo2RestMapperTest {
 
         // Validate
         assertEquals("uriProviderDb", target.getUri());
+    }
+
+    @Test
+    public void testToDataStructureWithDimensionsSpatial() {
+
+        DataStructureDefinitionVersionMetamac source = mockDataStructure("agencyID1", "resourceID1", "01.123");
+        ComponentList dimensionDescriptor = new DimensionDescriptor();
+        source.addGrouping(dimensionDescriptor);
+
+        Dimension dimension1 = new Dimension();
+        dimension1.setCode("dimension01");
+        dimension1.setSpecialDimensionType(null);
+        dimensionDescriptor.addComponent(dimension1);
+
+        Dimension dimension2 = new Dimension();
+        dimension2.setCode("dimension02");
+        dimension2.setSpecialDimensionType(SpecialDimensionTypeEnum.SPATIAL);
+        dimensionDescriptor.addComponent(dimension2);
+
+        Dimension dimension3 = new Dimension();
+        dimension3.setCode("dimension03");
+        dimension3.setSpecialDimensionType(SpecialDimensionTypeEnum.SPATIAL);
+        dimensionDescriptor.addComponent(dimension3);
+
+        // Transform
+        DataStructure target = do2RestInternalMapper.toDataStructure(source);
+        assertEquals(3, target.getDataStructureComponents().getDimensionList().getDimensionsAndMeasureDimensionsAndTimeDimensions().size());
+        assertEquals(null, getDimension(target, "dimension01").isIsSpatial());
+        assertEquals(true, getDimension(target, "dimension02").isIsSpatial());
+        assertEquals(true, getDimension(target, "dimension03").isIsSpatial());
+    }
+
+    @SuppressWarnings("rawtypes")
+    private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension getDimension(DataStructure target, String dimensionId) {
+        for (Iterator iterator = target.getDataStructureComponents().getDimensionList().getDimensionsAndMeasureDimensionsAndTimeDimensions().iterator(); iterator.hasNext();) {
+            Object dimensionObject = iterator.next();
+            if (dimensionObject instanceof org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) {
+                org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension dimension = (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) dimensionObject;
+                if (dimension.getId().equals(dimensionId)) {
+                    return dimension;
+                }
+            }
+        }
+        fail("dimension not found");
+        return null;
     }
 
 }

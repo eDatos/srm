@@ -12,7 +12,6 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.GroupType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureDimensionType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.MeasureListType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.TimeDimensionType;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Attribute;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -67,7 +66,12 @@ public class DataStructuresDo2JaxbCallbackImpl implements StructureDo2JaxbCallba
 
     @Override
     public DimensionType createDimensionJaxb(Dimension source) {
-        return new DimensionType();
+        return new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension();
+    }
+
+    @Override
+    public void fillDimensionJaxb(Dimension source, DimensionType target) {
+        dataStructuresDo2RestMapperV10.toDimension(source, (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) target);
     }
 
     @Override
@@ -82,7 +86,7 @@ public class DataStructuresDo2JaxbCallbackImpl implements StructureDo2JaxbCallba
 
     @Override
     public AttributeType createAttributeJaxb(DataAttribute source) {
-        return new Attribute();
+        return new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Attribute();
     }
 
     @Override

@@ -34,8 +34,10 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
+import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 
 @Component
 public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapperV10Impl implements DataStructuresDo2RestMapperV10 {
@@ -99,6 +101,16 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setShowDecimalsPrecisions(toShowDecimalPrecisions(source.getShowDecimalsPrecisions()));
 
         // TODO metadatos de visualización de codelist en dimensión (pte Core)
+    }
+
+    @Override
+    public void toDimension(Dimension source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension target) {
+        if (source == null) {
+            return;
+        }
+        if (SpecialDimensionTypeEnum.SPATIAL.equals(source.getSpecialDimensionType())) {
+            target.setIsSpatial(Boolean.TRUE);
+        }
     }
 
     @Override
