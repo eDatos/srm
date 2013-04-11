@@ -48,17 +48,26 @@ public class StructureVersioningCopyCallbackMetamacImpl implements StructureVers
         // can not copy stub here, because they belong to same dsd, and new dimension in new version must relate to versioned related dimension
 
         // showDecimalsPrecisions
+        copyShowDecimalsPrecision(source, target);
+
+        target.setStatisticalOperation(BaseVersioningCopyUtils.copy(source.getStatisticalOperation()));
+        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // New structure in draft version
+        target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+    }
+
+    @Override
+    public void copyShowDecimalsPrecision(DataStructureDefinitionVersion sourceSdmx, DataStructureDefinitionVersion targetSdmx) {
+        DataStructureDefinitionVersionMetamac source = (DataStructureDefinitionVersionMetamac) sourceSdmx;
+        DataStructureDefinitionVersionMetamac target = (DataStructureDefinitionVersionMetamac) targetSdmx;
+
         for (MeasureDimensionPrecision measureDimensionPrecision : source.getShowDecimalsPrecisions()) {
             MeasureDimensionPrecision targetMeasureDimensionPrecion = new MeasureDimensionPrecision();
             targetMeasureDimensionPrecion.setConcept(measureDimensionPrecision.getConcept());
             targetMeasureDimensionPrecion.setShowDecimalPrecision(measureDimensionPrecision.getShowDecimalPrecision());
             target.addShowDecimalsPrecision(targetMeasureDimensionPrecion);
         }
-
-        target.setStatisticalOperation(BaseVersioningCopyUtils.copy(source.getStatisticalOperation()));
-        target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT)); // New structure in draft version
-        target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
     }
+
     /***************
      * Descriptors
      ***************/

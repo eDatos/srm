@@ -62,10 +62,12 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
@@ -338,6 +340,35 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.setShowDecimals(dataStructureTemporalVersion.getShowDecimals());
         dataStructureDefinitionVersion.setStatisticalOperation(BaseReplaceFromTemporalMetamac.replaceExternalItemFromTemporal(dataStructureDefinitionVersion.getStatisticalOperation(),
                 dataStructureTemporalVersion.getStatisticalOperation(), internationalStringRepository, externalItemRepository));
+
+        // Merge componentlists and components
+        Map<String, ComponentList> temporalComponentListMap = BaseServiceUtils.createMapOfComponentLists(dataStructureTemporalVersion.getGrouping());
+        for (ComponentList componentList : dataStructureDefinitionVersion.getGrouping()) {
+            ComponentList componentListTemp = temporalComponentListMap.get(componentList.getUrn());
+
+            // Inherit InternationalStrings
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToComponentListWithoutComponents(componentList, componentListTemp, internationalStringRepository);
+
+            if (!(componentList instanceof GroupDimensionDescriptor)) {
+                Map<String, Component> temporalComponentMap = BaseServiceUtils.createMapOfComponents(componentList.getComponents());
+
+                for (Component component : componentList.getComponents()) {
+                    Component componentTemp = temporalComponentMap.get(component.getUrn());
+
+                    // Inherit InternationalStrings
+                    BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToComponent(component, componentTemp, internationalStringRepository);
+                }
+            }
+        }
+
+        // Heading and Stub
+        dataStructureDefinitionVersion.removeAllHeadingDimensions();
+        dataStructureDefinitionVersion.removeAllStubDimensions();
+        dataStructureDefinitionVersion = versioningHeadingAndStub(ctx, dataStructureTemporalVersion, dataStructureDefinitionVersion);
+
+        // ShowDecimalsPrecision
+        dataStructureDefinitionVersion.removeAllShowDecimalsPrecisions();
+        structureVersioningCopyCallback.copyShowDecimalsPrecision(dataStructureTemporalVersion, dataStructureDefinitionVersion);
 
         return dataStructureDefinitionVersion;
     }
@@ -706,12 +737,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         }
 
         // showDecimalsPrecisions
-        for (MeasureDimensionPrecision measureDimensionPrecision : dataStructureDefinitionVersionMetamacToCopy.getShowDecimalsPrecisions()) {
-            MeasureDimensionPrecision targetMeasureDimensionPrecion = new MeasureDimensionPrecision();
-            targetMeasureDimensionPrecion.setConcept(measureDimensionPrecision.getConcept());
-            targetMeasureDimensionPrecion.setShowDecimalPrecision(measureDimensionPrecision.getShowDecimalPrecision());
-            dataStructureDefinitionVersionMetamacNewVersion.addShowDecimalsPrecision(targetMeasureDimensionPrecion);
-        }
+        structureVersioningCopyCallback.copyShowDecimalsPrecision(dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
 
         return dataStructureDefinitionVersionMetamacNewVersion;
     }

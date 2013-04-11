@@ -18,6 +18,8 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
+import org.siemac.metamac.core.common.ent.domain.InternationalString;
+import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -48,6 +50,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
@@ -483,8 +486,88 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Override
     @Test
     public void testMergeTemporalVersion() throws Exception {
-        // TODO Auto-generated method stub
+        {
+            String urn = DSD_6_V1;
+            DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dsdsMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
 
+            // Change temporal version *********************
+
+            // DataStructure: Change Name
+            {
+                LocalisedString localisedString = new LocalisedString("fr", "dsd - text sample");
+                temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getName().addText(localisedString);
+            }
+
+            // DataStructure: Change AutoOpen
+            {
+                temporalDataStructureDefinitionVersionMetamac.setAutoOpen(Boolean.FALSE);
+            }
+
+            // ComponentList: Add Annotation
+            {
+                ComponentList componentListTemporal = temporalDataStructureDefinitionVersionMetamac.getGrouping().iterator().next();
+
+                {
+                    Annotation annotationTemporal = new Annotation();
+                    annotationTemporal.setTitle("title");
+                    annotationTemporal.setType("type");
+                    annotationTemporal.setUrl("url");
+                    LocalisedString localisedString = new LocalisedString("fr", "cl - text sample");
+                    InternationalString internationalString = new InternationalString();
+                    internationalString.addText(localisedString);
+                    annotationTemporal.setText(internationalString);
+                    componentListTemporal.addAnnotation(annotationTemporal);
+                }
+
+                // Component: Change Name
+                Component component = componentListTemporal.getComponents().iterator().next();
+                {
+                    Annotation annotationTemporal = new Annotation();
+                    annotationTemporal.setTitle("title");
+                    annotationTemporal.setType("type");
+                    annotationTemporal.setUrl("url");
+                    LocalisedString localisedString = new LocalisedString("fr", "c - text sample");
+                    InternationalString internationalString = new InternationalString();
+                    internationalString.addText(localisedString);
+                    annotationTemporal.setText(internationalString);
+                    component.addAnnotation(annotationTemporal);
+                }
+            }
+
+            // Merge
+            temporalDataStructureDefinitionVersionMetamac = dsdsMetamacService.sendDataStructureDefinitionToProductionValidation(getServiceContextAdministrador(),
+                    temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn());
+            temporalDataStructureDefinitionVersionMetamac = dsdsMetamacService.sendDataStructureDefinitionToDiffusionValidation(getServiceContextAdministrador(),
+                    temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn());
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dsdsMetamacService.mergeTemporalVersion(getServiceContextAdministrador(),
+                    temporalDataStructureDefinitionVersionMetamac);
+
+            // Assert **************************************
+
+            // DataStructure
+            assertEquals(3, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
+            assertEquals("dsd - text sample", dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+            assertFalse(dataStructureDefinitionVersionMetamac.getAutoOpen());
+
+            // ComponentList
+            {
+                ComponentList componentList = temporalDataStructureDefinitionVersionMetamac.getGrouping().iterator().next();
+
+                {
+                    Annotation annotation = componentList.getAnnotations().iterator().next();
+                    assertEquals(1, annotation.getText().getTexts().size());
+                    assertEquals("cl - text sample", annotation.getText().getLocalisedLabel("fr"));
+                }
+
+                Component component = componentList.getComponents().iterator().next();
+
+                {
+                    Annotation annotation = component.getAnnotations().iterator().next();
+                    assertEquals(1, annotation.getText().getTexts().size());
+                    assertEquals("c - text sample", annotation.getText().getLocalisedLabel("fr"));
+                }
+            }
+        }
     }
 
     @Test

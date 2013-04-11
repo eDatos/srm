@@ -3400,7 +3400,8 @@
         ID="614"
         ANNOTABLE_ARTEFACT_TYPE="DIMENSION"
         COMPONENT_TYPE="DIMENSION_COMPONENT"
-        
+        SPECIAL_DIMENSION_TYPE="SPATIAL"
+                
         CODE="dim-01"
         URI_PROVIDER="[null]"
         URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).dim-01"
