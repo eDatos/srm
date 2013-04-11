@@ -2038,6 +2038,18 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public OrganisationSchemeMetamacDto createTemporalVersionOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        // Security
+        OrganisationsSecurityUtils.canCreateOrganisationSchemeTemporalVersion(ctx);
+
+        OrganisationSchemeVersionMetamac organisationScheme = getOrganisationsMetamacService().createTemporalOrganisationScheme(ctx, urnToCopy);
+
+        // Transform to DTO
+        OrganisationSchemeMetamacDto organisationSchemeDto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(organisationScheme);
+        return organisationSchemeDto;
+    };
+
+    @Override
     public OrganisationSchemeMetamacDto endOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canEndOrganisationSchemeValidity(ctx);
@@ -3122,5 +3134,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
             return s1.getCreatedDate().compareTo(s2.getCreatedDate());
         }
 
-    };
+    }
+
 }

@@ -13,6 +13,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -120,6 +121,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Autowired
     private InternationalStringRepository         internationalStringRepository;
 
+    @Autowired
+    private ExternalItemRepository                externalItemRepository;
+
     public DsdsMetamacServiceImpl() {
     }
 
@@ -149,6 +153,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         return dataStructureDefinitionVersionMetamac;
     }
+
     @Override
     public DataStructureDefinitionVersionMetamac preCreateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
@@ -161,13 +166,6 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
 
         return dataStructureDefinitionVersion;
-    }
-
-    @Override
-    public DataStructureDefinitionVersionMetamac postCreateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionPrevious,
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
@@ -336,6 +334,10 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 internationalStringRepository);
 
         // Merge Metamac metadata of ItemScheme
+        dataStructureDefinitionVersion.setAutoOpen(dataStructureTemporalVersion.getAutoOpen());
+        dataStructureDefinitionVersion.setShowDecimals(dataStructureTemporalVersion.getShowDecimals());
+        dataStructureDefinitionVersion.setStatisticalOperation(BaseReplaceFromTemporalMetamac.replaceExternalItemFromTemporal(dataStructureDefinitionVersion.getStatisticalOperation(),
+                dataStructureTemporalVersion.getStatisticalOperation(), internationalStringRepository, externalItemRepository));
 
         return dataStructureDefinitionVersion;
     }
@@ -616,6 +618,15 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, structureVersioningCopyCallback);
 
         // Versioning heading and stub (metadata of Metamac). Note: other relations are copied in copy callback
+        dataStructureDefinitionVersionMetamacNewVersion = versioningHeadingAndStub(ctx, dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
+
+        return dataStructureDefinitionVersionMetamacNewVersion;
+    }
+
+    @Override
+    public DataStructureDefinitionVersionMetamac versioningHeadingAndStub(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy,
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException {
+
         // Map of new dimension
         Map<String, Component> dimensionOrderMap = new HashMap<String, Component>();
         for (ComponentList componentList : dataStructureDefinitionVersionMetamacNewVersion.getGrouping()) {
@@ -627,20 +638,79 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             }
         }
         // Heading
+        Integer dimOrderHeading = 1;
         for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getHeadingDimensions()) {
             DimensionComponent targetDimension = (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
-            DimensionOrder targetDimensionOrder = new DimensionOrder();
-            targetDimensionOrder.setDimension(targetDimension);
-            targetDimensionOrder.setDimOrder(dimensionOrder.getDimOrder());
-            dataStructureDefinitionVersionMetamacNewVersion.addHeadingDimension(targetDimensionOrder);
+            if (targetDimension != null) {
+                DimensionOrder targetDimensionOrder = new DimensionOrder();
+                targetDimensionOrder.setDimension(targetDimension);
+                targetDimensionOrder.setDimOrder(dimOrderHeading);
+                dataStructureDefinitionVersionMetamacNewVersion.addHeadingDimension(targetDimensionOrder);
+                dimOrderHeading++;
+            }
         }
         // Stub
+        Integer dimOrderStub = 1;
         for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getStubDimensions()) {
             DimensionComponent targetDimension = (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
-            DimensionOrder targetDimensionOrder = new DimensionOrder();
-            targetDimensionOrder.setDimension(targetDimension);
-            targetDimensionOrder.setDimOrder(dimensionOrder.getDimOrder());
-            dataStructureDefinitionVersionMetamacNewVersion.addStubDimension(targetDimensionOrder);
+            if (targetDimension != null) {
+                DimensionOrder targetDimensionOrder = new DimensionOrder();
+                targetDimensionOrder.setDimension(targetDimension);
+                targetDimensionOrder.setDimOrder(dimOrderStub);
+                dataStructureDefinitionVersionMetamacNewVersion.addStubDimension(targetDimensionOrder);
+                dimOrderStub++;
+            }
+        }
+
+        return dataStructureDefinitionVersionMetamacNewVersion;
+    }
+
+    @Override
+    public DataStructureDefinitionVersionMetamac versioningShowDecimalsPrecision(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy,
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException {
+
+        // Find Measure Dimension in old Version
+        MeasureDimension previousMeasureDimension = null;
+        for (ComponentList componentList : dataStructureDefinitionVersionMetamacToCopy.getGrouping()) {
+            if (componentList instanceof DimensionDescriptor) {
+                for (Component component : componentList.getComponents()) {
+                    if (component instanceof MeasureDimension) {
+                        previousMeasureDimension = (MeasureDimension) component;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Nothing to inherit
+        if (previousMeasureDimension == null) {
+            return dataStructureDefinitionVersionMetamacNewVersion;
+        }
+
+        // Find Measure Dimension in new Version
+        MeasureDimension newMeasureDimension = null;
+        for (ComponentList componentList : dataStructureDefinitionVersionMetamacNewVersion.getGrouping()) {
+            if (componentList instanceof DimensionDescriptor) {
+                for (Component component : componentList.getComponents()) {
+                    if (component instanceof MeasureDimension) {
+                        newMeasureDimension = (MeasureDimension) component;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // There isn't measure dimension in new version
+        if (newMeasureDimension == null) {
+            return dataStructureDefinitionVersionMetamacNewVersion;
+        }
+
+        // showDecimalsPrecisions
+        for (MeasureDimensionPrecision measureDimensionPrecision : dataStructureDefinitionVersionMetamacToCopy.getShowDecimalsPrecisions()) {
+            MeasureDimensionPrecision targetMeasureDimensionPrecion = new MeasureDimensionPrecision();
+            targetMeasureDimensionPrecion.setConcept(measureDimensionPrecision.getConcept());
+            targetMeasureDimensionPrecion.setShowDecimalPrecision(measureDimensionPrecision.getShowDecimalPrecision());
+            dataStructureDefinitionVersionMetamacNewVersion.addShowDecimalsPrecision(targetMeasureDimensionPrecion);
         }
 
         return dataStructureDefinitionVersionMetamacNewVersion;

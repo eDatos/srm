@@ -155,7 +155,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
             targetMetamac.setShowDecimals(previousMetamac.getShowDecimals());
             // can not copy heading here, because they belong to same dsd, and new dimension in new version must relate to versioned related dimension
             // can not copy stub here, because they belong to same dsd, and new dimension in new version must relate to versioned related dimension
-            // showDecimalsPrecisions
+            // can not copy showDecimalsPrecisions here
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -172,16 +172,13 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
 
         // Fill metadata heritable
         if (previousMetamac != null) {
-            // Heading
-
-            // Stub
+            // Heading and Stub
+            targetMetamac = dsdsMetamacService.versioningHeadingAndStub(ctx, previousMetamac, targetMetamac);
 
             // ShowDecimalsPRecicions
-
+            targetMetamac = dsdsMetamacService.versioningShowDecimalsPrecision(ctx, previousMetamac, targetMetamac);
         }
 
-        // Fill metadata
-        // codesMetamacService.postCreateCodelist(ctx, targetMetamac, (previousVersion != null) ? previousMetamac.getReplaceToCodelists() : new ArrayList<CodelistVersionMetamac>()); //
     }
 
     @Override

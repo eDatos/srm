@@ -296,6 +296,8 @@ Application SrmFacadeCore {
 	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
     		@OrganisationSchemeMetamacDto versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Creates a temporal version of a organisation scheme, copying metadata from version with provided urn"
+    		@OrganisationSchemeMetamacDto createTemporalVersionOrganisationScheme(String urnToCopy) throws MetamacException;
     		"Ends the organisation scheme validity"
     		@OrganisationSchemeMetamacDto endOrganisationSchemeValidity(String urn) throws MetamacException;
             

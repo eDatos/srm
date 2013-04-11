@@ -86,6 +86,12 @@ public class OrganisationsSecurityUtils extends ItemsSecurityUtils {
         }
     }
 
+    public static void canCreateOrganisationSchemeTemporalVersion(ServiceContext ctx) throws MetamacException {
+        if (!SharedOrganisationsSecurityUtils.canCreateOrganisationSchemeTemporalVersion(getMetamacPrincipal(ctx))) {
+            throw new MetamacException(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED, ctx.getUserId());
+        }
+    }
+
     public static void canAnnounceOrganisationScheme(ServiceContext ctx) throws MetamacException {
         if (!SharedOrganisationsSecurityUtils.canAnnounceOrganisationScheme(getMetamacPrincipal(ctx))) {
             throw new MetamacException(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED, ctx.getUserId());

@@ -26,8 +26,6 @@ Application DsdsMetamac {
 			@DataStructureDefinitionVersionMetamac createDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
 			"Pre-Create DataStructureDefinition"
 			@DataStructureDefinitionVersionMetamac preCreateDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
-			"post-Create DataStructureDefinition"
-			@DataStructureDefinitionVersionMetamac postCreateDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionPrevious, @DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
 			"Updates DataStructureDefinition"
 			@DataStructureDefinitionVersionMetamac updateDataStructureDefinition(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException;
     		"Retrieves data structure definition by urn"
@@ -56,10 +54,15 @@ Application DsdsMetamac {
 	    	@DataStructureDefinitionVersionMetamac publishInternallyDataStructureDefinition(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publish externally a data structure definition"
 	    	@DataStructureDefinitionVersionMetamac publishExternallyDataStructureDefinition(String urn) throws MetamacException;
+	    	
 			"Deletes data structure definition version. This must be last version and no published"
     		deleteDataStructureDefinition(String urn) throws MetamacException;
     		"Creates a new version of a data structure definition, copying metadata from version with provided urn"
     		@DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		"Create heading and stub metadata in the new version if exists in the previous DSD heading and stub"
+    		@DataStructureDefinitionVersionMetamac versioningHeadingAndStub(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy, @DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException;
+   			"Create showDecimalsPrecision in the new version if are valid metadata in the new version"
+    		@DataStructureDefinitionVersionMetamac versioningShowDecimalsPrecision(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy, @DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException;
     		"Creates a temporal version of a data structure definition, copying metadata from version with provided urn"
     		@DataStructureDefinitionVersionMetamac createTemporalDataStructureDefinition(String urnToCopy) throws MetamacException;
      		"Creates a new version of a data structure definition from temporal version with provided urn"
