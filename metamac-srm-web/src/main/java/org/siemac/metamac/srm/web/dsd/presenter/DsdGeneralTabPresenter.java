@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactVersionsEvent;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
@@ -274,7 +275,10 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(VersionDsdResult result) {
                 ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdVersioned()), MessageTypeEnum.SUCCESS);
-                goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn()); // To update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
+                // Update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
+                goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
+                // Update the version list
+                UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
             }
         });
     }
@@ -290,6 +294,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(CreateDsdTemporalVersionResult result) {
                 retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn(), true);
+                // Update the version list
+                UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
             }
         });
     }

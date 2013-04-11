@@ -10,6 +10,8 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
+import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactVersionsEvent;
+import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactVersionsEvent.UpdateMaintainableArtefactVersionsHandler;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -50,7 +52,7 @@ import com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
 import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 
-public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.DsdProxy> implements DsdUiHandlers, SelectViewDsdDescriptorHandler {
+public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.DsdProxy> implements DsdUiHandlers, SelectViewDsdDescriptorHandler, UpdateMaintainableArtefactVersionsHandler {
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
@@ -221,6 +223,12 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         } else {
             getView().getDsdTabSet().selectTab(0);
         }
+    }
+
+    @ProxyEvent
+    @Override
+    public void onUpdateMaintainableArtefactVersions(UpdateMaintainableArtefactVersionsEvent event) {
+        retrieveDsdAndVersions(event.getUrn()); // Load also the DSD to select it in the versions list
     }
 
     private void retrieveDsdAndVersions(String urn) {
