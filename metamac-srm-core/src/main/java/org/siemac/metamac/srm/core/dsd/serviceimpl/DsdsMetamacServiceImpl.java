@@ -256,17 +256,19 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // If is a Dimension check is not exist in the stub or heading, or delete it if exist
         if (component instanceof DimensionComponent) {
-            for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getStubDimensions()) {
+            for (DimensionOrder dimensionOrder : new ArrayList<DimensionOrder>(dataStructureDefinitionVersionMetamac.getStubDimensions())) {
                 if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionOrder.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeStubDimension(dimensionOrder);
                 }
             }
-            for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
+            for (DimensionOrder dimensionOrder : new ArrayList<DimensionOrder>(dataStructureDefinitionVersionMetamac.getHeadingDimensions())) {
                 if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionOrder.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeHeadingDimension(dimensionOrder);
                 }
             }
         }
+
+        // TODO recalcular los idnexorder al eliminar una dimension
 
         dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
