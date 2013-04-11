@@ -182,9 +182,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             OrganisationSchemeVersionMetamac organisationSchemeVersionMetamac = (OrganisationSchemeVersionMetamac) srmResourceVersion;
             if (VersionUtil.isTemporalVersion(organisationSchemeVersionMetamac.getMaintainableArtefact().getVersionLogic())) {
-                // TODO completar cuando se haga metgeTemporal de organisation
-                throw new UnsupportedOperationException("completar cuando se haga metgeTemporal de organisation");
-                // return conceptsMetamacService.mergeTemporalVersion(ctx, (ConceptSchemeVersionMetamac) srmResourceVersion);
+                organisationsMetamacService.mergeTemporalVersion(ctx, organisationSchemeVersionMetamac);
             }
             return srmResourceVersion;
         }
