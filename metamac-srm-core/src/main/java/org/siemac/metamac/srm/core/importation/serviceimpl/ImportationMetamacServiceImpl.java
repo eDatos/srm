@@ -32,10 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.importation.domain.ImportationTask;
+import com.arte.statistic.sdmx.srm.core.importation.domain.Task;
 import com.arte.statistic.sdmx.srm.core.importation.serviceapi.ImportationService;
 import com.arte.statistic.sdmx.srm.core.importation.serviceimpl.utils.ImportationJaxb2DoCallback;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ImportationStatusTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TaskStatusTypeEnum;
 
 /**
  * Implementation of ImportationMetamacService.
@@ -138,8 +138,8 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
     }
 
     @Override
-    public ImportationTask retrieveImportationTaskByJob(ServiceContext ctx, String job) throws MetamacException {
-        return importationService.retrieveImportationTaskByJob(ctx, job);
+    public Task retrieveTaskByJob(ServiceContext ctx, String job) throws MetamacException {
+        return importationService.retrieveTaskByJob(ctx, job);
     }
 
     @Override
@@ -153,14 +153,14 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
     }
 
     @Override
-    public PagedResult<ImportationTask> findImportationTasksByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-        return importationService.findImportationTasksByCondition(ctx, conditions, pagingParameter);
+    public PagedResult<Task> findTasksByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        return importationService.findTasksByCondition(ctx, conditions, pagingParameter);
     }
 
     private void createTaskInProgress(ServiceContext ctx, String jobKey, String fileName) throws MetamacException {
-        ImportationTask importData = new ImportationTask(jobKey);
+        Task importData = new Task(jobKey);
         importData.setFileName(fileName);
-        importData.setStatus(ImportationStatusTypeEnum.IN_PROGRESS);
-        importationService.createImportationTask(ctx, importData);
+        importData.setStatus(TaskStatusTypeEnum.IN_PROGRESS);
+        importationService.createTask(ctx, importData);
     }
 }

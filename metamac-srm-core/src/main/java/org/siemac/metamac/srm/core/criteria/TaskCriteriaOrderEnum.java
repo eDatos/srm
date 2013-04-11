@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.criteria;
 
-public enum ImportationTaskCriteriaOrderEnum {
+public enum TaskCriteriaOrderEnum {
 
     STATUS;
 
@@ -8,7 +8,7 @@ public enum ImportationTaskCriteriaOrderEnum {
         return name();
     }
 
-    public static ImportationTaskCriteriaOrderEnum fromValue(String v) {
+    public static TaskCriteriaOrderEnum fromValue(String v) {
         return valueOf(v);
     }
 

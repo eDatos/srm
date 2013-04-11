@@ -30,16 +30,16 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
-import com.arte.statistic.sdmx.srm.core.importation.domain.ImportationTask;
+import com.arte.statistic.sdmx.srm.core.importation.domain.Task;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ImportationTaskDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.importation.TaskDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 
 public interface SculptorCriteria2MetamacCriteriaMapper {
 
     public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersionMetamac> source, Integer pageSize);
-    public MetamacCriteriaResult<ImportationTaskDto> pageResultToMetamacCriteriaResultImportationTask(PagedResult<ImportationTask> source, Integer pageSize);
+    public MetamacCriteriaResult<TaskDto> pageResultToMetamacCriteriaResultTask(PagedResult<Task> source, Integer pageSize);
 
     public MetamacCriteriaResult<ConceptSchemeMetamacDto> pageResultToMetamacCriteriaResultConceptSchemeVersion(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<RelatedResourceDto> pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize);

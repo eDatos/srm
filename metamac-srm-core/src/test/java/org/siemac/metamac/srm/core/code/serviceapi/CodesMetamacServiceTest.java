@@ -103,10 +103,10 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
-import com.arte.statistic.sdmx.srm.core.importation.domain.ImportationTask;
-import com.arte.statistic.sdmx.srm.core.importation.domain.ImportationTaskResult;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ImportationStatusTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ImportationTaskResultTypeEnum;
+import com.arte.statistic.sdmx.srm.core.importation.domain.Task;
+import com.arte.statistic.sdmx.srm.core.importation.domain.TaskResult;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TaskResultTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TaskStatusTypeEnum;
 
 /**
  * Spring based transactional test with DbUnit support.
@@ -3245,24 +3245,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
-        assertEquals(6, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(6, task.getTaskResults().size());
         int i = 0;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE01", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE02", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code01b", Boolean.FALSE,
-                ImportationTaskResultTypeEnum.INFO, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code8", Boolean.FALSE,
-                ImportationTaskResultTypeEnum.INFO, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE03", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE0201", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE01", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE02", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code01b", Boolean.FALSE, TaskResultTypeEnum.INFO, task
+                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code8", Boolean.FALSE, TaskResultTypeEnum.INFO, task
+                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE03", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE0201", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
 
         // Validate codes
 
@@ -3680,10 +3676,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
-        assertEquals(0, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size());
 
         // Validate codes
         String codelistUrnPart = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).";
@@ -3734,24 +3730,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         entityManager.clear();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
-        assertEquals(6, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(6, task.getTaskResults().size());
         int i = 0;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE01", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE02", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code01b", Boolean.FALSE,
-                ImportationTaskResultTypeEnum.INFO, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code8", Boolean.FALSE,
-                ImportationTaskResultTypeEnum.INFO, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE03", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE0201", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE01", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE02", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code01b", Boolean.FALSE, TaskResultTypeEnum.INFO, task
+                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code8", Boolean.FALSE, TaskResultTypeEnum.INFO, task
+                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE03", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE0201", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
 
         // Validate codes (only check that existing codes not updated)
 
@@ -3869,16 +3861,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type,
+                task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @Test
@@ -3909,21 +3901,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importData = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importData);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importData.getStatus());
-        assertEquals(5, importData.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(5, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importData.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "%code1#@#code", Boolean.FALSE, type, importData
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_PARENT_NOT_FOUND.getCode(), "parentNotExists#@#codeParentNotExists", Boolean.FALSE, type, importData
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "codeWithoutName#@#name", Boolean.FALSE, type,
-                importData.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "5", Boolean.FALSE, type, importData.getImportationTaskResults().get(i++));
-        assertEquals(importData.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "%code1#@#code", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_PARENT_NOT_FOUND.getCode(), "parentNotExists#@#codeParentNotExists", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "codeWithoutName#@#name", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "5", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @Override
@@ -3953,10 +3942,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
-        assertEquals(0, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size());
 
         // Validate orders
         {
@@ -4050,16 +4039,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type,
+                task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @Test
@@ -4088,16 +4077,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_ORDER, Boolean.FALSE, type,
-                importationTask.getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_ORDER, Boolean.FALSE, type, task.getTaskResults()
+                .get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @Test
@@ -4126,16 +4115,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED.getCode(), null, Boolean.FALSE, type, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED.getCode(), null, Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @Test
@@ -4164,16 +4152,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_INCORRECT_NUMBER_CODES.getCode(), "9#@#6", Boolean.FALSE, type,
-                importationTask.getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_INCORRECT_NUMBER_CODES.getCode(), "9#@#6", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @Test
@@ -4202,16 +4189,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_ORDER_VISUALISATION_NOT_FOUND.getCode(),
-                "VISUALISATION001#@#urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)", Boolean.FALSE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR_ORDER_VISUALISATION_NOT_FOUND.getCode(),
+                "VISUALISATION001#@#urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @Test
@@ -4240,17 +4227,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(3, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(3, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "CODE0201#@#order", Boolean.FALSE, type,
-                importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "CODE04#@#order", Boolean.FALSE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "CODE0201#@#order", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "CODE04#@#order", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @DirtyDatabase
@@ -7485,10 +7471,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
-        assertEquals(0, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size());
         // Validate variable elements
         {
             // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
@@ -7572,16 +7558,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "VARIABLE_ELEMENT_02", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO,
-                importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "VARIABLE_ELEMENT_04", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO,
-                importationTask.getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "VARIABLE_ELEMENT_02", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "VARIABLE_ELEMENT_04", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
 
         // Validate variable elements
         {
@@ -7670,16 +7654,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FINISHED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "VARIABLE_ELEMENT_02", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO,
-                importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "VARIABLE_ELEMENT_04", Boolean.FALSE, ImportationTaskResultTypeEnum.INFO,
-                importationTask.getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "VARIABLE_ELEMENT_02", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "VARIABLE_ELEMENT_04", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
 
         // Validate variable elements
         {
@@ -7768,16 +7750,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importationTask = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importationTask);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importationTask.getStatus());
-        assertEquals(2, importationTask.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(2, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importationTask.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, importationTask
-                .getImportationTaskResults().get(i++));
-        assertEquals(importationTask.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type,
+                task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     @Test
@@ -7808,20 +7790,19 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
-        ImportationTask importData = importationService.retrieveImportationTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(importData);
-        assertEquals(ImportationStatusTypeEnum.FAILED, importData.getStatus());
-        assertEquals(5, importData.getImportationTaskResults().size());
+        Task task = importationService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(5, task.getTaskResults().size());
         int i = 0;
-        ImportationTaskResultTypeEnum type = ImportationTaskResultTypeEnum.ERROR;
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, importData.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "3", Boolean.FALSE, type, importData.getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "variableElement4WithoutShortName#@#shortName", Boolean.FALSE, type, importData
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#variableNotSemanticCode#@#code", Boolean.FALSE, type, importData
-                .getImportationTaskResults().get(i++));
-        assertEqualsImportationTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, type, importData.getImportationTaskResults().get(i++));
-        assertEquals(importData.getImportationTaskResults().size(), i);
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "3", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_REQUIRED.getCode(), "variableElement4WithoutShortName#@#shortName", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#variableNotSemanticCode#@#code", Boolean.FALSE, type, task.getTaskResults()
+                .get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
     }
 
     private VariableElementOperation getVariableElementOperationByCode(List<VariableElementOperation> operations, String code) {
@@ -7887,7 +7868,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
-    private void assertEqualsImportationTaskResult(String codeExpected, String infoExpected, Boolean isPrincipalExpected, ImportationTaskResultTypeEnum typeExpected, ImportationTaskResult actual) {
+    private void assertEqualsTaskResult(String codeExpected, String infoExpected, Boolean isPrincipalExpected, TaskResultTypeEnum typeExpected, TaskResult actual) {
         assertEquals(codeExpected, actual.getCode());
         assertEquals(infoExpected, actual.getParameters());
         assertEquals(isPrincipalExpected, actual.isPrincipal());

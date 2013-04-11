@@ -619,9 +619,6 @@ Application SrmFacadeCore {
 	    	"
 	    	importSDMXStructureMsgInBackground(@ContentInputDto contentDto) throws MetamacException;
 	   		
-	   		"Find information about importations jobs"
-    		MetamacCriteriaResult<@ImportationTaskDto> findImportationTasksByCondition(MetamacCriteria criteria) throws MetamacException;
-    		
 	    	"
 	    	 @param ctx                                                                         
 			 @param structureMsgDto                                                             
@@ -629,6 +626,9 @@ Application SrmFacadeCore {
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
 	    	String exportSDMXStructureMsg(@StructureMsgDto structureMsgDto) throws MetamacException;
+
+	   		"Finds information about tasks"
+    		MetamacCriteriaResult<@TaskDto> findTasksByCondition(MetamacCriteria criteria) throws MetamacException;
     	}
 
 		Service ImportationMetamacServiceJobFacade {

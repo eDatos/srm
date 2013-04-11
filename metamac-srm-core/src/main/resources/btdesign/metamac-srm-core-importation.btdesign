@@ -19,14 +19,14 @@ Application ImportationMetamac {
 			"Prepares importation of variable elements in csv format"
     		String importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 
-    		"Retrieves job"
-    		@ImportationTask retrieveImportationTaskByJob(String job) throws MetamacException;
+    		"Retrieves task"
+    		@Task retrieveTaskByJob(String job) throws MetamacException;
     		"Marks job as finished"
     		markTaskAsFinished(String job, List<MetamacExceptionItem> informationItems) throws MetamacException;
     		"Marks job as failed"
     		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
-    		"Find information about importations jobs"
-			PagedResult<@ImportationTask> findImportationTasksByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
+    		"Find information about tasks"
+			PagedResult<@Task> findTasksByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
 		}
 	}
 }
