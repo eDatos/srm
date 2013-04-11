@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.organisation.widgets;
 
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
@@ -70,14 +71,8 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersioningButton() {
-        // Resources from other maintainers can not be version
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
-            // Agency schemes, data consumer schemes and data provider schemes can not be version
-            if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
-                if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {
-                    versioning.show();
-                }
-            }
+        if (canVersionOrganisationScheme()) {
+            versioning.show();
         }
     }
 
@@ -93,8 +88,9 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showVersionSdmxResourceButton() {
-        // TODO Auto-generated method stub
-
+        if (canVersionOrganisationScheme() && VersionUtil.isTemporalVersion(versionLogic)) {
+            versionSdmxResource.show();
+        }
     }
 
     // @Override
@@ -103,4 +99,17 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     // announce.show();
     // }
     // }
+
+    private boolean canVersionOrganisationScheme() {
+        // Resources from other maintainers can not be version
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
+            // Agency schemes, data consumer schemes and data provider schemes can not be version
+            if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
+                if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
