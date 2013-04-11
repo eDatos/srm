@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedDragAndDropItem;
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
@@ -22,6 +23,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
+import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
 
 public class NewVariableWindow extends CustomWindow {
 
@@ -47,6 +49,10 @@ public class NewVariableWindow extends CustomWindow {
 
         RequiredTextItem shortNameItem = new RequiredTextItem(VariableDS.SHORT_NAME, getConstants().variableShortName());
         shortNameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        LengthRangeValidator lengthRangeValidator = new LengthRangeValidator();
+        lengthRangeValidator.setMin(0);
+        lengthRangeValidator.setMax(SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH);
+        shortNameItem.setValidators(lengthRangeValidator);
 
         SearchRelatedResourcePaginatedDragAndDropItem familyItem = createFamilyItem();
         familyItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);

@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -13,6 +14,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
+import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
 
 public class NewVariableElementWindow extends CustomWindow {
 
@@ -31,6 +33,10 @@ public class NewVariableElementWindow extends CustomWindow {
 
         RequiredTextItem shortNameItem = new RequiredTextItem(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
         shortNameItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
+        LengthRangeValidator lengthRangeValidator = new LengthRangeValidator();
+        lengthRangeValidator.setMin(0);
+        lengthRangeValidator.setMax(SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH);
+        shortNameItem.setValidators(lengthRangeValidator);
 
         CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, getConstants().variableElementCreate());
 
