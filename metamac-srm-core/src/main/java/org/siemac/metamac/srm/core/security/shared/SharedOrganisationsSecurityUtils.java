@@ -47,6 +47,10 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
         return canVersioningItemScheme(metamacPrincipal);
     }
 
+    public static boolean canCreateOrganisationSchemeTemporalVersion(MetamacPrincipal metamacPrincipal) {
+        return canVersioningOrganisationScheme(metamacPrincipal);
+    }
+
     public static boolean canAnnounceOrganisationScheme(MetamacPrincipal metamacPrincipal) {
         return canAnnounceItemScheme(metamacPrincipal);
     }
