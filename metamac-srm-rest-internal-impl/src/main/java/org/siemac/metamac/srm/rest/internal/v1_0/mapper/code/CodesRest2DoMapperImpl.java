@@ -67,9 +67,6 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case PROC_STATUS:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
-                case REPLACE_TO:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.replaceToCodelists().maintainableArtefact().urn(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), CodelistVersionMetamac.class, true);
                 case INTERNAL_PUBLICATION_USER:
