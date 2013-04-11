@@ -109,6 +109,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.UpdateDsdProcStatusActionHandlder;
 import org.siemac.metamac.srm.web.server.handlers.dsd.VersionDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.CancelOrganisationSchemeValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.CreateOrganisationSchemeTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationSchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetDefaultMaintainerActionHandler;
@@ -231,6 +232,7 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
 import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetDefaultMaintainerAction;
@@ -328,6 +330,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetOrganisationAction.class, GetOrganisationActionHandler.class);
         bindHandler(GetDefaultMaintainerAction.class, GetDefaultMaintainerActionHandler.class);
         bindHandler(GetOrganisationContactsAction.class, GetOrganisationContactsActionHandler.class);
+        bindHandler(CreateOrganisationSchemeTemporalVersionAction.class, CreateOrganisationSchemeTemporalVersionActionHandler.class);
 
         // Categories
         bindHandler(GetCategorySchemesAction.class, GetCategorySchemesActionHandler.class);

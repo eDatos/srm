@@ -39,6 +39,8 @@ import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
+import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionAction;
+import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
@@ -384,6 +386,23 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
                 retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
 
+                updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void createTemporalVersion(String urn) {
+        dispatcher.execute(new CreateOrganisationSchemeTemporalVersionAction(urn), new WaitingAsyncCallback<CreateOrganisationSchemeTemporalVersionResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorEditingPublishedResource()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CreateOrganisationSchemeTemporalVersionResult result) {
+                OrganisationSchemePresenter.this.organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
+                // TODO retrieveCompleteConceptSchemeByUrn(result.getConceptSchemeMetamacDto().getUrn(), true);
                 updateUrl();
             }
         });

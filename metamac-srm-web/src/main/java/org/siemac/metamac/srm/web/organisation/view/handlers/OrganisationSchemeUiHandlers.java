@@ -25,4 +25,5 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
     void publishInternally(String urn, ProcStatusEnum currentProcStatus);
     void publishExternally(String urn, ProcStatusEnum currentProcStatus);
     void versioning(String urn, VersionTypeEnum versionType);
+    void createTemporalVersion(String urn);
 }
