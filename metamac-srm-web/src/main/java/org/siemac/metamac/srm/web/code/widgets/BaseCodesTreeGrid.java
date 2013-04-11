@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -13,11 +15,14 @@ import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.BaseCodeUiHandlers;
+import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.TreeModelType;
+import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.tree.Tree;
+import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.tree.TreeNode;
 import com.smartgwt.client.widgets.tree.events.FolderContextClickEvent;
 import com.smartgwt.client.widgets.tree.events.FolderContextClickHandler;
@@ -43,6 +48,25 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
      * @param canOrderBeModified specified if the order of this tree can be modified (mark as <code>true</code> by {@link CodesOrderTreeGrid})
      */
     public BaseCodesTreeGrid(final boolean canStructureBeModified, final boolean canOrderBeModified) {
+
+        // Add the orderField to the previous fields
+
+        ListGridField[] itemFields = getFields();
+
+        TreeGridField orderField = new TreeGridField(CodeDS.ORDER, getConstants().codeOrder());
+        orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        orderField.setCanSort(true);
+
+        ListGridField[] codeFields = new ListGridField[itemFields.length + 1];
+        System.arraycopy(itemFields, 0, codeFields, 0, itemFields.length);
+        codeFields[codeFields.length - 1] = orderField;
+
+        setFields(codeFields);
+
+        // Order by ORDER field
+
+        setCanSort(true);
+        setSortField(CodeDS.ORDER);
 
         // Bind events
 
