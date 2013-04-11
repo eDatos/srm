@@ -76,6 +76,7 @@ public class DimensionsVisualisationItem extends CustomCanvasItem {
 
     public void setDimensions(List<RelatedResourceDto> dimensions) {
         this.dsdDimensions = dimensions;
+        updateDimensionList();
     }
 
     @SuppressWarnings("unchecked")
