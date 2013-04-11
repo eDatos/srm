@@ -48,6 +48,10 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canVersioningOrganisationScheme(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canCreateOrganisationSchemeTemporalVersion() {
+        return canVersioningOrganisationScheme();
+    }
+
     public static boolean canAnnounceOrganisationScheme() {
         return SharedOrganisationsSecurityUtils.canAnnounceOrganisationScheme(MetamacSrmWeb.getCurrentUser());
     }

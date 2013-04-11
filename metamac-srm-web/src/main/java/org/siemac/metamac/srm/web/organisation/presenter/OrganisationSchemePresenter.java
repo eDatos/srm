@@ -113,6 +113,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
         void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
         void setOrganisationList(List<ItemHierarchyDto> organisationDtos);
+        void startOrganisationSchemeEdition();
 
         // Categorisations
 
@@ -155,12 +156,12 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
-        String urn = PlaceRequestUtils.getOrganisationSchemeIdParamFromUrl(placeManager);
+        String identifier = PlaceRequestUtils.getOrganisationSchemeIdParamFromUrl(placeManager);
         String typeParam = PlaceRequestUtils.getOrganisationSchemeTypeParamFromUrl(placeManager);
         try {
             OrganisationSchemeTypeEnum type = !StringUtils.isBlank(typeParam) ? OrganisationSchemeTypeEnum.valueOf(typeParam) : null;
-            if (!StringUtils.isBlank(urn) && type != null) {
-                retrieveOrganisationScheme(urn, type);
+            if (!StringUtils.isBlank(identifier) && type != null) {
+                retrieveOrganisationScheme(identifier, type);
             } else {
                 MetamacSrmWeb.showErrorPage();
             }
@@ -191,8 +192,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         // Retrieve organisation scheme by URN
         String urn = CommonUtils.generateOrganisationSchemeUrn(identifier, type);
         if (!StringUtils.isBlank(urn)) {
-            retrieveOrganisationSchemeByUrn(urn);
-            retrieveCategorisations(urn);
+            retrieveCompleteOrganisationSchemeByUrn(urn);
         }
     }
 
@@ -200,7 +200,20 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     // ORGANISATION SCHEME
     //
 
+    private void retrieveCompleteOrganisationSchemeByUrn(String urn) {
+        retrieveCompleteOrganisationSchemeByUrn(urn, false);
+    }
+
+    private void retrieveCompleteOrganisationSchemeByUrn(String urn, boolean startEdition) {
+        retrieveOrganisationSchemeByUrn(urn, startEdition);
+        retrieveCategorisations(urn);
+    }
+
     private void retrieveOrganisationSchemeByUrn(String urn) {
+        retrieveOrganisationSchemeByUrn(urn, false);
+    }
+
+    private void retrieveOrganisationSchemeByUrn(String urn, final boolean startEdition) {
         dispatcher.execute(new GetOrganisationSchemeAction(urn), new WaitingAsyncCallback<GetOrganisationSchemeResult>() {
 
             @Override
@@ -210,7 +223,12 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             @Override
             public void onWaitSuccess(GetOrganisationSchemeResult result) {
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
+
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
+                if (startEdition) {
+                    getView().startOrganisationSchemeEdition();
+                }
+
                 retrieveOrganisationsByScheme(result.getOrganisationSchemeMetamacDto().getUrn());
                 retrieveOrganisationSchemeVersions(result.getOrganisationSchemeMetamacDto().getUrn());
             }
@@ -384,7 +402,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             public void onWaitSuccess(VersionOrganisationSchemeResult result) {
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeVersioned()), MessageTypeEnum.SUCCESS);
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
-                retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
+                retrieveCompleteOrganisationSchemeByUrn(result.getOrganisationSchemeMetamacDto().getUrn());
 
                 updateUrl();
             }
@@ -402,7 +420,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             @Override
             public void onWaitSuccess(CreateOrganisationSchemeTemporalVersionResult result) {
                 OrganisationSchemePresenter.this.organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
-                // TODO retrieveCompleteConceptSchemeByUrn(result.getConceptSchemeMetamacDto().getUrn(), true);
+                retrieveCompleteOrganisationSchemeByUrn(result.getOrganisationSchemeMetamacDto().getUrn(), true);
                 updateUrl();
             }
         });

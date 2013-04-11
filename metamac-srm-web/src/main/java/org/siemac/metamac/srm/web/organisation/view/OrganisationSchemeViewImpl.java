@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.organisation.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
@@ -316,17 +314,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
-                OrganisationSchemeTypeEnum type = organisationSchemeDto.getType();
                 ProcStatusEnum status = organisationSchemeDto.getLifeCycle().getProcStatus();
-                // If the organisation selected is and OrganisationUnit (and its status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED)
-                if ((!CommonUtils.isAgencyScheme(type) && !CommonUtils.isDataConsumerScheme(type) && !CommonUtils.isDataProviderScheme(type))
-                        && ((ProcStatusEnum.INTERNALLY_PUBLISHED.equals(status) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(status)))) {
-                    // Create a new version
-                    final InformationWindow window = new InformationWindow(getMessages().organisationSchemeEditionInfo(), getMessages().organisationSchemeEditionInfoDetailedMessage());
-                    window.show();
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                    // If the scheme is published, create a temporal version
+                    getUiHandlers().createTemporalVersion(organisationSchemeDto.getUrn());
                 } else {
                     // Default behavior
-                    setEditionMode();
+                    startOrganisationSchemeEdition();
                 }
             }
         });
@@ -383,17 +377,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
-                final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
-                versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (versionWindow.validateForm()) {
-                            getUiHandlers().versioning(organisationSchemeDto.getUrn(), versionWindow.getSelectedVersion());
-                            versionWindow.destroy();
-                        }
-                    }
-                });
+                versionOrganisationScheme();
             }
         });
         mainFormLayout.getCancelValidity().addClickHandler(new ClickHandler() {
@@ -401,6 +385,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().cancelValidity(organisationSchemeDto.getUrn());
+            }
+        });
+        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                versionOrganisationScheme();
             }
         });
     }
@@ -571,9 +562,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(organisationSchemeMetamacDto));
 
         // Security
-        ProcStatusEnum procStatus = organisationSchemeMetamacDto.getLifeCycle().getProcStatus();
-        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(procStatus, organisationSchemeMetamacDto.getType()));
-        mainFormLayout.updatePublishSection(organisationSchemeMetamacDto);
+        mainFormLayout.setOrganisationScheme(organisationSchemeMetamacDto);
         mainFormLayout.setViewMode();
         categorisationsPanel.updateVisibility(organisationSchemeMetamacDto);
 
@@ -614,6 +603,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             }
             organisationListGrid.setData(records);
         }
+    }
+
+    @Override
+    public void startOrganisationSchemeEdition() {
+        mainFormLayout.setEditionMode();
     }
 
     @Override
@@ -758,10 +752,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         return organisationSchemeDto;
     }
 
-    private void setEditionMode() {
-        mainFormLayout.setEditionMode();
-    }
-
     private List<String> getSelectedOrganisationUrns() {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : organisationListGrid.getSelectedRecords()) {
@@ -791,6 +781,20 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         } else {
             deleteButton.hide();
         }
+    }
+
+    private void versionOrganisationScheme() {
+        final VersionWindow versionWindow = new VersionWindow(getConstants().lifeCycleVersioning());
+        versionWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                if (versionWindow.validateForm()) {
+                    getUiHandlers().versioning(organisationSchemeDto.getUrn(), versionWindow.getSelectedVersion());
+                    versionWindow.destroy();
+                }
+            }
+        });
     }
 
     // ------------------------------------------------------------------------------------------------------------
