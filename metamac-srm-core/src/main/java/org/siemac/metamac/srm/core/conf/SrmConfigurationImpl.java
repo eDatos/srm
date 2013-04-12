@@ -9,7 +9,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     @Override
     public String retrieveMaintainerUrnDefault() throws MetamacException {
         if (maintainerUrnDefault == null) {
-            maintainerUrnDefault = retrieveProperty(SrmConstants.METAMAC_ORGANISATION_URN, Boolean.TRUE);
+            maintainerUrnDefault = retrieveProperty(ConfigurationConstants.METAMAC_ORGANISATION_URN, Boolean.TRUE);
         }
         return maintainerUrnDefault;
     }
@@ -36,7 +36,7 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     @Override
     public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException {
         if (primaryMeasureConceptIdUrnDefault == null) {
-            primaryMeasureConceptIdUrnDefault = retrieveProperty(SrmConstants.METAMAC_SRM_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.TRUE);
+            primaryMeasureConceptIdUrnDefault = retrieveProperty(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.TRUE);
         }
         return primaryMeasureConceptIdUrnDefault;
     }
@@ -44,8 +44,8 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     @Override
     public Boolean isDatabaseOracle() throws MetamacException {
         if (isDatabaseOracle == null) {
-            String database = retrieveProperty(SrmConstants.DB_DRIVER_NAME, Boolean.TRUE);
-            isDatabaseOracle = SrmConstants.DB_DRIVER_NAME_ORACLE.equals(database);
+            String database = retrieveProperty(SrmConfigurationConstants.DB_DRIVER_NAME, Boolean.TRUE);
+            isDatabaseOracle = SrmConfigurationConstants.DB_DRIVER_NAME_ORACLE.equals(database);
         }
         return isDatabaseOracle;
     }
@@ -53,8 +53,8 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     @Override
     public Boolean isDatabaseSqlServer() throws MetamacException {
         if (isDatabaseSqlServer == null) {
-            String database = retrieveProperty(SrmConstants.DB_DRIVER_NAME, Boolean.TRUE);
-            isDatabaseSqlServer = SrmConstants.DB_DRIVER_NAME_MSSQL.equals(database);
+            String database = retrieveProperty(SrmConfigurationConstants.DB_DRIVER_NAME, Boolean.TRUE);
+            isDatabaseSqlServer = SrmConfigurationConstants.DB_DRIVER_NAME_MSSQL.equals(database);
         }
         return isDatabaseSqlServer;
     }
@@ -62,7 +62,7 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     @Override
     public String retrieveLanguageDefault() throws MetamacException {
         if (languageDefault == null) {
-            List<Object> languages = retrievePropertyList(ConfigurationConstants.PROP_EDITION_LANGUAGES, Boolean.FALSE);
+            List<Object> languages = retrievePropertyList(ConfigurationConstants.METAMAC_EDITION_LANGUAGES, Boolean.FALSE);
             if (!CollectionUtils.isEmpty(languages)) {
                 languageDefault = (String) languages.get(0);
             }
