@@ -7,8 +7,8 @@ public class SrmConfigurationConstants {
     // Configuration
 
     public static final String DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN   = "metamac.srm.dsd.primary_measure.default_concept.urn";
-    public static final String DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN    = " metamac.srm.dsd.time_dimension.default_concept.urn";
-    public static final String DSD_MEASURE_DIMENSION_DEFAULT_CONCEPT_ID_URN = " metamac.srm.dsd.measure_dimension.default_concept.urn";
+    public static final String DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN    = "metamac.srm.dsd.time_dimension.default_concept.urn";
+    public static final String DSD_MEASURE_DIMENSION_DEFAULT_CONCEPT_ID_URN = "metamac.srm.dsd.measure_dimension.default_concept.urn";
 
     public static final String USER_GUIDE_FILE_NAME                         = "metamac.srm.user.guide.file.name";
 
