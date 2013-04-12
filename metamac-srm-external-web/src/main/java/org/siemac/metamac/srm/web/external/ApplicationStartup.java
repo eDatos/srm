@@ -9,7 +9,6 @@ import org.apache.commons.logging.LogFactory;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
-import org.siemac.metamac.rest.constants.RestEndpointsConstants;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 
 public class ApplicationStartup implements ServletContextListener {
@@ -42,8 +41,8 @@ public class ApplicationStartup implements ServletContextListener {
         checkProperty(SrmConstants.DB_DIALECT);
 
         // Api
-        checkProperty(RestEndpointsConstants.SRM_EXTERNAL_API);
-        checkProperty(RestEndpointsConstants.STATISTICAL_OPERATIONS_EXTERNAL_API);
+        checkProperty(ConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
+        checkProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
 
         LOG.info("**********************************************************");
         LOG.info("Application configuration checked");
