@@ -205,6 +205,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
                         versionTypeEnum));
 
         organisationSchemeVersionTemporal.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE); // For calculates new urns
+        organisationSchemeVersionTemporal.setIsTypeUpdated(Boolean.FALSE);
         organisationSchemeVersionTemporal = (OrganisationSchemeVersionMetamac) organisationsService.updateOrganisationScheme(ctx, organisationSchemeVersionTemporal);
 
         // Set null replacedBy in the original entity
