@@ -452,7 +452,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Check version to copy is published
         SrmValidationUtils.checkArtefactCanBeVersioned(organisationSchemeVersionToCopy.getMaintainableArtefact(), organisationSchemeVersionToCopy.getLifeCycleMetadata());
         // Check does not exist any version 'no final'
-        ItemSchemeVersion organisationSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(organisationSchemeVersionToCopy.getItemScheme().getId());
+        ItemSchemeVersion organisationSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(organisationSchemeVersionToCopy.getItemScheme().getId());
         if (organisationSchemeVersionNoFinal != null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(organisationSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();

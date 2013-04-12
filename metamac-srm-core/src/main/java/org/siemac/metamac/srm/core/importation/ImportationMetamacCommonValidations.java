@@ -37,7 +37,7 @@ public abstract class ImportationMetamacCommonValidations {
 
         if (!canBeNotFinal) {
             // Check does not exist any version 'no final'
-            ItemSchemeVersion itemSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
+            ItemSchemeVersion itemSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
                     .getMaintainableArtefact().getCode());
             if (itemSchemeVersionNoFinal != null) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_EXIST_NOT_FINAL_VERSION)
@@ -65,7 +65,7 @@ public abstract class ImportationMetamacCommonValidations {
         validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), false);
 
         // Check does not exist any version 'no final'
-        StructureVersion structureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinal(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
+        StructureVersion structureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinalClient(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
                 .getMaintainableArtefact().getCode());
         if (structureVersionNoFinal != null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_EXIST_NOT_FINAL_VERSION)

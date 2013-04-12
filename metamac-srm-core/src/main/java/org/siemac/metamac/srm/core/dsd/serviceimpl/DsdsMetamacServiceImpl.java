@@ -751,7 +751,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         SrmValidationUtils.checkArtefactCanBeVersioned(dataStructureDefinitionVersionToCopy.getMaintainableArtefact(), dataStructureDefinitionVersionToCopy.getLifeCycleMetadata());
 
         // Check does not exist any version 'no final'
-        StructureVersion dataStructureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinal(dataStructureDefinitionVersionToCopy.getStructure().getId());
+        StructureVersion dataStructureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinalClient(dataStructureDefinitionVersionToCopy.getStructure().getId());
         if (dataStructureVersionNoFinal != null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
                     .withMessageParameters(dataStructureVersionNoFinal.getMaintainableArtefact().getUrn()).build();
