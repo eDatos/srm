@@ -59,7 +59,7 @@ public class ApplicationStartup implements ServletContextListener {
 
         // Check filled
         if (required && StringUtils.isBlank(propertyValue)) {
-            String errorMessage = "Property [" + propertyKey + "] is required and it is not setted. Aborting application startup";
+            String errorMessage = "Property [" + propertyKey + "] is required and it is not filled. Aborting application startup";
             LOG.error(errorMessage);
             throw new IllegalArgumentException(errorMessage);
         }
