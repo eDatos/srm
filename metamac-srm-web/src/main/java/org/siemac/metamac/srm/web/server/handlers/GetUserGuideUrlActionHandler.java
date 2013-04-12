@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers;
 
 import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlResult;
@@ -22,8 +23,8 @@ public class GetUserGuideUrlActionHandler extends SecurityActionHandler<GetUserG
 
     @Override
     public GetUserGuideUrlResult executeSecurityAction(GetUserGuideUrlAction action) throws ActionException {
-        String dataUrl = configurationService.getConfig().getString(SrmWebConstants.PROP_DATA_URL);
-        String userGuideFileName = configurationService.getConfig().getString(SrmWebConstants.PROP_USER_GUIDE_FILE_NAME);
+        String dataUrl = configurationService.getConfig().getString(SrmWebConstants.ENVIRONMENT_DATA_URL);
+        String userGuideFileName = configurationService.getConfig().getString(SrmConfigurationConstants.USER_GUIDE_FILE_NAME);
         return new GetUserGuideUrlResult(dataUrl + "/srm/srm-web/docs/" + userGuideFileName);
     }
 }

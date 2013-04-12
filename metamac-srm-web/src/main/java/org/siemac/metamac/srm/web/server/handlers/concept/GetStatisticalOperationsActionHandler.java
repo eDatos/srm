@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operations;
 import org.siemac.metamac.srm.core.security.shared.SharedSecurityUtils;
-import org.siemac.metamac.srm.web.server.rest.RestApiConstants;
 import org.siemac.metamac.srm.web.server.rest.StatisticalOperationsRestInternalFacade;
 import org.siemac.metamac.srm.web.server.utils.ExternalItemUtils;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
@@ -41,7 +41,7 @@ public class GetStatisticalOperationsActionHandler extends SecurityActionHandler
     @Override
     public GetStatisticalOperationsResult executeSecurityAction(GetStatisticalOperationsAction action) throws ActionException {
 
-        String operationsApiEndpoint = configurationService.getProperty(RestApiConstants.STATISTICAL_OPERATIONS_REST_INTERNAL);
+        String operationsApiEndpoint = configurationService.getProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
 
         try {
 
