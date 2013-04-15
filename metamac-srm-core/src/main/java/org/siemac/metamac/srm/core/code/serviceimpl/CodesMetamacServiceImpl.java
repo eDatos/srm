@@ -385,11 +385,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update the codes index, this was updates before.
         codelistVersion.setDefaultOpennessVisualisation(null);
         codelistVersion.removeAllOpennessVisualisations();
+        itemSchemeVersionRepository.flush();
         codelistVersion = versioningCodelistOpennessVisualisations(ctx, codelistTemporalVersion, codelistVersion);
 
         // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update the codes index, this was updates before.
         codelistVersion.setDefaultOrderVisualisation(null);
         codelistVersion.removeAllOrderVisualisations();
+        itemSchemeVersionRepository.flush();
         codelistVersion = versioningCodelistOrderVisualisations(ctx, codelistTemporalVersion, codelistVersion);
 
         // Delete temporal version
