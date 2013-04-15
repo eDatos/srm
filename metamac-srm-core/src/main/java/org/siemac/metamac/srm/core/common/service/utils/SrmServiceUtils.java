@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.core.common.service.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
@@ -188,10 +187,49 @@ public class SrmServiceUtils {
     }
 
     public static Integer getCodeOrder(CodeMetamac code, int columnIndex) {
-        try {
-            return (Integer) MethodUtils.invokeExactMethod(code, "getOrder" + columnIndex, null);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        switch (columnIndex) {
+            case 1:
+                return code.getOrder1();
+            case 2:
+                return code.getOrder2();
+            case 3:
+                return code.getOrder3();
+            case 4:
+                return code.getOrder4();
+            case 5:
+                return code.getOrder5();
+            case 6:
+                return code.getOrder6();
+            case 7:
+                return code.getOrder7();
+            case 8:
+                return code.getOrder8();
+            case 9:
+                return code.getOrder9();
+            case 10:
+                return code.getOrder10();
+            case 11:
+                return code.getOrder11();
+            case 12:
+                return code.getOrder12();
+            case 13:
+                return code.getOrder13();
+            case 14:
+                return code.getOrder14();
+            case 15:
+                return code.getOrder15();
+            case 16:
+                return code.getOrder16();
+            case 17:
+                return code.getOrder17();
+            case 18:
+                return code.getOrder18();
+            case 19:
+                return code.getOrder19();
+            case 20:
+                return code.getOrder20();
+            default:
+                throw new IllegalArgumentException("Order not supported: " + columnIndex);
         }
     }
 
@@ -267,10 +305,49 @@ public class SrmServiceUtils {
     }
 
     public static Boolean getCodeOpenness(CodeMetamac code, int columnIndex) {
-        try {
-            return (Boolean) MethodUtils.invokeExactMethod(code, "getOpenness" + columnIndex, null);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        switch (columnIndex) {
+            case 1:
+                return code.getOpenness1();
+            case 2:
+                return code.getOpenness2();
+            case 3:
+                return code.getOpenness3();
+            case 4:
+                return code.getOpenness4();
+            case 5:
+                return code.getOpenness5();
+            case 6:
+                return code.getOpenness6();
+            case 7:
+                return code.getOpenness7();
+            case 8:
+                return code.getOpenness8();
+            case 9:
+                return code.getOpenness9();
+            case 10:
+                return code.getOpenness10();
+            case 11:
+                return code.getOpenness11();
+            case 12:
+                return code.getOpenness12();
+            case 13:
+                return code.getOpenness13();
+            case 14:
+                return code.getOpenness14();
+            case 15:
+                return code.getOpenness15();
+            case 16:
+                return code.getOpenness16();
+            case 17:
+                return code.getOpenness17();
+            case 18:
+                return code.getOpenness18();
+            case 19:
+                return code.getOpenness19();
+            case 20:
+                return code.getOpenness20();
+            default:
+                throw new IllegalArgumentException("Openness not supported: " + columnIndex);
         }
     }
 
