@@ -11,6 +11,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -26,9 +27,9 @@ public class VersionCategorySchemeActionHandler extends SecurityActionHandler<Ve
     @Override
     public VersionCategorySchemeResult executeSecurityAction(VersionCategorySchemeAction action) throws ActionException {
         try {
-            CategorySchemeMetamacDto categorySchemeMetamacDto = null;
-            // FIXME
-            srmCoreServiceFacade.versioningCategoryScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
+            VersioningResult result = srmCoreServiceFacade.versioningCategoryScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
+            // Category schemes will always be version synchronously (not in background!)
+            CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(ServiceContextHolder.getCurrentServiceContext(), result.getUrnResult());
             return new VersionCategorySchemeResult(categorySchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

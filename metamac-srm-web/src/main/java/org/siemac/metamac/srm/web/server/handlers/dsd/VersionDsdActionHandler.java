@@ -33,5 +33,4 @@ public class VersionDsdActionHandler extends SecurityActionHandler<VersionDsdAct
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }
