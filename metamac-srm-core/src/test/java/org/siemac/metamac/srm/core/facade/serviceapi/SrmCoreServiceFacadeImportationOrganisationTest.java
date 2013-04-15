@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.core.facade.serviceapi;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -106,13 +105,7 @@ public class SrmCoreServiceFacadeImportationOrganisationTest extends SrmBaseTest
 
         organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V1);
         assertEquals(2, organisationSchemeVersion.getItems().size());
-        assertFalse(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-
-        organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V2);
-        assertEquals(1, organisationSchemeVersion.getItems().size());
         assertTrue(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-
-        assertEquals(2, organisationSchemeVersion.getItemScheme().getVersions().size());
 
         // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
