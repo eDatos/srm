@@ -25,6 +25,8 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDefaultDimensionForDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDefaultDimensionForDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
@@ -37,6 +39,7 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
 import com.google.gwt.event.shared.EventBus;
@@ -90,6 +93,8 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
 
         void setDsdDimensions(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos);
+        void setDefaultDimensionToCreate(DimensionComponentDto dimensionComponentDto);
+
         DimensionComponentDto getDsdDimension();
         List<DimensionComponentDto> getSelectedDimensions();
         void onDimensionSaved(DimensionComponentDto dimensionComponentDto);
@@ -337,6 +342,22 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     private void setDsdDimensions(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
         getView().setDsdDimensions(dataStructureDefinitionMetamacDto, dimensionComponentDtos);
+    }
+
+    @Override
+    public void createDefaultDimension(String dsdUrn, TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType) {
+        dispatcher.execute(new GetDefaultDimensionForDsdAction(dsdUrn, dimensionType, specialDimensionType), new WaitingAsyncCallback<GetDefaultDimensionForDsdResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorRetrievingDefaultConcept()),
+                        MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetDefaultDimensionForDsdResult result) {
+                getView().setDefaultDimensionToCreate(result.getDimensionComponentDto());
+            }
+        });
     }
 
     private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(TypeDimensionComponent dimensionType) {

@@ -448,6 +448,20 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
+    public void setDefaultDimensionToCreate(DimensionComponentDto dimensionComponentDto) {
+        mainFormLayout.setTitleLabelContents(StringUtils.EMPTY);
+        deleteToolStripButton.hide();
+        dimensionsGrid.deselectAllRecords();
+        setDimensionEditionMode(dimensionComponentDto);
+        mainFormLayout.setEditionMode();
+
+        newDimensionWindow.markForDestroy();
+
+        selectedComponentLayout.show();
+        selectedComponentLayout.markForRedraw();
+    }
+
+    @Override
     public void setConceptSchemes(GetRelatedResourcesResult result) {
         if (searchConceptWindow != null) {
             searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
@@ -786,20 +800,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 @Override
                 public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                     if (newDimensionWindow.validateForm()) {
-                        dimensionSelected.setTypeDimensionComponent(newDimensionWindow.getDimensionType());
-                        dimensionSelected.setSpecialDimensionType(newDimensionWindow.getSpecialDimensionType());
-
-                        // Set dimension in form
-                        mainFormLayout.setTitleLabelContents(StringUtils.EMPTY);
-                        deleteToolStripButton.hide();
-                        dimensionsGrid.deselectAllRecords();
-                        setDimensionEditionMode(dimensionSelected);
-                        mainFormLayout.setEditionMode();
-
-                        newDimensionWindow.markForDestroy();
-
-                        selectedComponentLayout.show();
-                        selectedComponentLayout.markForRedraw();
+                        getUiHandlers().createDefaultDimension(dataStructureDefinitionMetamacDto.getUrn(), newDimensionWindow.getDimensionType(), newDimensionWindow.getSpecialDimensionType());
                     }
                 }
             });

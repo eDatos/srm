@@ -99,6 +99,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDescriptorListForDsd
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDimensionListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDsdsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.ExportDsdActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.dsd.GetDefaultDimensionForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdAndDescriptorsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdVersionsActionHandler;
@@ -222,6 +223,7 @@ import org.siemac.metamac.srm.web.shared.dsd.DeleteDescriptorListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDefaultDimensionForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsAction;
@@ -273,6 +275,7 @@ public class ServerModule extends HandlerModule {
 
     @Override
     protected void configureHandlers() {
+
         // DSDs
         bindHandler(GetDsdsAction.class, GetDsdsActionHandler.class);
         bindHandler(GetDsdAction.class, GetDsdActionHandler.class);
@@ -290,6 +293,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetDsdVersionsAction.class, GetDsdVersionsActionHandler.class);
         bindHandler(CancelDsdValidityAction.class, CancelDsdValidityActionHandler.class);
         bindHandler(CreateDsdTemporalVersionAction.class, CreateDsdTemporalVersionActionHandler.class);
+        bindHandler(GetDefaultDimensionForDsdAction.class, GetDefaultDimensionForDsdActionHandler.class);
 
         // Concepts
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
