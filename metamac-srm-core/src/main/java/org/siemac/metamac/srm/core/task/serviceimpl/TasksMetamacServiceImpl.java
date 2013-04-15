@@ -129,8 +129,8 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
 
             return jobKey;
         } catch (Exception e) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_ERROR).withMessageParameters(e.getMessage()).withCause(e)
-                    .withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build(); // Error
         } finally {
             IOUtils.closeQuietly(csvStream);
             IOUtils.closeQuietly(os);

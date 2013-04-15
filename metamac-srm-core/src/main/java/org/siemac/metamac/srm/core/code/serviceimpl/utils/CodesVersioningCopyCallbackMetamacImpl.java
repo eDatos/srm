@@ -20,8 +20,10 @@ import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCo
 /**
  * Copy Metamac metadata
  */
-@Component("codesVersioningCopyCallbackMetamac")
+@Component(CodesVersioningCopyCallbackMetamacImpl.BEAN_ID)
 public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCopyCallback {
+
+    public static final String  BEAN_ID = "codesVersioningCopyCallbackMetamac";
 
     @Autowired
     private CodesMetamacService codesMetamacService;
@@ -73,6 +75,11 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         target.setVariableElement(source.getVariableElement());
         copyCodeOrderVisualisations(source, target);
         copyCodeOpennessVisualisations(source, target);
+    }
+
+    @Override
+    public String getBeanName() {
+        return BEAN_ID;
     }
 
     private void copyCodeOrderVisualisations(CodeMetamac source, CodeMetamac target) {

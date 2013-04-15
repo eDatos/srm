@@ -1682,7 +1682,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Versioning
         CodesVersioningCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningCopyWithCodesCallback : codesVersioningCopyWithoutCodesCallback;
-        return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, callback);
+        return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, Boolean.TRUE, callback);
     }
 
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {

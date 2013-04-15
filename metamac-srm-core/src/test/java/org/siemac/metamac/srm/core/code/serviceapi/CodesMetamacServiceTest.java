@@ -95,6 +95,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts;
@@ -104,6 +105,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.srm.core.task.domain.TaskResult;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TaskResultTypeEnum;
@@ -1648,190 +1650,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testVersioningCodelist() throws Exception {
         String urn = CODELIST_3_V1;
-        String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(02.000)";
-        String urnExpectedCode1 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE01";
-        String urnExpectedCode2 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE02";
-        String urnExpectedCode21 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE0201";
-        String urnExpectedCode211 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE020101";
-        String urnExpectedCode22 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE0202";
-        String urnExpectedOrderVisualisation01 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(02.000).ALPHABETICAL";
-        String urnExpectedOrderVisualisation02 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(02.000).VISUALISATION02";
-        String urnExpectedOpennessVisualisation01 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(02.000).ALL_EXPANDED";
-        String urnExpectedOpennessVisualisation02 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(02.000).VISUALISATION02";
 
         VersioningResult versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.TRUE, VersionTypeEnum.MAJOR);
+        assertEquals(urnExpected, versioningResult.getUrnResult());
+        assertNull(versioningResult.getIsPlannedInBackground());
+        assertNull(versioningResult.getJobKey());
 
-        // Validate response
-        entityManager.clear();
-        CodelistVersionMetamac codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-        CodelistVersionMetamac codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
-        {
-            assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-            assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-            assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
-        }
-
-        // Validate retrieving
-        // New version
-        {
-            codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
-            assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
-            assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
-            assertEquals("01.000", codelistVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
-            assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
-            assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
-            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
-
-            // Codes
-            assertEquals(5, codelistVersionNewVersion.getItems().size());
-            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode1);
-            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode2);
-            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode21);
-            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode211);
-            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode22);
-
-            assertEquals(2, codelistVersionNewVersion.getItemsFirstLevel().size());
-            {
-                CodeMetamac code = assertListCodesContainsCode(codelistVersionNewVersion.getItemsFirstLevel(), urnExpectedCode1);
-                assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-1", null, null);
-                assertEquals(Integer.valueOf(0), code.getOrder1());
-                assertEquals(Integer.valueOf(1), code.getOrder2());
-                assertEquals(null, code.getOrder3());
-                assertEquals(null, code.getOrder4());
-                assertEquals(null, code.getOrder5());
-                assertEquals(null, code.getOrder6());
-                assertEquals(null, code.getOrder7());
-                assertEquals(null, code.getOrder8());
-                assertEquals(null, code.getOrder9());
-                assertEquals(null, code.getOrder10());
-                assertEquals(null, code.getOrder11());
-                assertEquals(null, code.getOrder12());
-                assertEquals(null, code.getOrder13());
-                assertEquals(null, code.getOrder14());
-                assertEquals(null, code.getOrder15());
-                assertEquals(null, code.getOrder16());
-                assertEquals(null, code.getOrder17());
-                assertEquals(null, code.getOrder18());
-                assertEquals(null, code.getOrder19());
-                assertEquals(null, code.getOrder20());
-
-                assertEquals(Boolean.TRUE, code.getOpenness1());
-                assertEquals(Boolean.TRUE, code.getOpenness2());
-                assertEquals(null, code.getOpenness3());
-                assertEquals(null, code.getOpenness4());
-                assertEquals(null, code.getOpenness5());
-                assertEquals(null, code.getOpenness6());
-                assertEquals(null, code.getOpenness7());
-                assertEquals(null, code.getOpenness8());
-                assertEquals(null, code.getOpenness9());
-                assertEquals(null, code.getOpenness10());
-                assertEquals(null, code.getOpenness11());
-                assertEquals(null, code.getOpenness12());
-                assertEquals(null, code.getOpenness13());
-                assertEquals(null, code.getOpenness14());
-                assertEquals(null, code.getOpenness15());
-                assertEquals(null, code.getOpenness16());
-                assertEquals(null, code.getOpenness17());
-                assertEquals(null, code.getOpenness18());
-                assertEquals(null, code.getOpenness19());
-                assertEquals(null, code.getOpenness20());
-
-                assertEquals(0, code.getChildren().size());
-            }
-            {
-                CodeMetamac code = assertListCodesContainsCode(codelistVersionNewVersion.getItemsFirstLevel(), urnExpectedCode2);
-                assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-2", null, null);
-                assertEquals(Integer.valueOf(1), code.getOrder1());
-                assertEquals(Integer.valueOf(0), code.getOrder2());
-                assertEquals(Boolean.TRUE, code.getOpenness1());
-                assertEquals(Boolean.FALSE, code.getOpenness2());
-
-                assertEquals(2, code.getChildren().size());
-                {
-                    CodeMetamac codeChild = assertListCodesContainsCode(code.getChildren(), urnExpectedCode21);
-                    assertEquals(urnExpectedCode21, codeChild.getNameableArtefact().getUrn());
-                    assertEquals(Integer.valueOf(0), codeChild.getOrder1());
-                    assertEquals(Integer.valueOf(1), codeChild.getOrder2());
-                    assertEquals(Boolean.TRUE, codeChild.getOpenness1());
-                    assertEquals(Boolean.TRUE, codeChild.getOpenness2());
-
-                    assertEquals(1, codeChild.getChildren().size());
-                    {
-                        CodeMetamac codeChildChild = assertListCodesContainsCode(codeChild.getChildren(), urnExpectedCode211);
-                        assertEquals(urnExpectedCode211, codeChildChild.getNameableArtefact().getUrn());
-                        assertEquals(Integer.valueOf(0), codeChildChild.getOrder1());
-                        assertEquals(Integer.valueOf(0), codeChildChild.getOrder2());
-                        assertEquals(Boolean.TRUE, codeChildChild.getOpenness1());
-                        assertEquals(Boolean.FALSE, codeChildChild.getOpenness2());
-
-                        assertEquals(0, codeChildChild.getChildren().size());
-                    }
-                }
-                {
-                    CodeMetamac codeChild = assertListCodesContainsCode(code.getChildren(), urnExpectedCode22);
-                    assertEquals(Integer.valueOf(1), codeChild.getOrder1());
-                    assertEquals(Integer.valueOf(0), codeChild.getOrder2());
-                    assertEquals(Boolean.TRUE, codeChild.getOpenness1());
-                    assertEquals(Boolean.FALSE, codeChild.getOpenness2());
-
-                    assertEquals(0, codeChild.getChildren().size());
-                }
-            }
-
-            // Order visualisations
-            assertEquals(urnExpectedOrderVisualisation01, codelistVersionNewVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn());
-            assertEquals(2, codelistVersionNewVersion.getOrderVisualisations().size());
-            {
-                CodelistOrderVisualisation codelistOrderVisualisation = assertContainsCodelistOrderVisualisation(urnExpectedOrderVisualisation01, codelistVersionNewVersion.getOrderVisualisations());
-                assertEquals("ALPHABETICAL", codelistOrderVisualisation.getNameableArtefact().getCode());
-                assertEquals(Integer.valueOf(1), codelistOrderVisualisation.getColumnIndex());
-                assertEqualsInternationalString(codelistOrderVisualisation.getNameableArtefact().getName(), "es", "Alfabético", null, null);
-            }
-            {
-                CodelistOrderVisualisation codelistOrderVisualisation = assertContainsCodelistOrderVisualisation(urnExpectedOrderVisualisation02, codelistVersionNewVersion.getOrderVisualisations());
-                assertEquals("VISUALISATION02", codelistOrderVisualisation.getNameableArtefact().getCode());
-                assertEquals(Integer.valueOf(2), codelistOrderVisualisation.getColumnIndex());
-                assertEqualsInternationalString(codelistOrderVisualisation.getNameableArtefact().getName(), "es", "Visualización 02", null, null);
-            }
-
-            // Openness visualisations
-            assertEquals(urnExpectedOpennessVisualisation01, codelistVersionNewVersion.getDefaultOpennessVisualisation().getNameableArtefact().getUrn());
-            assertEquals(2, codelistVersionNewVersion.getOpennessVisualisations().size());
-            {
-                CodelistOpennessVisualisation codelistOpennessVisualisation = assertContainsCodelistOpennessVisualisation(urnExpectedOpennessVisualisation01,
-                        codelistVersionNewVersion.getOpennessVisualisations());
-                assertEquals("ALL_EXPANDED", codelistOpennessVisualisation.getNameableArtefact().getCode());
-                assertEquals(Integer.valueOf(1), codelistOpennessVisualisation.getColumnIndex());
-                assertEqualsInternationalString(codelistOpennessVisualisation.getNameableArtefact().getName(), "es", "Visualización de apertura Todos abiertos 3-1", null, null);
-            }
-            {
-                CodelistOpennessVisualisation codelistOpennessVisualisation = assertContainsCodelistOpennessVisualisation(urnExpectedOpennessVisualisation02,
-                        codelistVersionNewVersion.getOpennessVisualisations());
-                assertEquals("VISUALISATION02", codelistOpennessVisualisation.getNameableArtefact().getCode());
-                assertEquals(Integer.valueOf(2), codelistOpennessVisualisation.getColumnIndex());
-                assertEqualsInternationalString(codelistOpennessVisualisation.getNameableArtefact().getName(), "es", "Visualización 02 3-1", null, null);
-            }
-        }
-
-        // Copied version
-        {
-            codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-            assertEquals("01.000", codelistVersionToCopy.getMaintainableArtefact().getVersionLogic());
-            assertEquals(urn, codelistVersionToCopy.getMaintainableArtefact().getUrn());
-            assertEquals(null, codelistVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
-            assertEquals(versionExpected, codelistVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
-            assertFalse(codelistVersionToCopy.getMaintainableArtefact().getIsLastVersion());
-        }
-        // All versions
-        {
-            List<CodelistVersionMetamac> allVersions = codesService.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
-            assertEquals(2, allVersions.size());
-            assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
-            assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
-        }
+        // Validate
+        validateVersioningCodelist3V1();
     }
 
     @Test
@@ -1963,6 +1790,58 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
         }
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testVersioningCodelistInBackground() throws Exception {
+
+        SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 3; // modify to force in background
+        final String codelistUrn = CODELIST_3_V1;
+        final StringBuilder jobKey = new StringBuilder();
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    ItemSchemeVersion itemSchemeVersion = itemSchemeRepository.findByUrn(codelistUrn);
+                    assertEquals(null, itemSchemeVersion.getItemScheme().getVersioningBackground());
+
+                    VersioningResult versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), codelistUrn, Boolean.TRUE, VersionTypeEnum.MAJOR);
+                    assertEquals(true, versioningResult.getIsPlannedInBackground());
+                    assertEquals(null, versioningResult.getUrnResult());
+                    jobKey.append(versioningResult.getJobKey());
+
+                    itemSchemeVersion = itemSchemeRepository.findByUrn(codelistUrn);
+                    assertEquals(true, itemSchemeVersion.getItemScheme().getVersioningBackground());
+
+                    try {
+                        codesService.versioningCodelist(getServiceContextAdministrador(), codelistUrn, Boolean.TRUE, VersionTypeEnum.MAJOR);
+                        fail("already versioning");
+                    } catch (MetamacException e) {
+                        assertEquals(1, e.getExceptionItems().size());
+                        assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_ALREADY_VERSIONING.getCode(), e.getExceptionItems().get(0).getCode());
+                        assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                        assertEquals(codelistUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                    }
+                } catch (MetamacException e) {
+                    fail("versioning failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+        SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 300;
+
+        // Validate
+        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size());
+
+        // Validate versioning
+        validateVersioningCodelist3V1();
     }
 
     @Override
@@ -7897,6 +7776,192 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(infoExpected, actual.getParameters());
         assertEquals(isPrincipalExpected, actual.isPrincipal());
         assertEquals(typeExpected, actual.getResultType());
+    }
+
+    private void validateVersioningCodelist3V1() throws Exception {
+        String urn = CODELIST_3_V1;
+        String versionExpected = "02.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(02.000)";
+        String urnExpectedCode1 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE01";
+        String urnExpectedCode2 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE02";
+        String urnExpectedCode21 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE0201";
+        String urnExpectedCode211 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE020101";
+        String urnExpectedCode22 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST03(02.000).CODE0202";
+        String urnExpectedOrderVisualisation01 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(02.000).ALPHABETICAL";
+        String urnExpectedOrderVisualisation02 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST03(02.000).VISUALISATION02";
+        String urnExpectedOpennessVisualisation01 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(02.000).ALL_EXPANDED";
+        String urnExpectedOpennessVisualisation02 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(02.000).VISUALISATION02";
+
+        // Validate response
+        entityManager.clear();
+        CodelistVersionMetamac codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+        CodelistVersionMetamac codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnExpected);
+        {
+            assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
+        }
+
+        // Validate retrieving
+        // New version
+        {
+            codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals("01.000", codelistVersionNewVersion.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(null, codelistVersionNewVersion.getMaintainableArtefact().getReplacedByVersion());
+            assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
+            assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
+
+            // Codes
+            assertEquals(5, codelistVersionNewVersion.getItems().size());
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode1);
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode2);
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode21);
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode211);
+            assertListItemsContainsItem(codelistVersionNewVersion.getItems(), urnExpectedCode22);
+
+            assertEquals(2, codelistVersionNewVersion.getItemsFirstLevel().size());
+            {
+                CodeMetamac code = assertListCodesContainsCode(codelistVersionNewVersion.getItemsFirstLevel(), urnExpectedCode1);
+                assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-1", null, null);
+                assertEquals(Integer.valueOf(0), code.getOrder1());
+                assertEquals(Integer.valueOf(1), code.getOrder2());
+                assertEquals(null, code.getOrder3());
+                assertEquals(null, code.getOrder4());
+                assertEquals(null, code.getOrder5());
+                assertEquals(null, code.getOrder6());
+                assertEquals(null, code.getOrder7());
+                assertEquals(null, code.getOrder8());
+                assertEquals(null, code.getOrder9());
+                assertEquals(null, code.getOrder10());
+                assertEquals(null, code.getOrder11());
+                assertEquals(null, code.getOrder12());
+                assertEquals(null, code.getOrder13());
+                assertEquals(null, code.getOrder14());
+                assertEquals(null, code.getOrder15());
+                assertEquals(null, code.getOrder16());
+                assertEquals(null, code.getOrder17());
+                assertEquals(null, code.getOrder18());
+                assertEquals(null, code.getOrder19());
+                assertEquals(null, code.getOrder20());
+
+                assertEquals(Boolean.TRUE, code.getOpenness1());
+                assertEquals(Boolean.TRUE, code.getOpenness2());
+                assertEquals(null, code.getOpenness3());
+                assertEquals(null, code.getOpenness4());
+                assertEquals(null, code.getOpenness5());
+                assertEquals(null, code.getOpenness6());
+                assertEquals(null, code.getOpenness7());
+                assertEquals(null, code.getOpenness8());
+                assertEquals(null, code.getOpenness9());
+                assertEquals(null, code.getOpenness10());
+                assertEquals(null, code.getOpenness11());
+                assertEquals(null, code.getOpenness12());
+                assertEquals(null, code.getOpenness13());
+                assertEquals(null, code.getOpenness14());
+                assertEquals(null, code.getOpenness15());
+                assertEquals(null, code.getOpenness16());
+                assertEquals(null, code.getOpenness17());
+                assertEquals(null, code.getOpenness18());
+                assertEquals(null, code.getOpenness19());
+                assertEquals(null, code.getOpenness20());
+
+                assertEquals(0, code.getChildren().size());
+            }
+            {
+                CodeMetamac code = assertListCodesContainsCode(codelistVersionNewVersion.getItemsFirstLevel(), urnExpectedCode2);
+                assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-2", null, null);
+                assertEquals(Integer.valueOf(1), code.getOrder1());
+                assertEquals(Integer.valueOf(0), code.getOrder2());
+                assertEquals(Boolean.TRUE, code.getOpenness1());
+                assertEquals(Boolean.FALSE, code.getOpenness2());
+
+                assertEquals(2, code.getChildren().size());
+                {
+                    CodeMetamac codeChild = assertListCodesContainsCode(code.getChildren(), urnExpectedCode21);
+                    assertEquals(urnExpectedCode21, codeChild.getNameableArtefact().getUrn());
+                    assertEquals(Integer.valueOf(0), codeChild.getOrder1());
+                    assertEquals(Integer.valueOf(1), codeChild.getOrder2());
+                    assertEquals(Boolean.TRUE, codeChild.getOpenness1());
+                    assertEquals(Boolean.TRUE, codeChild.getOpenness2());
+
+                    assertEquals(1, codeChild.getChildren().size());
+                    {
+                        CodeMetamac codeChildChild = assertListCodesContainsCode(codeChild.getChildren(), urnExpectedCode211);
+                        assertEquals(urnExpectedCode211, codeChildChild.getNameableArtefact().getUrn());
+                        assertEquals(Integer.valueOf(0), codeChildChild.getOrder1());
+                        assertEquals(Integer.valueOf(0), codeChildChild.getOrder2());
+                        assertEquals(Boolean.TRUE, codeChildChild.getOpenness1());
+                        assertEquals(Boolean.FALSE, codeChildChild.getOpenness2());
+
+                        assertEquals(0, codeChildChild.getChildren().size());
+                    }
+                }
+                {
+                    CodeMetamac codeChild = assertListCodesContainsCode(code.getChildren(), urnExpectedCode22);
+                    assertEquals(Integer.valueOf(1), codeChild.getOrder1());
+                    assertEquals(Integer.valueOf(0), codeChild.getOrder2());
+                    assertEquals(Boolean.TRUE, codeChild.getOpenness1());
+                    assertEquals(Boolean.FALSE, codeChild.getOpenness2());
+
+                    assertEquals(0, codeChild.getChildren().size());
+                }
+            }
+
+            // Order visualisations
+            assertEquals(urnExpectedOrderVisualisation01, codelistVersionNewVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn());
+            assertEquals(2, codelistVersionNewVersion.getOrderVisualisations().size());
+            {
+                CodelistOrderVisualisation codelistOrderVisualisation = assertContainsCodelistOrderVisualisation(urnExpectedOrderVisualisation01, codelistVersionNewVersion.getOrderVisualisations());
+                assertEquals("ALPHABETICAL", codelistOrderVisualisation.getNameableArtefact().getCode());
+                assertEquals(Integer.valueOf(1), codelistOrderVisualisation.getColumnIndex());
+                assertEqualsInternationalString(codelistOrderVisualisation.getNameableArtefact().getName(), "es", "Alfabético", null, null);
+            }
+            {
+                CodelistOrderVisualisation codelistOrderVisualisation = assertContainsCodelistOrderVisualisation(urnExpectedOrderVisualisation02, codelistVersionNewVersion.getOrderVisualisations());
+                assertEquals("VISUALISATION02", codelistOrderVisualisation.getNameableArtefact().getCode());
+                assertEquals(Integer.valueOf(2), codelistOrderVisualisation.getColumnIndex());
+                assertEqualsInternationalString(codelistOrderVisualisation.getNameableArtefact().getName(), "es", "Visualización 02", null, null);
+            }
+
+            // Openness visualisations
+            assertEquals(urnExpectedOpennessVisualisation01, codelistVersionNewVersion.getDefaultOpennessVisualisation().getNameableArtefact().getUrn());
+            assertEquals(2, codelistVersionNewVersion.getOpennessVisualisations().size());
+            {
+                CodelistOpennessVisualisation codelistOpennessVisualisation = assertContainsCodelistOpennessVisualisation(urnExpectedOpennessVisualisation01,
+                        codelistVersionNewVersion.getOpennessVisualisations());
+                assertEquals("ALL_EXPANDED", codelistOpennessVisualisation.getNameableArtefact().getCode());
+                assertEquals(Integer.valueOf(1), codelistOpennessVisualisation.getColumnIndex());
+                assertEqualsInternationalString(codelistOpennessVisualisation.getNameableArtefact().getName(), "es", "Visualización de apertura Todos abiertos 3-1", null, null);
+            }
+            {
+                CodelistOpennessVisualisation codelistOpennessVisualisation = assertContainsCodelistOpennessVisualisation(urnExpectedOpennessVisualisation02,
+                        codelistVersionNewVersion.getOpennessVisualisations());
+                assertEquals("VISUALISATION02", codelistOpennessVisualisation.getNameableArtefact().getCode());
+                assertEquals(Integer.valueOf(2), codelistOpennessVisualisation.getColumnIndex());
+                assertEqualsInternationalString(codelistOpennessVisualisation.getNameableArtefact().getName(), "es", "Visualización 02 3-1", null, null);
+            }
+        }
+
+        // Copied version
+        {
+            codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+            assertEquals("01.000", codelistVersionToCopy.getMaintainableArtefact().getVersionLogic());
+            assertEquals(urn, codelistVersionToCopy.getMaintainableArtefact().getUrn());
+            assertEquals(null, codelistVersionToCopy.getMaintainableArtefact().getReplaceToVersion());
+            assertEquals(versionExpected, codelistVersionToCopy.getMaintainableArtefact().getReplacedByVersion());
+            assertFalse(codelistVersionToCopy.getMaintainableArtefact().getIsLastVersion());
+        }
+        // All versions
+        {
+            List<CodelistVersionMetamac> allVersions = codesService.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
+            assertEquals(2, allVersions.size());
+            assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
+            assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+        }
     }
 
     @Override
