@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.core.constants;
 
-public class SrmConfigurationConstants {
+import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
+
+public class SrmConfigurationConstants extends ConfigurationConstants {
 
     // PROPERTIES SPECIFIED IN THE DATA DIRECTORY
 

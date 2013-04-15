@@ -3,13 +3,11 @@ package org.siemac.metamac.srm.web.external;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
-import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
-import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 
 public class ApplicationStartup implements ServletContextListener {
 
@@ -34,42 +32,19 @@ public class ApplicationStartup implements ServletContextListener {
         LOG.info("**********************************************************");
 
         // Datasource
-        checkProperty(SrmConstants.DB_DRIVER_NAME);
-        checkProperty(SrmConstants.DB_URL);
-        checkProperty(SrmConstants.DB_USERNAME);
-        checkProperty(SrmConstants.DB_PASSWORD);
-        checkProperty(SrmConstants.DB_DIALECT);
+        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_DRIVER_NAME);
+        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_URL);
+        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_USERNAME);
+        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_PASSWORD);
+        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_DIALECT);
 
         // Api
-        checkProperty(ConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
-        checkProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
+        configurationService.checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
+        configurationService.checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
 
         LOG.info("**********************************************************");
         LOG.info("Application configuration checked");
         LOG.info("**********************************************************");
-    }
-
-    private void checkProperty(String propertyKey) {
-        checkProperty(propertyKey, true);
-    }
-
-    private void checkProperty(String propertyKey, boolean required) {
-        String propertyValue = configurationService.getProperty(propertyKey);
-
-        // Check filled
-        if (required && StringUtils.isBlank(propertyValue)) {
-            String errorMessage = "Property [" + propertyKey + "] is required and it is not filled. Aborting application startup";
-            LOG.error(errorMessage);
-            throw new IllegalArgumentException(errorMessage);
-        }
-
-        // Check correctly filled
-        if (!StringUtils.isBlank(propertyValue) && propertyValue.contains(ConfigurationConstants.FILL_ME_WITH_VALUE)) {
-            String errorMessage = "Property [" + propertyKey + "] is not correctly filled. Aborting application startup";
-            LOG.error(errorMessage);
-            throw new IllegalArgumentException(errorMessage);
-        }
-        LOG.info("Property [" + propertyKey + "] filled"); // NOTE: Client requirement: Do not log properties values
     }
 
     @Override
