@@ -26,7 +26,9 @@ public class CreateCategorySchemeTemporalVersionActionHandler extends SecurityAc
     @Override
     public CreateCategorySchemeTemporalVersionResult executeSecurityAction(CreateCategorySchemeTemporalVersionAction action) throws ActionException {
         try {
-            CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.createTemporalVersionCategoryScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            CategorySchemeMetamacDto categorySchemeMetamacDto = null;
+            // FIXME
+            srmCoreServiceFacade.createTemporalVersionCategoryScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             return new CreateCategorySchemeTemporalVersionResult(categorySchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

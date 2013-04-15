@@ -26,7 +26,9 @@ public class VersionConceptSchemeActionHandler extends SecurityActionHandler<Ver
     @Override
     public VersionConceptSchemeResult executeSecurityAction(VersionConceptSchemeAction action) throws ActionException {
         try {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.versioningConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
+            ConceptSchemeMetamacDto conceptSchemeMetamacDto = null;
+            // FIXME
+            srmCoreServiceFacade.versioningConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
             return new VersionConceptSchemeResult(conceptSchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

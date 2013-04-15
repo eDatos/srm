@@ -26,7 +26,9 @@ public class CreateConceptSchemeTemporalVersionActionHandler extends SecurityAct
     @Override
     public CreateConceptSchemeTemporalVersionResult executeSecurityAction(CreateConceptSchemeTemporalVersionAction action) throws ActionException {
         try {
-            ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.createTemporalVersionConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            ConceptSchemeMetamacDto conceptSchemeMetamacDto = null;
+            // FIXME
+            srmCoreServiceFacade.createTemporalVersionConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             return new CreateConceptSchemeTemporalVersionResult(conceptSchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

@@ -26,12 +26,12 @@ public class VersionOrganisationSchemeActionHandler extends SecurityActionHandle
     @Override
     public VersionOrganisationSchemeResult executeSecurityAction(VersionOrganisationSchemeAction action) throws ActionException {
         try {
-            OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.versioningOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(),
-                    action.getVersionType());
+            OrganisationSchemeMetamacDto organisationSchemeMetamacDto = null;
+            // FIXME
+            srmCoreServiceFacade.versioningOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
             return new VersionOrganisationSchemeResult(organisationSchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

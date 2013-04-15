@@ -26,7 +26,9 @@ public class CreateOrganisationSchemeTemporalVersionActionHandler extends Securi
     @Override
     public CreateOrganisationSchemeTemporalVersionResult executeSecurityAction(CreateOrganisationSchemeTemporalVersionAction action) throws ActionException {
         try {
-            OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.createTemporalVersionOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            OrganisationSchemeMetamacDto organisationSchemeMetamacDto = null;
+            // FIXME
+            srmCoreServiceFacade.createTemporalVersionOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             return new CreateOrganisationSchemeTemporalVersionResult(organisationSchemeMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

@@ -26,7 +26,9 @@ public class CreateCodelistTemporalVersionActionHandler extends SecurityActionHa
     @Override
     public CreateCodelistTemporalVersionResult executeSecurityAction(CreateCodelistTemporalVersionAction action) throws ActionException {
         try {
-            CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.createTemporalVersionCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            CodelistMetamacDto codelistMetamacDto = null;
+            // FIXME
+            srmCoreServiceFacade.createTemporalVersionCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             return new CreateCodelistTemporalVersionResult(codelistMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

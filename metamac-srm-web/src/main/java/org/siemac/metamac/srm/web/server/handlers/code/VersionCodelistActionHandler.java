@@ -26,8 +26,9 @@ public class VersionCodelistActionHandler extends SecurityActionHandler<VersionC
     @Override
     public VersionCodelistResult executeSecurityAction(VersionCodelistAction action) throws ActionException {
         try {
-            CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.versioningCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionCodes(),
-                    action.getVersionType());
+            CodelistMetamacDto codelistMetamacDto = null;
+            // FIXME
+            srmCoreServiceFacade.versioningCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionCodes(), action.getVersionType());
             return new VersionCodelistResult(codelistMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
