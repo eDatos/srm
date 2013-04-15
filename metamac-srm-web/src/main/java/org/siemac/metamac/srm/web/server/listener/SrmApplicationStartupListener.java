@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.server.listener;
 
 import javax.servlet.ServletContextEvent;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -13,8 +14,10 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -67,20 +70,18 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
 
         checkRequiredProperty(ConfigurationConstants.METAMAC_EDITION_LANGUAGES);
         checkRequiredProperty(ConfigurationConstants.METAMAC_NAVBAR_URL);
-        checkRequiredProperty(ConfigurationConstants.METAMAC_ORGANISATION);
-        checkOrganisationUrnProperty();
+        checkRequiredOrganisationUrn(ConfigurationConstants.METAMAC_ORGANISATION_URN);
 
         // SRM properties
 
         checkRequiredProperty(SrmConfigurationConstants.USER_GUIDE_FILE_NAME);
 
-        checkOptionalProperty(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN);
-        checkOptionalProperty(SrmConfigurationConstants.DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN);
-        checkOptionalProperty(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_DEFAULT_CONCEPT_ID_URN);
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN);
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN);
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_DEFAULT_CONCEPT_ID_URN);
     }
 
-    private void checkOrganisationUrnProperty() {
-        String propertyKey = ConfigurationConstants.METAMAC_ORGANISATION_URN;
+    private void checkRequiredOrganisationUrn(String propertyKey) {
         checkRequiredProperty(propertyKey);
 
         String organisationUrn = configurationService.getProperty(propertyKey);
@@ -101,6 +102,32 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
             }
         } catch (MetamacException e) {
             abortApplicationStartup("Error checking the property [" + propertyKey + "]");
+        }
+    }
+
+    private void checkOptionalConceptUrn(String propertyKey) {
+        checkOptionalProperty(propertyKey);
+
+        String conceptUrn = configurationService.getProperty(propertyKey);
+        if (StringUtils.isNotBlank(conceptUrn)) {
+            try {
+                MetamacCriteria criteria = new MetamacCriteria();
+                criteria.setPaginator(new MetamacCriteriaPaginator());
+                criteria.getPaginator().setFirstResult(0);
+                criteria.getPaginator().setMaximumResultSize(SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                criteria.getPaginator().setCountTotalResults(true);
+                criteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), conceptUrn, OperationType.EQ));
+
+                MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsByCondition(getStartupServiceContext(), criteria);
+                if (result.getResults().isEmpty()) {
+                    String errorMessage = "Property [" + propertyKey + "] is not properly filled. The concept URN specified is not correct. Aborting application startup...";
+                    abortApplicationStartup(errorMessage);
+                } else {
+                    LOG.info("Property [" + propertyKey + "] filled");
+                }
+            } catch (MetamacException e) {
+                abortApplicationStartup("Error checking the property [" + propertyKey + "]");
+            }
         }
     }
 
