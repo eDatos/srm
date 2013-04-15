@@ -6893,27 +6893,31 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("it - text sample", codeTemporal.getShortName().getLocalisedLabel("fr"));
             }
         }
-        //
-        // {
-        // // save to force incorrect metadata
-        // CodelistVersionMetamac codelistSchemeForce = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_10_V3);
-        // codelistSchemeForce.getMaintainableArtefact().setFinalLogic(Boolean.TRUE);
-        // codelistSchemeForce.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        // itemSchemeRepository.save(codelistSchemeForce);
-        //
-        // String urn = CODELIST_10_V1;
-        // CodelistVersionMetamac codelistVersionTemporal = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
-        //
-        // assertTrue(codelistVersionTemporal.getMaintainableArtefact().getIsLastVersion());
-        //
-        // // Merge
-        // // save to force incorrect metadata
-        // codelistVersionTemporal.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
-        // itemSchemeRepository.save(codelistVersionTemporal);
-        // CodelistVersionMetamac codelistVersionMetamac = codesService.mergeTemporalVersion(getServiceContextAdministrador(), codelistVersionTemporal);
-        //
-        // assertFalse(codelistVersionMetamac.getMaintainableArtefact().getIsLastVersion());
-        // }
+
+        {
+            // save to force incorrect metadata
+            CodelistVersionMetamac codelistSchemeForce = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_10_V3);
+            codelistSchemeForce.getMaintainableArtefact().setFinalLogic(Boolean.TRUE);
+            codelistSchemeForce.getMaintainableArtefact().setFinalLogicClient(Boolean.TRUE);
+            codelistSchemeForce.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+            itemSchemeRepository.save(codelistSchemeForce);
+
+            String urn = CODELIST_10_V1;
+            VersioningResult createTemporalCodelistResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
+            entityManager.clear();
+            CodelistVersionMetamac codelistVersionTemporal = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), createTemporalCodelistResult.getUrnResult());
+
+            assertTrue(codelistVersionTemporal.getMaintainableArtefact().getIsLastVersion());
+
+            // Merge
+            // save to force incorrect metadata
+            codelistVersionTemporal.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
+            itemSchemeRepository.save(codelistVersionTemporal);
+            String codelistVersionMetamacUrn = codesService.mergeTemporalVersion(getServiceContextAdministrador(), codelistVersionTemporal);
+            entityManager.clear();
+            CodelistVersionMetamac codelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionMetamacUrn);
+            assertFalse(codelistVersionMetamac.getMaintainableArtefact().getIsLastVersion());
+        }
     }
 
     @Override
