@@ -70,6 +70,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
 
         checkRequiredProperty(ConfigurationConstants.METAMAC_EDITION_LANGUAGES);
         checkRequiredProperty(ConfigurationConstants.METAMAC_NAVBAR_URL);
+        checkRequiredProperty(ConfigurationConstants.METAMAC_ORGANISATION);
         checkRequiredOrganisationUrn(ConfigurationConstants.METAMAC_ORGANISATION_URN);
 
         // SRM properties
