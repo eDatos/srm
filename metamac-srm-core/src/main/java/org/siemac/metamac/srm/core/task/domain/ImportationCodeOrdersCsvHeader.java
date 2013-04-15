@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.importation.domain;
+package org.siemac.metamac.srm.core.task.domain;
 
 import java.util.HashMap;
 import java.util.Map;

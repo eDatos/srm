@@ -11,7 +11,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
-import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
+import org.siemac.metamac.srm.core.task.utils.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;

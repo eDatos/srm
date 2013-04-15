@@ -57,7 +57,7 @@
                         (execution(public * com.arte.statistic.sdmx.srm..service.*Facade.*(..)) and not (execution(public * com.arte.statistic.sdmx.srm..service.*Facade.retrieve*(..)) or execution(public * com.arte.statistic.sdmx.srm..service.*Facade.find*(..))))" />
 
 		<!-- Pointcut for requires new transaction -->
-        <aop:pointcut id="serviceImportPointCut" expression="execution(public * com.arte.statistic.sdmx.srm..serviceapi.*Service.import*(..)) and not execution(public * com.arte.statistic.sdmx.srm..serviceapi.ImportationService.*(..))" />
+        <aop:pointcut id="serviceImportPointCut" expression="execution(public * com.arte.statistic.sdmx.srm..serviceapi.*Service.import*(..)) and not execution(public * com.arte.statistic.sdmx.srm..serviceapi.TasksService.*(..))" />
         
         <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="txAdviceCore" order="1" />
         <aop:advisor pointcut-ref="serviceFacadePointCut" advice-ref="serviceContextStoreAdvice" order="2" />

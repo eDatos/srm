@@ -40,12 +40,12 @@ import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.srm.core.importation.domain.Task;
-import com.arte.statistic.sdmx.srm.core.importation.mapper.ImportationDo2DtoMapper;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
+import com.arte.statistic.sdmx.srm.core.task.domain.Task;
+import com.arte.statistic.sdmx.srm.core.task.mapper.TasksDo2DtoMapper;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.importation.TaskDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.task.TaskDto;
 
 @Component
 public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCriteria2MetamacCriteriaMapper {
@@ -54,7 +54,7 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     private DataStructureDefinitionDo2DtoMapper dataStructureDefinitionDo2DtoMapper;
 
     @Autowired
-    private ImportationDo2DtoMapper             importationDo2DtoMapper;
+    private TasksDo2DtoMapper                   tasksDo2DtoMapper;
 
     @Autowired
     private ConceptsDo2DtoMapper                conceptsDo2DtoMapper;
@@ -345,7 +345,7 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
         if (source.getValues() != null) {
             target.setResults(new ArrayList<TaskDto>(source.getValues().size()));
             for (Task task : source.getValues()) {
-                target.getResults().add(importationDo2DtoMapper.taskToDto(task));
+                target.getResults().add(tasksDo2DtoMapper.taskToDto(task));
             }
         }
         return target;

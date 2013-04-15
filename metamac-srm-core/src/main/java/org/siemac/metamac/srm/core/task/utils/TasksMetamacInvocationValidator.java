@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.importation.serviceimpl.utils;
+package org.siemac.metamac.srm.core.task.utils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseInvocationValidator;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 
-public class ImportationMetamacInvocationValidator extends BaseInvocationValidator {
+public class TasksMetamacInvocationValidator extends BaseInvocationValidator {
 
     public static void checkImportCodesCsvInBackground(String codelistUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {

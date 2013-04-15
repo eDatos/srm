@@ -30,7 +30,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
-import com.arte.statistic.sdmx.srm.core.importation.serviceapi.utils.ImportationsDtoMocks;
+import com.arte.statistic.sdmx.srm.core.task.serviceapi.utils.TaskDtoMocks;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -77,7 +77,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), ImportationsDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), TaskDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -107,8 +107,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(),
-                            ImportationsDtoMocks.createContentInput(new File(SdmxResources.CS_DEMO_1_0_FINAL_NO_PARTIAL)));
+                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), TaskDtoMocks.createContentInput(new File(SdmxResources.CS_DEMO_1_0_FINAL_NO_PARTIAL)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {

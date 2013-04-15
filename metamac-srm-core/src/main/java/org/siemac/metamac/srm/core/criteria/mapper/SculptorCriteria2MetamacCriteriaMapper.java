@@ -30,11 +30,11 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
-import com.arte.statistic.sdmx.srm.core.importation.domain.Task;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
+import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.importation.TaskDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.task.TaskDto;
 
 public interface SculptorCriteria2MetamacCriteriaMapper {
 

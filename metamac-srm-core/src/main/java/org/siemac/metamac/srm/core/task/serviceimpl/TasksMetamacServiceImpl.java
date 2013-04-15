@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.importation.serviceimpl;
+package org.siemac.metamac.srm.core.task.serviceimpl;
 
 import static org.quartz.DateBuilder.futureDate;
 import static org.quartz.JobBuilder.newJob;
@@ -27,41 +27,41 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
-import org.siemac.metamac.srm.core.importation.serviceimpl.utils.ImportationMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.task.utils.TasksMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.importation.domain.Task;
-import com.arte.statistic.sdmx.srm.core.importation.serviceapi.ImportationService;
-import com.arte.statistic.sdmx.srm.core.importation.serviceimpl.utils.ImportationJaxb2DoCallback;
+import com.arte.statistic.sdmx.srm.core.task.domain.Task;
+import com.arte.statistic.sdmx.srm.core.task.serviceapi.TasksService;
+import com.arte.statistic.sdmx.srm.core.task.serviceimpl.utils.ImportationJaxb2DoCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TaskStatusTypeEnum;
 
 /**
  * Implementation of ImportationMetamacService.
  */
-@Service("importationMetamacService")
-public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImplBase {
+@Service("tasksMetamacService")
+public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
 
     @Autowired
-    private ImportationService         importationService;
+    private TasksService               tasksService;
 
     @Autowired
     @Qualifier("importationMetamacJaxb2DoCallback")
     private ImportationJaxb2DoCallback importationJaxb2DoCallback;
 
-    public ImportationMetamacServiceImpl() {
+    public TasksMetamacServiceImpl() {
     }
 
     @Override
     public String importSDMXStructureInBackground(ServiceContext ctx, InputStream inputMessage, String fileName) throws MetamacException {
-        return importationService.importSDMXStructure(ctx, inputMessage, fileName, importationJaxb2DoCallback);
+        return tasksService.importSDMXStructure(ctx, inputMessage, fileName, importationJaxb2DoCallback);
     }
 
     @Override
     public String importCodesCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Validation
-        ImportationMetamacInvocationValidator.checkImportCodesCsvInBackground(codelistUrn, csvStream, updateAlreadyExisting, null);
+        TasksMetamacInvocationValidator.checkImportCodesCsvInBackground(codelistUrn, csvStream, updateAlreadyExisting, null);
 
         // Plan job
         JobDataMap jobDataAdditional = new JobDataMap();
@@ -74,7 +74,7 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
     @Override
     public String importCodeOrdersCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName) throws MetamacException {
         // Validation
-        ImportationMetamacInvocationValidator.checkImportCodeOrdersCsvInBackground(codelistUrn, csvStream, null);
+        TasksMetamacInvocationValidator.checkImportCodeOrdersCsvInBackground(codelistUrn, csvStream, null);
 
         // Plan job
         JobDataMap jobDataAdditional = new JobDataMap();
@@ -87,7 +87,7 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
     public String importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
 
         // Validation
-        ImportationMetamacInvocationValidator.checkImportVariableElementsCsvInBackground(variableUrn, csvStream, updateAlreadyExisting, null);
+        TasksMetamacInvocationValidator.checkImportVariableElementsCsvInBackground(variableUrn, csvStream, updateAlreadyExisting, null);
 
         // Plan job
         JobDataMap jobDataAdditional = new JobDataMap();
@@ -112,7 +112,7 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
 
             // Validation: There shouldn't be an import processing
             if (sched.getCurrentlyExecutingJobs().size() != 0) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
             }
 
             // Save InputStream (TempFile)
@@ -139,28 +139,28 @@ public class ImportationMetamacServiceImpl extends ImportationMetamacServiceImpl
 
     @Override
     public Task retrieveTaskByJob(ServiceContext ctx, String job) throws MetamacException {
-        return importationService.retrieveTaskByJob(ctx, job);
+        return tasksService.retrieveTaskByJob(ctx, job);
     }
 
     @Override
     public void markTaskAsFinished(ServiceContext ctx, String job, List<MetamacExceptionItem> informationItems) throws MetamacException {
-        importationService.markTaskAsFinished(ctx, job, informationItems);
+        tasksService.markTaskAsFinished(ctx, job, informationItems);
     }
 
     @Override
     public void markTaskAsFailed(ServiceContext ctx, String job, Exception exception) throws MetamacException {
-        importationService.markTaskAsFailed(ctx, job, exception);
+        tasksService.markTaskAsFailed(ctx, job, exception);
     }
 
     @Override
     public PagedResult<Task> findTasksByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
-        return importationService.findTasksByCondition(ctx, conditions, pagingParameter);
+        return tasksService.findTasksByCondition(ctx, conditions, pagingParameter);
     }
 
     private void createTaskInProgress(ServiceContext ctx, String jobKey, String fileName) throws MetamacException {
         Task importData = new Task(jobKey);
         importData.setFileName(fileName);
         importData.setStatus(TaskStatusTypeEnum.IN_PROGRESS);
-        importationService.createTask(ctx, importData);
+        tasksService.createTask(ctx, importData);
     }
 }

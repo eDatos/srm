@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.importation.serviceimpl.utils;
+package org.siemac.metamac.srm.core.task.utils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,10 +13,10 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
-import org.siemac.metamac.srm.core.importation.domain.ImportationCodeOrdersCsvHeader;
-import org.siemac.metamac.srm.core.importation.domain.ImportationCodesCsvHeader;
-import org.siemac.metamac.srm.core.importation.domain.ImportationVariableElementsCsvHeader;
-import org.siemac.metamac.srm.core.importation.domain.InternationalStringCsv;
+import org.siemac.metamac.srm.core.task.domain.ImportationCodeOrdersCsvHeader;
+import org.siemac.metamac.srm.core.task.domain.ImportationCodesCsvHeader;
+import org.siemac.metamac.srm.core.task.domain.ImportationVariableElementsCsvHeader;
+import org.siemac.metamac.srm.core.task.domain.InternationalStringCsv;
 
 public class ImportationCsvUtils {
 

@@ -1,6 +1,6 @@
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-trans.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
-import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-importations.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-tasks.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-common.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
@@ -13,7 +13,7 @@ import "classpath:/btdesign/metamac-core-common-enum.btdesign"
 
 import "classpath:/btdesign/statistic-sdmx-core-structure.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
-import "classpath:/btdesign/statistic-sdmx-core-importation.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-tasks.btdesign"
 
 import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-organisations.btdesign"
@@ -30,7 +30,7 @@ import "classpath:/btdesign/metamac-srm-core-categories-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
 import "classpath:/btdesign/metamac-srm-core-codes-dtos.btdesign"
 
-import "classpath:/btdesign/metamac-srm-core-importation.btdesign"
+import "classpath:/btdesign/metamac-srm-core-tasks.btdesign"
 
 Application SrmFacadeCore {
     basePackage=unused
@@ -44,7 +44,7 @@ Application SrmFacadeCore {
        		> @OrganisationsMetamacService
        		> @CategoriesMetamacService
        		> @CodesMetamacService
-       		> @ImportationMetamacService
+       		> @TasksMetamacService
 
 			"          
 			 @param ctx  
@@ -631,9 +631,9 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@TaskDto> findTasksByCondition(MetamacCriteria criteria) throws MetamacException;
     	}
 
-		Service ImportationMetamacServiceJobFacade {
+		Service TasksMetamacServiceJobFacade {
        		> @CodesMetamacService
-       		> @ImportationMetamacService
+       		> @TasksMetamacService
 
     		"Imports codes in csv format"
     		importCodesCsv(String codelistUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;

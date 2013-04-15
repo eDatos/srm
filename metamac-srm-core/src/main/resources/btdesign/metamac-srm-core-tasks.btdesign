@@ -1,15 +1,16 @@
-import "classpath:/btdesign/statistic-sdmx-core-importation.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-tasks.btdesign"
 
-Application ImportationMetamac {
+Application TaskMetamac {
 	basePackage=unused
 
-	Module domain_importation_metamac {
-		basePackage=org.siemac.metamac.srm.core.importation
+	Module domain_task_metamac {
+		basePackage=org.siemac.metamac.srm.core.task
 
 		// ----------------------------------------------------------------
 		// 							SERVICES
 		// ----------------------------------------------------------------  
-		Service ImportationMetamacService {
+		Service TasksMetamacService {
+			// IMPORTATION
 			"Imports file in sdmx format"
 			String importSDMXStructureInBackground(InputStream inputMessage, String fileName) throws MetamacException;
 			"Prepares importation of codes in csv format"
@@ -19,6 +20,7 @@ Application ImportationMetamac {
 			"Prepares importation of variable elements in csv format"
     		String importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 
+			// TASKS
     		"Retrieves task"
     		@Task retrieveTaskByJob(String job) throws MetamacException;
     		"Marks job as finished"

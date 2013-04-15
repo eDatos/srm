@@ -1,6 +1,6 @@
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-trans.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-core.btdesign"
-import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-importations.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-tasks.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-concepts.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-concept.btdesign"
@@ -26,7 +26,7 @@ import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
 import "classpath:/btdesign/metamac-srm-core-codes-dtos.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds.btdesign"
 import "classpath:/btdesign/metamac-srm-core-dsds-dtos.btdesign"
-import "classpath:/btdesign/metamac-srm-core-importation.btdesign"
+import "classpath:/btdesign/metamac-srm-core-tasks.btdesign"
 
 Application SrmCore {
     basePackage=unused

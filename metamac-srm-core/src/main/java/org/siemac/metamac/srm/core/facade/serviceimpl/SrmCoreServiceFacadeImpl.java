@@ -87,21 +87,21 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
-import com.arte.statistic.sdmx.srm.core.importation.domain.Task;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
+import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.importation.ContentInputDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.importation.TaskDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.task.ContentInputDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.task.TaskDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
@@ -520,7 +520,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ImportSecurityUtils.canImportStructure(ctx);
 
         // Import
-        getImportationMetamacService().importSDMXStructureInBackground(ctx, contentDto.getInput(), contentDto.getName());
+        getTasksMetamacService().importSDMXStructureInBackground(ctx, contentDto.getInput(), contentDto.getName());
     }
 
     @Override
@@ -532,7 +532,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<Task> result = getImportationMetamacService().findTasksByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<Task> result = getTasksMetamacService().findTasksByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<TaskDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultTask(result, sculptorCriteria.getPageSize());
@@ -1115,7 +1115,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Import in background
-        getImportationMetamacService().importCodesCsvInBackground(ctx, codelistUrn, csvStream, fileName, updateAlreadyExisting);
+        getTasksMetamacService().importCodesCsvInBackground(ctx, codelistUrn, csvStream, fileName, updateAlreadyExisting);
     }
 
     @Override
@@ -1125,7 +1125,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Import in background
-        getImportationMetamacService().importCodeOrdersCsvInBackground(ctx, codelistUrn, csvStream, fileName);
+        getTasksMetamacService().importCodeOrdersCsvInBackground(ctx, codelistUrn, csvStream, fileName);
     }
 
     @Override
@@ -1690,7 +1690,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         CodesSecurityUtils.canCrudVariableElement(ctx);
 
         // Import in background
-        getImportationMetamacService().importVariableElementsCsvInBackground(ctx, variableUrn, csvStream, fileName, updateAlreadyExisting);
+        getTasksMetamacService().importVariableElementsCsvInBackground(ctx, variableUrn, csvStream, fileName, updateAlreadyExisting);
     }
 
     @Override

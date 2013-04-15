@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.importation;
+package org.siemac.metamac.srm.core.task.utils;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;

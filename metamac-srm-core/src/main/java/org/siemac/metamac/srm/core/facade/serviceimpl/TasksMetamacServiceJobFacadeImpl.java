@@ -10,12 +10,12 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of ImportationMetamacServiceJobFacade.
+ * Implementation of TasksMetamacServiceJobFacade.
  */
-@Service("importationMetamacServiceJobFacade")
-public class ImportationMetamacServiceJobFacadeImpl extends ImportationMetamacServiceJobFacadeImplBase {
+@Service("tasksMetamacServiceJobFacade")
+public class TasksMetamacServiceJobFacadeImpl extends TasksMetamacServiceJobFacadeImplBase {
 
-    public ImportationMetamacServiceJobFacadeImpl() {
+    public TasksMetamacServiceJobFacadeImpl() {
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ImportationMetamacServiceJobFacadeImpl extends ImportationMetamacSe
         getCodesMetamacService().importCodesCsv(ctx, codelistUrn, csvStream, charset, fileName, updateAlreadyExisting, informationItems);
         // Mark job as completed
         // TODO sistema de avisos
-        getImportationMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ImportationMetamacServiceJobFacadeImpl extends ImportationMetamacSe
         getCodesMetamacService().importCodeOrdersCsv(ctx, codelistUrn, csvStream, charset, fileName);
         // Mark job as completed
         // TODO sistema de avisos
-        getImportationMetamacService().markTaskAsFinished(ctx, jobKey, null);
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
 
     }
 
@@ -44,12 +44,12 @@ public class ImportationMetamacServiceJobFacadeImpl extends ImportationMetamacSe
         List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         getCodesMetamacService().importVariableElementsCsv(ctx, variableUrn, csvStream, charset, fileName, updateAlreadyExisting, informationItems);
         // Mark job as completed
-        getImportationMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
     }
 
     @Override
     public void markTaskAsFailed(ServiceContext ctx, String job, Exception exception) throws MetamacException {
-        getImportationMetamacService().markTaskAsFailed(ctx, job, exception);
+        getTasksMetamacService().markTaskAsFailed(ctx, job, exception);
     }
 
 }

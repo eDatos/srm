@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.importation;
+package org.siemac.metamac.srm.core.task.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsJaxb2DoCallback;
-import com.arte.statistic.sdmx.srm.core.importation.serviceimpl.utils.ImportationJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsJaxb2DoCallback;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureJaxb2DoCallback;
+import com.arte.statistic.sdmx.srm.core.task.serviceimpl.utils.ImportationJaxb2DoCallback;
 
 @Component(ImportationJaxb2DoCallbackImpl.BEAN_ID)
 public class ImportationJaxb2DoCallbackImpl implements ImportationJaxb2DoCallback {

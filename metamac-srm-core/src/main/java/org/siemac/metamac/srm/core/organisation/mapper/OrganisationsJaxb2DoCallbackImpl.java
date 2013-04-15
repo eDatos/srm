@@ -14,10 +14,10 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationSchemesType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitSchemeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.importation.ImportationMetamacCommonValidations;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
+import org.siemac.metamac.srm.core.task.utils.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
