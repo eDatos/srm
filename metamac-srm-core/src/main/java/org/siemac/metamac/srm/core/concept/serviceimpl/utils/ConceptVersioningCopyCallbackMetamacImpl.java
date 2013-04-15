@@ -1,9 +1,13 @@
 package org.siemac.metamac.srm.core.concept.serviceimpl.utils;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
@@ -16,6 +20,9 @@ import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsVersio
  */
 @Component("conceptVersioningCopyCallbackMetamac")
 public class ConceptVersioningCopyCallbackMetamacImpl implements ConceptVersioningCopyCallback {
+
+    @Autowired
+    private ConceptsMetamacService conceptsMetamacService;
 
     @Override
     public ConceptSchemeVersion createConceptSchemeVersion() {
@@ -30,6 +37,13 @@ public class ConceptVersioningCopyCallbackMetamacImpl implements ConceptVersioni
         target.setRelatedOperation(BaseVersioningCopyUtils.copy(source.getRelatedOperation()));
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         target.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+    }
+
+    @Override
+    public void createConceptSchemeRelations(ServiceContext ctx, ConceptSchemeVersion sourceSdmx, ConceptSchemeVersion targetSdmx) throws MetamacException {
+        ConceptSchemeVersionMetamac source = (ConceptSchemeVersionMetamac) sourceSdmx;
+        ConceptSchemeVersionMetamac target = (ConceptSchemeVersionMetamac) targetSdmx;
+        conceptsMetamacService.versioningRelatedConcepts(ctx, source, target);
     }
 
     @Override
@@ -57,8 +71,7 @@ public class ConceptVersioningCopyCallbackMetamacImpl implements ConceptVersioni
         for (ConceptMetamac conceptRole : source.getRoleConcepts()) {
             target.addRoleConcept(conceptRole);
         }
-        // Do not copy related concepts in this point, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept. They will be copied in
-        // service
-
+        // Do not copy related concepts in this point, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept.
+        // They will be copied in createConceptSchemeRelations
     }
 }

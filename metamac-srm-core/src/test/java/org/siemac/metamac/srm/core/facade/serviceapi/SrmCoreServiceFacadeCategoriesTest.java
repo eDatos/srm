@@ -45,6 +45,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -528,12 +529,12 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
         // Versioning
         String urn = CATEGORY_SCHEME_3_V1;
-        CategorySchemeMetamacDto categorySchemeDtoNewVersion = srmCoreServiceFacade.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        VersioningResult versioningResult = srmCoreServiceFacade.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
 
         // Validate
-        categorySchemeDtoNewVersion = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeDtoNewVersion.getUrn());
-        assertEquals("02.000", categorySchemeDtoNewVersion.getVersionLogic());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME03(02.000)", categorySchemeDtoNewVersion.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME03(02.000)", versioningResult.getUrnResult());
+        assertEquals(null, versioningResult.getIsPlannedInBackground());
+        assertEquals(null, versioningResult.getJobKey());
     }
 
     @Test

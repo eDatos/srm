@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.core.task.utils.ImportationMetamacCommonValidation
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
@@ -255,7 +256,8 @@ public class OrganisationsJaxb2DoCallbackImpl extends ImportationMetamacCommonVa
 
         // Duplicate the previous version and mark the new version as temporal.
         if (!isEqualArtifact) {
-            return organisationsMetamacService.createTemporalOrganisationScheme(ctx, previous.getMaintainableArtefact().getUrn());
+            VersioningResult versioningResult = organisationsMetamacService.createTemporalOrganisationScheme(ctx, previous.getMaintainableArtefact().getUrn());
+            return organisationsMetamacService.retrieveOrganisationSchemeByUrn(ctx, versioningResult.getUrnResult());
         }
         return previous;
     }

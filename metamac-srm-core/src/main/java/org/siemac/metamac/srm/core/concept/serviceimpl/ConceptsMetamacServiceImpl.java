@@ -48,6 +48,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
@@ -233,17 +234,17 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public ConceptSchemeVersionMetamac versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public VersioningResult versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         return createVersionOfConceptScheme(ctx, urnToCopy, versionType, false);
     }
 
     @Override
-    public ConceptSchemeVersionMetamac createTemporalVersionConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public VersioningResult createTemporalVersionConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfConceptScheme(ctx, urnToCopy, null, true);
     }
 
     @Override
-    public ConceptSchemeVersionMetamac createVersionFromTemporalConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+    public VersioningResult createVersionFromTemporalConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
         ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = retrieveConceptSchemeByUrn(ctx, urnToCopy);
 
@@ -265,7 +266,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Set null replacedBy in the original entity
         conceptSchemeVersion.getMaintainableArtefact().setReplacedByVersion(null);
 
-        return conceptSchemeVersionTemporal;
+        VersioningResult versioningResult = new VersioningResult();
+        versioningResult.setUrnResult(conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
+        return versioningResult;
     }
 
     @Override
@@ -805,20 +808,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
     }
 
-    private ConceptSchemeVersionMetamac createVersionOfConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private VersioningResult createVersionOfConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
 
         // Validation
         checkConceptSchemeToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = retrieveConceptSchemeByUrn(ctx, urnToCopy);
-        ConceptSchemeVersionMetamac conceptSchemeNewVersion = (ConceptSchemeVersionMetamac) conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, isTemporal,
-                conceptVersioningCopyCallback);
-
-        // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
-        versioningRelatedConcepts(ctx, conceptSchemeVersionToCopy, conceptSchemeNewVersion);
-
-        return conceptSchemeNewVersion;
+        return conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, isTemporal, conceptVersioningCopyCallback);
     }
 
     private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) {

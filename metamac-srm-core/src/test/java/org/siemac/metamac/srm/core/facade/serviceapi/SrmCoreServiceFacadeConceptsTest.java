@@ -54,6 +54,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
@@ -942,9 +943,14 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(02.000)";
 
         ConceptSchemeMetamacDto conceptSchemeDtoToCopy = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
-        ConceptSchemeMetamacDto conceptSchemeDtoNewVersion = srmCoreServiceFacade.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        VersioningResult versioningResult = srmCoreServiceFacade.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
 
+        assertEquals(urnExpected, versioningResult.getUrnResult());
+        assertEquals(null, versioningResult.getIsPlannedInBackground());
+        assertEquals(null, versioningResult.getJobKey());
+        
         // Validate response
+        ConceptSchemeMetamacDto conceptSchemeDtoNewVersion =  srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
         {
             assertEquals(versionExpected, conceptSchemeDtoNewVersion.getVersionLogic());
             assertEquals(urnExpected, conceptSchemeDtoNewVersion.getUrn());

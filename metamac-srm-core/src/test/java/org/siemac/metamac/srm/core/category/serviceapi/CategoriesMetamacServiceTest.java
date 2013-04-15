@@ -12,6 +12,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -52,6 +55,7 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryProperties;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesDoMocks;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -68,6 +72,9 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeRepository;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager               entityManager;
 
     @Override
     @Test
@@ -1022,9 +1029,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         String urnExpectedCategory22 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME03(02.000).CATEGORY02.CATEGORY0202";
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-        CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        VersioningResult versioningResult = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
 
         // Validate response
+        entityManager.clear();
+        categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
+
         {
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
@@ -1109,9 +1120,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeVersionLast.getLifeCycleMetadata().getProcStatus());
         assertTrue(categorySchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
 
-        CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
+        VersioningResult versioningResult = categoriesService.versioningCategoryScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
 
         // Validate response
+        entityManager.clear();
+        categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urnToCopy);
+        CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
+
         {
             assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
@@ -1205,9 +1220,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         String urnExpectedCategory22 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME03(" + versionExpected + ").CATEGORY02.CATEGORY0202";
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
-        CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
+        VersioningResult versioningResult = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
 
         // Validate response
+        entityManager.clear();
+        categorySchemeVersionToCopy = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+        CategorySchemeVersionMetamac categorySchemeVersionNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
+
         {
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
@@ -1277,14 +1296,20 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     public void testCreateVersionFromTemporalCategoryScheme() throws Exception {
         String urn = CATEGORY_SCHEME_3_V1;
 
-        CategorySchemeVersionMetamac categorySchemeVersionTemporal = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
-        CategorySchemeVersionMetamac categorySchemeNewVersion = categoriesService.createVersionFromTemporalCategoryScheme(getServiceContextAdministrador(), categorySchemeVersionTemporal
-                .getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
+        VersioningResult versioningResult1 = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
+        entityManager.clear();
+        CategorySchemeVersionMetamac categorySchemeVersionTemporal = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), versioningResult1.getUrnResult());
+
+        VersioningResult versioningResult2 = categoriesService.createVersionFromTemporalCategoryScheme(getServiceContextAdministrador(), categorySchemeVersionTemporal.getMaintainableArtefact()
+                .getUrn(), VersionTypeEnum.MAJOR);
+        entityManager.clear();
+        CategorySchemeVersionMetamac categorySchemeNewVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), versioningResult2.getUrnResult());
 
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME03(" + versionExpected + ")";
 
         // Validate response
+
         {
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, categorySchemeNewVersion.getMaintainableArtefact().getVersionLogic());
@@ -1302,8 +1327,10 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     public void testMergeTemporalVersion() throws Exception {
         {
             String urn = CATEGORY_SCHEME_3_V1;
-            CategorySchemeVersionMetamac categorySchemeVersionTemporal = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
+            VersioningResult versioningResult = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
 
+            entityManager.clear();
+            CategorySchemeVersionMetamac categorySchemeVersionTemporal = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
             // Change temporal version *********************
 
             // Item scheme: Change Name

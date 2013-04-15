@@ -45,6 +45,7 @@ import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesInvocationValidator;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesVersioningCopyUtils.CategoryVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 
@@ -183,17 +184,17 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
-    public CategorySchemeVersionMetamac versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public VersioningResult versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         return createVersionOfCategoryScheme(ctx, urnToCopy, versionType, false);
     }
 
     @Override
-    public CategorySchemeVersionMetamac createTemporalVersionCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public VersioningResult createTemporalVersionCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfCategoryScheme(ctx, urnToCopy, null, true);
     }
 
     @Override
-    public CategorySchemeVersionMetamac createVersionFromTemporalCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+    public VersioningResult createVersionFromTemporalCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
         CategorySchemeVersionMetamac categorySchemeVersionTemporal = retrieveCategorySchemeByUrn(ctx, urnToCopy);
 
@@ -215,8 +216,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Set null replacedBy in the original entity
         categorySchemeVersion.getMaintainableArtefact().setReplacedByVersion(null);
 
-        return categorySchemeVersionTemporal;
-
+        VersioningResult versioningResult = new VersioningResult();
+        versioningResult.setUrnResult(categorySchemeVersionTemporal.getMaintainableArtefact().getUrn());
+        return versioningResult;
     }
 
     @Override
@@ -517,15 +519,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         checkCategorySchemeCanBeModified(categorySchemeVersion);
     }
 
-    private CategorySchemeVersionMetamac createVersionOfCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private VersioningResult createVersionOfCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, isTemporal, null, null);
         checkCategorySchemeToVersioning(ctx, urnToCopy);
         // Versioning
-        CategorySchemeVersionMetamac categorySchemeNewVersion = (CategorySchemeVersionMetamac) categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, isTemporal,
-                categoryVersioningCopyCallback);
-
-        return categorySchemeNewVersion;
+        return categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, isTemporal, categoryVersioningCopyCallback);
     }
 
     private void checkCategorySchemeToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {

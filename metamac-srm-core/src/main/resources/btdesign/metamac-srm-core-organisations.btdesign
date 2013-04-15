@@ -46,11 +46,11 @@ Application OrganisationsMetamac {
 			"Deletes organisation scheme version. This must be last version and no published"
     		deleteOrganisationScheme(String urn) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
-    		@OrganisationSchemeVersionMetamac versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		VersioningResult versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a organisation scheme, copying metadata from version with provided urn"
-    		@OrganisationSchemeVersionMetamac createTemporalOrganisationScheme(String urnToCopy) throws MetamacException;
+    		VersioningResult createTemporalOrganisationScheme(String urnToCopy) throws MetamacException;
     		"Creates a new version of a organisation scheme from temporal version with provided urn"
-    		@OrganisationSchemeVersionMetamac createVersionFromTemporalOrganisationScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
+    		VersioningResult createVersionFromTemporalOrganisationScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
     		@OrganisationSchemeVersionMetamac mergeTemporalVersion(@OrganisationSchemeVersionMetamac organisationSchemeTemporalVersion) throws MetamacException;
     		"Ends the organisation scheme validity"

@@ -295,9 +295,9 @@ Application SrmFacadeCore {
 	    	"Publishes externally a organisation scheme"
 	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
-    		@OrganisationSchemeMetamacDto versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		VersioningResult versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a organisation scheme, copying metadata from version with provided urn"
-    		@OrganisationSchemeMetamacDto createTemporalVersionOrganisationScheme(String urnToCopy) throws MetamacException;
+    		VersioningResult createTemporalVersionOrganisationScheme(String urnToCopy) throws MetamacException;
     		"Ends the organisation scheme validity"
     		@OrganisationSchemeMetamacDto endOrganisationSchemeValidity(String urn) throws MetamacException;
             
@@ -351,9 +351,9 @@ Application SrmFacadeCore {
 	    	"Publishes externally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
-    		@ConceptSchemeMetamacDto versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		VersioningResult versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"
-    		@ConceptSchemeMetamacDto createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
+    		VersioningResult createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
     		"Ends the concept scheme validity"
     		@ConceptSchemeMetamacDto endConceptSchemeValidity(String urn) throws MetamacException;
     		
@@ -425,9 +425,9 @@ Application SrmFacadeCore {
 	    	"Publishes externally a category scheme"
 	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a category scheme, copying metadata from version with provided urn"
-    		@CategorySchemeMetamacDto versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		VersioningResult versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a category scheme, copying metadata from version with provided urn"
-    		@CategorySchemeMetamacDto createTemporalVersionCategoryScheme(String urnToCopy) throws MetamacException;
+    		VersioningResult createTemporalVersionCategoryScheme(String urnToCopy) throws MetamacException;
     		"Ends the category scheme validity"
     		@CategorySchemeMetamacDto endCategorySchemeValidity(String urn) throws MetamacException;
             

@@ -46,6 +46,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -602,12 +603,12 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
         // Versioning
         String urn = ORGANISATION_SCHEME_3_V1;
-        OrganisationSchemeMetamacDto organisationSchemeDtoNewVersion = srmCoreServiceFacade.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        VersioningResult versioningResult = srmCoreServiceFacade.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
 
         // Validate
-        organisationSchemeDtoNewVersion = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeDtoNewVersion.getUrn());
-        assertEquals("02.000", organisationSchemeDtoNewVersion.getVersionLogic());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME03(02.000)", organisationSchemeDtoNewVersion.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME03(02.000)", versioningResult.getUrnResult());
+        assertEquals(null, versioningResult.getIsPlannedInBackground());
+        assertEquals(null, versioningResult.getJobKey());
     }
 
     @Test
