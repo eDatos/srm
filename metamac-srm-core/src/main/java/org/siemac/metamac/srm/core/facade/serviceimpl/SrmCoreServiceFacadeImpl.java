@@ -86,6 +86,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.srm.core.importation.domain.Task;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
@@ -1040,32 +1041,26 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public CodelistMetamacDto versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
+    public VersioningResult versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         // Security
         CodesSecurityUtils.canVersioningCodelist(ctx);
 
-        CodelistVersionMetamac codelistVersioned = null;
+        VersioningResult versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            codelistVersioned = getCodesMetamacService().createVersionFromTemporalCodelist(ctx, urnToCopy, versionType);
+            versioningResult = getCodesMetamacService().createVersionFromTemporalCodelist(ctx, urnToCopy, versionType);
         } else {
-            codelistVersioned = getCodesMetamacService().versioningCodelist(ctx, urnToCopy, versioningCodes, versionType);
+            versioningResult = getCodesMetamacService().versioningCodelist(ctx, urnToCopy, versioningCodes, versionType);
         }
 
-        // Transform to DTO
-        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersioned);
-        return codelistDto;
+        return versioningResult;
     }
 
     @Override
-    public CodelistMetamacDto createTemporalVersionCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public VersioningResult createTemporalVersionCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
         CodesSecurityUtils.canCreateCodelistTemporalVersion(ctx);
 
-        CodelistVersionMetamac codelistVersioned = getCodesMetamacService().createTemporalCodelist(ctx, urnToCopy);
-
-        // Transform to DTO
-        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersioned);
-        return codelistDto;
+        return getCodesMetamacService().createTemporalCodelist(ctx, urnToCopy);
     }
 
     @Override

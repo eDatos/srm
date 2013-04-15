@@ -83,6 +83,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 
@@ -204,7 +205,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Save codelist
         CodelistVersionMetamac codelistVersionMetamac = (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersion);
 
-        // Updates URNs of CodelistOrderVisualisations and CodelistOpenVisualizations
+        // Updates URNs of CodelistOrderVisualisations and CodelistOpenVisualisations
         // If code have been changed, update URN. In metamac not is possible to change the maintainer,
         // if this were not so, the URN will also be updated when the maintainer changes.
         if (codelistVersionMetamac.getMaintainableArtefact().getIsCodeUpdated()) {
@@ -282,17 +283,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public CodelistVersionMetamac versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
+    public VersioningResult versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         return createVersionOfCodelist(ctx, urnToCopy, versioningCodes, versionType, false);
     }
 
     @Override
-    public CodelistVersionMetamac createTemporalCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public VersioningResult createTemporalCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfCodelist(ctx, urnToCopy, null, null, true);
     }
 
     @Override
-    public CodelistVersionMetamac createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+    public VersioningResult createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
         CodelistVersionMetamac codelistVersionTemporal = retrieveCodelistByUrn(ctx, urnToCopy);
 
@@ -314,11 +315,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Set null replacedBy in the original entity
         codelistVersion.getMaintainableArtefact().setReplacedByVersion(null);
 
-        return codelistVersionTemporal;
+        VersioningResult versioningResult = new VersioningResult();
+        versioningResult.setUrnResult(codelistVersionTemporal.getMaintainableArtefact().getUrn());
+        return versioningResult;
     }
 
     @Override
-    public CodelistVersionMetamac mergeTemporalVersion(ServiceContext ctx, CodelistVersionMetamac codelistTemporalVersion) throws MetamacException {
+    public String mergeTemporalVersion(ServiceContext ctx, CodelistVersionMetamac codelistTemporalVersion) throws MetamacException {
         // Check if is a temporal version
         if (!VersionUtil.isTemporalVersion(codelistTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
             throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
@@ -341,7 +344,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         // IsRecommended
         codelistVersion.setIsRecommended(codelistTemporalVersion.getIsRecommended());
-        // AccesType
+        // AccessType
         codelistVersion.setAccessType(codelistTemporalVersion.getAccessType());
         // CodelistFamily
         codelistVersion.setFamily(codelistTemporalVersion.getFamily());
@@ -366,22 +369,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             // VariableElement
             code.setVariableElement(codeTemp.getVariableElement());
 
-            // Order Visualization
+            // Order Visualisation
             for (int i = 1; i <= SrmConstants.CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {
                 Integer order = SrmServiceUtils.getCodeOrder(codeTemp, i);
-                if (order != null) {
-                    SrmServiceUtils.setCodeOrder(code, i, order);
-                }
+                SrmServiceUtils.setCodeOrder(code, i, order);
             }
 
-            // Openness Visualization
+            // Openness Visualisation
             for (int i = 1; i <= SrmConstants.CODELIST_OPENNESS_VISUALISATION_MAXIMUM_NUMBER; i++) {
                 Boolean openness = SrmServiceUtils.getCodeOpenness(codeTemp, i);
-                if (openness != null) {
-                    SrmServiceUtils.setCodeOpenness(code, i, openness);
-                }
+                SrmServiceUtils.setCodeOpenness(code, i, openness);
             }
-
         }
 
         // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update the codes index, this was updates before.
@@ -397,7 +395,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Delete temporal version
         deleteCodelist(ctx, codelistTemporalVersion.getMaintainableArtefact().getUrn());
 
-        return codelistVersion;
+        return codelistVersion.getMaintainableArtefact().getUrn();
     }
 
     @Override
@@ -1677,20 +1675,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
-    private CodelistVersionMetamac createVersionOfCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private VersioningResult createVersionOfCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, isTemporal, null, null);
         checkCodelistToVersioning(ctx, urnToCopy);
 
         // Versioning
         CodesVersioningCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningCopyWithCodesCallback : codesVersioningCopyWithoutCodesCallback;
-        CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
-        CodelistVersionMetamac codelistNewVersion = (CodelistVersionMetamac) codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, callback);
-
-        codelistNewVersion = versioningCodelistOrderVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
-        codelistNewVersion = versioningCodelistOpennessVisualisations(ctx, codelistVersionToCopy, codelistNewVersion);
-        return codelistNewVersion;
+        return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, callback);
     }
+
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
         CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
         // Check version to copy is published

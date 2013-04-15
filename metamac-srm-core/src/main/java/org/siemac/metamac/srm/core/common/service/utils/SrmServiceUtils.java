@@ -195,11 +195,74 @@ public class SrmServiceUtils {
         }
     }
 
-    public static void setCodeOpenness(CodeMetamac code, int columnIndex, Boolean openness) {
-        try {
-            MethodUtils.invokeExactMethod(code, "setOpenness" + columnIndex, openness);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    /**
+     * Get code openness.
+     * Note: can not use reflection because set to null is necessary
+     */
+    public static void setCodeOpenness(CodeMetamac code, int columnIndex, Boolean codeIndex) {
+        switch (columnIndex) {
+            case 1:
+                code.setOpenness1(codeIndex);
+                break;
+            case 2:
+                code.setOpenness2(codeIndex);
+                break;
+            case 3:
+                code.setOpenness3(codeIndex);
+                break;
+            case 4:
+                code.setOpenness4(codeIndex);
+                break;
+            case 5:
+                code.setOpenness5(codeIndex);
+                break;
+            case 6:
+                code.setOpenness6(codeIndex);
+                break;
+            case 7:
+                code.setOpenness7(codeIndex);
+                break;
+            case 8:
+                code.setOpenness8(codeIndex);
+                break;
+            case 9:
+                code.setOpenness9(codeIndex);
+                break;
+            case 10:
+                code.setOpenness10(codeIndex);
+                break;
+            case 11:
+                code.setOpenness11(codeIndex);
+                break;
+            case 12:
+                code.setOpenness12(codeIndex);
+                break;
+            case 13:
+                code.setOpenness13(codeIndex);
+                break;
+            case 14:
+                code.setOpenness14(codeIndex);
+                break;
+            case 15:
+                code.setOpenness15(codeIndex);
+                break;
+            case 16:
+                code.setOpenness16(codeIndex);
+                break;
+            case 17:
+                code.setOpenness17(codeIndex);
+                break;
+            case 18:
+                code.setOpenness18(codeIndex);
+                break;
+            case 19:
+                code.setOpenness19(codeIndex);
+                break;
+            case 20:
+                code.setOpenness20(codeIndex);
+                break;
+            default:
+                throw new IllegalArgumentException("Openness not supported: " + columnIndex);
         }
     }
 

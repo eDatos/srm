@@ -1,11 +1,15 @@
 package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
@@ -18,6 +22,9 @@ import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCo
  */
 @Component("codesVersioningCopyCallbackMetamac")
 public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCopyCallback {
+
+    @Autowired
+    private CodesMetamacService codesMetamacService;
 
     @Override
     public CodelistVersion createCodelistVersion() {
@@ -37,7 +44,15 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         target.setVariable(source.getVariable());
         target.setFamily(source.getFamily());
         // note: replaceBy and replaceTo metadata do not must be copied, because they are related to concrete versions of codelist
-        // note: codelist visualisations (order and openness) are copied in CodesMetamacService
+    }
+
+    @Override
+    public void createCodelistRelations(ServiceContext ctx, CodelistVersion sourceSdmx, CodelistVersion targetSdmx) throws MetamacException {
+        CodelistVersionMetamac source = (CodelistVersionMetamac) sourceSdmx;
+        CodelistVersionMetamac target = (CodelistVersionMetamac) targetSdmx;
+        // Visualisations
+        codesMetamacService.versioningCodelistOrderVisualisations(ctx, source, target);
+        codesMetamacService.versioningCodelistOpennessVisualisations(ctx, source, target);
     }
 
     @Override

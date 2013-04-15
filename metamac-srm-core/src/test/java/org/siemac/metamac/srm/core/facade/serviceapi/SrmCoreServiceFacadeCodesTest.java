@@ -67,6 +67,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -834,10 +835,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(02.000)";
 
-        CodelistMetamacDto codelistDtoToCopy = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-        CodelistMetamacDto codelistDtoNewVersion = srmCoreServiceFacade.versioningCodelist(getServiceContextAdministrador(), urn, null, VersionTypeEnum.MAJOR);
+        VersioningResult versioningResult = srmCoreServiceFacade.versioningCodelist(getServiceContextAdministrador(), urn, null, VersionTypeEnum.MAJOR);
 
         // Validate response
+        CodelistMetamacDto codelistDtoToCopy = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+        CodelistMetamacDto codelistDtoNewVersion = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
         {
             assertEquals(versionExpected, codelistDtoNewVersion.getVersionLogic());
             assertEquals(urnExpected, codelistDtoNewVersion.getUrn());
