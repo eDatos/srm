@@ -16,12 +16,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.siemac.metamac.common.test.utils.ConditionalCriteriaUtils;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
 import org.siemac.metamac.rest.constants.RestConstants;
-import org.siemac.metamac.rest.constants.RestEndpointsConstants;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.springframework.context.ApplicationContext;
 
@@ -58,7 +58,7 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
     @Before
     public void setUp() throws MetamacException {
         ConfigurationService configurationService = applicationContext.getBean(ConfigurationService.class);
-        apiEndpointv10 = configurationService.getProperty(RestEndpointsConstants.SRM_INTERNAL_API) + "/v1.0";
+        apiEndpointv10 = configurationService.getProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API) + "/v1.0";
 
         resetMocks();
     }
