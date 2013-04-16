@@ -1,9 +1,13 @@
 package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 
+import java.util.List;
+
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
@@ -12,10 +16,12 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 /**
  * Copy Metamac metadata
@@ -23,10 +29,13 @@ import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCo
 @Component(CodesVersioningCopyCallbackMetamacImpl.BEAN_ID)
 public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCopyCallback {
 
-    public static final String  BEAN_ID = "codesVersioningCopyCallbackMetamac";
+    public static final String    BEAN_ID = "codesVersioningCopyCallbackMetamac";
 
     @Autowired
-    private CodesMetamacService codesMetamacService;
+    private CodesMetamacService   codesMetamacService;
+
+    @Autowired
+    private CodeMetamacRepository codeMetamacRepository;
 
     @Override
     public CodelistVersion createCodelistVersion() {
@@ -63,15 +72,32 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
     }
 
     @Override
+    public Boolean isOverridedFindCodesEfficiently() {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public List<ItemResult> findCodesEfficiently(Long codelistId) {
+        return codeMetamacRepository.findCodesByCodelistUnordered(codelistId, Boolean.TRUE);
+    }
+
+    @Override
     public Code createCode() {
         return new CodeMetamac();
     }
 
     @Override
-    public void copyCode(Code sourceSdmx, Code targetSdmx) {
+    public void copyCode(Code sourceSdmx, ItemResult itemResultSource, Code targetSdmx) {
         CodeMetamac source = (CodeMetamac) sourceSdmx;
         CodeMetamac target = (CodeMetamac) targetSdmx;
-        target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
+        if (itemResultSource != null) {
+            if (itemResultSource.getExtensionPoint() != null) {
+                CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResultSource.getExtensionPoint();
+                target.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(extensionPoint.getShortName()));
+            }
+        } else {
+            target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
+        }
         target.setVariableElement(source.getVariableElement());
         copyCodeOrderVisualisations(source, target);
         copyCodeOpennessVisualisations(source, target);

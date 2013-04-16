@@ -891,7 +891,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Retrieve
-        return getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersion.getId(), locale, orderColumnIndex, opennessColumnIndex);
+        return getCodeMetamacRepository().findCodesByCodelistUnorderedToVisualisation(codelistVersion.getId(), locale, orderColumnIndex, opennessColumnIndex);
     }
 
     @Override

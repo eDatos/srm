@@ -273,7 +273,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Override
     @SuppressWarnings("rawtypes")
-    public List<CodeMetamacVisualisationResult> findCodesByCodelistUnordered(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException {
+    public List<CodeMetamacVisualisationResult> findCodesByCodelistUnorderedToVisualisation(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex)
+            throws MetamacException {
         // Find codes
         List codesResultSql = executeQueryFindCodesByCodelistByNativeSqlQuery(idCodelist, locale, orderColumnIndex, opennessColumnIndex);
 
@@ -300,6 +301,26 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             }
         }
         return targets;
+    }
+
+    @Override
+    public List<ItemResult> findCodesByCodelistUnordered(Long idCodelist, Boolean extendedMetadata) {
+
+        // Find codes
+        List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, extendedMetadata);
+
+        // Init extension point and index by id
+        Map<Long, ItemResult> mapCodeByItemId = new HashMap<Long, ItemResult>(codes.size());
+        for (ItemResult itemResult : codes) {
+            itemResult.setExtensionPoint(new CodeMetamacResultExtensionPoint());
+            mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
+        }
+
+        if (extendedMetadata) {
+            // Fill short name
+            executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
+        }
+        return codes;
     }
 
     @SuppressWarnings("rawtypes")

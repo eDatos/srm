@@ -1932,7 +1932,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
+              SHORT_NAME_FK="137"
               TB_CODES="312"
               ORDER1="1"
               ORDER2="0"
@@ -1989,7 +1989,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
+              SHORT_NAME_FK="138"
               TB_CODES="3121"
               ORDER1="0"
               ORDER2="1"
@@ -8209,5 +8209,53 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="136"
-    />                                                                                                   
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="137"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1371"
+        LABEL="short name codelist3-v1-code-2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="137"
+    />   
+    <TB_LOCALISED_STRINGS
+        ID="1372"
+        LABEL="nombre corto codelist3-v1-code-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="137"
+    />                   
+
+     <TB_INTERNATIONAL_STRINGS
+        ID="138"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1381"
+        LABEL="short name codelist3-v1-code-2-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="138"
+    />   
+    <TB_LOCALISED_STRINGS
+        ID="1382"
+        LABEL="nombre corto codelist3-v1-code-2-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="138"
+    />                   
+    <TB_LOCALISED_STRINGS
+        ID="1383"
+        LABEL="nombre corto it codelist3-v1-code-2-1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="138"
+    />                   
+                                                                                                   
 </dataset>
