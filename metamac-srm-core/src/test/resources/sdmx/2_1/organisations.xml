@@ -228,47 +228,6 @@
 				</p3:OrganisationUnit>
 					
 			</p3:OrganisationUnitScheme>
-			
-			<p3:OrganisationUnitScheme agencyID="SDMX01" id="ORGANISATION_UNIT_SCHEME_01"
-				isExternalReference="false" isFinal="true" isPartial="false"
-				serviceURL="http://tempuri.org" structureURL="http://tempuri.org"
-				uri="http://tempuri.org" urn="http://tempuri.org" validFrom="2001-12-31T12:00:00"
-				validTo="2001-12-31T12:00:00" version="2.0">
-				<p2:Annotations>
-					<p2:Annotation id="ORGANISATION_UNIT_SCHEME_ANNO_01">
-						<p2:AnnotationTitle>AnnotationTitle</p2:AnnotationTitle>
-						<p2:AnnotationType>AnnotationType</p2:AnnotationType>
-						<p2:AnnotationURL>http://tempuri.org</p2:AnnotationURL>
-						<p2:AnnotationText xml:lang="en">AnnotationText
-						</p2:AnnotationText>
-					</p2:Annotation>
-				</p2:Annotations>
-				<p2:Name xml:lang="en">ORGANISATION_UNIT Scheme Test Name</p2:Name>
-				<p2:Description xml:lang="en">ORGANISATION_UNIT Scheme Test
-					Description</p2:Description>
-					
-				<p3:OrganisationUnit id="NA_COMMITTEE" uri="http://tempuri.org" urn="http://tempuri.org">
-					<p2:Annotations>
-						<p2:Annotation id="NA_COMMITTEE_ANNO_01">
-							<p2:AnnotationTitle>AnnotationTitle</p2:AnnotationTitle>
-							<p2:AnnotationType>AnnotationType</p2:AnnotationType>
-							<p2:AnnotationURL>http://tempuri.org</p2:AnnotationURL>
-							<p2:AnnotationText xml:lang="en">AnnotationText
-							</p2:AnnotationText>
-						</p2:Annotation>
-					</p2:Annotations>
-					<p2:Name xml:lang="en">National AIDS Committee
-					</p2:Name>
-					<p2:Description xml:lang="en">National AIDS Committee</p2:Description>
-					<p3:Contact id="CONTACT_01">
-						<p2:Name xml:lang="en">Jhon</p2:Name>
-						<p3:Department xml:lang="en">Personal</p3:Department>
-						<p3:Role xml:lang="en">boss</p3:Role>
-						<p3:Telephone>922123456789</p3:Telephone>
-					</p3:Contact>
-				</p3:OrganisationUnit>
-					
-			</p3:OrganisationUnitScheme>
 
 		</p3:OrganisationSchemes>
 	</p:Structures>
