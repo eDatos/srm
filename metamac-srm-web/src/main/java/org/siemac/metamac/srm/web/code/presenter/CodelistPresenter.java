@@ -166,6 +166,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
         void setVariables(GetVariablesResult result);
         void setCodelistsToReplace(List<RelatedResourceDto> codelists, int firstResult, int totalResults);
+
+        void showInformationMessage(String title, String message);
     }
 
     @ContentSlot
@@ -410,11 +412,18 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(VersionCodelistResult result) {
-                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistVersioned()), MessageTypeEnum.SUCCESS);
-                codelistMetamacDto = result.getCodelistMetamacDto();
-                retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn());
+                if (result.getIsPlannedInBackground()) {
+                    // The codelist is versioning in background
+                    getView().setCodelist(result.getCodelistMetamacDto());
+                    getView().showInformationMessage(getMessages().codelistVersioning(), getMessages().codelistBackgroundVersionInProgress());
+                } else {
+                    // Codelist has been version synchronously
+                    ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistVersioned()), MessageTypeEnum.SUCCESS);
+                    codelistMetamacDto = result.getCodelistMetamacDto();
+                    retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn());
 
-                updateUrl();
+                    updateUrl();
+                }
             }
         });
     }
@@ -429,9 +438,16 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(CreateCodelistTemporalVersionResult result) {
-                CodelistPresenter.this.codelistMetamacDto = result.getCodelistMetamacDto();
-                retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn(), true);
-                updateUrl();
+                if (result.getIsPlannedInBackground()) {
+                    // Temporal version is created in background
+                    getView().setCodelist(result.getCodelistMetamacDto());
+                    getView().showInformationMessage(getMessages().codelistEditionInfo(), getMessages().codelistBackgroundTemporalVersionInProgress());
+                } else {
+                    // Temporal version has been created synchronously
+                    CodelistPresenter.this.codelistMetamacDto = result.getCodelistMetamacDto();
+                    retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn(), true);
+                    updateUrl();
+                }
             }
         });
     }

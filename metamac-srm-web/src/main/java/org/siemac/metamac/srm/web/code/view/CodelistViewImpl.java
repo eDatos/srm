@@ -43,6 +43,7 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -874,6 +875,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 }
             }
         });
+    }
+
+    @Override
+    public void showInformationMessage(String title, String message) {
+        InformationWindow informationWindow = new InformationWindow(title, message);
+        informationWindow.show();
     }
 
     // ------------------------------------------------------------------------------------------------------------

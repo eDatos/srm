@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.server.handlers.code;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -28,7 +29,7 @@ public class CreateCodelistTemporalVersionActionHandler extends SecurityActionHa
     public CreateCodelistTemporalVersionResult executeSecurityAction(CreateCodelistTemporalVersionAction action) throws ActionException {
         try {
             VersioningResult result = srmCoreServiceFacade.createTemporalVersionCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            if (result.getIsPlannedInBackground()) {
+            if (BooleanUtils.isTrue(result.getIsPlannedInBackground())) {
                 CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
                 return new CreateCodelistTemporalVersionResult(true, codelistMetamacDto);
             } else {
