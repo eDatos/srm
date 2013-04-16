@@ -124,7 +124,7 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
             JobDetail job = newJob(ImportationCsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportationCsvJob.FILE_PATH, file.getAbsolutePath())
                     .usingJobData(ImportationCsvJob.FILE_IMPORTED_NAME, fileName).usingJobData(ImportationCsvJob.USER, ctx.getUserId()).usingJobData(jobDataAdditional).requestRecovery().build();
-            SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "importation").startAt(futureDate(1, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
+            SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "importation").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
             sched.scheduleJob(job, trigger);
 
             return jobKey;
