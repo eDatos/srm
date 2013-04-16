@@ -1796,6 +1796,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testVersioningCodelistInBackground() throws Exception {
 
+        int previousValueLimitToBackground = SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND;
         SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 3; // modify to force in background
         final String codelistUrn = CODELIST_3_V1;
         final StringBuilder jobKey = new StringBuilder();
@@ -1832,7 +1833,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         });
         waitUntilJobFinished();
-        SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 300;
+        SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = previousValueLimitToBackground;
 
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());

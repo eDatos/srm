@@ -499,7 +499,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     protected void waitUntilJobFinished() throws InterruptedException, SchedulerException {
         // Wait until the job is finished
-        Thread.sleep(5 * 1000l);
+        Thread.sleep(10 * 1000); // 10 sg
         Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
         while (sched.getCurrentlyExecutingJobs().size() != 0) {
             Thread.sleep(5 * 1000l);
