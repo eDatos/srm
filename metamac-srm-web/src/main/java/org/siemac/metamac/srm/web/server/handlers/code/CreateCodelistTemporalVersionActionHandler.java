@@ -11,6 +11,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -26,10 +27,14 @@ public class CreateCodelistTemporalVersionActionHandler extends SecurityActionHa
     @Override
     public CreateCodelistTemporalVersionResult executeSecurityAction(CreateCodelistTemporalVersionAction action) throws ActionException {
         try {
-            CodelistMetamacDto codelistMetamacDto = null;
-            // FIXME
-            srmCoreServiceFacade.createTemporalVersionCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
-            return new CreateCodelistTemporalVersionResult(codelistMetamacDto);
+            VersioningResult result = srmCoreServiceFacade.createTemporalVersionCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            if (result.getIsPlannedInBackground()) {
+                CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+                return new CreateCodelistTemporalVersionResult(true, codelistMetamacDto);
+            } else {
+                CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(ServiceContextHolder.getCurrentServiceContext(), result.getUrnResult());
+                return new CreateCodelistTemporalVersionResult(false, codelistMetamacDto);
+            }
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

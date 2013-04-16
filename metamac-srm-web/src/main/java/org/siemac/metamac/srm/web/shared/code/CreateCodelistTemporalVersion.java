@@ -13,5 +13,8 @@ public class CreateCodelistTemporalVersion {
     String             urn;
 
     @Out(1)
+    Boolean            isPlannedInBackground;
+
+    @Out(2)
     CodelistMetamacDto codelistMetamacDto;
 }

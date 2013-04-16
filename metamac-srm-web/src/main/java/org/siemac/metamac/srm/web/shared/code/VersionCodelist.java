@@ -20,5 +20,8 @@ public class VersionCodelist {
     Boolean            versionCodes;
 
     @Out(1)
+    Boolean            isPlannedInBackground;
+
+    @Out(2)
     CodelistMetamacDto codelistMetamacDto;
 }
