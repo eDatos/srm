@@ -85,18 +85,14 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
     private void copyCodeOrderVisualisations(CodeMetamac source, CodeMetamac target) {
         for (int i = 1; i <= SrmConstants.CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {
             Integer order = SrmServiceUtils.getCodeOrder(source, i);
-            if (order != null) {
-                SrmServiceUtils.setCodeOrder(target, i, order);
-            }
+            SrmServiceUtils.setCodeOrder(target, i, order);
         }
     }
 
     private void copyCodeOpennessVisualisations(CodeMetamac source, CodeMetamac target) {
         for (int i = 1; i <= SrmConstants.CODELIST_OPENNESS_VISUALISATION_MAXIMUM_NUMBER; i++) {
             Boolean openness = SrmServiceUtils.getCodeOpenness(source, i);
-            if (openness != null) {
-                SrmServiceUtils.setCodeOpenness(target, i, openness);
-            }
+            SrmServiceUtils.setCodeOpenness(target, i, openness);
         }
     }
 }
