@@ -14,6 +14,8 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
+    private Boolean              versioningBackground;
+
     private MainFormLayoutButton addCodelistToFamilyButton;
 
     public CodelistMainFormLayout() {
@@ -24,15 +26,16 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     public void setCodelist(CodelistMetamacDto codelistMetamacDto) {
         super.updatePublishSection(codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto);
+        this.versioningBackground = codelistMetamacDto.getVersioningBackground();
         setCanEdit();
     }
 
     private void setCanEdit() {
         boolean canEdit = false;
         if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus)) {
-            canEdit = CodesClientSecurityUtils.canCreateCodelistTemporalVersion();
+            canEdit = CodesClientSecurityUtils.canCreateCodelistTemporalVersion(versioningBackground);
         } else {
-            canEdit = CodesClientSecurityUtils.canUpdateCodelist(procStatus);
+            canEdit = CodesClientSecurityUtils.canUpdateCodelist(procStatus, versioningBackground);
         }
         super.setCanEdit(canEdit);
     }
@@ -59,35 +62,35 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showSendToProductionValidation() {
-        if (CodesClientSecurityUtils.canSendCodelistToProductionValidation()) {
+        if (CodesClientSecurityUtils.canSendCodelistToProductionValidation(versioningBackground)) {
             productionValidation.show();
         }
     }
 
     @Override
     protected void showSendToDiffusionValidation() {
-        if (CodesClientSecurityUtils.canSendCodelistToDiffusionValidation()) {
+        if (CodesClientSecurityUtils.canSendCodelistToDiffusionValidation(versioningBackground)) {
             diffusionValidation.show();
         }
     }
 
     @Override
     protected void showRejectValidationButton() {
-        if (CodesClientSecurityUtils.canRejectCodelistValidation(procStatus)) {
+        if (CodesClientSecurityUtils.canRejectCodelistValidation(procStatus, versioningBackground)) {
             rejectValidation.show();
         }
     }
 
     @Override
     protected void showPublishInternallyButton() {
-        if (CodesClientSecurityUtils.canPublishCodelistInternally()) {
+        if (CodesClientSecurityUtils.canPublishCodelistInternally(versioningBackground)) {
             publishInternally.show();
         }
     }
 
     @Override
     protected void showPublishExternallyButton() {
-        if (CodesClientSecurityUtils.canPublishCodelistExternally()) {
+        if (CodesClientSecurityUtils.canPublishCodelistExternally(versioningBackground)) {
             publishExternally.show();
         }
     }
@@ -101,7 +104,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (CodesClientSecurityUtils.canCancelCodelistValidity()) {
+        if (CodesClientSecurityUtils.canCancelCodelistValidity(versioningBackground)) {
             cancelValidity.show();
         }
     }
@@ -126,6 +129,6 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     private boolean canVersionCodelist() {
         // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist();
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist(versioningBackground);
     }
 }

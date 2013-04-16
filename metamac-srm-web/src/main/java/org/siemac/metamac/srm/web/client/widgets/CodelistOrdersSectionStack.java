@@ -101,7 +101,7 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
 
     @Override
     protected void updateListGridNewButtonVisibility() {
-        if (CodesClientSecurityUtils.canCreateCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canCreateCodelistOrderVisualisation(codelistMetamacDto)) {
             newCodelistVisualisationButton.show();
         } else {
             newCodelistVisualisationButton.hide();
@@ -110,14 +110,14 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
 
     @Override
     protected void showListGridEditButton() {
-        if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canUpdateCodelistOrderVisualisation(codelistMetamacDto)) {
             editCodelistVisualisationButton.show();
         }
     }
 
     @Override
     protected void showListGridDeleteButton() {
-        if (CodesClientSecurityUtils.canDeleteCodelistOrderVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canDeleteCodelistOrderVisualisation(codelistMetamacDto)) {
             deleteCodelistVisualisationButton.show();
         }
     }

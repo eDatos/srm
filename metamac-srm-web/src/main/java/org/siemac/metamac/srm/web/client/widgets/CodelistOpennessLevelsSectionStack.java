@@ -102,7 +102,7 @@ public class CodelistOpennessLevelsSectionStack extends BaseCodelistVisualisatio
 
     @Override
     protected void updateListGridNewButtonVisibility() {
-        if (CodesClientSecurityUtils.canCreateCodelistOpennessVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canCreateCodelistOpennessVisualisation(codelistMetamacDto)) {
             newCodelistVisualisationButton.show();
         } else {
             newCodelistVisualisationButton.hide();
@@ -111,14 +111,14 @@ public class CodelistOpennessLevelsSectionStack extends BaseCodelistVisualisatio
 
     @Override
     protected void showListGridEditButton() {
-        if (CodesClientSecurityUtils.canUpdateCodelistOpennessVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canUpdateCodelistOpennessVisualisation(codelistMetamacDto)) {
             editCodelistVisualisationButton.show();
         }
     }
 
     @Override
     protected void showListGridDeleteButton() {
-        if (CodesClientSecurityUtils.canDeleteCodelistOpennessVisualisation(codelistProcStatus)) {
+        if (CodesClientSecurityUtils.canDeleteCodelistOpennessVisualisation(codelistMetamacDto)) {
             deleteCodelistVisualisationButton.show();
         }
     }

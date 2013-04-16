@@ -238,7 +238,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         for (ListGridRecord record : records) {
             CodelistMetamacDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacDto();
             if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus()) || !CodesClientSecurityUtils.canDeleteCodelist()) {
+                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus()) || !CodesClientSecurityUtils.canDeleteCodelist(codelistMetamacDto)) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }
@@ -256,7 +256,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
             CodelistMetamacDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
             if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus()) || codelistMetamacDto.getValidTo() != null
-                    || !CodesClientSecurityUtils.canCancelCodelistValidity()) {
+                    || !CodesClientSecurityUtils.canCancelCodelistValidity(codelistMetamacDto.getVersioningBackground())) {
                 allSelectedCodelistValidityCanBeCanceled = false;
             }
         }

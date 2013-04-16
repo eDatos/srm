@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
@@ -34,16 +34,16 @@ public class CodeMainFormLayout extends InternationalMainFormLayout {
         return updateVariableElementButton;
     }
 
-    public void updateButtonsVisibility(ProcStatusEnum procStatusEnum) {
-        if (CommonUtils.isItemSchemePublished(procStatusEnum)) {
-            showUpdateVariableElementButton(procStatusEnum);
+    public void updateButtonsVisibility(CodelistMetamacDto codelistMetamacDto) {
+        if (CommonUtils.isItemSchemePublished(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+            showUpdateVariableElementButton(codelistMetamacDto);
         } else {
             updateVariableElementButton.hide();
         }
     }
 
-    protected void showUpdateVariableElementButton(ProcStatusEnum procStatusEnum) {
-        if (CodesClientSecurityUtils.canUpdateCodeVariableElement(procStatusEnum)) {
+    protected void showUpdateVariableElementButton(CodelistMetamacDto codelistMetamacDto) {
+        if (CodesClientSecurityUtils.canUpdateCodeVariableElement(codelistMetamacDto)) {
             updateVariableElementButton.show();
         }
     }

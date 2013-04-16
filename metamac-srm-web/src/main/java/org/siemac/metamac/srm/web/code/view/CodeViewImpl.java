@@ -298,8 +298,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         this.codelistMetamacDto = codelistMetamacDto;
 
         // Security
-        mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus()));
-        mainFormLayout.updateButtonsVisibility(codelistMetamacDto.getLifeCycle().getProcStatus());
+        mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto));
+        mainFormLayout.updateButtonsVisibility(codelistMetamacDto);
 
         markFormsForRedraw();
     }

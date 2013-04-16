@@ -5,8 +5,8 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
@@ -34,7 +34,7 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
 
     protected CodelistUiHandlers       uiHandlers;
 
-    protected ProcStatusEnum           codelistProcStatus;
+    protected CodelistMetamacDto       codelistMetamacDto;
 
     public BaseCodelistVisualisationSectionStack(final ListGrid listGrid, String title) {
         super(listGrid, title);
@@ -131,8 +131,8 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
         }
     }
 
-    public void setCodelistProcStatus(ProcStatusEnum procStatusEnum) {
-        this.codelistProcStatus = procStatusEnum;
+    public void setCodelist(CodelistMetamacDto codelistMetamacDto) {
+        this.codelistMetamacDto = codelistMetamacDto;
         updateListGridNewButtonVisibility();
     }
 

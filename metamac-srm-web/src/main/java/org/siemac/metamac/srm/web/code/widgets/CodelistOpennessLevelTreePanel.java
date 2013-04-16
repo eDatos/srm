@@ -106,8 +106,7 @@ public class CodelistOpennessLevelTreePanel extends VLayout {
 
     private boolean canCodeOpennessLevelBeModified(CodelistMetamacDto codelistMetamacDto, CodelistVisualisationDto codelistVisualisationDto) {
         // Openness level can not be modified if is the ALL_EXPANDED one, or if the user is not allowed
-        if (!StringUtils.equals(SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE, codelistVisualisationDto.getCode())
-                && CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+        if (!StringUtils.equals(SrmConstants.CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_CODE, codelistVisualisationDto.getCode()) && CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto)) {
             return true;
         }
         return false;

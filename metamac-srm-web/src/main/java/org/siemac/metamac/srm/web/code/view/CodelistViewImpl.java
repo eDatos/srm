@@ -382,8 +382,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     @Override
     public void setCodelist(CodelistMetamacDto codelist) {
         this.codelistDto = codelist;
-        this.codelistOrdersPanel.getCodelistOrdersSectionStack().setCodelistProcStatus(codelist.getLifeCycle().getProcStatus());
-        this.codelistOpennesssLevelsPanel.getCodelistOpennessLevelsSectionStack().setCodelistProcStatus(codelist.getLifeCycle().getProcStatus());
+        this.codelistOrdersPanel.getCodelistOrdersSectionStack().setCodelist(codelist);
+        this.codelistOpennesssLevelsPanel.getCodelistOpennessLevelsSectionStack().setCodelist(codelist);
 
         // Set title
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(codelist));
@@ -391,7 +391,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // Security
         mainFormLayout.setCodelist(codelist);
         mainFormLayout.setViewMode();
-        categorisationsPanel.updateVisibility(codelist.getLifeCycle().getProcStatus());
+        categorisationsPanel.updateVisibility(codelist);
 
         setCodelistViewMode(codelist);
         setCodelistEditionMode(codelist);

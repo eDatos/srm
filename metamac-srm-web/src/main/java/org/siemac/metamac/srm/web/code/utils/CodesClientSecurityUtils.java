@@ -1,15 +1,23 @@
 package org.siemac.metamac.srm.web.code.utils;
 
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
 import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.code.view.CodelistFamilyViewImpl;
+import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 
 public class CodesClientSecurityUtils {
+
+    //
+    // When a codelist is being version in background, the codelist and its codes CANNOT be modified. That's why an extra check (is versioningBackground TRUE or not) has been added to all these
+    // security methods.
+    //
 
     // CODELISTS
 
@@ -17,39 +25,66 @@ public class CodesClientSecurityUtils {
         return SharedItemsSecurityUtils.canCreateItemScheme(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canUpdateCodelist(ProcStatusEnum procStatus) {
+    public static boolean canUpdateCodelist(ProcStatusEnum procStatus, Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canUpdateItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCodelist() {
+    public static boolean canDeleteCodelist(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canDeleteItemScheme(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canSendCodelistToProductionValidation() {
+    public static boolean canSendCodelistToProductionValidation(Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canSendItemSchemeToProductionValidation(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canSendCodelistToDiffusionValidation() {
+    public static boolean canSendCodelistToDiffusionValidation(Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canSendItemSchemeToDiffusionValidation(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canRejectCodelistValidation(ProcStatusEnum procStatus) {
+    public static boolean canRejectCodelistValidation(ProcStatusEnum procStatus, Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canRejectItemSchemeValidation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canPublishCodelistInternally() {
+    public static boolean canPublishCodelistInternally(Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canPublishItemSchemeInternally(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canPublishCodelistExternally() {
+    public static boolean canPublishCodelistExternally(Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canPublishItemSchemeExternally(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canVersioningCodelist() {
+    public static boolean canVersioningCodelist(Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedCodesSecurityUtils.canVersioningCodelist(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCreateCodelistTemporalVersion() {
+    public static boolean canCreateCodelistTemporalVersion(Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedCodesSecurityUtils.canCreateCodelistTemporalVersion(MetamacSrmWeb.getCurrentUser());
     }
 
@@ -57,82 +92,144 @@ public class CodesClientSecurityUtils {
         return SharedItemsSecurityUtils.canAnnounceItemScheme(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCancelCodelistValidity() {
+    public static boolean canCancelCodelistValidity(Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canEndItemSchemeValidity(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCreateCategorisation(ProcStatusEnum procStatus) {
+    public static boolean canCreateCategorisation(ProcStatusEnum procStatus, Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, CategorisationDto categorisationDto) {
+    public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, Boolean versioningBackground, CategorisationDto categorisationDto) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
         // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is the
         // temporal one
         return SharedItemsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
+    /**
+     * This method is called from the {@link CodelistMainFormLayout}
+     * 
+     * @param versioningBackground
+     * @return
+     */
+    public static boolean canAddCodelistToCodelistFamily(Boolean versioningBackground) {
+        if (isBeingVersionInBackground(versioningBackground)) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
+    }
+
+    /**
+     * This method is called from the {@link CodelistFamilyViewImpl}
+     * 
+     * @return
+     */
     public static boolean canAddCodelistToCodelistFamily() {
+        // If the codelist has a background running is not checked here. The service (in metamac-srm-core) should throw and exception.
         return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canRemoveCodelistFromCodelistFamily() {
+        // If the codelist has a background running is not checked here. The service (in metamac-srm-core) should throw and exception.
         return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
     }
 
     // CODES
 
     public static boolean canCreateCode(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
         // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistMetamacDto);
     }
 
-    public static boolean canUpdateCode(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canUpdateCode(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     public static boolean canUpdateCodeParent(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
         // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistMetamacDto);
     }
 
     public static boolean canDeleteCode(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
         // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistMetamacDto);
     }
 
-    public static boolean canUpdateCodeVariableElement(ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canUpdateCodeVariableElement(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     // ORDERS
 
-    public static boolean canCreateCodelistOrderVisualisation(ProcStatusEnum procStatus) {
-        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canCreateCodelistOrderVisualisation(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
-    public static boolean canUpdateCodelistOrderVisualisation(ProcStatusEnum procStatus) {
-        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canUpdateCodelistOrderVisualisation(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
-    public static boolean canDeleteCodelistOrderVisualisation(ProcStatusEnum procStatus) {
-        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canDeleteCodelistOrderVisualisation(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     // OPENNESS LEVELS
 
-    public static boolean canCreateCodelistOpennessVisualisation(ProcStatusEnum procStatus) {
-        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canCreateCodelistOpennessVisualisation(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
-    public static boolean canUpdateCodelistOpennessVisualisation(ProcStatusEnum procStatus) {
-        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canUpdateCodelistOpennessVisualisation(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
-    public static boolean canDeleteCodelistOpennessVisualisation(ProcStatusEnum procStatus) {
-        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+    public static boolean canDeleteCodelistOpennessVisualisation(CodelistMetamacDto codelistMetamacDto) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     // CODELIST FAMILY
@@ -209,5 +306,13 @@ public class CodesClientSecurityUtils {
 
     public static boolean canDeleteVariableElementOperation() {
         return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
+    }
+
+    //
+    // PRIVATE METHODS
+    //
+
+    private static boolean isBeingVersionInBackground(Boolean versioningBackground) {
+        return BooleanUtils.isTrue(versioningBackground);
     }
 }
