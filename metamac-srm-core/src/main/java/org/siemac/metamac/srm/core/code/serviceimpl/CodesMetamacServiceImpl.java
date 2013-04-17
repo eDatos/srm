@@ -1682,17 +1682,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private VersioningResult createVersionOfCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, isTemporal, null, null);
-        checkCodelistToVersioning(ctx, urnToCopy);
+        checkCodelistToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
         CodesVersioningCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningCopyWithCodesCallback : codesVersioningCopyWithoutCodesCallback;
         return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, Boolean.TRUE, callback);
     }
 
-    private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
         CodelistVersionMetamac codelistVersionToCopy = retrieveCodelistByUrn(ctx, urnToCopy);
         // Check version to copy is published
-        SrmValidationUtils.checkArtefactCanBeVersioned(codelistVersionToCopy.getMaintainableArtefact(), codelistVersionToCopy.getLifeCycleMetadata());
+        SrmValidationUtils.checkArtefactCanBeVersioned(codelistVersionToCopy.getMaintainableArtefact(), codelistVersionToCopy.getLifeCycleMetadata(), isTemporal);
         // Check does not exist any version 'no final'
         ItemSchemeVersion codelistVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(codelistVersionToCopy.getItemScheme().getId());
         if (codelistVersionNoFinal != null) {

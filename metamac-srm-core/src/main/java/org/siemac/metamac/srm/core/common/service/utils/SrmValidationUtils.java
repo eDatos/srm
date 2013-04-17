@@ -15,7 +15,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
 
-public class SrmValidationUtils extends SdmxSrmValidationUtils {
+public class SrmValidationUtils {
 
     public static void checkArtefactInternallyOrExternallyPublished(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
         checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
@@ -29,9 +29,9 @@ public class SrmValidationUtils extends SdmxSrmValidationUtils {
         checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.DRAFT, ProcStatusEnum.PRODUCTION_VALIDATION, ProcStatusEnum.DIFFUSION_VALIDATION, ProcStatusEnum.VALIDATION_REJECTED);
     }
 
-    public static void checkArtefactCanBeVersioned(MaintainableArtefact maintainableArtefact, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+    public static void checkArtefactCanBeVersioned(MaintainableArtefact maintainableArtefact, SrmLifeCycleMetadata lifeCycle, boolean isTemporal) throws MetamacException {
         checkArtefactProcStatus(lifeCycle, maintainableArtefact.getUrn(), ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        SdmxSrmValidationUtils.checkMaintainableArtefactNotImported(maintainableArtefact);
+        SdmxSrmValidationUtils.checkMaintainableArtefactNotImported(maintainableArtefact, isTemporal);
     }
 
     public static void checkArtefactCanBeVersionedAsTemporal(MaintainableArtefact maintainableArtefact, SrmLifeCycleMetadata lifeCycle) throws MetamacException {

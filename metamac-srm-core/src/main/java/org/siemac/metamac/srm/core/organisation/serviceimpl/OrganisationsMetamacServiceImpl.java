@@ -450,10 +450,10 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
     }
 
-    private void checkOrganisationSchemeToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    private void checkOrganisationSchemeToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
         OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = retrieveOrganisationSchemeByUrn(ctx, urnToCopy);
         // Check version to copy is published
-        SrmValidationUtils.checkArtefactCanBeVersioned(organisationSchemeVersionToCopy.getMaintainableArtefact(), organisationSchemeVersionToCopy.getLifeCycleMetadata());
+        SrmValidationUtils.checkArtefactCanBeVersioned(organisationSchemeVersionToCopy.getMaintainableArtefact(), organisationSchemeVersionToCopy.getLifeCycleMetadata(), isTemporal);
         // Check does not exist any version 'no final'
         ItemSchemeVersion organisationSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(organisationSchemeVersionToCopy.getItemScheme().getId());
         if (organisationSchemeVersionNoFinal != null) {
@@ -470,7 +470,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     private VersioningResult createVersionOfOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, isTemporal, null, null);
-        checkOrganisationSchemeToVersioning(ctx, urnToCopy);
+        checkOrganisationSchemeToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
         return organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal, organisationVersioningCopyCallback);

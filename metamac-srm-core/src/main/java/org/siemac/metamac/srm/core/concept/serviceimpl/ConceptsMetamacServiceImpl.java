@@ -790,7 +790,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             SrmValidationUtils.checkArtefactCanBeVersionedAsTemporal(conceptSchemeVersionToCopy.getMaintainableArtefact(), conceptSchemeVersionToCopy.getLifeCycleMetadata());
         } else {
             // Check version to copy is published and not imported
-            SrmValidationUtils.checkArtefactCanBeVersioned(conceptSchemeVersionToCopy.getMaintainableArtefact(), conceptSchemeVersionToCopy.getLifeCycleMetadata());
+            SrmValidationUtils.checkArtefactCanBeVersioned(conceptSchemeVersionToCopy.getMaintainableArtefact(), conceptSchemeVersionToCopy.getLifeCycleMetadata(), isTemporal);
         }
 
         // Check does not exist any version 'no final'

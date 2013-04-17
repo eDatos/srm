@@ -643,7 +643,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private DataStructureDefinitionVersionMetamac createVersionOfDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, isTemporal, null, null);
-        checkDataStructureDefinitionToVersioning(ctx, urnToCopy);
+        checkDataStructureDefinitionToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
@@ -744,11 +744,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return dataStructureDefinitionVersionMetamacNewVersion;
     }
 
-    private void checkDataStructureDefinitionToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    private void checkDataStructureDefinitionToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         // Check version to copy is published
-        SrmValidationUtils.checkArtefactCanBeVersioned(dataStructureDefinitionVersionToCopy.getMaintainableArtefact(), dataStructureDefinitionVersionToCopy.getLifeCycleMetadata());
+        SrmValidationUtils.checkArtefactCanBeVersioned(dataStructureDefinitionVersionToCopy.getMaintainableArtefact(), dataStructureDefinitionVersionToCopy.getLifeCycleMetadata(), isTemporal);
 
         // Check does not exist any version 'no final'
         StructureVersion dataStructureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinalClient(dataStructureDefinitionVersionToCopy.getStructure().getId());

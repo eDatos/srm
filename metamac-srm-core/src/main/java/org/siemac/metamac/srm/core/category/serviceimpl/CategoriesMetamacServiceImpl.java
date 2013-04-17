@@ -522,16 +522,16 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private VersioningResult createVersionOfCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, isTemporal, null, null);
-        checkCategorySchemeToVersioning(ctx, urnToCopy);
+        checkCategorySchemeToVersioning(ctx, urnToCopy, isTemporal);
         // Versioning
         return categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, isTemporal, categoryVersioningCopyCallback);
     }
 
-    private void checkCategorySchemeToVersioning(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    private void checkCategorySchemeToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
 
         CategorySchemeVersionMetamac categorySchemeVersionToCopy = retrieveCategorySchemeByUrn(ctx, urnToCopy);
         // Check version to copy is published
-        SrmValidationUtils.checkArtefactCanBeVersioned(categorySchemeVersionToCopy.getMaintainableArtefact(), categorySchemeVersionToCopy.getLifeCycleMetadata());
+        SrmValidationUtils.checkArtefactCanBeVersioned(categorySchemeVersionToCopy.getMaintainableArtefact(), categorySchemeVersionToCopy.getLifeCycleMetadata(), isTemporal);
         // Check does not exist any version 'no final'
         ItemSchemeVersion categorySchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(categorySchemeVersionToCopy.getItemScheme().getId());
         if (categorySchemeVersionNoFinal != null) {
