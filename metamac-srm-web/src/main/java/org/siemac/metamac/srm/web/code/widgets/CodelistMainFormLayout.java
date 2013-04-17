@@ -55,7 +55,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     protected void showAddCodelistToFamilyButton() {
-        if (CodesClientSecurityUtils.canAddCodelistToCodelistFamily()) {
+        if (CodesClientSecurityUtils.canAddCodelistToCodelistFamily(versioningBackground)) {
             addCodelistToFamilyButton.show();
         }
     }

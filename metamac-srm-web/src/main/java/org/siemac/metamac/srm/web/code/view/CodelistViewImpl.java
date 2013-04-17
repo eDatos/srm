@@ -65,6 +65,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -189,6 +190,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         subPanel.addMember(versionsSectionStack);
         titleLabel = new TitleLabel();
         informationLabel = new InformationLabel(StringUtils.EMPTY);
+        informationLabel.setVisibility(Visibility.HIDDEN);
         TabSet tabSet = new TabSet();
         tabSet.setStyleName("marginTop15");
 
@@ -409,8 +411,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private void setInformationLabelContents(CodelistMetamacDto codelistMetamacDto) {
-        String message = BooleanUtils.isTrue(codelistMetamacDto.getVersioningBackground()) ? getMessages().codelistIsInProcessInBackground() : StringUtils.EMPTY;
-        informationLabel.setContents(message);
+        if (BooleanUtils.isTrue(codelistMetamacDto.getVersioningBackground())) {
+            String message = getMessages().codelistIsInProcessInBackground();
+            informationLabel.setContents(message);
+            informationLabel.show();
+        } else {
+            informationLabel.setContents(StringUtils.EMPTY);
+            informationLabel.hide();
+        }
     }
 
     @Override
