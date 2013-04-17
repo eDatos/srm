@@ -262,6 +262,14 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), criteria.getIsNotCodelistUrn(), OperationType.NE));
             }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getMaintainerUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.MAINTAINER_URN.name(), criteria.getMaintainerUrn(), OperationType.EQ));
+            }
 
         }
         return conjunctionRestriction;
@@ -422,6 +430,14 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
             }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getMaintainerUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.MAINTAINER_URN.name(), criteria.getMaintainerUrn(), OperationType.EQ));
+            }
 
         }
 
@@ -567,6 +583,14 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
             }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getMaintainerUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.MAINTAINER_URN.name(), criteria.getMaintainerUrn(), OperationType.EQ));
+            }
 
         }
         return conjunctionRestriction;
@@ -647,6 +671,14 @@ public class MetamacWebCriteriaUtils {
             if (criteria.getIsLastVersion() != null) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getMaintainerUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.MAINTAINER_URN.name(), criteria.getMaintainerUrn(), OperationType.EQ));
             }
 
         }
