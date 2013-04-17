@@ -16,6 +16,9 @@ public class UpdateConceptSchemeProcStatus {
     @In(2)
     ProcStatusEnum          nextProcStatus;
 
+    @In(3)
+    Boolean                 forceLatestFinal;       // Only suitable for internal publication
+
     @Out(1)
     ConceptSchemeMetamacDto conceptSchemeDto;
 }
