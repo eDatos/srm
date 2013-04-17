@@ -348,8 +348,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
-        Boolean forceLatestFinal = null; // FIXME
+    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal) {
         dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
                 new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 

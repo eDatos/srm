@@ -17,7 +17,7 @@ public interface DsdGeneralTabUiHandlers extends UiHandlers {
     void sendToProductionValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
     void sendToDiffusionValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
     void rejectValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
-    void publishInternally(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
+    void publishInternally(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, Boolean forceLatestFinal);
     void publishExternally(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
     void versioning(String urn, VersionTypeEnum versionType);
     void cancelValidity(String urn);

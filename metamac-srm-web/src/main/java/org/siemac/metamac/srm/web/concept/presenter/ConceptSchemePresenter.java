@@ -296,8 +296,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     @Override
-    public void publishInternally(final ConceptSchemeMetamacDto conceptSchemeToPublish) {
-        Boolean forceLatestFinal = null; // FIXME
+    public void publishInternally(final ConceptSchemeMetamacDto conceptSchemeToPublish, Boolean forceLatestFinal) {
         dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, forceLatestFinal),
                 new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
 

@@ -16,7 +16,7 @@ public interface CategorySchemeUiHandlers extends BaseCategoryUiHandlers {
     void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);
     void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus);
     void rejectValidation(String urn, ProcStatusEnum currentProcStatus);
-    void publishInternally(String urn, ProcStatusEnum currentProcStatus);
+    void publishInternally(String urn, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal);
     void publishExternally(String urn, ProcStatusEnum currentProcStatus);
     void versioning(String urn, VersionTypeEnum versionType);
     void createTemporalVersion(String urn);

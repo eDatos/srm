@@ -320,8 +320,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     }
 
     @Override
-    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
-        Boolean forceLatestFinal = null; // FIXME
+    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal) {
         dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
                 new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
 

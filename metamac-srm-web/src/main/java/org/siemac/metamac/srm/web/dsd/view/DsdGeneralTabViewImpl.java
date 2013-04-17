@@ -197,7 +197,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto);
+                publishDsdInternally();
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
@@ -592,6 +592,11 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     public void onDsdSaved(DataStructureDefinitionMetamacDto dsd) {
         setDsd(dsd);
         mainFormLayout.setViewMode();
+    }
+
+    private void publishDsdInternally() {
+        // TODO
+        getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto, null);
     }
 
     private void versionDsd() {

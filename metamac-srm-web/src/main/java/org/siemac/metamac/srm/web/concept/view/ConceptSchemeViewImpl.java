@@ -271,7 +271,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishInternally(conceptSchemeDto);
+                publishConceptSchemeInternally();
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
@@ -765,6 +765,11 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             }
         });
         return operation;
+    }
+
+    private void publishConceptSchemeInternally() {
+        // TODO
+        getUiHandlers().publishInternally(conceptSchemeDto, null);
     }
 
     private void versionConceptScheme() {

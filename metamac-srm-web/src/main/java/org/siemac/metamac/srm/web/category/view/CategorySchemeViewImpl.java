@@ -252,7 +252,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishInternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus());
+                publishCategorySchemeInternally();
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
@@ -612,6 +612,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         categorySchemeDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return categorySchemeDto;
+    }
+
+    private void publishCategorySchemeInternally() {
+        // TODO
+        getUiHandlers().publishInternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus(), null);
     }
 
     private void versionCategoryScheme() {

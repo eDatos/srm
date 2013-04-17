@@ -229,8 +229,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void publishInternally(final DataStructureDefinitionMetamacDto dsdToPublish) {
-        Boolean forceLatestFinal = null; // FIXME
+    public void publishInternally(final DataStructureDefinitionMetamacDto dsdToPublish, Boolean forceLatestFinal) {
         dispatcher.execute(new UpdateDsdProcStatusAction(dsdToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, forceLatestFinal), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override

@@ -363,7 +363,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
+                publishOrganisationSchemeInternally();
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
@@ -781,6 +781,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         } else {
             deleteButton.hide();
         }
+    }
+
+    private void publishOrganisationSchemeInternally() {
+        // TODO
+        getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
     }
 
     private void versionOrganisationScheme() {

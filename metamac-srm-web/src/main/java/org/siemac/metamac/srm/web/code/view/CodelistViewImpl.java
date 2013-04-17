@@ -311,7 +311,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishInternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus());
+                publishCodelistInternally();
             }
         });
         mainFormLayout.getPublishExternally().addClickHandler(new ClickHandler() {
@@ -864,6 +864,15 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codelistDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return codelistDto;
+    }
+
+    private void publishCodelistInternally() {
+        // If the codelist is imported, ask if this resource should be the latest one
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(codelistDto.getMaintainer())) {
+            // TODO
+        } else {
+            getUiHandlers().publishInternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus(), null);
+        }
     }
 
     private void versionCodelist() {

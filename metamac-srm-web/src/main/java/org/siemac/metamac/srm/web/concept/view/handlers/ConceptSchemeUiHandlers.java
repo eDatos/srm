@@ -18,7 +18,7 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
     void sendToProductionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
     void sendToDiffusionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
     void rejectValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
-    void publishInternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
+    void publishInternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto, Boolean forceLatestFinal);
     void publishExternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
     void versioning(String urn, VersionTypeEnum versionType);
     void createTemporalVersion(String urn);

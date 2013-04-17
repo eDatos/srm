@@ -362,8 +362,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
-        Boolean forceLatestFinal = null; // FIXME
+    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal) {
         dispatcher.execute(new UpdateCodelistProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
                 new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
 
