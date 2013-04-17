@@ -25,23 +25,6 @@ public class DsdRecord extends ListGridRecord {
         setDsd(dsd);
     }
 
-    // Complete record
-    public DsdRecord(Long identifier, String code, String version, String agency, String name, String description, String uri, String urn, Boolean finalStructure, String procStatus, Date startDate,
-            Date endDate) {
-        setId(identifier);
-        setCode(code);
-        setVersion(version);
-        setAgency(agency);
-        setName(name);
-        setDescription(description);
-        setUri(uri);
-        setUrn(urn);
-        setProcStatus(procStatus);
-        setFinalStructure(finalStructure);
-        setStartDate(startDate);
-        setEndDate(endDate);
-    }
-
     public void setId(Long attribute) {
         setAttribute(DataStructureDefinitionDS.ID, attribute);
     }
@@ -54,7 +37,7 @@ public class DsdRecord extends ListGridRecord {
         setAttribute(DataStructureDefinitionDS.VERSION_LOGIC, attribute);
     }
 
-    public void setAgency(String attribute) {
+    public void setMaintainer(String attribute) {
         setAttribute(DataStructureDefinitionDS.MAINTAINER, attribute);
     }
 
@@ -64,10 +47,6 @@ public class DsdRecord extends ListGridRecord {
 
     public void setDescription(String attribute) {
         setAttribute(DataStructureDefinitionDS.DESCRIPTION, attribute);
-    }
-
-    public void setUri(String attribute) {
-        setAttribute(DataStructureDefinitionDS.URI, attribute);
     }
 
     public void setUrn(String attribute) {
@@ -118,10 +97,6 @@ public class DsdRecord extends ListGridRecord {
         return getAttributeAsString(DataStructureDefinitionDS.DESCRIPTION);
     }
 
-    public String getUri() {
-        return getAttributeAsString(DataStructureDefinitionDS.URI);
-    }
-
     public String getUrn() {
         return getAttributeAsString(DataStructureDefinitionDS.URN);
     }
@@ -141,5 +116,4 @@ public class DsdRecord extends ListGridRecord {
     public DataStructureDefinitionMetamacDto getDsd() {
         return (DataStructureDefinitionMetamacDto) getAttributeAsObject(DataStructureDefinitionDS.DTO);
     }
-
 }
