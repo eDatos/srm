@@ -5,6 +5,7 @@ public class NameableArtefactWebCriteria extends MetamacWebCriteria {
     private static final long serialVersionUID = 1L;
 
     private String            code;
+    private String            codeEQ;               // Use this field when the comparison should be made with EQUALS (not ILIKE!)
     private String            name;
     private String            urn;
     private String            description;
@@ -46,5 +47,13 @@ public class NameableArtefactWebCriteria extends MetamacWebCriteria {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCodeEQ() {
+        return codeEQ;
+    }
+
+    public void setCodeEQ(String codeEQ) {
+        this.codeEQ = codeEQ;
     }
 }

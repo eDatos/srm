@@ -14,6 +14,8 @@ public class VersionableResourceWebCriteria extends NameableArtefactWebCriteria 
     private Date              externalPublicationDate;
     private String            externalPublicationUser;
     private Boolean           isLastVersion;
+    private Boolean           isLatestFinal;
+    private String            maintainerUrn;
 
     public VersionableResourceWebCriteria() {
     }
@@ -68,5 +70,21 @@ public class VersionableResourceWebCriteria extends NameableArtefactWebCriteria 
 
     public void setIsLastVersion(Boolean isLastVersion) {
         this.isLastVersion = isLastVersion;
+    }
+
+    public String getMaintainerUrn() {
+        return maintainerUrn;
+    }
+
+    public void setMaintainerUrn(String maintainerUrn) {
+        this.maintainerUrn = maintainerUrn;
+    }
+
+    public Boolean getIsLatestFinal() {
+        return isLatestFinal;
+    }
+
+    public void setIsLatestFinal(Boolean isLatestFinal) {
+        this.isLatestFinal = isLatestFinal;
     }
 }

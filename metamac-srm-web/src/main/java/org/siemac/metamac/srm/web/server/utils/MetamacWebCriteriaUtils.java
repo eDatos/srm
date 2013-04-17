@@ -59,6 +59,10 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
             }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
+            }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
@@ -108,6 +112,14 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
             }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
+            }
+            if (StringUtils.isNotBlank(criteria.getMaintainerUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.MAINTAINER_URN.name(), criteria.getMaintainerUrn(), OperationType.EQ));
+            }
 
         }
         return conjunctionRestriction;
@@ -134,6 +146,9 @@ public class MetamacWebCriteriaUtils {
 
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
             }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
@@ -204,6 +219,9 @@ public class MetamacWebCriteriaUtils {
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
             }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
+            }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
             }
@@ -270,6 +288,9 @@ public class MetamacWebCriteriaUtils {
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
             }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
+            }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
             }
@@ -313,6 +334,9 @@ public class MetamacWebCriteriaUtils {
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
             }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
+            }
             if (StringUtils.isNotBlank(criteria.getUrn())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.URN.name(), criteria.getUrn(), OperationType.ILIKE));
             }
@@ -353,6 +377,10 @@ public class MetamacWebCriteriaUtils {
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
             }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(
@@ -420,6 +448,9 @@ public class MetamacWebCriteriaUtils {
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
             }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
+            }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
             }
@@ -476,6 +507,10 @@ public class MetamacWebCriteriaUtils {
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
             }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(
@@ -569,6 +604,10 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
             }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
+            }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
@@ -636,6 +675,9 @@ public class MetamacWebCriteriaUtils {
 
             if (StringUtils.isNotBlank(criteria.getCode())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCode(), OperationType.ILIKE));
+            }
+            if (StringUtils.isNotBlank(criteria.getCodeEQ())) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.CODE.name(), criteria.getCodeEQ(), OperationType.EQ));
             }
             if (StringUtils.isNotBlank(criteria.getName())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.NAME.name(), criteria.getName(), OperationType.ILIKE));
