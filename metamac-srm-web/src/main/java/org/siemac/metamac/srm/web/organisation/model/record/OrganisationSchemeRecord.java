@@ -7,8 +7,23 @@ import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 
 public class OrganisationSchemeRecord extends ItemSchemeRecord {
 
-    public OrganisationSchemeRecord(Long id, String code, String name, String status, String type, String versionLogic, String urn, OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        super(id, code, name, status, versionLogic, urn);
+    public OrganisationSchemeRecord() {
+    }
+
+    public OrganisationSchemeRecord(Long id, String code, String name, String status, String type, String versionLogic, String urn, String maintainer, String internalPublicationDate,
+            String internalPublicationUser, String externalPublicationDate, String externalPublicationUser, OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        super();
+        setId(id);
+        setCode(code);
+        setName(name);
+        setProcStatus(status);
+        setVersionLogic(versionLogic);
+        setUrn(urn);
+        setMaintainer(maintainer);
+        setInternalPublicationDate(internalPublicationDate);
+        setInternalPublicationUser(internalPublicationUser);
+        setExternalPublicationDate(externalPublicationDate);
+        setExternalPublicationUser(externalPublicationUser);
         setType(type);
         setOrganisationSchemeDto(organisationSchemeMetamacDto);
     }
@@ -28,5 +43,4 @@ public class OrganisationSchemeRecord extends ItemSchemeRecord {
     public OrganisationSchemeMetamacDto getOrganisationSchemeDto() {
         return (OrganisationSchemeMetamacDto) getAttributeAsObject(OrganisationSchemeDS.DTO);
     }
-
 }

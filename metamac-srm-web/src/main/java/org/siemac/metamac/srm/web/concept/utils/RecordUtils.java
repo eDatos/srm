@@ -7,6 +7,8 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptTreeNode;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.utils.DateUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
 
@@ -15,9 +17,20 @@ public class RecordUtils {
     // CONCEPT SCHEMES
 
     public static ConceptSchemeRecord getConceptSchemeRecord(ConceptSchemeMetamacDto conceptSchemeDto) {
-        ConceptSchemeRecord record = new ConceptSchemeRecord(conceptSchemeDto.getId(), conceptSchemeDto.getCode(), getLocalisedString(conceptSchemeDto.getName()),
-                getLocalisedString(conceptSchemeDto.getDescription()), org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()),
-                conceptSchemeDto.getVersionLogic(), conceptSchemeDto.getUrn(), conceptSchemeDto);
+        ConceptSchemeRecord record = new ConceptSchemeRecord();
+        record.setId(conceptSchemeDto.getId());
+        record.setCode(conceptSchemeDto.getCode());
+        record.setName(getLocalisedString(conceptSchemeDto.getName()));
+        record.setDescription(getLocalisedString(conceptSchemeDto.getDescription()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
+        record.setVersionLogic(conceptSchemeDto.getVersionLogic());
+        record.setUrn(conceptSchemeDto.getUrn());
+        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
+        record.setInternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getLifeCycle().getInternalPublicationDate()));
+        record.setInternalPublicationUser(conceptSchemeDto.getLifeCycle().getInternalPublicationUser());
+        record.setExternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getLifeCycle().getExternalPublicationDate()));
+        record.setExternalPublicationUser(conceptSchemeDto.getLifeCycle().getExternalPublicationUser());
+        record.setConceptSchemeDto(conceptSchemeDto);
         return record;
     }
 

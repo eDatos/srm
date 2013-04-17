@@ -7,8 +7,24 @@ import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 
 public class ConceptSchemeRecord extends ItemSchemeRecord {
 
-    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, ConceptSchemeMetamacDto conceptSchemeDto) {
-        super(id, code, name, status, versionLogic, urn);
+    public ConceptSchemeRecord() {
+
+    }
+
+    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate,
+            String internalPublicationUser, String externalPublicationDate, String externalPublicationUser, ConceptSchemeMetamacDto conceptSchemeDto) {
+        super();
+        setId(id);
+        setCode(code);
+        setName(name);
+        setProcStatus(status);
+        setVersionLogic(versionLogic);
+        setUrn(urn);
+        setMaintainer(maintainer);
+        setInternalPublicationDate(internalPublicationDate);
+        setInternalPublicationUser(internalPublicationUser);
+        setExternalPublicationDate(externalPublicationDate);
+        setExternalPublicationUser(externalPublicationUser);
         setDescription(description);
         setConceptSchemeDto(conceptSchemeDto);
     }

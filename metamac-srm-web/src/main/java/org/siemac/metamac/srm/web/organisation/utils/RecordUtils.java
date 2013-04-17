@@ -7,6 +7,8 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.web.organisation.model.record.ContactRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
@@ -18,9 +20,20 @@ public class RecordUtils {
     // ORGANISATION SCHEMES
 
     public static OrganisationSchemeRecord getOrganisationSchemeRecord(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        OrganisationSchemeRecord record = new OrganisationSchemeRecord(organisationSchemeDto.getId(), organisationSchemeDto.getCode(), getLocalisedString(organisationSchemeDto.getName()),
-                org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()),
-                CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()), organisationSchemeDto.getVersionLogic(), organisationSchemeDto.getUrn(), organisationSchemeDto);
+        OrganisationSchemeRecord record = new OrganisationSchemeRecord();
+        record.setId(organisationSchemeDto.getId());
+        record.setCode(organisationSchemeDto.getCode());
+        record.setName(getLocalisedString(organisationSchemeDto.getName()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
+        record.setType(CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
+        record.setVersionLogic(organisationSchemeDto.getVersionLogic());
+        record.setUrn(organisationSchemeDto.getUrn());
+        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
+        record.setInternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getInternalPublicationDate()));
+        record.setInternalPublicationUser(organisationSchemeDto.getLifeCycle().getInternalPublicationUser());
+        record.setExternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getExternalPublicationDate()));
+        record.setExternalPublicationUser(organisationSchemeDto.getLifeCycle().getExternalPublicationUser());
+        record.setOrganisationSchemeDto(organisationSchemeDto);
         return record;
     }
 

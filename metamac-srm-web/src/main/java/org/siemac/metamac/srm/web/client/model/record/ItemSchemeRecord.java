@@ -6,7 +6,11 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ItemSchemeRecord extends ListGridRecord {
 
-    public ItemSchemeRecord(Long id, String code, String name, String status, String versionLogic, String urn) {
+    public ItemSchemeRecord() {
+    }
+
+    public ItemSchemeRecord(Long id, String code, String name, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate, String internalPublicationUser,
+            String externalPublicationDate, String externalPublicationUser) {
         setId(id);
         setCode(code);
         setName(name);
@@ -55,4 +59,23 @@ public class ItemSchemeRecord extends ListGridRecord {
         return getAttributeAsString(ItemSchemeDS.URN);
     }
 
+    public void setMaintainer(String value) {
+        setAttribute(ItemSchemeDS.MAINTAINER, value);
+    }
+
+    public void setInternalPublicationDate(String value) {
+        setAttribute(ItemSchemeDS.INTERNAL_PUBLICATION_DATE, value);
+    }
+
+    public void setInternalPublicationUser(String value) {
+        setAttribute(ItemSchemeDS.INTERNAL_PUBLICATION_USER, value);
+    }
+
+    public void setExternalPublicationDate(String value) {
+        setAttribute(ItemSchemeDS.EXTERNAL_PUBLICATION_DATE, value);
+    }
+
+    public void setExternalPublicationUser(String value) {
+        setAttribute(ItemSchemeDS.EXTERNAL_PUBLICATION_USER, value);
+    }
 }

@@ -7,8 +7,23 @@ import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
 
 public class CategorySchemeRecord extends ItemSchemeRecord {
 
-    public CategorySchemeRecord(Long id, String code, String name, String status, String versionLogic, String urn, CategorySchemeMetamacDto categorySchemeMetamacDto) {
-        super(id, code, name, status, versionLogic, urn);
+    public CategorySchemeRecord() {
+    }
+
+    public CategorySchemeRecord(Long id, String code, String name, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate, String internalPublicationUser,
+            String externalPublicationDate, String externalPublicationUser, CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        super();
+        setId(id);
+        setCode(code);
+        setName(name);
+        setProcStatus(status);
+        setVersionLogic(versionLogic);
+        setUrn(urn);
+        setMaintainer(maintainer);
+        setInternalPublicationDate(internalPublicationDate);
+        setInternalPublicationUser(internalPublicationUser);
+        setExternalPublicationDate(externalPublicationDate);
+        setExternalPublicationUser(externalPublicationUser);
         setCategorySchemeDto(categorySchemeMetamacDto);
     }
 
@@ -23,5 +38,4 @@ public class CategorySchemeRecord extends ItemSchemeRecord {
     public CategorySchemeMetamacDto getCategorySchemeDto() {
         return (CategorySchemeMetamacDto) getAttributeAsObject(CategorySchemeDS.DTO);
     }
-
 }
