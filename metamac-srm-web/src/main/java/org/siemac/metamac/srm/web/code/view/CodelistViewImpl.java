@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.code.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -79,6 +81,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
 
     private TitleLabel                                   titleLabel;
+    private InformationLabel                             informationLabel;
     private VLayout                                      panel;
     private CodelistMainFormLayout                       mainFormLayout;
 
@@ -185,6 +188,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         subPanel.setMembersMargin(5);
         subPanel.addMember(versionsSectionStack);
         titleLabel = new TitleLabel();
+        informationLabel = new InformationLabel(StringUtils.EMPTY);
         TabSet tabSet = new TabSet();
         tabSet.setStyleName("marginTop15");
 
@@ -215,6 +219,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         VLayout tabSubPanel = new VLayout();
         tabSubPanel.addMember(titleLabel);
+        tabSubPanel.addMember(informationLabel);
         tabSubPanel.addMember(tabSet);
         tabSubPanel.setMargin(15);
         subPanel.addMember(tabSubPanel);
@@ -387,6 +392,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Set title
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(codelist));
+        setInformationLabelContents(codelist);
 
         // Security
         mainFormLayout.setCodelist(codelist);
@@ -400,6 +406,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codesTreeGrid.updateItemScheme(codelist);
         codelistOrdersPanel.updateItemScheme(codelist);
         codelistOpennesssLevelsPanel.updateItemScheme(codelist);
+    }
+
+    private void setInformationLabelContents(CodelistMetamacDto codelistMetamacDto) {
+        String message = BooleanUtils.isTrue(codelistMetamacDto.getVersioningBackground()) ? getMessages().codelistIsInProcessInBackground() : StringUtils.EMPTY;
+        informationLabel.setContents(message);
     }
 
     @Override
