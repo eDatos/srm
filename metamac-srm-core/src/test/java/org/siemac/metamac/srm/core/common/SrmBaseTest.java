@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.SchedulerRepository;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
@@ -495,14 +492,5 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         }
         fail("List does not contain item with urn " + urn);
         return null;
-    }
-
-    protected void waitUntilJobFinished() throws InterruptedException, SchedulerException {
-        // Wait until the job is finished
-        Thread.sleep(10 * 1000); // 10 sg
-        Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
-        while (sched.getCurrentlyExecutingJobs().size() != 0) {
-            Thread.sleep(5 * 1000l);
-        }
     }
 }

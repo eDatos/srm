@@ -70,6 +70,7 @@ public class ImportationCsvJob implements Job {
                 throw new IllegalArgumentException("Job with operation " + operation + " is not supported");
             }
         } catch (Exception e) {
+            logger.error("ImportationJob: the importation with key " + jobKey.getName() + " has failed", e);
             try {
                 if (serviceContext == null) {
                     serviceContext = serviceContextDefault;
