@@ -6,6 +6,7 @@ public enum ConceptSchemeVersionMetamacCriteriaPropertyEnum {
     URN,
     NAME,
     DESCRIPTION,
+    MAINTAINER_URN,
     CONCEPT_SCHEME_TYPE,
     STATISTICAL_OPERATION_URN,
     PROC_STATUS,

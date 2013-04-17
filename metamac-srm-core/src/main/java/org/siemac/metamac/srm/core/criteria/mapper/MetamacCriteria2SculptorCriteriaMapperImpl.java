@@ -322,6 +322,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
                 case DESCRIPTION:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                case MAINTAINER_URN:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue());
                 case CONCEPT_SCHEME_TYPE:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.type(), propertyRestriction.getEnumValue());
                 case STATISTICAL_OPERATION_URN:
