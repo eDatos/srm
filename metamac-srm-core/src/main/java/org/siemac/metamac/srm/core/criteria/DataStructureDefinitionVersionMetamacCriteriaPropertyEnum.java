@@ -6,6 +6,7 @@ public enum DataStructureDefinitionVersionMetamacCriteriaPropertyEnum {
     URN,
     NAME,
     DESCRIPTION,
+    MAINTAINER_URN,
     PROC_STATUS,
     STATISTICAL_OPERATION_URN,
     DIMENSION_CONCEPT_URN,

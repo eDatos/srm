@@ -6,6 +6,7 @@ public enum CodelistVersionMetamacCriteriaPropertyEnum {
     URN,
     NAME,
     DESCRIPTION,
+    MAINTAINER_URN,
     PROC_STATUS,
     IS_LAST_VERSION,
     ACCESS_TYPE,

@@ -6,6 +6,7 @@ public enum OrganisationSchemeVersionMetamacCriteriaPropertyEnum {
     URN,
     NAME,
     DESCRIPTION,
+    MAINTAINER_URN,
     PROC_STATUS,
     TYPE,
     IS_LAST_VERSION,
