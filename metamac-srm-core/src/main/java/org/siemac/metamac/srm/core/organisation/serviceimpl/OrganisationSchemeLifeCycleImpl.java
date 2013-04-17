@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
@@ -35,6 +36,9 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ItemSchemeVersionRepository                itemSchemeVersionRepository;
+
+    @Autowired
+    private ItemRepository                             itemRepository;
 
     @Autowired
     private OrganisationSchemeVersionMetamacRepository organisationSchemeVersionMetamacRepository;
@@ -80,7 +84,8 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(organisationSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
 
             // One organisation at least
-            if (organisationSchemeVersion.getItems().size() == 0) {
+            Long itemsCount = itemRepository.countItems(organisationSchemeVersion.getId());
+            if (itemsCount == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
             }
         }

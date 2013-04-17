@@ -26,6 +26,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
@@ -39,6 +40,9 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
+
+    @Autowired
+    private ItemRepository                   itemRepository;
 
     @Autowired
     private CodeMetamacRepository            codeMetamacRepository;
@@ -86,7 +90,8 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);
 
             // One code at least
-            if (codelistVersion.getItems().size() == 0) {
+            Long itemsCount = itemRepository.countItems(codelistVersion.getId());
+            if (itemsCount == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, codelistVersion.getMaintainableArtefact().getUrn()));
             }
         }

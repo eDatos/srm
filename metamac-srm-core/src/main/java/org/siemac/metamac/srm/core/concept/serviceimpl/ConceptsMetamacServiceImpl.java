@@ -44,6 +44,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
@@ -69,6 +70,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
     private ItemSchemeVersionRepository      itemSchemeVersionRepository;
+
+    @Autowired
+    private ItemRepository                   itemRepository;
 
     @Autowired
     private ConceptRepository                conceptRepository;
@@ -859,12 +863,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // When updating
         // If the scheme has items (concepts), type cannot be modified
+
         if (conceptSchemeVersion.getId() != null) {
-            if (conceptSchemeVersion.getItems() != null && !conceptSchemeVersion.getItems().isEmpty()) {
-                if (conceptSchemeVersion.getIsTypeUpdated()) {
-                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE)
-                            .build();
-                }
+            Long itemsCount = itemRepository.countItems(conceptSchemeVersion.getId());
+            if (itemsCount != 0 && conceptSchemeVersion.getIsTypeUpdated()) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE).build();
             }
         }
 

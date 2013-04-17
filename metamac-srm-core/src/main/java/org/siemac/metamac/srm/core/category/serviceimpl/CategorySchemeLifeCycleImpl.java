@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
@@ -37,6 +38,9 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private CategorySchemeVersionMetamacRepository categorySchemeVersionMetamacRepository;
+
+    @Autowired
+    private ItemRepository                         itemRepository;
 
     @Autowired
     private CategoriesService                      categoriesService;
@@ -79,7 +83,8 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(categorySchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
 
             // One category at least
-            if (categorySchemeVersion.getItems().size() == 0) {
+            Long itemsCount = itemRepository.countItems(categorySchemeVersion.getId());
+            if (itemsCount == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, categorySchemeVersion.getMaintainableArtefact().getUrn()));
             }
         }

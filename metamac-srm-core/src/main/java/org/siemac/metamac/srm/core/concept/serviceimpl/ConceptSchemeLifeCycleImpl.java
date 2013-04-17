@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
@@ -37,6 +38,9 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ItemSchemeVersionRepository           itemSchemeVersionRepository;
+
+    @Autowired
+    private ItemRepository                        itemRepository;
 
     @Autowired
     private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
@@ -82,7 +86,8 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
 
             // One concept at least
-            if (conceptSchemeVersion.getItems().size() == 0) {
+            Long itemsCount = itemRepository.countItems(conceptSchemeVersion.getId());
+            if (itemsCount == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
             }
 
@@ -107,7 +112,6 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                 }
             }
         }
-
         @Override
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
