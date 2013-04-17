@@ -16,6 +16,9 @@ public class UpdateDsdProcStatus {
     @In(2)
     ProcStatusEnum                    nextProcStatus;
 
+    @In(3)
+    Boolean                           forceLatestFinal;
+
     @Out(1)
     DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
 }

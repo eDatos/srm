@@ -39,7 +39,7 @@ public class UpdateCodelistProcStatusActionHandler extends SecurityActionHandler
                     scheme = srmCoreServiceFacade.rejectCodelistDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
                 }
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.publishCodelistInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), false); // FIXME Set the forceFinal parameter
+                scheme = srmCoreServiceFacade.publishCodelistInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getForceLatestFinal());
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.publishCodelistExternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             }

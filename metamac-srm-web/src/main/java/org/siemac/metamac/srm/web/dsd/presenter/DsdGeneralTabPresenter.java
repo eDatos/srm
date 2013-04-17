@@ -182,7 +182,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void sendToProductionValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.PRODUCTION_VALIDATION), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.PRODUCTION_VALIDATION, null), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -198,7 +198,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void sendToDiffusionValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.DIFFUSION_VALIDATION), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.DIFFUSION_VALIDATION, null), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -214,7 +214,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void rejectValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.VALIDATION_REJECTED), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.VALIDATION_REJECTED, null), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -230,7 +230,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void publishInternally(final DataStructureDefinitionMetamacDto dsdToPublish) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dsdToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        Boolean forceLatestFinal = null; // FIXME
+        dispatcher.execute(new UpdateDsdProcStatusAction(dsdToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, forceLatestFinal), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -250,7 +251,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void publishExternally(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.EXTERNALLY_PUBLISHED), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.EXTERNALLY_PUBLISHED, null), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

@@ -312,7 +312,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
+        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus, null), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -329,7 +329,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
+        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus, null), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -346,7 +346,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void rejectValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
+        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus, null), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -363,31 +363,33 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCodelistProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
+        Boolean forceLatestFinal = null; // FIXME
+        dispatcher.execute(new UpdateCodelistProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
+                new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorPublishingInternally()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
-                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistPublishedInternally()), MessageTypeEnum.SUCCESS);
-                codelistMetamacDto = result.getCodelistMetamacDto();
-                getView().setCodelist(codelistMetamacDto);
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorPublishingInternally()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
+                        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistPublishedInternally()), MessageTypeEnum.SUCCESS);
+                        codelistMetamacDto = result.getCodelistMetamacDto();
+                        getView().setCodelist(codelistMetamacDto);
 
-                // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version (the
-                // URN changes!).
-                if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
-                    retrieveCodelistVersions(codelistMetamacDto.getUrn());
-                    updateUrl();
-                }
-            }
-        });
+                        // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version
+                        // (the URN changes!).
+                        if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
+                            retrieveCodelistVersions(codelistMetamacDto.getUrn());
+                            updateUrl();
+                        }
+                    }
+                });
     }
 
     @Override
     public void publishExternally(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
+        dispatcher.execute(new UpdateCodelistProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus, null), new WaitingAsyncCallback<UpdateCodelistProcStatusResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
