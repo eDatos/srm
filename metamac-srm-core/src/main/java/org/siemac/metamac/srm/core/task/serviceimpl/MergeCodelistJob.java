@@ -9,7 +9,6 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.PersistJobDataAfterExecution;
-import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
@@ -51,9 +50,7 @@ public class MergeCodelistJob implements Job {
         try {
             // Parameters
             String urnToCopy = data.getString(URN_TO_COPY);
-            VersionTypeEnum versionType = VersionTypeEnum.valueOf(data.getString(VERSION_TYPE));
             Boolean isTemporal = data.getBoolean(IS_TEMPORAL);
-            String operation = data.getString(OPERATION);
 
             logger.info("MergingJob: Copy " + urnToCopy + ", job " + jobKey + " starting at " + new Date());
 
