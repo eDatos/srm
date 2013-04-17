@@ -1,6 +1,5 @@
-package org.siemac.metamac.srm.web.code.widgets;
+package org.siemac.metamac.srm.web.client.widgets;
 
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
@@ -14,16 +13,16 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class VersionCodelistWindow extends CustomWindow {
+public class ConfirmationWindow extends CustomWindow {
 
     private IButton yesButton;
     private IButton noButton;
 
-    public VersionCodelistWindow() {
-        super(MetamacSrmWeb.getConstants().codelistVersioning());
+    public ConfirmationWindow(String title, String questionMessage) {
+        super(title);
         setHeight(170);
 
-        Label label = new Label(MetamacSrmWeb.getConstants().codelistVersioningConfirmationMessage());
+        Label label = new Label(questionMessage);
         label.setAutoHeight();
         label.setIcon(GlobalResources.RESOURCE.ask().getURL());
         label.setIconSize(32);
@@ -34,7 +33,7 @@ public class VersionCodelistWindow extends CustomWindow {
 
             @Override
             public void onClick(ClickEvent event) {
-                VersionCodelistWindow.this.destroy();
+                ConfirmationWindow.this.destroy();
             }
         });
 
@@ -43,7 +42,7 @@ public class VersionCodelistWindow extends CustomWindow {
 
             @Override
             public void onClick(ClickEvent event) {
-                VersionCodelistWindow.this.destroy();
+                ConfirmationWindow.this.destroy();
             }
         });
 

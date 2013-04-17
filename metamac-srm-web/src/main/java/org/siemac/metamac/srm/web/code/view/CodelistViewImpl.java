@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
+import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
@@ -34,7 +35,6 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistOpennesssLevelsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOrdersPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.code.widgets.CodesTreeGrid;
-import org.siemac.metamac.srm.web.code.widgets.VersionCodelistWindow;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
@@ -875,7 +875,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 if (versionWindow.validateForm()) {
                     final VersionTypeEnum versionType = versionWindow.getSelectedVersion();
 
-                    VersionCodelistWindow versionCodelistWindow = new VersionCodelistWindow();
+                    ConfirmationWindow versionCodelistWindow = new ConfirmationWindow(getConstants().codelistVersioning(), getConstants().codelistVersioningConfirmationMessage());
                     versionCodelistWindow.getYesButton().addClickHandler(new ClickHandler() {
 
                         @Override
