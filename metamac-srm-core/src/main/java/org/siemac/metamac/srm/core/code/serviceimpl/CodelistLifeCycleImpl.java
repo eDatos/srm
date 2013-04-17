@@ -189,7 +189,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             CodelistVersionMetamac codelistVersionMetamac = (CodelistVersionMetamac) srmResourceVersion;
             if (VersionUtil.isTemporalVersion(codelistVersionMetamac.getMaintainableArtefact().getVersionLogic())) {
-                return codesMetamacService.mergeTemporalVersion(ctx, codelistVersionMetamac);
+                return codesMetamacService.mergeTemporalVersion(ctx, codelistVersionMetamac.getMaintainableArtefact().getUrn());
             }
             return srmResourceVersion;
         }

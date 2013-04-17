@@ -138,6 +138,40 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
+    public String plannifyMergeCodelist(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
+        try {
+            // Plan job
+            String jobKey = "job_merge_" + java.util.UUID.randomUUID().toString();
+
+            // Mark task in progress
+            createTaskInProgress(ctx, jobKey, null);
+
+            // Scheduler a job
+            Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
+
+            // Validation: There shouldn't be an background processing
+            if (sched.getCurrentlyExecutingJobs().size() != 0) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+
+            // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
+            // ss
+            // JobDetail job = newJob(VersioningJob.class).withIdentity(jobKey, "merge").usingJobData(VersioningJob.OPERATION, VersioningJob.OPERATION_VERSIONING_CODELIST)
+            // .usingJobData(VersioningJob.USER, ctx.getUserId()).usingJobData(VersioningJob.URN_TO_COPY, urnToCopy).usingJobData(VersioningJob.CALLBACK, callback.getBeanName())
+            // .usingJobData(VersioningJob.VERSION_TYPE, versionType.name()).usingJobData(VersioningJob.IS_TEMPORAL, isTemporal).requestRecovery().build();
+            //
+            // SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "versioning").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
+            //
+            // sched.scheduleJob(job, trigger);
+
+            return jobKey;
+        } catch (Exception e) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+    }
+
+    @Override
     public Task retrieveTaskByJob(ServiceContext ctx, String job) throws MetamacException {
         return tasksService.retrieveTaskByJob(ctx, job);
     }

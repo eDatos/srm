@@ -631,7 +631,7 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@TaskDto> findTasksByCondition(MetamacCriteria criteria) throws MetamacException;
     	}
 
-		Service TasksMetamacServiceJobFacade {
+		Service TasksMetamacServiceFacade {
        		> @CodesMetamacService
        		> @TasksMetamacService
 
@@ -641,6 +641,10 @@ Application SrmFacadeCore {
     		importCodeOrdersCsv(String codelistUrn, InputStream csvStream, String charset, String fileName, String jobKey) throws MetamacException;
     		"Imports variable elements in csv format"
     		importVariableElementsCsv(String variableUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		"Perform a merge with temporal codelist"
+			processMergeCodelist(String urnToCopy, String jobKey) throws MetamacException;
+    		
+    		
     		"Marks job as failed"
     		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
    		}

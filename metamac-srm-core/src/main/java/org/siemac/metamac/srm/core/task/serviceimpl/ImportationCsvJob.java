@@ -15,7 +15,7 @@ import org.quartz.PersistJobDataAfterExecution;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.io.FileUtils;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
-import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceJobFacade;
+import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,29 +23,29 @@ import org.slf4j.LoggerFactory;
 @DisallowConcurrentExecution
 public class ImportationCsvJob implements Job {
 
-    private static Logger                logger                             = LoggerFactory.getLogger(ImportationCsvJob.class);
+    private static Logger             logger                             = LoggerFactory.getLogger(ImportationCsvJob.class);
 
     // Job Context Param
-    public static final String           USER                               = "user";
-    public static final String           FILE_PATH                          = "filePath";
-    public static final String           FILE_IMPORTED_NAME                 = "fileImportedName";
-    public static final String           VARIABLE_URN                       = "variableUrn";
-    public static final String           CODELIST_URN                       = "codelistUrn";
-    public static final String           UPDATE_ALREADY_EXISTING            = "updateAlreadyExisting";
-    public static final String           OPERATION                          = "operation";
-    public static final String           OPERATION_IMPORT_CODES             = "importCodes";
-    public static final String           OPERATION_IMPORT_CODE_ORDERS       = "importCodeOrdes";
-    public static final String           OPERATION_IMPORT_VARIABLE_ELEMENTS = "importVariableElements";
+    public static final String        USER                               = "user";
+    public static final String        FILE_PATH                          = "filePath";
+    public static final String        FILE_IMPORTED_NAME                 = "fileImportedName";
+    public static final String        VARIABLE_URN                       = "variableUrn";
+    public static final String        CODELIST_URN                       = "codelistUrn";
+    public static final String        UPDATE_ALREADY_EXISTING            = "updateAlreadyExisting";
+    public static final String        OPERATION                          = "operation";
+    public static final String        OPERATION_IMPORT_CODES             = "importCodes";
+    public static final String        OPERATION_IMPORT_CODE_ORDERS       = "importCodeOrdes";
+    public static final String        OPERATION_IMPORT_VARIABLE_ELEMENTS = "importVariableElements";
 
-    private TasksMetamacServiceJobFacade tasksMetamacServiceJobFacade       = null;
+    private TasksMetamacServiceFacade tasksMetamacServiceFacade          = null;
 
-    private final ServiceContext         serviceContextDefault              = new ServiceContext("importationCsvJob", "importationCsvJob", "metamac-srm");
+    private final ServiceContext      serviceContextDefault              = new ServiceContext("importationCsvJob", "importationCsvJob", "metamac-srm");
 
-    public TasksMetamacServiceJobFacade getImportationMetamacServiceJobFacade() {
-        if (tasksMetamacServiceJobFacade == null) {
-            tasksMetamacServiceJobFacade = (TasksMetamacServiceJobFacade) ApplicationContextProvider.getApplicationContext().getBean(TasksMetamacServiceJobFacade.BEAN_ID);
+    public TasksMetamacServiceFacade getImportationMetamacServiceFacade() {
+        if (tasksMetamacServiceFacade == null) {
+            tasksMetamacServiceFacade = (TasksMetamacServiceFacade) ApplicationContextProvider.getApplicationContext().getBean(TasksMetamacServiceFacade.BEAN_ID);
         }
-        return tasksMetamacServiceJobFacade;
+        return tasksMetamacServiceFacade;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ImportationCsvJob implements Job {
                 if (serviceContext == null) {
                     serviceContext = serviceContextDefault;
                 }
-                getImportationMetamacServiceJobFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
+                getImportationMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
                 // TODO sistema de avisos
             } catch (MetamacException e1) {
                 logger.error("ImportationJob: the importation with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
@@ -97,7 +97,7 @@ public class ImportationCsvJob implements Job {
 
         // Execution
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceJobFacade().importVariableElementsCsv(serviceContext, variableUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getImportationMetamacServiceFacade().importVariableElementsCsv(serviceContext, variableUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " finished at " + new Date());
     }
     private void importCodes(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
@@ -114,7 +114,7 @@ public class ImportationCsvJob implements Job {
 
         // Execution
         logger.info("ImportationJob [importCodes]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceJobFacade().importCodesCsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getImportationMetamacServiceFacade().importCodesCsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importCodes]: " + jobKey + " finished at " + new Date());
     }
 
@@ -131,7 +131,7 @@ public class ImportationCsvJob implements Job {
 
         // Execution
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceJobFacade().importCodeOrdersCsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName());
+        getImportationMetamacServiceFacade().importCodeOrdersCsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName());
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " finished at " + new Date());
     }
 

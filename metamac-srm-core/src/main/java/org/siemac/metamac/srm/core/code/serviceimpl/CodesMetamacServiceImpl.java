@@ -321,7 +321,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public String mergeTemporalVersion(ServiceContext ctx, CodelistVersionMetamac codelistTemporalVersion) throws MetamacException {
+    public String mergeTemporalVersion(ServiceContext ctx, String urnTemporal) throws MetamacException {
+
+        CodelistVersionMetamac codelistTemporalVersion = retrieveCodelistByUrn(ctx, urnTemporal);
+
         // Check if is a temporal version
         if (!VersionUtil.isTemporalVersion(codelistTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
             throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");

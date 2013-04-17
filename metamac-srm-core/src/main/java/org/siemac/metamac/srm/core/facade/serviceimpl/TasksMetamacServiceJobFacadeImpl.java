@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 /**
  * Implementation of TasksMetamacServiceJobFacade.
  */
-@Service("tasksMetamacServiceJobFacade")
-public class TasksMetamacServiceJobFacadeImpl extends TasksMetamacServiceJobFacadeImplBase {
+@Service("tasksMetamacServiceFacade")
+public class TasksMetamacServiceJobFacadeImpl extends TasksMetamacServiceFacadeImplBase {
 
     public TasksMetamacServiceJobFacadeImpl() {
     }
@@ -34,7 +34,6 @@ public class TasksMetamacServiceJobFacadeImpl extends TasksMetamacServiceJobFaca
         // Mark job as completed
         // TODO sistema de avisos
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
-
     }
 
     @Override
@@ -45,6 +44,15 @@ public class TasksMetamacServiceJobFacadeImpl extends TasksMetamacServiceJobFaca
         getCodesMetamacService().importVariableElementsCsv(ctx, variableUrn, csvStream, charset, fileName, updateAlreadyExisting, informationItems);
         // Mark job as completed
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
+    }
+
+    @Override
+    public void processMergeCodelist(ServiceContext ctx, String urnToCopy, String jobKey) throws MetamacException {
+        // Merge
+        getCodesMetamacService().mergeTemporalVersion(ctx, urnToCopy);
+        // Mark job as completed
+        // TODO sistema de avisos
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
     }
 
     @Override

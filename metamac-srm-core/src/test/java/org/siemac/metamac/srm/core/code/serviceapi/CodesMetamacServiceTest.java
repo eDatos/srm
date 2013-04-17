@@ -6876,7 +6876,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // Merge
             createTemporalCodelist = codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
             createTemporalCodelist = codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
-            String codelistVersionMetamacUrn = codesService.mergeTemporalVersion(getServiceContextAdministrador(), createTemporalCodelist);
+            String codelistVersionMetamacUrn = codesService.mergeTemporalVersion(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
             entityManager.clear();
             CodelistVersionMetamac codelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionMetamacUrn);
 
@@ -6914,7 +6914,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // save to force incorrect metadata
             codelistVersionTemporal.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
             itemSchemeRepository.save(codelistVersionTemporal);
-            String codelistVersionMetamacUrn = codesService.mergeTemporalVersion(getServiceContextAdministrador(), codelistVersionTemporal);
+            String codelistVersionMetamacUrn = codesService.mergeTemporalVersion(getServiceContextAdministrador(), codelistVersionTemporal.getMaintainableArtefact().getUrn());
             entityManager.clear();
             CodelistVersionMetamac codelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionMetamacUrn);
             assertFalse(codelistVersionMetamac.getMaintainableArtefact().getIsLastVersion());

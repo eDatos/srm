@@ -68,7 +68,7 @@ Application CodesMetamac {
     		"Creates a new version of a code list from temporal version with provided urn"
     		VersioningResult createVersionFromTemporalCodelist(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
-    		String mergeTemporalVersion(@CodelistVersionMetamac codelistTemporalVersion) throws MetamacException;
+    		String mergeTemporalVersion(String urnTemporal) throws MetamacException;
     		"Ends the codelist validity"
     		@CodelistVersionMetamac endCodelistValidity(String urn) throws MetamacException;
     		"Retrieves codelist by code urn"

@@ -19,7 +19,9 @@ Application TaskMetamac {
     		String importCodeOrdersCsvInBackground(String codelistUrn, InputStream csvStream, String fileName) throws MetamacException;
 			"Prepares importation of variable elements in csv format"
     		String importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
-
+    		"Prepares a merge between codelists"
+    		String plannifyMergeCodelist(String urnToCopy, boolean isTemporal) throws MetamacException;
+			
 			// TASKS
     		"Retrieves task"
     		@Task retrieveTaskByJob(String job) throws MetamacException;
