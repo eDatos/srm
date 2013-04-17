@@ -39,7 +39,7 @@ public class UpdateOrganisationSchemeProcStatusActionHandler extends SecurityAct
                     scheme = srmCoreServiceFacade.rejectOrganisationSchemeDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
                 }
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.publishOrganisationSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), false); // FIXME Set the forceFinal parameter
+                scheme = srmCoreServiceFacade.publishOrganisationSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getForceLastestFinal());
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.publishOrganisationSchemeExternally(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             }

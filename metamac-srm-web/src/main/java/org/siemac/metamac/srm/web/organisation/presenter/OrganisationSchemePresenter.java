@@ -293,7 +293,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus),
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus, null),
                 new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
                     @Override
@@ -312,7 +312,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus),
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus, null),
                 new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
                     @Override
@@ -331,7 +331,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void rejectValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus),
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus, null),
                 new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
                     @Override
@@ -349,7 +349,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus),
+        Boolean forceLatestFinal = null; // FIXME
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
                 new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
                     @Override
@@ -374,7 +375,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void publishExternally(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus),
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus, null),
                 new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
 
                     @Override

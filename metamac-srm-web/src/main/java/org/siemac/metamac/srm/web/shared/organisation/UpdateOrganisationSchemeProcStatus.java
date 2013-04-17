@@ -19,7 +19,9 @@ public class UpdateOrganisationSchemeProcStatus {
     @In(3)
     ProcStatusEnum               currentProcStatus;
 
+    @In(4)
+    Boolean                      forceLastestFinal;    // Only suitable for internal publication
+
     @Out(1)
     OrganisationSchemeMetamacDto organisationSchemeDto;
-
 }
