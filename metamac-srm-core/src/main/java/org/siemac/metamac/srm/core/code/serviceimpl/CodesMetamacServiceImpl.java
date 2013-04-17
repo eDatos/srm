@@ -982,6 +982,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Update codelists
         for (String codelistUrn : codelistUrns) {
             CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+            SrmValidationUtils.checkArtefactWithoutTaskInBackground(codelistVersion);
+
             if (codelistVersion.getFamily() != null) {
                 codelistVersion.getFamily().removeCodelist(codelistVersion);
             }
@@ -1792,6 +1794,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     private void checkCodelistCanBeModified(CodelistVersionMetamac codelistVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
+        SrmValidationUtils.checkArtefactWithoutTaskInBackground(codelistVersion);
     }
 
     /**

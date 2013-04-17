@@ -21,10 +21,12 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
 public abstract class LifeCycleImpl implements LifeCycle {
@@ -261,7 +263,10 @@ public abstract class LifeCycleImpl implements LifeCycle {
         if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(targetStatus)) {
             checkProcStatus(srmResourceVersion, procStatusToSendToProductionValidation);
         }
-
+        // There is not pending tasks
+        if (srmResourceVersion instanceof ItemSchemeVersion) {
+            SdmxSrmValidationUtils.checkArtefactWithoutTaskInBackground((ItemSchemeVersion) srmResourceVersion);
+        }
         // Conditions for concrete resource
         callback.checkConcreteResourceInProductionValidation(srmResourceVersion, targetStatus, exceptions);
 

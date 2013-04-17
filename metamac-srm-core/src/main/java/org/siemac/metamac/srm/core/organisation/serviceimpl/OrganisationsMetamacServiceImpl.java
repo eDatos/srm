@@ -464,6 +464,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     private void checkOrganisationSchemeCanBeModified(OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(organisationSchemeVersion.getLifeCycleMetadata(), organisationSchemeVersion.getMaintainableArtefact().getUrn());
+        SrmValidationUtils.checkArtefactWithoutTaskInBackground(organisationSchemeVersion);
     }
 
     private VersioningResult createVersionOfOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {

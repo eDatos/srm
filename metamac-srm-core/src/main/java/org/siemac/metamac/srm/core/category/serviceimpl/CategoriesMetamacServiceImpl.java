@@ -542,6 +542,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     private void checkCategorySchemeCanBeModified(CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(categorySchemeVersion.getLifeCycleMetadata(), categorySchemeVersion.getMaintainableArtefact().getUrn());
+        SrmValidationUtils.checkArtefactWithoutTaskInBackground(categorySchemeVersion);
     }
 
 }

@@ -946,6 +946,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     private void checkConceptSchemeCanBeModified(ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn());
+        SrmValidationUtils.checkArtefactWithoutTaskInBackground(conceptSchemeVersion);
     }
 
 }
