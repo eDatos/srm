@@ -19,7 +19,9 @@ public class UpdateCategorySchemeProcStatus {
     @In(3)
     ProcStatusEnum           currentProcStatus;
 
+    @In(4)
+    Boolean                  forceLatestFinal; // Only suitable for internal publication
+
     @Out(1)
     CategorySchemeMetamacDto categorySchemeDto;
-
 }

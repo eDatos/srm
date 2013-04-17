@@ -266,58 +266,63 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus, null),
+                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorSendingToProductionValidation()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSentToProductionValidation()), MessageTypeEnum.SUCCESS);
-                categorySchemeMetamacDto = result.getCategorySchemeDto();
-                getView().setCategoryScheme(categorySchemeMetamacDto);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorSendingToProductionValidation()),
+                                MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSentToProductionValidation()), MessageTypeEnum.SUCCESS);
+                        categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        getView().setCategoryScheme(categorySchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
     public void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus), new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus, null),
+                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorSendingToDiffusionValidation()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
-                categorySchemeMetamacDto = result.getCategorySchemeDto();
-                getView().setCategoryScheme(categorySchemeMetamacDto);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorSendingToDiffusionValidation()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
+                        categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        getView().setCategoryScheme(categorySchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
     public void rejectValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus), new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus, null),
+                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRejecting()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeRejected()), MessageTypeEnum.SUCCESS);
-                categorySchemeMetamacDto = result.getCategorySchemeDto();
-                getView().setCategoryScheme(categorySchemeMetamacDto);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRejecting()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeRejected()), MessageTypeEnum.SUCCESS);
+                        categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        getView().setCategoryScheme(categorySchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
     public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus),
+        Boolean forceLatestFinal = null; // FIXME
+        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
                 new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
 
                     @Override
@@ -342,19 +347,20 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void publishExternally(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus), new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus, null),
+                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorPublishingExternally()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemePublishedExternally()), MessageTypeEnum.SUCCESS);
-                categorySchemeMetamacDto = result.getCategorySchemeDto();
-                getView().setCategoryScheme(categorySchemeMetamacDto);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorPublishingExternally()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
+                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemePublishedExternally()), MessageTypeEnum.SUCCESS);
+                        categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        getView().setCategoryScheme(categorySchemeMetamacDto);
+                    }
+                });
     }
 
     @Override
