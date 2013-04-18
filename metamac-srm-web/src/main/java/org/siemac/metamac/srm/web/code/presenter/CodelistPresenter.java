@@ -11,6 +11,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
@@ -41,6 +42,8 @@ import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
+import org.siemac.metamac.srm.web.shared.code.CopyCodesInCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.CopyCodesInCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.CreateCodelistTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.code.CreateCodelistTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
@@ -571,6 +574,22 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(UpdateCodeParentResult result) {
                 retrieveCodes();
+            }
+        });
+    }
+
+    @Override
+    public void copyCodesInCodelist(final String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) {
+        dispatcher.execute(new CopyCodesInCodelistAction(codelistTargetUrn, parentTargetUrn, codesToCopy), new WaitingAsyncCallback<CopyCodesInCodelistResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codesErrorCopyingInCodelist()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CopyCodesInCodelistResult result) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codesCopiedInCodelist()), MessageTypeEnum.SUCCESS);
+                retrieveCodelistAndCodesByUrn(codelistTargetUrn);
             }
         });
     }

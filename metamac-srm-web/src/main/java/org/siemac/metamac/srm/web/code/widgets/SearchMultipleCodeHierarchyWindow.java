@@ -2,13 +2,16 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedItem;
+import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.view.handlers.BaseCodeUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
@@ -34,6 +37,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -42,7 +46,7 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
 /**
- * Window with a {@link CodesCheckboxTreeGrid} and a {@link SearchRelatedResourcePaginatedItem} as the codelist filter.
+ * Window with a {@link CodesSimpleCheckboxTreeGrid} and a {@link SearchRelatedResourcePaginatedItem} as the codelist filter.
  */
 public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
@@ -59,18 +63,27 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
     protected SearchRelatedResourcePaginatedItem filterListItem;
     protected ViewTextItem                       filterTextItem;
 
-    protected CodesCheckboxTreeGrid              codesTreeGrid;
+    protected CodesSimpleCheckboxTreeGrid        codesTreeGrid;
 
     private CodelistMetamacDto                   complexCodelistToAddCodes;                 // Codelist where the selected codes will be inserted
+    private TreeNode                             selectedSourceNode;                        // The selected codes will be inserted under this node. The node can a node or the codelist (root node)
     private String                               selectedCodelistUrn;                       // Codelist selected. The codes of this codelist will be inserted in the complex codelist
     private BaseCodeUiHandlers                   uiHandlers;
 
     private boolean                              cascadeSelection            = true;
 
-    public SearchMultipleCodeHierarchyWindow(CodelistMetamacDto complexCodelistToAddCodes, BaseCodeUiHandlers uiHandlers) {
+    /**
+     * The selected codes will be inserted under the selectedSourceNode.
+     * 
+     * @param complexCodelistToAddCodes
+     * @param selectedNode
+     * @param uiHandlers
+     */
+    public SearchMultipleCodeHierarchyWindow(CodelistMetamacDto complexCodelistToAddCodes, TreeNode selectedSourceNode, BaseCodeUiHandlers uiHandlers) {
         super(getConstants().codeAdd());
         this.setUiHandlers(uiHandlers);
         this.complexCodelistToAddCodes = complexCodelistToAddCodes;
+        this.selectedSourceNode = selectedSourceNode;
         setAutoSize(true);
 
         // FILTER SECTION
@@ -144,7 +157,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
         // CODES TREEGRID
 
-        codesTreeGrid = new CodesCheckboxTreeGrid();
+        codesTreeGrid = new CodesSimpleCheckboxTreeGrid();
         codesTreeGrid.setMargin(15);
         codesTreeGrid.setWidth(760);
         codesTreeGrid.setSelectionProperty(TREE_NODE_SELECTED_PROPERTY);
@@ -175,12 +188,24 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             public void onClick(ClickEvent event) {
 
                 ListGridRecord[] selectedRecords = codesTreeGrid.getSelectedRecords();
-                for (ListGridRecord record : selectedRecords) {
-                    if (!StringUtils.equals(selectedCodelistUrn, record.getAttribute(ItemDS.URN))) { // Do not add the codelist node!
-                        String recordParent = record.getAttribute(ItemDS.ITEM_PARENT_URN);
-                        if (recordParent == null) {
-                            // TODO Necesario conservar jerarquía
-                        }
+                if (selectedRecords != null) {
+
+                    List<TreeNode> nodesToAdd = getCodesHierarchy(selectedRecords);
+                    if (!nodesToAdd.isEmpty()) {
+
+                        final PreviewWindow previewWindow = new PreviewWindow(getConstants().codesHierarchyToAdd());
+                        previewWindow.setCodes(nodesToAdd);
+                        previewWindow.getSaveClickHandlers().addClickHandler(new ClickHandler() {
+
+                            @Override
+                            public void onClick(ClickEvent event) {
+                                List<CodeToCopyHierarchy> codesToCopy = previewWindow.getCodes();
+                                // If the node where the codes will be inserted is a codelist, parent should be null. Otherwise, specify the source code URN.
+                                String sourceNodeUrn = SearchMultipleCodeHierarchyWindow.this.selectedSourceNode.getAttribute(ItemDS.URN); // can be a codelist or a code
+                                String parentTargetUrn = StringUtils.equals(sourceNodeUrn, SearchMultipleCodeHierarchyWindow.this.complexCodelistToAddCodes.getUrn()) ? null : sourceNodeUrn;
+                                getUiHandlers().copyCodesInCodelist(SearchMultipleCodeHierarchyWindow.this.complexCodelistToAddCodes.getUrn(), parentTargetUrn, codesToCopy);
+                            }
+                        });
                     }
                 }
             }
@@ -201,6 +226,37 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         getUiHandlers().retrieveCodelistsForCreateComplexCodelists(FIRST_RESULTS, MAX_RESULTS, getCodelistWebCriteriaForCreateComplexCodelist(null));
 
         show();
+    }
+    private List<TreeNode> getCodesHierarchy(ListGridRecord[] records) {
+        List<TreeNode> nodes = new ArrayList<TreeNode>();
+
+        // Add root node
+        TreeNode rootNode = new TreeNode();
+        rootNode.setID(selectedSourceNode.getAttribute(ItemDS.URN));
+        rootNode.setAttribute(ItemDS.CODE, selectedSourceNode.getAttribute(ItemDS.CODE));
+        rootNode.setAttribute(ItemDS.NAME, selectedSourceNode.getAttribute(ItemDS.NAME));
+        rootNode.setAttribute(ItemDS.URN, selectedSourceNode.getAttribute(ItemDS.URN));
+        rootNode.setEnabled(false);
+        nodes.add(rootNode);
+
+        for (ListGridRecord record : records) {
+            if (!StringUtils.equals(selectedCodelistUrn, record.getAttribute(ItemDS.URN))) { // Do not add the codelist node! (the codelist node is disabled but can be selected)
+                TreeNode treeNode = new TreeNode();
+                treeNode.setID(record.getAttribute(ItemDS.URN));
+                treeNode.setAttribute(ItemDS.CODE, record.getAttribute(ItemDS.CODE));
+                treeNode.setAttribute(ItemDS.NAME, record.getAttribute(ItemDS.NAME));
+                treeNode.setAttribute(ItemDS.URN, record.getAttribute(ItemDS.URN));
+
+                // FIXME REMOVE THIS:
+                treeNode.setParentID(selectedSourceNode.getAttribute(ItemDS.URN));
+
+                // TODO Hierarchy should be preserved!!!
+
+                nodes.add(treeNode);
+            }
+        }
+
+        return nodes;
     }
 
     public void setCodelists(GetCodelistsResult result) {
@@ -252,5 +308,51 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             }
         }
         codesTreeGrid.markForRedraw();
+    }
+
+    /**
+     * This window shows a tree with the codes that have been previously selected. The root of the tree is the initial node (can be a codelist or a code) where all the the selected codes will be
+     * copied (inserted). The identifier of the codes (except the root node) can be edited.
+     */
+    private class PreviewWindow extends CustomWindow {
+
+        private static final String         FIELD_SAVE = "save-codes";
+        private CodesSimpleEditableTreeGrid codesEditableTreeGrid;
+
+        public PreviewWindow(String title) {
+            super(title);
+            setAutoSize(true);
+
+            int width = 650;
+
+            codesEditableTreeGrid = new CodesSimpleEditableTreeGrid();
+            codesEditableTreeGrid.setWidth(width);
+            codesEditableTreeGrid.setMargin(5);
+            codesEditableTreeGrid.setAutoFitMaxRecords(15);
+            codesEditableTreeGrid.getField(CodeDS.CODE).setWidth("50%");
+
+            CustomButtonItem saveItem = new CustomButtonItem(FIELD_SAVE, MetamacWebCommon.getConstants().actionSave());
+            form = new CustomDynamicForm();
+            form.setWidth(width);
+            form.setMargin(5);
+            form.setFields(saveItem);
+
+            addItem(codesEditableTreeGrid);
+            addItem(form);
+
+            show();
+        }
+
+        public void setCodes(List<TreeNode> nodes) {
+            codesEditableTreeGrid.setCodes(nodes);
+        }
+
+        public List<CodeToCopyHierarchy> getCodes() {
+            return codesEditableTreeGrid.getCodes();
+        }
+
+        public HasClickHandlers getSaveClickHandlers() {
+            return form.getItem(FIELD_SAVE);
+        }
     }
 }

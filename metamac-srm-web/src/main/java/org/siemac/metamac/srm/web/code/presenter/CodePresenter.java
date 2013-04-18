@@ -7,6 +7,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -23,6 +24,8 @@ import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenter
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
+import org.siemac.metamac.srm.web.shared.code.CopyCodesInCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.CopyCodesInCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodeResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
@@ -200,6 +203,22 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
                 // Update URL
                 PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodePlaceRequest(result.getCodeDto().getUrn());
                 placeManager.updateHistory(placeRequest, true);
+            }
+        });
+    }
+
+    @Override
+    public void copyCodesInCodelist(final String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) {
+        dispatcher.execute(new CopyCodesInCodelistAction(codelistTargetUrn, parentTargetUrn, codesToCopy), new WaitingAsyncCallback<CopyCodesInCodelistResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codesErrorCopyingInCodelist()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CopyCodesInCodelistResult result) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getMessageList(getMessages().codesCopiedInCodelist()), MessageTypeEnum.SUCCESS);
+                retrieveCodesByCodelist(codelistTargetUrn);
             }
         });
     }
