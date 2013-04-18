@@ -2070,25 +2070,25 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
         {
             CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-            code.setUrn(CODELIST_1_V2_CODE_2_1);
-            code.setCode("CODE05");
+            code.setSourceUrn(CODELIST_1_V2_CODE_2_1);
+            code.setNewCodeIdentifier("CODE05");
             codesToCopy.add(code);
         }
         {
             CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-            code.setUrn(CODELIST_1_V2_CODE_3);
-            code.setCode("CODE00");
+            code.setSourceUrn(CODELIST_1_V2_CODE_3);
+            code.setNewCodeIdentifier("CODE00");
             codesToCopy.add(code);
         }
         {
             CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-            code.setUrn(CODELIST_1_V2_CODE_4);
-            code.setCode("CODE01B");
+            code.setSourceUrn(CODELIST_1_V2_CODE_4);
+            code.setNewCodeIdentifier("CODE01B");
             codesToCopy.add(code);
             {
                 CodeToCopyHierarchy codeChild = new CodeToCopyHierarchy();
-                codeChild.setUrn(CODELIST_1_V2_CODE_4_1_1);
-                codeChild.setCode("CODE01B01");
+                codeChild.setSourceUrn(CODELIST_1_V2_CODE_4_1_1);
+                codeChild.setNewCodeIdentifier("CODE01B01");
                 code.getChildren().add(codeChild);
             }
         }
@@ -2270,25 +2270,25 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
         {
             CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-            code.setUrn(CODELIST_1_V2_CODE_2_1);
-            code.setCode("CODE05");
+            code.setSourceUrn(CODELIST_1_V2_CODE_2_1);
+            code.setNewCodeIdentifier("CODE05");
             codesToCopy.add(code);
         }
         {
             CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-            code.setUrn(CODELIST_1_V2_CODE_3);
-            code.setCode("CODE00");
+            code.setSourceUrn(CODELIST_1_V2_CODE_3);
+            code.setNewCodeIdentifier("CODE00");
             codesToCopy.add(code);
         }
         {
             CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-            code.setUrn(CODELIST_1_V2_CODE_4);
-            code.setCode("CODE01B");
+            code.setSourceUrn(CODELIST_1_V2_CODE_4);
+            code.setNewCodeIdentifier("CODE01B");
             codesToCopy.add(code);
             {
                 CodeToCopyHierarchy codeChild = new CodeToCopyHierarchy();
-                codeChild.setUrn(CODELIST_1_V2_CODE_4_1_1);
-                codeChild.setCode("CODE01B01");
+                codeChild.setSourceUrn(CODELIST_1_V2_CODE_4_1_1);
+                codeChild.setNewCodeIdentifier("CODE01B01");
                 code.getChildren().add(codeChild);
             }
         }
@@ -2396,8 +2396,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Codes to copy
         List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
         CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-        code.setUrn(code01SourceUrn);
-        code.setCode("CODE03");
+        code.setSourceUrn(code01SourceUrn);
+        code.setNewCodeIdentifier("CODE03");
         codesToCopy.add(code);
 
         // Copy

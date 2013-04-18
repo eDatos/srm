@@ -472,7 +472,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Get codelist source from one code, to check all codes belong to this codelist and to check variable
-        CodelistVersionMetamac codelistVersionSource = retrieveCodelistByCodeUrn(ctx, codesToCopy.get(0).getUrn());
+        CodelistVersionMetamac codelistVersionSource = retrieveCodelistByCodeUrn(ctx, codesToCopy.get(0).getSourceUrn());
 
         // Copy
         for (CodeToCopyHierarchy codeToCopyHierarchy : codesToCopy) {
@@ -2269,14 +2269,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             CodeToCopyHierarchy codeToCopyHierarchy) throws MetamacException {
 
         // Copy metadata from source
-        CodeMetamac codeSource = retrieveCodeByUrn(ctx, codeToCopyHierarchy.getUrn());
+        CodeMetamac codeSource = retrieveCodeByUrn(ctx, codeToCopyHierarchy.getSourceUrn());
         if (!codeSource.getItemSchemeVersion().getMaintainableArtefact().getUrn().equals(codelistVersionSource.getMaintainableArtefact().getUrn())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.URN).build();
         }
         CodeMetamac codeTarget = new CodeMetamac();
         codeTarget.setNameableArtefact(new NameableArtefact());
-        if (codeToCopyHierarchy.getCode() != null) {
-            codeTarget.getNameableArtefact().setCode(codeToCopyHierarchy.getCode());
+        if (codeToCopyHierarchy.getNewCodeIdentifier() != null) {
+            codeTarget.getNameableArtefact().setCode(codeToCopyHierarchy.getNewCodeIdentifier());
         } else {
             codeTarget.getNameableArtefact().setCode(codeSource.getNameableArtefact().getCode());
         }

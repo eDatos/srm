@@ -8,29 +8,31 @@ public class CodeToCopyHierarchy implements Serializable {
 
     private static final long         serialVersionUID = 1L;
 
-    private String                    urn;
-    private String                    code;
+    private String                    sourceUrn;
+    private String                    newCodeIdentifier;
     private List<CodeToCopyHierarchy> children;
 
     public CodeToCopyHierarchy() {
     }
 
-    public String getUrn() {
-        return urn;
+    public String getSourceUrn() {
+        return sourceUrn;
     }
-    public void setUrn(String urn) {
-        this.urn = urn;
+
+    public void setSourceUrn(String sourceUrn) {
+        this.sourceUrn = sourceUrn;
     }
 
     /**
      * fill only if code must be changed
      */
-    public String getCode() {
-        return code;
+
+    public String getNewCodeIdentifier() {
+        return newCodeIdentifier;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setNewCodeIdentifier(String newCodeIdentifier) {
+        this.newCodeIdentifier = newCodeIdentifier;
     }
 
     public List<CodeToCopyHierarchy> getChildren() {
