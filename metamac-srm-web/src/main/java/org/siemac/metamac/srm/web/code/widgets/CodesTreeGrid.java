@@ -17,6 +17,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
+import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class CodesTreeGrid extends BaseCodesTreeGrid {
 
@@ -71,7 +72,9 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
             @Override
             public void onClick(MenuItemClickEvent event) {
-                searchMultipleCodeHierarchyWindow = new SearchMultipleCodeHierarchyWindow(codelistMetamacDto, uiHandlers);
+                if (getSelectedRecord() instanceof TreeNode) {
+                    searchMultipleCodeHierarchyWindow = new SearchMultipleCodeHierarchyWindow(codelistMetamacDto, (TreeNode) getSelectedRecord(), uiHandlers);
+                }
             }
         });
 
