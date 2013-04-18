@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.category.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.siemac.metamac.srm.web.category.widgets.CategorySchemeVersionsSection
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
@@ -615,8 +617,40 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     }
 
     private void publishCategorySchemeInternally() {
-        // TODO
-        getUiHandlers().publishInternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus(), null);
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer())) {
+            getUiHandlers().publishInternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus(), null);
+        } else {
+            // If the category scheme is imported, ask the user if this resource should be the latest one.
+            // If there were another category scheme marked as final, find it, and inform the user that the category scheme to publish will replace the latest one.
+            getUiHandlers().retrieveLatestCategoryScheme(categorySchemeDto); // Publication will be done in setLatestCategorySchemeForInternalPublication method
+        }
+    }
+
+    @Override
+    public void setLatestCategorySchemeForInternalPublication(GetCategorySchemesResult result) {
+        if (result.getCategorySchemeList().isEmpty()) {
+            getUiHandlers().publishInternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus(), null);
+        } else {
+            // If there were other version marked as the latest, ask the user what to do
+            CategorySchemeMetamacDto latest = result.getCategorySchemeList().get(0);
+            ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().categorySchemeShouldBeMarkAsTheLatest(latest.getVersionLogic()));
+            confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // Category scheme will be the latest
+                    getUiHandlers().publishInternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus(), true);
+                }
+            });
+            confirmationWindow.getNoButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // Category scheme WON'T be the latest
+                    getUiHandlers().publishInternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus(), false);
+                }
+            });
+        }
     }
 
     private void versionCategoryScheme() {

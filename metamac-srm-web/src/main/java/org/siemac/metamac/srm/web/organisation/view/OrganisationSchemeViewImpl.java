@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.organisation.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
@@ -31,6 +33,7 @@ import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersion
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -784,8 +787,42 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     private void publishOrganisationSchemeInternally() {
-        // TODO
-        getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer()) || CommonUtils.isAgencyScheme(organisationSchemeDto)
+                || CommonUtils.isDataProviderScheme(organisationSchemeDto) || CommonUtils.isDataConsumenScheme(organisationSchemeDto)) {
+            getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
+        } else {
+            // If the organisation scheme is imported, ask the user if this resource should be the latest one.
+            // If there were another organisation scheme marked as final, find it, and inform the user that the organisation scheme to publish will replace the latest one.
+            getUiHandlers().retrieveLatestOrganisationScheme(organisationSchemeDto); // Publication will be done in setLatestOrganisationSchemeForInternalPublication method
+        }
+    }
+
+    @Override
+    public void setLatestOrganisationSchemeForInternalPublication(GetOrganisationSchemesResult result) {
+        if (result.getOrganisationSchemeMetamacDtos().isEmpty()) {
+            getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
+        } else {
+            // If there were other version marked as the latest, ask the user what to do
+            OrganisationSchemeMetamacDto latest = result.getOrganisationSchemeMetamacDtos().get(0);
+            ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().organisationSchemeShouldBeMarkAsTheLatest(
+                    latest.getVersionLogic()));
+            confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // Organisation scheme will be the latest
+                    getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), true);
+                }
+            });
+            confirmationWindow.getNoButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // Organisation scheme WON'T be the latest
+                    getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), false);
+                }
+            });
+        }
     }
 
     private void versionOrganisationScheme() {

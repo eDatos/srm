@@ -111,6 +111,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         void setCategorySchemeVersions(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos);
         void setCategories(List<ItemHierarchyDto> categoryDtos);
         void startCategorySchemeEdition();
+        void setLatestCategorySchemeForInternalPublication(GetCategorySchemesResult result);
 
         // Categorisations
 
@@ -219,6 +220,25 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(GetCategorySchemeVersionsResult result) {
                 getView().setCategorySchemeVersions(result.getCategorySchemeMetamacDtos());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveLatestCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        CategorySchemeWebCriteria criteria = new CategorySchemeWebCriteria();
+        criteria.setCodeEQ(categorySchemeMetamacDto.getCode());
+        criteria.setMaintainerUrn(categorySchemeMetamacDto.getMaintainer().getUrn());
+        criteria.setIsLatestFinal(true);
+        dispatcher.execute(new GetCategorySchemesAction(0, 1, criteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCategorySchemesResult result) {
+                getView().setLatestCategorySchemeForInternalPublication(result);
             }
         });
     }

@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -121,12 +122,24 @@ public class CommonUtils {
         return null;
     }
 
+    public static boolean isDataConsumenScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        return isDataConsumerScheme(organisationSchemeMetamacDto.getType());
+    }
+
     public static boolean isDataConsumerScheme(OrganisationSchemeTypeEnum type) {
         return OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME.equals(type);
     }
 
+    public static boolean isDataProviderScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        return isDataProviderScheme(organisationSchemeMetamacDto.getType());
+    }
+
     public static boolean isDataProviderScheme(OrganisationSchemeTypeEnum type) {
         return OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME.equals(type);
+    }
+
+    public static boolean isAgencyScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        return isAgencyScheme(organisationSchemeMetamacDto.getType());
     }
 
     public static boolean isAgencyScheme(OrganisationSchemeTypeEnum type) {

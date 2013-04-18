@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.concept.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
@@ -26,6 +28,7 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionSt
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -768,8 +771,40 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     }
 
     private void publishConceptSchemeInternally() {
-        // TODO
-        getUiHandlers().publishInternally(conceptSchemeDto, null);
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer())) {
+            getUiHandlers().publishInternally(conceptSchemeDto, null);
+        } else {
+            // If the concept scheme is imported, ask the user if this resource should be the latest one.
+            // If there were another concept scheme marked as final, find it, and inform the user that the concept scheme to publish will replace the latest one.
+            getUiHandlers().retrieveLatestConceptScheme(conceptSchemeDto); // Publication will be done in setLatestConceptSchemeForInternalPublication method
+        }
+    }
+
+    @Override
+    public void setLatestConceptSchemeForInternalPublication(GetConceptSchemesResult result) {
+        if (result.getConceptSchemeList().isEmpty()) {
+            getUiHandlers().publishInternally(conceptSchemeDto, null);
+        } else {
+            // If there were other version marked as the latest, ask the user what to do
+            ConceptSchemeMetamacDto latest = result.getConceptSchemeList().get(0);
+            ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().conceptSchemeShouldBeMarkAsTheLatest(latest.getVersionLogic()));
+            confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // Concept scheme will be the latest
+                    getUiHandlers().publishInternally(conceptSchemeDto, true);
+                }
+            });
+            confirmationWindow.getNoButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // Concept scheme WON'T be the latest
+                    getUiHandlers().publishInternally(conceptSchemeDto, false);
+                }
+            });
+        }
     }
 
     private void versionConceptScheme() {

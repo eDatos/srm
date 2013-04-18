@@ -43,6 +43,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsResult;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
@@ -57,6 +59,7 @@ import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
@@ -114,6 +117,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         void setConcepts(List<ItemHierarchyDto> itemHierarchyDtos);
         void setConceptSchemeVersions(List<ConceptSchemeMetamacDto> conceptSchemeDtos);
         void setOperations(GetStatisticalOperationsResult result);
+        void setLatestConceptSchemeForInternalPublication(GetConceptSchemesResult result);
 
         // Categorisations
 
@@ -180,6 +184,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         retrieveConceptSchemeByUrn(urn, false);
     }
 
+    //
+    // CONCEPT SCHEME
+    //
+
     private void retrieveConceptSchemeByUrn(String urn, final boolean startEdition) {
         dispatcher.execute(new GetConceptSchemeAction(urn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
 
@@ -198,6 +206,25 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
                 retrieveConceptsByScheme(result.getConceptSchemeDto().getUrn());
                 retrieveConceptSchemeVersions(result.getConceptSchemeDto().getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveLatestConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        ConceptSchemeWebCriteria criteria = new ConceptSchemeWebCriteria();
+        criteria.setCodeEQ(conceptSchemeMetamacDto.getCode());
+        criteria.setMaintainerUrn(conceptSchemeMetamacDto.getMaintainer().getUrn());
+        criteria.setIsLatestFinal(true);
+        dispatcher.execute(new GetConceptSchemesAction(0, 1, criteria), new WaitingAsyncCallback<GetConceptSchemesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptSchemesResult result) {
+                getView().setLatestConceptSchemeForInternalPublication(result);
             }
         });
     }

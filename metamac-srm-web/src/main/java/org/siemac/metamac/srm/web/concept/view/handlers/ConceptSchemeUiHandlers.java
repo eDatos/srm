@@ -12,6 +12,7 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
     void goToConceptScheme(String urn);
     void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
     void cancelValidity(String urn);
+    void retrieveLatestConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
 
     // Life cycle
 

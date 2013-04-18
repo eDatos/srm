@@ -37,6 +37,7 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionAction;
@@ -47,6 +48,8 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeActio
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsResult;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
+import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
@@ -114,6 +117,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
         void setOrganisationList(List<ItemHierarchyDto> organisationDtos);
         void startOrganisationSchemeEdition();
+        void setLatestOrganisationSchemeForInternalPublication(GetOrganisationSchemesResult result);
 
         // Categorisations
 
@@ -246,6 +250,25 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             @Override
             public void onWaitSuccess(GetOrganisationSchemeVersionsResult result) {
                 getView().setOrganisationSchemeVersions(result.getOrganisationSchemeMetamacDtos());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveLatestOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        OrganisationSchemeWebCriteria criteria = new OrganisationSchemeWebCriteria();
+        criteria.setCodeEQ(organisationSchemeMetamacDto.getCode());
+        criteria.setMaintainerUrn(organisationSchemeMetamacDto.getMaintainer().getUrn());
+        criteria.setIsLatestFinal(true);
+        dispatcher.execute(new GetOrganisationSchemesAction(0, 1, criteria), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetOrganisationSchemesResult result) {
+                getView().setLatestOrganisationSchemeForInternalPublication(result);
             }
         });
     }

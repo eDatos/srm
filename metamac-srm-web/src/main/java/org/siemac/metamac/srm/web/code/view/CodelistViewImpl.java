@@ -867,11 +867,39 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private void publishCodelistInternally() {
-        // If the codelist is imported, ask if this resource should be the latest one
         if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(codelistDto.getMaintainer())) {
-            // TODO
-        } else {
             getUiHandlers().publishInternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus(), null);
+        } else {
+            // If the codelist is imported, ask the user if this resource should be the latest one.
+            // If there were another codelist marked as final, find it, and inform the user that the codelist to publish will replace the latest one.
+            getUiHandlers().retrieveLatestCodelist(codelistDto); // Publication will be done in setLatestCodelistForInternalPublication method
+        }
+    }
+
+    @Override
+    public void setLatestCodelistForInternalPublication(GetCodelistsResult result) {
+        if (result.getCodelists().isEmpty()) {
+            getUiHandlers().publishInternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus(), null);
+        } else {
+            // If there were other version marked as the latest, ask the user what to do
+            CodelistMetamacDto latest = result.getCodelists().get(0);
+            ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().codelistShouldBeMarkAsTheLatest(latest.getVersionLogic()));
+            confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // Codelist will be the latest
+                    getUiHandlers().publishInternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus(), true);
+                }
+            });
+            confirmationWindow.getNoButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // Codelist WON'T be the latest
+                    getUiHandlers().publishInternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus(), false);
+                }
+            });
         }
     }
 

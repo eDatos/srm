@@ -141,6 +141,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setCodelist(CodelistMetamacDto codelistMetamacDto);
         void setCodelistVersions(List<CodelistMetamacDto> codelistMetamacDtos);
         void startCodelistEdition();
+        void setLatestCodelistForInternalPublication(GetCodelistsResult result);
 
         // Codes
         void setCodes(List<CodeMetamacVisualisationResult> codes);
@@ -302,6 +303,25 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 getView().setCodelist(codelistMetamacDto);
 
                 updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void retrieveLatestCodelist(CodelistMetamacDto codelistMetamacDto) {
+        CodelistWebCriteria criteria = new CodelistWebCriteria();
+        criteria.setCodeEQ(codelistMetamacDto.getCode());
+        criteria.setMaintainerUrn(codelistMetamacDto.getMaintainer().getUrn());
+        criteria.setIsLatestFinal(true);
+        dispatcher.execute(new GetCodelistsAction(0, 1, criteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetCodelistsResult result) {
+                getView().setLatestCodelistForInternalPublication(result);
             }
         });
     }

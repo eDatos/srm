@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
+import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.DimensionsVisualisationItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -24,6 +26,7 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
@@ -595,8 +598,40 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     private void publishDsdInternally() {
-        // TODO
-        getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto, null);
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer())) {
+            getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto, null);
+        } else {
+            // If the DSD is imported, ask the user if this resource should be the latest one.
+            // If there were another DSD marked as final, find it, and inform the user that the DSD to publish will replace the latest one.
+            getUiHandlers().retrieveLatestDsd(dataStructureDefinitionMetamacDto); // Publication will be done in setLatestDsdForInternalPublication method
+        }
+    }
+
+    @Override
+    public void setLatestDsdForInternalPublication(GetDsdsResult result) {
+        if (result.getDsdDtos().isEmpty()) {
+            getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto, null);
+        } else {
+            // If there were other version marked as the latest, ask the user what to do
+            DataStructureDefinitionMetamacDto latest = result.getDsdDtos().get(0);
+            ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().dsdShouldBeMarkAsTheLatest(latest.getVersionLogic()));
+            confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // DSD will be the latest
+                    getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto, true);
+                }
+            });
+            confirmationWindow.getNoButton().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(ClickEvent event) {
+                    // DSD WON'T be the latest
+                    getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto, false);
+                }
+            });
+        }
     }
 
     private void versionDsd() {

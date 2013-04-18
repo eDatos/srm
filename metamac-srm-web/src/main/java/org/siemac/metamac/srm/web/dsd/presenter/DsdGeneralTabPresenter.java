@@ -27,6 +27,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
+import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
@@ -34,6 +35,8 @@ import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
@@ -91,6 +94,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         DataStructureDefinitionMetamacDto getDataStructureDefinitionDto();
         HasClickHandlers getSave();
         void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
+        void setLatestDsdForInternalPublication(GetDsdsResult result);
 
         void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos);
         void setConceptsForShowDecimalsPrecision(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> concepts);
@@ -172,6 +176,25 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                 List<DimensionComponentDto> dimensionComponentDtos = CommonUtils.getDimensionComponents(result.getDimensions());
                 getView().setDimensionsForStubAndHeading(dimensionComponentDtos);
                 setConceptSchemeOfTheMeasureDimension(dimensionComponentDtos);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveLatestDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        DataStructureDefinitionWebCriteria criteria = new DataStructureDefinitionWebCriteria();
+        criteria.setCodeEQ(dataStructureDefinitionMetamacDto.getCode());
+        criteria.setMaintainerUrn(dataStructureDefinitionMetamacDto.getMaintainer().getUrn());
+        criteria.setIsLatestFinal(true);
+        dispatcher.execute(new GetDsdsAction(0, 1, criteria), new WaitingAsyncCallback<GetDsdsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetDsdsResult result) {
+                getView().setLatestDsdForInternalPublication(result);
             }
         });
     }
