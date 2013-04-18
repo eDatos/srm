@@ -5631,7 +5631,52 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                      
+                />       
+                
+            <TB_M_VARIABLE_ELEMENTS
+                ID="27"
+                IDENTIFIABLE_ARTEFACT_FK="9999327"
+                
+                SHORT_NAME_FK="139"
+                VALID_FROM_TZ="Europe/London"
+                VALID_FROM="2011-01-02 02:02:04" 
+                VALID_TO_TZ="[null]"
+                VALID_TO="[null]"
+                VARIABLE_FK="2"
+                REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                
+                UUID="variable-element-27"
+                CREATED_DATE_TZ="Europe/London"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_BY="user1"
+                LAST_UPDATED_TZ="Europe/London"
+                LAST_UPDATED="2012-01-01 01:02:03"
+                LAST_UPDATED_BY="user2"
+                VERSION="1"
+            />
+            
+               <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9999327"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
+                    
+                    CODE="VARIABLE_ELEMENT_07"
+                    CODE_FULL="[null]"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_07"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_07"
+                    
+                    NAME_FK="[null]"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-9999327"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                      
                 
                 <!-- VARIABLE ELEMENTS OPERATIONS -->
                 
@@ -6388,7 +6433,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="121"
-        LABEL="Nombre codelist-1-v2-code-1"
+        LABEL="Isla de Tenerife"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="12"
@@ -6422,7 +6467,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="141"
-        LABEL="Nombre codelist-1-v2-code-2"
+        LABEL="Nombre codelist-1-v2-code-2 Canaria, Gran"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="14"
@@ -6435,7 +6480,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="151"
-        LABEL="Nombre codelist-1-v2-code-2-1"
+        LABEL="codelist-1-v2-code-2- Isla de La Gomera"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="15"
@@ -6457,7 +6502,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="161"
-        LABEL="Nombre codelist-1-v2-code-2-1-1"
+        LABEL="Santa Cruz de La Palma codelist-1-v2-code-2-1-1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="16"
@@ -6746,7 +6791,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="371"
-        LABEL="Nombre codelist-1-v2-code-4-1"
+        LABEL="Canarias, Tenerife"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="37"
@@ -7220,7 +7265,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="711"
-        LABEL="Nombre corto variableElement 2-1"
+        LABEL="El Hierro"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="71"
@@ -7262,7 +7307,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="731"
-        LABEL="Nombre corto variableElement 2-2"
+        LABEL="Fuerteventura"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="73"
@@ -7473,7 +7518,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="831"
-        LABEL="Nombre corto variableElement 2-3"
+        LABEL="Gran Canaria"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="83"
@@ -7486,8 +7531,8 @@
     
     <TB_LOCALISED_STRINGS
         ID="841"
-        LABEL="nombre corto"
-        LOCALE="es"
+        LABEL="short name v2-4"
+        LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="84"
     />    
@@ -7499,12 +7544,20 @@
     
     <TB_LOCALISED_STRINGS
         ID="851"
-        LABEL="nombre corto"
+        LABEL="La Palma"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="85"
     />    
     
+    <TB_LOCALISED_STRINGS
+        ID="852"
+        LABEL="short name v2-5"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="85"
+    />  
+        
     <TB_INTERNATIONAL_STRINGS
         ID="86"
         VERSION="1"
@@ -7538,7 +7591,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="881"
-        LABEL="título"
+        LABEL="título ve-5-2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="88"
@@ -7564,12 +7617,21 @@
     
     <TB_LOCALISED_STRINGS
         ID="901"
-        LABEL="título"
+        LABEL="título ve5-3"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="90"
     />     
     
+    <TB_LOCALISED_STRINGS
+        ID="902"
+        LABEL="short name ve5-3"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="90"
+    />     
+    
+        
     <TB_INTERNATIONAL_STRINGS
         ID="91"
         VERSION="1"
@@ -7590,7 +7652,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="921"
-        LABEL="título"
+        LABEL="La Gomera"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="92"
@@ -7645,7 +7707,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="953"
-        LABEL="nombre code-3"
+        LABEL="Fuerteventura"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="95"
@@ -7658,7 +7720,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="961"
-        LABEL="Nombre codelist-1-v2-code-4"
+        LABEL="Lanzarote"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="96"
@@ -7809,7 +7871,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="1071"
-        LABEL="código 2-2"
+        LABEL="Isla de El Hierro"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="107"
@@ -8256,6 +8318,33 @@
         LOCALE="it"
         VERSION="1"
         INTERNATIONAL_STRING_FK="138"
+    />         
+    
+   <TB_INTERNATIONAL_STRINGS
+        ID="139"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1391"
+        LABEL="Teneriffa"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="139"
+    />   
+    <TB_LOCALISED_STRINGS
+        ID="1392"
+        LABEL="Tenerife"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="139"
     />                   
+    <TB_LOCALISED_STRINGS
+        ID="1393"
+        LABEL="Tenerife it"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="139"
+    />                        
                                                                                                    
 </dataset>

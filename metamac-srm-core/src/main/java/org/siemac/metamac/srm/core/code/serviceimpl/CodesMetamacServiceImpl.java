@@ -45,6 +45,8 @@ import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
@@ -58,6 +60,8 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.normalisation.DiceLuceneRamAproxStringMatch;
+import org.siemac.metamac.srm.core.normalisation.MatchResult;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodeOrdersCsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodesCsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationVariableElementsCsvHeader;
@@ -898,6 +902,52 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
+    public List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(ServiceContext ctx, String codelistUrn, String locale) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkNormaliseVariableElementsToCodes(codelistUrn, locale, null);
+
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        String variableUrn = codelistVersion.getVariable().getNameableArtefact().getUrn();
+
+        // Find codes and variable elements
+        List<CodeMetamacVisualisationResult> codes = retrieveCodesByCodelistUrn(ctx, codelistUrn, locale, null, null);
+        List<VariableElementResult> variableElements = retrieveVariableElementsByVariable(ctx, variableUrn, locale);
+        Map<String, VariableElementResult> variableElementsByUrn = new HashMap<String, VariableElementResult>(variableElements.size());
+        for (VariableElementResult variableElement : variableElements) {
+            variableElementsByUrn.put(variableElement.getUrn(), variableElement);
+        }
+
+        // Init dictionary with variable elements
+        Map<String, String> dictionary = new HashMap<String, String>(variableElements.size());
+        for (VariableElementResult variableElement : variableElements) {
+            if (variableElement.getShortName() != null) {
+                dictionary.put(variableElement.getUrn(), variableElement.getShortName());
+            }
+        }
+        DiceLuceneRamAproxStringMatch luceneMatch = new DiceLuceneRamAproxStringMatch(dictionary);
+
+        // Get suggestions
+        List<CodeVariableElementNormalisationResult> results = new ArrayList<CodeVariableElementNormalisationResult>(codes.size());
+        for (CodeMetamacVisualisationResult code : codes) {
+            CodeVariableElementNormalisationResult result = new CodeVariableElementNormalisationResult();
+            result.setCode(code);
+            String name = code.getName();
+            if (name != null) {
+                List<MatchResult> suggestedVariableElements = luceneMatch.getSuggestedWords(name, 1);
+                if (suggestedVariableElements.size() != 0) {
+                    String variableElementUrn = suggestedVariableElements.get(0).getDictionaryKey();
+                    VariableElementResult variableElement = variableElementsByUrn.get(variableElementUrn);
+                    result.setVariableElement(variableElement);
+                }
+            }
+            results.add(result);
+        }
+
+        luceneMatch.shutdown();
+        return results;
+    }
+
+    @Override
     public List<MetamacExceptionItem> checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         getCodelistVersionMetamacRepository().checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
@@ -1290,6 +1340,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 .eq(codelistVersion.getVariable().getNameableArtefact().getUrn()).buildSingle());
         PagedResult<VariableElement> variableElementPagedResult = getVariableElementRepository().findByCondition(conditions, pagingParameter);
         return variableElementPagedResult;
+    }
+
+    @Override
+    public List<VariableElementResult> retrieveVariableElementsByVariable(ServiceContext ctx, String variableUrn, String locale) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveVariableElementsByVariable(variableUrn, locale, null);
+
+        // Find
+        Variable variable = retrieveVariableByUrn(variableUrn);
+        return getVariableElementRepository().retrieveVariableElementsByVariableEfficiently(variable.getId(), locale);
     }
 
     @Override

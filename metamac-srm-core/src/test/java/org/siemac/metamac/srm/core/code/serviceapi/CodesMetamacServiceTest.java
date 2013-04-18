@@ -66,6 +66,8 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
@@ -2153,7 +2155,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNotNull(code.getItemSchemeVersionFirstLevel());
             assertNull(code.getNameableArtefact().getUriProvider());
             assertNull(code.getShortName());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-2-1", "en", "Name codelist-1-v2-code-2-1");
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "codelist-1-v2-code-2- Isla de La Gomera", "en", "Name codelist-1-v2-code-2-1");
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "descripción CODELIST_1_V2_CODE_2_1", null, null);
             assertNull(code.getNameableArtefact().getComment());
             assertEquals(code.getVariableElement().getIdentifiableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_1);
@@ -2195,7 +2197,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(3, code.getNameableArtefact().getName().getTexts().size());
             assertEquals("name code-3", code.getNameableArtefact().getName().getLocalisedLabel("en"));
             assertEquals("nombre it code-3", code.getNameableArtefact().getName().getLocalisedLabel("it"));
-            assertEquals("nombre code-3", code.getNameableArtefact().getName().getLocalisedLabel("es"));
+            assertEquals("Fuerteventura", code.getNameableArtefact().getName().getLocalisedLabel("es"));
             assertNull(code.getNameableArtefact().getDescription());
             assertEquals(code.getVariableElement().getIdentifiableArtefact().getUrn(), VARIABLE_2_VARIABLE_ELEMENT_3);
             assertNull(code.getNameableArtefact().getComment());
@@ -2218,7 +2220,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNotNull(code.getItemSchemeVersionFirstLevel());
             assertNull(code.getNameableArtefact().getUriProvider());
             assertNull(code.getShortName());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-4", null, null);
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Lanzarote", null, null);
             assertNull(code.getNameableArtefact().getDescription());
             assertNull(code.getVariableElement());
             assertNull(code.getNameableArtefact().getComment());
@@ -2718,7 +2720,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(CODELIST_1_V2_CODE_1, code.getUrn());
                 assertEquals("CODE01", code.getCode());
 
-                assertEquals("Nombre codelist-1-v2-code-1", code.getName());
+                assertEquals("Isla de Tenerife", code.getName());
                 assertEquals(Long.valueOf(121), code.getItemIdDatabase());
                 assertEquals(null, code.getParent());
                 assertEquals(null, code.getParentIdDatabase());
@@ -2729,7 +2731,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2);
                 assertEquals(CODELIST_1_V2_CODE_2, code.getUrn());
                 assertEquals("CODE02", code.getCode());
-                assertEquals("Nombre codelist-1-v2-code-2", code.getName());
+                assertEquals("Nombre codelist-1-v2-code-2 Canaria, Gran", code.getName());
                 assertEquals(Integer.valueOf(1), code.getOrder());
             }
             {
@@ -2737,7 +2739,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1);
                 assertEquals(CODELIST_1_V2_CODE_2_1, code.getUrn());
                 assertEquals("CODE02", code.getParent().getCode());
-                assertEquals("Nombre codelist-1-v2-code-2-1", code.getName());
+                assertEquals("codelist-1-v2-code-2- Isla de La Gomera", code.getName());
                 assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), code.getParentIdDatabase());
                 assertEquals(Integer.valueOf(0), code.getOrder());
@@ -2747,7 +2749,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1);
                 assertEquals(CODELIST_1_V2_CODE_2_1_1, code.getUrn());
                 assertEquals("CODE0201", code.getParent().getCode());
-                assertEquals("Nombre codelist-1-v2-code-2-1-1", code.getName());
+                assertEquals("Santa Cruz de La Palma codelist-1-v2-code-2-1-1", code.getName());
                 assertEquals(Long.valueOf("1221"), code.getParentIdDatabase());
                 assertEquals(Integer.valueOf(0), code.getOrder());
             }
@@ -2758,28 +2760,28 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("CODE02", code.getParent().getCode());
                 assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), code.getParentIdDatabase());
-                assertEquals("código 2-2", code.getName());
+                assertEquals("Isla de El Hierro", code.getName());
                 assertEquals(Integer.valueOf(1), code.getOrder());
             }
             {
                 // Code 03
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3);
                 assertEquals(CODELIST_1_V2_CODE_3, code.getUrn());
-                assertEquals("nombre code-3", code.getName());
+                assertEquals("Fuerteventura", code.getName());
                 assertEquals(Integer.valueOf(2), code.getOrder());
             }
             {
                 // Code 04
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4);
                 assertEquals(CODELIST_1_V2_CODE_4, code.getUrn());
-                assertEquals("Nombre codelist-1-v2-code-4", code.getName());
+                assertEquals("Lanzarote", code.getName());
                 assertEquals(Integer.valueOf(3), code.getOrder());
             }
             {
                 // Code 04 01
                 CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1);
                 assertEquals(CODELIST_1_V2_CODE_4_1, code.getUrn());
-                assertEquals("Nombre codelist-1-v2-code-4-1", code.getName());
+                assertEquals("Canarias, Tenerife", code.getName());
                 assertEquals(Integer.valueOf(0), code.getOrder());
             }
             {
@@ -3031,11 +3033,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Find by name (like), code (like) and codelist urn
         {
-            String name = "Nombre codelist-1-v2-code-2-";
+            String name = "codelist-1-v2-code-2-";
             String code = "CODE02";
             String codelistUrn = CODELIST_1_V2;
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).withProperty(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).eq(codelistUrn)
-                    .withProperty(CodeProperties.nameableArtefact().code()).like(code + "%").withProperty(CodeProperties.nameableArtefact().name().texts().label()).like(name + "%")
+                    .withProperty(CodeProperties.nameableArtefact().code()).like(code + "%").withProperty(CodeProperties.nameableArtefact().name().texts().label()).like("%" + name + "%")
                     .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
@@ -3647,7 +3649,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(semanticIdentifier, code.getNameableArtefact().getCode());
             assertEquals(code.getNameableArtefact().getUrn(), code.getNameableArtefact().getUrnProvider());
             assertEquals(null, code.getParent());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-1", "en", "Name codelist-1-v2-code-1");
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Isla de Tenerife", "en", "Name codelist-1-v2-code-1");
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "Descripción codelist-1-v2-code-1", null, null);
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getIdentifiableArtefact().getUrn());
             assertEquals(Integer.valueOf(0), code.getOrder1());
@@ -3667,7 +3669,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(semanticIdentifier, code.getNameableArtefact().getCode());
             assertEquals(code.getNameableArtefact().getUrn(), code.getNameableArtefact().getUrnProvider());
             assertEquals(null, code.getParent());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-2", null, null);
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-2 Canaria, Gran", null, null);
             assertEquals(null, code.getNameableArtefact().getDescription());
             assertEquals(null, code.getVariableElement());
             assertEqualsInternationalString(code.getShortName(), "es", "nombre corto code2", "en", "short name code2");
@@ -3688,7 +3690,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(semanticIdentifier, code.getNameableArtefact().getCode());
             assertEquals(code.getNameableArtefact().getUrn(), code.getNameableArtefact().getUrnProvider());
             assertEquals(null, code.getParent());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "nombre code-3", "it", "nombre it code-3", "en", "name code-3");
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Fuerteventura", "it", "nombre it code-3", "en", "name code-3");
             assertEquals(null, code.getNameableArtefact().getDescription());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, code.getVariableElement().getIdentifiableArtefact().getUrn());
             assertEquals(null, code.getShortName());
@@ -3710,7 +3712,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(semanticIdentifier, code.getNameableArtefact().getCode());
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
             assertEquals(Long.valueOf(122), code.getParent().getId());
-            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-1-v2-code-2-1", "en", "Name codelist-1-v2-code-2-1");
+            assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "codelist-1-v2-code-2- Isla de La Gomera", "en", "Name codelist-1-v2-code-2-1");
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "descripción CODELIST_1_V2_CODE_2_1", null, null);
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, code.getVariableElement().getIdentifiableArtefact().getUrn());
             assertEquals(Integer.valueOf(0), code.getOrder1());
@@ -4133,6 +4135,77 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     @Test
     public void testClearDirtyDatabaseBecausePreviuosTestCanNotHaveNotTransactionalAnnotation() throws Exception {
+    }
+
+    @Override
+    @Test
+    public void testNormaliseVariableElementsToCodes() throws Exception {
+
+        String codelistUrn = CODELIST_1_V2;
+        List<CodeVariableElementNormalisationResult> results = codesService.normaliseVariableElementsToCodes(getServiceContextAdministrador(), codelistUrn, "es");
+        assertEquals(9, results.size());
+
+        {
+            String codeUrn = CODELIST_1_V2_CODE_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Isla de Tenerife", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, result.getVariableElement().getUrn());
+            assertEquals("Tenerife", result.getVariableElement().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_2;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Nombre codelist-1-v2-code-2 Canaria, Gran", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getVariableElement().getUrn());
+            assertEquals("Gran Canaria", result.getVariableElement().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_2_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("codelist-1-v2-code-2- Isla de La Gomera", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getVariableElement().getUrn());
+            assertEquals("La Gomera", result.getVariableElement().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_2_1_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Santa Cruz de La Palma codelist-1-v2-code-2-1-1", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getVariableElement().getUrn());
+            assertEquals("La Palma", result.getVariableElement().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_2_2;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Isla de El Hierro", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getVariableElement().getUrn());
+            assertEquals("El Hierro", result.getVariableElement().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_3;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Fuerteventura", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getVariableElement().getUrn());
+            assertEquals("Fuerteventura", result.getVariableElement().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_4;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Lanzarote", result.getCode().getName());
+            assertEquals(null, result.getVariableElement());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_4_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Canarias, Tenerife", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, result.getVariableElement().getUrn());
+            assertEquals("Tenerife", result.getVariableElement().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_4_1_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Nombre codelist-1-v2-code-4-1-1", result.getCode().getName());
+            assertEquals(null, result.getVariableElement());
+        }
     }
 
     // ------------------------------------------------------------------------------------
@@ -5394,7 +5467,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         assertEquals(urn, variableElement.getIdentifiableArtefact().getUrn());
         assertEquals("VARIABLE_ELEMENT_02", variableElement.getIdentifiableArtefact().getCode());
-        assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto variableElement 2-2", "en", "Short name variableElement 2-2");
+        assertEqualsInternationalString(variableElement.getShortName(), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
         assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidFrom());
         assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variableElement.getValidTo());
         assertEquals(VARIABLE_2, variableElement.getVariable().getNameableArtefact().getUrn());
@@ -5442,7 +5515,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableElement> result = codesService.findVariableElementsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
-            assertEquals(9, result.getTotalRows());
+            assertEquals(10, result.getTotalRows());
             int i = 0;
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
@@ -5450,6 +5523,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
@@ -5494,6 +5568,99 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, result.getTotalRows());
             int i = 0;
             assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
+        }
+    }
+
+    @Test
+    @Override
+    public void testRetrieveVariableElementsByVariable() throws Exception {
+        {
+            String variableUrn = VARIABLE_1;
+            String locale = "es";
+            List<VariableElementResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
+            assertEquals(0, result.size());
+        }
+        {
+            String variableUrn = VARIABLE_2;
+            String locale = "es";
+            List<VariableElementResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
+            assertEquals(7, result.size());
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_1, result);
+                assertEquals(Long.valueOf(21), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_01", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, ve.getUrn());
+                assertEquals("El Hierro", ve.getShortName());
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_2, result);
+                assertEquals(Long.valueOf(22), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_02", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, ve.getUrn());
+                assertEquals("Fuerteventura", ve.getShortName());
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_3, result);
+                assertEquals(Long.valueOf(23), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_03", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, ve.getUrn());
+                assertEquals("Gran Canaria", ve.getShortName());
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_4, result);
+                assertEquals(Long.valueOf(24), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_04", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, ve.getUrn());
+                assertEquals(null, ve.getShortName());
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_5, result);
+                assertEquals(Long.valueOf(25), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_05", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, ve.getUrn());
+                assertEquals("La Palma", ve.getShortName());
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_6, result);
+                assertEquals(Long.valueOf(26), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_06", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, ve.getUrn());
+                assertEquals("La Gomera", ve.getShortName());
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_7, result);
+                assertEquals(Long.valueOf(27), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_07", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, ve.getUrn());
+                assertEquals("Tenerife", ve.getShortName());
+            }
+        }
+        {
+            String variableUrn = VARIABLE_5;
+            String locale = "en";
+            List<VariableElementResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
+            assertEquals(3, result.size());
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_1, result);
+                assertEquals(Long.valueOf(51), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_01", ve.getCode());
+                assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, ve.getUrn());
+                assertEquals("Short name 5-1", ve.getShortName());
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_2, result);
+                assertEquals(Long.valueOf(52), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_02", ve.getCode());
+                assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, ve.getUrn());
+                assertEquals(null, ve.getShortName());
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_3, result);
+                assertEquals(Long.valueOf(53), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_03", ve.getCode());
+                assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, ve.getUrn());
+                assertEquals("short name ve5-3", ve.getShortName());
+            }
         }
     }
 
@@ -7590,7 +7757,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02");
             assertEquals("VARIABLE_ELEMENT_02", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
-            assertEqualsInternationalString(variableElement.getShortName(), "es", "Nombre corto variableElement 2-2", "en", "Short name variableElement 2-2");
+            assertEqualsInternationalString(variableElement.getShortName(), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             assertEquals(Long.valueOf(22), variableElement.getId());
             BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), variableElement.getCreatedDate());
@@ -7612,7 +7779,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04");
             assertEquals("VARIABLE_ELEMENT_04", variableElement.getIdentifiableArtefact().getCode());
             assertEquals(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getIdentifiableArtefact().getUrnProvider());
-            assertEqualsInternationalString(variableElement.getShortName(), "es", "nombre corto", null, null);
+            assertEqualsInternationalString(variableElement.getShortName(), "en", "short name v2-4", null, null);
             assertEquals(variableUrn, variableElement.getVariable().getNameableArtefact().getUrn());
             assertEquals(Long.valueOf(24), variableElement.getId());
             BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), variableElement.getCreatedDate());
@@ -7781,6 +7948,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(infoExpected, actual.getParameters());
         assertEquals(isPrincipalExpected, actual.isPrincipal());
         assertEquals(typeExpected, actual.getResultType());
+    }
+
+    private VariableElementResult assertContainsVariableElementResult(String variableElementUrnExpected, List<VariableElementResult> actuals) {
+        for (VariableElementResult actual : actuals) {
+            if (actual.getUrn().equals(variableElementUrnExpected)) {
+                return actual;
+            }
+        }
+        fail("variable element not found");
+        return null;
+    }
+
+    private CodeVariableElementNormalisationResult assertContainsCodeVariableElementNormalisationResult(String codeUrnExpected, List<CodeVariableElementNormalisationResult> actuals) {
+        for (CodeVariableElementNormalisationResult actual : actuals) {
+            if (actual.getCode().getUrn().equals(codeUrnExpected)) {
+                return actual;
+            }
+        }
+        fail("not found");
+        return null;
     }
 
     private void validateVersioningCodelist3V1() throws Exception {

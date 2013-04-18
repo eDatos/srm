@@ -590,6 +590,8 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@VariableElementDto> findVariableElementsByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find variable elements can be for codes of codelist"
     		MetamacCriteriaResult<@RelatedResourceDto> findVariableElementsForCodesByCondition(MetamacCriteria criteria, String codelistUrn) throws MetamacException;
+    		"Finds efficiently variable elements by variable"
+    		List<VariableElementResult> retrieveVariableElementsByVariable(String variableUrn, String locale) throws MetamacException;
 			"Deletes variable element"
     		deleteVariableElement(String urn) throws MetamacException;
     		"Adds variable elements to a variable"

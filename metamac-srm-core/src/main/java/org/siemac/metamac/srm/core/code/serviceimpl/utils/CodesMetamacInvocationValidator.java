@@ -61,7 +61,8 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
     public static void checkCodelist(CodelistVersionMetamac codelistVersion, boolean creating, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, exceptions);
-        ValidationUtils.checkInternationalStringMaximumLength(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH, exceptions);
+        ValidationUtils.checkInternationalStringMaximumLength(codelistVersion.getShortName(), ServiceExceptionParameters.CODELIST_SHORT_NAME, SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH,
+                exceptions);
         ValidationUtils.checkMetadataOptionalIsValid(codelistVersion.getDescriptionSource(), ServiceExceptionParameters.CODELIST_DESCRIPTION_SOURCE, exceptions);
         if (codelistVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsExternalReference())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_IS_EXTERNAL_REFERENCE));
@@ -187,6 +188,17 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkNormaliseVariableElementsToCodes(String codelistUrn, String locale, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -544,6 +556,17 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
 
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveVariableElementsByVariable(String variableUrn, String locale, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

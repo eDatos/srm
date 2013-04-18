@@ -49,6 +49,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     // Codes miscellaneous
     public static final CommonServiceExceptionType ARTEFACT_CAN_NOT_REPLACE_ITSELF                                      = create("exception.srm.codelists.artefact.cannot_replace_itself");
     public static final CommonServiceExceptionType ARTEFACT_IS_ALREADY_REPLACED                                         = create("exception.srm.codelists.artefact.already_replaced");
+    public static final CommonServiceExceptionType CODES_VARIABLE_ELEMENTS_NORMALISATION_ERROR                          = create("exception.srm.codelists.error.variable_elements_normalisation");
 
     // Importation
     public static final CommonServiceExceptionType IMPORTATION_EXIST_NOT_FINAL_VERSION                                  = create("exception.srm.importation.error.there_are_not_final_versions");

@@ -411,7 +411,11 @@
             <artifactId>stax-utils</artifactId>
             <version>20070216</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene-core.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>

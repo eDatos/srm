@@ -53,10 +53,9 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals("CODE01", code.getCode());
             assertEquals(null, code.getParent());
             assertEquals(2, code.getName().size());
-            CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Nombre codelist-1-v2-code-1", "en", "Name codelist-1-v2-code-1");
+            CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Isla de Tenerife", "en", "Name codelist-1-v2-code-1");
             CodesAsserts.assertEqualsInternationalString(code.getDescription(), "es", "Descripción codelist-1-v2-code-1", null, null);
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Nombre corto variableElement 2-2", "en",
-                    "Short name variableElement 2-2");
+            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
 
             assertEquals(2, code.getAnnotations().size());
             {
@@ -82,7 +81,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_2, code.getUrn());
             assertEquals("CODE02", code.getCode());
             assertEquals(1, code.getName().size());
-            CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Nombre codelist-1-v2-code-2", null, null);
+            CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Canaria, Gran", null, null);
             CodesAsserts.assertEqualsInternationalString(code.getDescription(), null, null, null, null);
             CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "nombre corto code2", "en", "short name code2");
             assertEquals(0, code.getAnnotations().size());
@@ -93,8 +92,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_2_1, code.getUrn());
             assertEquals("CODE02", code.getParent().getCode());
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Nombre corto variableElement 2-1", "en",
-                    "short name variableElement 2-1");
+            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "El Hierro", "en", "short name variableElement 2-1");
         }
         {
             // Code 02 01 01
@@ -114,7 +112,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             // Code 03
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_3, code.getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Nombre corto variableElement 2-3", null, null);
+            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Gran Canaria", null, null);
         }
         {
             // Code 04
@@ -134,8 +132,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_4_1_1, code.getUrn());
             assertEquals("CODE0401", code.getParent().getCode());
             assertEquals(CODELIST_1_V2_CODE_4_1, code.getParent().getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Nombre corto variableElement 2-1", "en",
-                    "short name variableElement 2-1");
+            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "El Hierro", "en", "short name variableElement 2-1");
         }
     }
 

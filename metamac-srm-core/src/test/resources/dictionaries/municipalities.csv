@@ -1,0 +1,8099 @@
+1##Alegría-Dulantzi
+2##Amurrio
+3##Añana
+4##Aramaio
+5##Armiñón
+6##Arraia-Maeztu
+7##Arrazua-Ubarrundia
+8##Artziniega
+9##Asparrena
+10##Ayala/Aiara
+11##Baños de Ebro/Mañueta
+12##Barrundia
+13##Berantevilla
+14##Bernedo
+15##Campezo/Kanpezu
+16##Elburgo/Burgelu
+17##Elciego
+18##Elvillar/Bilar
+19##Erriberagoitia/Ribera Alta
+20##Harana/Valle de Arana
+21##Iruña Oka/Iruña de Oca
+22##Iruraiz-Gauna
+23##Kripan
+24##Kuartango
+25##Labastida/Bastida
+26##Lagrán
+27##Laguardia
+28##Lanciego/Lantziego
+29##Lantarón
+30##Lapuebla de Labarca
+31##Laudio/Llodio
+32##Legutio
+33##Leza
+34##Moreda de Álava
+35##Navaridas
+36##Okondo
+37##Oyón-Oion
+38##Peñacerrada-Urizaharra
+39##Ribera Baja/Erribera Beitia
+40##Salvatierra/Agurain
+41##Samaniego
+42##San Millán/Donemiliaga
+43##Urkabustaiz
+44##Valdegovía/Gaubea
+45##Villabuena de Álava/Eskuernaga
+46##Vitoria-Gasteiz
+47##Yécora/Iekora
+48##Zalduondo
+49##Zambrana
+50##Zigoitia
+51##Zuia
+52##Abengibre
+53##Alatoz
+54##Albacete
+55##Albatana
+56##Alborea
+57##Alcadozo
+58##Alcalá del Júcar
+59##Alcaraz
+60##Almansa
+61##Alpera
+62##Ayna
+63##Balazote
+64##Ballestero El
+65##Balsa de Ves
+66##Barrax
+67##Bienservida
+68##Bogarra
+69##Bonete
+70##Bonillo El
+71##Carcelén
+72##Casas de Juan Núñez
+73##Casas de Lázaro
+74##Casas de Ves
+75##Casas-Ibáñez
+76##Caudete
+77##Cenizate
+78##Chinchilla de Monte-Aragón
+79##Corral-Rubio
+80##Cotillas
+81##Elche de la Sierra
+82##Férez
+83##Fuensanta
+84##Fuente-Álamo
+85##Fuentealbilla
+86##Gineta La
+87##Golosalvo
+88##Hellín
+89##Herrera La
+90##Higueruela
+91##Hoya-Gonzalo
+92##Jorquera
+93##Letur
+94##Lezuza
+95##Liétor
+96##Madrigueras
+97##Mahora
+98##Masegoso
+99##Minaya
+100##Molinicos
+101##Montalvos
+102##Montealegre del Castillo
+103##Motilleja
+104##Munera
+105##Navas de Jorquera
+106##Nerpio
+107##Ontur
+108##Ossa de Montiel
+109##Paterna del Madera
+110##Peñas de San Pedro
+111##Peñascosa
+112##Pétrola
+113##Povedilla
+114##Pozo Cañada
+115##Pozohondo
+116##Pozo-Lorente
+117##Pozuelo
+118##Recueja La
+119##Riópar
+120##Robledo
+121##Roda La
+122##Salobre
+123##San Pedro
+124##Socovos
+125##Tarazona de la Mancha
+126##Tobarra
+127##Valdeganga
+128##Vianos
+129##Villa de Ves
+130##Villalgordo del Júcar
+131##Villamalea
+132##Villapalacios
+133##Villarrobledo
+134##Villatoya
+135##Villavaliente
+136##Villaverde de Guadalimar
+137##Viveros
+138##Yeste
+139##Adsubia
+140##Agost
+141##Agres
+142##Aigües
+143##Albatera
+144##Alcalalí
+145##Alcocer de Planes
+146##Alcoleja
+147##Alcoy/Alcoi
+148##Alfafara
+149##Alfàs del Pi l'
+150##Algorfa
+151##Algueña
+152##Alicante/Alacant
+153##Almoradí
+154##Almudaina
+155##Alqueria d'Asnar l'
+156##Altea
+157##Aspe
+158##Balones
+159##Banyeres de Mariola
+160##Benasau
+161##Beneixama
+162##Benejúzar
+163##Benferri
+164##Beniarbeig
+165##Beniardá
+166##Beniarrés
+167##Benidoleig
+168##Benidorm
+169##Benifallim
+170##Benifato
+171##Benigembla
+172##Benijófar
+173##Benilloba
+174##Benillup
+175##Benimantell
+176##Benimarfull
+177##Benimassot
+178##Benimeli
+179##Benissa
+180##Benitachell/Poble Nou de Benitatxell el
+181##Biar
+182##Bigastro
+183##Bolulla
+184##Busot
+185##Callosa de Segura
+186##Callosa d'En Sarrià
+187##Calp
+188##Campello el
+189##Campo de Mirra/Camp de Mirra el
+190##Cañada
+191##Castalla
+192##Castell de Castells
+193##Castell de Guadalest el
+194##Catral
+195##Cocentaina
+196##Confrides
+197##Cox
+198##Crevillent
+199##Daya Nueva
+200##Daya Vieja
+201##Dénia
+202##Dolores
+203##Elche/Elx
+204##Elda
+205##Facheca
+206##Famorca
+207##Finestrat
+208##Fondó de les Neus el/Hondón de las Nieves
+209##Formentera del Segura
+210##Gaianes
+211##Gata de Gorgos
+212##Gorga
+213##Granja de Rocamora
+214##Guardamar del Segura
+215##Hondón de los Frailes
+216##Ibi
+217##Jacarilla
+218##Jávea/Xàbia
+219##Jijona/Xixona
+220##Llíber
+221##Lorcha/Orxa l'
+222##Millena
+223##Monforte del Cid
+224##Monóvar/Monòver
+225##Montesinos Los
+226##Murla
+227##Muro de Alcoy
+228##Mutxamel
+229##Novelda
+230##Nucia la
+231##Ondara
+232##Onil
+233##Orba
+234##Orihuela
+235##Orxeta
+236##Parcent
+237##Pedreguer
+238##Pego
+239##Penàguila
+240##Petrer
+241##Pilar de la Horadada
+242##Pinós el/Pinoso
+243##Planes
+244##Poblets els
+245##Polop
+246##Quatretondeta
+247##Rafal
+248##Ràfol d'Almúnia El
+249##Redován
+250##Relleu
+251##Rojales
+252##Romana la
+253##Sagra
+254##Salinas
+255##San Fulgencio
+256##San Isidro
+257##San Miguel de Salinas
+258##San Vicente del Raspeig/Sant Vicent del Raspeig
+259##Sanet y Negrals
+260##Sant Joan d'Alacant
+261##Santa Pola
+262##Sax
+263##Sella
+264##Senija
+265##Tàrbena
+266##Teulada
+267##Tibi
+268##Tollos
+269##Tormos
+270##Torremanzanas/Torre de les Maçanes la
+271##Torrevieja
+272##Vall d'Alcalà la
+273##Vall de Gallinera
+274##Vall de Laguar la
+275##Vall d'Ebo la
+276##Verger el
+277##Villajoyosa/Vila Joiosa la
+278##Villena
+279##Xaló
+280##Abla
+281##Abrucena
+282##Adra
+283##Albánchez
+284##Alboloduy
+285##Albox
+286##Alcolea
+287##Alcóntar
+288##Alcudia de Monteagud
+289##Alhabia
+290##Alhama de Almería
+291##Alicún
+292##Almería
+293##Almócita
+294##Alsodux
+295##Antas
+296##Arboleas
+297##Armuña de Almanzora
+298##Bacares
+299##Bayárcal
+300##Bayarque
+301##Bédar
+302##Beires
+303##Benahadux
+304##Benitagla
+305##Benizalón
+306##Bentarique
+307##Berja
+308##Canjáyar
+309##Cantoria
+310##Carboneras
+311##Castro de Filabres
+312##Chercos
+313##Chirivel
+314##Cóbdar
+315##Cuevas del Almanzora
+316##Dalías
+317##Ejido El
+318##Enix
+319##Felix
+320##Fines
+321##Fiñana
+322##Fondón
+323##Gádor
+324##Gallardos Los
+325##Garrucha
+326##Gérgal
+327##Huécija
+328##Huércal de Almería
+329##Huércal-Overa
+330##Illar
+331##Instinción
+332##Laroya
+333##Láujar de Andarax
+334##Líjar
+335##Lubrín
+336##Lucainena de las Torres
+337##Lúcar
+338##Macael
+339##María
+340##Mojácar
+341##Mojonera La
+342##Nacimiento
+343##Níjar
+344##Ohanes
+345##Olula de Castro
+346##Olula del Río
+347##Oria
+348##Padules
+349##Partaloa
+350##Paterna del Río
+351##Pechina
+352##Pulpí
+353##Purchena
+354##Rágol
+355##Rioja
+356##Roquetas de Mar
+357##Santa Cruz de Marchena
+358##Santa Fe de Mondújar
+359##Senés
+360##Serón
+361##Sierro
+362##Somontín
+363##Sorbas
+364##Suflí
+365##Tabernas
+366##Taberno
+367##Tahal
+368##Terque
+369##Tíjola
+370##Tres Villas Las
+371##Turre
+372##Turrillas
+373##Uleila del Campo
+374##Urrácal
+375##Velefique
+376##Vélez-Blanco
+377##Vélez-Rubio
+378##Vera
+379##Viator
+380##Vícar
+381##Zurgena
+382##Adanero
+383##Adrada La
+384##Albornos
+385##Aldeanueva de Santa Cruz
+386##Aldeaseca
+387##Aldehuela La
+388##Amavida
+389##Arenal El
+390##Arenas de San Pedro
+391##Arevalillo
+392##Arévalo
+393##Aveinte
+394##Avellaneda
+395##Ávila
+396##Barco de Ávila El
+397##Barraco El
+398##Barromán
+399##Becedas
+400##Becedillas
+401##Bercial de Zapardiel
+402##Berlanas Las
+403##Bernuy-Zapardiel
+404##Berrocalejo de Aragona
+405##Blascomillán
+406##Blasconuño de Matacabras
+407##Blascosancho
+408##Bohodón El
+409##Bohoyo
+410##Bonilla de la Sierra
+411##Brabos
+412##Bularros
+413##Burgohondo
+414##Cabezas de Alambre
+415##Cabezas del Pozo
+416##Cabezas del Villar
+417##Cabizuela
+418##Canales
+419##Candeleda
+420##Cantiveros
+421##Cardeñosa
+422##Carrera La
+423##Casas del Puerto
+424##Casasola
+425##Casavieja
+426##Casillas
+427##Castellanos de Zapardiel
+428##Cebreros
+429##Cepeda la Mora
+430##Chamartín
+431##Cillán
+432##Cisla
+433##Colilla La
+434##Collado de Contreras
+435##Collado del Mirón
+436##Constanzana
+437##Crespos
+438##Cuevas del Valle
+439##Diego del Carpio
+440##Donjimeno
+441##Donvidas
+442##Espinosa de los Caballeros
+443##Flores de Ávila
+444##Fontiveros
+445##Fresnedilla
+446##Fresno El
+447##Fuente el Saúz
+448##Fuentes de Año
+449##Gallegos de Altamiros
+450##Gallegos de Sobrinos
+451##Garganta del Villar
+452##Gavilanes
+453##Gemuño
+454##Gil García
+455##Gilbuena
+456##Gimialcón
+457##Gotarrendura
+458##Grandes y San Martín
+459##Guisando
+460##Gutierre-Muñoz
+461##Hernansancho
+462##Herradón de Pinares
+463##Herreros de Suso
+464##Higuera de las Dueñas
+465##Hija de Dios La
+466##Horcajada La
+467##Horcajo de las Torres
+468##Hornillo El
+469##Hoyo de Pinares El
+470##Hoyocasero
+471##Hoyorredondo
+472##Hoyos de Miguel Muñoz
+473##Hoyos del Collado
+474##Hoyos del Espino
+475##Hurtumpascual
+476##Junciana
+477##Langa
+478##Lanzahíta
+479##Llanos de Tormes Los
+480##Losar del Barco El
+481##Madrigal de las Altas Torres
+482##Maello
+483##Malpartida de Corneja
+484##Mamblas
+485##Mancera de Arriba
+486##Manjabálago
+487##Marlín
+488##Martiherrero
+489##Martínez
+490##Mediana de Voltoya
+491##Medinilla
+492##Mengamuñoz
+493##Mesegar de Corneja
+494##Mijares
+495##Mingorría
+496##Mirón El
+497##Mironcillo
+498##Mirueña de los Infanzones
+499##Mombeltrán
+500##Monsalupe
+501##Moraleja de Matacabras
+502##Muñana
+503##Muñico
+504##Muñogalindo
+505##Muñogrande
+506##Muñomer del Peco
+507##Muñopepe
+508##Muñosancho
+509##Muñotello
+510##Narrillos del Álamo
+511##Narrillos del Rebollar
+512##Narros de Saldueña
+513##Narros del Castillo
+514##Narros del Puerto
+515##Nava de Arévalo
+516##Nava del Barco
+517##Navacepedilla de Corneja
+518##Navadijos
+519##Navaescurial
+520##Navahondilla
+521##Navalacruz
+522##Navalmoral
+523##Navalonguilla
+524##Navalosa
+525##Navalperal de Pinares
+526##Navalperal de Tormes
+527##Navaluenga
+528##Navaquesera
+529##Navarredonda de Gredos
+530##Navarredondilla
+531##Navarrevisca
+532##Navas del Marqués Las
+533##Navatalgordo
+534##Navatejares
+535##Neila de San Miguel
+536##Niharra
+537##Ojos-Albos
+538##Orbita
+539##Oso El
+540##Padiernos
+541##Pajares de Adaja
+542##Palacios de Goda
+543##Papatrigo
+544##Parral El
+545##Pascualcobo
+546##Pedro Bernardo
+547##Pedro-Rodríguez
+548##Peguerinos
+549##Peñalba de Ávila
+550##Piedrahíta
+551##Piedralaves
+552##Poveda
+553##Poyales del Hoyo
+554##Pozanco
+555##Pradosegar
+556##Puerto Castilla
+557##Rasueros
+558##Riocabado
+559##Riofrío
+560##Rivilla de Barajas
+561##Salobral
+562##Salvadiós
+563##San Bartolomé de Béjar
+564##San Bartolomé de Corneja
+565##San Bartolomé de Pinares
+566##San Esteban de los Patos
+567##San Esteban de Zapardiel
+568##San Esteban del Valle
+569##San García de Ingelmos
+570##San Juan de Gredos
+571##San Juan de la Encinilla
+572##San Juan de la Nava
+573##San Juan del Molinillo
+574##San Juan del Olmo
+575##San Lorenzo de Tormes
+576##San Martín de la Vega del Alberche
+577##San Martín del Pimpollar
+578##San Miguel de Corneja
+579##San Miguel de Serrezuela
+580##San Pascual
+581##San Pedro del Arroyo
+582##San Vicente de Arévalo
+583##Sanchidrián
+584##Sanchorreja
+585##Santa Cruz de Pinares
+586##Santa Cruz del Valle
+587##Santa María de los Caballeros
+588##Santa María del Arroyo
+589##Santa María del Berrocal
+590##Santa María del Cubillo
+591##Santa María del Tiétar
+592##Santiago del Collado
+593##Santiago del Tormes
+594##Santo Domingo de las Posadas
+595##Santo Tomé de Zabarcos
+596##Serrada La
+597##Serranillos
+598##Sigeres
+599##Sinlabajos
+600##Solana de Ávila
+601##Solana de Rioalmar
+602##Solosancho
+603##Sotalbo
+604##Sotillo de la Adrada
+605##Tiemblo El
+606##Tiñosillos
+607##Tolbaños
+608##Tormellas
+609##Tornadizos de Ávila
+610##Torre La
+611##Tórtoles
+612##Umbrías
+613##Vadillo de la Sierra
+614##Valdecasa
+615##Vega de Santa María
+616##Velayos
+617##Villaflor
+618##Villafranca de la Sierra
+619##Villanueva de Ávila
+620##Villanueva de Gómez
+621##Villanueva del Aceral
+622##Villanueva del Campillo
+623##Villar de Corneja
+624##Villarejo del Valle
+625##Villatoro
+626##Viñegra de Moraña
+627##Vita
+628##Zapardiel de la Cañada
+629##Zapardiel de la Ribera
+630##Acedera
+631##Aceuchal
+632##Ahillones
+633##Alange
+634##Albuera La
+635##Alburquerque
+636##Alconchel
+637##Alconera
+638##Aljucén
+639##Almendral
+640##Almendralejo
+641##Arroyo de San Serván
+642##Atalaya
+643##Azuaga
+644##Badajoz
+645##Barcarrota
+646##Baterno
+647##Benquerencia de la Serena
+648##Berlanga
+649##Bienvenida
+650##Bodonal de la Sierra
+651##Burguillos del Cerro
+652##Cabeza del Buey
+653##Cabeza la Vaca
+654##Calamonte
+655##Calera de León
+656##Calzadilla de los Barros
+657##Campanario
+658##Campillo de Llerena
+659##Capilla
+660##Carmonita
+661##Carrascalejo El
+662##Casas de Don Pedro
+663##Casas de Reina
+664##Castilblanco
+665##Castuera
+666##Cheles
+667##Codosera La
+668##Cordobilla de Lácara
+669##Coronada La
+670##Corte de Peleas
+671##Cristina
+672##Don Álvaro
+673##Don Benito
+674##Entrín Bajo
+675##Esparragalejo
+676##Esparragosa de la Serena
+677##Esparragosa de Lares
+678##Feria
+679##Fregenal de la Sierra
+680##Fuenlabrada de los Montes
+681##Fuente de Cantos
+682##Fuente del Arco
+683##Fuente del Maestre
+684##Fuentes de León
+685##Garbayuela
+686##Garlitos
+687##Garrovilla La
+688##Granja de Torrehermosa
+689##Guareña
+690##Haba La
+691##Helechosa de los Montes
+692##Herrera del Duque
+693##Higuera de la Serena
+694##Higuera de Llerena
+695##Higuera de Vargas
+696##Higuera la Real
+697##Hinojosa del Valle
+698##Hornachos
+699##Jerez de los Caballeros
+700##Lapa La
+701##Llera
+702##Llerena
+703##Lobón
+704##Magacela
+705##Maguilla
+706##Malcocinado
+707##Malpartida de la Serena
+708##Manchita
+709##Medellín
+710##Medina de las Torres
+711##Mengabril
+712##Mérida
+713##Mirandilla
+714##Monesterio
+715##Montemolín
+716##Monterrubio de la Serena
+717##Montijo
+718##Morera La
+719##Nava de Santiago La
+720##Navalvillar de Pela
+721##Nogales
+722##Oliva de la Frontera
+723##Oliva de Mérida
+724##Olivenza
+725##Orellana de la Sierra
+726##Orellana la Vieja
+727##Palomas
+728##Parra La
+729##Peñalsordo
+730##Peraleda del Zaucejo
+731##Puebla de Alcocer
+732##Puebla de la Calzada
+733##Puebla de la Reina
+734##Puebla de Obando
+735##Puebla de Sancho Pérez
+736##Puebla del Maestre
+737##Puebla del Prior
+738##Pueblonuevo del Guadiana
+739##Quintana de la Serena
+740##Reina
+741##Rena
+742##Retamal de Llerena
+743##Ribera del Fresno
+744##Risco
+745##Roca de la Sierra La
+746##Salvaleón
+747##Salvatierra de los Barros
+748##San Pedro de Mérida
+749##San Vicente de Alcántara
+751##Santa Amalia
+752##Santa Marta
+753##Santos de Maimona Los
+754##Segura de León
+755##Siruela
+756##Solana de los Barros
+757##Talarrubias
+758##Talavera la Real
+759##Táliga
+760##Tamurejo
+761##Torre de Miguel Sesmero
+762##Torremayor
+763##Torremejía
+764##Trasierra
+765##Trujillanos
+766##Usagre
+767##Valdecaballeros
+768##Valdelacalzada
+769##Valdetorres
+770##Valencia de las Torres
+771##Valencia del Mombuey
+772##Valencia del Ventoso
+773##Valle de la Serena
+774##Valle de Matamoros
+775##Valle de Santa Ana
+776##Valverde de Burguillos
+777##Valverde de Leganés
+778##Valverde de Llerena
+779##Valverde de Mérida
+780##Villafranca de los Barros
+781##Villagarcía de la Torre
+782##Villagonzalo
+783##Villalba de los Barros
+784##Villanueva de la Serena
+785##Villanueva del Fresno
+786##Villar de Rena
+787##Villar del Rey
+788##Villarta de los Montes
+789##Zafra
+790##Zahínos
+791##Zalamea de la Serena
+792##Zarza La
+793##Zarza-Capilla
+794##Alaior
+795##Alaró
+796##Alcúdia
+797##Algaida
+798##Andratx
+799##Ariany
+800##Artà
+801##Banyalbufar
+802##Binissalem
+803##Búger
+804##Bunyola
+805##Calvià
+806##Campanet
+807##Campos
+808##Capdepera
+809##Castell Es
+810##Ciutadella de Menorca
+811##Consell
+812##Costitx
+813##Deyá
+814##Eivissa
+815##Escorca
+816##Esporles
+817##Estellencs
+818##Felanitx
+819##Ferreries
+820##Formentera
+821##Fornalutx
+822##Inca
+823##Lloret de Vistalegre
+824##Lloseta
+825##Llubí
+826##Llucmajor
+827##Manacor
+828##Mancor de la Vall
+829##Maó
+830##Maria de la Salut
+831##Marratxí
+832##Mercadal Es
+833##Migjorn Gran Es
+834##Montuïri
+835##Muro
+836##Palma
+837##Petra
+838##Pobla Sa
+839##Pollença
+840##Porreres
+841##Puigpunyent
+842##Salines Ses
+843##Sant Antoni de Portmany
+844##Sant Joan
+845##Sant Joan de Labritja
+846##Sant Josep de sa Talaia
+847##Sant Llorenç des Cardassar
+848##Sant Lluís
+849##Santa Eugènia
+850##Santa Eulalia del Río
+851##Santa Margalida
+852##Santa María del Camí
+853##Santanyí
+854##Selva
+855##Sencelles
+856##Sineu
+857##Sóller
+858##Son Servera
+859##Valldemossa
+860##Vilafranca de Bonany
+861##Abrera
+862##Aguilar de Segarra
+863##Aiguafreda
+864##Alella
+865##Alpens
+866##Ametlla del Vallès L'
+867##Arenys de Mar
+868##Arenys de Munt
+869##Argençola
+870##Argentona
+871##Artés
+872##Avià
+873##Avinyó
+874##Avinyonet del Penedès
+875##Badalona
+876##Badia del Vallès
+877##Bagà
+878##Balenyà
+879##Balsareny
+880##Barberà del Vallès
+881##Barcelona
+882##Begues
+883##Bellprat
+884##Berga
+885##Bigues i Riells
+886##Borredà
+887##Bruc El
+888##Brull El
+889##Cabanyes Les
+890##Cabrera d'Anoia
+891##Cabrera de Mar
+892##Cabrils
+893##Calaf
+894##Calders
+895##Caldes de Montbui
+896##Caldes d'Estrac
+897##Calella
+898##Calldetenes
+899##Callús
+900##Calonge de Segarra
+901##Campins
+902##Canet de Mar
+903##Canovelles
+904##Cànoves i Samalús
+905##Canyelles
+906##Capellades
+907##Capolat
+908##Cardedeu
+909##Cardona
+910##Carme
+911##Casserres
+912##Castell de l'Areny
+913##Castellar de n'Hug
+914##Castellar del Riu
+915##Castellar del Vallès
+916##Castellbell i el Vilar
+917##Castellbisbal
+918##Castellcir
+919##Castelldefels
+920##Castellet i la Gornal
+921##Castellfollit de Riubregós
+922##Castellfollit del Boix
+923##Castellgalí
+924##Castellnou de Bages
+925##Castellolí
+926##Castellterçol
+927##Castellví de la Marca
+928##Castellví de Rosanes
+929##Centelles
+930##Cercs
+931##Cerdanyola del Vallès
+932##Cervelló
+933##Collbató
+934##Collsuspina
+935##Copons
+936##Corbera de Llobregat
+937##Cornellà de Llobregat
+938##Cubelles
+939##Dosrius
+940##Esparreguera
+941##Esplugues de Llobregat
+942##Espunyola L'
+943##Estany L'
+944##Figaró-Montmany
+945##Fígols
+946##Fogars de la Selva
+947##Fogars de Montclús
+948##Folgueroles
+949##Fonollosa
+950##Font-rubí
+951##Franqueses del Vallès Les
+952##Gaià
+953##Gallifa
+954##Garriga La
+955##Gavà
+956##Gelida
+957##Gironella
+958##Gisclareny
+959##Granada La
+960##Granera
+961##Granollers
+962##Gualba
+963##Guardiola de Berguedà
+964##Gurb
+965##Hospitalet de Llobregat L'
+966##Hostalets de Pierola Els
+967##Igualada
+968##Jorba
+969##Llacuna La
+970##Llagosta La
+971##Lliçà d'Amunt
+972##Lliçà de Vall
+973##Llinars del Vallès
+974##Lluçà
+975##Malgrat de Mar
+976##Malla
+977##Manlleu
+978##Manresa
+979##Marganell
+980##Martorell
+981##Martorelles
+982##Masies de Roda Les
+983##Masies de Voltregà Les
+984##Masnou El
+985##Masquefa
+986##Matadepera
+987##Mataró
+988##Mediona
+989##Moià
+990##Molins de Rei
+991##Mollet del Vallès
+992##Monistrol de Calders
+993##Monistrol de Montserrat
+994##Montcada i Reixac
+995##Montclar
+996##Montesquiu
+997##Montgat
+998##Montmajor
+999##Montmaneu
+1000##Montmeló
+1001##Montornès del Vallès
+1002##Montseny
+1003##Muntanyola
+1004##Mura
+1005##Navarcles
+1006##Navàs
+1007##Nou de Berguedà La
+1008##Òdena
+1009##Olèrdola
+1010##Olesa de Bonesvalls
+1011##Olesa de Montserrat
+1012##Olivella
+1013##Olost
+1014##Olvan
+1015##Orís
+1016##Oristà
+1017##Orpí
+1018##Òrrius
+1019##Pacs del Penedès
+1020##Palafolls
+1021##Palau-solità i Plegamans
+1022##Pallejà
+1023##Palma de Cervelló La
+1024##Papiol El
+1025##Parets del Vallès
+1026##Perafita
+1027##Piera
+1028##Pineda de Mar
+1029##Pla del Penedès El
+1030##Pobla de Claramunt La
+1031##Pobla de Lillet La
+1032##Polinyà
+1033##Pont de Vilomara i Rocafort El
+1034##Pontons
+1035##Prat de Llobregat El
+1036##Prats de Lluçanès
+1037##Prats de Rei Els
+1038##Premià de Dalt
+1039##Premià de Mar
+1040##Puigdàlber
+1041##Puig-reig
+1042##Pujalt
+1043##Quar La
+1044##Rajadell
+1045##Rellinars
+1046##Ripollet
+1047##Roca del Vallès La
+1048##Roda de Ter
+1049##Rubí
+1050##Rubió
+1051##Rupit i Pruit
+1052##Sabadell
+1053##Sagàs
+1054##Saldes
+1055##Sallent
+1056##Sant Adrià de Besòs
+1057##Sant Agustí de Lluçanès
+1058##Sant Andreu de la Barca
+1059##Sant Andreu de Llavaneres
+1060##Sant Antoni de Vilamajor
+1061##Sant Bartomeu del Grau
+1062##Sant Boi de Llobregat
+1063##Sant Boi de Lluçanès
+1064##Sant Cebrià de Vallalta
+1065##Sant Celoni
+1066##Sant Climent de Llobregat
+1067##Sant Cugat del Vallès
+1068##Sant Cugat Sesgarrigues
+1069##Sant Esteve de Palautordera
+1070##Sant Esteve Sesrovires
+1071##Sant Feliu de Codines
+1072##Sant Feliu de Llobregat
+1073##Sant Feliu Sasserra
+1074##Sant Fost de Campsentelles
+1075##Sant Fruitós de Bages
+1076##Sant Hipòlit de Voltregà
+1077##Sant Iscle de Vallalta
+1078##Sant Jaume de Frontanyà
+1079##Sant Joan de Vilatorrada
+1080##Sant Joan Despí
+1081##Sant Julià de Cerdanyola
+1082##Sant Julià de Vilatorta
+1083##Sant Just Desvern
+1084##Sant Llorenç d'Hortons
+1085##Sant Llorenç Savall
+1086##Sant Martí d'Albars
+1087##Sant Martí de Centelles
+1088##Sant Martí de Tous
+1089##Sant Martí Sarroca
+1090##Sant Martí Sesgueioles
+1091##Sant Mateu de Bages
+1092##Sant Pere de Ribes
+1093##Sant Pere de Riudebitlles
+1094##Sant Pere de Torelló
+1095##Sant Pere de Vilamajor
+1096##Sant Pere Sallavinera
+1097##Sant Pol de Mar
+1098##Sant Quintí de Mediona
+1099##Sant Quirze de Besora
+1100##Sant Quirze del Vallès
+1101##Sant Quirze Safaja
+1102##Sant Sadurní d'Anoia
+1103##Sant Sadurní d'Osormort
+1104##Sant Salvador de Guardiola
+1105##Sant Vicenç de Castellet
+1106##Sant Vicenç de Montalt
+1107##Sant Vicenç de Torelló
+1108##Sant Vicenç dels Horts
+1109##Santa Cecília de Voltregà
+1110##Santa Coloma de Cervelló
+1111##Santa Coloma de Gramenet
+1112##Santa Eugènia de Berga
+1113##Santa Eulàlia de Riuprimer
+1114##Santa Eulàlia de Ronçana
+1115##Santa Fe del Penedès
+1116##Santa Margarida de Montbui
+1117##Santa Margarida i els Monjos
+1118##Santa Maria de Besora
+1119##Santa Maria de Corcó
+1120##Santa Maria de Martorelles
+1121##Santa Maria de Merlès
+1122##Santa Maria de Miralles
+1123##Santa Maria de Palautordera
+1124##Santa Maria d'Oló
+1125##Santa Perpètua de Mogoda
+1126##Santa Susanna
+1127##Santpedor
+1128##Sentmenat
+1129##Seva
+1130##Sitges
+1131##Sobremunt
+1132##Sora
+1133##Subirats
+1134##Súria
+1135##Tagamanent
+1136##Talamanca
+1137##Taradell
+1138##Tavèrnoles
+1139##Tavertet
+1140##Teià
+1141##Terrassa
+1142##Tiana
+1143##Tona
+1144##Tordera
+1145##Torelló
+1146##Torre de Claramunt La
+1147##Torrelavit
+1148##Torrelles de Foix
+1149##Torrelles de Llobregat
+1150##Ullastrell
+1151##Vacarisses
+1152##Vallbona d'Anoia
+1153##Vallcebre
+1154##Vallgorguina
+1155##Vallirana
+1156##Vallromanes
+1157##Veciana
+1158##Vic
+1159##Vilada
+1160##Viladecans
+1161##Viladecavalls
+1162##Vilafranca del Penedès
+1163##Vilalba Sasserra
+1164##Vilanova de Sau
+1165##Vilanova del Camí
+1166##Vilanova del Vallès
+1167##Vilanova i la Geltrú
+1168##Vilassar de Dalt
+1169##Vilassar de Mar
+1170##Vilobí del Penedès
+1171##Viver i Serrateix
+1172##Abajas
+1173##Adrada de Haza
+1174##Aguas Cándidas
+1175##Aguilar de Bureba
+1176##Albillos
+1177##Alcocero de Mola
+1178##Alfoz de Bricia
+1179##Alfoz de Quintanadueñas
+1180##Alfoz de Santa Gadea
+1181##Altable
+1182##Altos Los
+1183##Ameyugo
+1184##Anguix
+1185##Aranda de Duero
+1186##Arandilla
+1187##Arauzo de Miel
+1188##Arauzo de Salce
+1189##Arauzo de Torre
+1190##Arcos
+1191##Arenillas de Riopisuerga
+1192##Arija
+1193##Arlanzón
+1194##Arraya de Oca
+1195##Atapuerca
+1196##Ausines Los
+1197##Avellanosa de Muñó
+1198##Bahabón de Esgueva
+1199##Balbases Los
+1200##Baños de Valdearados
+1201##Bañuelos de Bureba
+1202##Barbadillo de Herreros
+1203##Barbadillo del Mercado
+1204##Barbadillo del Pez
+1205##Barrio de Muñó
+1206##Barrios de Bureba Los
+1207##Barrios de Colina
+1208##Basconcillos del Tozo
+1209##Bascuñana
+1210##Belbimbre
+1211##Belorado
+1212##Berberana
+1213##Berlangas de Roa
+1214##Berzosa de Bureba
+1215##Bozoó
+1216##Brazacorta
+1217##Briviesca
+1218##Bugedo
+1219##Buniel
+1220##Burgos
+1221##Busto de Bureba
+1222##Cabañes de Esgueva
+1223##Cabezón de la Sierra
+1224##Caleruega
+1225##Campillo de Aranda
+1226##Campolara
+1227##Canicosa de la Sierra
+1228##Cantabrana
+1229##Carazo
+1230##Carcedo de Bureba
+1231##Carcedo de Burgos
+1232##Cardeñadijo
+1233##Cardeñajimeno
+1234##Cardeñuela Riopico
+1235##Carrias
+1236##Cascajares de Bureba
+1237##Cascajares de la Sierra
+1238##Castellanos de Castro
+1239##Castil de Peones
+1240##Castildelgado
+1241##Castrillo de la Reina
+1242##Castrillo de la Vega
+1243##Castrillo de Riopisuerga
+1244##Castrillo del Val
+1245##Castrillo Matajudíos
+1246##Castrojeriz
+1247##Cavia
+1248##Cayuela
+1249##Cebrecos
+1250##Celada del Camino
+1251##Cerezo de Río Tirón
+1252##Cerratón de Juarros
+1253##Ciadoncha
+1254##Cillaperlata
+1255##Cilleruelo de Abajo
+1256##Cilleruelo de Arriba
+1257##Ciruelos de Cervera
+1258##Cogollos
+1259##Condado de Treviño
+1260##Contreras
+1261##Coruña del Conde
+1262##Covarrubias
+1263##Cubillo del Campo
+1264##Cubo de Bureba
+1265##Cueva de Roa La
+1266##Cuevas de San Clemente
+1267##Encío
+1268##Espinosa de Cervera
+1269##Espinosa de los Monteros
+1270##Espinosa del Camino
+1271##Estépar
+1272##Fontioso
+1273##Frandovínez
+1274##Fresneda de la Sierra Tirón
+1275##Fresneña
+1276##Fresnillo de las Dueñas
+1277##Fresno de Río Tirón
+1278##Fresno de Rodilla
+1279##Frías
+1280##Fuentebureba
+1281##Fuentecén
+1282##Fuentelcésped
+1283##Fuentelisendo
+1284##Fuentemolinos
+1285##Fuentenebro
+1286##Fuentespina
+1287##Galbarros
+1288##Gallega La
+1289##Grijalba
+1290##Grisaleña
+1291##Gumiel de Izán
+1292##Gumiel de Mercado
+1293##Hacinas
+1294##Haza
+1295##Hontanas
+1296##Hontangas
+1297##Hontoria de la Cantera
+1298##Hontoria de Valdearados
+1299##Hontoria del Pinar
+1300##Hormazas Las
+1301##Hornillos del Camino
+1302##Horra La
+1303##Hortigüela
+1304##Hoyales de Roa
+1305##Huérmeces
+1306##Huerta de Arriba
+1307##Huerta de Rey
+1308##Humada
+1309##Hurones
+1310##Ibeas de Juarros
+1311##Ibrillos
+1312##Iglesiarrubia
+1313##Iglesias
+1314##Isar
+1315##Itero del Castillo
+1316##Jaramillo de la Fuente
+1317##Jaramillo Quemado
+1318##Junta de Traslaloma
+1319##Junta de Villalba de Losa
+1320##Jurisdicción de Lara
+1321##Jurisdicción de San Zadornil
+1322##Lerma
+1323##Llano de Bureba
+1324##Madrigal del Monte
+1325##Madrigalejo del Monte
+1326##Mahamud
+1327##Mambrilla de Castrejón
+1328##Mambrillas de Lara
+1329##Mamolar
+1330##Manciles
+1331##Mazuela
+1332##Mecerreyes
+1333##Medina de Pomar
+1334##Melgar de Fernamental
+1335##Merindad de Cuesta-Urria
+1336##Merindad de Montija
+1337##Merindad de Río Ubierna
+1338##Merindad de Sotoscueva
+1339##Merindad de Valdeporres
+1340##Merindad de Valdivielso
+1341##Milagros
+1342##Miranda de Ebro
+1343##Miraveche
+1344##Modúbar de la Emparedada
+1345##Monasterio de la Sierra
+1346##Monasterio de Rodilla
+1347##Moncalvillo
+1348##Monterrubio de la Demanda
+1349##Montorio
+1350##Moradillo de Roa
+1351##Nava de Roa
+1352##Navas de Bureba
+1353##Nebreda
+1354##Neila
+1355##Olmedillo de Roa
+1356##Olmillos de Muñó
+1357##Oña
+1358##Oquillas
+1359##Orbaneja Riopico
+1360##Padilla de Abajo
+1361##Padilla de Arriba
+1362##Padrones de Bureba
+1363##Palacios de la Sierra
+1364##Palacios de Riopisuerga
+1365##Palazuelos de la Sierra
+1366##Palazuelos de Muñó
+1367##Pampliega
+1368##Pancorbo
+1369##Pardilla
+1370##Partido de la Sierra en Tobalina
+1371##Pedrosa de Duero
+1372##Pedrosa de Río Úrbel
+1373##Pedrosa del Páramo
+1374##Pedrosa del Príncipe
+1375##Peñaranda de Duero
+1376##Peral de Arlanza
+1377##Piérnigas
+1378##Pineda de la Sierra
+1379##Pineda Trasmonte
+1380##Pinilla de los Barruecos
+1381##Pinilla de los Moros
+1382##Pinilla Trasmonte
+1383##Poza de la Sal
+1384##Prádanos de Bureba
+1385##Pradoluengo
+1386##Presencio
+1387##Puebla de Arganzón La
+1388##Puentedura
+1389##Quemada
+1390##Quintana del Pidio
+1391##Quintanabureba
+1392##Quintanaélez
+1393##Quintanaortuño
+1394##Quintanapalla
+1395##Quintanar de la Sierra
+1396##Quintanavides
+1397##Quintanilla de la Mata
+1398##Quintanilla del Agua y Tordueles
+1399##Quintanilla del Coco
+1400##Quintanilla San García
+1401##Quintanilla Vivar
+1402##Quintanillas Las
+1403##Rabanera del Pinar
+1404##Rábanos
+1405##Rabé de las Calzadas
+1406##Rebolledo de la Torre
+1407##Redecilla del Camino
+1408##Redecilla del Campo
+1409##Regumiel de la Sierra
+1410##Reinoso
+1411##Retuerta
+1412##Revilla del Campo
+1413##Revilla Vallejera
+1414##Revilla y Ahedo La
+1415##Revillarruz
+1416##Rezmondo
+1417##Riocavado de la Sierra
+1418##Roa
+1419##Rojas
+1420##Royuela de Río Franco
+1421##Rubena
+1422##Rublacedo de Abajo
+1423##Rucandio
+1424##Salas de Bureba
+1425##Salas de los Infantes
+1426##Saldaña de Burgos
+1427##Salinillas de Bureba
+1428##San Adrián de Juarros
+1429##San Juan del Monte
+1430##San Mamés de Burgos
+1431##San Martín de Rubiales
+1432##San Millán de Lara
+1433##San Vicente del Valle
+1434##Santa Cecilia
+1435##Santa Cruz de la Salceda
+1436##Santa Cruz del Valle Urbión
+1437##Santa Gadea del Cid
+1438##Santa Inés
+1439##Santa María del Campo
+1440##Santa María del Invierno
+1441##Santa María del Mercadillo
+1442##Santa María Rivarredonda
+1443##Santa Olalla de Bureba
+1444##Santibáñez de Esgueva
+1445##Santibáñez del Val
+1446##Santo Domingo de Silos
+1447##Sargentes de la Lora
+1448##Sarracín
+1449##Sasamón
+1450##Sequera de Haza La
+1451##Solarana
+1452##Sordillos
+1453##Sotillo de la Ribera
+1454##Sotragero
+1455##Sotresgudo
+1456##Susinos del Páramo
+1457##Tamarón
+1458##Tardajos
+1459##Tejada
+1460##Terradillos de Esgueva
+1461##Tinieblas de la Sierra
+1462##Tobar
+1463##Tordómar
+1464##Torrecilla del Monte
+1465##Torregalindo
+1466##Torrelara
+1467##Torrepadre
+1468##Torresandino
+1469##Tórtoles de Esgueva
+1470##Tosantos
+1471##Trespaderne
+1472##Tubilla del Agua
+1473##Tubilla del Lago
+1474##Úrbel del Castillo
+1475##Vadocondes
+1476##Valdeande
+1477##Valdezate
+1478##Valdorros
+1479##Vallarta de Bureba
+1480##Valle de las Navas
+1481##Valle de Losa
+1482##Valle de Manzanedo
+1483##Valle de Mena
+1484##Valle de Oca
+1485##Valle de Santibáñez
+1486##Valle de Sedano
+1487##Valle de Tobalina
+1488##Valle de Valdebezana
+1489##Valle de Valdelaguna
+1490##Valle de Valdelucio
+1491##Valle de Zamanzas
+1492##Vallejera
+1493##Valles de Palenzuela
+1494##Valluércanes
+1495##Valmala
+1496##Vid de Bureba La
+1497##Vid y Barrios La
+1498##Vileña
+1499##Villadiego
+1500##Villaescusa de Roa
+1501##Villaescusa la Sombría
+1502##Villaespasa
+1503##Villafranca Montes de Oca
+1504##Villafruela
+1505##Villagalijo
+1506##Villagonzalo Pedernales
+1507##Villahoz
+1508##Villalba de Duero
+1509##Villalbilla de Burgos
+1510##Villalbilla de Gumiel
+1511##Villaldemiro
+1512##Villalmanzo
+1513##Villamayor de los Montes
+1514##Villamayor de Treviño
+1515##Villambistia
+1516##Villamedianilla
+1517##Villamiel de la Sierra
+1518##Villangómez
+1519##Villanueva de Argaño
+1520##Villanueva de Carazo
+1521##Villanueva de Gumiel
+1522##Villanueva de Teba
+1523##Villaquirán de la Puebla
+1524##Villaquirán de los Infantes
+1525##Villarcayo de Merindad de Castilla la Vieja
+1526##Villariezo
+1527##Villasandino
+1528##Villasur de Herreros
+1529##Villatuelda
+1530##Villaverde del Monte
+1531##Villaverde-Mogina
+1532##Villayerno Morquillas
+1533##Villazopeque
+1534##Villegas
+1535##Villoruebo
+1536##Viloria de Rioja
+1537##Vilviestre del Pinar
+1538##Vizcaínos
+1539##Zael
+1540##Zarzosa de Río Pisuerga
+1541##Zazuar
+1542##Zuñeda
+1543##Abadía
+1544##Abertura
+1545##Acebo
+1546##Acehúche
+1547##Aceituna
+1548##Ahigal
+1549##Alagón del Río
+1550##Albalá
+1551##Alcántara
+1552##Alcollarín
+1553##Alcuéscar
+1554##Aldea del Cano
+1555##Aldea del Obispo La
+1556##Aldeacentenera
+1557##Aldeanueva de la Vera
+1558##Aldeanueva del Camino
+1559##Aldehuela de Jerte
+1560##Alía
+1561##Aliseda
+1562##Almaraz
+1563##Almoharín
+1564##Arroyo de la Luz
+1565##Arroyomolinos
+1566##Arroyomolinos de la Vera
+1567##Baños de Montemayor
+1568##Barrado
+1569##Belvís de Monroy
+1570##Benquerencia
+1571##Berrocalejo
+1572##Berzocana
+1573##Bohonal de Ibor
+1574##Botija
+1575##Brozas
+1576##Cabañas del Castillo
+1577##Cabezabellosa
+1578##Cabezuela del Valle
+1579##Cabrero
+1580##Cáceres
+1581##Cachorrilla
+1582##Cadalso
+1583##Calzadilla
+1584##Caminomorisco
+1585##Campillo de Deleitosa
+1586##Campo Lugar
+1587##Cañamero
+1588##Cañaveral
+1589##Carbajo
+1590##Carcaboso
+1591##Carrascalejo
+1592##Casar de Cáceres
+1593##Casar de Palomero
+1594##Casares de las Hurdes
+1595##Casas de Don Antonio
+1596##Casas de Don Gómez
+1597##Casas de Millán
+1598##Casas de Miravete
+1599##Casas del Castañar
+1600##Casas del Monte
+1601##Casatejada
+1602##Casillas de Coria
+1603##Castañar de Ibor
+1604##Ceclavín
+1605##Cedillo
+1606##Cerezo
+1607##Cilleros
+1608##Collado
+1609##Conquista de la Sierra
+1610##Coria
+1611##Cuacos de Yuste
+1612##Cumbre La
+1613##Deleitosa
+1614##Descargamaría
+1615##Eljas
+1616##Escurial
+1617##Fresnedoso de Ibor
+1618##Galisteo
+1619##Garciaz
+1620##Garganta La
+1621##Garganta la Olla
+1622##Gargantilla
+1623##Gargüera
+1624##Garrovillas de Alconétar
+1625##Garvín
+1626##Gata
+1627##Gordo El
+1628##Granja La
+1629##Guadalupe
+1630##Guijo de Coria
+1631##Guijo de Galisteo
+1632##Guijo de Granadilla
+1633##Guijo de Santa Bárbara
+1634##Herguijuela
+1635##Hernán-Pérez
+1636##Herrera de Alcántara
+1637##Herreruela
+1638##Hervás
+1639##Higuera
+1640##Hinojal
+1641##Holguera
+1642##Hoyos
+1643##Huélaga
+1644##Ibahernando
+1645##Jaraicejo
+1646##Jaraíz de la Vera
+1647##Jarandilla de la Vera
+1648##Jarilla
+1649##Jerte
+1650##Ladrillar
+1651##Logrosán
+1652##Losar de la Vera
+1653##Madrigal de la Vera
+1654##Madrigalejo
+1655##Madroñera
+1656##Majadas
+1657##Malpartida de Cáceres
+1658##Malpartida de Plasencia
+1659##Marchagaz
+1660##Mata de Alcántara
+1661##Membrío
+1662##Mesas de Ibor
+1663##Miajadas
+1664##Millanes
+1665##Mirabel
+1666##Mohedas de Granadilla
+1667##Monroy
+1668##Montánchez
+1669##Montehermoso
+1670##Moraleja
+1671##Morcillo
+1672##Navaconcejo
+1673##Navalmoral de la Mata
+1674##Navalvillar de Ibor
+1675##Navas del Madroño
+1676##Navezuelas
+1677##Nuñomoral
+1678##Oliva de Plasencia
+1679##Palomero
+1680##Pasarón de la Vera
+1681##Pedroso de Acim
+1682##Peraleda de la Mata
+1683##Peraleda de San Román
+1684##Perales del Puerto
+1685##Pescueza
+1686##Pesga La
+1687##Piedras Albas
+1688##Pinofranqueado
+1689##Piornal
+1690##Plasencia
+1691##Plasenzuela
+1692##Portaje
+1693##Portezuelo
+1694##Pozuelo de Zarzón
+1695##Puerto de Santa Cruz
+1696##Rebollar
+1697##Riolobos
+1698##Robledillo de Gata
+1699##Robledillo de la Vera
+1700##Robledillo de Trujillo
+1701##Robledollano
+1702##Romangordo
+1703##Rosalejo
+1704##Ruanes
+1705##Salorino
+1706##Salvatierra de Santiago
+1707##San Martín de Trevejo
+1708##Santa Ana
+1709##Santa Cruz de la Sierra
+1710##Santa Cruz de Paniagua
+1711##Santa Marta de Magasca
+1712##Santiago de Alcántara
+1713##Santiago del Campo
+1714##Santibáñez el Alto
+1715##Santibáñez el Bajo
+1716##Saucedilla
+1717##Segura de Toro
+1718##Serradilla
+1719##Serrejón
+1720##Sierra de Fuentes
+1721##Talaván
+1722##Talaveruela de la Vera
+1723##Talayuela
+1724##Tejeda de Tiétar
+1725##Toril
+1726##Tornavacas
+1727##Torno El
+1728##Torre de Don Miguel
+1729##Torre de Santa María
+1730##Torrecilla de los Ángeles
+1731##Torrecillas de la Tiesa
+1732##Torrejón el Rubio
+1733##Torrejoncillo
+1734##Torremenga
+1735##Torremocha
+1736##Torreorgaz
+1737##Torrequemada
+1738##Trujillo
+1739##Valdastillas
+1740##Valdecañas de Tajo
+1741##Valdefuentes
+1742##Valdehúncar
+1743##Valdelacasa de Tajo
+1744##Valdemorales
+1745##Valdeobispo
+1746##Valencia de Alcántara
+1747##Valverde de la Vera
+1748##Valverde del Fresno
+1749##Vegaviana
+1750##Viandar de la Vera
+1751##Villa del Campo
+1752##Villa del Rey
+1753##Villamesías
+1754##Villamiel
+1755##Villanueva de la Sierra
+1756##Villanueva de la Vera
+1757##Villar de Plasencia
+1758##Villar del Pedroso
+1759##Villasbuenas de Gata
+1760##Zarza de Granadilla
+1761##Zarza de Montánchez
+1762##Zarza la Mayor
+1763##Zorita
+1764##Alcalá de los Gazules
+1765##Alcalá del Valle
+1766##Algar
+1767##Algeciras
+1768##Algodonales
+1769##Arcos de la Frontera
+1770##Barbate
+1771##Barrios Los
+1772##Benalup-Casas Viejas
+1773##Benaocaz
+1774##Bornos
+1775##Bosque El
+1776##Cádiz
+1777##Castellar de la Frontera
+1778##Chiclana de la Frontera
+1779##Chipiona
+1780##Conil de la Frontera
+1781##Espera
+1782##Gastor El
+1783##Grazalema
+1784##Jerez de la Frontera
+1785##Jimena de la Frontera
+1786##Línea de la Concepción La
+1787##Medina-Sidonia
+1788##Olvera
+1789##Paterna de Rivera
+1790##Prado del Rey
+1791##Puerto de Santa María El
+1792##Puerto Real
+1793##Puerto Serrano
+1794##Rota
+1795##San Fernando
+1796##San José del Valle
+1797##San Roque
+1798##Sanlúcar de Barrameda
+1799##Setenil de las Bodegas
+1800##Tarifa
+1801##Torre Alháquime
+1802##Trebujena
+1803##Ubrique
+1804##Vejer de la Frontera
+1805##Villaluenga del Rosario
+1806##Villamartín
+1807##Zahara
+1808##Aín
+1809##Albocàsser
+1810##Alcalà de Xivert
+1811##Alcora l'
+1812##Alcudia de Veo
+1813##Alfondeguilla
+1814##Algimia de Almonacid
+1815##Almazora/Almassora
+1816##Almedíjar
+1817##Almenara
+1818##Alquerías del Niño Perdido
+1819##Altura
+1820##Arañuel
+1821##Ares del Maestrat
+1822##Argelita
+1823##Artana
+1824##Atzeneta del Maestrat
+1825##Ayódar
+1826##Azuébar
+1827##Barracas
+1828##Bejís
+1829##Benafer
+1830##Benafigos
+1831##Benasal
+1832##Benicarló
+1833##Benicasim/Benicàssim
+1834##Benlloch
+1835##Betxí
+1836##Borriana/Burriana
+1837##Borriol
+1838##Cabanes
+1839##Càlig
+1840##Canet lo Roig
+1841##Castell de Cabres
+1842##Castellfort
+1843##Castellnovo
+1844##Castellón de la Plana/Castelló de la Plana
+1845##Castillo de Villamalefa
+1846##Catí
+1847##Caudiel
+1848##Cervera del Maestre
+1849##Chert/Xert
+1850##Chilches/Xilxes
+1851##Chodos/Xodos
+1852##Chóvar
+1853##Cinctorres
+1854##Cirat
+1855##Cortes de Arenoso
+1856##Costur
+1857##Coves de Vinromà les
+1858##Culla
+1859##Eslida
+1860##Espadilla
+1861##Fanzara
+1862##Figueroles
+1863##Forcall
+1864##Fuente la Reina
+1865##Fuentes de Ayódar
+1866##Gaibiel
+1867##Geldo
+1868##Herbés
+1869##Higueras
+1870##Jana la
+1871##Jérica
+1872##Llosa la
+1873##Lucena del Cid
+1874##Ludiente
+1875##Mata de Morella la
+1876##Matet
+1877##Moncofa
+1878##Montán
+1879##Montanejos
+1880##Morella
+1881##Navajas
+1882##Nules
+1883##Olocau del Rey
+1884##Onda
+1885##Oropesa del Mar/Orpesa
+1886##Palanques
+1887##Pavías
+1888##Peníscola/Peñíscola
+1889##Pina de Montalgrao
+1890##Pobla de Benifassà la
+1891##Pobla Tornesa la
+1892##Portell de Morella
+1893##Puebla de Arenoso
+1894##Ribesalbes
+1895##Rossell
+1896##Sacañet
+1897##Salzadella la
+1898##San Rafael del Río
+1899##Sant Joan de Moró
+1900##Sant Jordi/San Jorge
+1901##Sant Mateu
+1902##Santa Magdalena de Pulpis
+1903##Sarratella
+1904##Segorbe
+1905##Sierra Engarcerán
+1906##Soneja
+1907##Sot de Ferrer
+1908##Sueras/Suera
+1909##Tales
+1910##Teresa
+1911##Tírig
+1912##Todolella
+1913##Toga
+1914##Torás
+1915##Toro El
+1916##Torralba del Pinar
+1917##Torre d'En Besora la
+1918##Torre d'en Doménec la
+1919##Torreblanca
+1920##Torrechiva
+1921##Traiguera
+1922##Useras/Useres les
+1923##Vall d'Alba
+1924##Vall de Almonacid
+1925##Vall d'Uixó la
+1926##Vallat
+1927##Vallibona
+1928##Vilafamés
+1929##Vilanova d'Alcolea
+1930##Vilar de Canes
+1931##Vila-real
+1932##Vilavella la
+1933##Villafranca del Cid/Vilafranca
+1934##Villahermosa del Río
+1935##Villamalur
+1936##Villanueva de Viver
+1937##Villores
+1938##Vinaròs
+1939##Vistabella del Maestrazgo
+1940##Viver
+1941##Zorita del Maestrazgo
+1942##Zucaina
+1943##Abenójar
+1944##Agudo
+1945##Alamillo
+1946##Albaladejo
+1947##Alcázar de San Juan
+1948##Alcoba
+1949##Alcolea de Calatrava
+1950##Alcubillas
+1951##Aldea del Rey
+1952##Alhambra
+1953##Almadén
+1954##Almadenejos
+1955##Almagro
+1956##Almedina
+1957##Almodóvar del Campo
+1958##Almuradiel
+1959##Anchuras
+1960##Arenales de San Gregorio
+1961##Arenas de San Juan
+1962##Argamasilla de Alba
+1963##Argamasilla de Calatrava
+1964##Arroba de los Montes
+1965##Ballesteros de Calatrava
+1966##Bolaños de Calatrava
+1967##Brazatortas
+1968##Cabezarados
+1969##Cabezarrubias del Puerto
+1970##Calzada de Calatrava
+1971##Campo de Criptana
+1972##Cañada de Calatrava
+1973##Caracuel de Calatrava
+1974##Carrión de Calatrava
+1975##Carrizosa
+1976##Castellar de Santiago
+1977##Chillón
+1978##Ciudad Real
+1979##Corral de Calatrava
+1980##Cortijos Los
+1981##Cózar
+1982##Daimiel
+1983##Fernán Caballero
+1984##Fontanarejo
+1985##Fuencaliente
+1986##Fuenllana
+1987##Fuente el Fresno
+1988##Granátula de Calatrava
+1989##Guadalmez
+1990##Herencia
+1991##Hinojosas de Calatrava
+1992##Horcajo de los Montes
+1993##Labores Las
+1994##Llanos del Caudillo
+1995##Luciana
+1996##Malagón
+1997##Manzanares
+1998##Membrilla
+1999##Mestanza
+2000##Miguelturra
+2001##Montiel
+2002##Moral de Calatrava
+2003##Navalpino
+2004##Navas de Estena
+2005##Pedro Muñoz
+2006##Picón
+2007##Piedrabuena
+2008##Poblete
+2009##Porzuna
+2010##Pozuelo de Calatrava
+2011##Pozuelos de Calatrava Los
+2012##Puebla de Don Rodrigo
+2013##Puebla del Príncipe
+2014##Puerto Lápice
+2015##Puertollano
+2016##Retuerta del Bullaque
+2017##Robledo El
+2018##Ruidera
+2019##Saceruela
+2020##San Carlos del Valle
+2021##San Lorenzo de Calatrava
+2022##Santa Cruz de los Cáñamos
+2023##Santa Cruz de Mudela
+2024##Socuéllamos
+2025##Solana La
+2026##Solana del Pino
+2027##Terrinches
+2028##Tomelloso
+2029##Torralba de Calatrava
+2030##Torre de Juan Abad
+2031##Torrenueva
+2032##Valdemanco del Esteras
+2033##Valdepeñas
+2034##Valenzuela de Calatrava
+2035##Villahermosa
+2036##Villamanrique
+2037##Villamayor de Calatrava
+2038##Villanueva de la Fuente
+2040##Villanueva de San Carlos
+2041##Villar del Pozo
+2042##Villarrubia de los Ojos
+2043##Villarta de San Juan
+2044##Viso del Marqués
+2045##Adamuz
+2046##Aguilar de la Frontera
+2047##Alcaracejos
+2048##Almedinilla
+2049##Almodóvar del Río
+2050##Añora
+2051##Baena
+2052##Belalcázar
+2053##Belmez
+2054##Benamejí
+2055##Blázquez Los
+2056##Bujalance
+2057##Cabra
+2058##Cañete de las Torres
+2059##Carcabuey
+2060##Cardeña
+2061##Carlota La
+2062##Carpio El
+2063##Castro del Río
+2064##Conquista
+2065##Córdoba
+2066##Doña Mencía
+2067##Dos Torres
+2068##Encinas Reales
+2069##Espejo
+2070##Espiel
+2071##Fernán-Núñez
+2072##Fuente la Lancha
+2073##Fuente Obejuna
+2074##Fuente Palmera
+2075##Fuente-Tójar
+2076##Granjuela La
+2077##Guadalcázar
+2078##Guijo El
+2079##Hinojosa del Duque
+2080##Hornachuelos
+2081##Iznájar
+2082##Lucena
+2083##Luque
+2084##Montalbán de Córdoba
+2085##Montemayor
+2086##Montilla
+2087##Montoro
+2088##Monturque
+2089##Moriles
+2090##Nueva Carteya
+2091##Obejo
+2092##Palenciana
+2093##Palma del Río
+2094##Pedro Abad
+2095##Pedroche
+2096##Peñarroya-Pueblonuevo
+2097##Posadas
+2098##Pozoblanco
+2099##Priego de Córdoba
+2100##Puente Genil
+2101##Rambla La
+2102##Rute
+2103##San Sebastián de los Ballesteros
+2104##Santa Eufemia
+2105##Santaella
+2106##Torrecampo
+2107##Valenzuela
+2108##Valsequillo
+2109##Victoria La
+2110##Villa del Río
+2111##Villafranca de Córdoba
+2112##Villaharta
+2113##Villanueva de Córdoba
+2114##Villanueva del Duque
+2115##Villanueva del Rey
+2116##Villaralto
+2117##Villaviciosa de Córdoba
+2118##Viso El
+2119##Zuheros
+2120##Abegondo
+2121##Ames
+2122##Aranga
+2123##Ares
+2124##Arteixo
+2125##Arzúa
+2126##Baña A
+2127##Bergondo
+2128##Betanzos
+2129##Boimorto
+2130##Boiro
+2131##Boqueixón
+2132##Brión
+2133##Cabana de Bergantiños
+2134##Cabanas
+2135##Camariñas
+2136##Cambre
+2137##Capela A
+2138##Carballo
+2139##Cariño
+2140##Carnota
+2141##Carral
+2142##Cedeira
+2143##Cee
+2144##Cerceda
+2145##Cerdido
+2146##Cesuras
+2147##Coirós
+2148##Corcubión
+2149##Coristanco
+2150##Coruña A
+2151##Culleredo
+2152##Curtis
+2153##Dodro
+2154##Dumbría
+2155##Fene
+2156##Ferrol
+2157##Fisterra
+2158##Frades
+2159##Irixoa
+2160##Laracha A
+2161##Laxe
+2162##Lousame
+2163##Malpica de Bergantiños
+2164##Mañón
+2165##Mazaricos
+2166##Melide
+2167##Mesía
+2168##Miño
+2169##Moeche
+2170##Monfero
+2171##Mugardos
+2172##Muros
+2173##Muxía
+2174##Narón
+2175##Neda
+2176##Negreira
+2177##Noia
+2178##Oleiros
+2179##Ordes
+2180##Oroso
+2181##Ortigueira
+2182##Outes
+2183##Oza dos Ríos
+2184##Paderne
+2185##Padrón
+2186##Pino O
+2187##Pobra do Caramiñal A
+2188##Ponteceso
+2189##Pontedeume
+2190##Pontes de García Rodríguez As
+2191##Porto do Son
+2192##Rianxo
+2193##Ribeira
+2194##Rois
+2195##Sada
+2196##San Sadurniño
+2197##Santa Comba
+2198##Santiago de Compostela
+2199##Santiso
+2201##Somozas As
+2202##Teo
+2203##Toques
+2204##Tordoia
+2205##Touro
+2206##Trazo
+2207##Val do Dubra
+2208##Valdoviño
+2209##Vedra
+2210##Vilarmaior
+2211##Vilasantar
+2212##Vimianzo
+2213##Zas
+2214##Abia de la Obispalía
+2215##Acebrón El
+2216##Alarcón
+2217##Albaladejo del Cuende
+2218##Albalate de las Nogueras
+2219##Albendea
+2220##Alberca de Záncara La
+2221##Alcalá de la Vega
+2222##Alcantud
+2223##Alcázar del Rey
+2224##Alcohujate
+2225##Alconchel de la Estrella
+2226##Algarra
+2227##Aliaguilla
+2228##Almarcha La
+2229##Almendros
+2230##Almodóvar del Pinar
+2231##Almonacid del Marquesado
+2232##Altarejos
+2233##Arandilla del Arroyo
+2234##Arcas del Villar
+2235##Arcos de la Sierra
+2236##Arguisuelas
+2237##Arrancacepas
+2238##Atalaya del Cañavate
+2239##Barajas de Melo
+2240##Barchín del Hoyo
+2241##Bascuñana de San Pedro
+2242##Beamud
+2243##Belinchón
+2244##Belmonte
+2245##Belmontejo
+2246##Beteta
+2247##Boniches
+2248##Buciegas
+2249##Buenache de Alarcón
+2250##Buenache de la Sierra
+2251##Buendía
+2252##Campillo de Altobuey
+2253##Campillos-Paravientos
+2254##Campillos-Sierra
+2255##Campos del Paraíso
+2256##Canalejas del Arroyo
+2257##Cañada del Hoyo
+2258##Cañada Juncosa
+2259##Cañamares
+2260##Cañavate El
+2261##Cañaveras
+2262##Cañaveruelas
+2263##Cañete
+2264##Cañizares
+2265##Carboneras de Guadazaón
+2266##Cardenete
+2267##Carrascosa
+2268##Carrascosa de Haro
+2269##Casas de Benítez
+2270##Casas de Fernando Alonso
+2271##Casas de Garcimolina
+2272##Casas de Guijarro
+2273##Casas de Haro
+2274##Casas de los Pinos
+2275##Casasimarro
+2276##Castejón
+2277##Castillejo de Iniesta
+2278##Castillejo-Sierra
+2279##Castillo de Garcimuñoz
+2280##Castillo-Albaráñez
+2281##Cervera del Llano
+2282##Chillarón de Cuenca
+2283##Chumillas
+2284##Cierva La
+2285##Cuenca
+2286##Cueva del Hierro
+2287##Enguídanos
+2288##Fresneda de Altarejos
+2289##Fresneda de la Sierra
+2290##Frontera La
+2291##Fuente de Pedro Naharro
+2292##Fuentelespino de Haro
+2293##Fuentelespino de Moya
+2294##Fuentenava de Jábaga
+2295##Fuentes
+2296##Fuertescusa
+2297##Gabaldón
+2298##Garaballa
+2299##Gascueña
+2300##Graja de Campalbo
+2301##Graja de Iniesta
+2302##Henarejos
+2303##Herrumblar El
+2304##Hinojosa La
+2305##Hinojosos Los
+2306##Hito El
+2307##Honrubia
+2308##Hontanaya
+2309##Hontecillas
+2310##Horcajo de Santiago
+2311##Huélamo
+2312##Huelves
+2313##Huérguina
+2314##Huerta de la Obispalía
+2315##Huerta del Marquesado
+2316##Huete
+2317##Iniesta
+2318##Laguna del Marquesado
+2319##Lagunaseca
+2320##Landete
+2321##Ledaña
+2322##Leganiel
+2323##Majadas Las
+2324##Mariana
+2325##Masegosa
+2326##Mesas Las
+2327##Minglanilla
+2328##Mira
+2329##Monreal del Llano
+2330##Montalbanejo
+2331##Montalbo
+2332##Monteagudo de las Salinas
+2333##Mota de Altarejos
+2334##Mota del Cuervo
+2335##Motilla del Palancar
+2337##Narboneta
+2338##Olivares de Júcar
+2339##Olmeda de la Cuesta
+2340##Olmeda del Rey
+2341##Olmedilla de Alarcón
+2342##Olmedilla de Eliz
+2343##Osa de la Vega
+2344##Pajarón
+2345##Pajaroncillo
+2346##Palomares del Campo
+2347##Palomera
+2348##Paracuellos
+2349##Paredes
+2350##Parra de las Vegas La
+2351##Pedernoso El
+2352##Pedroñeras Las
+2353##Peral El
+2354##Peraleja La
+2355##Pesquera La
+2356##Picazo El
+2357##Pinarejo
+2358##Pineda de Gigüela
+2359##Piqueras del Castillo
+2360##Portalrubio de Guadamejud
+2361##Portilla
+2362##Poyatos
+2363##Pozoamargo
+2364##Pozorrubielos de la Mancha
+2365##Pozorrubio
+2366##Pozuelo El
+2367##Priego
+2368##Provencio El
+2369##Puebla de Almenara
+2370##Puebla del Salvador
+2371##Quintanar del Rey
+2372##Rada de Haro
+2373##Reíllo
+2374##Rozalén del Monte
+2375##Saceda-Trasierra
+2376##Saelices
+2377##Salinas del Manzano
+2378##Salmeroncillos
+2379##Salvacañete
+2380##San Clemente
+2381##San Lorenzo de la Parrilla
+2382##San Martín de Boniches
+2383##San Pedro Palmiches
+2384##Santa Cruz de Moya
+2385##Santa María de los Llanos
+2386##Santa María del Campo Rus
+2387##Santa María del Val
+2388##Sisante
+2389##Solera de Gabaldón
+2390##Sotorribas
+2391##Talayuelas
+2392##Tarancón
+2393##Tébar
+2394##Tejadillos
+2395##Tinajas
+2396##Torralba
+2397##Torrejoncillo del Rey
+2398##Torrubia del Campo
+2399##Torrubia del Castillo
+2400##Tragacete
+2401##Tresjuncos
+2402##Tribaldos
+2403##Uclés
+2404##Uña
+2405##Valdecolmenas Los
+2406##Valdemeca
+2407##Valdemorillo de la Sierra
+2408##Valdemoro-Sierra
+2409##Valdeolivas
+2410##Valdetórtola
+2411##Valeras Las
+2412##Valhermoso de la Fuente
+2413##Valle de Altomira El
+2414##Valsalobre
+2415##Valverde de Júcar
+2416##Valverdejo
+2417##Vara de Rey
+2418##Vega del Codorno
+2419##Vellisca
+2420##Villaconejos de Trabaque
+2421##Villaescusa de Haro
+2422##Villagarcía del Llano
+2423##Villalba de la Sierra
+2424##Villalba del Rey
+2425##Villalgordo del Marquesado
+2426##Villalpardo
+2427##Villamayor de Santiago
+2428##Villanueva de Guadamejud
+2429##Villanueva de la Jara
+2430##Villar de Cañas
+2431##Villar de Domingo García
+2432##Villar de la Encina
+2433##Villar de Olalla
+2434##Villar del Humo
+2435##Villar del Infantado
+2436##Villar y Velasco
+2437##Villarejo de Fuentes
+2438##Villarejo de la Peñuela
+2439##Villarejo-Periesteban
+2440##Villares del Saz
+2441##Villarrubio
+2442##Villarta
+2443##Villas de la Ventosa
+2444##Villaverde y Pasaconsol
+2445##Víllora
+2446##Vindel
+2447##Yémeda
+2448##Zafra de Záncara
+2449##Zafrilla
+2450##Zarza de Tajo
+2451##Zarzuela
+2452##Agullana
+2453##Aiguaviva
+2454##Albanyà
+2455##Albons
+2456##Alp
+2457##Amer
+2458##Anglès
+2459##Arbúcies
+2460##Argelaguer
+2461##Armentera L'
+2462##Avinyonet de Puigventós
+2463##Banyoles
+2464##Bàscara
+2465##Begur
+2466##Bellcaire d'Empordà
+2467##Besalú
+2468##Bescanó
+2469##Beuda
+2470##Bisbal d'Empordà La
+2471##Biure
+2472##Blanes
+2473##Boadella i les Escaules
+2474##Bolvir
+2475##Bordils
+2476##Borrassà
+2477##Breda
+2478##Brunyola
+2479##Cabanelles
+2481##Cadaqués
+2482##Caldes de Malavella
+2483##Calonge
+2484##Camós
+2485##Campdevànol
+2486##Campelles
+2487##Campllong
+2488##Camprodon
+2489##Canet d'Adri
+2490##Cantallops
+2491##Capmany
+2492##Cassà de la Selva
+2493##Castellfollit de la Roca
+2494##Castelló d'Empúries
+2495##Castell-Platja d'Aro
+2496##Cellera de Ter La
+2497##Celrà
+2498##Cervià de Ter
+2499##Cistella
+2500##Colera
+2501##Colomers
+2502##Corçà
+2503##Cornellà del Terri
+2504##Crespià
+2505##Cruïlles Monells i Sant Sadurní de l'Heura
+2506##Darnius
+2507##Das
+2508##Escala L'
+2509##Espinelves
+2510##Espolla
+2511##Esponellà
+2512##Far d'Empordà El
+2513##Figueres
+2514##Flaçà
+2515##Foixà
+2516##Fontanals de Cerdanya
+2517##Fontanilles
+2518##Fontcoberta
+2519##Forallac
+2520##Fornells de la Selva
+2521##Fortià
+2522##Garrigàs
+2523##Garrigoles
+2524##Garriguella
+2525##Ger
+2526##Girona
+2527##Gombrèn
+2528##Gualta
+2529##Guils de Cerdanya
+2530##Hostalric
+2531##Isòvol
+2532##Jafre
+2533##Jonquera La
+2534##Juià
+2535##Lladó
+2536##Llagostera
+2537##Llambilles
+2538##Llanars
+2539##Llançà
+2540##Llers
+2541##Llívia
+2542##Lloret de Mar
+2543##Llosses Les
+2544##Maçanet de Cabrenys
+2545##Maçanet de la Selva
+2546##Madremanya
+2547##Maià de Montcal
+2548##Masarac
+2549##Massanes
+2550##Meranges
+2551##Mieres
+2552##Mollet de Peralada
+2553##Molló
+2554##Montagut i Oix
+2555##Mont-ras
+2556##Navata
+2557##Ogassa
+2558##Olot
+2559##Ordis
+2560##Osor
+2561##Palafrugell
+2562##Palamós
+2563##Palau de Santa Eulàlia
+2564##Palau-sator
+2565##Palau-saverdera
+2566##Palol de Revardit
+2567##Pals
+2568##Pardines
+2569##Parlavà
+2570##Pau
+2571##Pedret i Marzà
+2572##Pera La
+2573##Peralada
+2574##Planes d'Hostoles Les
+2575##Planoles
+2576##Pont de Molins
+2577##Pontós
+2578##Porqueres
+2579##Port de la Selva El
+2580##Portbou
+2581##Preses Les
+2582##Puigcerdà
+2583##Quart
+2584##Queralbs
+2585##Rabós
+2586##Regencós
+2587##Ribes de Freser
+2588##Riells i Viabrea
+2589##Ripoll
+2590##Riudarenes
+2591##Riudaura
+2592##Riudellots de la Selva
+2593##Riumors
+2594##Roses
+2595##Rupià
+2596##Sales de Llierca
+2597##Salt
+2598##Sant Andreu Salou
+2599##Sant Aniol de Finestres
+2600##Sant Climent Sescebes
+2601##Sant Feliu de Buixalleu
+2602##Sant Feliu de Guíxols
+2603##Sant Feliu de Pallerols
+2604##Sant Ferriol
+2605##Sant Gregori
+2606##Sant Hilari Sacalm
+2607##Sant Jaume de Llierca
+2608##Sant Joan de les Abadesses
+2609##Sant Joan de Mollet
+2610##Sant Joan les Fonts
+2611##Sant Jordi Desvalls
+2612##Sant Julià de Ramis
+2613##Sant Julià del Llor i Bonmatí
+2614##Sant Llorenç de la Muga
+2615##Sant Martí de Llémena
+2616##Sant Martí Vell
+2617##Sant Miquel de Campmajor
+2618##Sant Miquel de Fluvià
+2619##Sant Mori
+2620##Sant Pau de Segúries
+2621##Sant Pere Pescador
+2622##Santa Coloma de Farners
+2623##Santa Cristina d'Aro
+2624##Santa Llogaia d'Àlguema
+2625##Santa Pau
+2626##Sarrià de Ter
+2627##Saus Camallera i Llampaies
+2628##Selva de Mar La
+2629##Serinyà
+2630##Serra de Daró
+2631##Setcases
+2632##Sils
+2633##Siurana
+2634##Susqueda
+2635##Tallada d'Empordà La
+2636##Terrades
+2638##Torroella de Fluvià
+2639##Torroella de Montgrí
+2640##Tortellà
+2641##Toses
+2642##Tossa de Mar
+2643##Ullà
+2644##Ullastret
+2645##Ultramort
+2646##Urús
+2647##Vajol La
+2648##Vall de Bianya La
+2649##Vall d'en Bas La
+2650##Vallfogona de Ripollès
+2651##Vall-llobrega
+2652##Ventalló
+2653##Verges
+2654##Vidrà
+2655##Vidreres
+2656##Vilabertran
+2657##Vilablareix
+2658##Viladamat
+2659##Viladasens
+2660##Vilademuls
+2661##Viladrau
+2662##Vilafant
+2663##Vilajuïga
+2664##Vilallonga de Ter
+2665##Vilamacolum
+2666##Vilamalla
+2667##Vilamaniscle
+2668##Vilanant
+2669##Vila-sacra
+2670##Vilaür
+2671##Vilobí d'Onyar
+2672##Vilopriu
+2673##Agrón
+2674##Alamedilla
+2675##Albolote
+2676##Albondón
+2677##Albuñán
+2678##Albuñol
+2679##Albuñuelas
+2680##Aldeire
+2681##Alfacar
+2682##Algarinejo
+2683##Alhama de Granada
+2684##Alhendín
+2685##Alicún de Ortega
+2686##Almegíjar
+2687##Almuñécar
+2688##Alpujarra de la Sierra
+2689##Alquife
+2690##Arenas del Rey
+2691##Armilla
+2692##Atarfe
+2693##Baza
+2694##Beas de Granada
+2695##Beas de Guadix
+2696##Benalúa
+2697##Benalúa de las Villas
+2698##Benamaurel
+2699##Bérchules
+2700##Bubión
+2701##Busquístar
+2702##Cacín
+2703##Cádiar
+2704##Cájar
+2705##Calahorra La
+2706##Calicasas
+2707##Campotéjar
+2708##Caniles
+2709##Cáñar
+2710##Capileira
+2711##Carataunas
+2712##Cástaras
+2713##Castilléjar
+2714##Castril
+2715##Cenes de la Vega
+2716##Chauchina
+2717##Chimeneas
+2718##Churriana de la Vega
+2719##Cijuela
+2720##Cogollos de Guadix
+2721##Cogollos de la Vega
+2722##Colomera
+2723##Cortes de Baza
+2724##Cortes y Graena
+2725##Cuevas del Campo
+2726##Cúllar
+2727##Cúllar Vega
+2728##Darro
+2729##Dehesas de Guadix
+2730##Deifontes
+2731##Diezma
+2732##Dílar
+2733##Dólar
+2734##Dúdar
+2735##Dúrcal
+2736##Escúzar
+2737##Ferreira
+2738##Fonelas
+2739##Freila
+2740##Fuente Vaqueros
+2741##Gabias Las
+2742##Galera
+2743##Gobernador
+2744##Gójar
+2745##Gor
+2746##Gorafe
+2747##Granada
+2748##Guadahortuna
+2749##Guadix
+2750##Guajares Los
+2751##Gualchos
+2752##Güejar Sierra
+2753##Güevéjar
+2754##Huélago
+2755##Huéneja
+2756##Huéscar
+2757##Huétor de Santillán
+2758##Huétor Tájar
+2759##Huétor Vega
+2760##Illora
+2761##Itrabo
+2762##Iznalloz
+2763##Jayena
+2764##Jerez del Marquesado
+2765##Jete
+2766##Jun
+2767##Juviles
+2768##Láchar
+2769##Lanjarón
+2770##Lanteira
+2771##Lecrín
+2772##Lentegí
+2773##Lobras
+2774##Loja
+2775##Lugros
+2776##Lújar
+2777##Malahá La
+2778##Maracena
+2779##Marchal
+2780##Moclín
+2781##Molvízar
+2782##Monachil
+2783##Montefrío
+2784##Montejícar
+2785##Montillana
+2786##Moraleda de Zafayona
+2787##Morelábor
+2788##Motril
+2789##Murtas
+2790##Nevada
+2791##Nigüelas
+2792##Nívar
+2793##Ogíjares
+2794##Orce
+2795##Órgiva
+2796##Otívar
+2797##Otura
+2798##Padul
+2799##Pampaneira
+2800##Pedro Martínez
+2801##Peligros
+2802##Peza La
+2803##Pinar El
+2804##Pinos Genil
+2805##Pinos Puente
+2806##Píñar
+2807##Polícar
+2808##Polopos
+2809##Pórtugos
+2810##Puebla de Don Fadrique
+2811##Pulianas
+2812##Purullena
+2813##Quéntar
+2814##Rubite
+2815##Salar
+2816##Salobreña
+2817##Santa Cruz del Comercio
+2818##Santa Fe
+2819##Soportújar
+2820##Sorvilán
+2821##Taha La
+2822##Torre-Cardela
+2823##Torvizcón
+2824##Trevélez
+2825##Turón
+2826##Ugíjar
+2827##Valle El
+2828##Valle del Zalabí
+2829##Válor
+2830##Vegas del Genil
+2831##Vélez de Benaudalla
+2832##Ventas de Huelma
+2833##Villamena
+2834##Villanueva de las Torres
+2835##Villanueva Mesía
+2836##Víznar
+2837##Zafarraya
+2838##Zagra
+2839##Zubia La
+2840##Zújar
+2841##Abánades
+2842##Ablanque
+2843##Adobes
+2844##Alaminos
+2845##Alarilla
+2846##Albalate de Zorita
+2847##Albares
+2848##Albendiego
+2849##Alcocer
+2850##Alcolea de las Peñas
+2851##Alcolea del Pinar
+2852##Alcoroches
+2853##Aldeanueva de Guadalajara
+2854##Algar de Mesa
+2855##Algora
+2856##Alhóndiga
+2857##Alique
+2858##Almadrones
+2859##Almoguera
+2860##Almonacid de Zorita
+2861##Alocén
+2862##Alovera
+2863##Alustante
+2864##Angón
+2865##Anguita
+2866##Anquela del Ducado
+2867##Anquela del Pedregal
+2868##Aranzueque
+2869##Arbancón
+2870##Arbeteta
+2871##Argecilla
+2872##Armallones
+2873##Armuña de Tajuña
+2874##Arroyo de las Fraguas
+2875##Atanzón
+2876##Atienza
+2877##Auñón
+2878##Azuqueca de Henares
+2879##Baides
+2880##Baños de Tajo
+2881##Bañuelos
+2882##Barriopedro
+2883##Berninches
+2884##Bodera La
+2885##Brihuega
+2886##Budia
+2887##Bujalaro
+2888##Bustares
+2889##Cabanillas del Campo
+2890##Campillo de Dueñas
+2891##Campillo de Ranas
+2892##Campisábalos
+2893##Canredondo
+2894##Cantalojas
+2895##Cañizar
+2896##Cardoso de la Sierra El
+2897##Casa de Uceda
+2898##Casar El
+2899##Casas de San Galindo
+2900##Caspueñas
+2901##Castejón de Henares
+2902##Castellar de la Muela
+2903##Castilforte
+2904##Castilnuevo
+2905##Cendejas de Enmedio
+2906##Cendejas de la Torre
+2907##Centenera
+2908##Checa
+2909##Chequilla
+2910##Chillarón del Rey
+2911##Chiloeches
+2912##Cifuentes
+2913##Cincovillas
+2914##Ciruelas
+2915##Ciruelos del Pinar
+2916##Cobeta
+2917##Cogollor
+2918##Cogolludo
+2919##Condemios de Abajo
+2920##Condemios de Arriba
+2921##Congostrina
+2922##Copernal
+2923##Corduente
+2924##Cubillo de Uceda El
+2925##Driebes
+2926##Durón
+2927##Embid
+2928##Escamilla
+2929##Escariche
+2930##Escopete
+2931##Espinosa de Henares
+2932##Esplegares
+2933##Establés
+2934##Estriégana
+2935##Fontanar
+2936##Fuembellida
+2937##Fuencemillán
+2938##Fuentelahiguera de Albatages
+2939##Fuentelencina
+2940##Fuentelsaz
+2941##Fuentelviejo
+2942##Fuentenovilla
+2943##Gajanejos
+2944##Galápagos
+2945##Galve de Sorbe
+2946##Gascueña de Bornova
+2947##Guadalajara
+2948##Henche
+2949##Heras de Ayuso
+2950##Herrería
+2951##Hiendelaencina
+2952##Hijes
+2953##Hita
+2954##Hombrados
+2955##Hontoba
+2956##Horche
+2957##Hortezuela de Océn
+2958##Huerce La
+2959##Huérmeces del Cerro
+2960##Huertahernando
+2961##Hueva
+2962##Humanes
+2963##Illana
+2964##Iniéstola
+2965##Inviernas Las
+2966##Irueste
+2967##Jadraque
+2968##Jirueque
+2969##Ledanca
+2970##Loranca de Tajuña
+2971##Lupiana
+2972##Luzaga
+2973##Luzón
+2974##Majaelrayo
+2975##Málaga del Fresno
+2976##Malaguilla
+2977##Mandayona
+2978##Mantiel
+2979##Maranchón
+2980##Marchamalo
+2981##Masegoso de Tajuña
+2982##Matarrubia
+2983##Matillas
+2984##Mazarete
+2985##Mazuecos
+2986##Medranda
+2987##Megina
+2988##Membrillera
+2989##Miedes de Atienza
+2990##Mierla La
+2991##Millana
+2992##Milmarcos
+2993##Miñosa La
+2994##Mirabueno
+2995##Miralrío
+2996##Mochales
+2997##Mohernando
+2998##Molina de Aragón
+2999##Monasterio
+3000##Mondéjar
+3001##Montarrón
+3002##Moratilla de los Meleros
+3003##Morenilla
+3004##Muduex
+3005##Navas de Jadraque Las
+3006##Negredo
+3007##Ocentejo
+3008##Olivar El
+3009##Olmeda de Cobeta
+3010##Olmeda de Jadraque La
+3011##Ordial El
+3012##Orea
+3013##Pálmaces de Jadraque
+3014##Pardos
+3015##Paredes de Sigüenza
+3016##Pareja
+3017##Pastrana
+3018##Pedregal El
+3019##Peñalén
+3020##Peñalver
+3021##Peralejos de las Truchas
+3022##Peralveche
+3023##Pinilla de Jadraque
+3024##Pinilla de Molina
+3025##Pioz
+3026##Piqueras
+3027##Pobo de Dueñas El
+3028##Poveda de la Sierra
+3029##Pozo de Almoguera
+3030##Pozo de Guadalajara
+3031##Prádena de Atienza
+3032##Prados Redondos
+3033##Puebla de Beleña
+3034##Puebla de Valles
+3035##Quer
+3036##Rebollosa de Jadraque
+3037##Recuenco El
+3038##Renera
+3039##Retiendas
+3040##Riba de Saelices
+3041##Rillo de Gallo
+3042##Riofrío del Llano
+3043##Robledillo de Mohernando
+3044##Robledo de Corpes
+3045##Romanillos de Atienza
+3046##Romanones
+3047##Rueda de la Sierra
+3048##Sacecorbo
+3049##Sacedón
+3050##Saelices de la Sal
+3051##Salmerón
+3052##San Andrés del Congosto
+3053##San Andrés del Rey
+3054##Santiuste
+3055##Saúca
+3056##Sayatón
+3057##Selas
+3058##Semillas
+3059##Setiles
+3060##Sienes
+3061##Sigüenza
+3062##Solanillos del Extremo
+3063##Somolinos
+3064##Sotillo El
+3065##Sotodosos
+3066##Tamajón
+3067##Taragudo
+3068##Taravilla
+3069##Tartanedo
+3070##Tendilla
+3071##Terzaga
+3072##Tierzo
+3073##Toba La
+3074##Tordellego
+3075##Tordelrábano
+3076##Tordesilos
+3077##Torija
+3078##Torre del Burgo
+3079##Torrecuadrada de Molina
+3080##Torrecuadradilla
+3081##Torrejón del Rey
+3082##Torremocha de Jadraque
+3083##Torremocha del Campo
+3084##Torremocha del Pinar
+3085##Torremochuela
+3086##Torrubia
+3087##Tórtola de Henares
+3088##Tortuera
+3089##Tortuero
+3090##Traíd
+3091##Trijueque
+3092##Trillo
+3093##Uceda
+3094##Ujados
+3095##Utande
+3096##Valdarachas
+3097##Valdearenas
+3098##Valdeavellano
+3099##Valdeaveruelo
+3100##Valdeconcha
+3101##Valdegrudas
+3102##Valdelcubo
+3103##Valdenuño Fernández
+3104##Valdepeñas de la Sierra
+3105##Valderrebollo
+3106##Valdesotos
+3107##Valfermoso de Tajuña
+3108##Valhermoso
+3109##Valtablado del Río
+3110##Valverde de los Arroyos
+3111##Viana de Jadraque
+3112##Villanueva de Alcorón
+3113##Villanueva de Argecilla
+3114##Villanueva de la Torre
+3115##Villares de Jadraque
+3116##Villaseca de Henares
+3117##Villaseca de Uceda
+3118##Villel de Mesa
+3119##Viñuelas
+3120##Yebes
+3121##Yebra
+3122##Yélamos de Abajo
+3123##Yélamos de Arriba
+3124##Yunquera de Henares
+3125##Yunta La
+3126##Zaorejas
+3127##Zarzuela de Jadraque
+3128##Zorita de los Canes
+3129##Abaltzisketa
+3130##Aduna
+3131##Aia
+3132##Aizarnazabal
+3133##Albiztur
+3134##Alegia
+3135##Alkiza
+3136##Altzaga
+3137##Altzo
+3138##Amezketa
+3139##Andoain
+3140##Anoeta
+3141##Antzuola
+3142##Arama
+3143##Aretxabaleta
+3144##Arrasate/Mondragón
+3145##Asteasu
+3146##Astigarraga
+3147##Ataun
+3148##Azkoitia
+3149##Azpeitia
+3150##Baliarrain
+3151##Beasain
+3152##Beizama
+3153##Belauntza
+3154##Berastegi
+3155##Bergara
+3156##Berrobi
+3157##Bidegoian
+3158##Deba
+3159##Donostia-San Sebastián
+3160##Eibar
+3161##Elduain
+3162##Elgeta
+3163##Elgoibar
+3164##Errenteria
+3165##Errezil
+3166##Eskoriatza
+3167##Ezkio-Itsaso
+3168##Gabiria
+3169##Gaintza
+3170##Gaztelu
+3171##Getaria
+3172##Hernani
+3173##Hernialde
+3174##Hondarribia
+3175##Ibarra
+3176##Idiazabal
+3177##Ikaztegieta
+3178##Irun
+3179##Irura
+3180##Itsasondo
+3181##Larraul
+3182##Lasarte-Oria
+3183##Lazkao
+3184##Leaburu
+3185##Legazpi
+3186##Legorreta
+3187##Leintz-Gatzaga
+3188##Lezo
+3189##Lizartza
+3190##Mendaro
+3191##Mutiloa
+3192##Mutriku
+3193##Oiartzun
+3194##Olaberria
+3195##Oñati
+3196##Ordizia
+3197##Orendain
+3198##Orexa
+3199##Orio
+3200##Ormaiztegi
+3201##Pasaia
+3202##Segura
+3203##Soraluze/Placencia de las Armas
+3204##Tolosa
+3205##Urnieta
+3206##Urretxu
+3207##Usurbil
+3208##Villabona
+3209##Zaldibia
+3210##Zarautz
+3211##Zegama
+3212##Zerain
+3213##Zestoa
+3214##Zizurkil
+3215##Zumaia
+3216##Zumarraga
+3217##Alájar
+3218##Aljaraque
+3219##Almendro El
+3220##Almonaster la Real
+3221##Almonte
+3222##Alosno
+3223##Aracena
+3224##Aroche
+3225##Arroyomolinos de León
+3226##Ayamonte
+3227##Beas
+3228##Berrocal
+3229##Bollullos Par del Condado
+3230##Bonares
+3231##Cabezas Rubias
+3232##Cala
+3233##Calañas
+3234##Campillo El
+3235##Campofrío
+3236##Cañaveral de León
+3237##Cartaya
+3238##Castaño del Robledo
+3239##Cerro de Andévalo El
+3240##Chucena
+3241##Corteconcepción
+3242##Cortegana
+3243##Cortelazor
+3244##Cumbres de Enmedio
+3245##Cumbres de San Bartolomé
+3246##Cumbres Mayores
+3247##Encinasola
+3248##Escacena del Campo
+3249##Fuenteheridos
+3250##Galaroza
+3251##Gibraleón
+3252##Granada de Río-Tinto La
+3253##Granado El
+3254##Higuera de la Sierra
+3255##Hinojales
+3256##Hinojos
+3257##Huelva
+3258##Isla Cristina
+3259##Jabugo
+3260##Lepe
+3261##Linares de la Sierra
+3262##Lucena del Puerto
+3263##Manzanilla
+3264##Marines Los
+3265##Minas de Riotinto
+3266##Moguer
+3267##Nava La
+3268##Nerva
+3269##Niebla
+3270##Palma del Condado La
+3271##Palos de la Frontera
+3272##Paterna del Campo
+3273##Paymogo
+3274##Puebla de Guzmán
+3275##Puerto Moral
+3276##Punta Umbría
+3277##Rociana del Condado
+3278##Rosal de la Frontera
+3279##San Bartolomé de la Torre
+3280##San Juan del Puerto
+3281##San Silvestre de Guzmán
+3282##Sanlúcar de Guadiana
+3283##Santa Ana la Real
+3284##Santa Bárbara de Casa
+3285##Santa Olalla del Cala
+3286##Trigueros
+3287##Valdelarco
+3288##Valverde del Camino
+3289##Villablanca
+3290##Villalba del Alcor
+3291##Villanueva de las Cruces
+3292##Villanueva de los Castillejos
+3293##Villarrasa
+3294##Zalamea la Real
+3295##Zufre
+3296##Abiego
+3297##Abizanda
+3298##Adahuesca
+3299##Agüero
+3300##Aínsa-Sobrarbe
+3301##Aisa
+3302##Albalate de Cinca
+3303##Albalatillo
+3304##Albelda
+3305##Albero Alto
+3306##Albero Bajo
+3307##Alberuela de Tubo
+3308##Alcalá de Gurrea
+3309##Alcalá del Obispo
+3310##Alcampell
+3311##Alcolea de Cinca
+3312##Alcubierre
+3313##Alerre
+3314##Alfántega
+3315##Almudévar
+3316##Almunia de San Juan
+3317##Almuniente
+3318##Alquézar
+3319##Altorricón
+3320##Angüés
+3321##Ansó
+3322##Antillón
+3323##Aragüés del Puerto
+3324##Arén
+3325##Argavieso
+3326##Arguis
+3327##Ayerbe
+3328##Azanuy-Alins
+3329##Azara
+3330##Azlor
+3331##Baélls
+3332##Bailo
+3333##Baldellou
+3334##Ballobar
+3335##Banastás
+3336##Barbastro
+3337##Barbués
+3338##Barbuñales
+3339##Bárcabo
+3340##Belver de Cinca
+3341##Benabarre
+3342##Benasque
+3343##Berbegal
+3344##Bielsa
+3345##Bierge
+3346##Biescas
+3347##Binaced
+3348##Binéfar
+3349##Bisaurri
+3350##Biscarrués
+3351##Blecua y Torres
+3352##Boltaña
+3353##Bonansa
+3354##Borau
+3355##Broto
+3356##Caldearenas
+3357##Campo
+3358##Camporrélls
+3359##Canal de Berdún
+3360##Candasnos
+3361##Canfranc
+3362##Capdesaso
+3363##Capella
+3364##Casbas de Huesca
+3365##Castejón de Monegros
+3366##Castejón de Sos
+3367##Castejón del Puente
+3368##Castelflorite
+3369##Castiello de Jaca
+3370##Castigaleu
+3371##Castillazuelo
+3372##Castillonroy
+3373##Chalamera
+3374##Chía
+3375##Chimillas
+3376##Colungo
+3377##Esplús
+3378##Estada
+3379##Estadilla
+3380##Estopiñán del Castillo
+3381##Fago
+3382##Fanlo
+3383##Fiscal
+3384##Fonz
+3385##Foradada del Toscar
+3386##Fraga
+3387##Fueva La
+3388##Gistaín
+3389##Grado El
+3390##Grañén
+3391##Graus
+3392##Gurrea de Gállego
+3393##Hoz de Jaca
+3394##Hoz y Costean
+3395##Huerto
+3396##Huesca
+3397##Ibieca
+3398##Igriés
+3399##Ilche
+3400##Isábena
+3401##Jaca
+3402##Jasa
+3403##Labuerda
+3404##Laluenga
+3405##Lalueza
+3406##Lanaja
+3407##Laperdiguera
+3408##Lascellas-Ponzano
+3409##Lascuarre
+3410##Laspaúles
+3411##Laspuña
+3412##Loarre
+3413##Loporzano
+3414##Loscorrales
+3415##Lupiñén-Ortilla
+3416##Monesma y Cajigar
+3417##Monflorite-Lascasas
+3418##Montanuy
+3419##Monzón
+3420##Naval
+3421##Novales
+3422##Nueno
+3423##Olvena
+3424##Ontiñena
+3425##Osso de Cinca
+3426##Palo
+3427##Panticosa
+3428##Peñalba
+3429##Peñas de Riglos Las
+3430##Peralta de Alcofea
+3431##Peralta de Calasanz
+3432##Peraltilla
+3433##Perarrúa
+3434##Pertusa
+3435##Piracés
+3436##Plan
+3437##Poleñino
+3438##Pozán de Vero
+3439##Puebla de Castro La
+3440##Puente de Montañana
+3441##Puente la Reina de Jaca
+3442##Puértolas
+3443##Pueyo de Araguás El
+3444##Pueyo de Santa Cruz
+3445##Quicena
+3446##Robres
+3447##Sabiñánigo
+3448##Sahún
+3449##Salas Altas
+3450##Salas Bajas
+3451##Salillas
+3452##Sallent de Gállego
+3453##San Esteban de Litera
+3454##San Juan de Plan
+3455##San Miguel del Cinca
+3456##Sangarrén
+3457##Santa Cilia
+3458##Santa Cruz de la Serós
+3459##Santa María de Dulcis
+3460##Santaliestra y San Quílez
+3461##Sariñena
+3462##Secastilla
+3463##Seira
+3464##Sena
+3465##Senés de Alcubierre
+3466##Sesa
+3467##Sesué
+3468##Siétamo
+3469##Sopeira
+3470##Sotonera La
+3471##Tamarite de Litera
+3472##Tardienta
+3473##Tella-Sin
+3474##Tierz
+3475##Tolva
+3476##Torla
+3477##Torralba de Aragón
+3478##Torre la Ribera
+3479##Torrente de Cinca
+3480##Torres de Alcanadre
+3481##Torres de Barbués
+3482##Tramaced
+3483##Valfarta
+3484##Valle de Bardají
+3485##Valle de Hecho
+3486##Valle de Lierp
+3487##Velilla de Cinca
+3488##Vencillón
+3489##Veracruz
+3490##Viacamp y Litera
+3491##Vicién
+3492##Villanova
+3493##Villanúa
+3494##Villanueva de Sigena
+3495##Yebra de Basa
+3496##Yésero
+3497##Zaidín
+3498##Albanchez de Mágina
+3499##Alcalá la Real
+3500##Alcaudete
+3501##Aldeaquemada
+3502##Andújar
+3503##Arjona
+3504##Arjonilla
+3505##Arquillos
+3506##Arroyo del Ojanco
+3507##Baeza
+3508##Bailén
+3509##Baños de la Encina
+3510##Beas de Segura
+3511##Bedmar y Garcíez
+3512##Begíjar
+3513##Bélmez de la Moraleda
+3514##Benatae
+3515##Cabra del Santo Cristo
+3516##Cambil
+3517##Campillo de Arenas
+3518##Canena
+3519##Carboneros
+3520##Cárcheles
+3521##Carolina La
+3522##Castellar
+3523##Castillo de Locubín
+3524##Cazalilla
+3525##Cazorla
+3526##Chiclana de Segura
+3527##Chilluévar
+3528##Escañuela
+3529##Espelúy
+3530##Frailes
+3531##Fuensanta de Martos
+3532##Fuerte del Rey
+3533##Génave
+3534##Guardia de Jaén La
+3535##Guarromán
+3536##Higuera de Calatrava
+3537##Hinojares
+3538##Hornos
+3539##Huelma
+3540##Huesa
+3541##Ibros
+3542##Iruela La
+3543##Iznatoraf
+3544##Jabalquinto
+3545##Jaén
+3546##Jamilena
+3547##Jimena
+3548##Jódar
+3549##Lahiguera
+3550##Larva
+3551##Linares
+3552##Lopera
+3553##Lupión
+3554##Mancha Real
+3555##Marmolejo
+3556##Martos
+3557##Mengíbar
+3558##Montizón
+3559##Navas de San Juan
+3560##Noalejo
+3561##Orcera
+3562##Peal de Becerro
+3563##Pegalajar
+3564##Porcuna
+3565##Pozo Alcón
+3566##Puente de Génave
+3567##Puerta de Segura La
+3568##Quesada
+3569##Rus
+3570##Sabiote
+3571##Santa Elena
+3572##Santiago de Calatrava
+3573##Santiago-Pontones
+3574##Santisteban del Puerto
+3575##Santo Tomé
+3576##Segura de la Sierra
+3577##Siles
+3578##Sorihuela del Guadalimar
+3579##Torre del Campo
+3580##Torreblascopedro
+3581##Torredonjimeno
+3582##Torreperogil
+3583##Torres
+3584##Torres de Albánchez
+3585##Úbeda
+3586##Valdepeñas de Jaén
+3587##Vilches
+3588##Villacarrillo
+3589##Villanueva de la Reina
+3590##Villanueva del Arzobispo
+3591##Villardompardo
+3592##Villares Los
+3593##Villarrodrigo
+3594##Villatorres
+3595##Acebedo
+3596##Algadefe
+3597##Alija del Infantado
+3598##Almanza
+3599##Antigua La
+3600##Ardón
+3601##Arganza
+3602##Astorga
+3603##Balboa
+3604##Bañeza La
+3605##Barjas
+3606##Barrios de Luna Los
+3607##Bembibre
+3608##Benavides
+3609##Benuza
+3610##Bercianos del Páramo
+3611##Bercianos del Real Camino
+3612##Berlanga del Bierzo
+3613##Boca de Huérgano
+3614##Boñar
+3615##Borrenes
+3616##Brazuelo
+3617##Burgo Ranero El
+3618##Burón
+3619##Bustillo del Páramo
+3620##Cabañas Raras
+3621##Cabreros del Río
+3622##Cabrillanes
+3623##Cacabelos
+3624##Calzada del Coto
+3625##Campazas
+3626##Campo de Villavidel
+3627##Camponaraya
+3628##Candín
+3629##Cármenes
+3630##Carracedelo
+3631##Carrizo
+3632##Carrocera
+3633##Carucedo
+3634##Castilfalé
+3635##Castrillo de Cabrera
+3636##Castrillo de la Valduerna
+3637##Castrocalbón
+3638##Castrocontrigo
+3639##Castropodame
+3640##Castrotierra de Valmadrigal
+3641##Cea
+3642##Cebanico
+3643##Cebrones del Río
+3644##Chozas de Abajo
+3645##Cimanes de la Vega
+3646##Cimanes del Tejar
+3647##Cistierna
+3648##Congosto
+3649##Corbillos de los Oteros
+3650##Corullón
+3651##Crémenes
+3652##Cuadros
+3653##Cubillas de los Oteros
+3654##Cubillas de Rueda
+3655##Cubillos del Sil
+3656##Destriana
+3657##Encinedo
+3658##Ercina La
+3659##Escobar de Campos
+3660##Fabero
+3661##Folgoso de la Ribera
+3662##Fresno de la Vega
+3663##Fuentes de Carbajal
+3664##Garrafe de Torío
+3665##Gordaliza del Pino
+3666##Gordoncillo
+3667##Gradefes
+3668##Grajal de Campos
+3669##Gusendos de los Oteros
+3670##Hospital de Órbigo
+3671##Igüeña
+3672##Izagre
+3673##Joarilla de las Matas
+3674##Laguna Dalga
+3675##Laguna de Negrillos
+3676##León
+3677##Llamas de la Ribera
+3678##Lucillo
+3679##Luyego
+3680##Magaz de Cepeda
+3681##Mansilla de las Mulas
+3682##Mansilla Mayor
+3683##Maraña
+3684##Matadeón de los Oteros
+3685##Matallana de Torío
+3686##Matanza
+3687##Molinaseca
+3688##Murias de Paredes
+3689##Noceda del Bierzo
+3690##Oencia
+3691##Omañas Las
+3692##Onzonilla
+3693##Oseja de Sajambre
+3694##Pajares de los Oteros
+3695##Palacios de la Valduerna
+3696##Palacios del Sil
+3697##Páramo del Sil
+3698##Peranzanes
+3699##Pobladura de Pelayo García
+3700##Pola de Gordón La
+3701##Ponferrada
+3702##Posada de Valdeón
+3703##Pozuelo del Páramo
+3704##Prado de la Guzpeña
+3705##Priaranza del Bierzo
+3706##Prioro
+3707##Puebla de Lillo
+3708##Puente de Domingo Flórez
+3709##Quintana del Castillo
+3710##Quintana del Marco
+3711##Quintana y Congosto
+3712##Regueras de Arriba
+3713##Reyero
+3714##Riaño
+3715##Riego de la Vega
+3716##Riello
+3717##Rioseco de Tapia
+3718##Robla La
+3719##Roperuelos del Páramo
+3720##Sabero
+3721##Sahagún
+3722##San Adrián del Valle
+3723##San Andrés del Rabanedo
+3724##San Cristóbal de la Polantera
+3725##San Emiliano
+3726##San Esteban de Nogales
+3727##San Justo de la Vega
+3728##San Millán de los Caballeros
+3729##San Pedro Bercianos
+3730##Sancedo
+3731##Santa Colomba de Curueño
+3732##Santa Colomba de Somoza
+3733##Santa Cristina de Valmadrigal
+3734##Santa Elena de Jamuz
+3735##Santa María de la Isla
+3736##Santa María de Ordás
+3737##Santa María del Monte de Cea
+3738##Santa María del Páramo
+3739##Santa Marina del Rey
+3740##Santas Martas
+3741##Santiago Millas
+3742##Santovenia de la Valdoncina
+3743##Sariegos
+3744##Sena de Luna
+3745##Sobrado
+3746##Soto de la Vega
+3747##Soto y Amío
+3748##Toral de los Guzmanes
+3749##Toral de los Vados
+3750##Toreno
+3751##Torre del Bierzo
+3752##Trabadelo
+3753##Truchas
+3754##Turcia
+3755##Urdiales del Páramo
+3756##Val de San Lorenzo
+3757##Valdefresno
+3758##Valdefuentes del Páramo
+3759##Valdelugueros
+3760##Valdemora
+3761##Valdepiélago
+3762##Valdepolo
+3763##Valderas
+3764##Valderrey
+3765##Valderrueda
+3766##Valdesamario
+3767##Valdevimbre
+3768##Valencia de Don Juan
+3769##Vallecillo
+3770##Valverde de la Virgen
+3771##Valverde-Enrique
+3772##Vecilla La
+3773##Vega de Espinareda
+3774##Vega de Infanzones
+3775##Vega de Valcarce
+3776##Vegacervera
+3777##Vegaquemada
+3778##Vegas del Condado
+3779##Villablino
+3780##Villabraz
+3781##Villadangos del Páramo
+3782##Villademor de la Vega
+3783##Villafranca del Bierzo
+3784##Villagatón
+3785##Villamandos
+3786##Villamanín
+3787##Villamañán
+3788##Villamartín de Don Sancho
+3789##Villamejil
+3790##Villamol
+3791##Villamontán de la Valduerna
+3792##Villamoratiel de las Matas
+3793##Villanueva de las Manzanas
+3794##Villaobispo de Otero
+3795##Villaornate y Castro
+3796##Villaquejida
+3797##Villaquilambre
+3798##Villarejo de Órbigo
+3799##Villares de Órbigo
+3800##Villasabariego
+3801##Villaselán
+3802##Villaturiel
+3803##Villazala
+3804##Villazanzo de Valderaduey
+3805##Zotes del Páramo
+3806##Abella de la Conca
+3807##Àger
+3808##Agramunt
+3809##Aitona
+3810##Alamús Els
+3811##Alàs i Cerc
+3812##Albagés L'
+3813##Albatàrrec
+3814##Albesa
+3815##Albi L'
+3816##Alcanó
+3817##Alcarràs
+3818##Alcoletge
+3819##Alfarràs
+3820##Alfés
+3821##Algerri
+3822##Alguaire
+3823##Alins
+3824##Almacelles
+3825##Almatret
+3826##Almenar
+3827##Alòs de Balaguer
+3828##Alpicat
+3829##Alt Àneu
+3830##Anglesola
+3831##Arbeca
+3832##Arres
+3833##Arsèguel
+3834##Artesa de Lleida
+3835##Artesa de Segre
+3836##Aspa
+3837##Avellanes i Santa Linya Les
+3838##Baix Pallars
+3839##Balaguer
+3840##Barbens
+3841##Baronia de Rialb La
+3842##Bassella
+3843##Bausen
+3844##Belianes
+3845##Bellaguarda
+3846##Bellcaire d'Urgell
+3847##Bell-lloc d'Urgell
+3848##Bellmunt d'Urgell
+3849##Bellpuig
+3850##Bellver de Cerdanya
+3851##Bellvís
+3852##Benavent de Segrià
+3853##Biosca
+3854##Bòrdes Es
+3855##Borges Blanques Les
+3856##Bossòst
+3857##Bovera
+3858##Cabanabona
+3859##Cabó
+3860##Camarasa
+3861##Canejan
+3862##Castell de Mur
+3863##Castellar de la Ribera
+3864##Castelldans
+3865##Castellnou de Seana
+3866##Castelló de Farfanya
+3867##Castellserà
+3868##Cava
+3869##Cervera
+3870##Cervià de les Garrigues
+3871##Ciutadilla
+3872##Clariana de Cardener
+3873##Cogul El
+3874##Coll de Nargó
+3875##Coma i la Pedra La
+3876##Conca de Dalt
+3877##Corbins
+3878##Cubells
+3879##Espluga Calba L'
+3880##Espot
+3881##Estamariu
+3882##Estaràs
+3883##Esterri d'Àneu
+3884##Esterri de Cardós
+3885##Farrera
+3886##Fígols i Alinyà
+3887##Floresta La
+3888##Fondarella
+3889##Foradada
+3890##Fuliola La
+3891##Fulleda
+3892##Gavet de la Conca
+3893##Gimenells i el Pla de la Font
+3894##Golmés
+3895##Gósol
+3896##Granadella La
+3897##Granja d'Escarp La
+3898##Granyanella
+3899##Granyena de les Garrigues
+3900##Granyena de Segarra
+3901##Guimerà
+3902##Guingueta d'Àneu La
+3903##Guissona
+3904##Guixers
+3905##Isona i Conca Dellà
+3906##Ivars de Noguera
+3907##Ivars d'Urgell
+3908##Ivorra
+3909##Josa i Tuixén
+3910##Juncosa
+3911##Juneda
+3912##Les
+3913##Linyola
+3914##Lladorre
+3915##Lladurs
+3916##Llardecans
+3917##Llavorsí
+3918##Lleida
+3919##Lles de Cerdanya
+3920##Llimiana
+3921##Llobera
+3922##Maials
+3923##Maldà
+3924##Massalcoreig
+3925##Massoteres
+3926##Menàrguens
+3927##Miralcamp
+3928##Mollerussa
+3929##Molsosa La
+3930##Montellà i Martinet
+3931##Montferrer i Castellbò
+3932##Montgai
+3933##Montoliu de Lleida
+3934##Montoliu de Segarra
+3935##Montornès de Segarra
+3936##Nalec
+3937##Naut Aran
+3938##Navès
+3939##Odèn
+3940##Oliana
+3941##Oliola
+3942##Olius
+3943##Oluges Les
+3944##Omellons Els
+3945##Omells de na Gaia Els
+3946##Organyà
+3947##Os de Balaguer
+3948##Ossó de Sió
+3949##Palau d'Anglesola El
+3950##Penelles
+3951##Peramola
+3952##Pinell de Solsonès
+3953##Pinós
+3954##Plans de Sió Els
+3955##Poal El
+3956##Pobla de Cérvoles La
+3957##Pobla de Segur La
+3958##Pont de Bar El
+3959##Pont de Suert El
+3960##Ponts
+3961##Portella La
+3962##Prats i Sansor
+3963##Preixana
+3964##Preixens
+3965##Prullans
+3966##Puiggròs
+3967##Puigverd d'Agramunt
+3968##Puigverd de Lleida
+3969##Rialp
+3970##Ribera d'Ondara
+3971##Ribera d'Urgellet
+3972##Riner
+3973##Riu de Cerdanya
+3974##Rosselló
+3975##Salàs de Pallars
+3976##Sanaüja
+3977##Sant Esteve de la Sarga
+3978##Sant Guim de Freixenet
+3979##Sant Guim de la Plana
+3980##Sant Llorenç de Morunys
+3981##Sant Martí de Riucorb
+3982##Sant Ramon
+3983##Sarroca de Bellera
+3984##Sarroca de Lleida
+3985##Senterada
+3986##Sentiu de Sió La
+3987##Seròs
+3988##Seu d'Urgell La
+3989##Sidamon
+3990##Soleràs El
+3991##Solsona
+3992##Soriguera
+3993##Sort
+3994##Soses
+3995##Sudanell
+3996##Sunyer
+3997##Talarn
+3998##Talavera
+3999##Tàrrega
+4000##Tarrés
+4001##Tarroja de Segarra
+4002##Térmens
+4003##Tírvia
+4004##Tiurana
+4005##Torà
+4006##Torms Els
+4007##Tornabous
+4008##Torre de Cabdella La
+4009##Torrebesses
+4010##Torrefarrera
+4011##Torrefeta i Florejacs
+4012##Torregrossa
+4013##Torrelameu
+4014##Torres de Segre
+4015##Torre-serona
+4016##Tremp
+4017##Vall de Boí La
+4018##Vall de Cardós
+4019##Vallbona de les Monges
+4020##Vallfogona de Balaguer
+4021##Valls d'Aguilar Les
+4022##Valls de Valira Les
+4023##Vansa i Fórnols La
+4024##Verdú
+4025##Vielha e Mijaran
+4026##Vilagrassa
+4027##Vilaller
+4028##Vilamòs
+4029##Vilanova de Bellpuig
+4030##Vilanova de la Barca
+4031##Vilanova de l'Aguda
+4032##Vilanova de Meià
+4033##Vilanova de Segrià
+4034##Vila-sana
+4035##Vilosell El
+4036##Vinaixa
+4037##Ábalos
+4038##Agoncillo
+4039##Aguilar del Río Alhama
+4040##Ajamil de Cameros
+4041##Albelda de Iregua
+4042##Alberite
+4043##Alcanadre
+4044##Aldeanueva de Ebro
+4045##Alesanco
+4046##Alesón
+4047##Alfaro
+4048##Almarza de Cameros
+4049##Anguciana
+4050##Anguiano
+4051##Arenzana de Abajo
+4052##Arenzana de Arriba
+4053##Arnedillo
+4054##Arnedo
+4055##Arrúbal
+4056##Ausejo
+4057##Autol
+4058##Azofra
+4059##Badarán
+4060##Bañares
+4061##Baños de Río Tobía
+4062##Baños de Rioja
+4063##Berceo
+4064##Bergasa
+4065##Bergasillas Bajera
+4066##Bezares
+4067##Bobadilla
+4068##Brieva de Cameros
+4069##Briñas
+4070##Briones
+4071##Cabezón de Cameros
+4072##Calahorra
+4073##Camprovín
+4074##Canales de la Sierra
+4075##Canillas de Río Tuerto
+4076##Cañas
+4077##Cárdenas
+4078##Casalarreina
+4079##Castañares de Rioja
+4080##Castroviejo
+4081##Cellorigo
+4082##Cenicero
+4083##Cervera del Río Alhama
+4084##Cidamón
+4085##Cihuri
+4086##Cirueña
+4087##Clavijo
+4088##Cordovín
+4089##Corera
+4090##Cornago
+4091##Corporales
+4092##Cuzcurrita de Río Tirón
+4093##Daroca de Rioja
+4094##Enciso
+4095##Entrena
+4096##Estollo
+4097##Ezcaray
+4098##Foncea
+4099##Fonzaleche
+4100##Fuenmayor
+4101##Galbárruli
+4102##Galilea
+4103##Gallinero de Cameros
+4104##Gimileo
+4105##Grañón
+4106##Grávalos
+4107##Haro
+4108##Herce
+4109##Herramélluri
+4110##Hervías
+4111##Hormilla
+4112##Hormilleja
+4113##Hornillos de Cameros
+4114##Hornos de Moncalvillo
+4115##Huércanos
+4116##Igea
+4117##Jalón de Cameros
+4118##Laguna de Cameros
+4119##Lagunilla del Jubera
+4120##Lardero
+4121##Ledesma de la Cogolla
+4122##Leiva
+4123##Leza de Río Leza
+4124##Logroño
+4125##Lumbreras
+4126##Manjarrés
+4127##Mansilla de la Sierra
+4128##Manzanares de Rioja
+4129##Matute
+4130##Medrano
+4131##Munilla
+4132##Murillo de Río Leza
+4133##Muro de Aguas
+4134##Muro en Cameros
+4135##Nájera
+4136##Nalda
+4137##Navajún
+4138##Navarrete
+4139##Nestares
+4140##Nieva de Cameros
+4141##Ochánduri
+4142##Ocón
+4143##Ojacastro
+4144##Ollauri
+4145##Ortigosa de Cameros
+4146##Pazuengos
+4147##Pedroso
+4148##Pinillos
+4149##Pradejón
+4150##Pradillo
+4151##Préjano
+4152##Quel
+4153##Rabanera
+4154##Rasillo de Cameros El
+4155##Redal El
+4156##Ribafrecha
+4157##Rincón de Soto
+4158##Robres del Castillo
+4159##Rodezno
+4160##Sajazarra
+4161##San Asensio
+4162##San Millán de la Cogolla
+4163##San Millán de Yécora
+4164##San Román de Cameros
+4165##San Torcuato
+4166##San Vicente de la Sonsierra
+4167##Santa Coloma
+4168##Santa Engracia del Jubera
+4169##Santa Eulalia Bajera
+4170##Santo Domingo de la Calzada
+4171##Santurde de Rioja
+4172##Santurdejo
+4173##Sojuela
+4174##Sorzano
+4175##Sotés
+4176##Soto en Cameros
+4177##Terroba
+4178##Tirgo
+4179##Tobía
+4180##Tormantos
+4181##Torre en Cameros
+4182##Torrecilla en Cameros
+4183##Torrecilla sobre Alesanco
+4184##Torremontalbo
+4185##Treviana
+4186##Tricio
+4187##Tudelilla
+4188##Uruñuela
+4189##Valdemadera
+4190##Valgañón
+4191##Ventosa
+4192##Ventrosa
+4193##Viguera
+4194##Villalba de Rioja
+4195##Villalobar de Rioja
+4196##Villamediana de Iregua
+4197##Villanueva de Cameros
+4198##Villar de Arnedo El
+4199##Villar de Torre
+4200##Villarejo
+4201##Villarroya
+4202##Villarta-Quintana
+4203##Villavelayo
+4204##Villaverde de Rioja
+4205##Villoslada de Cameros
+4206##Viniegra de Abajo
+4207##Viniegra de Arriba
+4208##Zarratón
+4209##Zarzosa
+4210##Zorraquín
+4211##Abadín
+4212##Alfoz
+4213##Antas de Ulla
+4214##Baleira
+4215##Baralla
+4216##Barreiros
+4217##Becerreá
+4218##Begonte
+4219##Bóveda
+4220##Burela
+4221##Carballedo
+4222##Castro de Rei
+4223##Castroverde
+4224##Cervantes
+4225##Cervo
+4226##Chantada
+4227##Corgo O
+4228##Cospeito
+4229##Folgoso do Courel
+4230##Fonsagrada A
+4231##Foz
+4232##Friol
+4233##Guitiriz
+4234##Guntín
+4235##Incio O
+4236##Láncara
+4237##Lourenzá
+4238##Lugo
+4239##Meira
+4240##Mondoñedo
+4241##Monforte de Lemos
+4242##Monterroso
+4243##Muras
+4244##Navia de Suarna
+4245##Negueira de Muñiz
+4246##Nogais As
+4247##Ourol
+4248##Outeiro de Rei
+4249##Palas de Rei
+4250##Pantón
+4251##Paradela
+4252##Páramo O
+4253##Pastoriza A
+4254##Pedrafita do Cebreiro
+4255##Pobra do Brollón A
+4256##Pol
+4257##Pontenova A
+4258##Portomarín
+4259##Quiroga
+4260##Rábade
+4261##Ribadeo
+4262##Ribas de Sil
+4263##Ribeira de Piquín
+4264##Riotorto
+4265##Samos
+4266##Sarria
+4267##Saviñao O
+4268##Sober
+4269##Taboada
+4270##Trabada
+4271##Triacastela
+4272##Valadouro O
+4273##Vicedo O
+4274##Vilalba
+4275##Viveiro
+4276##Xermade
+4277##Xove
+4278##Acebeda La
+4279##Ajalvir
+4280##Alameda del Valle
+4281##Álamo El
+4282##Alcalá de Henares
+4283##Alcobendas
+4284##Alcorcón
+4285##Aldea del Fresno
+4286##Algete
+4287##Alpedrete
+4288##Ambite
+4289##Anchuelo
+4290##Aranjuez
+4291##Arganda del Rey
+4293##Atazar El
+4294##Batres
+4295##Becerril de la Sierra
+4296##Belmonte de Tajo
+4297##Berrueco El
+4298##Berzosa del Lozoya
+4299##Boadilla del Monte
+4300##Boalo El
+4301##Braojos
+4302##Brea de Tajo
+4303##Brunete
+4304##Buitrago del Lozoya
+4305##Bustarviejo
+4306##Cabanillas de la Sierra
+4307##Cabrera La
+4308##Cadalso de los Vidrios
+4309##Camarma de Esteruelas
+4310##Campo Real
+4311##Canencia
+4312##Carabaña
+4313##Casarrubuelos
+4314##Cenicientos
+4315##Cercedilla
+4316##Cervera de Buitrago
+4317##Chapinería
+4318##Chinchón
+4319##Ciempozuelos
+4320##Cobeña
+4321##Collado Mediano
+4322##Collado Villalba
+4323##Colmenar de Oreja
+4324##Colmenar del Arroyo
+4325##Colmenar Viejo
+4326##Colmenarejo
+4327##Corpa
+4328##Coslada
+4329##Cubas de la Sagra
+4330##Daganzo de Arriba
+4331##Escorial El
+4332##Estremera
+4333##Fresnedillas de la Oliva
+4334##Fresno de Torote
+4335##Fuenlabrada
+4336##Fuente el Saz de Jarama
+4337##Fuentidueña de Tajo
+4338##Galapagar
+4339##Garganta de los Montes
+4340##Gargantilla del Lozoya y Pinilla de Buitrago
+4341##Gascones
+4342##Getafe
+4343##Griñón
+4344##Guadalix de la Sierra
+4345##Guadarrama
+4346##Hiruela La
+4347##Horcajo de la Sierra-Aoslos
+4348##Horcajuelo de la Sierra
+4349##Hoyo de Manzanares
+4350##Humanes de Madrid
+4351##Leganés
+4352##Loeches
+4353##Lozoya
+4354##Lozoyuela-Navas-Sieteiglesias
+4355##Madarcos
+4356##Madrid
+4357##Majadahonda
+4358##Manzanares el Real
+4359##Meco
+4360##Mejorada del Campo
+4361##Miraflores de la Sierra
+4363##Molinos Los
+4364##Montejo de la Sierra
+4365##Moraleja de Enmedio
+4366##Moralzarzal
+4367##Morata de Tajuña
+4368##Móstoles
+4369##Navacerrada
+4370##Navalafuente
+4371##Navalagamella
+4372##Navalcarnero
+4373##Navarredonda y San Mamés
+4374##Navas del Rey
+4375##Nuevo Baztán
+4376##Olmeda de las Fuentes
+4377##Orusco de Tajuña
+4378##Paracuellos de Jarama
+4379##Parla
+4380##Patones
+4381##Pedrezuela
+4382##Pelayos de la Presa
+4383##Perales de Tajuña
+4384##Pezuela de las Torres
+4385##Pinilla del Valle
+4386##Pinto
+4387##Piñuécar-Gandullas
+4388##Pozuelo de Alarcón
+4389##Pozuelo del Rey
+4390##Prádena del Rincón
+4391##Puebla de la Sierra
+4392##Puentes Viejas
+4393##Quijorna
+4394##Rascafría
+4395##Redueña
+4396##Ribatejada
+4397##Rivas-Vaciamadrid
+4398##Robledillo de la Jara
+4399##Robledo de Chavela
+4400##Robregordo
+4401##Rozas de Madrid Las
+4402##Rozas de Puerto Real
+4403##San Agustín del Guadalix
+4404##San Fernando de Henares
+4405##San Lorenzo de El Escorial
+4406##San Martín de la Vega
+4407##San Martín de Valdeiglesias
+4408##San Sebastián de los Reyes
+4409##Santa María de la Alameda
+4410##Santorcaz
+4411##Santos de la Humosa Los
+4412##Serna del Monte La
+4413##Serranillos del Valle
+4414##Sevilla la Nueva
+4415##Somosierra
+4416##Soto del Real
+4417##Talamanca de Jarama
+4418##Tielmes
+4419##Titulcia
+4420##Torrejón de Ardoz
+4421##Torrejón de la Calzada
+4422##Torrejón de Velasco
+4423##Torrelaguna
+4424##Torrelodones
+4425##Torremocha de Jarama
+4426##Torres de la Alameda
+4427##Tres Cantos
+4428##Valdaracete
+4429##Valdeavero
+4430##Valdelaguna
+4431##Valdemanco
+4432##Valdemaqueda
+4433##Valdemorillo
+4434##Valdemoro
+4435##Valdeolmos-Alalpardo
+4436##Valdepiélagos
+4437##Valdetorres de Jarama
+4438##Valdilecha
+4439##Valverde de Alcalá
+4440##Velilla de San Antonio
+4441##Vellón El
+4442##Venturada
+4443##Villa del Prado
+4444##Villaconejos
+4445##Villalbilla
+4446##Villamanrique de Tajo
+4447##Villamanta
+4448##Villamantilla
+4449##Villanueva de la Cañada
+4450##Villanueva de Perales
+4451##Villanueva del Pardillo
+4452##Villar del Olmo
+4453##Villarejo de Salvanés
+4454##Villaviciosa de Odón
+4455##Villavieja del Lozoya
+4456##Zarzalejo
+4457##Alameda
+4458##Alcaucín
+4459##Alfarnate
+4460##Alfarnatejo
+4461##Algarrobo
+4462##Algatocín
+4463##Alhaurín de la Torre
+4464##Alhaurín el Grande
+4465##Almáchar
+4466##Almargen
+4467##Almogía
+4468##Álora
+4469##Alozaina
+4470##Alpandeire
+4471##Antequera
+4472##Árchez
+4473##Archidona
+4474##Ardales
+4475##Arenas
+4476##Arriate
+4477##Atajate
+4478##Benadalid
+4479##Benahavís
+4480##Benalauría
+4481##Benalmádena
+4482##Benamargosa
+4483##Benamocarra
+4484##Benaoján
+4485##Benarrabá
+4486##Borge El
+4487##Burgo El
+4488##Campillos
+4489##Canillas de Aceituno
+4490##Canillas de Albaida
+4491##Cañete la Real
+4492##Carratraca
+4493##Cartajima
+4494##Cártama
+4495##Casabermeja
+4496##Casarabonela
+4497##Casares
+4498##Coín
+4499##Colmenar
+4500##Comares
+4501##Cómpeta
+4502##Cortes de la Frontera
+4503##Cuevas Bajas
+4504##Cuevas de San Marcos
+4505##Cuevas del Becerro
+4506##Cútar
+4507##Estepona
+4508##Faraján
+4509##Frigiliana
+4510##Fuengirola
+4511##Fuente de Piedra
+4512##Gaucín
+4513##Genalguacil
+4514##Guaro
+4515##Humilladero
+4516##Igualeja
+4517##Istán
+4518##Iznate
+4519##Jimera de Líbar
+4520##Jubrique
+4521##Júzcar
+4522##Macharaviaya
+4523##Málaga
+4524##Manilva
+4525##Marbella
+4526##Mijas
+4527##Moclinejo
+4528##Mollina
+4529##Monda
+4530##Montejaque
+4531##Nerja
+4532##Ojén
+4533##Parauta
+4534##Periana
+4535##Pizarra
+4536##Pujerra
+4537##Rincón de la Victoria
+4538##Riogordo
+4539##Ronda
+4540##Salares
+4541##Sayalonga
+4542##Sedella
+4543##Sierra de Yeguas
+4544##Teba
+4545##Tolox
+4546##Torremolinos
+4547##Torrox
+4548##Totalán
+4549##Valle de Abdalajís
+4550##Vélez-Málaga
+4551##Villanueva de Algaidas
+4552##Villanueva de la Concepción
+4553##Villanueva de Tapia
+4554##Villanueva del Rosario
+4555##Villanueva del Trabuco
+4556##Viñuela
+4557##Yunquera
+4558##Abanilla
+4559##Abarán
+4560##Águilas
+4561##Albudeite
+4562##Alcantarilla
+4563##Alcázares Los
+4564##Aledo
+4565##Alguazas
+4566##Alhama de Murcia
+4567##Archena
+4568##Beniel
+4569##Blanca
+4570##Bullas
+4571##Calasparra
+4572##Campos del Río
+4573##Caravaca de la Cruz
+4574##Cartagena
+4575##Cehegín
+4576##Ceutí
+4577##Cieza
+4578##Fortuna
+4579##Fuente Álamo de Murcia
+4580##Jumilla
+4581##Librilla
+4582##Lorca
+4583##Lorquí
+4584##Mazarrón
+4585##Molina de Segura
+4586##Moratalla
+4587##Mula
+4588##Murcia
+4589##Ojós
+4590##Pliego
+4591##Puerto Lumbreras
+4592##Ricote
+4593##San Javier
+4594##San Pedro del Pinatar
+4595##Santomera
+4596##Torre-Pacheco
+4597##Torres de Cotillas Las
+4598##Totana
+4599##Ulea
+4600##Unión La
+4601##Villanueva del Río Segura
+4602##Yecla
+4603##Abáigar
+4604##Abárzuza
+4605##Abaurregaina/Abaurrea Alta
+4606##Abaurrepea/Abaurrea Baja
+4607##Aberin
+4608##Ablitas
+4609##Adiós
+4610##Aguilar de Codés
+4611##Aibar/Oibar
+4612##Allín
+4613##Allo
+4614##Altsasu/Alsasua
+4615##Améscoa Baja
+4616##Ancín/Antzin
+4617##Andosilla
+4618##Ansoáin/Antsoain
+4619##Anue
+4620##Añorbe
+4621##Aoiz/Agoitz
+4622##Araitz
+4623##Arakil
+4624##Aranarache/Aranaratxe
+4625##Aranguren
+4626##Arano
+4627##Arantza
+4628##Aras
+4629##Arbizu
+4630##Arce/Artzi
+4631##Arcos Los
+4632##Arellano
+4633##Areso
+4634##Arguedas
+4635##Aria
+4636##Aribe
+4637##Armañanzas
+4638##Arróniz
+4639##Arruazu
+4640##Artajona
+4641##Artazu
+4642##Atez
+4643##Auritz/Burguete
+4644##Ayegui/Aiegi
+4645##Azagra
+4646##Azuelo
+4647##Bakaiku
+4648##Barañain
+4649##Barásoain
+4650##Barbarin
+4651##Bargota
+4652##Barillas
+4653##Basaburua
+4654##Baztan
+4655##Beintza-Labaien
+4656##Beire
+4657##Belascoáin
+4658##Bera
+4659##Berbinzana
+4660##Beriáin
+4661##Berrioplano
+4662##Berriozar
+4663##Bertizarana
+4664##Betelu
+4665##Bidaurreta
+4666##Biurrun-Olcoz
+4667##Buñuel
+4668##Burgui/Burgi
+4669##Burlada/Burlata
+4670##Busto El
+4671##Cabanillas
+4672##Cabredo
+4673##Cadreita
+4674##Caparroso
+4675##Cárcar
+4676##Carcastillo
+4677##Cascante
+4678##Cáseda
+4680##Castillonuevo
+4681##Cendea de Olza/Oltza Zendea
+4682##Cintruénigo
+4683##Cirauqui/Zirauki
+4684##Ciriza
+4685##Cizur
+4686##Corella
+4687##Cortes
+4688##Desojo
+4689##Dicastillo
+4690##Donamaria
+4691##Doneztebe/Santesteban
+4692##Echarri
+4693##Egüés
+4694##Elgorriaga
+4695##Enériz/Eneritz
+4696##Eratsun
+4697##Ergoiena
+4698##Erro
+4699##Eslava
+4700##Esparza de Salazar/Espartza Zaraitzu
+4701##Espronceda
+4702##Estella/Lizarra
+4703##Esteribar
+4704##Etayo
+4705##Etxalar
+4706##Etxarri-Aranatz
+4707##Etxauri
+4708##Eulate
+4709##Ezcabarte
+4710##Ezcároz/Ezkaroze
+4711##Ezkurra
+4712##Ezprogui
+4713##Falces
+4714##Fitero
+4715##Fontellas
+4716##Funes
+4717##Fustiñana
+4718##Galar
+4719##Gallipienzo/Galipentzu
+4720##Gallués/Galoze
+4721##Garaioa
+4722##Garde
+4723##Garínoain
+4724##Garralda
+4725##Genevilla
+4726##Goizueta
+4727##Goñi
+4728##Güesa/Gorza
+4729##Guesálaz/Gesalatz
+4730##Guirguillano
+4731##Hiriberri/Villanueva de Aezkoa
+4732##Huarte/Uharte
+4733##Ibargoiti
+4734##Igantzi
+4735##Igúzquiza
+4736##Imotz
+4737##Irañeta
+4738##Irurtzun
+4739##Isaba/Izaba
+4740##Ituren
+4741##Iturmendi
+4742##Iza/Itza
+4743##Izagaondoa
+4744##Izalzu/Itzaltzu
+4745##Jaurrieta
+4746##Javier
+4747##Juslapeña
+4748##Lakuntza
+4749##Lana
+4750##Lantz
+4751##Lapoblación
+4752##Larraga
+4753##Larraona
+4754##Larraun
+4755##Lazagurría
+4756##Leache
+4757##Legarda
+4758##Legaria
+4759##Leitza
+4760##Lekunberri
+4761##Leoz/Leotz
+4762##Lerga
+4763##Lerín
+4764##Lesaka
+4765##Lezáun
+4766##Liédena
+4767##Lizoáin-Arriasgoiti
+4768##Lodosa
+4769##Lónguida/Longida
+4770##Lumbier
+4771##Luquin
+4772##Luzaide/Valcarlos
+4773##Mañeru
+4774##Marañón
+4775##Marcilla
+4776##Mélida
+4777##Mendavia
+4778##Mendaza
+4779##Mendigorría
+4780##Metauten
+4781##Milagro
+4782##Mirafuentes
+4783##Miranda de Arga
+4784##Monreal
+4785##Monteagudo
+4786##Morentin
+4787##Mues
+4788##Murchante
+4789##Murieta
+4790##Murillo el Cuende
+4791##Murillo el Fruto
+4792##Muruzábal
+4793##Navascués
+4794##Nazar
+4795##Noáin (Valle de Elorz)/Noain (Elortzibar)
+4796##Obanos
+4797##Ochagavía/Otsagabia
+4798##Oco
+4799##Odieta
+4800##Oitz
+4801##Olaibar
+4802##Olazti/Olazagutía
+4803##Olejua
+4804##Olite/Erriberri
+4805##Ollo
+4806##Olóriz/Oloritz
+4807##Orbaitzeta
+4808##Orbara
+4809##Orísoain
+4810##Orkoien
+4811##Oronz/Orontze
+4812##Oroz-Betelu/Orotz-Betelu
+4813##Orreaga/Roncesvalles
+4814##Oteiza
+4815##Pamplona/Iruña
+4816##Peralta/Azkoien
+4817##Petilla de Aragón
+4818##Piedramillera
+4819##Pitillas
+4820##Puente la Reina/Gares
+4821##Pueyo
+4822##Ribaforada
+4823##Romanzado
+4824##Roncal/Erronkari
+4826##Saldías
+4827##Salinas de Oro/Jaitz
+4828##San Adrián
+4829##San Martín de Unx
+4830##Sangüesa/Zangoza
+4831##Sansol
+4832##Santacara
+4833##Sarriés/Sartze
+4834##Sartaguda
+4835##Sesma
+4836##Sorlada
+4837##Sunbilla
+4838##Tafalla
+4839##Tiebas-Muruarte de Reta
+4840##Tirapu
+4841##Torralba del Río
+4842##Torres del Río
+4843##Tudela
+4844##Tulebras
+4845##Ucar
+4846##Uharte-Arakil
+4847##Ujué
+4848##Ultzama
+4849##Unciti
+4850##Unzué
+4851##Urdazubi/Urdax
+4852##Urdiain
+4853##Urraul Alto
+4854##Urraul Bajo
+4855##Urrotz
+4856##Urroz-Villa
+4857##Urzainqui/Urzainki
+4858##Uterga
+4859##Uztárroz/Uztarroze
+4860##Valle de Yerri/Deierri
+4861##Valtierra
+4862##Viana
+4863##Vidángoz/Bidankoze
+4864##Villafranca
+4865##Villamayor de Monjardín
+4866##Villatuerta
+4867##Villava/Atarrabia
+4868##Yesa
+4869##Zabalza/Zabaltza
+4870##Ziordia
+4871##Zizur Mayor/Zizur Nagusia
+4872##Zubieta
+4873##Zugarramurdi
+4874##Zúñiga
+4875##Allariz
+4876##Amoeiro
+4877##Arnoia A
+4878##Avión
+4879##Baltar
+4880##Bande
+4881##Baños de Molgas
+4882##Barbadás
+4883##Barco de Valdeorras O
+4884##Beade
+4885##Beariz
+4886##Blancos Os
+4887##Boborás
+4888##Bola A
+4889##Bolo O
+4890##Calvos de Randín
+4891##Carballeda de Avia
+4892##Carballeda de Valdeorras
+4893##Carballiño O
+4894##Cartelle
+4895##Castrelo de Miño
+4896##Castrelo do Val
+4897##Castro Caldelas
+4898##Celanova
+4899##Cenlle
+4900##Chandrexa de Queixa
+4901##Coles
+4902##Cortegada
+4903##Cualedro
+4904##Entrimo
+4905##Esgos
+4906##Gomesende
+4907##Gudiña A
+4908##Irixo O
+4909##Larouco
+4910##Laza
+4911##Leiro
+4912##Lobeira
+4913##Lobios
+4914##Maceda
+4915##Manzaneda
+4916##Maside
+4917##Melón
+4918##Merca A
+4919##Mezquita A
+4920##Montederramo
+4921##Monterrei
+4922##Muíños
+4923##Nogueira de Ramuín
+4924##Oímbra
+4925##Ourense
+4926##Paderne de Allariz
+4927##Padrenda
+4928##Parada de Sil
+4929##Pereiro de Aguiar O
+4930##Peroxa A
+4931##Petín
+4932##Piñor
+4933##Pobra de Trives A
+4934##Pontedeva
+4935##Porqueira
+4936##Punxín
+4937##Quintela de Leirado
+4938##Rairiz de Veiga
+4939##Ramirás
+4940##Ribadavia
+4941##Riós
+4942##Rúa A
+4943##Rubiá
+4944##San Amaro
+4945##San Cibrao das Viñas
+4946##San Cristovo de Cea
+4947##San Xoán de Río
+4948##Sandiás
+4949##Sarreaus
+4950##Taboadela
+4951##Teixeira A
+4952##Toén
+4953##Trasmiras
+4954##Veiga A
+4955##Verea
+4956##Verín
+4957##Viana do Bolo
+4958##Vilamarín
+4959##Vilamartín de Valdeorras
+4960##Vilar de Barrio
+4961##Vilar de Santos
+4962##Vilardevós
+4963##Vilariño de Conso
+4964##Xinzo de Limia
+4965##Xunqueira de Ambía
+4966##Xunqueira de Espadanedo
+4967##Allande
+4968##Aller
+4969##Amieva
+4970##Avilés
+4971##Belmonte de Miranda
+4972##Bimenes
+4973##Boal
+4974##Cabrales
+4975##Cabranes
+4976##Candamo
+4977##Cangas de Onís
+4978##Cangas del Narcea
+4979##Caravia
+4980##Carreño
+4981##Caso
+4982##Castrillón
+4983##Castropol
+4984##Coaña
+4985##Colunga
+4986##Corvera de Asturias
+4987##Cudillero
+4988##Degaña
+4989##Franco El
+4990##Gijón
+4991##Gozón
+4992##Grado
+4993##Grandas de Salime
+4994##Ibias
+4995##Illano
+4996##Illas
+4997##Langreo
+4998##Laviana
+4999##Lena
+5000##Llanera
+5001##Llanes
+5003##Morcín
+5004##Muros de Nalón
+5005##Nava
+5006##Navia
+5007##Noreña
+5008##Onís
+5009##Oviedo
+5010##Parres
+5011##Peñamellera Alta
+5012##Peñamellera Baja
+5013##Pesoz
+5014##Piloña
+5015##Ponga
+5016##Pravia
+5017##Proaza
+5018##Quirós
+5019##Regueras Las
+5020##Ribadedeva
+5021##Ribadesella
+5022##Ribera de Arriba
+5023##Riosa
+5024##Salas
+5025##San Martín de Oscos
+5026##San Martín del Rey Aurelio
+5027##San Tirso de Abres
+5028##Santa Eulalia de Oscos
+5029##Santo Adriano
+5030##Sariego
+5031##Siero
+5032##Sobrescobio
+5033##Somiedo
+5034##Soto del Barco
+5035##Tapia de Casariego
+5036##Taramundi
+5037##Teverga
+5038##Tineo
+5039##Valdés
+5040##Vegadeo
+5041##Villanueva de Oscos
+5042##Villaviciosa
+5043##Villayón
+5044##Yernes y Tameza
+5045##Abarca de Campos
+5046##Abia de las Torres
+5047##Aguilar de Campoo
+5048##Alar del Rey
+5049##Alba de Cerrato
+5050##Amayuelas de Arriba
+5051##Ampudia
+5052##Amusco
+5053##Antigüedad
+5054##Arconada
+5055##Astudillo
+5056##Autilla del Pino
+5057##Autillo de Campos
+5058##Ayuela
+5059##Baltanás
+5060##Baquerín de Campos
+5061##Bárcena de Campos
+5062##Barruelo de Santullán
+5063##Báscones de Ojeda
+5064##Becerril de Campos
+5065##Belmonte de Campos
+5066##Berzosilla
+5067##Boada de Campos
+5068##Boadilla de Rioseco
+5069##Boadilla del Camino
+5070##Brañosera
+5071##Buenavista de Valdavia
+5072##Bustillo de la Vega
+5073##Bustillo del Páramo de Carrión
+5074##Calahorra de Boedo
+5075##Calzada de los Molinos
+5076##Capillas
+5077##Cardeñosa de Volpejera
+5078##Carrión de los Condes
+5079##Castil de Vela
+5080##Castrejón de la Peña
+5081##Castrillo de Don Juan
+5082##Castrillo de Onielo
+5083##Castrillo de Villavega
+5084##Castromocho
+5085##Cervatos de la Cueza
+5086##Cervera de Pisuerga
+5087##Cevico de la Torre
+5088##Cevico Navero
+5089##Cisneros
+5090##Cobos de Cerrato
+5091##Collazos de Boedo
+5092##Congosto de Valdavia
+5093##Cordovilla la Real
+5094##Cubillas de Cerrato
+5095##Dehesa de Montejo
+5096##Dehesa de Romanos
+5097##Dueñas
+5098##Espinosa de Cerrato
+5099##Espinosa de Villagonzalo
+5100##Frechilla
+5101##Fresno del Río
+5102##Frómista
+5103##Fuentes de Nava
+5104##Fuentes de Valdepero
+5105##Grijota
+5106##Guardo
+5107##Guaza de Campos
+5108##Hérmedes de Cerrato
+5109##Herrera de Pisuerga
+5110##Herrera de Valdecañas
+5111##Hontoria de Cerrato
+5112##Hornillos de Cerrato
+5113##Husillos
+5114##Itero de la Vega
+5115##Lagartos
+5116##Lantadilla
+5117##Ledigos
+5118##Loma de Ucieza
+5119##Lomas
+5120##Magaz de Pisuerga
+5121##Manquillos
+5122##Mantinos
+5123##Marcilla de Campos
+5124##Mazariegos
+5125##Mazuecos de Valdeginate
+5126##Melgar de Yuso
+5127##Meneses de Campos
+5128##Micieces de Ojeda
+5129##Monzón de Campos
+5130##Moratinos
+5131##Mudá
+5132##Nogal de las Huertas
+5133##Olea de Boedo
+5134##Olmos de Ojeda
+5135##Osornillo
+5136##Osorno la Mayor
+5137##Palencia
+5138##Palenzuela
+5139##Páramo de Boedo
+5140##Paredes de Nava
+5141##Payo de Ojeda
+5142##Pedraza de Campos
+5143##Pedrosa de la Vega
+5144##Perales
+5145##Pernía La
+5146##Pino del Río
+5147##Piña de Campos
+5148##Población de Arroyo
+5149##Población de Campos
+5150##Población de Cerrato
+5151##Polentinos
+5152##Pomar de Valdivia
+5153##Poza de la Vega
+5154##Pozo de Urama
+5155##Prádanos de Ojeda
+5156##Puebla de Valdavia La
+5157##Quintana del Puente
+5158##Quintanilla de Onsoña
+5159##Reinoso de Cerrato
+5160##Renedo de la Vega
+5161##Requena de Campos
+5162##Respenda de la Peña
+5163##Revenga de Campos
+5164##Revilla de Collazos
+5165##Ribas de Campos
+5166##Riberos de la Cueza
+5167##Saldaña
+5168##Salinas de Pisuerga
+5169##San Cebrián de Campos
+5170##San Cebrián de Mudá
+5171##San Cristóbal de Boedo
+5172##San Mamés de Campos
+5173##San Román de la Cuba
+5174##Santa Cecilia del Alcor
+5175##Santa Cruz de Boedo
+5176##Santervás de la Vega
+5177##Santibáñez de Ecla
+5178##Santibáñez de la Peña
+5179##Santoyo
+5180##Serna La
+5181##Soto de Cerrato
+5182##Sotobañado y Priorato
+5183##Tabanera de Cerrato
+5184##Tabanera de Valdavia
+5185##Támara de Campos
+5186##Tariego de Cerrato
+5187##Torquemada
+5188##Torremormojón
+5189##Triollo
+5190##Valbuena de Pisuerga
+5191##Valdeolmillos
+5192##Valderrábano
+5193##Valde-Ucieza
+5194##Valle de Cerrato
+5195##Valle del Retortillo
+5196##Velilla del Río Carrión
+5197##Venta de Baños
+5198##Vertavillo
+5199##Vid de Ojeda La
+5200##Villabasta de Valdavia
+5201##Villacidaler
+5202##Villaconancio
+5203##Villada
+5204##Villaeles de Valdavia
+5205##Villahán
+5206##Villaherreros
+5207##Villalaco
+5208##Villalba de Guardo
+5209##Villalcázar de Sirga
+5210##Villalcón
+5211##Villalobón
+5212##Villaluenga de la Vega
+5213##Villamartín de Campos
+5214##Villamediana
+5215##Villameriel
+5216##Villamoronta
+5217##Villamuera de la Cueza
+5218##Villamuriel de Cerrato
+5219##Villanueva del Rebollar
+5220##Villanuño de Valdavia
+5221##Villaprovedo
+5222##Villarmentero de Campos
+5223##Villarrabé
+5224##Villarramiel
+5225##Villasarracino
+5226##Villasila de Valdavia
+5227##Villaturde
+5228##Villaumbrales
+5229##Villaviudas
+5230##Villerías de Campos
+5231##Villodre
+5232##Villodrigo
+5233##Villoldo
+5234##Villota del Páramo
+5235##Villovieco
+5236##Agaete
+5237##Agüimes
+5238##Aldea de San Nicolás La
+5239##Antigua
+5240##Arrecife
+5241##Artenara
+5242##Arucas
+5243##Betancuria
+5244##Firgas
+5245##Gáldar
+5246##Haría
+5247##Ingenio
+5248##Mogán
+5249##Moya
+5250##Oliva La
+5251##Pájara
+5252##Palmas de Gran Canaria Las
+5253##Puerto del Rosario
+5254##San Bartolomé
+5255##San Bartolomé de Tirajana
+5256##Santa Brígida
+5257##Santa Lucía de Tirajana
+5258##Santa María de Guía de Gran Canaria
+5259##Teguise
+5260##Tejeda
+5261##Telde
+5262##Teror
+5263##Tías
+5264##Tinajo
+5265##Tuineje
+5266##Valleseco
+5267##Valsequillo de Gran Canaria
+5268##Vega de San Mateo
+5269##Yaiza
+5270##Agolada
+5271##Arbo
+5272##Baiona
+5273##Barro
+5274##Bueu
+5275##Caldas de Reis
+5276##Cambados
+5277##Campo Lameiro
+5278##Cangas
+5279##Cañiza A
+5280##Catoira
+5281##Cerdedo
+5282##Cotobade
+5283##Covelo
+5284##Crecente
+5285##Cuntis
+5286##Dozón
+5287##Estrada A
+5288##Forcarei
+5289##Fornelos de Montes
+5290##Gondomar
+5291##Grove O
+5292##Guarda A
+5293##Illa de Arousa A
+5294##Lalín
+5295##Lama A
+5296##Marín
+5297##Meaño
+5298##Meis
+5299##Moaña
+5300##Mondariz
+5301##Mondariz-Balneario
+5302##Moraña
+5303##Mos
+5304##Neves As
+5305##Nigrán
+5306##Oia
+5307##Pazos de Borbén
+5308##Poio
+5309##Ponte Caldelas
+5310##Ponteareas
+5311##Pontecesures
+5312##Pontevedra
+5313##Porriño O
+5314##Portas
+5315##Redondela
+5316##Ribadumia
+5317##Rodeiro
+5318##Rosal O
+5319##Salceda de Caselas
+5320##Salvaterra de Miño
+5321##Sanxenxo
+5322##Silleda
+5323##Soutomaior
+5324##Tomiño
+5325##Tui
+5326##Valga
+5327##Vigo
+5328##Vila de Cruces
+5329##Vilaboa
+5330##Vilagarcía de Arousa
+5331##Vilanova de Arousa
+5332##Abusejo
+5333##Agallas
+5334##Ahigal de los Aceiteros
+5335##Ahigal de Villarino
+5336##Alameda de Gardón La
+5337##Alamedilla La
+5338##Alaraz
+5339##Alba de Tormes
+5340##Alba de Yeltes
+5341##Alberca La
+5342##Alberguería de Argañán La
+5343##Alconada
+5344##Aldea del Obispo
+5345##Aldeacipreste
+5346##Aldeadávila de la Ribera
+5347##Aldealengua
+5348##Aldeanueva de Figueroa
+5349##Aldeanueva de la Sierra
+5350##Aldearrodrigo
+5351##Aldearrubia
+5352##Aldeaseca de Alba
+5353##Aldeaseca de la Frontera
+5354##Aldeatejada
+5355##Aldeavieja de Tormes
+5356##Aldehuela de la Bóveda
+5357##Aldehuela de Yeltes
+5358##Almenara de Tormes
+5359##Almendra
+5360##Anaya de Alba
+5361##Añover de Tormes
+5362##Arabayona de Mógica
+5363##Arapiles
+5364##Arcediano
+5365##Arco El
+5366##Armenteros
+5367##Atalaya La
+5368##Babilafuente
+5369##Bañobárez
+5370##Barbadillo
+5371##Barbalos
+5372##Barceo
+5373##Barruecopardo
+5374##Bastida La
+5375##Béjar
+5376##Beleña
+5377##Bermellar
+5378##Berrocal de Huebra
+5379##Berrocal de Salvatierra
+5380##Boada
+5381##Bodón El
+5382##Bogajo
+5383##Bouza La
+5384##Bóveda del Río Almar
+5385##Brincones
+5386##Buenamadre
+5387##Buenavista
+5388##Cabaco El
+5389##Cabeza de Béjar La
+5390##Cabeza del Caballo
+5391##Cabezabellosa de la Calzada
+5392##Cabrerizos
+5393##Cabrillas
+5394##Calvarrasa de Abajo
+5395##Calvarrasa de Arriba
+5396##Calzada de Béjar La
+5397##Calzada de Don Diego
+5398##Calzada de Valdunciel
+5399##Campillo de Azaba
+5400##Campo de Peñaranda El
+5401##Candelario
+5402##Canillas de Abajo
+5403##Cantagallo
+5404##Cantalapiedra
+5405##Cantalpino
+5406##Cantaracillo
+5407##Carbajosa de la Sagrada
+5408##Carpio de Azaba
+5409##Carrascal de Barregas
+5410##Carrascal del Obispo
+5411##Casafranca
+5412##Casas del Conde Las
+5413##Casillas de Flores
+5414##Castellanos de Moriscos
+5415##Castellanos de Villiquera
+5416##Castillejo de Martín Viejo
+5417##Castraz
+5418##Cepeda
+5419##Cereceda de la Sierra
+5420##Cerezal de Peñahorcada
+5421##Cerralbo
+5422##Cerro El
+5423##Cespedosa de Tormes
+5424##Chagarcía Medianero
+5425##Cilleros de la Bastida
+5426##Cipérez
+5427##Ciudad Rodrigo
+5428##Coca de Alba
+5429##Colmenar de Montemayor
+5430##Cordovilla
+5431##Cristóbal
+5432##Cubo de Don Sancho El
+5433##Dios le Guarde
+5434##Doñinos de Ledesma
+5435##Doñinos de Salamanca
+5436##Ejeme
+5437##Encina La
+5438##Encina de San Silvestre
+5439##Encinas de Abajo
+5440##Encinas de Arriba
+5441##Encinasola de los Comendadores
+5442##Endrinal
+5443##Escurial de la Sierra
+5444##Espadaña
+5445##Espeja
+5446##Espino de la Orbada
+5447##Florida de Liébana
+5448##Forfoleda
+5449##Frades de la Sierra
+5450##Fregeneda La
+5451##Fresnedoso
+5452##Fresno Alhándiga
+5453##Fuente de San Esteban La
+5454##Fuenteguinaldo
+5455##Fuenteliante
+5456##Fuenterroble de Salvatierra
+5457##Fuentes de Béjar
+5458##Fuentes de Oñoro
+5459##Gajates
+5460##Galindo y Perahuy
+5461##Galinduste
+5462##Galisancho
+5463##Gallegos de Argañán
+5464##Gallegos de Solmirón
+5465##Garcibuey
+5466##Garcihernández
+5467##Garcirrey
+5468##Gejuelo del Barro
+5469##Golpejas
+5470##Gomecello
+5471##Guadramiro
+5472##Guijo de Ávila
+5473##Guijuelo
+5474##Herguijuela de Ciudad Rodrigo
+5475##Herguijuela de la Sierra
+5476##Herguijuela del Campo
+5477##Hinojosa de Duero
+5478##Horcajo de Montemayor
+5479##Horcajo Medianero
+5480##Hoya La
+5481##Huerta
+5482##Iruelos
+5483##Ituero de Azaba
+5484##Juzbado
+5485##Lagunilla
+5486##Larrodrigo
+5487##Ledesma
+5488##Ledrada
+5489##Linares de Riofrío
+5490##Lumbrales
+5491##Machacón
+5492##Macotera
+5493##Madroñal
+5494##Maíllo El
+5495##Malpartida
+5496##Mancera de Abajo
+5497##Manzano El
+5498##Martiago
+5499##Martín de Yeltes
+5500##Martinamor
+5501##Masueco
+5502##Mata de Ledesma La
+5503##Matilla de los Caños del Río
+5504##Maya La
+5505##Membribe de la Sierra
+5506##Mieza
+5507##Milano El
+5508##Miranda de Azán
+5509##Miranda del Castañar
+5510##Mogarraz
+5511##Molinillo
+5512##Monforte de la Sierra
+5513##Monleón
+5514##Monleras
+5515##Monsagro
+5516##Montejo
+5517##Montemayor del Río
+5518##Monterrubio de Armuña
+5519##Monterrubio de la Sierra
+5520##Morasverdes
+5521##Morille
+5522##Moríñigo
+5523##Moriscos
+5524##Moronta
+5525##Mozárbez
+5526##Narros de Matalayegua
+5527##Nava de Béjar
+5528##Nava de Francia
+5529##Nava de Sotrobal
+5530##Navacarros
+5531##Navales
+5532##Navalmoral de Béjar
+5533##Navamorales
+5534##Navarredonda de la Rinconada
+5535##Navasfrías
+5536##Negrilla de Palencia
+5537##Olmedo de Camaces
+5538##Orbada La
+5539##Pajares de la Laguna
+5540##Palacios del Arzobispo
+5541##Palaciosrubios
+5542##Palencia de Negrilla
+5543##Parada de Arriba
+5544##Parada de Rubiales
+5545##Paradinas de San Juan
+5546##Pastores
+5547##Payo El
+5548##Pedraza de Alba
+5549##Pedrosillo de Alba
+5550##Pedrosillo de los Aires
+5551##Pedrosillo el Ralo
+5552##Pedroso de la Armuña El
+5553##Pelabravo
+5554##Pelarrodríguez
+5555##Pelayos
+5556##Peña La
+5557##Peñacaballera
+5558##Peñaparda
+5559##Peñaranda de Bracamonte
+5560##Peñarandilla
+5561##Peralejos de Abajo
+5562##Peralejos de Arriba
+5563##Pereña de la Ribera
+5564##Peromingo
+5565##Pinedas
+5566##Pino de Tormes El
+5567##Pitiegua
+5568##Pizarral
+5569##Poveda de las Cintas
+5570##Pozos de Hinojo
+5571##Puebla de Azaba
+5572##Puebla de San Medel
+5573##Puebla de Yeltes
+5574##Puente del Congosto
+5575##Puertas
+5576##Puerto de Béjar
+5577##Puerto Seguro
+5578##Rágama
+5579##Redonda La
+5580##Retortillo
+5581##Rinconada de la Sierra La
+5582##Robleda
+5583##Robliza de Cojos
+5584##Rollán
+5585##Saelices el Chico
+5586##Sagrada La
+5587##Sahugo El
+5588##Salamanca
+5589##Saldeana
+5590##Salmoral
+5591##Salvatierra de Tormes
+5592##San Cristóbal de la Cuesta
+5593##San Esteban de la Sierra
+5594##San Felices de los Gallegos
+5595##San Martín del Castañar
+5596##San Miguel de Valero
+5597##San Miguel del Robledo
+5598##San Morales
+5599##San Muñoz
+5600##San Pedro de Rozados
+5601##San Pedro del Valle
+5602##San Pelayo de Guareña
+5603##Sanchón de la Ribera
+5604##Sanchón de la Sagrada
+5605##Sanchotello
+5606##Sancti-Spíritus
+5607##Sando
+5608##Santa María de Sando
+5609##Santa Marta de Tormes
+5610##Santiago de la Puebla
+5611##Santibáñez de Béjar
+5612##Santibáñez de la Sierra
+5613##Santiz
+5614##Santos Los
+5615##Sardón de los Frailes
+5616##Saucelle
+5617##Sepulcro-Hilario
+5618##Sequeros
+5619##Serradilla del Arroyo
+5620##Serradilla del Llano
+5621##Sierpe La
+5622##Sieteiglesias de Tormes
+5623##Sobradillo
+5624##Sorihuela
+5625##Sotoserrano
+5626##Tabera de Abajo
+5627##Tala La
+5628##Tamames
+5629##Tarazona de Guareña
+5630##Tardáguila
+5631##Tejado El
+5632##Tejeda y Segoyuela
+5633##Tenebrón
+5634##Terradillos
+5635##Topas
+5636##Tordillos
+5637##Tornadizo El
+5638##Torresmenudas
+5639##Trabanca
+5640##Tremedal de Tormes
+5641##Valdecarros
+5642##Valdefuentes de Sangusín
+5643##Valdehijaderos
+5644##Valdelacasa
+5645##Valdelageve
+5646##Valdelosa
+5647##Valdemierque
+5648##Valderrodrigo
+5649##Valdunciel
+5650##Valero
+5651##Vallejera de Riofrío
+5652##Valsalabroso
+5653##Valverde de Valdelacasa
+5654##Valverdón
+5655##Vecinos
+5656##Vega de Tirados
+5657##Veguillas Las
+5658##Vellés La
+5659##Ventosa del Río Almar
+5660##Vídola La
+5661##Villaflores
+5662##Villagonzalo de Tormes
+5663##Villalba de los Llanos
+5664##Villamayor
+5665##Villanueva del Conde
+5666##Villar de Argañán
+5667##Villar de Ciervo
+5668##Villar de Gallimazo
+5669##Villar de la Yegua
+5670##Villar de Peralonso
+5671##Villar de Samaniego
+5672##Villares de la Reina
+5673##Villares de Yeltes
+5674##Villarino de los Aires
+5675##Villarmayor
+5676##Villarmuerto
+5677##Villasbuenas
+5678##Villasdardo
+5679##Villaseco de los Gamitos
+5680##Villaseco de los Reyes
+5681##Villasrubias
+5682##Villaverde de Guareña
+5683##Villavieja de Yeltes
+5684##Villoria
+5685##Villoruela
+5686##Vilvestre
+5687##Vitigudino
+5688##Yecla de Yeltes
+5689##Zamarra
+5690##Zamayón
+5691##Zarapicos
+5692##Zarza de Pumareda La
+5693##Zorita de la Frontera
+5694##Adeje
+5695##Agulo
+5696##Alajeró
+5697##Arafo
+5698##Arico
+5699##Arona
+5700##Barlovento
+5701##Breña Alta
+5702##Breña Baja
+5703##Buenavista del Norte
+5704##Candelaria
+5705##Fasnia
+5706##Frontera
+5707##Fuencaliente de la Palma
+5708##Garachico
+5709##Garafía
+5710##Granadilla de Abona
+5711##Guancha La
+5712##Guía de Isora
+5713##Güímar
+5714##Hermigua
+5715##Icod de los Vinos
+5716##Llanos de Aridane Los
+5717##Matanza de Acentejo La
+5718##Orotava La
+5719##Paso El
+5720##Pinar de El Hierro El
+5721##Puerto de la Cruz
+5722##Puntagorda
+5723##Puntallana
+5724##Realejos Los
+5725##Rosario El
+5726##San Andrés y Sauces
+5727##San Cristóbal de La Laguna
+5728##San Juan de la Rambla
+5729##San Miguel de Abona
+5730##San Sebastián de la Gomera
+5731##Santa Cruz de la Palma
+5732##Santa Cruz de Tenerife
+5733##Santa Úrsula
+5734##Santiago del Teide
+5735##Sauzal El
+5736##Silos Los
+5737##Tacoronte
+5738##Tanque El
+5739##Tazacorte
+5740##Tegueste
+5741##Tijarafe
+5742##Valle Gran Rey
+5743##Vallehermoso
+5744##Valverde
+5745##Victoria de Acentejo La
+5746##Vilaflor
+5747##Villa de Mazo
+5748##Alfoz de Lloredo
+5749##Ampuero
+5750##Anievas
+5751##Arenas de Iguña
+5752##Argoños
+5753##Arnuero
+5754##Arredondo
+5755##Astillero El
+5756##Bárcena de Cicero
+5757##Bárcena de Pie de Concha
+5758##Bareyo
+5759##Cabezón de la Sal
+5760##Cabezón de Liébana
+5761##Cabuérniga
+5762##Camaleño
+5763##Camargo
+5764##Campoo de Enmedio
+5765##Campoo de Yuso
+5766##Cartes
+5767##Castañeda
+5768##Castro-Urdiales
+5770##Cillorigo de Liébana
+5771##Colindres
+5772##Comillas
+5773##Corrales de Buelna Los
+5774##Corvera de Toranzo
+5775##Entrambasaguas
+5776##Escalante
+5777##Guriezo
+5778##Hazas de Cesto
+5779##Hermandad de Campoo de Suso
+5780##Herrerías
+5781##Lamasón
+5782##Laredo
+5783##Liendo
+5784##Liérganes
+5785##Limpias
+5786##Luena
+5787##Marina de Cudeyo
+5788##Mazcuerras
+5789##Medio Cudeyo
+5790##Meruelo
+5791##Miengo
+5792##Miera
+5793##Molledo
+5794##Noja
+5795##Penagos
+5796##Peñarrubia
+5797##Pesaguero
+5798##Pesquera
+5799##Piélagos
+5800##Polaciones
+5801##Polanco
+5802##Potes
+5803##Puente Viesgo
+5804##Ramales de la Victoria
+5805##Rasines
+5806##Reinosa
+5807##Reocín
+5808##Ribamontán al Mar
+5809##Ribamontán al Monte
+5810##Rionansa
+5811##Riotuerto
+5812##Rozas de Valdearroyo Las
+5813##Ruente
+5814##Ruesga
+5815##Ruiloba
+5816##San Felices de Buelna
+5817##San Miguel de Aguayo
+5818##San Pedro del Romeral
+5819##San Roque de Riomiera
+5820##San Vicente de la Barquera
+5821##Santa Cruz de Bezana
+5822##Santa María de Cayón
+5823##Santander
+5824##Santillana del Mar
+5825##Santiurde de Reinosa
+5826##Santiurde de Toranzo
+5827##Santoña
+5828##Saro
+5829##Selaya
+5830##Soba
+5831##Solórzano
+5832##Suances
+5833##Tojos Los
+5834##Torrelavega
+5835##Tresviso
+5836##Tudanca
+5837##Udías
+5838##Val de San Vicente
+5839##Valdáliga
+5840##Valdeolea
+5841##Valdeprado del Río
+5842##Valderredible
+5843##Valle de Villaverde
+5844##Vega de Liébana
+5845##Vega de Pas
+5846##Villacarriedo
+5847##Villaescusa
+5848##Villafufre
+5849##Voto
+5850##Abades
+5851##Adrada de Pirón
+5852##Adrados
+5853##Aguilafuente
+5854##Alconada de Maderuelo
+5855##Aldea Real
+5856##Aldealcorvo
+5857##Aldealengua de Pedraza
+5858##Aldealengua de Santa María
+5859##Aldeanueva de la Serrezuela
+5860##Aldeanueva del Codonal
+5861##Aldeasoña
+5862##Aldehorno
+5863##Aldehuela del Codonal
+5864##Aldeonte
+5865##Anaya
+5866##Añe
+5867##Arahuetes
+5868##Arcones
+5869##Arevalillo de Cega
+5870##Armuña
+5871##Ayllón
+5872##Barbolla
+5873##Basardilla
+5874##Bercial
+5875##Bercimuel
+5876##Bernardos
+5877##Bernuy de Porreros
+5878##Boceguillas
+5879##Brieva
+5880##Caballar
+5881##Cabañas de Polendos
+5882##Cabezuela
+5883##Calabazas de Fuentidueña
+5884##Campo de San Pedro
+5885##Cantalejo
+5886##Cantimpalos
+5887##Carbonero el Mayor
+5888##Carrascal del Río
+5889##Casla
+5890##Castillejo de Mesleón
+5891##Castro de Fuentidueña
+5892##Castrojimeno
+5893##Castroserna de Abajo
+5894##Castroserracín
+5895##Cedillo de la Torre
+5896##Cerezo de Abajo
+5897##Cerezo de Arriba
+5898##Chañe
+5899##Cilleruelo de San Mamés
+5900##Cobos de Fuentidueña
+5901##Coca
+5902##Codorniz
+5903##Collado Hermoso
+5904##Condado de Castilnovo
+5905##Corral de Ayllón
+5906##Cozuelos de Fuentidueña
+5907##Cubillo
+5908##Cuéllar
+5909##Cuevas de Provanco
+5910##Domingo García
+5911##Donhierro
+5912##Duruelo
+5913##Encinas
+5914##Encinillas
+5915##Escalona del Prado
+5916##Escarabajosa de Cabezas
+5917##Escobar de Polendos
+5918##Espinar El
+5919##Espirdo
+5920##Fresneda de Cuéllar
+5921##Fresno de Cantespino
+5922##Fresno de la Fuente
+5923##Frumales
+5924##Fuente de Santa Cruz
+5925##Fuente el Olmo de Fuentidueña
+5926##Fuente el Olmo de Íscar
+5927##Fuentepelayo
+5928##Fuentepiñel
+5929##Fuenterrebollo
+5930##Fuentesaúco de Fuentidueña
+5931##Fuentesoto
+5932##Fuentidueña
+5933##Gallegos
+5934##Garcillán
+5935##Gomezserracín
+5936##Grajera
+5937##Honrubia de la Cuesta
+5938##Hontalbilla
+5939##Hontanares de Eresma
+5940##Huertos Los
+5941##Ituero y Lama
+5942##Juarros de Riomoros
+5943##Juarros de Voltoya
+5944##Labajos
+5945##Laguna de Contreras
+5946##Languilla
+5947##Lastras de Cuéllar
+5948##Lastras del Pozo
+5949##Lastrilla La
+5950##Losa La
+5951##Maderuelo
+5952##Marazoleja
+5953##Marazuela
+5954##Martín Miguel
+5955##Martín Muñoz de la Dehesa
+5956##Martín Muñoz de las Posadas
+5957##Marugán
+5958##Mata de Cuéllar
+5959##Matabuena
+5960##Matilla La
+5961##Melque de Cercos
+5962##Membibre de la Hoz
+5963##Migueláñez
+5964##Montejo de Arévalo
+5965##Montejo de la Vega de la Serrezuela
+5966##Monterrubio
+5967##Moral de Hornuez
+5968##Mozoncillo
+5969##Muñopedro
+5970##Muñoveros
+5971##Nava de la Asunción
+5972##Navafría
+5973##Navalilla
+5974##Navalmanzano
+5975##Navares de Ayuso
+5976##Navares de Enmedio
+5977##Navares de las Cuevas
+5978##Navas de Oro
+5979##Navas de Riofrío
+5980##Navas de San Antonio
+5981##Nieva
+5982##Olombrada
+5983##Orejana
+5984##Ortigosa de Pestaño
+5985##Ortigosa del Monte
+5986##Otero de Herreros
+5987##Pajarejos
+5988##Palazuelos de Eresma
+5989##Pedraza
+5990##Pelayos del Arroyo
+5991##Perosillo
+5992##Pinarejos
+5993##Pinarnegrillo
+5994##Pradales
+5995##Prádena
+5996##Puebla de Pedraza
+5997##Rapariegos
+5998##Real Sitio de San Ildefonso
+5999##Rebollo
+6000##Remondo
+6001##Riaguas de San Bartolomé
+6002##Riaza
+6003##Ribota
+6004##Riofrío de Riaza
+6005##Roda de Eresma
+6006##Sacramenia
+6007##Samboal
+6008##San Cristóbal de Cuéllar
+6009##San Cristóbal de la Vega
+6010##San Cristóbal de Segovia
+6011##San Martín y Mudrián
+6012##San Miguel de Bernuy
+6013##San Pedro de Gaíllos
+6014##Sanchonuño
+6015##Sangarcía
+6016##Santa María la Real de Nieva
+6017##Santa Marta del Cerro
+6018##Santiuste de Pedraza
+6019##Santiuste de San Juan Bautista
+6020##Santo Domingo de Pirón
+6021##Santo Tomé del Puerto
+6022##Sauquillo de Cabezas
+6023##Sebúlcor
+6024##Segovia
+6025##Sepúlveda
+6026##Sequera de Fresno
+6027##Sotillo
+6028##Sotosalbos
+6029##Tabanera la Luenga
+6030##Tolocirio
+6031##Torre Val de San Pedro
+6032##Torreadrada
+6033##Torrecaballeros
+6034##Torrecilla del Pinar
+6035##Torreiglesias
+6036##Trescasas
+6037##Turégano
+6038##Urueñas
+6039##Valdeprados
+6040##Valdevacas de Montejo
+6041##Valdevacas y Guijar
+6042##Valle de Tabladillo
+6043##Vallelado
+6044##Valleruela de Pedraza
+6045##Valleruela de Sepúlveda
+6046##Valseca
+6047##Valtiendas
+6048##Valverde del Majano
+6049##Veganzones
+6050##Vegas de Matute
+6051##Ventosilla y Tejadilla
+6052##Villacastín
+6053##Villaverde de Íscar
+6054##Villaverde de Montejo
+6055##Villeguillo
+6056##Yanguas de Eresma
+6057##Zarzuela del Monte
+6058##Zarzuela del Pinar
+6059##Aguadulce
+6060##Alanís
+6061##Albaida del Aljarafe
+6062##Alcalá de Guadaíra
+6063##Alcalá del Río
+6064##Alcolea del Río
+6065##Algaba La
+6066##Algámitas
+6067##Almadén de la Plata
+6068##Almensilla
+6069##Arahal
+6070##Aznalcázar
+6071##Aznalcóllar
+6072##Badolatosa
+6073##Benacazón
+6074##Bollullos de la Mitación
+6075##Bormujos
+6076##Brenes
+6077##Burguillos
+6078##Cabezas de San Juan Las
+6079##Camas
+6080##Campana La
+6081##Cantillana
+6082##Cañada Rosal
+6083##Carmona
+6084##Carrión de los Céspedes
+6085##Casariche
+6086##Castilblanco de los Arroyos
+6087##Castilleja de Guzmán
+6088##Castilleja de la Cuesta
+6089##Castilleja del Campo
+6090##Castillo de las Guardas El
+6091##Cazalla de la Sierra
+6092##Constantina
+6093##Coria del Río
+6094##Coripe
+6095##Coronil El
+6096##Corrales Los
+6097##Cuervo de Sevilla El
+6098##Dos Hermanas
+6099##Écija
+6100##Espartinas
+6101##Estepa
+6102##Fuentes de Andalucía
+6103##Garrobo El
+6104##Gelves
+6105##Gerena
+6106##Gilena
+6107##Gines
+6108##Guadalcanal
+6109##Guillena
+6110##Herrera
+6111##Huévar del Aljarafe
+6112##Isla Mayor
+6113##Lantejuela La
+6114##Lebrija
+6115##Lora de Estepa
+6116##Lora del Río
+6117##Luisiana La
+6118##Madroño El
+6119##Mairena del Alcor
+6120##Mairena del Aljarafe
+6121##Marchena
+6122##Marinaleda
+6123##Martín de la Jara
+6124##Molares Los
+6125##Montellano
+6126##Morón de la Frontera
+6127##Navas de la Concepción Las
+6128##Olivares
+6129##Osuna
+6130##Palacios y Villafranca Los
+6131##Palomares del Río
+6132##Paradas
+6133##Pedrera
+6134##Pedroso El
+6135##Peñaflor
+6136##Pilas
+6137##Pruna
+6138##Puebla de Cazalla La
+6139##Puebla de los Infantes La
+6140##Puebla del Río La
+6141##Real de la Jara El
+6142##Rinconada La
+6143##Roda de Andalucía La
+6144##Ronquillo El
+6145##Rubio El
+6146##Salteras
+6147##San Juan de Aznalfarache
+6148##San Nicolás del Puerto
+6149##Sanlúcar la Mayor
+6150##Santiponce
+6151##Saucejo El
+6152##Sevilla
+6153##Tocina
+6154##Tomares
+6155##Umbrete
+6156##Utrera
+6157##Valencina de la Concepción
+6158##Villamanrique de la Condesa
+6159##Villanueva de San Juan
+6160##Villanueva del Ariscal
+6161##Villanueva del Río y Minas
+6162##Villaverde del Río
+6163##Viso del Alcor El
+6164##Abejar
+6165##Adradas
+6166##Ágreda
+6167##Alconaba
+6168##Alcubilla de Avellaneda
+6169##Alcubilla de las Peñas
+6170##Aldealafuente
+6171##Aldealices
+6172##Aldealpozo
+6173##Aldealseñor
+6174##Aldehuela de Periáñez
+6175##Aldehuelas Las
+6176##Alentisque
+6177##Aliud
+6178##Almajano
+6179##Almaluez
+6180##Almarza
+6181##Almazán
+6182##Almazul
+6183##Almenar de Soria
+6184##Alpanseque
+6185##Arancón
+6186##Arcos de Jalón
+6187##Arenillas
+6188##Arévalo de la Sierra
+6189##Ausejo de la Sierra
+6190##Baraona
+6191##Barca
+6192##Barcones
+6193##Bayubas de Abajo
+6194##Bayubas de Arriba
+6195##Beratón
+6196##Berlanga de Duero
+6197##Blacos
+6198##Bliecos
+6199##Borjabad
+6200##Borobia
+6201##Buberos
+6202##Buitrago
+6203##Burgo de Osma-Ciudad de Osma
+6204##Cabrejas del Campo
+6205##Cabrejas del Pinar
+6206##Calatañazor
+6207##Caltojar
+6208##Candilichera
+6209##Cañamaque
+6210##Carabantes
+6211##Caracena
+6212##Carrascosa de Abajo
+6213##Carrascosa de la Sierra
+6214##Casarejos
+6215##Castilfrío de la Sierra
+6216##Castillejo de Robledo
+6217##Castilruiz
+6218##Centenera de Andaluz
+6219##Cerbón
+6220##Cidones
+6221##Cigudosa
+6222##Cihuela
+6223##Ciria
+6224##Cirujales del Río
+6225##Coscurita
+6226##Covaleda
+6227##Cubilla
+6228##Cubo de la Solana
+6229##Cueva de Ágreda
+6230##Dévanos
+6231##Deza
+6232##Duruelo de la Sierra
+6233##Escobosa de Almazán
+6234##Espeja de San Marcelino
+6235##Espejón
+6236##Estepa de San Juan
+6237##Frechilla de Almazán
+6238##Fresno de Caracena
+6239##Fuentearmegil
+6240##Fuentecambrón
+6241##Fuentecantos
+6242##Fuentelmonge
+6243##Fuentelsaz de Soria
+6244##Fuentepinilla
+6245##Fuentes de Magaña
+6246##Fuentestrún
+6247##Garray
+6248##Golmayo
+6249##Gómara
+6250##Gormaz
+6251##Herrera de Soria
+6252##Hinojosa del Campo
+6253##Langa de Duero
+6254##Liceras
+6255##Losilla La
+6256##Magaña
+6257##Maján
+6258##Matalebreras
+6259##Matamala de Almazán
+6260##Medinaceli
+6261##Miño de Medinaceli
+6262##Miño de San Esteban
+6263##Molinos de Duero
+6264##Momblona
+6265##Monteagudo de las Vicarías
+6266##Montejo de Tiermes
+6267##Montenegro de Cameros
+6268##Morón de Almazán
+6269##Muriel de la Fuente
+6270##Muriel Viejo
+6271##Nafría de Ucero
+6272##Narros
+6273##Navaleno
+6274##Nepas
+6275##Nolay
+6276##Noviercas
+6277##Ólvega
+6278##Oncala
+6279##Pinilla del Campo
+6280##Portillo de Soria
+6281##Póveda de Soria La
+6282##Pozalmuro
+6283##Quintana Redonda
+6284##Quintanas de Gormaz
+6285##Quiñonería
+6286##Rábanos Los
+6288##Recuerda
+6289##Rello
+6290##Renieblas
+6291##Retortillo de Soria
+6292##Reznos
+6293##Riba de Escalote La
+6294##Rioseco de Soria
+6295##Rollamienta
+6296##Royo El
+6297##Salduero
+6298##San Esteban de Gormaz
+6299##San Felices
+6300##San Leonardo de Yagüe
+6301##San Pedro Manrique
+6302##Santa Cruz de Yanguas
+6303##Santa María de Huerta
+6304##Santa María de las Hoyas
+6305##Serón de Nágima
+6306##Soliedra
+6307##Soria
+6308##Sotillo del Rincón
+6309##Suellacabras
+6310##Tajahuerce
+6311##Tajueco
+6312##Talveila
+6313##Tardelcuende
+6314##Taroda
+6315##Tejado
+6316##Torlengua
+6317##Torreblacos
+6318##Torrubia de Soria
+6319##Trévago
+6320##Ucero
+6321##Vadillo
+6322##Valdeavellano de Tera
+6323##Valdegeña
+6324##Valdelagua del Cerro
+6325##Valdemaluque
+6326##Valdenebro
+6327##Valdeprado
+6328##Valderrodilla
+6329##Valtajeros
+6330##Velamazán
+6331##Velilla de la Sierra
+6332##Velilla de los Ajos
+6333##Viana de Duero
+6334##Villaciervos
+6335##Villanueva de Gormaz
+6336##Villar del Ala
+6337##Villar del Campo
+6338##Villar del Río
+6339##Villares de Soria Los
+6340##Villasayas
+6341##Villaseca de Arciel
+6342##Vinuesa
+6343##Vizmanos
+6344##Vozmediano
+6345##Yanguas
+6346##Yelo
+6347##Aiguamúrcia
+6348##Albinyana
+6349##Albiol L'
+6350##Alcanar
+6351##Alcover
+6352##Aldea L'
+6353##Aldover
+6354##Aleixar L'
+6355##Alfara de Carles
+6356##Alforja
+6357##Alió
+6358##Almoster
+6359##Altafulla
+6360##Ametlla de Mar L'
+6361##Ampolla L'
+6362##Amposta
+6363##Arboç L'
+6364##Arbolí
+6365##Argentera L'
+6366##Arnes
+6367##Ascó
+6368##Banyeres del Penedès
+6369##Barberà de la Conca
+6370##Batea
+6371##Bellmunt del Priorat
+6372##Bellvei
+6373##Benifallet
+6374##Benissanet
+6375##Bisbal de Falset La
+6376##Bisbal del Penedès La
+6377##Blancafort
+6378##Bonastre
+6379##Borges del Camp Les
+6380##Bot
+6381##Botarell
+6382##Bràfim
+6383##Cabacés
+6384##Cabra del Camp
+6385##Calafell
+6386##Camarles
+6387##Cambrils
+6388##Canonja La
+6389##Capafonts
+6390##Capçanes
+6391##Caseres
+6392##Castellvell del Camp
+6393##Catllar El
+6394##Colldejou
+6395##Conesa
+6396##Constantí
+6397##Corbera d'Ebre
+6398##Cornudella de Montsant
+6399##Creixell
+6400##Cunit
+6401##Deltebre
+6402##Duesaigües
+6403##Espluga de Francolí L'
+6404##Falset
+6405##Fatarella La
+6406##Febró La
+6407##Figuera La
+6408##Figuerola del Camp
+6409##Flix
+6410##Forès
+6411##Freginals
+6412##Galera La
+6413##Gandesa
+6414##Garcia
+6415##Garidells Els
+6416##Ginestar
+6417##Godall
+6418##Gratallops
+6419##Guiamets Els
+6420##Horta de Sant Joan
+6421##Lloar El
+6422##Llorac
+6423##Llorenç del Penedès
+6424##Marçà
+6425##Margalef
+6426##Mas de Barberans
+6427##Masdenverge
+6428##Masllorenç
+6429##Masó La
+6430##Maspujols
+6431##Masroig El
+6432##Milà El
+6433##Miravet
+6434##Molar El
+6435##Montblanc
+6436##Montbrió del Camp
+6437##Montferri
+6438##Montmell El
+6439##Mont-ral
+6440##Mont-roig del Camp
+6441##Móra d'Ebre
+6442##Móra la Nova
+6443##Morell El
+6444##Morera de Montsant La
+6445##Nou de Gaià La
+6446##Nulles
+6447##Pallaresos Els
+6448##Palma d'Ebre La
+6449##Passanant i Belltall
+6450##Paüls
+6451##Perafort
+6452##Perelló El
+6453##Piles Les
+6454##Pinell de Brai El
+6455##Pira
+6456##Pla de Santa Maria El
+6457##Pobla de Mafumet La
+6458##Pobla de Massaluca La
+6459##Pobla de Montornès La
+6460##Poboleda
+6461##Pont d'Armentera El
+6462##Pontils
+6463##Porrera
+6464##Pradell de la Teixeta
+6465##Prades
+6466##Prat de Comte
+6467##Pratdip
+6468##Puigpelat
+6469##Querol
+6470##Rasquera
+6471##Renau
+6472##Reus
+6473##Riba La
+6474##Riba-roja d'Ebre
+6475##Riera de Gaià La
+6476##Riudecanyes
+6477##Riudecols
+6478##Riudoms
+6479##Rocafort de Queralt
+6480##Roda de Barà
+6481##Rodonyà
+6482##Roquetes
+6483##Rourell El
+6484##Salomó
+6485##Salou
+6486##Sant Carles de la Ràpita
+6487##Sant Jaume dels Domenys
+6488##Sant Jaume d'Enveja
+6489##Santa Bàrbara
+6490##Santa Coloma de Queralt
+6491##Santa Oliva
+6492##Sarral
+6493##Savallà del Comtat
+6494##Secuita La
+6495##Selva del Camp La
+6496##Senan
+6497##Sénia La
+6498##Solivella
+6499##Tarragona
+6500##Tivenys
+6501##Tivissa
+6502##Torre de Fontaubella La
+6503##Torre de l'Espanyol La
+6504##Torredembarra
+6505##Torroja del Priorat
+6506##Tortosa
+6507##Ulldecona
+6508##Ulldemolins
+6509##Vallclara
+6510##Vallfogona de Riucorb
+6511##Vallmoll
+6512##Valls
+6513##Vandellòs i l'Hospitalet de l'Infant
+6514##Vendrell El
+6515##Vespella de Gaià
+6516##Vilabella
+6517##Vilalba dels Arcs
+6518##Vilallonga del Camp
+6519##Vilanova de Prades
+6520##Vilanova d'Escornalbou
+6521##Vilaplana
+6522##Vila-rodona
+6523##Vila-seca
+6524##Vilaverd
+6525##Vilella Alta La
+6526##Vilella Baixa La
+6527##Vimbodí i Poblet
+6528##Vinebre
+6529##Vinyols i els Arcs
+6530##Xerta
+6531##Ababuj
+6532##Abejuela
+6533##Aguatón
+6534##Aguaviva
+6535##Aguilar del Alfambra
+6536##Alacón
+6537##Alba
+6538##Albalate del Arzobispo
+6539##Albarracín
+6540##Albentosa
+6541##Alcaine
+6542##Alcalá de la Selva
+6543##Alcañiz
+6544##Alcorisa
+6545##Alfambra
+6546##Aliaga
+6547##Allepuz
+6548##Alloza
+6549##Allueva
+6550##Almohaja
+6551##Alobras
+6552##Alpeñés
+6553##Anadón
+6554##Andorra
+6555##Arcos de las Salinas
+6556##Arens de Lledó
+6557##Argente
+6558##Ariño
+6559##Azaila
+6560##Bádenas
+6561##Báguena
+6562##Bañón
+6563##Barrachina
+6564##Bea
+6565##Beceite
+6566##Bello
+6567##Belmonte de San José
+6568##Berge
+6569##Bezas
+6570##Blancas
+6571##Blesa
+6572##Bordón
+6573##Bronchales
+6574##Bueña
+6575##Burbáguena
+6576##Cabra de Mora
+6577##Calaceite
+6578##Calamocha
+6579##Calanda
+6580##Calomarde
+6581##Camañas
+6582##Camarena de la Sierra
+6583##Camarillas
+6584##Caminreal
+6585##Cantavieja
+6586##Cañada de Benatanduz
+6587##Cañada de Verich La
+6588##Cañada Vellida
+6589##Cañizar del Olivar
+6590##Cascante del Río
+6591##Castejón de Tornos
+6592##Castel de Cabra
+6593##Castellar El
+6594##Castellote
+6595##Castelnou
+6596##Castelserás
+6597##Cedrillas
+6598##Celadas
+6599##Cella
+6600##Cerollera La
+6601##Codoñera La
+6602##Corbalán
+6603##Cortes de Aragón
+6604##Cosa
+6605##Cretas
+6606##Crivillén
+6607##Cuba La
+6608##Cubla
+6609##Cucalón
+6610##Cuervo El
+6611##Cuevas de Almudén
+6612##Cuevas Labradas
+6613##Ejulve
+6614##Escorihuela
+6615##Escucha
+6616##Estercuel
+6617##Ferreruela de Huerva
+6619##Formiche Alto
+6620##Fórnoles
+6621##Fortanete
+6622##Foz-Calanda
+6623##Fresneda La
+6624##Frías de Albarracín
+6625##Fuenferrada
+6626##Fuentes Calientes
+6627##Fuentes Claras
+6628##Fuentes de Rubielos
+6629##Fuentespalda
+6630##Galve
+6631##Gargallo
+6632##Gea de Albarracín
+6633##Ginebrosa La
+6634##Griegos
+6635##Guadalaviar
+6636##Gúdar
+6637##Híjar
+6638##Hinojosa de Jarque
+6639##Hoz de la Vieja La
+6640##Huesa del Común
+6641##Iglesuela del Cid La
+6642##Jabaloyas
+6643##Jarque de la Val
+6644##Jatiel
+6645##Jorcas
+6646##Josa
+6647##Lagueruela
+6648##Lanzuela
+6649##Libros
+6650##Lidón
+6651##Linares de Mora
+6652##Lledó
+6653##Loscos
+6654##Maicas
+6655##Manzanera
+6656##Martín del Río
+6657##Mas de las Matas
+6658##Mata de los Olmos La
+6659##Mazaleón
+6660##Mezquita de Jarque
+6661##Mirambel
+6662##Miravete de la Sierra
+6663##Molinos
+6664##Monforte de Moyuela
+6665##Monreal del Campo
+6666##Monroyo
+6667##Montalbán
+6668##Monteagudo del Castillo
+6669##Monterde de Albarracín
+6670##Mora de Rubielos
+6671##Moscardón
+6672##Mosqueruela
+6673##Muniesa
+6674##Noguera de Albarracín
+6675##Nogueras
+6676##Nogueruelas
+6677##Obón
+6678##Odón
+6679##Ojos Negros
+6680##Olba
+6681##Oliete
+6682##Olmos Los
+6683##Orihuela del Tremedal
+6684##Orrios
+6685##Palomar de Arroyos
+6686##Pancrudo
+6687##Parras de Castellote Las
+6688##Peñarroya de Tastavins
+6689##Peracense
+6690##Peralejos
+6691##Perales del Alfambra
+6692##Pitarque
+6693##Plou
+6694##Pobo El
+6695##Portellada La
+6696##Pozondón
+6697##Pozuel del Campo
+6698##Puebla de Híjar La
+6699##Puebla de Valverde La
+6700##Puertomingalvo
+6701##Ráfales
+6702##Rillo
+6703##Riodeva
+6704##Ródenas
+6705##Royuela
+6706##Rubiales
+6707##Rubielos de la Cérida
+6708##Rubielos de Mora
+6709##Salcedillo
+6710##Saldón
+6711##Samper de Calanda
+6712##San Agustín
+6713##San Martín del Río
+6714##Santa Cruz de Nogueras
+6715##Santa Eulalia
+6716##Sarrión
+6717##Segura de los Baños
+6718##Seno
+6719##Singra
+6720##Terriente
+6721##Teruel
+6722##Toril y Masegoso
+6723##Tormón
+6724##Tornos
+6725##Torralba de los Sisones
+6726##Torre de Arcas
+6727##Torre de las Arcas
+6728##Torre del Compte
+6729##Torre los Negros
+6730##Torrecilla de Alcañiz
+6731##Torrecilla del Rebollar
+6732##Torrelacárcel
+6733##Torremocha de Jiloca
+6734##Torres de Albarracín
+6735##Torrevelilla
+6736##Torrijas
+6737##Torrijo del Campo
+6738##Tramacastiel
+6739##Tramacastilla
+6740##Tronchón
+6741##Urrea de Gaén
+6742##Utrillas
+6743##Valacloche
+6744##Valbona
+6745##Valdealgorfa
+6746##Valdecuenca
+6747##Valdelinares
+6748##Valdeltormo
+6749##Valderrobres
+6750##Valjunquera
+6751##Vallecillo El
+6752##Veguillas de la Sierra
+6753##Villafranca del Campo
+6754##Villahermosa del Campo
+6755##Villanueva del Rebollar de la Sierra
+6756##Villar del Cobo
+6757##Villar del Salz
+6758##Villarluengo
+6759##Villarquemado
+6760##Villarroya de los Pinares
+6761##Villastar
+6762##Villel
+6763##Vinaceite
+6764##Visiedo
+6765##Vivel del Río Martín
+6766##Zoma La
+6767##Ajofrín
+6768##Alameda de la Sagra
+6769##Albarreal de Tajo
+6770##Alcabón
+6771##Alcañizo
+6772##Alcaudete de la Jara
+6773##Alcolea de Tajo
+6774##Aldea en Cabo
+6775##Aldeanueva de Barbarroya
+6776##Aldeanueva de San Bartolomé
+6777##Almendral de la Cañada
+6778##Almonacid de Toledo
+6779##Almorox
+6780##Añover de Tajo
+6781##Arcicóllar
+6782##Argés
+6783##Azután
+6784##Barcience
+6785##Bargas
+6786##Belvís de la Jara
+6787##Borox
+6788##Buenaventura
+6789##Burguillos de Toledo
+6790##Burujón
+6791##Cabañas de la Sagra
+6792##Cabañas de Yepes
+6793##Cabezamesada
+6794##Calera y Chozas
+6795##Caleruela
+6796##Calzada de Oropesa
+6797##Camarena
+6798##Camarenilla
+6799##Campillo de la Jara El
+6800##Camuñas
+6801##Cardiel de los Montes
+6802##Carmena
+6803##Carpio de Tajo El
+6804##Carranque
+6805##Carriches
+6806##Casar de Escalona El
+6807##Casarrubios del Monte
+6808##Casasbuenas
+6809##Castillo de Bayuela
+6810##Cazalegas
+6811##Cebolla
+6812##Cedillo del Condado
+6813##Cerralbos Los
+6814##Cervera de los Montes
+6815##Chozas de Canales
+6816##Chueca
+6817##Ciruelos
+6818##Cobeja
+6819##Cobisa
+6820##Consuegra
+6821##Corral de Almaguer
+6822##Cuerva
+6823##Domingo Pérez
+6824##Dosbarrios
+6825##Erustes
+6826##Escalona
+6827##Escalonilla
+6828##Espinoso del Rey
+6829##Esquivias
+6830##Estrella La
+6831##Fuensalida
+6832##Gálvez
+6833##Garciotum
+6834##Gerindote
+6835##Guadamur
+6836##Guardia La
+6837##Herencias Las
+6838##Herreruela de Oropesa
+6839##Hinojosa de San Vicente
+6840##Hontanar
+6841##Hormigos
+6842##Huecas
+6843##Huerta de Valdecarábanos
+6844##Iglesuela La
+6845##Illán de Vacas
+6846##Illescas
+6847##Lagartera
+6848##Layos
+6849##Lillo
+6850##Lominchar
+6851##Lucillos
+6852##Madridejos
+6853##Magán
+6854##Malpica de Tajo
+6855##Manzaneque
+6856##Maqueda
+6857##Marjaliza
+6858##Marrupe
+6859##Mascaraque
+6860##Mata La
+6861##Mazarambroz
+6862##Mejorada
+6863##Menasalbas
+6864##Méntrida
+6865##Mesegar de Tajo
+6866##Miguel Esteban
+6867##Mocejón
+6868##Mohedas de la Jara
+6869##Montearagón
+6870##Montesclaros
+6871##Mora
+6872##Nambroca
+6873##Nava de Ricomalillo La
+6874##Navahermosa
+6875##Navalcán
+6876##Navalmoralejo
+6877##Navalmorales Los
+6878##Navalucillos Los
+6879##Navamorcuende
+6880##Noblejas
+6881##Noez
+6882##Nombela
+6883##Novés
+6884##Numancia de la Sagra
+6885##Nuño Gómez
+6886##Ocaña
+6887##Olías del Rey
+6888##Ontígola
+6889##Orgaz
+6890##Oropesa
+6891##Otero
+6892##Palomeque
+6893##Pantoja
+6894##Paredes de Escalona
+6895##Parrillas
+6896##Pelahustán
+6897##Pepino
+6898##Polán
+6899##Portillo de Toledo
+6900##Puebla de Almoradiel La
+6901##Puebla de Montalbán La
+6902##Pueblanueva La
+6903##Puente del Arzobispo El
+6904##Puerto de San Vicente
+6905##Pulgar
+6906##Quero
+6907##Quintanar de la Orden
+6908##Quismondo
+6909##Real de San Vicente El
+6910##Recas
+6911##Retamoso de la Jara
+6912##Rielves
+6913##Robledo del Mazo
+6914##Romeral El
+6915##San Bartolomé de las Abiertas
+6916##San Martín de Montalbán
+6917##San Martín de Pusa
+6918##San Pablo de los Montes
+6919##San Román de los Montes
+6920##Santa Ana de Pusa
+6921##Santa Cruz de la Zarza
+6922##Santa Cruz del Retamar
+6923##Santa Olalla
+6924##Santo Domingo-Caudilla
+6925##Sartajada
+6926##Segurilla
+6927##Seseña
+6928##Sevilleja de la Jara
+6929##Sonseca
+6930##Sotillo de las Palomas
+6931##Talavera de la Reina
+6932##Tembleque
+6933##Toboso El
+6934##Toledo
+6935##Torralba de Oropesa
+6936##Torre de Esteban Hambrán La
+6937##Torrecilla de la Jara
+6938##Torrico
+6939##Torrijos
+6940##Totanés
+6941##Turleque
+6942##Ugena
+6943##Urda
+6944##Valdeverdeja
+6945##Valmojado
+6946##Velada
+6947##Ventas con Peña Aguilera Las
+6948##Ventas de Retamosa Las
+6949##Ventas de San Julián Las
+6950##Villa de Don Fadrique La
+6951##Villacañas
+6952##Villafranca de los Caballeros
+6953##Villaluenga de la Sagra
+6954##Villamiel de Toledo
+6955##Villaminaya
+6956##Villamuelas
+6957##Villanueva de Alcardete
+6958##Villanueva de Bogas
+6959##Villarejo de Montalbán
+6960##Villarrubia de Santiago
+6961##Villaseca de la Sagra
+6962##Villasequilla
+6963##Villatobas
+6964##Viso de San Juan El
+6965##Yébenes Los
+6966##Yeles
+6967##Yepes
+6968##Yuncler
+6969##Yunclillos
+6970##Yuncos
+6971##Ademuz
+6972##Ador
+6973##Agullent
+6974##Aielo de Malferit
+6975##Aielo de Rugat
+6976##Alaquàs
+6977##Albaida
+6978##Albal
+6979##Albalat de la Ribera
+6980##Albalat dels Sorells
+6981##Albalat dels Tarongers
+6982##Alberic
+6983##Alborache
+6984##Alboraya
+6985##Albuixech
+6986##Alcàntera de Xúquer
+6987##Alcàsser
+6988##Alcublas
+6989##Alcúdia l'
+6990##Alcúdia de Crespins l'
+6991##Aldaia
+6992##Alfafar
+6993##Alfara de la Baronia
+6994##Alfara del Patriarca
+6995##Alfarp
+6996##Alfarrasí
+6997##Alfauir
+6998##Algar de Palancia
+6999##Algemesí
+7000##Algimia de Alfara
+7001##Alginet
+7002##Almàssera
+7003##Almiserà
+7004##Almoines
+7005##Almussafes
+7006##Alpuente
+7007##Alqueria de la Comtessa l'
+7008##Alzira
+7009##Andilla
+7010##Anna
+7011##Antella
+7012##Aras de los Olmos
+7013##Atzeneta d'Albaida
+7014##Ayora
+7015##Barx
+7016##Barxeta
+7017##Bèlgida
+7018##Bellreguard
+7019##Bellús
+7020##Benagéber
+7021##Benaguasil
+7022##Benavites
+7023##Beneixida
+7024##Benetússer
+7025##Beniarjó
+7026##Beniatjar
+7027##Benicolet
+7028##Benicull de Xúquer
+7029##Benifaió
+7030##Benifairó de la Valldigna
+7031##Benifairó de les Valls
+7032##Beniflá
+7033##Benigánim
+7034##Benimodo
+7035##Benimuslem
+7036##Beniparrell
+7037##Benirredrà
+7038##Benisanó
+7039##Benissoda
+7040##Benisuera
+7041##Bétera
+7042##Bicorp
+7043##Bocairent
+7044##Bolbaite
+7045##Bonrepòs i Mirambell
+7046##Bufali
+7047##Bugarra
+7048##Buñol
+7049##Burjassot
+7050##Calles
+7051##Camporrobles
+7052##Canals
+7053##Canet d'En Berenguer
+7054##Carcaixent
+7055##Càrcer
+7056##Carlet
+7057##Carrícola
+7058##Casas Altas
+7059##Casas Bajas
+7060##Casinos
+7061##Castelló de Rugat
+7062##Castellonet de la Conquesta
+7063##Castielfabib
+7064##Catadau
+7065##Catarroja
+7066##Caudete de las Fuentes
+7067##Cerdà
+7068##Chella
+7069##Chelva
+7070##Chera
+7071##Cheste
+7072##Chiva
+7073##Chulilla
+7074##Cofrentes
+7075##Corbera
+7076##Cortes de Pallás
+7077##Cotes
+7078##Cullera
+7079##Daimús
+7080##Domeño
+7081##Dos Aguas
+7082##Eliana l'
+7083##Emperador
+7084##Enguera
+7085##Ènova l'
+7086##Estivella
+7087##Estubeny
+7088##Faura
+7089##Favara
+7090##Foios
+7091##Font de la Figuera la
+7092##Font d'En Carròs la
+7093##Fontanars dels Alforins
+7094##Fortaleny
+7095##Fuenterrobles
+7096##Gandia
+7097##Gátova
+7098##Gavarda
+7099##Genovés
+7100##Gestalgar
+7101##Gilet
+7102##Godella
+7103##Godelleta
+7104##Granja de la Costera la
+7105##Guadasequies
+7106##Guadassuar
+7107##Guardamar de la Safor
+7108##Higueruelas
+7109##Jalance
+7110##Jarafuel
+7111##Llanera de Ranes
+7112##Llaurí
+7113##Llíria
+7114##Llocnou de la Corona
+7115##Llocnou de Sant Jeroni
+7116##Llocnou d'En Fenollet
+7117##Llombai
+7118##Llosa de Ranes la
+7119##Llutxent
+7120##Loriguilla
+7121##Losa del Obispo
+7122##Macastre
+7123##Manises
+7124##Manuel
+7125##Marines
+7126##Massalavés
+7127##Massalfassar
+7128##Massamagrell
+7129##Massanassa
+7130##Meliana
+7131##Millares
+7132##Miramar
+7133##Mislata
+7134##Mogente/Moixent
+7135##Moncada
+7136##Montaverner
+7137##Montesa
+7138##Montitxelvo/Montichelvo
+7139##Montroy
+7140##Montserrat
+7141##Museros
+7142##Náquera
+7143##Navarrés
+7144##Novelé/Novetlè
+7145##Oliva
+7146##Olleria l'
+7147##Olocau
+7148##Ontinyent
+7149##Otos
+7150##Paiporta
+7151##Palma de Gandía
+7152##Palmera
+7153##Palomar el
+7154##Paterna
+7155##Pedralba
+7156##Petrés
+7157##Picanya
+7158##Picassent
+7159##Piles
+7160##Pinet
+7161##Pobla de Farnals la
+7162##Pobla de Vallbona la
+7163##Pobla del Duc la
+7164##Pobla Llarga la
+7165##Polinyà de Xúquer
+7166##Potríes
+7167##Puçol
+7168##Puebla de San Miguel
+7169##Puig
+7170##Quart de les Valls
+7171##Quart de Poblet
+7172##Quartell
+7173##Quatretonda
+7174##Quesa
+7175##Rafelbuñol/Rafelbunyol
+7176##Rafelcofer
+7177##Rafelguaraf
+7178##Ráfol de Salem
+7179##Real
+7180##Real de Gandía
+7181##Requena
+7182##Riba-roja de Túria
+7183##Riola
+7184##Rocafort
+7185##Rotglà i Corberà
+7186##Rótova
+7187##Rugat
+7188##Sagunto/Sagunt
+7189##Salem
+7190##San Antonio de Benagéber
+7191##Sant Joanet
+7192##Sedaví
+7193##Segart
+7194##Sellent
+7195##Sempere
+7196##Senyera
+7197##Serra
+7198##Siete Aguas
+7199##Silla
+7200##Simat de la Valldigna
+7201##Sinarcas
+7202##Sollana
+7203##Sot de Chera
+7204##Sueca
+7205##Sumacàrcer
+7206##Tavernes Blanques
+7207##Tavernes de la Valldigna
+7208##Teresa de Cofrentes
+7209##Terrateig
+7210##Titaguas
+7211##Torrebaja
+7212##Torrella
+7213##Torrent
+7214##Torres Torres
+7215##Tous
+7216##Tuéjar
+7217##Turís
+7218##Utiel
+7219##Valencia
+7220##Vallada
+7221##Vallanca
+7222##Vallés
+7223##Venta del Moro
+7224##Vilamarxant
+7225##Villalonga
+7226##Villanueva de Castellón
+7227##Villar del Arzobispo
+7228##Villargordo del Cabriel
+7229##Vinalesa
+7230##Xàtiva
+7231##Xeraco
+7232##Xeresa
+7233##Xirivella
+7234##Yátova
+7235##Yesa La
+7236##Zarra
+7237##Adalia
+7238##Aguasal
+7239##Aguilar de Campos
+7240##Alaejos
+7241##Alcazarén
+7242##Aldea de San Miguel
+7243##Aldeamayor de San Martín
+7244##Almenara de Adaja
+7245##Amusquillo
+7246##Arroyo de la Encomienda
+7247##Ataquines
+7248##Bahabón
+7249##Barcial de la Loma
+7250##Barruelo del Valle
+7251##Becilla de Valderaduey
+7252##Benafarces
+7253##Bercero
+7254##Berceruelo
+7255##Berrueces
+7256##Bobadilla del Campo
+7257##Bocigas
+7258##Bocos de Duero
+7259##Boecillo
+7260##Bolaños de Campos
+7261##Brahojos de Medina
+7262##Bustillo de Chaves
+7263##Cabezón de Pisuerga
+7264##Cabezón de Valderaduey
+7265##Cabreros del Monte
+7266##Campaspero
+7268##Camporredondo
+7269##Canalejas de Peñafiel
+7270##Canillas de Esgueva
+7271##Carpio
+7272##Casasola de Arión
+7273##Castrejón de Trabancos
+7274##Castrillo de Duero
+7275##Castrillo-Tejeriego
+7276##Castrobol
+7277##Castrodeza
+7278##Castromembibre
+7279##Castromonte
+7280##Castronuevo de Esgueva
+7281##Castronuño
+7282##Castroponce
+7283##Castroverde de Cerrato
+7284##Ceinos de Campos
+7285##Cervillego de la Cruz
+7286##Cigales
+7287##Ciguñuela
+7288##Cistérniga
+7289##Cogeces de Íscar
+7290##Cogeces del Monte
+7291##Corcos
+7292##Corrales de Duero
+7293##Cubillas de Santa Marta
+7294##Cuenca de Campos
+7295##Curiel de Duero
+7296##Encinas de Esgueva
+7297##Esguevillas de Esgueva
+7298##Fombellida
+7299##Fompedraza
+7300##Fontihoyuelo
+7301##Fresno el Viejo
+7302##Fuensaldaña
+7303##Fuente el Sol
+7304##Fuente-Olmedo
+7305##Gallegos de Hornija
+7306##Gatón de Campos
+7307##Geria
+7308##Herrín de Campos
+7309##Hornillos de Eresma
+7310##Íscar
+7311##Laguna de Duero
+7312##Langayo
+7313##Llano de Olmedo
+7314##Lomoviejo
+7315##Manzanillo
+7316##Marzales
+7317##Matapozuelos
+7318##Matilla de los Caños
+7319##Mayorga
+7320##Medina de Rioseco
+7321##Medina del Campo
+7322##Megeces
+7323##Melgar de Abajo
+7324##Melgar de Arriba
+7325##Mojados
+7326##Monasterio de Vega
+7327##Montealegre de Campos
+7328##Montemayor de Pililla
+7329##Moral de la Reina
+7330##Moraleja de las Panaderas
+7331##Morales de Campos
+7332##Mota del Marqués
+7333##Mucientes
+7334##Mudarra La
+7335##Muriel
+7336##Nava del Rey
+7337##Nueva Villa de las Torres
+7338##Olivares de Duero
+7339##Olmedo
+7340##Olmos de Esgueva
+7341##Olmos de Peñafiel
+7342##Palazuelo de Vedija
+7343##Parrilla La
+7344##Pedraja de Portillo La
+7345##Pedrajas de San Esteban
+7346##Pedrosa del Rey
+7347##Peñafiel
+7348##Peñaflor de Hornija
+7349##Pesquera de Duero
+7350##Piña de Esgueva
+7351##Piñel de Abajo
+7352##Piñel de Arriba
+7353##Pollos
+7354##Portillo
+7355##Pozal de Gallinas
+7356##Pozaldez
+7357##Pozuelo de la Orden
+7358##Puras
+7359##Quintanilla de Arriba
+7360##Quintanilla de Onésimo
+7361##Quintanilla de Trigueros
+7362##Quintanilla del Molar
+7363##Rábano
+7364##Ramiro
+7365##Renedo de Esgueva
+7366##Roales de Campos
+7367##Robladillo
+7368##Roturas
+7369##Rubí de Bracamonte
+7370##Rueda
+7371##Saelices de Mayorga
+7372##Salvador de Zapardiel
+7373##San Cebrián de Mazote
+7374##San Llorente
+7375##San Martín de Valvení
+7376##San Miguel del Arroyo
+7377##San Miguel del Pino
+7378##San Pablo de la Moraleja
+7379##San Pedro de Latarce
+7380##San Pelayo
+7381##San Román de Hornija
+7382##San Salvador
+7383##San Vicente del Palacio
+7384##Santa Eufemia del Arroyo
+7385##Santervás de Campos
+7386##Santibáñez de Valcorba
+7387##Santovenia de Pisuerga
+7388##Sardón de Duero
+7389##Seca La
+7390##Serrada
+7391##Siete Iglesias de Trabancos
+7392##Simancas
+7393##Tamariz de Campos
+7394##Tiedra
+7395##Tordehumos
+7396##Tordesillas
+7397##Torre de Esgueva
+7398##Torre de Peñafiel
+7399##Torrecilla de la Abadesa
+7400##Torrecilla de la Orden
+7401##Torrecilla de la Torre
+7402##Torrelobatón
+7403##Torrescárcela
+7404##Traspinedo
+7405##Trigueros del Valle
+7406##Tudela de Duero
+7407##Unión de Campos La
+7408##Urones de Castroponce
+7409##Urueña
+7410##Valbuena de Duero
+7411##Valdearcos de la Vega
+7412##Valdenebro de los Valles
+7413##Valdestillas
+7414##Valdunquillo
+7415##Valladolid
+7416##Valoria la Buena
+7417##Valverde de Campos
+7418##Vega de Ruiponce
+7419##Vega de Valdetronco
+7420##Velascálvaro
+7421##Velilla
+7422##Velliza
+7423##Ventosa de la Cuesta
+7424##Viana de Cega
+7425##Villabáñez
+7426##Villabaruz de Campos
+7427##Villabrágima
+7428##Villacarralón
+7429##Villacid de Campos
+7430##Villaco
+7431##Villafrades de Campos
+7432##Villafranca de Duero
+7433##Villafrechós
+7434##Villafuerte
+7435##Villagarcía de Campos
+7436##Villagómez la Nueva
+7437##Villalán de Campos
+7438##Villalar de los Comuneros
+7439##Villalba de la Loma
+7440##Villalba de los Alcores
+7441##Villalbarba
+7442##Villalón de Campos
+7443##Villamuriel de Campos
+7444##Villán de Tordesillas
+7445##Villanubla
+7446##Villanueva de Duero
+7447##Villanueva de la Condesa
+7448##Villanueva de los Caballeros
+7449##Villanueva de los Infantes
+7450##Villanueva de San Mancio
+7451##Villardefrades
+7452##Villarmentero de Esgueva
+7453##Villasexmir
+7454##Villavaquerín
+7455##Villavellid
+7456##Villaverde de Medina
+7457##Villavicencio de los Caballeros
+7458##Viloria
+7459##Wamba
+7460##Zaratán
+7462##Abadiño
+7463##Abanto y Ciérvana-Abanto Zierbena
+7464##Ajangiz
+7465##Alonsotegi
+7466##Amorebieta-Etxano
+7467##Amoroto
+7468##Arakaldo
+7469##Arantzazu
+7470##Areatza
+7471##Arrankudiaga
+7472##Arratzu
+7473##Arrieta
+7474##Arrigorriaga
+7475##Artea
+7476##Artzentales
+7477##Atxondo
+7478##Aulesti
+7479##Bakio
+7480##Balmaseda
+7481##Barakaldo
+7482##Barrika
+7483##Basauri
+7484##Bedia
+7485##Berango
+7486##Bermeo
+7487##Berriatua
+7488##Berriz
+7489##Bilbao
+7490##Busturia
+7491##Derio
+7492##Dima
+7493##Durango
+7494##Ea
+7495##Elantxobe
+7496##Elorrio
+7497##Erandio
+7498##Ereño
+7499##Ermua
+7500##Errigoiti
+7501##Etxebarri
+7502##Etxebarria
+7503##Forua
+7504##Fruiz
+7505##Galdakao
+7506##Galdames
+7507##Gamiz-Fika
+7508##Garai
+7509##Gatika
+7510##Gautegiz Arteaga
+7511##Gernika-Lumo
+7512##Getxo
+7513##Gizaburuaga
+7514##Gordexola
+7515##Gorliz
+7516##Güeñes
+7517##Ibarrangelu
+7518##Igorre
+7519##Ispaster
+7520##Iurreta
+7521##Izurtza
+7522##Karrantza Harana/Valle de Carranza
+7523##Kortezubi
+7524##Lanestosa
+7525##Larrabetzu
+7526##Laukiz
+7527##Leioa
+7528##Lekeitio
+7529##Lemoa
+7530##Lemoiz
+7531##Lezama
+7532##Loiu
+7533##Mallabia
+7534##Mañaria
+7535##Markina-Xemein
+7536##Maruri-Jatabe
+7537##Mendata
+7538##Mendexa
+7539##Meñaka
+7540##Morga
+7541##Mundaka
+7542##Mungia
+7543##Munitibar-Arbatzegi Gerrikaitz
+7544##Murueta
+7545##Muskiz
+7546##Muxika
+7547##Nabarniz
+7548##Ondarroa
+7549##Orozko
+7550##Ortuella
+7551##Otxandio
+7552##Plentzia
+7553##Portugalete
+7554##Santurtzi
+7555##Sestao
+7556##Sondika
+7557##Sopelana
+7558##Sopuerta
+7559##Sukarrieta
+7560##Trucios-Turtzioz
+7561##Ubide
+7562##Ugao-Miraballes
+7563##Urduliz
+7564##Urduña/Orduña
+7565##Valle de Trápaga-Trapagaran
+7566##Zaldibar
+7567##Zalla
+7568##Zamudio
+7569##Zaratamo
+7570##Zeanuri
+7571##Zeberio
+7572##Zierbena
+7573##Ziortza-Bolibar
+7574##Abezames
+7575##Alcañices
+7576##Alcubilla de Nogales
+7577##Alfaraz de Sayago
+7578##Algodre
+7579##Almaraz de Duero
+7580##Almeida de Sayago
+7581##Andavías
+7582##Arcenillas
+7583##Arcos de la Polvorosa
+7584##Argañín
+7585##Argujillo
+7586##Arquillinos
+7587##Arrabalde
+7588##Aspariegos
+7589##Asturianos
+7590##Ayoó de Vidriales
+7591##Barcial del Barco
+7592##Belver de los Montes
+7593##Benavente
+7594##Benegiles
+7595##Bermillo de Sayago
+7596##Bóveda de Toro La
+7597##Bretó
+7598##Bretocino
+7599##Brime de Sog
+7600##Brime de Urz
+7601##Burganes de Valverde
+7602##Bustillo del Oro
+7603##Cabañas de Sayago
+7604##Calzadilla de Tera
+7605##Camarzana de Tera
+7606##Cañizal
+7607##Cañizo
+7608##Carbajales de Alba
+7609##Carbellino
+7610##Casaseca de Campeán
+7611##Casaseca de las Chanas
+7612##Castrillo de la Guareña
+7613##Castrogonzalo
+7614##Castronuevo
+7615##Castroverde de Campos
+7616##Cazurra
+7617##Cerecinos de Campos
+7618##Cerecinos del Carrizal
+7619##Cernadilla
+7620##Cobreros
+7621##Coomonte
+7622##Coreses
+7623##Corrales del Vino
+7624##Cotanes del Monte
+7625##Cubillos
+7626##Cubo de Benavente
+7627##Cubo de Tierra del Vino El
+7628##Cuelgamures
+7629##Entrala
+7630##Espadañedo
+7631##Faramontanos de Tábara
+7632##Fariza
+7633##Fermoselle
+7634##Ferreras de Abajo
+7635##Ferreras de Arriba
+7636##Ferreruela
+7637##Figueruela de Arriba
+7638##Fonfría
+7639##Fresno de la Polvorosa
+7640##Fresno de la Ribera
+7641##Fresno de Sayago
+7642##Friera de Valverde
+7643##Fuente Encalada
+7644##Fuentelapeña
+7645##Fuentes de Ropel
+7646##Fuentesaúco
+7647##Fuentesecas
+7648##Fuentespreadas
+7649##Galende
+7650##Gallegos del Pan
+7651##Gallegos del Río
+7652##Gamones
+7653##Gema
+7654##Granja de Moreruela
+7655##Granucillo
+7656##Guarrate
+7657##Hermisende
+7658##Hiniesta La
+7659##Jambrina
+7660##Justel
+7661##Losacino
+7662##Losacio
+7663##Lubián
+7664##Luelmo
+7665##Maderal El
+7666##Madridanos
+7667##Mahide
+7668##Maire de Castroponce
+7669##Malva
+7670##Manganeses de la Lampreana
+7671##Manganeses de la Polvorosa
+7672##Manzanal de Arriba
+7673##Manzanal de los Infantes
+7674##Manzanal del Barco
+7675##Matilla de Arzón
+7676##Matilla la Seca
+7677##Mayalde
+7678##Melgar de Tera
+7679##Micereces de Tera
+7680##Milles de la Polvorosa
+7681##Molacillos
+7682##Molezuelas de la Carballeda
+7683##Mombuey
+7684##Monfarracinos
+7685##Montamarta
+7686##Moral de Sayago
+7687##Moraleja de Sayago
+7688##Moraleja del Vino
+7689##Morales de Rey
+7690##Morales de Toro
+7691##Morales de Valverde
+7692##Morales del Vino
+7693##Moralina
+7694##Moreruela de los Infanzones
+7695##Moreruela de Tábara
+7696##Muelas de los Caballeros
+7697##Muelas del Pan
+7698##Muga de Sayago
+7699##Navianos de Valverde
+7700##Olmillos de Castro
+7701##Otero de Bodas
+7702##Pajares de la Lampreana
+7703##Palacios de Sanabria
+7704##Palacios del Pan
+7705##Pedralba de la Pradería
+7706##Pego El
+7707##Peleagonzalo
+7708##Peleas de Abajo
+7709##Peñausende
+7710##Peque
+7711##Perdigón El
+7712##Pereruela
+7713##Perilla de Castro
+7714##Pías
+7715##Piedrahita de Castro
+7716##Pinilla de Toro
+7717##Pino del Oro
+7718##Piñero El
+7719##Pobladura de Valderaduey
+7720##Pobladura del Valle
+7721##Porto
+7722##Pozoantiguo
+7723##Pozuelo de Tábara
+7724##Prado
+7725##Puebla de Sanabria
+7726##Pueblica de Valverde
+7727##Quintanilla de Urz
+7728##Quintanilla del Monte
+7729##Quintanilla del Olmo
+7730##Quiruelas de Vidriales
+7731##Rabanales
+7732##Rábano de Aliste
+7733##Requejo
+7734##Revellinos
+7735##Riofrío de Aliste
+7736##Rionegro del Puente
+7737##Roales
+7738##Robleda-Cervantes
+7739##Roelos de Sayago
+7740##Rosinos de la Requejada
+7741##Salce
+7742##Samir de los Caños
+7743##San Agustín del Pozo
+7744##San Cebrián de Castro
+7745##San Cristóbal de Entreviñas
+7746##San Esteban del Molar
+7747##San Justo
+7748##San Martín de Valderaduey
+7749##San Miguel de la Ribera
+7750##San Miguel del Valle
+7751##San Pedro de Ceque
+7752##San Pedro de la Nave-Almendra
+7753##San Vicente de la Cabeza
+7754##San Vitero
+7755##Santa Clara de Avedillo
+7756##Santa Colomba de las Monjas
+7757##Santa Cristina de la Polvorosa
+7758##Santa Croya de Tera
+7759##Santa Eufemia del Barco
+7760##Santa María de la Vega
+7761##Santa María de Valverde
+7762##Santibáñez de Tera
+7763##Santibáñez de Vidriales
+7764##Santovenia
+7765##Sanzoles
+7766##Tábara
+7767##Tapioles
+7768##Toro
+7769##Torre del Valle La
+7770##Torregamones
+7771##Torres del Carrizal
+7772##Trabazos
+7773##Trefacio
+7774##Uña de Quintana
+7775##Vadillo de la Guareña
+7776##Valcabado
+7777##Valdefinjas
+7778##Valdescorriel
+7779##Vallesa de la Guareña
+7780##Vega de Tera
+7781##Vega de Villalobos
+7782##Vegalatrave
+7783##Venialbo
+7784##Vezdemarbán
+7785##Vidayanes
+7786##Videmala
+7787##Villabrázaro
+7788##Villabuena del Puente
+7789##Villadepera
+7791##Villafáfila
+7792##Villaferrueña
+7793##Villageriz
+7794##Villalazán
+7795##Villalba de la Lampreana
+7796##Villalcampo
+7797##Villalobos
+7798##Villalonso
+7799##Villalpando
+7800##Villalube
+7801##Villamayor de Campos
+7802##Villamor de los Escuderos
+7803##Villanázar
+7804##Villanueva de Azoague
+7805##Villanueva de Campeán
+7806##Villanueva de las Peras
+7807##Villanueva del Campo
+7808##Villar de Fallaves
+7809##Villar del Buey
+7810##Villaralbo
+7811##Villardeciervos
+7812##Villardiegua de la Ribera
+7813##Villárdiga
+7814##Villardondiego
+7815##Villarrín de Campos
+7816##Villaseco del Pan
+7817##Villavendimio
+7818##Villaveza de Valverde
+7819##Villaveza del Agua
+7820##Viñas
+7821##Zamora
+7822##Abanto
+7823##Acered
+7824##Agón
+7825##Aguarón
+7826##Aguilón
+7827##Ainzón
+7828##Aladrén
+7829##Alagón
+7830##Alarba
+7831##Alberite de San Juan
+7832##Albeta
+7833##Alborge
+7834##Alcalá de Ebro
+7835##Alcalá de Moncayo
+7836##Alconchel de Ariza
+7837##Aldehuela de Liestos
+7838##Alfajarín
+7839##Alfamén
+7840##Alforque
+7841##Alhama de Aragón
+7842##Almochuel
+7843##Almolda La
+7844##Almonacid de la Cuba
+7845##Almonacid de la Sierra
+7846##Almunia de Doña Godina La
+7847##Alpartir
+7848##Ambel
+7849##Anento
+7850##Aniñón
+7851##Añón de Moncayo
+7852##Aranda de Moncayo
+7853##Arándiga
+7854##Ardisa
+7855##Ariza
+7856##Artieda
+7857##Asín
+7858##Atea
+7859##Ateca
+7860##Azuara
+7861##Badules
+7862##Bagüés
+7863##Balconchán
+7864##Bárboles
+7865##Bardallur
+7866##Belchite
+7867##Belmonte de Gracián
+7868##Berdejo
+7869##Berrueco
+7870##Biel
+7871##Bijuesca
+7872##Biota
+7873##Bisimbre
+7874##Boquiñeni
+7875##Bordalba
+7876##Borja
+7877##Botorrita
+7878##Brea de Aragón
+7879##Bubierca
+7880##Bujaraloz
+7881##Bulbuente
+7882##Bureta
+7883##Burgo de Ebro El
+7884##Buste El
+7885##Cabañas de Ebro
+7886##Cabolafuente
+7887##Cadrete
+7888##Calatayud
+7889##Calatorao
+7890##Calcena
+7891##Calmarza
+7892##Campillo de Aragón
+7893##Carenas
+7894##Cariñena
+7895##Caspe
+7896##Castejón de Alarba
+7897##Castejón de las Armas
+7898##Castejón de Valdejasa
+7899##Castiliscar
+7900##Cervera de la Cañada
+7901##Cerveruela
+7902##Cetina
+7903##Chiprana
+7904##Chodes
+7905##Cimballa
+7906##Cinco Olivas
+7907##Clarés de Ribota
+7908##Codo
+7909##Codos
+7910##Contamina
+7911##Cosuenda
+7912##Cuarte de Huerva
+7913##Cubel
+7914##Cuerlas Las
+7915##Daroca
+7916##Ejea de los Caballeros
+7917##Embid de Ariza
+7918##Encinacorba
+7919##Épila
+7920##Erla
+7921##Escatrón
+7922##Fabara
+7923##Farlete
+7924##Fayón
+7925##Fayos Los
+7926##Figueruelas
+7927##Fombuena
+7928##Frago El
+7929##Frasno El
+7930##Fréscano
+7931##Fuendejalón
+7932##Fuendetodos
+7933##Fuentes de Ebro
+7934##Fuentes de Jiloca
+7935##Gallocanta
+7936##Gallur
+7937##Gelsa
+7938##Godojos
+7939##Gotor
+7940##Grisel
+7941##Grisén
+7942##Herrera de los Navarros
+7943##Ibdes
+7944##Illueca
+7945##Isuerre
+7946##Jaraba
+7947##Jarque
+7948##Jaulín
+7949##Joyosa La
+7950##Lagata
+7951##Langa del Castillo
+7952##Layana
+7953##Lécera
+7954##Lechón
+7955##Leciñena
+7956##Letux
+7957##Litago
+7958##Lituénigo
+7959##Lobera de Onsella
+7960##Longares
+7961##Longás
+7962##Lucena de Jalón
+7963##Luceni
+7964##Luesia
+7965##Luesma
+7966##Lumpiaque
+7967##Luna
+7968##Maella
+7969##Magallón
+7970##Mainar
+7971##Malanquilla
+7972##Maleján
+7973##Mallén
+7974##Malón
+7975##Maluenda
+7976##Manchones
+7977##Mara
+7978##María de Huerva
+7979##Marracos
+7980##Mediana de Aragón
+7981##Mequinenza
+7982##Mesones de Isuela
+7983##Mezalocha
+7984##Mianos
+7985##Miedes de Aragón
+7986##Monegrillo
+7987##Moneva
+7988##Monreal de Ariza
+7989##Monterde
+7990##Montón
+7991##Morata de Jalón
+7992##Morata de Jiloca
+7993##Morés
+7994##Moros
+7995##Moyuela
+7996##Mozota
+7997##Muel
+7998##Muela La
+7999##Munébrega
+8000##Murero
+8001##Murillo de Gállego
+8002##Navardún
+8003##Nigüella
+8004##Nombrevilla
+8005##Nonaspe
+8006##Novallas
+8007##Novillas
+8008##Nuévalos
+8009##Nuez de Ebro
+8010##Olvés
+8011##Orcajo
+8012##Orera
+8013##Orés
+8014##Oseja
+8015##Osera de Ebro
+8016##Paniza
+8017##Paracuellos de Jiloca
+8018##Paracuellos de la Ribera
+8019##Pastriz
+8020##Pedrola
+8021##Pedrosas Las
+8022##Perdiguera
+8023##Piedratajada
+8024##Pina de Ebro
+8025##Pinseque
+8026##Pintanos Los
+8027##Plasencia de Jalón
+8028##Pleitas
+8029##Plenas
+8030##Pomer
+8031##Pozuel de Ariza
+8032##Pozuelo de Aragón
+8033##Pradilla de Ebro
+8034##Puebla de Albortón
+8035##Puebla de Alfindén La
+8036##Puendeluna
+8037##Purujosa
+8038##Quinto
+8039##Remolinos
+8040##Retascón
+8041##Ricla
+8042##Romanos
+8043##Rueda de Jalón
+8044##Ruesca
+8045##Sabiñán
+8046##Sádaba
+8047##Salillas de Jalón
+8048##Salvatierra de Esca
+8049##Samper del Salz
+8050##San Martín de la Virgen de Moncayo
+8051##San Mateo de Gállego
+8052##Santa Cruz de Grío
+8053##Santa Cruz de Moncayo
+8054##Santa Eulalia de Gállego
+8055##Santed
+8056##Sástago
+8057##Sediles
+8058##Sestrica
+8059##Sierra de Luna
+8060##Sigüés
+8061##Sisamón
+8062##Sobradiel
+8063##Sos del Rey Católico
+8064##Tabuenca
+8065##Talamantes
+8066##Tarazona
+8067##Tauste
+8068##Terrer
+8069##Tierga
+8070##Tobed
+8071##Torralba de los Frailes
+8072##Torralba de Ribota
+8073##Torralbilla
+8074##Torrehermosa
+8075##Torrelapaja
+8076##Torrellas
+8077##Torres de Berrellén
+8078##Torrijo de la Cañada
+8079##Tosos
+8080##Trasmoz
+8081##Trasobares
+8082##Uncastillo
+8083##Undués de Lerda
+8084##Urrea de Jalón
+8085##Urriés
+8086##Used
+8087##Utebo
+8088##Val de San Martín
+8089##Valdehorna
+8090##Valmadrid
+8091##Valpalmas
+8092##Valtorres
+8093##Velilla de Ebro
+8094##Velilla de Jiloca
+8095##Vera de Moncayo
+8096##Vierlas
+8097##Villadoz
+8098##Villafeliche
+8099##Villafranca de Ebro
+8100##Villalba de Perejil
+8101##Villalengua
+8102##Villamayor de Gállego
+8103##Villanueva de Gállego
+8104##Villanueva de Huerva
+8105##Villanueva de Jiloca
+8106##Villar de los Navarros
+8107##Villarreal de Huerva
+8108##Villarroya de la Sierra
+8109##Villarroya del Campo
+8110##Vilueña La
+8111##Vistabella
+8112##Zaida La
+8113##Zaragoza
+8114##Zuera
+8115##Ceuta
+8116##Melilla

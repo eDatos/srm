@@ -256,6 +256,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_4                        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_04";
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_5                        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_05";
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_6                        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_06";
+    protected static final String VARIABLE_2_VARIABLE_ELEMENT_7                        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_07";
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_1                        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_01";
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_2                        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_02";
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_3                        = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_03";
