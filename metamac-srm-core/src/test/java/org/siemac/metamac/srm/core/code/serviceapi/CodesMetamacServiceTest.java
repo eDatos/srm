@@ -1808,7 +1808,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
                     ItemSchemeVersion itemSchemeVersion = itemSchemeRepository.findByUrn(codelistUrn);
-                    assertEquals(null, itemSchemeVersion.getItemScheme().getTaskBackground());
+                    assertEquals(null, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
 
                     VersioningResult versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), codelistUrn, Boolean.TRUE, VersionTypeEnum.MAJOR);
                     assertEquals(true, versioningResult.getIsPlannedInBackground());
@@ -1816,7 +1816,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     jobKey.append(versioningResult.getJobKey());
 
                     itemSchemeVersion = itemSchemeRepository.findByUrn(codelistUrn);
-                    assertEquals(true, itemSchemeVersion.getItemScheme().getTaskBackground());
+                    assertEquals(true, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
 
                     try {
                         codesService.versioningCodelist(getServiceContextAdministrador(), codelistUrn, Boolean.TRUE, VersionTypeEnum.MAJOR);
