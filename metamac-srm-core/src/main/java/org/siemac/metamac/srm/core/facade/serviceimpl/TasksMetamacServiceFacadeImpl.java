@@ -1,68 +1,62 @@
 package org.siemac.metamac.srm.core.facade.serviceimpl;
 
-import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-
-import org.siemac.metamac.core.common.exception.MetamacException;
-
-import org.springframework.stereotype.Service;
-
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of TasksMetamacServiceFacade.
  */
 @Service("tasksMetamacServiceFacade")
-public class TasksMetamacServiceFacadeImpl
-    extends TasksMetamacServiceFacadeImplBase {
+public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImplBase {
+
     public TasksMetamacServiceFacadeImpl() {
     }
 
-    public void importCodesCsv(ServiceContext ctx, String codelistUrn,
-        InputStream csvStream, String charset, String fileName, String jobKey,
-        boolean updateAlreadyExisting) throws MetamacException {
+    @Override
+    public void importCodesCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
+        // Import
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
+        getCodesMetamacService().importCodesCsv(ctx, codelistUrn, csvStream, charset, fileName, updateAlreadyExisting, informationItems);
+        // Mark job as completed
+        // TODO sistema de avisos
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
+    }
 
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "importCodesCsv not implemented");
+    @Override
+    public void importCodeOrdersCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String charset, String fileName, String jobKey) throws MetamacException {
+        getCodesMetamacService().importCodeOrdersCsv(ctx, codelistUrn, csvStream, charset, fileName);
+        // Mark job as completed
+        // TODO sistema de avisos
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
 
     }
 
-    public void importCodeOrdersCsv(ServiceContext ctx, String codelistUrn,
-        InputStream csvStream, String charset, String fileName, String jobKey)
-        throws MetamacException {
+    @Override
+    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting)
+            throws MetamacException {
+        // Import
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
+        getCodesMetamacService().importVariableElementsCsv(ctx, variableUrn, csvStream, charset, fileName, updateAlreadyExisting, informationItems);
+        // Mark job as completed
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
+    }
+
+    @Override
+    public void processMergeCodelist(ServiceContext ctx, String urnToCopy, String jobKey) throws MetamacException {
 
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "importCodeOrdersCsv not implemented");
+        throw new UnsupportedOperationException("processMergeCodelist not implemented");
 
     }
 
-    public void importVariableElementsCsv(ServiceContext ctx,
-        String variableUrn, InputStream csvStream, String charset,
-        String fileName, String jobKey, boolean updateAlreadyExisting)
-        throws MetamacException {
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "importVariableElementsCsv not implemented");
-
-    }
-
-    public void processMergeCodelist(ServiceContext ctx, String urnToCopy,
-        String jobKey) throws MetamacException {
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "processMergeCodelist not implemented");
-
-    }
-
-    public void markTaskAsFailed(ServiceContext ctx, String job,
-        Exception exception) throws MetamacException {
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "markTaskAsFailed not implemented");
-
+    @Override
+    public void markTaskAsFailed(ServiceContext ctx, String job, Exception exception) throws MetamacException {
+        getTasksMetamacService().markTaskAsFailed(ctx, job, exception);
     }
 }
