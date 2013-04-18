@@ -42,7 +42,7 @@ public class GetCodesActionHandler extends SecurityActionHandler<GetCodesAction,
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.DESC);
-        order.setPropertyName(CodeMetamacCriteriaOrderEnum.URN.name()); // TODO order by last_updated
+        order.setPropertyName(CodeMetamacCriteriaOrderEnum.LAST_UPDATED.name());
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);

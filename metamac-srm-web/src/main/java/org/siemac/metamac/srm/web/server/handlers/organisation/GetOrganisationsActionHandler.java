@@ -42,7 +42,7 @@ public class GetOrganisationsActionHandler extends SecurityActionHandler<GetOrga
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.DESC);
-        order.setPropertyName(OrganisationMetamacCriteriaOrderEnum.URN.name()); // TODO order by last_updated
+        order.setPropertyName(OrganisationMetamacCriteriaOrderEnum.LAST_UPDATED.name());
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
