@@ -23,8 +23,8 @@ public class MergeCodelistJob implements Job {
 
     // Job Context Param
     public static final String        USER                      = "user";
-    public static final String        URN_TO_COPY               = "urnToCopy";
-    public static final String        IS_TEMPORAL               = "isTemporal";
+    public static final String        URN                       = "urn";
+    // public static final String IS_TEMPORAL = "isTemporal";
 
     private TasksMetamacServiceFacade tasksMetamacServiceFacade = null;
 
@@ -44,8 +44,8 @@ public class MergeCodelistJob implements Job {
 
         try {
             // Parameters
-            String urnToCopy = data.getString(URN_TO_COPY);
-            Boolean isTemporal = data.getBoolean(IS_TEMPORAL);
+            String urnToCopy = data.getString(URN);
+            // Boolean isTemporal = data.getBoolean(IS_TEMPORAL);
 
             logger.info("MergingJob: Copy " + urnToCopy + ", job " + jobKey + " starting at " + new Date());
 
@@ -59,10 +59,8 @@ public class MergeCodelistJob implements Job {
             try {
                 getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
 
-                // TODO marcar como fallido¿??
-                throw new UnsupportedOperationException("// TODO marcar como fallido¿??");
-                // String urnToCopy = data.getString(URN_TO_COPY);
-                // getTaskMetamacServiceFacade().markVersioningCodelistAsFailed(serviceContext, urnToCopy);
+                String urnToCopy = data.getString(URN);
+                getTaskMetamacServiceFacade().markTaskItemSchemeAsFailed(serviceContext, urnToCopy);
             } catch (MetamacException e1) {
                 logger.error("MergingJob: job with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
             }

@@ -7,13 +7,19 @@ import java.util.List;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 
 /**
  * Implementation of TasksMetamacServiceFacade.
  */
 @Service("tasksMetamacServiceFacade")
 public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImplBase {
+
+    @Autowired
+    private BaseService baseService;
 
     public TasksMetamacServiceFacadeImpl() {
     }
@@ -58,5 +64,10 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     @Override
     public void markTaskAsFailed(ServiceContext ctx, String job, Exception exception) throws MetamacException {
         getTasksMetamacService().markTaskAsFailed(ctx, job, exception);
+    }
+
+    @Override
+    public void markTaskItemSchemeAsFailed(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        baseService.markTaskItemSchemeInBackgroundAsFailed(ctx, urnToCopy);
     }
 }

@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.srm.core.task.serviceapi.TasksService;
 import com.arte.statistic.sdmx.srm.core.task.serviceimpl.utils.ImportationJaxb2DoCallback;
@@ -45,6 +46,9 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
 
     @Autowired
     private TasksService               tasksService;
+
+    @Autowired
+    private BaseService                baseService;
 
     @Autowired
     @Qualifier("importationMetamacJaxb2DoCallback")
@@ -155,8 +159,8 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
             }
 
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
-            JobDetail job = newJob(MergeCodelistJob.class).withIdentity(jobKey, "merge").usingJobData(MergeCodelistJob.USER, ctx.getUserId()).usingJobData(MergeCodelistJob.URN_TO_COPY, urnToCopy)
-                    .usingJobData(MergeCodelistJob.IS_TEMPORAL, isTemporal).requestRecovery().build();
+            JobDetail job = newJob(MergeCodelistJob.class).withIdentity(jobKey, "merge").usingJobData(MergeCodelistJob.USER, ctx.getUserId()).usingJobData(MergeCodelistJob.URN, urnToCopy)
+                    .requestRecovery().build();
 
             SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "merge").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
 
