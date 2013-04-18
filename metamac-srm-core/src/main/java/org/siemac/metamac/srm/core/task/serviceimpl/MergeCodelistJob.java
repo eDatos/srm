@@ -19,19 +19,14 @@ import org.slf4j.LoggerFactory;
 @DisallowConcurrentExecution
 public class MergeCodelistJob implements Job {
 
-    private static Logger             logger                        = LoggerFactory.getLogger(MergeCodelistJob.class);
+    private static Logger             logger                    = LoggerFactory.getLogger(MergeCodelistJob.class);
 
     // Job Context Param
-    public static final String        USER                          = "user";
-    public static final String        URN_TO_COPY                   = "urnToCopy";
-    public static final String        VERSION_TYPE                  = "versionType";
-    public static final String        IS_TEMPORAL                   = "isTemporal";
-    public static final String        CALLBACK                      = "callback";
+    public static final String        USER                      = "user";
+    public static final String        URN_TO_COPY               = "urnToCopy";
+    public static final String        IS_TEMPORAL               = "isTemporal";
 
-    public static final String        OPERATION                     = "operation";
-    public static final String        OPERATION_VERSIONING_CODELIST = "versioningCodelist";
-
-    private TasksMetamacServiceFacade tasksMetamacServiceFacade     = null;
+    private TasksMetamacServiceFacade tasksMetamacServiceFacade = null;
 
     public TasksMetamacServiceFacade getTaskMetamacServiceFacade() {
         if (tasksMetamacServiceFacade == null) {

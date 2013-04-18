@@ -155,14 +155,12 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
             }
 
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
-            // ss
-            // JobDetail job = newJob(VersioningJob.class).withIdentity(jobKey, "merge").usingJobData(VersioningJob.OPERATION, VersioningJob.OPERATION_VERSIONING_CODELIST)
-            // .usingJobData(VersioningJob.USER, ctx.getUserId()).usingJobData(VersioningJob.URN_TO_COPY, urnToCopy).usingJobData(VersioningJob.CALLBACK, callback.getBeanName())
-            // .usingJobData(VersioningJob.VERSION_TYPE, versionType.name()).usingJobData(VersioningJob.IS_TEMPORAL, isTemporal).requestRecovery().build();
-            //
-            // SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "versioning").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
-            //
-            // sched.scheduleJob(job, trigger);
+            JobDetail job = newJob(MergeCodelistJob.class).withIdentity(jobKey, "merge").usingJobData(MergeCodelistJob.USER, ctx.getUserId()).usingJobData(MergeCodelistJob.URN_TO_COPY, urnToCopy)
+                    .usingJobData(MergeCodelistJob.IS_TEMPORAL, isTemporal).requestRecovery().build();
+
+            SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "merge").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
+
+            sched.scheduleJob(job, trigger);
 
             return jobKey;
         } catch (Exception e) {
