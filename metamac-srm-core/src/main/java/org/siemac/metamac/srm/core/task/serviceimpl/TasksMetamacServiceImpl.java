@@ -142,7 +142,7 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
-    public String plannifyMergeCodelist(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
+    public synchronized String plannifyPublicationInternallyCodelist(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
         try {
             // Plan job
             String jobKey = "job_merge_" + java.util.UUID.randomUUID().toString();
@@ -159,8 +159,8 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
             }
 
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
-            JobDetail job = newJob(MergeCodelistJob.class).withIdentity(jobKey, "merge").usingJobData(MergeCodelistJob.USER, ctx.getUserId()).usingJobData(MergeCodelistJob.URN, urnToCopy)
-                    .requestRecovery().build();
+            JobDetail job = newJob(MergeCodelistJob.class).withIdentity(jobKey, "merge").usingJobData(MergeCodelistJob.USER, ctx.getUserId()).usingJobData(MergeCodelistJob.URN, urn)
+                    .usingJobData(MergeCodelistJob.FORCE_LATEST_FINAL, forceLatestFinal).requestRecovery().build();
 
             SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "merge").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
 

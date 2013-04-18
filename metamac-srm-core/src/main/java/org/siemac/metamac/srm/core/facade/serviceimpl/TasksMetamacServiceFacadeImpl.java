@@ -53,9 +53,10 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     }
 
     @Override
-    public void processMergeCodelist(ServiceContext ctx, String urnToCopy, String jobKey) throws MetamacException {
-        // Merge
-        getCodesMetamacService().mergeTemporalVersion(ctx, urnToCopy);
+    public void processPublishInternallyCodelist(ServiceContext ctx, String urn, boolean forceLatestFinal, String jobKey) throws MetamacException {
+        // Publish
+        getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal, Boolean.FALSE);
+
         // Mark job as completed
         // TODO sistema de avisos
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);

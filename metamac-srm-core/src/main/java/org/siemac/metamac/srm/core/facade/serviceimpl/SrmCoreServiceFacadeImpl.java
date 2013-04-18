@@ -1018,16 +1018,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public CodelistMetamacDto publishCodelistInternally(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
+    public VersioningResult publishCodelistInternally(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
         // Security
         ItemsSecurityUtils.canPublishItemSchemeInternally(ctx);
 
         // Publish
-        CodelistVersionMetamac codelistVersionPublished = getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal);
+        VersioningResult versioningResult = getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal, Boolean.TRUE);
 
-        // Transform to DTO
-        CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionPublished);
-        return codelistDto;
+        return versioningResult;
     }
 
     @Override

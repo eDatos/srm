@@ -20,7 +20,7 @@ Application TaskMetamac {
 			"Prepares importation of variable elements in csv format"
     		String importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
     		"Prepares a merge between codelists"
-    		String plannifyMergeCodelist(String urnToCopy, boolean isTemporal) throws MetamacException;
+    		String plannifyPublicationInternallyCodelist(String urn, Boolean forceLatestFinal) throws MetamacException;
 			
 			// TASKS
     		"Retrieves task"

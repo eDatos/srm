@@ -480,7 +480,7 @@ Application SrmFacadeCore {
 	    	"Rejects diffusion validation of Codelist"
 	    	@CodelistMetamacDto rejectCodelistDiffusionValidation(String urn) throws MetamacException; 
 	    	"Publishes internally a Codelist"
-	    	@CodelistMetamacDto publishCodelistInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
+	    	VersioningResult publishCodelistInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a Codelist"
 	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
     		"Creates a new version of a Codelist, copying metadata from version with provided urn"
@@ -646,7 +646,7 @@ Application SrmFacadeCore {
     		"Imports variable elements in csv format"
     		importVariableElementsCsv(String variableUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Perform a merge with temporal codelist"
-			processMergeCodelist(String urnToCopy, String jobKey) throws MetamacException;
+			processPublishInternallyCodelist(String urnToCopy, boolean forceLatestFinal, String jobKey) throws MetamacException;
     		
     		
     		"Marks job as failed"

@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -65,6 +66,7 @@ import org.siemac.metamac.srm.core.normalisation.MatchResult;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodeOrdersCsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodesCsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationVariableElementsCsvHeader;
+import org.siemac.metamac.srm.core.task.serviceapi.TasksMetamacService;
 import org.siemac.metamac.srm.core.task.utils.ImportationCsvUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +78,9 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
@@ -90,6 +95,7 @@ import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCo
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 
 /**
  * Implementation of CodesMetamacService.
@@ -102,6 +108,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Autowired
     private ItemSchemeVersionRepository    itemSchemeVersionRepository;
+
+    @Autowired
+    private ItemRepository                 itemRepository;
+
+    @Autowired
+    private ItemSchemeRepository           itemSchemeRepository;
 
     @Autowired
     private IdentifiableArtefactRepository identifiableArtefactRepository;
@@ -120,6 +132,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Autowired
     @Qualifier("codesVersioningCopyWithoutCodesCallbackMetamac")
     private CodesVersioningCopyCallback    codesVersioningCopyWithoutCodesCallback;
+
+    @Autowired
+    private TasksMetamacService            tasksMetamacService;
 
     @Autowired
     private InternationalStringRepository  internationalStringRepository;
@@ -263,8 +278,40 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public CodelistVersionMetamac publishInternallyCodelist(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
-        return (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
+    public VersioningResult publishInternallyCodelist(ServiceContext ctx, String urn, Boolean forceLatestFinal, Boolean canBeBackground) throws MetamacException {
+        // Validation
+        // TODO
+
+        // Initialize
+        CodelistVersion codelistVersionToPublish = retrieveCodelistByUrn(ctx, urn);
+        ItemScheme itemScheme = codelistVersionToPublish.getItemScheme();
+
+        // TODO testear constraint que haría el job para evitar que falle
+
+        Boolean executeInBackground = Boolean.FALSE;
+        if (BooleanUtils.isTrue(canBeBackground)) {
+            Long itemsCount = itemRepository.countItems(codelistVersionToPublish.getId());
+            if (itemsCount > SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND) {
+                executeInBackground = Boolean.TRUE;
+            }
+        }
+
+        VersioningResult versioningResult = new VersioningResult();
+        if (executeInBackground) {
+            itemScheme.setIsTaskInBackground(Boolean.TRUE);
+            itemScheme = itemSchemeRepository.save(itemScheme);
+
+            // execute in background
+            String jobKey = tasksMetamacService.plannifyPublicationInternallyCodelist(ctx, urn, forceLatestFinal);
+
+            versioningResult.setIsPlannedInBackground(Boolean.TRUE);
+            versioningResult.setJobKey(jobKey);
+        } else {
+            CodelistVersion codelist = (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
+            versioningResult.setUrnResult(codelist.getMaintainableArtefact().getUrn());
+        }
+
+        return versioningResult;
     }
 
     @Override
@@ -325,7 +372,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public String mergeTemporalVersion(ServiceContext ctx, String urnTemporal) throws MetamacException {
+    public CodelistVersionMetamac mergeTemporalVersion(ServiceContext ctx, String urnTemporal) throws MetamacException {
 
         CodelistVersionMetamac codelistTemporalVersion = retrieveCodelistByUrn(ctx, urnTemporal);
 
@@ -404,7 +451,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Delete temporal version
         deleteCodelist(ctx, codelistTemporalVersion.getMaintainableArtefact().getUrn());
 
-        return codelistVersion.getMaintainableArtefact().getUrn();
+        return codelistVersion;
     }
 
     @Override

@@ -40,6 +40,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.joda.time.tz.DateTimeZoneBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
@@ -1224,7 +1225,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Publish internally
-        CodelistVersionMetamac codelistVersion = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE);
+        VersioningResult versioningResult = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE, Boolean.FALSE);
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, versioningResult.getUrnResult());
 
         // Validate response
         {
@@ -1310,7 +1312,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Publish internally
-        codelistVersion = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE);
+        VersioningResult versioningResult = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE, Boolean.FALSE);
+        codelistVersion = codesService.retrieveCodelistByUrn(ctx, versioningResult.getUrnResult());
 
         // After
         entityManager.clear();
@@ -1370,7 +1373,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         try {
             // Note: publishInternallyCodelist calls to 'checkCodelistVersionTranslates'
-            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE, Boolean.FALSE);
             fail("Codelist wrong translations");
         } catch (MetamacException e) {
             assertEquals(11, e.getExceptionItems().size());
@@ -1404,7 +1407,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testPublishInternallyCodelistErrorRequiredMetadata() throws Exception {
         String urn = CODELIST_11_V1;
         try {
-            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE, Boolean.FALSE);
             fail("codelist cannot be publish without an access type defined and with an associated variable and others...");
         } catch (MetamacException e) {
             assertEquals(3, e.getExceptionItems().size());
@@ -1418,7 +1421,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testPublishInternallyCodelistErrorNotExists() throws Exception {
         String urn = NOT_EXISTS;
         try {
-            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE, Boolean.FALSE);
             fail("Codelist not exists");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -1434,7 +1437,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         try {
-            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE);
+            codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE, Boolean.FALSE);
             fail("Codelist wrong proc status");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
@@ -7043,9 +7046,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // Merge
             createTemporalCodelist = codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
             createTemporalCodelist = codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
-            String codelistVersionMetamacUrn = codesService.mergeTemporalVersion(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
-            entityManager.clear();
-            CodelistVersionMetamac codelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionMetamacUrn);
+            CodelistVersionMetamac codelistVersionMetamac = codesService.mergeTemporalVersion(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
+            // String codelistVersionMetamacUrn = versioningResult.getUrnResult();
+            // entityManager.clear();
+            // CodelistVersionMetamac codelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionMetamacUrn);
 
             // Assert **************************************
 
@@ -7081,13 +7085,76 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // save to force incorrect metadata
             codelistVersionTemporal.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DIFFUSION_VALIDATION);
             itemSchemeRepository.save(codelistVersionTemporal);
-            String codelistVersionMetamacUrn = codesService.mergeTemporalVersion(getServiceContextAdministrador(), codelistVersionTemporal.getMaintainableArtefact().getUrn());
-            entityManager.clear();
-            CodelistVersionMetamac codelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionMetamacUrn);
+            CodelistVersionMetamac codelistVersionMetamac = codesService.mergeTemporalVersion(getServiceContextAdministrador(), codelistVersionTemporal.getMaintainableArtefact().getUrn());
+            // String codelistVersionMetamacUrn = versioningResult.getUrnResult();
+            // entityManager.clear();
+            // CodelistVersionMetamac codelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionMetamacUrn);
             assertFalse(codelistVersionMetamac.getMaintainableArtefact().getIsLastVersion());
         }
     }
 
+    @Test
+    @DirtyDatabase
+    @Ignore
+    public void testPublishInternallyCodelistInBackground() throws Exception {
+
+        int previousValueLimitToBackground = SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND;
+        final String codelistUrn = CODELIST_3_V1;
+        final StringBuilder jobKey = new StringBuilder();
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    ItemSchemeVersion itemSchemeVersion = itemSchemeRepository.findByUrn(codelistUrn);
+                    assertEquals(null, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+                    // Create Temporal Codelist and go to PublicationInternally phase
+                    VersioningResult createTemporalCodelistResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), codelistUrn);
+                    CodelistVersionMetamac createTemporalCodelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), createTemporalCodelistResult.getUrnResult());
+                    createTemporalCodelist = codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
+                    createTemporalCodelist = codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
+
+                    // PublicationInternally phase
+                    SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 3; // modify to force in background
+                    VersioningResult versioningResult = codesService.publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false,
+                            Boolean.TRUE);
+
+                    assertEquals(true, versioningResult.getIsPlannedInBackground());
+                    assertEquals(null, versioningResult.getUrnResult());
+                    jobKey.append(versioningResult.getJobKey());
+
+                    itemSchemeVersion = itemSchemeRepository.findByUrn(createTemporalCodelist.getMaintainableArtefact().getUrn());
+                    assertEquals(true, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+                    // try {
+                    // codesService.publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false, Boolean.TRUE);
+                    // fail("already versioning");
+                    // } catch (MetamacException e) {
+                    // assertEquals(1, e.getExceptionItems().size());
+                    // assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_ALREADY_VERSIONING.getCode(), e.getExceptionItems().get(0).getCode());
+                    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                    // assertEquals(codelistUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                    // }
+                } catch (MetamacException e) {
+                    fail("versioning failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+        SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = previousValueLimitToBackground;
+
+        // Validate
+        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size());
+
+        // Validate versioning
+        validateVersioningCodelist3V1();
+    }
     @Override
     @Test
     public void testRetrieveCodelistOpennessVisualisationsByCodelist() throws Exception {

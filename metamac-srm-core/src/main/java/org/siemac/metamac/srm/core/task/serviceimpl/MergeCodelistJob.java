@@ -24,7 +24,7 @@ public class MergeCodelistJob implements Job {
     // Job Context Param
     public static final String        USER                      = "user";
     public static final String        URN                       = "urn";
-    // public static final String IS_TEMPORAL = "isTemporal";
+    public static final String        FORCE_LATEST_FINAL        = "forceLatestFinal";
 
     private TasksMetamacServiceFacade tasksMetamacServiceFacade = null;
 
@@ -45,11 +45,11 @@ public class MergeCodelistJob implements Job {
         try {
             // Parameters
             String urnToCopy = data.getString(URN);
-            // Boolean isTemporal = data.getBoolean(IS_TEMPORAL);
+            Boolean forceLatestFinal = data.getBoolean(FORCE_LATEST_FINAL);
 
             logger.info("MergingJob: Copy " + urnToCopy + ", job " + jobKey + " starting at " + new Date());
 
-            getTaskMetamacServiceFacade().processMergeCodelist(serviceContext, urnToCopy, jobKey.getName());
+            getTaskMetamacServiceFacade().processPublishInternallyCodelist(serviceContext, urnToCopy, forceLatestFinal, jobKey.getName());
 
             logger.info("MergingJob: Urn to copy " + urnToCopy + ", job " + jobKey + " finished at " + new Date());
             // TODO sistema de avisos
