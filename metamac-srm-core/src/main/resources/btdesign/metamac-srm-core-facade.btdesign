@@ -516,6 +516,8 @@ Application SrmFacadeCore {
     		importCodesCsvInBackground(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports code orders in csv format"
     		importCodeOrdersCsvInBackground(String codelistUrn, InputStream csvStream, String fileName) throws MetamacException;
+	   		"Propuses a normalisation of variable elements to codes"
+	   		List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(String codelistUrn, String locale) throws MetamacException;
     		
     		"Creates order visualisation"
     		@CodelistVisualisationDto createCodelistOrderVisualisation(@CodelistVisualisationDto codelistOrderVisualisationDto) throws MetamacException;

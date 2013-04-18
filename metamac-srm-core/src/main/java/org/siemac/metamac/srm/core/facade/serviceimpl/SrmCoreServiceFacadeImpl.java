@@ -36,6 +36,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
@@ -1239,6 +1240,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Retrieve
         return getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn, locale, orderVisualisationUrn, opennessVisualisationUrn);
+    }
+
+    @Override
+    public List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(ServiceContext ctx, String codelistUrn, String locale) throws MetamacException {
+        // Security
+        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+
+        // Normalise
+        return getCodesMetamacService().normaliseVariableElementsToCodes(ctx, codelistUrn, locale);
     }
 
     // ------------------------------------------------------------------------
