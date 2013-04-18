@@ -2,19 +2,20 @@ package org.siemac.metamac.srm.web.shared.code;
 
 import java.util.List;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 
 @GenDispatch(isSecure = false)
-public class CreateCodesHierarchy {
+public class CopyCodesInCodelist {
 
     @In(1)
-    String                 codelistUrn;
+    String                    codelistTargetUrn;
 
     @In(2)
-    String                 parentUrn;
+    String                    parentTargetUrn;
 
     @In(3)
-    List<ItemHierarchyDto> codesMetamacDto;
+    List<CodeToCopyHierarchy> codesToCopy;
 }

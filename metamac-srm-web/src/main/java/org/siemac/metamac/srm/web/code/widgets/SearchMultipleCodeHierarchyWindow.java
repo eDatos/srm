@@ -168,8 +168,8 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             }
         });
 
-        CustomButtonItem saveItem = new CustomButtonItem("save-cod", MetamacWebCommon.getConstants().accept());
-        saveItem.addClickHandler(new ClickHandler() {
+        CustomButtonItem continueItem = new CustomButtonItem("save-cod", MetamacWebCommon.getConstants().actionContinue());
+        continueItem.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -189,7 +189,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         form = new CustomDynamicForm();
         form.setMargin(15);
         form.setWidth(760);
-        form.setFields(saveItem);
+        form.setFields(continueItem);
 
         addItem(filterForm);
         addItem(title);
