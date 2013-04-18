@@ -171,9 +171,9 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         tabSet.addTab(conceptSchemeTab);
 
         // Concepts tab
-        Tab codesTab = new Tab(getConstants().concept());
-        codesTab.setPane(conceptsLayout);
-        tabSet.addTab(codesTab);
+        Tab conceptsTab = new Tab(getConstants().concepts());
+        conceptsTab.setPane(conceptsLayout);
+        tabSet.addTab(conceptsTab);
 
         // Categorisations tab
         Tab categorisationsTab = new Tab(getConstants().categorisations());

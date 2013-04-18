@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
+import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.tree.Tree;
@@ -20,8 +21,8 @@ public class CodesSimpleCheckboxTreeGrid extends BaseCodesSimpleTreeGrid {
     protected Tree          tree;
 
     public CodesSimpleCheckboxTreeGrid() {
-        super();
-
+        super(false);
+        setSelectionAppearance(SelectionAppearance.CHECKBOX);
     }
 
     public void setItems(ItemSchemeDto itemSchemeDto, List<CodeMetamacVisualisationResult> itemMetamacResults) {

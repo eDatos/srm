@@ -8,14 +8,15 @@ import org.siemac.metamac.web.common.client.resources.StyleUtils;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 
 public class BaseCodesSimpleTreeGrid extends TreeGrid {
 
-    public BaseCodesSimpleTreeGrid() {
+    public BaseCodesSimpleTreeGrid(boolean alwaysShowEditors) {
         super();
+
+        setAlwaysShowEditors(alwaysShowEditors);
 
         setHeight(175);
         setAutoFitMaxRecords(10);
@@ -26,7 +27,6 @@ public class BaseCodesSimpleTreeGrid extends TreeGrid {
         setShowPartialSelection(true);
         setShowConnectors(true);
         setLeaveScrollbarGap(false);
-        setSelectionAppearance(SelectionAppearance.CHECKBOX);
         setCascadeSelection(false);
         setRollUnderCanvasProperties(StyleUtils.getRollUnderCanvasProperties());
 
