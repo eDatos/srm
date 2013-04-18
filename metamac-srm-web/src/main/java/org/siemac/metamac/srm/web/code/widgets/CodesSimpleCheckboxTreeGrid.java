@@ -1,51 +1,27 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
-import org.siemac.metamac.web.common.client.resources.StyleUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.tree.Tree;
-import com.smartgwt.client.widgets.tree.TreeGrid;
-import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
-public class CodesCheckboxTreeGrid extends TreeGrid {
+public class CodesSimpleCheckboxTreeGrid extends BaseCodesSimpleTreeGrid {
 
     protected ItemSchemeDto itemSchemeDto;
 
     protected Tree          tree;
 
-    public CodesCheckboxTreeGrid() {
+    public CodesSimpleCheckboxTreeGrid() {
         super();
 
-        setHeight(175);
-        setAutoFitMaxRecords(10);
-        setAutoFitData(Autofit.VERTICAL);
-        setShowOpenIcons(true);
-        setShowDropIcons(false);
-        setShowSelectedStyle(true);
-        setShowPartialSelection(true);
-        setShowConnectors(true);
-        setLeaveScrollbarGap(false);
-        setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        setCascadeSelection(false);
-        setRollUnderCanvasProperties(StyleUtils.getRollUnderCanvasProperties());
-
-        TreeGridField codeField = new TreeGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
-        codeField.setWidth("45%");
-        TreeGridField nameField = new TreeGridField(ItemDS.NAME, getConstants().nameableArtefactName());
-        setFields(codeField, nameField);
     }
 
     public void setItems(ItemSchemeDto itemSchemeDto, List<CodeMetamacVisualisationResult> itemMetamacResults) {
