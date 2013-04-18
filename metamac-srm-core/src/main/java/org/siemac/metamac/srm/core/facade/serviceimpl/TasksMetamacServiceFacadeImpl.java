@@ -34,7 +34,6 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
         // Mark job as completed
         // TODO sistema de avisos
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
-
     }
 
     @Override
@@ -49,10 +48,11 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
 
     @Override
     public void processMergeCodelist(ServiceContext ctx, String urnToCopy, String jobKey) throws MetamacException {
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("processMergeCodelist not implemented");
-
+        // Merge
+        getCodesMetamacService().mergeTemporalVersion(ctx, urnToCopy);
+        // Mark job as completed
+        // TODO sistema de avisos
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
     }
 
     @Override
