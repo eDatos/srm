@@ -279,15 +279,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public VersioningResult publishInternallyCodelist(ServiceContext ctx, String urn, Boolean forceLatestFinal, Boolean canBeBackground) throws MetamacException {
-        // Validation
-        // TODO
-
         // Initialize
         CodelistVersion codelistVersionToPublish = retrieveCodelistByUrn(ctx, urn);
         ItemScheme itemScheme = codelistVersionToPublish.getItemScheme();
 
-        // TODO testear constraint que haría el job para evitar que falle
-
+        // Determine if you need a schedule
         Boolean executeInBackground = Boolean.FALSE;
         if (BooleanUtils.isTrue(canBeBackground)) {
             Long itemsCount = itemRepository.countItems(codelistVersionToPublish.getId());
@@ -298,6 +294,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         VersioningResult versioningResult = new VersioningResult();
         if (executeInBackground) {
+            // Scheduled is needed
+            // Validation
+            codelistLifeCycle.prePublishResourceInInternallyPublished(ctx, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, Boolean.FALSE); // PrePublish for early error checking
+
             itemScheme.setIsTaskInBackground(Boolean.TRUE);
             itemScheme = itemSchemeRepository.save(itemScheme);
 
@@ -307,7 +307,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             versioningResult.setIsPlannedInBackground(Boolean.TRUE);
             versioningResult.setJobKey(jobKey);
         } else {
-            CodelistVersion codelist = (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
+            // The publication is now
+            Boolean skipValidation = itemScheme.getIsTaskInBackground(); // If is a scheduled job, skip publication validation because it was performed before.
+            CodelistVersion codelist = (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal, skipValidation);
             versioningResult.setUrnResult(codelist.getMaintainableArtefact().getUrn());
         }
 
@@ -321,16 +323,22 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public void deleteCodelist(ServiceContext ctx, String urn) throws MetamacException {
+        CodelistVersionMetamac codelistVersionMetamac = retrieveCodelistByUrn(ctx, urn);
+        deleteCodelist(ctx, codelistVersionMetamac, Boolean.TRUE);
+    }
+
+    private void deleteCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersionMetamac, boolean doValidations) throws MetamacException {
 
         // Validation
-        CodelistVersionMetamac codelistVersionMetamac = retrieveCodelistByUrn(ctx, urn);
-        checkCodelistCanBeModified(codelistVersionMetamac);
+        if (doValidations) {
+            checkCodelistCanBeModified(codelistVersionMetamac);
+        }
 
         // Delete
         codelistVersionMetamac.removeAllReplaceToCodelists(); // codelist can be deleted although it replaces to another codelist
         codelistVersionMetamac.setDefaultOrderVisualisation(null);
         codelistVersionMetamac.setDefaultOpennessVisualisation(null);
-        codesService.deleteCodelist(ctx, urn);
+        codesService.deleteCodelist(ctx, codelistVersionMetamac.getMaintainableArtefact().getUrn());
     }
 
     @Override
@@ -449,7 +457,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion = versioningCodelistOrderVisualisations(ctx, codelistTemporalVersion, codelistVersion);
 
         // Delete temporal version
-        deleteCodelist(ctx, codelistTemporalVersion.getMaintainableArtefact().getUrn());
+        deleteCodelist(ctx, codelistTemporalVersion, Boolean.FALSE);
 
         return codelistVersion;
     }

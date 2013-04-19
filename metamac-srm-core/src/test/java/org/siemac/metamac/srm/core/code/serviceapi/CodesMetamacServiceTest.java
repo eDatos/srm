@@ -40,7 +40,6 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.joda.time.tz.DateTimeZoneBuilder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
@@ -7095,7 +7094,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @DirtyDatabase
-    @Ignore
     public void testPublishInternallyCodelistInBackground() throws Exception {
 
         int previousValueLimitToBackground = SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND;

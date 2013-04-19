@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -154,18 +155,12 @@ public abstract class LifeCycleImpl implements LifeCycle {
     }
 
     @Override
-    public Object publishInternally(ServiceContext ctx, String urn, Boolean forceLastestFinal) throws MetamacException {
-
+    public Object publishInternally(ServiceContext ctx, String urn, Boolean forceLastestFinal, Boolean skipValidation) throws MetamacException {
         // Validation
         checkInvocation(urn);
 
-        // Retrieve version in specific proc status
-        Object srmResourceVersion = callback.retrieveSrmResourceByProcStatus(urn, procStatusToPublishInternally);
-
         ProcStatusEnum targetStatus = ProcStatusEnum.INTERNALLY_PUBLISHED;
-
-        // Validate to publish internally
-        checkResourceInInternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
+        Object srmResourceVersion = prePublishResourceInInternallyPublished(ctx, urn, targetStatus, skipValidation);
 
         // Merge temporal version if is needed
         srmResourceVersion = callback.mergeTemporal(ctx, srmResourceVersion);
@@ -193,6 +188,19 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // version
         if (callback.isTemporalToPublishExternally(ctx, srmResourceVersion)) {
             publishExternally(ctx, urn);
+        }
+
+        return srmResourceVersion;
+    }
+
+    @Override
+    public Object prePublishResourceInInternallyPublished(ServiceContext ctx, String urn, ProcStatusEnum targetStatus, Boolean skipValidation) throws MetamacException {
+        // Retrieve version in specific proc status
+        Object srmResourceVersion = callback.retrieveSrmResourceByProcStatus(urn, procStatusToPublishInternally);
+
+        // Validate to publish internally
+        if (BooleanUtils.isNotTrue(skipValidation)) {
+            checkResourceInInternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
         }
 
         return srmResourceVersion;
