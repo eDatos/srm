@@ -33,7 +33,7 @@ public class CodesClientSecurityUtils {
     }
 
     public static boolean canDeleteCodelist(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedItemsSecurityUtils.canDeleteItemScheme(MetamacSrmWeb.getCurrentUser());
@@ -146,7 +146,7 @@ public class CodesClientSecurityUtils {
     // CODES
 
     public static boolean canCreateCode(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
@@ -155,14 +155,14 @@ public class CodesClientSecurityUtils {
     }
 
     public static boolean canUpdateCode(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     public static boolean canUpdateCodeParent(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
@@ -171,7 +171,7 @@ public class CodesClientSecurityUtils {
     }
 
     public static boolean canDeleteCode(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
@@ -180,7 +180,7 @@ public class CodesClientSecurityUtils {
     }
 
     public static boolean canUpdateCodeVariableElement(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
@@ -189,21 +189,21 @@ public class CodesClientSecurityUtils {
     // ORDERS
 
     public static boolean canCreateCodelistOrderVisualisation(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     public static boolean canUpdateCodelistOrderVisualisation(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     public static boolean canDeleteCodelistOrderVisualisation(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
@@ -212,21 +212,21 @@ public class CodesClientSecurityUtils {
     // OPENNESS LEVELS
 
     public static boolean canCreateCodelistOpennessVisualisation(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     public static boolean canUpdateCodelistOpennessVisualisation(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     public static boolean canDeleteCodelistOpennessVisualisation(CodelistMetamacDto codelistMetamacDto) {
-        if (isBeingVersionInBackground(codelistMetamacDto.getVersioningBackground())) {
+        if (isBeingVersionInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
         return SharedCodesSecurityUtils.canCrudCodelistOpennessVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());

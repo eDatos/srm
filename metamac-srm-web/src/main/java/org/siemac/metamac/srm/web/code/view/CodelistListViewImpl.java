@@ -256,7 +256,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
             CodelistMetamacDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
             if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus()) || codelistMetamacDto.getValidTo() != null
-                    || !CodesClientSecurityUtils.canCancelCodelistValidity(codelistMetamacDto.getVersioningBackground())) {
+                    || !CodesClientSecurityUtils.canCancelCodelistValidity(codelistMetamacDto.getIsTaskInBackground())) {
                 allSelectedCodelistValidityCanBeCanceled = false;
             }
         }

@@ -26,7 +26,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     public void setCodelist(CodelistMetamacDto codelistMetamacDto) {
         super.updatePublishSection(codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto);
-        this.versioningBackground = codelistMetamacDto.getVersioningBackground();
+        this.versioningBackground = codelistMetamacDto.getIsTaskInBackground();
         setCanEdit();
     }
 

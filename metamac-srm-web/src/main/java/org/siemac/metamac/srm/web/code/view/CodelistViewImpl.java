@@ -411,7 +411,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private void setInformationLabelContents(CodelistMetamacDto codelistMetamacDto) {
-        if (BooleanUtils.isTrue(codelistMetamacDto.getVersioningBackground())) {
+        if (BooleanUtils.isTrue(codelistMetamacDto.getIsTaskInBackground())) {
             String message = getMessages().codelistIsInProcessInBackground();
             informationLabel.setContents(message);
             informationLabel.show();

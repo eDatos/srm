@@ -13,7 +13,7 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
 
     public void updateVisibility(CodelistMetamacDto codelistMetamacDto) {
         super.setProcStatus(codelistMetamacDto.getLifeCycle().getProcStatus());
-        this.versioningBackground = codelistMetamacDto.getVersioningBackground();
+        this.versioningBackground = codelistMetamacDto.getIsTaskInBackground();
         updateNewButtonVisibility();
     }
 
