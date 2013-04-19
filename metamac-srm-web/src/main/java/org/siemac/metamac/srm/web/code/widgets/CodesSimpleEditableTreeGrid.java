@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.code.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
@@ -23,9 +22,7 @@ public class CodesSimpleEditableTreeGrid extends BaseCodesSimpleTreeGrid {
 
         getField(ItemDS.CODE).setCanEdit(true);
         getField(ItemDS.CODE).setValidators(SemanticIdentifiersUtils.getCodeIdentifierCustomValidator());
-
         getField(ItemDS.NAME).setCanEdit(false);
-
         getField(CodeDS.ORDER).setCanEdit(false);
 
         setValidateOnChange(true);
@@ -44,25 +41,44 @@ public class CodesSimpleEditableTreeGrid extends BaseCodesSimpleTreeGrid {
     /**
      * Root node is excluded
      * 
-     * @param rootNodeUrn
+     * @param rootNodeUrnToExlude
      * @return
      */
-    public List<CodeToCopyHierarchy> getCodes(String rootNodeUrn) {
-        saveAllEdits();
+    public List<CodeToCopyHierarchy> getCodes() {
+        saveAllEdits(); // ensure all changes made has been applied
 
-        List<CodeToCopyHierarchy> codes = new ArrayList<CodeToCopyHierarchy>();
-        ListGridRecord[] nodes = getRecords();
-        if (nodes != null) {
-            for (ListGridRecord node : nodes) {
-                if (!StringUtils.equals(rootNodeUrn, node.getAttributeAsString(ItemDS.URN))) {
-                    CodeToCopyHierarchy codeToCopyHierarchy = new CodeToCopyHierarchy();
-                    codeToCopyHierarchy.setNewCodeIdentifier(node.getAttributeAsString(ItemDS.CODE));
-                    codeToCopyHierarchy.setSourceUrn(node.getAttributeAsString(ItemDS.URN));
-                    codes.add(codeToCopyHierarchy);
+        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
+
+        TreeNode root = getTree().getRoot();
+        if (root != null && getTree().getChildren(root) != null) {
+            root = getTree().getChildren(root)[0]; // this node CANNOT be included in the list of node that will be copied
+            if (root != null) {
+                for (TreeNode child : getTree().getChildren(root)) {
+                    CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+                    code.setNewCodeIdentifier(child.getAttributeAsString(ItemDS.CODE));
+                    code.setSourceUrn(child.getAttributeAsString(ItemDS.URN));
+                    code.getChildren().addAll(buildCodesHierarchy(child));
+                    codesToCopy.add(code);
                 }
             }
         }
-        return codes;
+
+        return codesToCopy;
+    }
+
+    private List<CodeToCopyHierarchy> buildCodesHierarchy(TreeNode root) {
+        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
+        TreeNode[] children = getTree().getChildren(root);
+        if (children != null) {
+            for (TreeNode child : children) {
+                CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+                code.setNewCodeIdentifier(child.getAttributeAsString(ItemDS.CODE));
+                code.setSourceUrn(child.getAttributeAsString(ItemDS.URN));
+                code.getChildren().addAll(buildCodesHierarchy(child));
+                codesToCopy.add(code);
+            }
+        }
+        return codesToCopy;
     }
 
     @Override
