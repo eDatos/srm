@@ -60,7 +60,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptProperties;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
@@ -1305,7 +1305,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urnExpectedConcept22 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(02.000).CONCEPT0202";
 
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
-        VersioningResult versioningResult = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
 
         // Validate response
         entityManager.clear();
@@ -1433,7 +1433,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, conceptSchemeVersionLast.getLifeCycleMetadata().getProcStatus());
         assertTrue(conceptSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
 
-        VersioningResult versioningResult = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult = conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
 
         // Validate response
         entityManager.clear();
@@ -1619,7 +1619,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urnExpectedConcept22 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME03(" + versionExpected + ").CONCEPT0202";
 
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
-        VersioningResult versioningResult = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
+        TaskInfo versioningResult = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
 
         // Validate response
         entityManager.clear();
@@ -1732,11 +1732,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     public void testCreateVersionFromTemporalConceptScheme() throws Exception {
         String urn = CONCEPT_SCHEME_3_V1;
 
-        VersioningResult versioningResult1 = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
+        TaskInfo versioningResult1 = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
         entityManager.clear();
         ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult1.getUrnResult());
 
-        VersioningResult versioningResult2 = conceptsService.createVersionFromTemporalConceptScheme(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn(),
+        TaskInfo versioningResult2 = conceptsService.createVersionFromTemporalConceptScheme(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn(),
                 VersionTypeEnum.MAJOR);
         entityManager.clear();
         ConceptSchemeVersionMetamac conceptSchemeNewVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult2.getUrnResult());
@@ -1762,7 +1762,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     public void testMergeTemporalVersion() throws Exception {
         {
             String urn = CONCEPT_SCHEME_3_V1;
-            VersioningResult versioningResult = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
+            TaskInfo versioningResult = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
 
             entityManager.clear();
             ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
@@ -1813,7 +1813,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             itemSchemeRepository.save(conceptSchemeForce);
 
             String urn = CONCEPT_SCHEME_10_V1;
-            VersioningResult versioningResult = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
+            TaskInfo versioningResult = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
 
             entityManager.clear();
             ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());

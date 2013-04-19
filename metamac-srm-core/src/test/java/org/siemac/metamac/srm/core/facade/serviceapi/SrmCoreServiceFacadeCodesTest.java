@@ -67,7 +67,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -747,7 +747,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         }
 
         // Publish internally
-        VersioningResult versioningResult = srmCoreServiceFacade.publishCodelistInternally(ctx, urn, Boolean.FALSE);
+        TaskInfo versioningResult = srmCoreServiceFacade.publishCodelistInternally(ctx, urn, Boolean.FALSE);
         CodelistMetamacDto codelistDto = srmCoreServiceFacade.retrieveCodelistByUrn(ctx, versioningResult.getUrnResult());
 
         // Validate response
@@ -836,7 +836,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(02.000)";
 
-        VersioningResult versioningResult = srmCoreServiceFacade.versioningCodelist(getServiceContextAdministrador(), urn, null, VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult = srmCoreServiceFacade.versioningCodelist(getServiceContextAdministrador(), urn, null, VersionTypeEnum.MAJOR);
 
         // Validate response
         CodelistMetamacDto codelistDtoToCopy = srmCoreServiceFacade.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);

@@ -52,7 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
@@ -1150,7 +1150,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         String urnExpectedOrganisation22 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION0202";
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-        VersioningResult versioningResult = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
 
         // Validate response
         entityManager.clear();
@@ -1278,7 +1278,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersionLast.getLifeCycleMetadata().getProcStatus());
         assertTrue(organisationSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
 
-        VersioningResult versioningResult = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urnToCopy, VersionTypeEnum.MAJOR);
 
         // Validate response
         entityManager.clear();
@@ -1377,7 +1377,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         String urnExpectedOrganisation22 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(" + versionExpected + ").ORGANISATION0202";
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
-        VersioningResult versioningResult = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
+        TaskInfo versioningResult = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
 
         // Validate response
         entityManager.clear();
@@ -1490,12 +1490,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     public void testCreateVersionFromTemporalOrganisationScheme() throws Exception {
         String urn = ORGANISATION_SCHEME_3_V1;
 
-        VersioningResult versioningResult = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
+        TaskInfo versioningResult = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
         entityManager.clear();
         OrganisationSchemeVersionMetamac organisationSchemeVersionTemporal = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
 
         // Create no temporal version
-        VersioningResult versioningResult2 = organisationsService.createVersionFromTemporalOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersionTemporal
+        TaskInfo versioningResult2 = organisationsService.createVersionFromTemporalOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersionTemporal
                 .getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
 
         String versionExpected = "02.000";
@@ -1521,7 +1521,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     public void testMergeTemporalVersion() throws Exception {
         {
             String urn = ORGANISATION_SCHEME_3_V1;
-            VersioningResult versioningResult = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
+            TaskInfo versioningResult = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
 
             entityManager.clear();
             OrganisationSchemeVersionMetamac organisationSchemeVersionTemporal = organisationsService

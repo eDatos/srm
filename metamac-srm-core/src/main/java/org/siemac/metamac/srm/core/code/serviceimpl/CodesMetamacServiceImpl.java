@@ -92,7 +92,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
@@ -278,7 +278,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public VersioningResult publishInternallyCodelist(ServiceContext ctx, String urn, Boolean forceLatestFinal, Boolean canBeBackground) throws MetamacException {
+    public TaskInfo publishInternallyCodelist(ServiceContext ctx, String urn, Boolean forceLatestFinal, Boolean canBeBackground) throws MetamacException {
         // Initialize
         CodelistVersion codelistVersionToPublish = retrieveCodelistByUrn(ctx, urn);
         ItemScheme itemScheme = codelistVersionToPublish.getItemScheme();
@@ -292,7 +292,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         }
 
-        VersioningResult versioningResult = new VersioningResult();
+        TaskInfo versioningResult = new TaskInfo();
         if (executeInBackground) {
             // Scheduled is needed
             // Validation
@@ -342,17 +342,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public VersioningResult versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
+    public TaskInfo versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         return createVersionOfCodelist(ctx, urnToCopy, versioningCodes, versionType, false);
     }
 
     @Override
-    public VersioningResult createTemporalCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo createTemporalCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfCodelist(ctx, urnToCopy, null, null, true);
     }
 
     @Override
-    public VersioningResult createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+    public TaskInfo createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
         CodelistVersionMetamac codelistVersionTemporal = retrieveCodelistByUrn(ctx, urnToCopy);
 
@@ -374,7 +374,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Set null replacedBy in the original entity
         codelistVersion.getMaintainableArtefact().setReplacedByVersion(null);
 
-        VersioningResult versioningResult = new VersioningResult();
+        TaskInfo versioningResult = new TaskInfo();
         versioningResult.setUrnResult(codelistVersionTemporal.getMaintainableArtefact().getUrn());
         return versioningResult;
     }
@@ -1797,7 +1797,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
-    private VersioningResult createVersionOfCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private TaskInfo createVersionOfCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, isTemporal, null, null);
         checkCodelistToVersioning(ctx, urnToCopy, isTemporal);

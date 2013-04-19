@@ -54,11 +54,11 @@ Application ConceptsMetamac {
 			"Deletes concept scheme version. This must be last version and no published"
     		deleteConceptScheme(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
-    		VersioningResult versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		TaskInfo versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"
-    		VersioningResult createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
+    		TaskInfo createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
     		"Creates a new version of a concept scheme from temporal version with provided urn"
-    		VersioningResult createVersionFromTemporalConceptScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
+    		TaskInfo createVersionFromTemporalConceptScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
     		@ConceptSchemeVersionMetamac mergeTemporalVersion(@ConceptSchemeVersionMetamac conceptSchemeTemporalVersion) throws MetamacException;
     		"Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback"

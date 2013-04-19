@@ -88,7 +88,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
@@ -1018,12 +1018,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult publishCodelistInternally(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
+    public TaskInfo publishCodelistInternally(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
         // Security
         ItemsSecurityUtils.canPublishItemSchemeInternally(ctx);
 
         // Publish
-        VersioningResult versioningResult = getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal, Boolean.TRUE);
+        TaskInfo versioningResult = getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal, Boolean.TRUE);
 
         return versioningResult;
     }
@@ -1041,11 +1041,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
+    public TaskInfo versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         // Security
         CodesSecurityUtils.canVersioningCodelist(ctx);
 
-        VersioningResult versioningResult = null;
+        TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
             versioningResult = getCodesMetamacService().createVersionFromTemporalCodelist(ctx, urnToCopy, versionType);
         } else {
@@ -1056,7 +1056,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult createTemporalVersionCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo createTemporalVersionCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
         CodesSecurityUtils.canCreateCodelistTemporalVersion(ctx);
 
@@ -2032,11 +2032,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public TaskInfo versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canVersioningOrganisationScheme(ctx);
 
-        VersioningResult versioningResult = null;
+        TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
             // TODO create version from organisation schemete temporal
             throw new UnsupportedOperationException("TODO create version from organisation schemete temporal");
@@ -2047,7 +2047,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult createTemporalVersionOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo createTemporalVersionOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canCreateOrganisationSchemeTemporalVersion(ctx);
 
@@ -2410,12 +2410,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public TaskInfo versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);
         ConceptsSecurityUtils.canVersioningConceptScheme(ctx, conceptSchemeVersionToCopy);
 
-        VersioningResult versioningResult = null;
+        TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
             versioningResult = getConceptsMetamacService().createVersionFromTemporalConceptScheme(ctx, urnToCopy, versionType);
         } else {
@@ -2425,7 +2425,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult createTemporalVersionConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo createTemporalVersionConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);
         ConceptsSecurityUtils.canCreateConceptSchemeTemporalVersion(ctx, conceptSchemeVersionToCopy);
@@ -2870,11 +2870,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public TaskInfo versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
         ItemsSecurityUtils.canVersioningItemScheme(ctx);
 
-        VersioningResult versioningResult = null;
+        TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
             versioningResult = getCategoriesMetamacService().createVersionFromTemporalCategoryScheme(ctx, urnToCopy, versionType);
         } else {
@@ -2885,7 +2885,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public VersioningResult createTemporalVersionCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo createTemporalVersionCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
         CategoriesSecurityUtils.canCreateCategorySchemeTemporalVersion(ctx);
 

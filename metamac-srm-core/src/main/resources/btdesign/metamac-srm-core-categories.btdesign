@@ -47,11 +47,11 @@ Application CategoriesMetamac {
 			"Deletes category scheme version. This must be last version and no published"
     		deleteCategoryScheme(String urn) throws MetamacException;
     		"Creates a new version of a category scheme, copying metadata from version with provided urn"
-    		VersioningResult versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		TaskInfo versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a category scheme, copying metadata from version with provided urn"
-    		VersioningResult createTemporalVersionCategoryScheme(String urnToCopy) throws MetamacException;
+    		TaskInfo createTemporalVersionCategoryScheme(String urnToCopy) throws MetamacException;
     		"Creates a new version of a category scheme from temporal version with provided urn"
-    		VersioningResult createVersionFromTemporalCategoryScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
+    		TaskInfo createVersionFromTemporalCategoryScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
     		@CategorySchemeVersionMetamac mergeTemporalVersion(@CategorySchemeVersionMetamac categorySchemeTemporalVersion) throws MetamacException;
     		"Ends the category scheme validity"

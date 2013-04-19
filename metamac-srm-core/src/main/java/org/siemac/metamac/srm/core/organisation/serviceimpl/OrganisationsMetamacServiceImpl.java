@@ -38,7 +38,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
@@ -178,17 +178,17 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public VersioningResult versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public TaskInfo versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         return createVersionOfOrganisationScheme(ctx, urnToCopy, versionType, false);
     }
 
     @Override
-    public VersioningResult createTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo createTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfOrganisationScheme(ctx, urnToCopy, null, true);
     }
 
     @Override
-    public VersioningResult createVersionFromTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+    public TaskInfo createVersionFromTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
         OrganisationSchemeVersionMetamac organisationSchemeVersionTemporal = retrieveOrganisationSchemeByUrn(ctx, urnToCopy);
 
@@ -212,7 +212,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Set null replacedBy in the original entity
         organisationSchemeVersion.getMaintainableArtefact().setReplacedByVersion(null);
 
-        VersioningResult versioningResult = new VersioningResult();
+        TaskInfo versioningResult = new TaskInfo();
         versioningResult.setUrnResult(organisationSchemeVersionTemporal.getMaintainableArtefact().getUrn());
         return versioningResult;
     }
@@ -467,7 +467,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         SrmValidationUtils.checkArtefactWithoutTaskInBackground(organisationSchemeVersion);
     }
 
-    private VersioningResult createVersionOfOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private TaskInfo createVersionOfOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, isTemporal, null, null);
         checkOrganisationSchemeToVersioning(ctx, urnToCopy, isTemporal);

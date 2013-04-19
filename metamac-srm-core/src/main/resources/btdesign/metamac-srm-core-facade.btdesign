@@ -295,9 +295,9 @@ Application SrmFacadeCore {
 	    	"Publishes externally a organisation scheme"
 	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
-    		VersioningResult versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		TaskInfo versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a organisation scheme, copying metadata from version with provided urn"
-    		VersioningResult createTemporalVersionOrganisationScheme(String urnToCopy) throws MetamacException;
+    		TaskInfo createTemporalVersionOrganisationScheme(String urnToCopy) throws MetamacException;
     		"Ends the organisation scheme validity"
     		@OrganisationSchemeMetamacDto endOrganisationSchemeValidity(String urn) throws MetamacException;
             
@@ -351,9 +351,9 @@ Application SrmFacadeCore {
 	    	"Publishes externally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
-    		VersioningResult versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		TaskInfo versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"
-    		VersioningResult createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
+    		TaskInfo createTemporalVersionConceptScheme(String urnToCopy) throws MetamacException;
     		"Ends the concept scheme validity"
     		@ConceptSchemeMetamacDto endConceptSchemeValidity(String urn) throws MetamacException;
     		
@@ -425,9 +425,9 @@ Application SrmFacadeCore {
 	    	"Publishes externally a category scheme"
 	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
     		"Creates a new version of a category scheme, copying metadata from version with provided urn"
-    		VersioningResult versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		TaskInfo versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a category scheme, copying metadata from version with provided urn"
-    		VersioningResult createTemporalVersionCategoryScheme(String urnToCopy) throws MetamacException;
+    		TaskInfo createTemporalVersionCategoryScheme(String urnToCopy) throws MetamacException;
     		"Ends the category scheme validity"
     		@CategorySchemeMetamacDto endCategorySchemeValidity(String urn) throws MetamacException;
             
@@ -480,13 +480,13 @@ Application SrmFacadeCore {
 	    	"Rejects diffusion validation of Codelist"
 	    	@CodelistMetamacDto rejectCodelistDiffusionValidation(String urn) throws MetamacException; 
 	    	"Publishes internally a Codelist"
-	    	VersioningResult publishCodelistInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
+	    	TaskInfo publishCodelistInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a Codelist"
 	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
     		"Creates a new version of a Codelist, copying metadata from version with provided urn"
-    		VersioningResult versioningCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionType) throws MetamacException;
+    		TaskInfo versioningCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a Codelist, copying metadata from version with provided urn"
-    		VersioningResult createTemporalVersionCodelist(String urnToCopy) throws MetamacException;
+    		TaskInfo createTemporalVersionCodelist(String urnToCopy) throws MetamacException;
     		"Ends the Codelist validity"
     		@CodelistMetamacDto endCodelistValidity(String urn) throws MetamacException;
     		

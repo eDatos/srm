@@ -106,7 +106,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDoMocks;
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.srm.core.task.domain.TaskResult;
@@ -1224,7 +1224,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Publish internally
-        VersioningResult versioningResult = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE, Boolean.FALSE);
+        TaskInfo versioningResult = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE, Boolean.FALSE);
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, versioningResult.getUrnResult());
 
         // Validate response
@@ -1311,7 +1311,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Publish internally
-        VersioningResult versioningResult = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE, Boolean.FALSE);
+        TaskInfo versioningResult = codesService.publishInternallyCodelist(ctx, urn, Boolean.FALSE, Boolean.FALSE);
         codelistVersion = codesService.retrieveCodelistByUrn(ctx, versioningResult.getUrnResult());
 
         // After
@@ -1656,7 +1656,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = CODELIST_3_V1;
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(02.000)";
 
-        VersioningResult versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.TRUE, VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.TRUE, VersionTypeEnum.MAJOR);
         assertEquals(urnExpected, versioningResult.getUrnResult());
         assertNull(versioningResult.getIsPlannedInBackground());
         assertNull(versioningResult.getJobKey());
@@ -1682,7 +1682,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersionLast.getLifeCycleMetadata().getProcStatus());
         assertTrue(codelistVersionLast.getMaintainableArtefact().getIsLastVersion());
 
-        VersioningResult versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), urnToCopy, Boolean.TRUE, VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), urnToCopy, Boolean.TRUE, VersionTypeEnum.MAJOR);
 
         // Validate response
         entityManager.clear();
@@ -1738,7 +1738,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urn = CODELIST_3_V1;
 
         CodelistVersionMetamac codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-        VersioningResult versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE, VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE, VersionTypeEnum.MAJOR);
 
         // Validate
         entityManager.clear();
@@ -1814,7 +1814,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     ItemSchemeVersion itemSchemeVersion = itemSchemeRepository.findByUrn(codelistUrn);
                     assertEquals(null, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
 
-                    VersioningResult versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), codelistUrn, Boolean.TRUE, VersionTypeEnum.MAJOR);
+                    TaskInfo versioningResult = codesService.versioningCodelist(getServiceContextAdministrador(), codelistUrn, Boolean.TRUE, VersionTypeEnum.MAJOR);
                     assertEquals(true, versioningResult.getIsPlannedInBackground());
                     assertEquals(null, versioningResult.getUrnResult());
                     jobKey.append(versioningResult.getJobKey());
@@ -6811,7 +6811,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urnExpectedOpennessVisualisation02 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST03(" + versionExpected + ").VISUALISATION02";
 
         CodelistVersionMetamac codelistVersionToCopy = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
-        VersioningResult versioningResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
+        TaskInfo versioningResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
 
         // Validate response
         entityManager.clear();
@@ -6989,11 +6989,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testCreateVersionFromTemporalCodelist() throws Exception {
         String urn = CODELIST_3_V1;
 
-        VersioningResult versioningTemporalResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
+        TaskInfo versioningTemporalResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
         entityManager.clear();
         CodelistVersionMetamac temporalCodelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningTemporalResult.getUrnResult());
 
-        VersioningResult versioningTemporalToVersionResult = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(), temporalCodelistVersionMetamac.getMaintainableArtefact()
+        TaskInfo versioningTemporalToVersionResult = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(), temporalCodelistVersionMetamac.getMaintainableArtefact()
                 .getUrn(), VersionTypeEnum.MAJOR);
         entityManager.clear();
         CodelistVersionMetamac codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningTemporalToVersionResult.getUrnResult());
@@ -7019,7 +7019,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testMergeTemporalVersion() throws Exception {
         {
             String urn = CODELIST_3_V1;
-            VersioningResult createTemporalCodelistResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
+            TaskInfo createTemporalCodelistResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
 
             entityManager.clear();
             CodelistVersionMetamac createTemporalCodelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), createTemporalCodelistResult.getUrnResult());
@@ -7074,7 +7074,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             itemSchemeRepository.save(codelistSchemeForce);
 
             String urn = CODELIST_10_V1;
-            VersioningResult createTemporalCodelistResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
+            TaskInfo createTemporalCodelistResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
             entityManager.clear();
             CodelistVersionMetamac codelistVersionTemporal = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), createTemporalCodelistResult.getUrnResult());
 
@@ -7110,14 +7110,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     assertEquals(null, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
 
                     // Create Temporal Codelist and go to PublicationInternally phase
-                    VersioningResult createTemporalCodelistResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), codelistUrn);
+                    TaskInfo createTemporalCodelistResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), codelistUrn);
                     CodelistVersionMetamac createTemporalCodelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), createTemporalCodelistResult.getUrnResult());
                     createTemporalCodelist = codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
                     createTemporalCodelist = codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
 
                     // PublicationInternally phase
                     SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 3; // modify to force in background
-                    VersioningResult versioningResult = codesService.publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false,
+                    TaskInfo versioningResult = codesService.publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false,
                             Boolean.TRUE);
 
                     assertEquals(true, versioningResult.getIsPlannedInBackground());
