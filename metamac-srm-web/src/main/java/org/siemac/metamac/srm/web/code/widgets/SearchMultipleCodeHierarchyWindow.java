@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.srm.web.client.utils.RecordUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedItem;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.view.handlers.BaseCodeUiHandlers;
@@ -29,6 +30,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.widgets.Label;
@@ -194,7 +196,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
                 ListGridRecord[] selectedRecords = codesTreeGrid.getSelectedRecords();
 
                 if (isAnyValidCodeSelected(selectedRecords)) {
-                    List<TreeNode> nodesToAdd = getCodesHierarchy(selectedRecords);
+                    List<TreeNode> nodesToAdd = getCodesHierarchy(allRecords, selectedRecords);
                     if (!nodesToAdd.isEmpty()) {
 
                         final PreviewWindow previewWindow = new PreviewWindow(getConstants().codesHierarchyToAdd());
@@ -251,10 +253,20 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         return false;
     }
 
-    private List<TreeNode> getCodesHierarchy(ListGridRecord[] selectedRecords) {
+    private List<TreeNode> getCodesHierarchy(ListGridRecord[] allRecords, ListGridRecord[] selectedRecords) {
+
+        // These recordLists are built only for search purposes
+
+        RecordList allRecordsAsRecordList = new RecordList(allRecords);
+        RecordList selectedRecordsAsRecordList = new RecordList(selectedRecords);
+        RecordUtils.removeRecord(selectedRecordsAsRecordList, ItemDS.URN, selectedCodelistUrn); // Remove the codelist node from selectedRecordsAsRecordList if included (NOTE: the codelist node is
+                                                                                                // disabled but can be selected)
+
         List<TreeNode> nodes = new ArrayList<TreeNode>();
 
-        // Add root node
+        // Add the root node of the tree:
+        // - The root node of this tree will be initial node that was selected, where all these nodes will be inserted
+        // - Building the tree this way, the user can preview how the final tree looks like
         TreeNode rootNode = new TreeNode();
         rootNode.setID(selectedSourceNode.getAttribute(ItemDS.URN));
         rootNode.setAttribute(ItemDS.CODE, selectedSourceNode.getAttribute(ItemDS.CODE));
@@ -263,24 +275,59 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         rootNode.setEnabled(false);
         nodes.add(rootNode);
 
+        // Add the selected nodes (hierarchy should be preserved)
         for (ListGridRecord record : selectedRecords) {
-            if (!StringUtils.equals(selectedCodelistUrn, record.getAttribute(ItemDS.URN))) { // Do not add the codelist node! (the codelist node is disabled but can be selected)
+            if (!StringUtils.equals(selectedCodelistUrn, record.getAttribute(ItemDS.URN))) { // The codelist node cannot be included (NOTE: the codelist node is disabled but can be selected)
                 TreeNode treeNode = new TreeNode();
                 treeNode.setID(record.getAttribute(ItemDS.URN));
                 treeNode.setAttribute(ItemDS.CODE, record.getAttribute(ItemDS.CODE));
                 treeNode.setAttribute(ItemDS.NAME, record.getAttribute(ItemDS.NAME));
                 treeNode.setAttribute(ItemDS.URN, record.getAttribute(ItemDS.URN));
-
-                // FIXME REMOVE THIS:
-                treeNode.setParentID(selectedSourceNode.getAttribute(ItemDS.URN));
-
-                // TODO Hierarchy should be preserved!!!
-
+                treeNode.setParentID(getResultingNodeParentID(record, allRecordsAsRecordList, selectedRecordsAsRecordList));
                 nodes.add(treeNode);
             }
         }
 
         return nodes;
+    }
+
+    /**
+     * Returns the parent of the record preserving the hierarchy of the tree.
+     * <p>
+     * Given the tree:
+     * <p>
+     * A<br>
+     * |_ B<br>
+     * |__|_ C<br>
+     * |__|__|_ D<br>
+     * <p>
+     * If nodes B and D are selected, the resulting parent of node D will be B.
+     * 
+     * @param record record whose parent this method return
+     * @param allRecords
+     * @param selectedRecords
+     * @return the URN of the parent of the record
+     */
+    private String getResultingNodeParentID(Record record, RecordList allRecords, RecordList selectedRecords) {
+        String parentUrn = record.getAttribute(ItemDS.ITEM_PARENT_URN);
+
+        if (parentUrn != null) {
+            Record parentRecord = selectedRecords.find(ItemDS.URN, parentUrn);
+
+            // The parent of the record is in the selected records
+            if (parentRecord != null) {
+                return parentRecord.getAttribute(ItemDS.URN);
+            }
+
+            // The parent of the record is not in the selected records, but maybe the parent of its parent is selected...
+            parentRecord = allRecords.find(ItemDS.URN, parentUrn);
+            if (parentRecord != null) { // NullPointerException is checked, although this parentRecourd shoul always be != null
+                return getResultingNodeParentID(parentRecord, allRecords, selectedRecords);
+            }
+        }
+
+        // The record has no parent, so it should be linked to the root node
+        return selectedSourceNode.getAttribute(ItemDS.URN);
     }
 
     public void setCodelists(GetCodelistsResult result) {

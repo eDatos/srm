@@ -7,6 +7,8 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 
 public class RecordUtils {
 
@@ -23,5 +25,20 @@ public class RecordUtils {
             records[index++] = getCategorisationRecord(categorisationDto);
         }
         return records;
+    }
+
+    /**
+     * Remove the record from the RecordList (if exists) given propertyName and the value of the record
+     * 
+     * @param recordList
+     * @param propertyName
+     * @param value
+     * @return
+     */
+    public static void removeRecord(RecordList recordList, String propertyName, String value) {
+        Record record = recordList.find(propertyName, value);
+        if (record != null) {
+            recordList.remove(record);
+        }
     }
 }
