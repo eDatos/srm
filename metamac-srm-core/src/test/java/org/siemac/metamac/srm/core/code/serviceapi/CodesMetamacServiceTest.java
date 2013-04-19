@@ -7149,10 +7149,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(task);
         assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
         assertEquals(0, task.getTaskResults().size());
-
-        // Validate versioning
-        validateVersioningCodelist3V1();
     }
+
     @Override
     @Test
     public void testRetrieveCodelistOpennessVisualisationsByCodelist() throws Exception {
