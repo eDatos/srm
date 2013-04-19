@@ -325,10 +325,12 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             super(title);
             setAutoSize(true);
 
-            // TODO test this!
-            InformationLabel informationLabel = new InformationLabel(getMessages().codesInfoChangeIdentifier());
-
             int width = 650;
+
+            InformationLabel informationLabel = new InformationLabel(getMessages().codesInfoChangeIdentifier());
+            informationLabel.setWidth(width);
+            informationLabel.setMargin(5);
+
             codesEditableTreeGrid = new CodesSimpleEditableTreeGrid();
             codesEditableTreeGrid.setWidth(width);
             codesEditableTreeGrid.setMargin(5);
