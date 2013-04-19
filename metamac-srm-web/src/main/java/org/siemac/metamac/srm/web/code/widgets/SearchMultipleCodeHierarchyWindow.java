@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
+import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
@@ -323,8 +325,10 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             super(title);
             setAutoSize(true);
 
-            int width = 650;
+            // TODO test this!
+            InformationLabel informationLabel = new InformationLabel(getMessages().codesInfoChangeIdentifier());
 
+            int width = 650;
             codesEditableTreeGrid = new CodesSimpleEditableTreeGrid();
             codesEditableTreeGrid.setWidth(width);
             codesEditableTreeGrid.setMargin(5);
@@ -337,6 +341,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             form.setMargin(5);
             form.setFields(saveItem);
 
+            addItem(informationLabel);
             addItem(codesEditableTreeGrid);
             addItem(form);
 
