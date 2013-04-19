@@ -24,7 +24,7 @@ public class ExportDsdActionHandler extends SecurityActionHandler<ExportDsdActio
         // StructureMsgDto structureMsgDto = new StructureMsgDto();
 
         // try {
-        // TODO
+        // TODO export
         // DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(),
         // action.getUrn(), TypeDozerCopyMode.COPY_ALL_METADATA);
         // structureMsgDto.getDataStructureDefinitionDtos().add(dataStructureDefinitionExtendDto);
