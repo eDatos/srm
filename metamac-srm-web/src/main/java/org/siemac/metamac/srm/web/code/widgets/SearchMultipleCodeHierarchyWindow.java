@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationLabel;
+import org.siemac.metamac.web.common.client.widgets.WarningWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
@@ -171,7 +172,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
                 if (selectedRecord != null) {
                     if (cascadeSelection) {
                         if (selectedRecord.getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY) != null) {
-                            updateNodeSelectionStatusInCascade((TreeNode) selectedRecord, selectedRecord.getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY));
+                            updateNodeSelectionStatusInCascade(selectedRecord, selectedRecord.getAttributeAsBoolean(TREE_NODE_SELECTED_PROPERTY));
                         }
                     } else {
                         // If the cascade selection is not enabled, and the selected node is the codelist node, DO NOT SELECT the node
@@ -189,9 +190,10 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             @Override
             public void onClick(ClickEvent event) {
 
+                ListGridRecord[] allRecords = codesTreeGrid.getRecords();
                 ListGridRecord[] selectedRecords = codesTreeGrid.getSelectedRecords();
-                if (selectedRecords != null) {
 
+                if (isAnyValidCodeSelected(selectedRecords)) {
                     List<TreeNode> nodesToAdd = getCodesHierarchy(selectedRecords);
                     if (!nodesToAdd.isEmpty()) {
 
@@ -214,6 +216,9 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
                             }
                         });
                     }
+                } else {
+                    WarningWindow warningWindow = new WarningWindow(getConstants().codesSelection(), getMessages().codeSelectionRequired());
+                    warningWindow.show();
                 }
             }
         });
@@ -234,7 +239,19 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
         show();
     }
-    private List<TreeNode> getCodesHierarchy(ListGridRecord[] records) {
+
+    private boolean isAnyValidCodeSelected(ListGridRecord[] selectedRecords) {
+        if (selectedRecords != null && selectedRecords.length > 0) {
+            if (selectedRecords.length == 1 && StringUtils.equals(selectedRecords[0].getAttribute(ItemDS.URN), selectedCodelistUrn)) {
+                // If there is only one node selected, and its the root one (the codelist)
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private List<TreeNode> getCodesHierarchy(ListGridRecord[] selectedRecords) {
         List<TreeNode> nodes = new ArrayList<TreeNode>();
 
         // Add root node
@@ -246,7 +263,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         rootNode.setEnabled(false);
         nodes.add(rootNode);
 
-        for (ListGridRecord record : records) {
+        for (ListGridRecord record : selectedRecords) {
             if (!StringUtils.equals(selectedCodelistUrn, record.getAttribute(ItemDS.URN))) { // Do not add the codelist node! (the codelist node is disabled but can be selected)
                 TreeNode treeNode = new TreeNode();
                 treeNode.setID(record.getAttribute(ItemDS.URN));
@@ -303,7 +320,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         return codelistWebCriteria;
     }
 
-    private void updateNodeSelectionStatusInCascade(TreeNode treeNode, boolean selectionStatus) {
+    private void updateNodeSelectionStatusInCascade(Record treeNode, boolean selectionStatus) {
         // When setting this property to TRUE/FALSE, the treeNode is selected/unselected WITHOUT firing a new SelectionChanged event
         treeNode.setAttribute(TREE_NODE_SELECTED_PROPERTY, selectionStatus);
 
@@ -311,7 +328,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
         Record[] children = codesTreeGrid.getRecordList().findAll(ItemDS.ITEM_PARENT_URN, treeNode.getAttributeAsString(ItemDS.URN));
         if (children != null) {
             for (Record child : children) {
-                updateNodeSelectionStatusInCascade((TreeNode) child, selectionStatus);
+                updateNodeSelectionStatusInCascade(child, selectionStatus);
             }
         }
         codesTreeGrid.markForRedraw();
