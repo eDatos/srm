@@ -201,11 +201,16 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
                             @Override
                             public void onClick(ClickEvent event) {
-                                List<CodeToCopyHierarchy> codesToCopy = previewWindow.getCodes();
+
                                 // If the node where the codes will be inserted is a codelist, parent should be null. Otherwise, specify the source code URN.
                                 String sourceNodeUrn = SearchMultipleCodeHierarchyWindow.this.selectedSourceNode.getAttribute(ItemDS.URN); // can be a codelist or a code
                                 String parentTargetUrn = StringUtils.equals(sourceNodeUrn, SearchMultipleCodeHierarchyWindow.this.complexCodelistToAddCodes.getUrn()) ? null : sourceNodeUrn;
+                                List<CodeToCopyHierarchy> codesToCopy = previewWindow.getCodes(sourceNodeUrn);
+                                // Add the selected nodes in the codelist
                                 getUiHandlers().copyCodesInCodelist(SearchMultipleCodeHierarchyWindow.this.complexCodelistToAddCodes.getUrn(), parentTargetUrn, codesToCopy);
+
+                                previewWindow.markForDestroy();
+                                SearchMultipleCodeHierarchyWindow.this.markForDestroy();
                             }
                         });
                     }
@@ -354,8 +359,8 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             codesEditableTreeGrid.setCodes(nodes);
         }
 
-        public List<CodeToCopyHierarchy> getCodes() {
-            return codesEditableTreeGrid.getCodes();
+        public List<CodeToCopyHierarchy> getCodes(String rootNodeUrn) {
+            return codesEditableTreeGrid.getCodes(rootNodeUrn);
         }
 
         public HasClickHandlers getSaveClickHandlers() {

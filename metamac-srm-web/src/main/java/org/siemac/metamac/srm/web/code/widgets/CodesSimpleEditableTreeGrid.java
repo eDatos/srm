@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.code.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
@@ -40,9 +41,27 @@ public class CodesSimpleEditableTreeGrid extends BaseCodesSimpleTreeGrid {
         getData().openAll();
     }
 
-    public List<CodeToCopyHierarchy> getCodes() {
+    /**
+     * Root node is excluded
+     * 
+     * @param rootNodeUrn
+     * @return
+     */
+    public List<CodeToCopyHierarchy> getCodes(String rootNodeUrn) {
+        saveAllEdits();
+
         List<CodeToCopyHierarchy> codes = new ArrayList<CodeToCopyHierarchy>();
-        // TODO
+        ListGridRecord[] nodes = getRecords();
+        if (nodes != null) {
+            for (ListGridRecord node : nodes) {
+                if (!StringUtils.equals(rootNodeUrn, node.getAttributeAsString(ItemDS.URN))) {
+                    CodeToCopyHierarchy codeToCopyHierarchy = new CodeToCopyHierarchy();
+                    codeToCopyHierarchy.setNewCodeIdentifier(node.getAttributeAsString(ItemDS.CODE));
+                    codeToCopyHierarchy.setSourceUrn(node.getAttributeAsString(ItemDS.URN));
+                    codes.add(codeToCopyHierarchy);
+                }
+            }
+        }
         return codes;
     }
 
