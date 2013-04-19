@@ -22,7 +22,6 @@ public class CodesOpennessLevelEditableTreeGrid extends BaseCodesTreeGrid {
         super(false, true);
 
         setShowFilterEditor(false);
-        setAlwaysShowEditors(true);
         setCanReorderRecords(false);
         setCanAcceptDroppedRecords(false);
         setCanDragRecordsOut(false);

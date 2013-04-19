@@ -62,6 +62,7 @@ public class CodelistOpennessLevelTreePanel extends VLayout {
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
 
+                        // Needed to get the most updated changes made in the tree
                         editCodelistOpennessLevelWindow.getCodesOpennessLevelEditableTreeGrid().saveAllEdits();
 
                         Map<String, Boolean> modifiedOpennessLevels = new HashMap<String, Boolean>();
