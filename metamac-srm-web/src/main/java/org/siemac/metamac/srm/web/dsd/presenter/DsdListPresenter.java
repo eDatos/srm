@@ -18,6 +18,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
+import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
+import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
@@ -29,8 +31,6 @@ import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsResult;
-import org.siemac.metamac.srm.web.shared.dsd.ExportDsdAction;
-import org.siemac.metamac.srm.web.shared.dsd.ExportDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
@@ -234,14 +234,14 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @Override
     public void exportDsd(DataStructureDefinitionMetamacDto dsd) {
-        dispatcher.execute(new ExportDsdAction(dsd.getUrn()), new WaitingAsyncCallback<ExportDsdResult>() {
+        dispatcher.execute(new ExportSDMXResourceAction(dsd.getUrn()), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorExport()), MessageTypeEnum.ERROR);
             }
             @Override
-            public void onWaitSuccess(ExportDsdResult result) {
+            public void onWaitSuccess(ExportSDMXResourceResult result) {
                 // TODO Is it better to use com.google.gwt.http.client.RequestBuilder to send the request?
                 StringBuffer url = new StringBuffer();
                 url.append(URL.encode(MetamacSrmWeb.getRelativeURL(SharedTokens.FILE_DOWNLOAD_DIR_PATH)));
