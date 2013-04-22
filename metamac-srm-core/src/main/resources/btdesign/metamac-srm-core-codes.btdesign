@@ -86,6 +86,8 @@ Application CodesMetamac {
 			@CodeMetamac updateCode(@CodeMetamac code) throws MetamacException;
 			"Change variable element to code"
 			@CodeMetamac updateCodeVariableElement(String codeUrn, String variableElementUrn) throws MetamacException;
+			"Change variable elements to codes"
+			updateCodesVariableElements(Map<Long,Long> variableElementsIdByCodeId) throws MetamacException;
 			"Updates parent of code. parentUrn is null when code is moved to first level. Code is moved at the end of new level"
 			updateCodeParent(String codeUrn, String newParentUrn) throws MetamacException;
 			"Updates position of code to visualisation requested"
@@ -339,6 +341,7 @@ Application CodesMetamac {
 				checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 				
 				clearCodesVariableElementByCodelist(@CodelistVersionMetamac codelistVersion);
+				updateCodesVariableElements(Map<Long,Long> variableElementsByCodes, Long codelistVersionId, Long variableId) throws MetamacException;
 				
 				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Item parent, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToDelete);
 				reorderCodesAddingOneCodeInMiddle(@CodelistVersionMetamac codelistVersion, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToAdd);

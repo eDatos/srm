@@ -1070,7 +1070,7 @@
             
             <TB_M_CODES
               VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
+              SHORT_NAME_FK="141"
               TB_CODES="124"
               ORDER1="3"
               ORDER2="3"
@@ -8345,6 +8345,32 @@
         LOCALE="it"
         VERSION="1"
         INTERNATIONAL_STRING_FK="139"
-    />                        
+    />         
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="140"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1401"
+        LABEL="Teneriffa"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="140"
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="141"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1411"
+        LABEL="Teneriffa"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="141"
+    />                      
                                                                                                    
 </dataset>

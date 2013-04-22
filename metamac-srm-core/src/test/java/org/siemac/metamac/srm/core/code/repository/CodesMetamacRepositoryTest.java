@@ -81,7 +81,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_2, code.getUrn());
             assertEquals("CODE02", code.getCode());
             assertEquals(1, code.getName().size());
-            CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Canaria, Gran", null, null);
+            CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Nombre codelist-1-v2-code-2 Canaria, Gran", null, null);
             CodesAsserts.assertEqualsInternationalString(code.getDescription(), null, null, null, null);
             CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "nombre corto code2", "en", "short name code2");
             assertEquals(0, code.getAnnotations().size());

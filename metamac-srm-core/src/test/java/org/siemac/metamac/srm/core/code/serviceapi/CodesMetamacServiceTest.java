@@ -2490,6 +2490,82 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), null);
         code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
         assertNull(variableElementUrnNew, code.getVariableElement());
+
+        // Add short name
+        code.setShortName(BaseDoMocks.mockInternationalString());
+        code.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        code = codesService.updateCode(getServiceContextAdministrador(), code);
+        assertNotNull(code.getShortName());
+
+        // Add variable element again to test short name was cleared
+        codesService.updateCodeVariableElement(getServiceContextAdministrador(), code.getNameableArtefact().getUrn(), variableElementUrnNew);
+        code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), codeUrn);
+        assertEquals(variableElementUrnNew, code.getVariableElement().getIdentifiableArtefact().getUrn());
+        assertNull(code.getShortName());
+    }
+
+    @Override
+    @Test
+    public void testUpdateCodesVariableElements() throws Exception {
+        CodeMetamac code1 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
+        CodeMetamac code2 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2);
+        CodeMetamac code211 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2_1_1);
+        CodeMetamac code22 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2_2);
+        CodeMetamac code3 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_3);
+        CodeMetamac code4 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_4);
+        CodeMetamac code41 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_4_1);
+
+        VariableElement variableElement1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        VariableElement variableElement2 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_2);
+        VariableElement variableElement3 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_3);
+
+        Map<Long, Long> variableElementsIdByCodeId = new HashMap<Long, Long>();
+        variableElementsIdByCodeId.put(code1.getId(), variableElement1.getId()); // change variableElement
+        variableElementsIdByCodeId.put(code2.getId(), variableElement1.getId()); // add variableElement
+        variableElementsIdByCodeId.put(code211.getId(), null); // remove variableElement
+        variableElementsIdByCodeId.put(code22.getId(), variableElement3.getId()); // add variableElement
+        variableElementsIdByCodeId.put(code3.getId(), null); // remove variableElement
+        variableElementsIdByCodeId.put(code4.getId(), variableElement3.getId()); // add variableElement
+        variableElementsIdByCodeId.put(code41.getId(), variableElement2.getId()); // add variableElement
+
+        codesService.updateCodesVariableElements(getServiceContextAdministrador(), variableElementsIdByCodeId);
+
+        entityManager.clear();
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code1.getNameableArtefact().getUrn());
+            assertEquals(variableElement1.getIdentifiableArtefact().getUrn(), code.getVariableElement().getIdentifiableArtefact().getUrn());
+            assertNull(code.getShortName());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code2.getNameableArtefact().getUrn());
+            assertEquals(variableElement1.getIdentifiableArtefact().getUrn(), code.getVariableElement().getIdentifiableArtefact().getUrn());
+            assertNull(code.getShortName()); // cleared
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code211.getNameableArtefact().getUrn());
+            assertNull(code.getVariableElement());
+            assertNotNull(code.getShortName());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code22.getNameableArtefact().getUrn());
+            assertEquals(variableElement3.getIdentifiableArtefact().getUrn(), code.getVariableElement().getIdentifiableArtefact().getUrn());
+            assertNull(code.getShortName());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code3.getNameableArtefact().getUrn());
+            assertNull(code.getVariableElement());
+            assertNull(code.getShortName());
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code4.getNameableArtefact().getUrn());
+            assertEquals(variableElement3.getIdentifiableArtefact().getUrn(), code.getVariableElement().getIdentifiableArtefact().getUrn());
+            assertNull(code.getShortName()); // cleared
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), code41.getNameableArtefact().getUrn());
+            assertEquals(variableElement2.getIdentifiableArtefact().getUrn(), code.getVariableElement().getIdentifiableArtefact().getUrn());
+            assertNull(code.getShortName());
+        }
     }
 
     @Test
