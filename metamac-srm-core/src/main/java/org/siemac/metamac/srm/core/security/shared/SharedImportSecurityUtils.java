@@ -15,4 +15,8 @@ public class SharedImportSecurityUtils extends SharedSecurityUtils {
     public static boolean canImportStructure(MetamacPrincipal metamacPrincipal) {
         return isSrmRoleAllowed(metamacPrincipal, TECNICO_PRODUCCION, JEFE_PRODUCCION, JEFE_NORMALIZACION);
     }
+
+    public static boolean canExportStructure(MetamacPrincipal metamacPrincipal) {
+        return isAnySrmRole(metamacPrincipal);
+    }
 }
