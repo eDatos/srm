@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
@@ -397,15 +398,27 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     }
                     @Override
                     public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
-                        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistPublishedInternally()), MessageTypeEnum.SUCCESS);
                         codelistMetamacDto = result.getCodelistMetamacDto();
-                        getView().setCodelist(codelistMetamacDto);
 
-                        // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version
-                        // (the URN changes!).
-                        if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
-                            retrieveCodelistVersions(codelistMetamacDto.getUrn());
-                            updateUrl();
+                        if (BooleanUtils.isTrue(result.getCodelistMetamacDto().getIsTaskInBackground())) {
+
+                            // Internal publication planned in background
+                            getView().setCodelist(codelistMetamacDto);
+                            getView().showInformationMessage(getMessages().codelistInternalPublication(), getMessages().codelistBackgroundInternalPublicationInProgress());
+
+                        } else {
+
+                            // Synchronous internal publication
+                            ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistPublishedInternally()), MessageTypeEnum.SUCCESS);
+                            getView().setCodelist(codelistMetamacDto);
+
+                            // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal
+                            // version
+                            // (the URN changes!).
+                            if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
+                                retrieveCodelistVersions(codelistMetamacDto.getUrn());
+                                updateUrl();
+                            }
                         }
                     }
                 });
@@ -438,14 +451,14 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(VersionCodelistResult result) {
+                codelistMetamacDto = result.getCodelistMetamacDto();
                 if (result.getIsPlannedInBackground()) {
                     // The codelist is versioning in background
-                    getView().setCodelist(result.getCodelistMetamacDto());
+                    getView().setCodelist(codelistMetamacDto);
                     getView().showInformationMessage(getMessages().codelistVersioning(), getMessages().codelistBackgroundVersionInProgress());
                 } else {
                     // Codelist has been version synchronously
                     ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistVersioned()), MessageTypeEnum.SUCCESS);
-                    codelistMetamacDto = result.getCodelistMetamacDto();
                     retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn());
 
                     updateUrl();
