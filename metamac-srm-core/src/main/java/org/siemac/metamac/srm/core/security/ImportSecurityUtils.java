@@ -13,4 +13,9 @@ public class ImportSecurityUtils extends SecurityUtils {
         }
     }
 
+    public static void canExportStructure(ServiceContext ctx) throws MetamacException {
+        if (!SharedImportSecurityUtils.canExportStructure(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
 }
