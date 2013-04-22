@@ -15,6 +15,8 @@ import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
+
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
 public class MergeCodelistJob implements Job {
@@ -41,6 +43,7 @@ public class MergeCodelistJob implements Job {
         JobKey jobKey = context.getJobDetail().getKey();
         JobDataMap data = context.getJobDetail().getJobDataMap();
         ServiceContext serviceContext = new ServiceContext(data.getString(USER), context.getFireInstanceId(), "sdmx-srm-core");
+        serviceContext.setProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION, Boolean.TRUE);
 
         try {
             // Parameters

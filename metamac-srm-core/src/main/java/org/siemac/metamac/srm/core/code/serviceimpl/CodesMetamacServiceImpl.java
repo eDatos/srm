@@ -92,6 +92,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
@@ -414,12 +415,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Merge metadata of Item
         Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(codelistTemporalVersion.getItems());
+        List<ItemResult> codesFoundEfficiently = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistTemporalVersion.getId(), Boolean.TRUE);
+        Map<String, ItemResult> codesFoundEfficientlyByUrn = new HashMap<String, ItemResult>(codesFoundEfficiently.size());
+        for (ItemResult itemResult : codesFoundEfficiently) {
+            codesFoundEfficientlyByUrn.put(itemResult.getUrn(), itemResult);
+        }
+
+        // Merge metadata of Item
         for (Item item : codelistVersion.getItems()) {
             CodeMetamac code = (CodeMetamac) item;
             CodeMetamac codeTemp = (CodeMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
 
             // Inherit InternationalStrings
-            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(code, codeTemp, internationalStringRepository);
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(code, codesFoundEfficientlyByUrn.get(GeneratorUrnUtils.makeUrnAsTemporal(code.getNameableArtefact().getUrn())),
+                    internationalStringRepository);
 
             // Metamac Metadata
             // ShortName
@@ -441,6 +450,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 Boolean openness = SrmServiceUtils.getCodeOpenness(codeTemp, i);
                 SrmServiceUtils.setCodeOpenness(code, i, openness);
             }
+
         }
 
         // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update the codes index, this was updates before.
@@ -460,6 +470,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return codelistVersion;
     }
+
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation

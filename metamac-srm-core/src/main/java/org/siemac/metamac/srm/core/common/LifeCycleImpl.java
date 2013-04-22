@@ -27,6 +27,7 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
 public abstract class LifeCycleImpl implements LifeCycle {
@@ -65,7 +66,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         ProcStatusEnum targetStatus = ProcStatusEnum.PRODUCTION_VALIDATION;
 
         // Validate to send to production
-        checkResourceInProductionValidation(urn, srmResourceVersion, targetStatus);
+        checkResourceInProductionValidation(ctx, urn, srmResourceVersion, targetStatus);
 
         // Update life cycle metadata
         SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
@@ -89,7 +90,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         ProcStatusEnum targetStatus = ProcStatusEnum.DIFFUSION_VALIDATION;
 
         // Validate to send to Diffusion
-        checkResourceInDiffusionValidation(urn, srmResourceVersion, targetStatus);
+        checkResourceInDiffusionValidation(ctx, urn, srmResourceVersion, targetStatus);
 
         // Update life cycle metadata
         SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
@@ -260,7 +261,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
     /**
      * Makes validations to sent to production validation. Also revalidates conditions that were checked to go previous statuses.
      */
-    private void checkResourceInProductionValidation(String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
+    private void checkResourceInProductionValidation(ServiceContext ctx, String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
@@ -269,7 +270,10 @@ public abstract class LifeCycleImpl implements LifeCycle {
             checkProcStatus(srmResourceVersion, procStatusToSendToProductionValidation);
         }
         // There is not pending tasks
-        if (srmResourceVersion instanceof ItemSchemeVersion) {
+        Boolean isJobInvocation = (Boolean) ((ctx.getProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION) != null)
+                ? ctx.getProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION)
+                : Boolean.FALSE);
+        if (srmResourceVersion instanceof ItemSchemeVersion && !isJobInvocation) {
             SdmxSrmValidationUtils.checkArtefactWithoutTaskInBackground((ItemSchemeVersion) srmResourceVersion);
         }
         // Conditions for concrete resource
@@ -277,11 +281,10 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         ExceptionUtils.throwIfException(exceptions);
     }
-
     /**
      * Makes validations to send to diffusion validation. Also revalidates conditions that were checked to go previous statuses.
      */
-    private void checkResourceInDiffusionValidation(String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
+    private void checkResourceInDiffusionValidation(ServiceContext ctx, String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
@@ -291,7 +294,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         }
 
         // Check other conditions
-        checkResourceInProductionValidation(urn, srmResourceVersion, targetStatus);
+        checkResourceInProductionValidation(ctx, urn, srmResourceVersion, targetStatus);
         callback.checkConcreteResourceInDiffusionValidation(srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
@@ -353,7 +356,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         }
 
         // Check other conditions
-        checkResourceInDiffusionValidation(urn, srmResourceVersion, targetStatus);
+        checkResourceInDiffusionValidation(ctx, urn, srmResourceVersion, targetStatus);
         callback.checkConcreteResourceInInternallyPublished(ctx, srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);

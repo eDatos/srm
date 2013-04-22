@@ -19,6 +19,8 @@ import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
+
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
 public class ImportationCsvJob implements Job {
@@ -59,6 +61,7 @@ public class ImportationCsvJob implements Job {
             JobDataMap data = context.getJobDetail().getJobDataMap();
             String user = data.getString(USER);
             serviceContext = new ServiceContext(user, context.getFireInstanceId(), "sdmx-srm-core");
+            serviceContext.setProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION, Boolean.TRUE);
             String operation = data.getString(OPERATION);
             if (OPERATION_IMPORT_CODES.equals(operation)) {
                 importCodes(jobKey, data, serviceContext);
