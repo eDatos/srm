@@ -36,6 +36,8 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void deleteCodelistOpennessLevel(List<String> opennessLevelsUrns);
     void updateCodesOpennessLevel(String opennessLevelUrn, Map<String, Boolean> opennessLevels);
 
+    void normaliseVariableElementsToCodes(String codelistUrn, String locale);
+
     // Life cycle
 
     void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);

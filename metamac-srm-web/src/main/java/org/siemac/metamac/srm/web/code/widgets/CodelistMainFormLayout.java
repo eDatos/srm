@@ -14,7 +14,7 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
-    private Boolean              versioningBackground;
+    private Boolean              isTaskInBackground;
 
     private MainFormLayoutButton addCodelistToFamilyButton;
 
@@ -26,16 +26,16 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     public void setCodelist(CodelistMetamacDto codelistMetamacDto) {
         super.updatePublishSection(codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto);
-        this.versioningBackground = codelistMetamacDto.getIsTaskInBackground();
+        this.isTaskInBackground = codelistMetamacDto.getIsTaskInBackground();
         setCanEdit();
     }
 
     private void setCanEdit() {
         boolean canEdit = false;
         if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus)) {
-            canEdit = CodesClientSecurityUtils.canCreateCodelistTemporalVersion(versioningBackground);
+            canEdit = CodesClientSecurityUtils.canCreateCodelistTemporalVersion(isTaskInBackground);
         } else {
-            canEdit = CodesClientSecurityUtils.canUpdateCodelist(procStatus, versioningBackground);
+            canEdit = CodesClientSecurityUtils.canUpdateCodelist(procStatus, isTaskInBackground);
         }
         super.setCanEdit(canEdit);
     }
@@ -55,42 +55,42 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     protected void showAddCodelistToFamilyButton() {
-        if (CodesClientSecurityUtils.canAddCodelistToCodelistFamily(versioningBackground)) {
+        if (CodesClientSecurityUtils.canAddCodelistToCodelistFamily(isTaskInBackground)) {
             addCodelistToFamilyButton.show();
         }
     }
 
     @Override
     protected void showSendToProductionValidation() {
-        if (CodesClientSecurityUtils.canSendCodelistToProductionValidation(versioningBackground)) {
+        if (CodesClientSecurityUtils.canSendCodelistToProductionValidation(isTaskInBackground)) {
             productionValidation.show();
         }
     }
 
     @Override
     protected void showSendToDiffusionValidation() {
-        if (CodesClientSecurityUtils.canSendCodelistToDiffusionValidation(versioningBackground)) {
+        if (CodesClientSecurityUtils.canSendCodelistToDiffusionValidation(isTaskInBackground)) {
             diffusionValidation.show();
         }
     }
 
     @Override
     protected void showRejectValidationButton() {
-        if (CodesClientSecurityUtils.canRejectCodelistValidation(procStatus, versioningBackground)) {
+        if (CodesClientSecurityUtils.canRejectCodelistValidation(procStatus, isTaskInBackground)) {
             rejectValidation.show();
         }
     }
 
     @Override
     protected void showPublishInternallyButton() {
-        if (CodesClientSecurityUtils.canPublishCodelistInternally(versioningBackground)) {
+        if (CodesClientSecurityUtils.canPublishCodelistInternally(isTaskInBackground)) {
             publishInternally.show();
         }
     }
 
     @Override
     protected void showPublishExternallyButton() {
-        if (CodesClientSecurityUtils.canPublishCodelistExternally(versioningBackground)) {
+        if (CodesClientSecurityUtils.canPublishCodelistExternally(isTaskInBackground)) {
             publishExternally.show();
         }
     }
@@ -104,7 +104,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (CodesClientSecurityUtils.canCancelCodelistValidity(versioningBackground)) {
+        if (CodesClientSecurityUtils.canCancelCodelistValidity(isTaskInBackground)) {
             cancelValidity.show();
         }
     }
@@ -129,6 +129,6 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     private boolean canVersionCodelist() {
         // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist(versioningBackground);
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist(isTaskInBackground);
     }
 }
