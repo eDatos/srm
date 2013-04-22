@@ -26,29 +26,18 @@ import com.google.inject.Singleton;
 
 @Singleton
 @SuppressWarnings("serial")
-public class FileUploadServlet extends HttpServlet {
+public class ImportSDMXStructureServlet extends HttpServlet {
 
-    private static Logger logger = Logger.getLogger(FileUploadServlet.class.getName());
+    private static Logger logger = Logger.getLogger(ImportSDMXStructureServlet.class.getName());
 
     private File          tmpDir;
-
-    // private File destinationDir;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         logger.info("FileUpload Servlet");
         tmpDir = new File(((File) getServletContext().getAttribute("javax.servlet.context.tempdir")).toString());
-        // if (!tmpDir.isDirectory()) {
-        // throw new ServletException(tmpDir.toString() + " is not a directory");
-        // }
-        // logger.info("tmpDir: " + tmpDir.toString());
-        // String realPath = getServletContext().getRealPath("/" + SharedTokens.FILE_UPLOAD_DIR_PATH);
-        // destinationDir = new File(realPath);
-        // if (!destinationDir.isDirectory()) {
-        // throw new ServletException(SharedTokens.FILE_UPLOAD_DIR_PATH + " is not a directory");
-        // }
-        // logger.info("destinationDir: " + destinationDir.toString());
+        logger.info("tmpDir: " + tmpDir.toString());
     }
 
     @Override
@@ -133,5 +122,4 @@ public class FileUploadServlet extends HttpServlet {
 
     private void processQuery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     }
-
 }

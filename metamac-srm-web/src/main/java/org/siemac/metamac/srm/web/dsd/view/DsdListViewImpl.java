@@ -10,15 +10,12 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
-import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdSearchSectionStack;
-import org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDsdWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
@@ -50,13 +47,11 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
     private ToolStripButton          newToolStripButton;
     private ToolStripButton          deleteToolStripButton;
-    private ToolStripButton          importToolStripButton;
     private ToolStripButton          exportToolStripButton;
     private ToolStripButton          cancelValidityButton;
 
     private NewDsdWindow             newDsdWindow;
     private DeleteConfirmationWindow deleteConfirmationWindow;
-    private ImportDsdWindow          importDsdWindow;
 
     private DsdSearchSectionStack    searchSectionStack;
 
@@ -101,31 +96,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         });
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateDsd() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
-        importToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionImport(), GlobalResources.RESOURCE.importDsd().getURL());
-        importToolStripButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                importDsdWindow.show();
-            }
-        });
-        importToolStripButton.setVisibility(ImportationClientSecurityUtils.canImportStructure() ? Visibility.VISIBLE : Visibility.HIDDEN);
-
-        importDsdWindow = new ImportDsdWindow();
-        importDsdWindow.setVisibility(Visibility.HIDDEN);
-        importDsdWindow.setUploadListener(new UploadListener() {
-
-            @Override
-            public void uploadComplete(String fileName) {
-                getUiHandlers().dsdSuccessfullyImported(fileName);
-            }
-            @Override
-            public void uploadFailed(String fileName) {
-                getUiHandlers().dsdImportFailed(fileName);
-            }
-        });
-
-        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), GlobalResources.RESOURCE.exportDsd().getURL());
+        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), GlobalResources.RESOURCE.exportSDMXResource().getURL());
         exportToolStripButton.setVisibility(Visibility.HIDDEN);
         exportToolStripButton.addClickHandler(new ClickHandler() {
 
@@ -167,7 +138,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         dsdGridToolStrip.addButton(deleteToolStripButton);
         dsdGridToolStrip.addButton(cancelValidityButton);
         dsdGridToolStrip.addSeparator();
-        dsdGridToolStrip.addButton(importToolStripButton);
         dsdGridToolStrip.addButton(exportToolStripButton);
 
         // Search

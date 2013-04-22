@@ -1,8 +1,9 @@
-package org.siemac.metamac.srm.web.dsd.widgets;
+package org.siemac.metamac.srm.web.client.widgets;
 
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
+import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
 import com.google.gwt.user.client.ui.NamedFrame;
@@ -19,7 +20,7 @@ import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class ImportDsdWindow extends Window {
+public class ImportSDMXStructureWindow extends Window {
 
     private static final String TARGET = "uploadTarget";
 
@@ -29,13 +30,19 @@ public class ImportDsdWindow extends Window {
 
     private UploadListener      listener;
 
-    public ImportDsdWindow() {
+    public ImportSDMXStructureWindow(String title) {
         super();
+
+        setHeight(130);
+        setWidth(350);
+        setTitle(title);
+        setShowMinimizeButton(false);
+
         initComplete(this);
         initUploadFailed(this);
         setAutoSize(true);
-        setTitle(MetamacSrmWeb.getMessages().dsdImport());
-        setShowMinimizeButton(false);
+        setShowModalMask(true);
+        setAutoCenter(true);
         setIsModal(true);
         setShowModalMask(true);
         setAutoCenter(true);
@@ -69,7 +76,7 @@ public class ImportDsdWindow extends Window {
         form.setWidth100();
         form.setMargin(8);
         form.setNumCols(2);
-        form.setCellPadding(2);
+        form.setCellPadding(4);
         form.setWrapItemTitles(false);
         form.setTitleSuffix(" ");
         form.setRequiredTitleSuffix(" ");
@@ -89,17 +96,17 @@ public class ImportDsdWindow extends Window {
         form.setAction(MetamacSrmWeb.getRelativeURL(url.toString()));
 
         uploadItem = new UploadItem("filename");
-        uploadItem.setTitle(MetamacSrmWeb.getConstants().dsdFileName());
+        uploadItem.setTitle(MetamacSrmWeb.getConstants().sDMXResource());
         uploadItem.setWidth(300);
         uploadItem.setRequired(true);
 
-        uploadButton = new CustomButtonItem("button-import", MetamacSrmWeb.getConstants().actionImport());
+        uploadButton = new CustomButtonItem("button-import", MetamacWebCommon.getConstants().accept());
         uploadButton.addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
             public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                 Object obj = uploadItem.getDisplayValue();
-                if (ImportDsdWindow.this.form.validate() && obj != null) {
+                if (ImportSDMXStructureWindow.this.form.validate() && obj != null) {
                     form.submitForm();
                     hide();
                 }
@@ -143,16 +150,15 @@ public class ImportDsdWindow extends Window {
         }
     }
 
-    private native void initComplete(ImportDsdWindow upload) /*-{
-                                                             $wnd.uploadComplete = function(fileName) {
-                                                             upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadComplete(Ljava/lang/String;)(fileName);
-                                                             };
-                                                             }-*/;
+    private native void initComplete(ImportSDMXStructureWindow upload) /*-{
+		$wnd.uploadComplete = function(fileName) {
+			upload.@org.siemac.metamac.srm.web.client.widgets.ImportSDMXStructureWindow::uploadComplete(Ljava/lang/String;)(fileName);
+		};
+    }-*/;
 
-    private native void initUploadFailed(ImportDsdWindow upload) /*-{
-                                                                 $wnd.uploadFailed = function(fileName) {
-                                                                 upload.@org.siemac.metamac.srm.web.dsd.widgets.ImportDsdWindow::uploadFailed(Ljava/lang/String;)(fileName);
-                                                                 }
-                                                                 }-*/;
-
+    private native void initUploadFailed(ImportSDMXStructureWindow upload) /*-{
+		$wnd.uploadFailed = function(fileName) {
+			upload.@org.siemac.metamac.srm.web.client.widgets.ImportSDMXStructureWindow::uploadFailed(Ljava/lang/String;)(fileName);
+		}
+    }-*/;
 }

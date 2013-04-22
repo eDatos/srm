@@ -61,9 +61,6 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         Window.enableScrolling(false);
         Window.setMargin(DEFAULT_MARGIN);
 
-        // Add handlers to the resources menu
-        registerStructuralResourcesMenuHandlers();
-
         // Initialize the main layout container
         panel = new VLayout();
         panel.setWidth100();
@@ -136,6 +133,12 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
     @Override
     public Widget asWidget() {
         return panel;
+    }
+
+    @Override
+    public void setUiHandlers(MainPageUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        structuralResourcesMenu.setUiHandlers(uiHandlers);
     }
 
     /****************************************************
@@ -223,44 +226,6 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
             return metamacPrincipal.getUserId();
         }
         return new String();
-    }
-
-    private void registerStructuralResourcesMenuHandlers() {
-        structuralResourcesMenu.getDsdsButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                getUiHandlers().goToDsds();
-            }
-        });
-        structuralResourcesMenu.getConceptSchemesButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                getUiHandlers().goToConcepts();
-            }
-        });
-        structuralResourcesMenu.getOrganisationSchemesButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                getUiHandlers().goToOrganisations();
-            }
-        });
-        structuralResourcesMenu.getCategorySchemesButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                getUiHandlers().goToCategories();
-            }
-        });
-        structuralResourcesMenu.getCodelistButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                getUiHandlers().goToCodelists();
-            }
-        });
     }
 
     @Override

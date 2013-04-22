@@ -20,11 +20,11 @@ public interface GlobalResources extends ClientBundleWithLookup {
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/import.png")
-    ImageResource importDsd();
+    ImageResource importSDMXResource();
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/export.png")
-    ImageResource exportDsd();
+    ImageResource exportSDMXResource();
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/resultsetnext.png")

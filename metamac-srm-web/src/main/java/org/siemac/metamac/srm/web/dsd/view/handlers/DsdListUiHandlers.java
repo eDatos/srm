@@ -16,9 +16,6 @@ public interface DsdListUiHandlers extends UiHandlers {
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
 
-    void dsdSuccessfullyImported(String fileName);
-    void dsdImportFailed(String fileName);
-
     void exportDsd(DataStructureDefinitionMetamacDto dsd);
 
     void cancelValidity(List<String> urns);

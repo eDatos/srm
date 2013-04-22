@@ -233,17 +233,6 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    public void dsdSuccessfullyImported(String fileName) {
-        ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdImported()), MessageTypeEnum.SUCCESS);
-        getView().onNewDsdCreated();
-    }
-
-    @Override
-    public void dsdImportFailed(String fileName) {
-        ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdErrorImport()), MessageTypeEnum.ERROR);
-    }
-
-    @Override
     public void exportDsd(DataStructureDefinitionMetamacDto dsd) {
         dispatcher.execute(new ExportDsdAction(dsd.getUrn()), new WaitingAsyncCallback<ExportDsdResult>() {
 

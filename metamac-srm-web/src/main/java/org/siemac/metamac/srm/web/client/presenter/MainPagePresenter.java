@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
@@ -216,6 +217,24 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
             }
         });
     }
+
+    //
+    // IMPORTATION
+    //
+
+    @Override
+    public void sDMXResourceImportationFailed(String fileName) {
+        ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().sDMXResourceErrorImport()), MessageTypeEnum.ERROR);
+    }
+
+    @Override
+    public void sDMXResourceImportationSucceed(String fileName) {
+        ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().sDMXResourceImportationPlanned()), MessageTypeEnum.SUCCESS);
+    }
+
+    //
+    // PLACES
+    //
 
     @Override
     public void goToConcepts() {
