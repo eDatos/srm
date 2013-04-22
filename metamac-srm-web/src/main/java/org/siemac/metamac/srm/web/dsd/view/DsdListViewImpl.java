@@ -295,7 +295,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showExportToolStripButton(DataStructureDefinitionMetamacDto selectedDsd) {
-        if (ImportationClientSecurityUtils.canExportStructure(selectedDsd)) {
+        if (ImportationClientSecurityUtils.canExportStructure(selectedDsd.getVersionLogic())) {
             exportToolStripButton.show();
         }
     }

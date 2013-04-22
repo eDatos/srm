@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
@@ -113,6 +114,13 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     protected void showVersionSdmxResourceButton() {
         if (canVersionCodelist() && VersionUtil.isTemporalVersion(versionLogic)) {
             versionSdmxResource.show();
+        }
+    }
+
+    @Override
+    protected void showExportButton() {
+        if (ImportationClientSecurityUtils.canExportStructure(versionLogic)) {
+            export.show();
         }
     }
 

@@ -23,6 +23,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected MainFormLayoutButton versioning;
     protected MainFormLayoutButton cancelValidity;
     protected MainFormLayoutButton versionSdmxResource;
+    protected MainFormLayoutButton export;
     // protected AnnounceToolStripButton announce;
 
     protected ProcStatusEnum       procStatus;
@@ -52,6 +53,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         versioning = new MainFormLayoutButton(getConstants().lifeCycleVersioning(), GlobalResources.RESOURCE.version().getURL());
         cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
         versionSdmxResource = new MainFormLayoutButton(getConstants().lifeCycleVersionSdmxResource(), GlobalResources.RESOURCE.version().getURL());
+        export = new MainFormLayoutButton(getConstants().actionExport(), GlobalResources.RESOURCE.exportSDMXResource().getURL());
         // announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
 
         toolStrip.addButton(productionValidation);
@@ -62,6 +64,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         toolStrip.addButton(versioning);
         toolStrip.addButton(cancelValidity);
         toolStrip.addButton(versionSdmxResource);
+        toolStrip.addButton(export);
         // toolStrip.addButton(announce);
     }
 
@@ -116,6 +119,10 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         return versionSdmxResource;
     }
 
+    public HasClickHandlers getExport() {
+        return export;
+    }
+
     // public HasClickHandlers getAnnounce() {
     // return announce;
     // }
@@ -129,6 +136,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         versioning.hide();
         cancelValidity.hide();
         versionSdmxResource.hide();
+        export.hide();
         // announce.hide();
     }
 
@@ -160,6 +168,8 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         // excepting INTERNALLY_PUBLISHED and EXTERNALLY_PUBLISHED.
         showVersionSdmxResourceButton();
 
+        showExportButton();
+
         // Announce button (does not depends on the procStatus)
         // showAnnounceButton();
     }
@@ -179,6 +189,8 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected abstract void showCancelValidityButton();
 
     protected abstract void showVersionSdmxResourceButton();
+
+    protected abstract void showExportButton();
 
     // protected abstract void showAnnounceButton();
 }

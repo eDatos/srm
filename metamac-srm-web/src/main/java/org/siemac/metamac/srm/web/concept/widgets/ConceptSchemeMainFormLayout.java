@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.widgets;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
@@ -91,6 +92,13 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
     protected void showVersionSdmxResourceButton() {
         if (canConceptSchemeBeVersion() && VersionUtil.isTemporalVersion(versionLogic)) {
             versionSdmxResource.show();
+        }
+    }
+
+    @Override
+    protected void showExportButton() {
+        if (ImportationClientSecurityUtils.canExportStructure(versionLogic)) {
+            export.show();
         }
     }
 

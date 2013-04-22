@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.dsd.widgets;
 
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
@@ -82,6 +83,13 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     protected void showVersionSdmxResourceButton() {
         if (canVersionDsd() && VersionUtil.isTemporalVersion(versionLogic)) {
             versionSdmxResource.show();
+        }
+    }
+
+    @Override
+    protected void showExportButton() {
+        if (ImportationClientSecurityUtils.canExportStructure(versionLogic)) {
+            export.show();
         }
     }
 
