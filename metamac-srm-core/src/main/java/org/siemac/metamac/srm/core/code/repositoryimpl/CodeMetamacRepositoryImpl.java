@@ -7,9 +7,11 @@ import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRe
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Query;
 
@@ -79,9 +81,125 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set VARIABLE_ELEMENT_FK = null ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
-        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
+    }
+
+    // TODO pasar a repositorio
+    private void deleteInternationalStrings(Collection<Long> internationalStringToDelete) {
+        if (CollectionUtils.isEmpty(internationalStringToDelete)) {
+            return;
+        }
+
+        StringBuilder internationalStringToDeleteParameter = new StringBuilder();
+        int count = 0;
+        int countToSqlParameter = 0;
+        for (Long id : internationalStringToDelete) {
+            countToSqlParameter++;
+            internationalStringToDeleteParameter.append(id);
+            if (countToSqlParameter == 1000 || count == internationalStringToDelete.size() - 1) {
+
+                // LocalisedString
+                Query queryDeleteLocalisedString = getEntityManager().createNativeQuery(
+                        "DELETE FROM TB_LOCALISED_STRINGS where INTERNATIONAL_STRING_FK IN (" + internationalStringToDeleteParameter + ")");
+                queryDeleteLocalisedString.executeUpdate();
+                // InternationalString
+                Query queryDeleteInternationalString = getEntityManager().createNativeQuery("DELETE FROM TB_INTERNATIONAL_STRINGS WHERE ID IN (" + internationalStringToDeleteParameter + ")");
+                queryDeleteInternationalString.executeUpdate();
+
+                // Reset parameter
+                countToSqlParameter = 0;
+                internationalStringToDeleteParameter = new StringBuilder();
+            } else {
+                internationalStringToDeleteParameter.append(",");
+            }
+            count++;
+        }
+    }
+
+    @Override
+    public void updateCodesVariableElements(Map<Long, Long> variableElementsByCodes, Long codelistVersionId, Long variableId) throws MetamacException {
+
+        // TODO quitar!
+        int j = 3;
+        int z = 17211;
+        Long[] codes = new Long[17211];
+        for (int i = 0; i < z; i++) {
+            codes[i] = Long.valueOf(122);
+        }
+
+        Map<Long, Long> shortNamesCandidateToDelete = executeSelectShortNamesByCodes(variableElementsByCodes.keySet());
+
+        String sqlUpdateWithVariableElement = buildQueryUpdateCodeVariableElement(true);
+        String sqlUpdateWithoutVariableElement = buildQueryUpdateCodeVariableElement(false);
+
+        // for (Long codeId : variableElementsByCodes.keySet()) { // TODO poner
+        // Long variableElementId = variableElementsByCodes.get(codeId);
+        for (int i = 0; i < codes.length; i++) {
+            Long codeId = codes[i];
+            Long variableElementId = variableElementsByCodes.get(codeId);
+
+            // Update
+            String sql = variableElementId != null ? sqlUpdateWithVariableElement : sqlUpdateWithoutVariableElement;
+            Query queryUpdate = getEntityManager().createNativeQuery(sql);
+
+            queryUpdate.setParameter("codelistVersionId", codelistVersionId);
+            queryUpdate.setParameter("variableId", variableId);
+            queryUpdate.setParameter("codeId", codeId);
+            if (variableElementId != null) {
+                queryUpdate.setParameter("variableElementId", variableElementId);
+            }
+            int updateResult = queryUpdate.executeUpdate();
+            if (updateResult > 1) {
+                throw new MetamacException(ServiceExceptionType.UNKNOWN, "Update result can not be more than one when updating variable element of code");
+            } else if (updateResult == 0) {
+                throw new MetamacException(ServiceExceptionType.UNKNOWN, "Code or variable element incorrect: code = " + codeId + "; variableElementId = " + variableElementId);
+            }
+            if (variableElementId == null) {
+                // short name is not cleared
+                shortNamesCandidateToDelete.remove(codeId);
+            }
+        }
+        // Delete short names
+        // deleteInternationalStrings(shortNamesCandidateToDelete.values()); // TODO
+        // TODO poner
+        List<Long> interLongs = new ArrayList<Long>();
+        for (int i = 0; i < codes.length; i++) {
+            interLongs.add(Long.valueOf(77));
+        }
+        deleteInternationalStrings(interLongs);
+
+        j++;
+    }
+
+    private String buildQueryUpdateCodeVariableElement(boolean variableElementNotNull) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_CODES SET ");
+        if (variableElementNotNull) {
+            sb.append("VARIABLE_ELEMENT_FK = :variableElementId, SHORT_NAME_FK = null ");
+        } else {
+            sb.append("VARIABLE_ELEMENT_FK = null ");
+        }
+        sb.append("WHERE ");
+        sb.append("    TB_CODES = :codeId ");
+        sb.append("   AND ");
+        // Check code belongs to codelist
+        sb.append("    TB_CODES = ");
+        sb.append("   (SELECT i.ID ");
+        sb.append("    FROM TB_ITEMS_BASE i ");
+        sb.append("    WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersionId ");
+        sb.append("    AND i.ID = :codeId) ");
+        // Check variable element belongs to variable of codelist
+        if (variableElementNotNull) {
+            sb.append("   AND ");
+            sb.append("   :variableElementId = ");
+            sb.append("   (SELECT ve.ID ");
+            sb.append("   FROM TB_M_VARIABLE_ELEMENTS ve ");
+            sb.append("   WHERE ve.VARIABLE_FK = :variableId ");
+            sb.append("   AND ve.ID = :variableElementId) ");
+        }
+        return sb.toString();
     }
 
     @Override
@@ -141,7 +259,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + orderColumn + " = null ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
-        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
@@ -154,7 +272,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + columnTarget + " = " + columnSource + " ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
-        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
@@ -165,7 +283,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = null ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
-        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
@@ -178,7 +296,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + columnTarget + " = " + columnSource + " ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
-        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
@@ -189,7 +307,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
-        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
@@ -200,7 +318,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
         sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID WHERE a.URN = :codeUrn AND i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
-        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codeUrn", codeUrn);
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -215,7 +333,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         sb.append("TB_CODES IN (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         sb.append("AND ");
         sb.append("TB_CODES NOT IN (SELECT DISTINCT(i.PARENT_FK) FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK IS NOT NULL) ");
-        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());;
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
     }
@@ -489,7 +607,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
      */
     @SuppressWarnings("rawtypes")
     private void checkCodeMetamacTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
-
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT distinct(a.CODE) ");
         sb.append("FROM TB_ITEMS_BASE i ");
@@ -509,5 +626,64 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             String code = getString(resultSql);
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.CODE_SHORT_NAME, code));
         }
+    }
+
+    // TODO borrar
+    // @SuppressWarnings("rawtypes")
+    // private Map<Long, Long> executeSelectShortNamesByCodes(Long[] codes) {
+    // Map<Long, Long> shortNamesByCode = new HashMap<Long, Long>(codes.length); // resulting map could have minor size, but more memory is prefered than relocate few times later
+    // int startIndex = 0;
+    // int endIndex = -1;
+    // int endIndexLimit = codes.length - 1;
+    // while (endIndex < endIndexLimit) {
+    // startIndex = endIndex + 1;
+    // endIndex = startIndex + 999; // 1000 IN is limit in Oracle
+    // if (endIndex > endIndexLimit) {
+    // endIndex = endIndexLimit;
+    // }
+    // String codesIdParameterToSelect = StringUtils.join(codes, ",", startIndex, endIndex);
+    //
+    // Query query = getEntityManager().createNativeQuery("SELECT TB_CODES, SHORT_NAME_FK FROM TB_M_CODES WHERE TB_CODES IN (" + codesIdParameterToSelect + ") AND SHORT_NAME_FK IS NOT NULL");
+    // List resultsSql = query.getResultList();
+    // for (Object resultSql : resultsSql) {
+    // Object[] resultSqlArray = (Object[]) resultSql;
+    // Long codeId = getLong(resultSqlArray[0]);
+    // Long internationalStringId = getLong(resultSqlArray[1]);
+    // shortNamesByCode.put(codeId, internationalStringId);
+    // }
+    // }
+    // return shortNamesByCode;
+    // }
+
+    @SuppressWarnings("rawtypes")
+    private Map<Long, Long> executeSelectShortNamesByCodes(Set<Long> codes) {
+        Map<Long, Long> shortNamesByCode = new HashMap<Long, Long>(codes.size()); // resulting map could have minor size, but more memory is prefered than relocate few times later
+
+        StringBuilder codesParameter = new StringBuilder();
+        int count = 0;
+        int countToSqlParameter = 0;
+        for (Long codeId : codes) {
+            countToSqlParameter++;
+            codesParameter.append(codeId);
+            if (countToSqlParameter == 1000 || count == codes.size() - 1) {
+                // Execute select
+                Query query = getEntityManager().createNativeQuery("SELECT TB_CODES, SHORT_NAME_FK FROM TB_M_CODES WHERE TB_CODES IN (" + codesParameter + ") AND SHORT_NAME_FK IS NOT NULL");
+                List resultsSql = query.getResultList();
+                for (Object resultSql : resultsSql) {
+                    Object[] resultSqlArray = (Object[]) resultSql;
+                    Long codeIdSqlResult = getLong(resultSqlArray[0]);
+                    Long internationalStringIdSqlResult = getLong(resultSqlArray[1]);
+                    shortNamesByCode.put(codeIdSqlResult, internationalStringIdSqlResult);
+                }
+
+                // Reset parameter
+                countToSqlParameter = 0;
+                codesParameter = new StringBuilder();
+            } else {
+                codesParameter.append(",");
+            }
+            count++;
+        }
+        return shortNamesByCode;
     }
 }
