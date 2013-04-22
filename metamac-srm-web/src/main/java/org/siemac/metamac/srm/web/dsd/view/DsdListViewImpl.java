@@ -104,7 +104,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             public void onClick(ClickEvent event) {
                 ListGridRecord record = dsdListGrid.getListGrid().getSelectedRecord();
                 if (record instanceof DsdRecord) {
-                    getUiHandlers().exportDsd(((DsdRecord) record).getDsd());
+                    getUiHandlers().exportDsd(((DsdRecord) record).getUrn());
                 }
             }
         });
@@ -295,6 +295,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showExportToolStripButton() {
+        // TODO Security
         exportToolStripButton.show();
     }
 

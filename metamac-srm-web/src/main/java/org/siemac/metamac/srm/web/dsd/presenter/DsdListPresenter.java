@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -35,7 +36,6 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
-import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -43,8 +43,6 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -233,20 +231,16 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    public void exportDsd(DataStructureDefinitionMetamacDto dsd) {
-        dispatcher.execute(new ExportSDMXResourceAction(dsd.getUrn()), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
+    public void exportDsd(String urn) {
+        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().sDMXResourceErrorExport()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
-                // TODO Is it better to use com.google.gwt.http.client.RequestBuilder to send the request?
-                StringBuffer url = new StringBuffer();
-                url.append(URL.encode(MetamacSrmWeb.getRelativeURL(SharedTokens.FILE_DOWNLOAD_DIR_PATH)));
-                url.append("?").append(URL.encode(SharedTokens.PARAM_FILE_NAME)).append("=").append(URL.encode(result.getFileName()));
-                Window.open(url.toString(), "_blank", "");
+                CommonUtils.downloadFile(result.getFileName());
             }
         });
     }
