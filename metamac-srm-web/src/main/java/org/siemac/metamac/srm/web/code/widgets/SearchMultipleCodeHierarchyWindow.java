@@ -195,7 +195,15 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
                 ListGridRecord[] allRecords = codesTreeGrid.getRecords();
                 ListGridRecord[] selectedRecords = codesTreeGrid.getSelectedRecords();
 
-                if (isAnyValidCodeSelected(selectedRecords)) {
+                if (!isAnyValidCodeSelected(selectedRecords)) {
+                    // At least one code must be selected
+                    WarningWindow warningWindow = new WarningWindow(getConstants().codesSelection(), getMessages().codeSelectionRequired());
+                    warningWindow.show();
+                } else if (selectedRecords.length > 100) {
+                    // The user cannot create more than 100 codes at the same time
+                    WarningWindow warningWindow = new WarningWindow(getConstants().codesSelection(), getMessages().codeSelectionErrorSize());
+                    warningWindow.show();
+                } else {
                     List<TreeNode> nodesToAdd = getCodesHierarchy(allRecords, selectedRecords);
                     if (!nodesToAdd.isEmpty()) {
 
@@ -218,9 +226,6 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
                             }
                         });
                     }
-                } else {
-                    WarningWindow warningWindow = new WarningWindow(getConstants().codesSelection(), getMessages().codeSelectionRequired());
-                    warningWindow.show();
                 }
             }
         });
