@@ -549,11 +549,12 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkUpdateCodesVariableElements(Map<Long, Long> variableElementsIdByCodeId, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkUpdateCodesVariableElements(String codelistUrn, Map<Long, Long> variableElementsIdByCodeId, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(variableElementsIdByCodeId, ServiceExceptionParameters.ID, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);

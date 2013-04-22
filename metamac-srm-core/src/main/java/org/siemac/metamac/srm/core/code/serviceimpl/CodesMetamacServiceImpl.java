@@ -84,7 +84,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
-import com.arte.statistic.sdmx.srm.core.base.exception.ItemNotFoundException;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
@@ -811,20 +810,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void updateCodesVariableElements(ServiceContext ctx, Map<Long, Long> variableElementsIdByCodeId) throws MetamacException {
+    public void updateCodesVariableElements(ServiceContext ctx, String codelistUrn, Map<Long, Long> variableElementsIdByCodeId) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkUpdateCodesVariableElements(variableElementsIdByCodeId, null);
+        CodesMetamacInvocationValidator.checkUpdateCodesVariableElements(codelistUrn, variableElementsIdByCodeId, null);
         // Note: It is not necessary to check the codelist status. Variable element can be modified although the codelist is published
 
-        // Select codelist from aleatory code. All codes must belong to same codelist. In repository, update is not executed if code doesnot belong to this codelist
-        Long aleatoryCodeId = variableElementsIdByCodeId.keySet().iterator().next();
-        Item code = null;
-        try {
-            code = itemRepository.findById(aleatoryCodeId);
-        } catch (ItemNotFoundException e) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.ID).build();
-        }
-        CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, code.getNameableArtefact().getUrn());
+        // Retrieve codelist. All codes must belong to same codelist. In repository, error ocurrs if any code doesnot belong to this codelist
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        // Retrieve variable. All variable elements must belong to codelist varliable. In repository, error ocurrs if any variable element doesnot belong to this variable
         Variable variable = codelistVersion.getVariable();
         if (variable == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CODELIST_VARIABLE).build();

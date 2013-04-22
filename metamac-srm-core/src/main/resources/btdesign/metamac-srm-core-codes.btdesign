@@ -87,7 +87,7 @@ Application CodesMetamac {
 			"Change variable element to code"
 			@CodeMetamac updateCodeVariableElement(String codeUrn, String variableElementUrn) throws MetamacException;
 			"Change variable elements to codes"
-			updateCodesVariableElements(Map<Long,Long> variableElementsIdByCodeId) throws MetamacException;
+			updateCodesVariableElements(String codelistUrn, Map<Long,Long> variableElementsIdByCodeId) throws MetamacException;
 			"Updates parent of code. parentUrn is null when code is moved to first level. Code is moved at the end of new level"
 			updateCodeParent(String codeUrn, String newParentUrn) throws MetamacException;
 			"Updates position of code to visualisation requested"

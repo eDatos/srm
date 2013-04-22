@@ -8367,7 +8367,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="1411"
-        LABEL="Teneriffa"
+        LABEL="Lanzarote en"
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="141"
@@ -8375,7 +8375,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="1412"
-        LABEL="Tenerife"
+        LABEL="Lanzarote"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="141"

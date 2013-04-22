@@ -2221,7 +2221,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(code.getParent());
             assertNotNull(code.getItemSchemeVersionFirstLevel());
             assertNull(code.getNameableArtefact().getUriProvider());
-            assertNull(code.getShortName());
+            assertEqualsInternationalString(code.getShortName(), "es", "Lanzarote", "en", "Lanzarote en");
             assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Lanzarote", null, null);
             assertNull(code.getNameableArtefact().getDescription());
             assertNull(code.getVariableElement());
@@ -2507,6 +2507,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testUpdateCodesVariableElements() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
+
         CodeMetamac code1 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1);
         CodeMetamac code2 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2);
         CodeMetamac code211 = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_2_1_1);
@@ -2528,7 +2530,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         variableElementsIdByCodeId.put(code4.getId(), variableElement3.getId()); // add variableElement
         variableElementsIdByCodeId.put(code41.getId(), variableElement2.getId()); // add variableElement
 
-        codesService.updateCodesVariableElements(getServiceContextAdministrador(), variableElementsIdByCodeId);
+        codesService.updateCodesVariableElements(getServiceContextAdministrador(), codelistUrn, variableElementsIdByCodeId);
 
         entityManager.clear();
         {
