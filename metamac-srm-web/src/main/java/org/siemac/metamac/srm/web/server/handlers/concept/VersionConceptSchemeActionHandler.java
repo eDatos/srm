@@ -11,7 +11,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -27,7 +27,7 @@ public class VersionConceptSchemeActionHandler extends SecurityActionHandler<Ver
     @Override
     public VersionConceptSchemeResult executeSecurityAction(VersionConceptSchemeAction action) throws ActionException {
         try {
-            VersioningResult result = srmCoreServiceFacade.versioningConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
+            TaskInfo result = srmCoreServiceFacade.versioningConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
             // Concept schemes will always be version synchronously (not in background!)
             ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ServiceContextHolder.getCurrentServiceContext(), result.getUrnResult());
             return new VersionConceptSchemeResult(conceptSchemeMetamacDto);

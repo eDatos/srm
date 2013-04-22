@@ -11,7 +11,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.VersioningResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -27,7 +27,7 @@ public class CreateOrganisationSchemeTemporalVersionActionHandler extends Securi
     @Override
     public CreateOrganisationSchemeTemporalVersionResult executeSecurityAction(CreateOrganisationSchemeTemporalVersionAction action) throws ActionException {
         try {
-            VersioningResult result = srmCoreServiceFacade.createTemporalVersionOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            TaskInfo result = srmCoreServiceFacade.createTemporalVersionOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             // Organisation schemes will always be version synchronously (not in background!)
             OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(ServiceContextHolder.getCurrentServiceContext(), result.getUrnResult());
             return new CreateOrganisationSchemeTemporalVersionResult(organisationSchemeMetamacDto);
