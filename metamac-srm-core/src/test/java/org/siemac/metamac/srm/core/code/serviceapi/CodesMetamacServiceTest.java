@@ -7772,6 +7772,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         waitUntilJobFinished();
 
         // Validate
+        entityManager.clear();
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
         assertNotNull(task);
         assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());

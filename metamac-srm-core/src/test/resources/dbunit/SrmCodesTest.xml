@@ -8371,6 +8371,14 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="141"
-    />                      
+    />      
+    
+    <TB_LOCALISED_STRINGS
+        ID="1412"
+        LABEL="Tenerife"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="141"
+    />                     
                                                                                                    
 </dataset>
