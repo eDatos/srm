@@ -421,7 +421,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             codesFoundEfficientlyByUrn.put(itemResult.getUrn(), itemResult);
         }
 
-        // Merge metadata of Item
         for (Item item : codelistVersion.getItems()) {
             CodeMetamac code = (CodeMetamac) item;
             CodeMetamac codeTemp = (CodeMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
