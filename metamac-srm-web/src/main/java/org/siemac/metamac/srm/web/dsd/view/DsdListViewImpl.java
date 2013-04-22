@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
+import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
@@ -226,16 +227,15 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     /**
      * Select DSD in ListGrid
      * 
-     * @param dsdSelected
+     * @param selectedDsd
      */
-    private void selectDsd(DataStructureDefinitionMetamacDto dsdSelected) {
-        if (dsdSelected.getId() == null) {
-            // New dimension
+    private void selectDsd(DataStructureDefinitionMetamacDto selectedDsd) {
+        if (selectedDsd.getId() == null) {
             deleteToolStripButton.hide();
             dsdListGrid.getListGrid().deselectAllRecords();
         } else {
             showDeleteToolStripButton();
-            showExportToolStripButton();
+            showExportToolStripButton(selectedDsd);
         }
     }
 
@@ -294,9 +294,10 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         }
     }
 
-    private void showExportToolStripButton() {
-        // TODO Security
-        exportToolStripButton.show();
+    private void showExportToolStripButton(DataStructureDefinitionMetamacDto selectedDsd) {
+        if (ImportationClientSecurityUtils.canExportStructure(selectedDsd)) {
+            exportToolStripButton.show();
+        }
     }
 
     private List<DataStructureDefinitionMetamacDto> getSelectedDsds() {
