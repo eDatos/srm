@@ -20,6 +20,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToCodelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -187,6 +189,39 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return AccessTypeEnum.PUBLIC.equals(codelistVersion.getAccessType());
     }
 
+    @Override
+    public VariableFamilies toVariableFamilies(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> sourcesPagedResult, String query, String orderBy, Integer limit) {
+
+        VariableFamilies targets = new VariableFamilies();
+        targets.setKind(RestInternalConstants.KIND_VARIABLE_FAMILIES);
+
+        // Pagination
+        String baseLink = toVariableFamiliesLink();
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (org.siemac.metamac.srm.core.code.domain.VariableFamily source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getVariableFamilies().add(target);
+        }
+        return targets;
+    }
+
+    @Override
+    public VariableFamily toVariableFamily(org.siemac.metamac.srm.core.code.domain.VariableFamily source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        VariableFamily target = new VariableFamily();
+        target.setId(source.getNameableArtefact().getCode());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
+        target.setSelfLink(toVariableFamilySelfLink(source));
+        // target.setChildLinks(toVariableFamilyChildLinks(source)); // TODO variables?
+        target.setName(toInternationalString(source.getNameableArtefact().getName()));
+        return target;
+    }
+
     private Item toItem(VariableElement source) {
         if (source == null) {
             return null;
@@ -249,6 +284,13 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODE, toCodeSelfLink(source));
     }
 
+    private Resource toResource(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
+        if (source == null) {
+            return null;
+        }
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source));
+    }
+
     private String toCodelistsLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
@@ -275,6 +317,23 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
     private String toSubpathItems() {
         return RestInternalConstants.LINK_SUBPATH_CODES;
+    }
+
+    // API/variablefamilies
+    private String toVariableFamiliesLink() {
+        return RestUtils.createLink(getSrmApiInternalEndpointV10(), RestInternalConstants.LINK_SUBPATH_VARIABLE_FAMILIES);
+    }
+
+    // API/variablefamilies/VARIABLE_FAMILY_ID
+    private String toVariableFamilyLink(org.siemac.metamac.srm.core.code.domain.VariableFamily variableFamily) {
+        String linkVariableFamilies = toVariableFamiliesLink();
+        return RestUtils.createLink(linkVariableFamilies, variableFamily.getNameableArtefact().getCode());
+    }
+    private ResourceLink toVariableFamilySelfLink(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
+        ResourceLink target = new ResourceLink();
+        target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
+        target.setHref(toVariableFamilyLink(source));
+        return target;
     }
 
     private AccessType toAccessType(AccessTypeEnum source) {

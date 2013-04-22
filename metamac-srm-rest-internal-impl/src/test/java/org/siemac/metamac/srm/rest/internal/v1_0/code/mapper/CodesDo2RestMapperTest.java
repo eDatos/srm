@@ -8,6 +8,7 @@ import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCAR
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCode;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelist;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
@@ -37,6 +38,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -297,5 +300,69 @@ public class CodesDo2RestMapperTest {
 
         // Validate
         assertEqualsInternationalString("es", "shortName-code2 en Español", "en", "shortName-code2 in English", target.getShortName());
+    }
+
+    @Test
+    public void testToVariableFamilies() {
+
+        String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_ID_DESC;
+        Integer limit = Integer.valueOf(4);
+        Integer offset = Integer.valueOf(4);
+
+        List<org.siemac.metamac.srm.core.code.domain.VariableFamily> source = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableFamily>();
+        source.add(mockVariableFamily("variableFamily1"));
+        source.add(mockVariableFamily("variableFamily2"));
+        source.add(mockVariableFamily("variableFamily3"));
+        source.add(mockVariableFamily("variableFamily4"));
+
+        Integer totalRows = source.size() * 5;
+        PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> sources = new PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily>(source, offset, source.size(), limit,
+                totalRows, 0);
+
+        // Transform
+        VariableFamilies target = do2RestInternalMapper.toVariableFamilies(sources, query, orderBy, limit);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILIES, target.getKind());
+
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies?query=" + query + "&orderBy=" + orderBy;
+
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=16", target.getLastLink());
+
+        assertEquals(limit.intValue(), target.getLimit().intValue());
+        assertEquals(offset.intValue(), target.getOffset().intValue());
+        assertEquals(totalRows.intValue(), target.getTotal().intValue());
+
+        assertEquals(source.size(), target.getVariableFamilies().size());
+        for (int i = 0; i < source.size(); i++) {
+            assertEqualsResource(source.get(i), target.getVariableFamilies().get(i));
+        }
+    }
+
+    @Test
+    public void testToVariableFamily() throws MetamacException {
+
+        org.siemac.metamac.srm.core.code.domain.VariableFamily source = mockVariableFamily("variableFamily1");
+
+        // Transform
+        VariableFamily target = do2RestInternalMapper.toVariableFamily(source);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, target.getKind());
+        assertEquals("urn:variableFamily1", target.getUrn());
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/variableFamily1";
+        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEqualsInternationalString("es", "name-variableFamily1 en Español", "en", "name-variableFamily1 in English", target.getName());
+
+        // TODO childs
+        // assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
+        // assertEquals(RestInternalConstants.KIND_CODES, target.getChildLinks().getChildLinks().get(0).getKind());
+        // assertEquals(selfLink + "/codes", target.getChildLinks().getChildLinks().get(0).getHref());
     }
 }

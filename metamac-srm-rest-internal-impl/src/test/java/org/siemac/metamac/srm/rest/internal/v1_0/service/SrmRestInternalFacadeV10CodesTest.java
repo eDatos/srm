@@ -8,10 +8,16 @@ import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelists;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableFamilies;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCode;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCodelist;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveVariableFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ARTEFACT_1_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ARTEFACT_2_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ARTEFACT_3_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ARTEFACT_4_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_3_CODE;
@@ -45,10 +51,14 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
+import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
@@ -488,6 +498,89 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         }
     }
 
+    @Test
+    public void testFindVariableFamilies() throws Exception {
+        resetMocks();
+        String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_ID_DESC;
+        String limit = "4";
+        String offset = "4";
+
+        // Find
+        VariableFamilies variableFamilies = getSrmRestInternalFacadeClientXml().findVariableFamilies(query, orderBy, limit, offset);
+
+        assertNotNull(variableFamilies);
+        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILIES, variableFamilies.getKind());
+        // Verify with Mockito
+        verifyFindVariableFamilies(codesService, null, limit, offset, query, orderBy);
+    }
+
+    @Test
+    public void testFindVariableFamiliesXml() throws Exception {
+        String requestUri = getUriVariableFamilies(null, null, "4", "4");
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findVariableFamilies.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testRetrieveVariableFamily() throws Exception {
+        String resourceID = ARTEFACT_1_CODE;
+        VariableFamily variableFamily = getSrmRestInternalFacadeClientXml().retrieveVariableFamilyById(resourceID);
+
+        // Validation
+        assertNotNull(variableFamily);
+        // other metadata are tested in mapper tests
+        assertEquals(resourceID, variableFamily.getId());
+        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, variableFamily.getKind());
+        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, variableFamily.getSelfLink().getKind());
+
+        // Verify with Mockito
+        verifyRetrieveVariableFamily(codesService, resourceID);
+    }
+
+    @Test
+    public void testRetrieveVariableFamilyXml() throws Exception {
+
+        String requestBase = getUriVariableFamily(ARTEFACT_1_CODE);
+        String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
+
+        for (int i = 0; i < requestUris.length; i++) {
+            String requestUri = requestUris[i];
+            InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/retrieveVariableFamily.id1.xml");
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+        }
+    }
+
+    @Test
+    public void testRetrieveVariableFamilyErrorNotExists() throws Exception {
+        String resourceID = NOT_EXISTS;
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveVariableFamilyById(resourceID);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND.getCode(), exception.getCode());
+            assertEquals("Variable family " + resourceID + " not found", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(resourceID, exception.getParameters().getParameters().get(0));
+            assertNull(exception.getErrors());
+        } catch (Exception e) {
+            fail("Incorrect exception");
+        }
+    }
+
+    @Test
+    public void testRetrieveVariableFamilyErrorNotExistsXml() throws Exception {
+        String requestUri = getUriVariableFamily(NOT_EXISTS);
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/retrieveVariableFamily.notFound.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
+    }
+
     private void testFindCodelists(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
 
@@ -645,6 +738,60 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         });
     }
 
+    @SuppressWarnings("unchecked")
+    private void mockFindVariableFamiliesByCondition() throws MetamacException {
+        when(codesService.findVariableFamiliesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
+                new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily>>() {
+
+                    @Override
+                    public org.fornax.cartridges.sculptor.framework.domain.PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> answer(InvocationOnMock invocation) throws Throwable {
+                        List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
+
+                        String resourceID = getNameableArtefactCodeFromConditionalCriteria(conditions, CodeMetamacProperties.nameableArtefact());
+
+                        if (resourceID != null) {
+                            // Retrieve one
+                            org.siemac.metamac.srm.core.code.domain.VariableFamily variableFamily = null;
+                            if (NOT_EXISTS.equals(resourceID)) {
+                                variableFamily = null;
+                            } else {
+                                variableFamily = CodesDoMocks.mockVariableFamily(resourceID);
+                            }
+                            List<org.siemac.metamac.srm.core.code.domain.VariableFamily> variableFamilies = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableFamily>();
+                            if (variableFamily != null) {
+                                variableFamilies.add(variableFamily);
+                            }
+                            return new PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily>(variableFamilies, 0, variableFamilies.size(), variableFamilies.size());
+                        } else {
+                            // any
+                            List<org.siemac.metamac.srm.core.code.domain.VariableFamily> variableFamilies = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableFamily>();
+                            variableFamilies.add(CodesDoMocks.mockVariableFamily(ARTEFACT_1_CODE));
+                            variableFamilies.add(CodesDoMocks.mockVariableFamily(ARTEFACT_2_CODE));
+                            variableFamilies.add(CodesDoMocks.mockVariableFamily(ARTEFACT_3_CODE));
+                            variableFamilies.add(CodesDoMocks.mockVariableFamily(ARTEFACT_4_CODE));
+
+                            return new PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily>(variableFamilies, variableFamilies.size(), variableFamilies.size(), variableFamilies.size(),
+                                    variableFamilies.size() * 10, 0);
+                        }
+                    };
+                });
+    }
+
+    private String getUriVariableFamilies(String resourceID, String query, String limit, String offset) throws Exception {
+        String uri = baseApi + "/" + "variablefamilies";
+        if (resourceID != null) {
+            uri += "/" + resourceID;
+        }
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
+        return uri.toString();
+    }
+
+    private String getUriVariableFamily(String resourceID) throws Exception {
+        return getUriVariableFamilies(resourceID, null, null, null);
+    }
+
     @Override
     protected void resetMocks() throws MetamacException {
         codesService = applicationContext.getBean(CodesMetamacService.class);
@@ -659,6 +806,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         mockFindCodelistsByCondition();
         mockFindCodesByCondition();
         mockFindCodesByNativeSqlQuery();
+        mockFindVariableFamiliesByCondition();
     }
 
     @Override

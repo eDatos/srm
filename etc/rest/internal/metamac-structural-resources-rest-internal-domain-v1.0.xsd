@@ -113,6 +113,26 @@
         </xs:complexContent>
     </xs:complexType>
     
+    <xs:complexType name="VariableFamily">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string" />
+            <xs:element name="urn" type="xs:string" />
+            <xs:element name="selfLink" type="common:ResourceLink" />
+            <xs:element name="name" type="common:InternationalString" />
+        </xs:sequence>
+        <xs:attribute name="kind" type="xs:string" use="required" />
+    </xs:complexType>    
+
+    <xs:complexType name="VariableFamilies">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="variableFamily" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
     <xs:complexType name="DataStructure">
         <xs:complexContent>
             <xs:extension base="sdmx:DataStructureType">
@@ -725,6 +745,20 @@
         </xs:restriction>
     </xs:simpleType>    
 
+    <xs:simpleType name="VariableFamilyCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="NAME" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="VariableFamilyCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
+    
     <xs:simpleType name="DataStructureCriteriaPropertyRestriction">
         <xs:restriction base="xs:token">
             <xs:enumeration value="ID" />
@@ -827,6 +861,8 @@
     <xs:element name="codelist" type="tns:Codelist" />
     <xs:element name="codes" type="tns:Codes" />
     <xs:element name="code" type="tns:Code" />
+    <xs:element name="variableFamilies" type="tns:VariableFamilies" />
+    <xs:element name="variableFamily" type="tns:VariableFamily" />
 
     <xs:element name="dataStructures" type="tns:DataStructures" />
     <xs:element name="dataStructure" type="tns:DataStructure" />

@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 
 public class Asserts extends MetamacRestAsserts {
 
@@ -73,13 +74,17 @@ public class Asserts extends MetamacRestAsserts {
         assertEqualsResource(expected.getMaintainableArtefact(), expectedKind, expectedSelfLink, actual);
     }
 
-    public static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, Resource actual) {
+    public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, Resource actual) {
         assertEquals(expectedKind, actual.getKind());
-        assertEquals(expected.getNameableArtefact().getCode(), actual.getId());
-        assertEquals(expected.getNameableArtefact().getUrn(), actual.getUrn());
+        assertEquals(expected.getCode(), actual.getId());
+        assertEquals(expected.getUrn(), actual.getUrn());
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
-        assertEqualsInternationalString(expected.getNameableArtefact().getName(), actual.getTitle());
+        assertEqualsInternationalString(expected.getName(), actual.getTitle());
+    }
+
+    public static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, Resource actual) {
+        assertEqualsResource(expected.getNameableArtefact(), expectedKind, expectedSelfLink, actual);
     }
 
     public static void assertUriProviderExpected(MaintainableArtefact maintainableArtefact, String uriActual) {

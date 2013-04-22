@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionProperties;
@@ -138,6 +139,18 @@ public class MockitoVerify {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
+    public static List<ConditionalCriteria> buildFindExpectedOrder(String orderBy, Class entityClass, NameableArtefactProperty nameableArtefactProperty) {
+        if (orderBy == null) {
+            return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(nameableArtefactProperty.code()).ascending().build();
+        }
+        if (ORDER_BY_ID_DESC.equals(orderBy)) {
+            return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(nameableArtefactProperty.code()).descending().build();
+        }
+        fail();
+        return null;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static List<ConditionalCriteria> buildFindItemSchemesExpectedOrder(String orderBy, Class entityClass) {
         if (orderBy == null) {
             return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemSchemeVersionProperties.maintainableArtefact().code()).ascending().build();
@@ -164,6 +177,21 @@ public class MockitoVerify {
             } else {
                 return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().code()).descending().build();
             }
+        }
+        fail();
+        return null;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static List<ConditionalCriteria> buildFindExpectedQuery(String query, Class entityClass, NameableArtefactProperty nameableArtefactProperty) {
+        if (query == null) {
+            return new ArrayList<ConditionalCriteria>();
+        }
+        if (QUERY_ID_LIKE_1.equals(query)) {
+            return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(nameableArtefactProperty.code()).like("%1%").build();
+        } else if (QUERY_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
+            return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(nameableArtefactProperty.code()).like("%1%").withProperty(nameableArtefactProperty.name().texts().label())
+                    .like("%2%").build();
         }
         fail();
         return null;

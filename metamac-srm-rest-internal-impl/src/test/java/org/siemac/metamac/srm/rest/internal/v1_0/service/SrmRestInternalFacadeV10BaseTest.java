@@ -142,6 +142,12 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         return conditionalCriteria != null ? (String) conditionalCriteria.getFirstOperant() : null;
     }
 
+    @SuppressWarnings("rawtypes")
+    protected String getNameableArtefactCodeFromConditionalCriteria(List<ConditionalCriteria> conditions, NameableArtefactProperty nameableArtefactProperty) {
+        ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, nameableArtefactProperty.code());
+        return conditionalCriteria != null ? (String) conditionalCriteria.getFirstOperant() : null;
+    }
+
     protected String getApiEndpoint() {
         return apiEndpointv10;
     }

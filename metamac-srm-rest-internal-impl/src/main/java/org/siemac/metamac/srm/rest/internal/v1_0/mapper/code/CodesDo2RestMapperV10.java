@@ -9,6 +9,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -25,4 +26,8 @@ public interface CodesDo2RestMapperV10 {
     public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, CodeType target);
     public void toCode(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target);
     public Item toItem(Variable source);
+
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies toVariableFamilies(PagedResult<VariableFamily> sources, String query, String orderBy, Integer limit);
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily toVariableFamily(VariableFamily source) throws MetamacException;
+
 }
