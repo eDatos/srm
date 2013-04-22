@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.code.utils;
 
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -34,6 +35,10 @@ public class CodesDoMocks {
 
     public static VariableFamily mockVariableFamily(String resourceID) {
         return CodesMetamacDoMocks.mockVariableFamilyFixedValues(resourceID);
+    }
+
+    public static CodelistFamily mockCodelistFamily(String resourceID) {
+        return CodesMetamacDoMocks.mockCodelistFamilyFixedValues(resourceID);
     }
 
     private static void addReplaceMetadatasToCodelist(CodelistVersionMetamac target, String agencyID) {

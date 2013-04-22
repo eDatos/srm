@@ -147,8 +147,10 @@
         <cdomain:text xml:lang="es">descriptionSource-itemScheme1v01.000 en Español</cdomain:text>
     </sr:descriptionSource>
     <sr:isRecommended>true</sr:isRecommended>
-    <sr:family>
+    <sr:family kind="structuralResources#codelistFamily">
         <cdomain:id>family1</cdomain:id>
+        <cdomain:urn>urn:family1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#codelistFamily" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelistfamilies/family1"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-family1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-family1 en Español</cdomain:text>

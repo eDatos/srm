@@ -6,11 +6,13 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
 import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelistFamilies;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelists;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableFamilies;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCode;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCodelist;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCodelistFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveVariableFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
@@ -54,6 +56,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
@@ -500,7 +504,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testFindVariableFamilies() throws Exception {
-        resetMocks();
         String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
         String orderBy = ORDER_BY_ID_DESC;
         String limit = "4";
@@ -576,6 +579,89 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testRetrieveVariableFamilyErrorNotExistsXml() throws Exception {
         String requestUri = getUriVariableFamily(NOT_EXISTS);
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/retrieveVariableFamily.notFound.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
+    }
+
+    @Test
+    public void testFindCodelistFamilies() throws Exception {
+        resetMocks();
+        String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_ID_DESC;
+        String limit = "4";
+        String offset = "4";
+
+        // Find
+        CodelistFamilies codelistFamilies = getSrmRestInternalFacadeClientXml().findCodelistFamilies(query, orderBy, limit, offset);
+
+        assertNotNull(codelistFamilies);
+        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILIES, codelistFamilies.getKind());
+        // Verify with Mockito
+        verifyFindCodelistFamilies(codesService, null, limit, offset, query, orderBy);
+    }
+
+    @Test
+    public void testFindCodelistFamiliesXml() throws Exception {
+        String requestUri = getUriCodelistFamilies(null, null, "4", "4");
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodelistFamilies.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testRetrieveCodelistFamily() throws Exception {
+        String resourceID = ARTEFACT_1_CODE;
+        CodelistFamily codelistFamily = getSrmRestInternalFacadeClientXml().retrieveCodelistFamilyById(resourceID);
+
+        // Validation
+        assertNotNull(codelistFamily);
+        // other metadata are tested in mapper tests
+        assertEquals(resourceID, codelistFamily.getId());
+        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, codelistFamily.getKind());
+        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, codelistFamily.getSelfLink().getKind());
+
+        // Verify with Mockito
+        verifyRetrieveCodelistFamily(codesService, resourceID);
+    }
+
+    @Test
+    public void testRetrieveCodelistFamilyXml() throws Exception {
+
+        String requestBase = getUriCodelistFamily(ARTEFACT_1_CODE);
+        String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
+
+        for (int i = 0; i < requestUris.length; i++) {
+            String requestUri = requestUris[i];
+            InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/retrieveCodelistFamily.id1.xml");
+            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+        }
+    }
+
+    @Test
+    public void testRetrieveCodelistFamilyErrorNotExists() throws Exception {
+        String resourceID = NOT_EXISTS;
+        try {
+            getSrmRestInternalFacadeClientXml().retrieveCodelistFamilyById(resourceID);
+        } catch (ServerWebApplicationException e) {
+            assertEquals(Status.NOT_FOUND.getStatusCode(), e.getStatus());
+
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = extractErrorFromException(getSrmRestInternalFacadeClientXml(), e);
+            assertEquals(RestServiceExceptionType.CODELIST_FAMILY_NOT_FOUND.getCode(), exception.getCode());
+            assertEquals("Codelist family " + resourceID + " not found", exception.getMessage());
+            assertEquals(1, exception.getParameters().getParameters().size());
+            assertEquals(resourceID, exception.getParameters().getParameters().get(0));
+            assertNull(exception.getErrors());
+        } catch (Exception e) {
+            fail("Incorrect exception");
+        }
+    }
+
+    @Test
+    public void testRetrieveCodelistFamilyErrorNotExistsXml() throws Exception {
+        String requestUri = getUriCodelistFamily(NOT_EXISTS);
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/retrieveCodelistFamily.notFound.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
@@ -777,6 +863,45 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
                 });
     }
 
+    @SuppressWarnings("unchecked")
+    private void mockFindCodelistFamiliesByCondition() throws MetamacException {
+        when(codesService.findCodelistFamiliesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
+                new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily>>() {
+
+                    @Override
+                    public org.fornax.cartridges.sculptor.framework.domain.PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> answer(InvocationOnMock invocation) throws Throwable {
+                        List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
+
+                        String resourceID = getNameableArtefactCodeFromConditionalCriteria(conditions, CodeMetamacProperties.nameableArtefact());
+
+                        if (resourceID != null) {
+                            // Retrieve one
+                            org.siemac.metamac.srm.core.code.domain.CodelistFamily codelistFamily = null;
+                            if (NOT_EXISTS.equals(resourceID)) {
+                                codelistFamily = null;
+                            } else {
+                                codelistFamily = CodesDoMocks.mockCodelistFamily(resourceID);
+                            }
+                            List<org.siemac.metamac.srm.core.code.domain.CodelistFamily> codelistFamilies = new ArrayList<org.siemac.metamac.srm.core.code.domain.CodelistFamily>();
+                            if (codelistFamily != null) {
+                                codelistFamilies.add(codelistFamily);
+                            }
+                            return new PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily>(codelistFamilies, 0, codelistFamilies.size(), codelistFamilies.size());
+                        } else {
+                            // any
+                            List<org.siemac.metamac.srm.core.code.domain.CodelistFamily> codelistFamilies = new ArrayList<org.siemac.metamac.srm.core.code.domain.CodelistFamily>();
+                            codelistFamilies.add(CodesDoMocks.mockCodelistFamily(ARTEFACT_1_CODE));
+                            codelistFamilies.add(CodesDoMocks.mockCodelistFamily(ARTEFACT_2_CODE));
+                            codelistFamilies.add(CodesDoMocks.mockCodelistFamily(ARTEFACT_3_CODE));
+                            codelistFamilies.add(CodesDoMocks.mockCodelistFamily(ARTEFACT_4_CODE));
+
+                            return new PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily>(codelistFamilies, codelistFamilies.size(), codelistFamilies.size(), codelistFamilies.size(),
+                                    codelistFamilies.size() * 10, 0);
+                        }
+                    };
+                });
+    }
+
     private String getUriVariableFamilies(String resourceID, String query, String limit, String offset) throws Exception {
         String uri = baseApi + "/" + "variablefamilies";
         if (resourceID != null) {
@@ -790,6 +915,21 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     private String getUriVariableFamily(String resourceID) throws Exception {
         return getUriVariableFamilies(resourceID, null, null, null);
+    }
+
+    private String getUriCodelistFamilies(String resourceID, String query, String limit, String offset) throws Exception {
+        String uri = baseApi + "/" + "codelistfamilies";
+        if (resourceID != null) {
+            uri += "/" + resourceID;
+        }
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
+        return uri.toString();
+    }
+
+    private String getUriCodelistFamily(String resourceID) throws Exception {
+        return getUriCodelistFamilies(resourceID, null, null, null);
     }
 
     @Override
@@ -807,6 +947,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         mockFindCodesByCondition();
         mockFindCodesByNativeSqlQuery();
         mockFindVariableFamiliesByCondition();
+        mockFindCodelistFamiliesByCondition();
     }
 
     @Override

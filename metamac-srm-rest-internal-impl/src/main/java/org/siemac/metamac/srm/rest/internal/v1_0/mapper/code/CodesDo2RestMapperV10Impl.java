@@ -17,6 +17,8 @@ import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCrite
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToCodelist;
@@ -24,7 +26,6 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variabl
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -95,7 +96,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setIsRecommended(source.getIsRecommended());
-        target.setFamily(toItem(source.getFamily()));
+        target.setFamily(toResource(source.getFamily()));
         target.setVariable(toItem(source.getVariable()));
         target.setAccessType(toAccessType(source.getAccessType()));
         target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode());
@@ -217,7 +218,38 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setUrn(source.getNameableArtefact().getUrn());
         target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
         target.setSelfLink(toVariableFamilySelfLink(source));
-        // target.setChildLinks(toVariableFamilyChildLinks(source)); // TODO variables?
+        target.setName(toInternationalString(source.getNameableArtefact().getName()));
+        return target;
+    }
+
+    @Override
+    public CodelistFamilies toCodelistFamilies(PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> sourcesPagedResult, String query, String orderBy, Integer limit) {
+
+        CodelistFamilies targets = new CodelistFamilies();
+        targets.setKind(RestInternalConstants.KIND_CODELIST_FAMILIES);
+
+        // Pagination
+        String baseLink = toCodelistFamiliesLink();
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (org.siemac.metamac.srm.core.code.domain.CodelistFamily source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getCodelistFamilies().add(target);
+        }
+        return targets;
+    }
+
+    @Override
+    public CodelistFamily toCodelistFamily(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        CodelistFamily target = new CodelistFamily();
+        target.setId(source.getNameableArtefact().getCode());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setKind(RestInternalConstants.KIND_CODELIST_FAMILY);
+        target.setSelfLink(toCodelistFamilySelfLink(source));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
@@ -229,16 +261,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         Item target = new Item();
         target.setId(source.getIdentifiableArtefact().getCode());
         target.setTitle(toInternationalString(source.getShortName()));
-        return target;
-    }
-
-    private Item toItem(CodelistFamily source) {
-        if (source == null) {
-            return null;
-        }
-        Item target = new Item();
-        target.setId(source.getNameableArtefact().getCode());
-        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
 
@@ -291,6 +313,13 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source));
     }
 
+    private Resource toResource(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
+        if (source == null) {
+            return null;
+        }
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source));
+    }
+
     private String toCodelistsLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
@@ -333,6 +362,23 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         ResourceLink target = new ResourceLink();
         target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
         target.setHref(toVariableFamilyLink(source));
+        return target;
+    }
+
+    // API/codelistfamilies
+    private String toCodelistFamiliesLink() {
+        return RestUtils.createLink(getSrmApiInternalEndpointV10(), RestInternalConstants.LINK_SUBPATH_CODELIST_FAMILIES);
+    }
+
+    // API/codelistfamilies/CODELIST_FAMILY_ID
+    private String toCodelistFamilyLink(org.siemac.metamac.srm.core.code.domain.CodelistFamily codelistFamily) {
+        String linkCodelistFamilies = toCodelistFamiliesLink();
+        return RestUtils.createLink(linkCodelistFamilies, codelistFamily.getNameableArtefact().getCode());
+    }
+    private ResourceLink toCodelistFamilySelfLink(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
+        ResourceLink target = new ResourceLink();
+        target.setKind(RestInternalConstants.KIND_CODELIST_FAMILY);
+        target.setHref(toCodelistFamilyLink(source));
         return target;
     }
 

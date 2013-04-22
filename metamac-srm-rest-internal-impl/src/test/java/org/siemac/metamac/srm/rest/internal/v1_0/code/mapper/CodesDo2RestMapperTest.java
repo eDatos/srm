@@ -8,6 +8,7 @@ import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCAR
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCode;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelist;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelistFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
@@ -35,6 +36,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
@@ -124,8 +127,12 @@ public class CodesDo2RestMapperTest {
         assertEquals("defaultOrderVisualisation1", target.getDefaultOrderVisualisation());
         assertEquals("defaultOpennessVisualisation1", target.getDefaultOpennessVisualisation());
         assertEquals("family1", target.getFamily().getId());
+        assertEquals("urn:family1", target.getFamily().getUrn());
         assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getTitle());
+        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, target.getFamily().getSelfLink().getKind());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/codelistfamilies/family1", target.getFamily().getSelfLink().getHref());
         assertEquals("variable1", target.getVariable().getId());
+        // TODO variable resource
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
@@ -359,10 +366,64 @@ public class CodesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEqualsInternationalString("es", "name-variableFamily1 en Español", "en", "name-variableFamily1 in English", target.getName());
+    }
 
-        // TODO childs
-        // assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
-        // assertEquals(RestInternalConstants.KIND_CODES, target.getChildLinks().getChildLinks().get(0).getKind());
-        // assertEquals(selfLink + "/codes", target.getChildLinks().getChildLinks().get(0).getHref());
+    @Test
+    public void testToCodelistFamilies() {
+
+        String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_ID_DESC;
+        Integer limit = Integer.valueOf(4);
+        Integer offset = Integer.valueOf(4);
+
+        List<org.siemac.metamac.srm.core.code.domain.CodelistFamily> source = new ArrayList<org.siemac.metamac.srm.core.code.domain.CodelistFamily>();
+        source.add(mockCodelistFamily("codelistFamily1"));
+        source.add(mockCodelistFamily("codelistFamily2"));
+        source.add(mockCodelistFamily("codelistFamily3"));
+        source.add(mockCodelistFamily("codelistFamily4"));
+
+        Integer totalRows = source.size() * 5;
+        PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> sources = new PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily>(source, offset, source.size(), limit,
+                totalRows, 0);
+
+        // Transform
+        CodelistFamilies target = do2RestInternalMapper.toCodelistFamilies(sources, query, orderBy, limit);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILIES, target.getKind());
+
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelistfamilies?query=" + query + "&orderBy=" + orderBy;
+
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=16", target.getLastLink());
+
+        assertEquals(limit.intValue(), target.getLimit().intValue());
+        assertEquals(offset.intValue(), target.getOffset().intValue());
+        assertEquals(totalRows.intValue(), target.getTotal().intValue());
+
+        assertEquals(source.size(), target.getCodelistFamilies().size());
+        for (int i = 0; i < source.size(); i++) {
+            assertEqualsResource(source.get(i), target.getCodelistFamilies().get(i));
+        }
+    }
+
+    @Test
+    public void testToCodelistFamily() throws MetamacException {
+
+        org.siemac.metamac.srm.core.code.domain.CodelistFamily source = mockCodelistFamily("codelistFamily1");
+
+        // Transform
+        CodelistFamily target = do2RestInternalMapper.toCodelistFamily(source);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, target.getKind());
+        assertEquals("urn:codelistFamily1", target.getUrn());
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelistfamilies/codelistFamily1";
+        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEqualsInternationalString("es", "name-codelistFamily1 en Español", "en", "name-codelistFamily1 in English", target.getName());
     }
 }

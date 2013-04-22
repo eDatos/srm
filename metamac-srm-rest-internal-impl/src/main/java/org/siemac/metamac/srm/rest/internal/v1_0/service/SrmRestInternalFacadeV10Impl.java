@@ -30,6 +30,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categor
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategorySchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
@@ -62,6 +64,7 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
@@ -836,6 +839,45 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
+    public CodelistFamily retrieveCodelistFamilyById(String id) {
+        try {
+            // Find one
+            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> entitiesPagedResult = findCodelistFamiliesCore(id, null, PagingParameter.pageAccess(1, 1, false));
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_FAMILY_NOT_FOUND, id);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            org.siemac.metamac.srm.core.code.domain.CodelistFamily codelistFamilyEntity = entitiesPagedResult.getValues().get(0);
+            CodelistFamily codelistFamily = codesDo2RestMapper.toCodelistFamily(codelistFamilyEntity);
+            return codelistFamily;
+
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public CodelistFamilies findCodelistFamilies(String query, String orderBy, String limit, String offset) {
+        try {
+            // Retrieve codelistFamilies by criteria
+            SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodelistFamilyCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Retrieve
+            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> entitiesPagedResult = findCodelistFamiliesCore(null, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
+
+            // Transform
+            CodelistFamilies codelistFamilies = codesDo2RestMapper.toCodelistFamilies(entitiesPagedResult, query, orderBy, sculptorCriteria.getLimit());
+            return codelistFamilies;
+
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
     public Code retrieveCode(String agencyID, String resourceID, String version, String codeID) {
         try {
             checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, codeID, RestInternalConstants.PARAMETER_CODE_ID);
@@ -1197,6 +1239,26 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> entitiesPagedResult = codesService.findVariableFamiliesByCondition(ctx, conditionalCriteria, pagingParameter);
         return entitiesPagedResult;
     }
+
+    private PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> findCodelistFamiliesCore(String codelistFamilyID, List<ConditionalCriteria> conditionalCriteriaQuery,
+            PagingParameter pagingParameter) throws MetamacException {
+
+        List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
+        if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
+            conditionalCriteria.addAll(conditionalCriteriaQuery);
+        } else {
+            // init
+            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.CodelistFamily.class).distinctRoot().build());
+        }
+        if (codelistFamilyID != null) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.CodelistFamily.class)
+                    .withProperty(CodelistFamilyProperties.nameableArtefact().code()).eq(codelistFamilyID).buildSingle());
+        }
+        // Find
+        PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> entitiesPagedResult = codesService.findCodelistFamiliesByCondition(ctx, conditionalCriteria, pagingParameter);
+        return entitiesPagedResult;
+    }
+
     /**
      * Throws response error, logging exception
      */

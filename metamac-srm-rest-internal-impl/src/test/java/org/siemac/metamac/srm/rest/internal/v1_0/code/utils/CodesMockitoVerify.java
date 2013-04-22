@@ -15,6 +15,8 @@ import org.mockito.ArgumentCaptor;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
@@ -49,6 +51,14 @@ public class CodesMockitoVerify extends MockitoVerify {
 
     public static void verifyFindVariableFamilies(CodesMetamacService codesService, String resourceID, String limit, String offset, String query, String orderBy) throws Exception {
         verifyFindVariableFamilies(codesService, resourceID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
+    }
+
+    public static void verifyRetrieveCodelistFamily(CodesMetamacService codesService, String resourceID) throws Exception {
+        verifyFindCodelistFamilies(codesService, resourceID, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
+    }
+
+    public static void verifyFindCodelistFamilies(CodesMetamacService codesService, String resourceID, String limit, String offset, String query, String orderBy) throws Exception {
+        verifyFindCodelistFamilies(codesService, resourceID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -109,6 +119,31 @@ public class CodesMockitoVerify extends MockitoVerify {
         conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).distinctRoot().buildSingle());
         if (resourceID != null) {
             conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).withProperty(VariableFamilyProperties.nameableArtefact().code()).eq(resourceID).buildSingle());
+        }
+
+        MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
+
+        MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static void verifyFindCodelistFamilies(CodesMetamacService codesService, String resourceID, String query, String orderBy, PagingParameter pagingParameterExpected,
+            RestOperationEnum restOperation) throws Exception {
+
+        // Verify
+        ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<PagingParameter> pagingParameter = ArgumentCaptor.forClass(PagingParameter.class);
+        verify(codesService).findCodelistFamiliesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
+
+        // Validate
+        List<ConditionalCriteria> conditionalCriteriaExpected = new ArrayList<ConditionalCriteria>();
+        if (RestOperationEnum.FIND.equals(restOperation)) {
+            conditionalCriteriaExpected.addAll(buildFindExpectedOrder(orderBy, CodelistFamily.class, CodelistFamilyProperties.nameableArtefact()));
+            conditionalCriteriaExpected.addAll(buildFindExpectedQuery(query, CodelistFamily.class, CodelistFamilyProperties.nameableArtefact()));
+        }
+        conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).distinctRoot().buildSingle());
+        if (resourceID != null) {
+            conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(CodelistFamily.class).withProperty(CodelistFamilyProperties.nameableArtefact().code()).eq(resourceID).buildSingle());
         }
 
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());

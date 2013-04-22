@@ -18,6 +18,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categor
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategorySchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
@@ -392,6 +394,16 @@ public interface SrmRestInternalFacadeV10 {
     @Produces("application/xml")
     @Path("variablefamilies/{id}")
     VariableFamily retrieveVariableFamilyById(@PathParam("id") String id);
+
+    @GET
+    @Produces("application/xml")
+    @Path("codelistfamilies")
+    CodelistFamilies findCodelistFamilies(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("codelistfamilies/{id}")
+    CodelistFamily retrieveCodelistFamilyById(@PathParam("id") String id);
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // DATASTRUCTURES
