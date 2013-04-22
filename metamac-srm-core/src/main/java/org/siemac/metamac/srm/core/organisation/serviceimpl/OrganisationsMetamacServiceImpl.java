@@ -159,7 +159,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public OrganisationSchemeVersionMetamac publishInternallyOrganisationScheme(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
-        return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.publishInternally(ctx, urn, forceLatestFinal, Boolean.FALSE);
+        return (OrganisationSchemeVersionMetamac) organisationSchemeLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
     }
 
     @Override

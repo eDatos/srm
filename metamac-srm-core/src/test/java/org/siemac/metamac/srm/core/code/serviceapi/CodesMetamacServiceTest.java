@@ -1827,7 +1827,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                         fail("already versioning");
                     } catch (MetamacException e) {
                         assertEquals(1, e.getExceptionItems().size());
-                        assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_ALREADY_VERSIONING.getCode(), e.getExceptionItems().get(0).getCode());
+                        assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_ACTION_NOT_SUPPORTED_WHEN_TASK_IN_BACKGROUND.getCode(), e.getExceptionItems().get(0).getCode());
                         assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
                         assertEquals(codelistUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
                     }
@@ -6993,8 +6993,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         entityManager.clear();
         CodelistVersionMetamac temporalCodelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningTemporalResult.getUrnResult());
 
-        TaskInfo versioningTemporalToVersionResult = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(), temporalCodelistVersionMetamac.getMaintainableArtefact()
-                .getUrn(), VersionTypeEnum.MAJOR);
+        TaskInfo versioningTemporalToVersionResult = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(),
+                temporalCodelistVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
         entityManager.clear();
         CodelistVersionMetamac codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningTemporalToVersionResult.getUrnResult());
 
@@ -7117,8 +7117,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
                     // PublicationInternally phase
                     SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 3; // modify to force in background
-                    TaskInfo versioningResult = codesService.publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false,
-                            Boolean.TRUE);
+                    TaskInfo versioningResult = codesService
+                            .publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false, Boolean.TRUE);
 
                     assertEquals(true, versioningResult.getIsPlannedInBackground());
                     assertEquals(null, versioningResult.getUrnResult());

@@ -296,7 +296,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (executeInBackground) {
             // Scheduled is needed
             // Validation
-            codelistLifeCycle.prePublishResourceInInternallyPublished(ctx, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, Boolean.FALSE); // PrePublish for early error checking
+            codelistLifeCycle.prePublishResourceInInternallyPublished(ctx, urn, ProcStatusEnum.INTERNALLY_PUBLISHED); // PrePublish for early error checking
 
             itemScheme.setIsTaskInBackground(Boolean.TRUE);
             itemScheme = itemSchemeRepository.save(itemScheme);
@@ -308,8 +308,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             versioningResult.setJobKey(jobKey);
         } else {
             // The publication is now
-            Boolean skipValidation = itemScheme.getIsTaskInBackground(); // If is a scheduled job, skip publication validation because it was performed before.
-            CodelistVersion codelist = (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal, skipValidation);
+            CodelistVersion codelist = (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
             versioningResult.setUrnResult(codelist.getMaintainableArtefact().getUrn());
         }
 
@@ -461,7 +460,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return codelistVersion;
     }
-
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation

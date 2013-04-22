@@ -10,8 +10,8 @@ public interface LifeCycle {
     public Object sendToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException;
     public Object rejectProductionValidation(ServiceContext ctx, String urn) throws MetamacException;
     public Object rejectDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException;
-    public Object publishInternally(ServiceContext ctx, String urn, Boolean forceLastestFinal, Boolean skipValidation) throws MetamacException;
+    public Object publishInternally(ServiceContext ctx, String urn, Boolean forceLastestFinal) throws MetamacException;
     public Object publishExternally(ServiceContext ctx, String urn) throws MetamacException;
 
-    public Object prePublishResourceInInternallyPublished(ServiceContext ctx, String urn, ProcStatusEnum targetStatus, Boolean skipValidation) throws MetamacException;
+    public Object prePublishResourceInInternallyPublished(ServiceContext ctx, String urn, ProcStatusEnum targetStatus) throws MetamacException;
 }
