@@ -81,11 +81,13 @@
             </cdomain:title>
         </sr:role>
     </sr:roles>
-    <sr:variable>
+    <sr:variable kind="structuralResources#variable">
         <cdomain:id>variable1</cdomain:id>
+        <cdomain:urn>urn:variable1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1"/>
         <cdomain:title>
-            <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
         </cdomain:title>
     </sr:variable>
     <sr:derivation>

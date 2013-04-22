@@ -34,7 +34,7 @@
                     <xs:element name="sdmxRelatedArtefact" type="tns:SdmxRelatedArtefact" minOccurs="0" />
                     <xs:element name="type" type="common:Item" minOccurs="0" />
                     <xs:element name="roles" type="tns:RoleConcepts" minOccurs="0" />
-                    <xs:element name="variable" type="common:Item" minOccurs="0" />
+                    <xs:element name="variable" type="common:Resource" minOccurs="0" />
                     <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="extends" type="common:Resource" minOccurs="0" />
                     <xs:element name="relatedConcepts" type="tns:RelatedConcepts" minOccurs="0" />
@@ -88,7 +88,7 @@
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="isRecommended" type="xs:boolean" minOccurs="0" />
                     <xs:element name="family" type="common:Resource" minOccurs="0" />
-                    <xs:element name="variable" type="common:Item" minOccurs="1" />
+                    <xs:element name="variable" type="common:Resource" minOccurs="1" />
                     <xs:element name="replaceTo" type="tns:ReplaceToCodelist" minOccurs="0" />
                     <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
                     <xs:element name="accessType" type="tns:AccessType" minOccurs="1" />
@@ -152,6 +152,52 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>    
+    
+    <xs:complexType name="Variable">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string" />
+            <xs:element name="urn" type="xs:string" />
+            <xs:element name="selfLink" type="common:ResourceLink" />
+            <xs:element name="name" type="common:InternationalString" />
+            <xs:element name="shortName" type="common:InternationalString" />
+            <xs:element name="validFrom" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="validTo" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
+            <xs:element name="replaceTo" type="tns:ReplaceToVariable" minOccurs="0" />
+            <xs:element name="family" type="tns:VariableFamilyMetadata" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="kind" type="xs:string" use="required" />
+    </xs:complexType>    
+
+    <xs:complexType name="Variables">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="variable" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>  
+    
+    <xs:complexType name="ReplaceToVariable">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="replaceTo" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>       
+    
+    <xs:complexType name="VariableFamilyMetadata">
+        <xs:complexContent>
+            <xs:extension base="common:ListBase">
+                <xs:sequence>
+                    <xs:element name="family" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>      
     
     <xs:complexType name="DataStructure">
         <xs:complexContent>
@@ -779,6 +825,22 @@
         </xs:restriction>
     </xs:simpleType>
     
+    <xs:simpleType name="VariableCriteriaPropertyRestriction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="URN" />
+            <xs:enumeration value="NAME" />
+            <xs:enumeration value="SHORT_NAME" />
+            <xs:enumeration value="FAMILY_URN" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="VariableCriteriaPropertyOrder">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ID" />
+        </xs:restriction>
+    </xs:simpleType>
+        
     <xs:simpleType name="CodelistFamilyCriteriaPropertyRestriction">
         <xs:restriction base="xs:token">
             <xs:enumeration value="ID" />
@@ -899,6 +961,8 @@
     <xs:element name="codelistFamily" type="tns:CodelistFamily" />
     <xs:element name="variableFamilies" type="tns:VariableFamilies" />
     <xs:element name="variableFamily" type="tns:VariableFamily" />
+    <xs:element name="variables" type="tns:Variables" />
+    <xs:element name="variable" type="tns:Variable" />
 
     <xs:element name="dataStructures" type="tns:DataStructures" />
     <xs:element name="dataStructure" type="tns:DataStructure" />

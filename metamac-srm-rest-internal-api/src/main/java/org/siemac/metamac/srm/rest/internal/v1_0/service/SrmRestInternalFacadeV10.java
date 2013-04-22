@@ -45,8 +45,10 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
 
 @Path("v1.0")
 public interface SrmRestInternalFacadeV10 {
@@ -394,6 +396,16 @@ public interface SrmRestInternalFacadeV10 {
     @Produces("application/xml")
     @Path("variablefamilies/{id}")
     VariableFamily retrieveVariableFamilyById(@PathParam("id") String id);
+
+    @GET
+    @Produces("application/xml")
+    @Path("variables")
+    Variables findVariables(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
+    @Path("variables/{id}")
+    Variable retrieveVariableById(@PathParam("id") String id);
 
     @GET
     @Produces("application/xml")

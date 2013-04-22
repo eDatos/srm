@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -22,12 +23,15 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToCodelist;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToVariable;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyMetadata;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
-import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -97,7 +101,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setIsRecommended(source.getIsRecommended());
         target.setFamily(toResource(source.getFamily()));
-        target.setVariable(toItem(source.getVariable()));
+        target.setVariable(toResource(source.getVariable()));
         target.setAccessType(toAccessType(source.getAccessType()));
         target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode());
         target.setDefaultOpennessVisualisation(source.getDefaultOpennessVisualisation().getNameableArtefact().getCode());
@@ -174,17 +178,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public Item toItem(Variable source) {
-        if (source == null) {
-            return null;
-        }
-        Item target = new Item();
-        target.setId(source.getNameableArtefact().getCode());
-        target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
-        return target;
-    }
-
-    @Override
     protected boolean canItemSchemeVersionBeProvidedByApi(ItemSchemeVersion source) {
         CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) source;
         return AccessTypeEnum.PUBLIC.equals(codelistVersion.getAccessType());
@@ -220,6 +213,52 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setSelfLink(toVariableFamilySelfLink(source));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
+    }
+
+    @Override
+    public Variables toVariables(PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> sourcesPagedResult, String query, String orderBy, Integer limit) {
+
+        Variables targets = new Variables();
+        targets.setKind(RestInternalConstants.KIND_VARIABLES);
+
+        // Pagination
+        String baseLink = toVariablesLink();
+        SculptorCriteria2RestCriteria.toPagedResult(sourcesPagedResult, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (org.siemac.metamac.srm.core.code.domain.Variable source : sourcesPagedResult.getValues()) {
+            Resource target = toResource(source);
+            targets.getVariables().add(target);
+        }
+        return targets;
+    }
+
+    @Override
+    public Variable toVariable(org.siemac.metamac.srm.core.code.domain.Variable source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        Variable target = new Variable();
+        target.setId(source.getNameableArtefact().getCode());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setKind(RestInternalConstants.KIND_VARIABLE);
+        target.setSelfLink(toVariableSelfLink(source));
+        target.setName(toInternationalString(source.getNameableArtefact().getName()));
+        target.setShortName(toInternationalString(source.getShortName()));
+        target.setValidFrom(toDate(source.getValidFrom()));
+        target.setValidTo(toDate(source.getValidTo()));
+        target.setReplacedBy(toResource(source.getReplacedByVariable()));
+        target.setReplaceTo(toVariableReplaceTo(source));
+        target.setFamily(toVariableFamilyMetadata(source));
+        return target;
+    }
+
+    @Override
+    public Resource toResource(org.siemac.metamac.srm.core.code.domain.Variable source) {
+        if (source == null) {
+            return null;
+        }
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, toVariableSelfLink(source));
     }
 
     @Override
@@ -365,6 +404,23 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
+    // API/variables
+    private String toVariablesLink() {
+        return RestUtils.createLink(getSrmApiInternalEndpointV10(), RestInternalConstants.LINK_SUBPATH_VARIABLES);
+    }
+
+    // API/variables/VARIABLE_ID
+    private String toVariableLink(org.siemac.metamac.srm.core.code.domain.Variable variable) {
+        String linkVariables = toVariablesLink();
+        return RestUtils.createLink(linkVariables, variable.getNameableArtefact().getCode());
+    }
+    private ResourceLink toVariableSelfLink(org.siemac.metamac.srm.core.code.domain.Variable source) {
+        ResourceLink target = new ResourceLink();
+        target.setKind(RestInternalConstants.KIND_VARIABLE);
+        target.setHref(toVariableLink(source));
+        return target;
+    }
+
     // API/codelistfamilies
     private String toCodelistFamiliesLink() {
         return RestUtils.createLink(getSrmApiInternalEndpointV10(), RestInternalConstants.LINK_SUBPATH_CODELIST_FAMILIES);
@@ -418,6 +474,32 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         if (target != null) {
             target.setKind(RestInternalConstants.KIND_CODELISTS);
             target.setTotal(BigInteger.valueOf(target.getReplaceTos().size()));
+        }
+        return target;
+    }
+
+    private ReplaceToVariable toVariableReplaceTo(org.siemac.metamac.srm.core.code.domain.Variable source) {
+        if (CollectionUtils.isEmpty(source.getReplaceToVariables())) {
+            return null;
+        }
+        ReplaceToVariable target = new ReplaceToVariable();
+        target.setKind(RestInternalConstants.KIND_VARIABLES);
+        target.setTotal(BigInteger.valueOf(source.getReplaceToVariables().size()));
+        for (org.siemac.metamac.srm.core.code.domain.Variable replaceToSource : source.getReplaceToVariables()) {
+            target.getReplaceTos().add(toResource(replaceToSource));
+        }
+        return target;
+    }
+
+    private VariableFamilyMetadata toVariableFamilyMetadata(org.siemac.metamac.srm.core.code.domain.Variable source) {
+        if (CollectionUtils.isEmpty(source.getFamilies())) {
+            return null;
+        }
+        VariableFamilyMetadata target = new VariableFamilyMetadata();
+        target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILIES);
+        target.setTotal(BigInteger.valueOf(source.getFamilies().size()));
+        for (org.siemac.metamac.srm.core.code.domain.VariableFamily variableFamily : source.getFamilies()) {
+            target.getFamilies().add(toResource(variableFamily));
         }
         return target;
     }

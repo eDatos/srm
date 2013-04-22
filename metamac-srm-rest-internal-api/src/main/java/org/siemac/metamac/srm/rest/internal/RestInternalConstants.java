@@ -39,6 +39,7 @@ public class RestInternalConstants {
     public static String LINK_SUBPATH_CODELISTS                 = "codelists";
     public static String LINK_SUBPATH_CODES                     = "codes";
     public static String LINK_SUBPATH_VARIABLE_FAMILIES         = "variablefamilies";
+    public static String LINK_SUBPATH_VARIABLES                 = "variables";
     public static String LINK_SUBPATH_CODELIST_FAMILIES         = "codelistfamilies";
 
     public static String LINK_SUBPATH_DATA_STRUCTURES           = "datastructures";
@@ -85,6 +86,8 @@ public class RestInternalConstants {
 
     public static String KIND_VARIABLE_FAMILIES                 = API_NAME + KIND_SEPARATOR + "variableFamilies";
     public static String KIND_VARIABLE_FAMILY                   = API_NAME + KIND_SEPARATOR + "variableFamily";
+    public static String KIND_VARIABLES                         = API_NAME + KIND_SEPARATOR + "variables";
+    public static String KIND_VARIABLE                          = API_NAME + KIND_SEPARATOR + "variable";
     public static String KIND_CODELIST_FAMILIES                 = API_NAME + KIND_SEPARATOR + "codelistFamilies";
     public static String KIND_CODELIST_FAMILY                   = API_NAME + KIND_SEPARATOR + "codelistFamily";
 

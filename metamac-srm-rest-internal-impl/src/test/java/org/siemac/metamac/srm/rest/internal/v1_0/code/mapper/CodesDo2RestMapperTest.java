@@ -9,6 +9,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesAsserts.
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCode;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelist;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelistFamily;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariable;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
@@ -32,6 +33,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
@@ -41,8 +43,10 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -112,6 +116,8 @@ public class CodesDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CODELIST, target.getKind());
+        assertEquals("resourceID1", target.getId());
+        assertEquals("01.123", target.getVersion());
         assertEquals("urn:resourceID1:01.123", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CODELIST, target.getSelfLink().getKind());
@@ -132,8 +138,10 @@ public class CodesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, target.getFamily().getSelfLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/codelistfamilies/family1", target.getFamily().getSelfLink().getHref());
         assertEquals("variable1", target.getVariable().getId());
-        // TODO variable resource
+        assertEquals("urn:variable1", target.getVariable().getUrn());
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
+        assertEquals(RestInternalConstants.KIND_VARIABLE, target.getVariable().getSelfLink().getKind());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1", target.getVariable().getSelfLink().getHref());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
@@ -263,6 +271,7 @@ public class CodesDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CODE, target.getKind());
+        assertEquals("code2", target.getId());
         assertEquals("urn:code2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragencyID1/resourceID1/01.123/codes";
@@ -361,11 +370,91 @@ public class CodesDo2RestMapperTest {
 
         // Validate
         assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, target.getKind());
+        assertEquals("variableFamily1", target.getId());
         assertEquals("urn:variableFamily1", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/variableFamily1";
         assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEqualsInternationalString("es", "name-variableFamily1 en Español", "en", "name-variableFamily1 in English", target.getName());
+    }
+
+    @Test
+    public void testToVariables() {
+
+        String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_ID_DESC;
+        Integer limit = Integer.valueOf(4);
+        Integer offset = Integer.valueOf(4);
+
+        List<org.siemac.metamac.srm.core.code.domain.Variable> source = new ArrayList<org.siemac.metamac.srm.core.code.domain.Variable>();
+        source.add(mockVariable("variable1"));
+        source.add(mockVariable("variable2"));
+        source.add(mockVariable("variable3"));
+        source.add(mockVariable("variable4"));
+
+        Integer totalRows = source.size() * 5;
+        PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> sources = new PagedResult<org.siemac.metamac.srm.core.code.domain.Variable>(source, offset, source.size(), limit, totalRows, 0);
+
+        // Transform
+        Variables target = do2RestInternalMapper.toVariables(sources, query, orderBy, limit);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_VARIABLES, target.getKind());
+
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variables?query=" + query + "&orderBy=" + orderBy;
+
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=16", target.getLastLink());
+
+        assertEquals(limit.intValue(), target.getLimit().intValue());
+        assertEquals(offset.intValue(), target.getOffset().intValue());
+        assertEquals(totalRows.intValue(), target.getTotal().intValue());
+
+        assertEquals(source.size(), target.getVariables().size());
+        for (int i = 0; i < source.size(); i++) {
+            assertEqualsResource(source.get(i), target.getVariables().get(i));
+        }
+    }
+
+    @Test
+    public void testToVariable() throws MetamacException {
+
+        org.siemac.metamac.srm.core.code.domain.Variable source = mockVariable("variable1");
+
+        // Transform
+        Variable target = do2RestInternalMapper.toVariable(source);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_VARIABLE, target.getKind());
+        assertEquals("variable1", target.getId());
+        assertEquals("urn:variable1", target.getUrn());
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1";
+        assertEquals(RestInternalConstants.KIND_VARIABLE, target.getSelfLink().getKind());
+        assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getName());
+        assertEqualsInternationalString("es", "shortName-variable1 en Español", "en", "shortName-variable1 in English", target.getShortName());
+        MetamacAsserts.assertEqualsDate("2012-10-01 10:12:13", target.getValidFrom());
+        MetamacAsserts.assertEqualsDate("2013-10-01 10:12:13", target.getValidTo());
+
+        assertEquals(RestInternalConstants.KIND_VARIABLE, target.getReplacedBy().getKind());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variableReplacedBy1", target.getReplacedBy().getSelfLink().getHref());
+        assertEquals("urn:variableReplacedBy1", target.getReplacedBy().getUrn());
+
+        assertEquals(RestInternalConstants.KIND_VARIABLES, target.getReplaceTo().getKind());
+        assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
+        assertEquals("urn:variableReplaceTo1", target.getReplaceTo().getReplaceTos().get(0).getUrn());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variableReplaceTo1", target.getReplaceTo().getReplaceTos().get(0).getSelfLink().getHref());
+        assertEquals("urn:variableReplaceTo2", target.getReplaceTo().getReplaceTos().get(1).getUrn());
+
+        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILIES, target.getFamily().getKind());
+        assertEquals(BigInteger.valueOf(3), target.getFamily().getTotal());
+        assertEquals("urn:variableFamily1", target.getFamily().getFamilies().get(0).getUrn());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/variableFamily1", target.getFamily().getFamilies().get(0).getSelfLink().getHref());
+        assertEquals("urn:variableFamily2", target.getFamily().getFamilies().get(1).getUrn());
+        assertEquals("urn:variableFamily3", target.getFamily().getFamilies().get(2).getUrn());
     }
 
     @Test
@@ -420,6 +509,7 @@ public class CodesDo2RestMapperTest {
 
         // Validate
         assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, target.getKind());
+        assertEquals("codelistFamily1", target.getId());
         assertEquals("urn:codelistFamily1", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelistfamilies/codelistFamily1";
         assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, target.getSelfLink().getKind());

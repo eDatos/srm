@@ -110,6 +110,8 @@ public class ConceptsDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
+        assertEquals("resourceID1", target.getId());
+        assertEquals("01.123", target.getVersion());
         assertEquals("urn:resourceID1:01.123", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
@@ -243,6 +245,7 @@ public class ConceptsDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
+        assertEquals("concept2", target.getId());
         assertEquals("urn:concept2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID1/01.123/concepts";
@@ -262,6 +265,12 @@ public class ConceptsDo2RestMapperTest {
         assertEqualsInternationalString("es", "docMethod-concept2 en Español", "en", "docMethod-concept2 in English", target.getDocMethod());
         assertEqualsInternationalString("es", "derivation-concept2 en Español", "en", "derivation-concept2 in English", target.getDerivation());
         assertEqualsInternationalString("es", "legalActs-concept2 en Español", "en", "legalActs-concept2 in English", target.getLegalActs());
+
+        assertEquals("variable1", target.getVariable().getId());
+        assertEquals("urn:variable1", target.getVariable().getUrn());
+        assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
+        assertEquals(RestInternalConstants.KIND_VARIABLE, target.getVariable().getSelfLink().getKind());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1", target.getVariable().getSelfLink().getHref());
 
         assertEquals("conceptType1", target.getType().getId());
         assertEqualsInternationalString("es", "description-conceptType1 en Español", "en", "description-conceptType1 in English", target.getType().getTitle());

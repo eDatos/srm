@@ -111,6 +111,8 @@ public class OrganisationsTypeDataProviderDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, target.getKind());
+        assertEquals("DATAPROVIDERS", target.getId());
+        assertEquals("01.000", target.getVersion());
         assertEquals("urn:DATAPROVIDERS:01.000", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/idAsMaintaineragencyID1/DATAPROVIDERS/01.000";
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, target.getSelfLink().getKind());
@@ -234,6 +236,7 @@ public class OrganisationsTypeDataProviderDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER, target.getKind());
+        assertEquals("organisation2", target.getId());
         assertEquals("urn:organisation2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/idAsMaintaineragencyID1/DATAPROVIDERS/01.000/dataproviders";

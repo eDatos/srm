@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.code.utils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
@@ -37,6 +38,15 @@ public class CodesDoMocks {
         return CodesMetamacDoMocks.mockVariableFamilyFixedValues(resourceID);
     }
 
+    public static Variable mockVariable(String resourceID) {
+        Variable target = CodesMetamacDoMocks.mockVariableFixedValues(resourceID);
+        addReplaceMetadatasToVariable(target);
+        target.addFamily(mockVariableFamily("variableFamily1"));
+        target.addFamily(mockVariableFamily("variableFamily2"));
+        target.addFamily(mockVariableFamily("variableFamily3"));
+        return target;
+    }
+
     public static CodelistFamily mockCodelistFamily(String resourceID) {
         return CodesMetamacDoMocks.mockCodelistFamilyFixedValues(resourceID);
     }
@@ -48,6 +58,12 @@ public class CodesDoMocks {
         target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo3", "03.000", AccessTypeEnum.PUBLIC, true, true));
         target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo4", "04.000", AccessTypeEnum.PUBLIC, false, false));
         target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo5", "05.000", AccessTypeEnum.RESTRICTED, true, true));
+    }
+
+    private static void addReplaceMetadatasToVariable(Variable target) {
+        target.setReplacedByVariable(CodesMetamacDoMocks.mockVariableFixedValues("variableReplacedBy1"));
+        target.addReplaceToVariable(CodesMetamacDoMocks.mockVariableFixedValues("variableReplaceTo1"));
+        target.addReplaceToVariable(CodesMetamacDoMocks.mockVariableFixedValues("variableReplaceTo2"));
     }
 
     private static CodelistVersionMetamac mockCodelistToReplaceMetadata(String agencyID, String resourceID, String version, AccessTypeEnum accessType, boolean finalLogic, boolean publicLogic) {

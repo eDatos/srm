@@ -4,6 +4,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts;
@@ -30,6 +31,11 @@ public class CodesAsserts extends Asserts {
     public static void assertEqualsResource(VariableFamily expected, Resource actual) {
         String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/" + expected.getNameableArtefact().getCode();
         assertEqualsResource(expected.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, expectedSelfLink, actual);
+    }
+
+    public static void assertEqualsResource(Variable expected, Resource actual) {
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variables/" + expected.getNameableArtefact().getCode();
+        assertEqualsResource(expected.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, expectedSelfLink, actual);
     }
 
     public static void assertEqualsResource(CodelistFamily expected, Resource actual) {

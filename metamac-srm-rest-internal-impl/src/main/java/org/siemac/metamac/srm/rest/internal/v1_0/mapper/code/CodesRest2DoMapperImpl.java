@@ -15,6 +15,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilyCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilyCriteriaPropertyRestriction;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableCriteriaPropertyOrder;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyCriteriaPropertyRestriction;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
@@ -23,8 +25,10 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +38,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
     private RestCriteria2SculptorCriteria<CodelistVersionMetamac> codelistCriteriaMapper       = null;
     private RestCriteria2SculptorCriteria<CodeMetamac>            codeCriteriaMapper           = null;
     private RestCriteria2SculptorCriteria<VariableFamily>         variableFamilyCriteriaMapper = null;
+    private RestCriteria2SculptorCriteria<Variable>               variableCriteriaMapper       = null;
     private RestCriteria2SculptorCriteria<CodelistFamily>         codelistFamilyCriteriaMapper = null;
 
     public CodesRest2DoMapperImpl() {
@@ -42,6 +47,8 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
         codeCriteriaMapper = new RestCriteria2SculptorCriteria<CodeMetamac>(CodeMetamac.class, CodeCriteriaPropertyOrder.class, CodeCriteriaPropertyRestriction.class, new CodeCriteriaCallback());
         variableFamilyCriteriaMapper = new RestCriteria2SculptorCriteria<VariableFamily>(VariableFamily.class, VariableFamilyCriteriaPropertyOrder.class,
                 VariableFamilyCriteriaPropertyRestriction.class, new VariableFamilyCriteriaCallback());
+        variableCriteriaMapper = new RestCriteria2SculptorCriteria<Variable>(Variable.class, VariableCriteriaPropertyOrder.class, VariableCriteriaPropertyRestriction.class,
+                new VariableCriteriaCallback());
         codelistFamilyCriteriaMapper = new RestCriteria2SculptorCriteria<CodelistFamily>(CodelistFamily.class, CodelistFamilyCriteriaPropertyOrder.class,
                 CodelistFamilyCriteriaPropertyRestriction.class, new CodelistFamilyCriteriaCallback());
     }
@@ -59,6 +66,11 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
     @Override
     public RestCriteria2SculptorCriteria<VariableFamily> getVariableFamilyCriteriaMapper() {
         return variableFamilyCriteriaMapper;
+    }
+
+    @Override
+    public RestCriteria2SculptorCriteria<Variable> getVariableCriteriaMapper() {
+        return variableCriteriaMapper;
     }
 
     @Override
@@ -205,6 +217,46 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
         @Override
         public Property retrievePropertyOrderDefault() throws RestException {
             return VariableFamilyProperties.nameableArtefact().code();
+        }
+    }
+
+    private class VariableCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+            VariableCriteriaPropertyRestriction propertyNameCriteria = VariableCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                case URN:
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                case NAME:
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                case SHORT_NAME:
+                    return new SculptorPropertyCriteria(VariableProperties.shortName().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                case FAMILY_URN:
+                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().urn(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+            VariableCriteriaPropertyOrder propertyNameCriteria = VariableCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return VariableProperties.nameableArtefact().code();
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrderDefault() throws RestException {
+            return VariableProperties.nameableArtefact().code();
         }
     }
 

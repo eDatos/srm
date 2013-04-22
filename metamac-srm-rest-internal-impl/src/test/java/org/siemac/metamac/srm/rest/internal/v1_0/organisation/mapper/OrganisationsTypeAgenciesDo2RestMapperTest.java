@@ -111,6 +111,8 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getKind());
+        assertEquals("AGENCIES", target.getId());
+        assertEquals("01.000", target.getVersion());
         assertEquals("urn:AGENCIES:01.000", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragencyID1/AGENCIES/01.000";
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getSelfLink().getKind());
@@ -234,6 +236,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_AGENCY, target.getKind());
+        assertEquals("organisation2", target.getId());
         assertEquals("urn:organisation2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragencyID1/AGENCIES/01.000/agencies";

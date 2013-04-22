@@ -109,6 +109,8 @@ public class CategoriesDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, target.getKind());
+        assertEquals("resourceID1", target.getId());
+        assertEquals("01.123", target.getVersion());
         assertEquals("urn:resourceID1:01.123", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, target.getSelfLink().getKind());
@@ -240,6 +242,7 @@ public class CategoriesDo2RestMapperTest {
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getKind());
+        assertEquals("category2", target.getId());
         assertEquals("urn:category2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragencyID1/resourceID1/01.123/categories";

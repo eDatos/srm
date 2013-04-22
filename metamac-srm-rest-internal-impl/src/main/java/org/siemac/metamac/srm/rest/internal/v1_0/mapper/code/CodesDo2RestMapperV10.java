@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.rest.common.v1_0.domain.Item;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
@@ -26,10 +26,13 @@ public interface CodesDo2RestMapperV10 {
     public Code toCode(CodeMetamac source);
     public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, CodeType target);
     public void toCode(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target);
-    public Item toItem(Variable source);
 
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies toVariableFamilies(PagedResult<VariableFamily> sources, String query, String orderBy, Integer limit);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily toVariableFamily(VariableFamily source) throws MetamacException;
+
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables toVariables(PagedResult<Variable> sources, String query, String orderBy, Integer limit);
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable toVariable(Variable source) throws MetamacException;
+    public Resource toResource(Variable source);
 
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies toCodelistFamilies(PagedResult<CodelistFamily> sources, String query, String orderBy, Integer limit);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily toCodelistFamily(CodelistFamily source) throws MetamacException;

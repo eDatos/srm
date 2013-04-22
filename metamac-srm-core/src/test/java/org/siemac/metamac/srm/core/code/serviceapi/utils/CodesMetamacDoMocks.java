@@ -168,6 +168,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setLastUpdated(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setUpdateDate(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setShortName(mockInternationalStringFixedValues("shortName", resourceID));
+        target.setValidFrom(new DateTime(2012, 10, 1, 10, 12, 13, 14));
+        target.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
         target.setNameableArtefact(new NameableArtefact());
         mockNameableArtefactFixedValues(target.getNameableArtefact(), resourceID, null);
         return target;
@@ -199,6 +201,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setUpdateDate(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setShortName(mockInternationalStringFixedValues("shortName", resourceID));
         target.setVariable(mockVariableFixedValues("variable01"));
+        target.setValidFrom(new DateTime(2012, 10, 1, 10, 12, 13, 14));
+        target.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
         target.setIdentifiableArtefact(new IdentifiableArtefact());
         mockIdentifiableArtefactFixedValues(target.getIdentifiableArtefact(), resourceID, null);
         return target;

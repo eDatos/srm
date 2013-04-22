@@ -29,6 +29,7 @@ public class RestServiceExceptionType extends RestCommonServiceExceptionType {
     public static final RestCommonServiceExceptionType CODELIST_NOT_FOUND                 = create("exception.structural_resources.codelist.not_found");
     public static final RestCommonServiceExceptionType CODE_NOT_FOUND                     = create("exception.structural_resources.code.not_found");
     public static final RestCommonServiceExceptionType VARIABLE_FAMILY_NOT_FOUND          = create("exception.structural_resources.variable_family.not_found");
+    public static final RestCommonServiceExceptionType VARIABLE_NOT_FOUND                 = create("exception.structural_resources.variable.not_found");
     public static final RestCommonServiceExceptionType CODELIST_FAMILY_NOT_FOUND          = create("exception.structural_resources.codelist_family.not_found");
 
     public static final RestCommonServiceExceptionType DATA_STRUCTURE_NOT_FOUND           = create("exception.structural_resources.data_structure.not_found");
