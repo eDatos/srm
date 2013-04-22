@@ -55,6 +55,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetVariableElementsAction
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariablesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.NormaliseVariableElementsToCodesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveCodelistsFromCodelistFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveVariablesFromVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodeActionHandler;
@@ -70,6 +71,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeParentActionHan
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodeVariableElementActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodelistProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodesInOpennessVisualisationActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodesVariableElementsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
@@ -179,6 +181,7 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesAction;
 import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
@@ -193,6 +196,7 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodeInOrderAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodesInOpennessVisualisationAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodesVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
@@ -407,6 +411,8 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetCodelistOpennessLevelsAction.class, GetCodelistOpennessLevelsActionHandler.class);
         bindHandler(UpdateCodesInOpennessVisualisationAction.class, UpdateCodesInOpennessVisualisationActionHandler.class);
         bindHandler(CreateCodelistTemporalVersionAction.class, CreateCodelistTemporalVersionActionHandler.class);
+        bindHandler(NormaliseVariableElementsToCodesAction.class, NormaliseVariableElementsToCodesActionHandler.class);
+        bindHandler(UpdateCodesVariableElementsAction.class, UpdateCodesVariableElementsActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);

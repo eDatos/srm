@@ -68,6 +68,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesByCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesAction;
+import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
@@ -802,6 +804,26 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                         getView().setCodesToCreateComplexCodelist(codelistMetamacDto, result.getCodes());
                     }
                 });
+            }
+        });
+    }
+
+    //
+    // NORMALISATION (VARIABLE ELEMENTS AND CODES)
+    //
+
+    @Override
+    public void normaliseVariableElementsToCodes(String codelistUrn, String locale) {
+        dispatcher.execute(new NormaliseVariableElementsToCodesAction(codelistUrn, locale), new WaitingAsyncCallback<NormaliseVariableElementsToCodesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorNormalisingVariableElementsToCodes()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(NormaliseVariableElementsToCodesResult result) {
+                // TODO Auto-generated method stub
+
             }
         });
     }
