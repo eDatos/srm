@@ -56,6 +56,9 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetVariableElementsAction
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariablesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ImportCodeOrdersCsvInBackgroundActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ImportCodesCsvInBackgroundActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ImportVariableElementCSVInBackgroundActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.NormaliseVariableElementsToCodesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveCodelistsFromCodelistFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveVariablesFromVariableFamilyActionHandler;
@@ -182,6 +185,9 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.ImportCodeOrdersCsvInBackgroundAction;
+import org.siemac.metamac.srm.web.shared.code.ImportCodesCsvInBackgroundAction;
+import org.siemac.metamac.srm.web.shared.code.ImportVariableElementCSVInBackgroundAction;
 import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesAction;
 import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyAction;
@@ -413,6 +419,9 @@ public class ServerModule extends HandlerModule {
         bindHandler(CreateCodelistTemporalVersionAction.class, CreateCodelistTemporalVersionActionHandler.class);
         bindHandler(NormaliseVariableElementsToCodesAction.class, NormaliseVariableElementsToCodesActionHandler.class);
         bindHandler(UpdateCodesVariableElementsAction.class, UpdateCodesVariableElementsActionHandler.class);
+        bindHandler(ImportVariableElementCSVInBackgroundAction.class, ImportVariableElementCSVInBackgroundActionHandler.class);
+        bindHandler(ImportCodeOrdersCsvInBackgroundAction.class, ImportCodeOrdersCsvInBackgroundActionHandler.class);
+        bindHandler(ImportCodesCsvInBackgroundAction.class, ImportCodesCsvInBackgroundActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
