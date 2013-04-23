@@ -1355,6 +1355,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         // Do not test because facade operation has same signature as service operation (without dto)
     }
 
+    @Test
+    public void testNormaliseVariableElementsToCodes() throws Exception {
+        // Do not test because facade operation has same signature as service operation (without dto)
+    }
+
     // ---------------------------------------------------------------------------------------
     // CODELIST FAMILIES
     // ---------------------------------------------------------------------------------------

@@ -35,7 +35,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
@@ -1099,13 +1099,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void copyCodesInCodelist(ServiceContext ctx, String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException {
+    public void copyCodesInCodelist(ServiceContext ctx, String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistTargetUrn);
         ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Copy
-        getCodesMetamacService().copyCodesInCodelist(ctx, codelistTargetUrn, parentTargetUrn, codesToCopy);
+        getCodesMetamacService().copyCodesInCodelist(ctx, codelistSourceUrn, codelistTargetUrn, codesToCopy);
     }
 
     @Override

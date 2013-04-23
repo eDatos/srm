@@ -35,6 +35,7 @@ import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -45,7 +46,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
@@ -74,7 +75,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -504,7 +504,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodeMetamac createCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
 
-        // IMPORTANT: If any restriction change, review importation of csv file, because the importation doesnot call to service methods to avoid extra queries, flushing...
+        // IMPORTANT: If any restriction change, review operations of importation of csv file and copy of codes,
+        // because the importation doesnot call to service methods to avoid extra queries, flushing...
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
 
@@ -519,32 +520,67 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void copyCodesInCodelist(ServiceContext ctx, String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException {
+    public void copyCodesInCodelist(ServiceContext ctx, String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkCopyCodesInCodelist(codelistTargetUrn, parentTargetUrn, codesToCopy, null);
         if (CollectionUtils.isEmpty(codesToCopy)) {
             return;
         }
+        CodesMetamacInvocationValidator.checkCopyCodesInCodelist(codelistSourceUrn, codelistTargetUrn, codesToCopy, null);
+
+        // TARGET: codelist
         CodelistVersionMetamac codelistVersionTarget = retrieveCodelistByUrn(ctx, codelistTargetUrn);
         checkCodelistCanBeModified(codelistVersionTarget);
         srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersionTarget);
-
-        CodeMetamac parentTarget = null;
-        if (parentTargetUrn != null) {
-            parentTarget = retrieveCodeByUrn(ctx, parentTargetUrn);
-            if (!parentTarget.getItemSchemeVersion().getMaintainableArtefact().getUrn().equals(codelistVersionTarget.getMaintainableArtefact().getUrn())) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.ITEM_PARENT).build();
-            }
+        // TARGET: actual codes in codelist
+        List<Item> codesInCodelistTargetBeforeCopy = codelistVersionTarget.getItems();
+        Map<String, CodeMetamac> codesInCodelistTargetBeforeCopyByCode = new HashMap<String, CodeMetamac>(codesInCodelistTargetBeforeCopy.size());
+        for (Item item : codesInCodelistTargetBeforeCopy) {
+            codesInCodelistTargetBeforeCopyByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
         }
 
-        // Get codelist source from one code, to check all codes belong to this codelist and to check variable
-        CodelistVersionMetamac codelistVersionSource = retrieveCodelistByCodeUrn(ctx, codesToCopy.get(0).getSourceUrn());
+        // SOURCE: Get codelist source
+        CodelistVersionMetamac codelistVersionSource = retrieveCodelistByUrn(ctx, codelistSourceUrn);
+        // SOURCE: Retrieve all codes of codelist source together (although all codes wont be copied, it is prefered obtain in x single queries than x * numCodesToCopy queries)
+        List<Item> codesInCodelistSource = codelistVersionSource.getItems();
+        Map<String, CodeMetamac> codesInCodelistSourceByUrn = new HashMap<String, CodeMetamac>(codesInCodelistSource.size());
+        for (Item item : codesInCodelistSource) {
+            codesInCodelistSourceByUrn.put(item.getNameableArtefact().getUrn(), (CodeMetamac) item);
+        }
+        // SOURCE: Retrieve efficiently some metadata: name, description, annotations...
+        List<ItemResult> codesItemResultInCodelistSource = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersionSource.getId(), Boolean.TRUE);
+        Map<String, ItemResult> codesItemResultInCodelistSourceByUrn = new HashMap<String, ItemResult>(codesItemResultInCodelistSource.size());
+        for (ItemResult itemResult : codesItemResultInCodelistSource) {
+            codesItemResultInCodelistSourceByUrn.put(itemResult.getUrn(), itemResult);
+        }
+
+        boolean copyVariableElements = false;
+        if (codelistVersionTarget.getVariable() != null && codelistVersionSource.getVariable() != null
+                && codelistVersionSource.getVariable().getId().equals(codelistVersionTarget.getVariable().getId())) {
+            copyVariableElements = true;
+        }
 
         // Copy
-        for (CodeToCopyHierarchy codeToCopyHierarchy : codesToCopy) {
-            copyCodeInCodelist(ctx, codelistVersionSource, codelistVersionTarget, parentTarget, codeToCopyHierarchy);
+        List<CodeMetamac> codesToPersist = new ArrayList<CodeMetamac>(codesToCopy.size());
+        Map<String, CodeMetamac> codesToPersistByCode = new HashMap<String, CodeMetamac>(codesToCopy.size());
+        for (CodeToCopy codeToCopy : codesToCopy) {
+            CodeMetamac codeCopied = prepareCopyCodeInCodelist(codesInCodelistSourceByUrn, codesItemResultInCodelistSourceByUrn, codelistVersionTarget, codesInCodelistTargetBeforeCopyByCode,
+                    codesToPersistByCode, codeToCopy, copyVariableElements);
+            codesToPersist.add(codeCopied);
+            codesToPersistByCode.put(codeCopied.getNameableArtefact().getCode(), codeCopied);
         }
+
+        // Re-calculate all visualisations with new codes
+        List<Item> allItemsToUpdateVisualisations = new ArrayList<Item>(codesInCodelistTargetBeforeCopy);
+        for (Item item : codesToPersist) {
+            if (!codesInCodelistTargetBeforeCopyByCode.containsKey(item.getNameableArtefact().getCode())) {
+                allItemsToUpdateVisualisations.add(item);
+            }
+        }
+        recalculateCodesVisualisations(ctx, allItemsToUpdateVisualisations, codelistVersionTarget.getOrderVisualisations(), codelistVersionTarget.getOpennessVisualisations(), false);
+
+        // Save codes
+        saveCodesEfficiently(codesToPersist, codesToPersistByCode);
     }
 
     @Override
@@ -629,19 +665,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         recalculateCodesVisualisations(ctx, allItemsToUpdateVisualisations, codelistVersion.getOrderVisualisations(), codelistVersion.getOpennessVisualisations(), false);
 
-        // Persist
-        for (int i = 0; i < codesToPersist.size(); i++) {
-            CodeMetamac codeMetamac = codesToPersist.get(i);
-            if (codeMetamac.getParent() != null) {
-                if (codesToPersistByCode.containsKey(codeMetamac.getParent().getNameableArtefact().getCode())) {
-                    // update reference because it was saved
-                    codeMetamac.setParent(codesToPersistByCode.get(codeMetamac.getParent().getNameableArtefact().getCode()));
-                }
-            }
-            codeMetamac = getCodeMetamacRepository().save(codeMetamac);
-            // update reference after save to assign to children
-            codesToPersistByCode.put(codeMetamac.getNameableArtefact().getCode(), codeMetamac);
-        }
+        // Save codes
+        saveCodesEfficiently(codesToPersist, codesToPersistByCode);
     }
 
     @Override
@@ -780,7 +805,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public CodeMetamac updateCode(ServiceContext ctx, CodeMetamac code) throws MetamacException {
 
-        // IMPORTANT: If any restriction change, review importation of csv file, because the importation doesnot call to service methods to avoid extra queries, flushing...
+        // IMPORTANT: If any restriction change, review operations of importation of csv file and copy of codes,
+        // because the importation doesnot call to service methods to avoid extra queries, flushing...
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, code.getNameableArtefact().getUrn());
 
@@ -2416,42 +2442,73 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return code;
     }
 
-    private void copyCodeInCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersionSource, CodelistVersionMetamac codelistVersionTarget, CodeMetamac parent,
-            CodeToCopyHierarchy codeToCopyHierarchy) throws MetamacException {
+    private CodeMetamac prepareCopyCodeInCodelist(Map<String, CodeMetamac> codesInCodelistSourceByUrn, Map<String, ItemResult> codesItemResultInCodelistSourceByUrn,
+            CodelistVersionMetamac codelistVersionTarget, Map<String, CodeMetamac> codesPreviousInCodelistTargetByCode, Map<String, CodeMetamac> codesToPersistByCode, CodeToCopy codeToCopy,
+            boolean copyVariableElements) throws MetamacException {
 
-        // Copy metadata from source
-        CodeMetamac codeSource = retrieveCodeByUrn(ctx, codeToCopyHierarchy.getSourceUrn());
-        if (!codeSource.getItemSchemeVersion().getMaintainableArtefact().getUrn().equals(codelistVersionSource.getMaintainableArtefact().getUrn())) {
+        // Prepare source
+        ItemResult codeItemResultSource = codesItemResultInCodelistSourceByUrn.get(codeToCopy.getSourceUrn());
+        if (codeItemResultSource == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.URN).build();
         }
-        CodeMetamac codeTarget = new CodeMetamac();
-        codeTarget.setNameableArtefact(new NameableArtefact());
-        if (codeToCopyHierarchy.getNewCodeIdentifier() != null) {
-            codeTarget.getNameableArtefact().setCode(codeToCopyHierarchy.getNewCodeIdentifier());
-        } else {
-            codeTarget.getNameableArtefact().setCode(codeSource.getNameableArtefact().getCode());
+        CodeMetamac codeSource = codesInCodelistSourceByUrn.get(codeToCopy.getSourceUrn());
+
+        // semantic identifier and urn
+        String codeIdentifier = codeToCopy.getNewCodeIdentifier();
+        if (codeIdentifier == null) {
+            codeIdentifier = codeItemResultSource.getCode();
         }
-        codeTarget.getNameableArtefact().setUriProvider(null);
-        codeTarget.getNameableArtefact().setName(BaseCopyAllMetadataUtils.copy(codeSource.getNameableArtefact().getName()));
-        codeTarget.getNameableArtefact().setDescription(BaseCopyAllMetadataUtils.copy(codeSource.getNameableArtefact().getDescription()));
+        String urn = GeneratorUrnUtils.generateCodeUrn(codelistVersionTarget, codeIdentifier);
+        if (codesToPersistByCode.containsKey(codeIdentifier) || codesPreviousInCodelistTargetByCode.containsKey(codeIdentifier)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED).withMessageParameters(urn).build();
+        }
+        if (!SemanticIdentifierValidationUtils.isCodeSemanticIdentifier(codeIdentifier)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE).build();
+        }
+
+        // parent
+        CodeMetamac codeParent = null;
+        String codeParentIdentifier = codeToCopy.getParentNewCodeIdentifier();
+        if (codeParentIdentifier != null) {
+            if (codesToPersistByCode.containsKey(codeParentIdentifier)) {
+                codeParent = codesToPersistByCode.get(codeParentIdentifier);
+            } else {
+                codeParent = codesPreviousInCodelistTargetByCode.get(codeParentIdentifier); // try find code that already exists in codelist before copy
+            }
+            if (codeParent == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.ITEM_PARENT).build();
+            }
+        }
+
+        // copy code
+        CodeMetamac codeTarget = new CodeMetamac();
+        codeTarget.setItemSchemeVersion(codelistVersionTarget);
+        if (codeParent == null) {
+            codeTarget.setParent(null);
+            codeTarget.setItemSchemeVersionFirstLevel(codelistVersionTarget);
+        } else {
+            codeTarget.setParent(codeParent);
+            codeTarget.setItemSchemeVersionFirstLevel(null);
+        }
+        codeTarget.setNameableArtefact(new NameableArtefact());
+        codeTarget.getNameableArtefact().setCode(codeIdentifier);
+        codeTarget.getNameableArtefact().setUrn(urn);
+        codeTarget.getNameableArtefact().setUrnProvider(urn);
+        codeTarget.getNameableArtefact().setName(BaseCopyAllMetadataUtils.copyInternationalString(codeItemResultSource.getName()));
+        codeTarget.getNameableArtefact().setDescription(BaseCopyAllMetadataUtils.copyInternationalString(codeItemResultSource.getDescription()));
         codeTarget.getNameableArtefact().setComment(null);
-        codeTarget.setShortName(BaseCopyAllMetadataUtils.copy(codeSource.getShortName()));
-        if (codelistVersionTarget.getVariable() != null && codelistVersionSource.getVariable() != null
-                && codelistVersionSource.getVariable().getNameableArtefact().getUrn().equals(codelistVersionTarget.getVariable().getNameableArtefact().getUrn())) {
+        BaseCopyAllMetadataUtils.copyAnnotations(codeItemResultSource.getAnnotations(), codeTarget.getNameableArtefact());
+        if (codeItemResultSource.getExtensionPoint() != null) {
+            CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) codeItemResultSource.getExtensionPoint();
+            codeTarget.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(extensionPoint.getShortName()));
+        }
+        if (copyVariableElements) {
             codeTarget.setVariableElement(codeSource.getVariableElement());
         }
-        for (Annotation annotationSource : codeSource.getNameableArtefact().getAnnotations()) {
-            codeTarget.getNameableArtefact().addAnnotation(BaseCopyAllMetadataUtils.copy(annotationSource));
-        }
-        codeTarget.setParent(parent);
 
-        // Create
-        codeTarget = createCode(ctx, codelistVersionTarget.getMaintainableArtefact().getUrn(), codeTarget);
-
-        // Children
-        for (CodeToCopyHierarchy child : codeToCopyHierarchy.getChildren()) {
-            copyCodeInCodelist(ctx, codelistVersionSource, codelistVersionTarget, codeTarget, child);
-        }
+        // extra validation to avoid save some incorrect
+        CodesMetamacInvocationValidator.checkCreateCode(codelistVersionTarget, codeTarget, null);
+        return codeTarget;
     }
 
     /**
@@ -2796,5 +2853,21 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             return null;
         }
         return orderVisualisations;
+    }
+
+    private void saveCodesEfficiently(List<CodeMetamac> codesToPersist, Map<String, CodeMetamac> codesToPersistByCode) {
+        // Persist
+        for (int i = 0; i < codesToPersist.size(); i++) {
+            CodeMetamac codeMetamac = codesToPersist.get(i);
+            if (codeMetamac.getParent() != null) {
+                if (codesToPersistByCode.containsKey(codeMetamac.getParent().getNameableArtefact().getCode())) {
+                    // update reference because it was saved
+                    codeMetamac.setParent(codesToPersistByCode.get(codeMetamac.getParent().getNameableArtefact().getCode()));
+                }
+            }
+            codeMetamac = getCodeMetamacRepository().save(codeMetamac);
+            // update reference after save to assign to children
+            codesToPersistByCode.put(codeMetamac.getNameableArtefact().getCode(), codeMetamac);
+        }
     }
 }

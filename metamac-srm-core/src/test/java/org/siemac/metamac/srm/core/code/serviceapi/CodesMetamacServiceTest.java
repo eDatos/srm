@@ -65,7 +65,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -2064,6 +2064,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testCopyCodesInCodelist() throws Exception {
+        String codelistSourceUrn = CODELIST_1_V2;
         String codelistTargetUrn = CODELIST_1_V2;
 
         // Before
@@ -2071,34 +2072,38 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(9, hierarchyBefore.size());
 
         // Codes to copy
-        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
+        List<CodeToCopy> codesToCopy = new ArrayList<CodeToCopy>();
         {
-            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-            code.setSourceUrn(CODELIST_1_V2_CODE_2_1);
-            code.setNewCodeIdentifier("CODE05");
-            codesToCopy.add(code);
-        }
-        {
-            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            CodeToCopy code = new CodeToCopy();
             code.setSourceUrn(CODELIST_1_V2_CODE_3);
             code.setNewCodeIdentifier("CODE00");
+            code.setParentNewCodeIdentifier(null);
             codesToCopy.add(code);
         }
         {
-            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            CodeToCopy code = new CodeToCopy();
             code.setSourceUrn(CODELIST_1_V2_CODE_4);
             code.setNewCodeIdentifier("CODE01B");
+            code.setParentNewCodeIdentifier(null);
             codesToCopy.add(code);
             {
-                CodeToCopyHierarchy codeChild = new CodeToCopyHierarchy();
+                CodeToCopy codeChild = new CodeToCopy();
                 codeChild.setSourceUrn(CODELIST_1_V2_CODE_4_1_1);
                 codeChild.setNewCodeIdentifier("CODE01B01");
-                code.getChildren().add(codeChild);
+                codeChild.setParentNewCodeIdentifier(code.getNewCodeIdentifier());
+                codesToCopy.add(codeChild);
             }
+        }
+        {
+            CodeToCopy code = new CodeToCopy();
+            code.setSourceUrn(CODELIST_1_V2_CODE_2_1);
+            code.setNewCodeIdentifier("CODE05");
+            code.setParentNewCodeIdentifier(null);
+            codesToCopy.add(code);
         }
 
         // Copy
-        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistTargetUrn, null, codesToCopy);
+        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistSourceUrn, codelistTargetUrn, codesToCopy);
 
         entityManager.clear();
         String code0201TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE05";
@@ -2179,8 +2184,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("title-annotation212", annotation.getTitle());
             }
             assertEquals(Integer.valueOf(6), code.getOrder1());
-            assertEquals(Integer.valueOf(4), code.getOrder2());
-            assertEquals(Integer.valueOf(4), code.getOrder3());
+            assertEquals(Integer.valueOf(6), code.getOrder2());
+            assertEquals(Integer.valueOf(6), code.getOrder3());
             assertNull(code.getOrder4());
             assertEquals(Boolean.TRUE, code.getOpenness1());
             assertEquals(Boolean.TRUE, code.getOpenness2());
@@ -2205,8 +2210,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(code.getNameableArtefact().getComment());
             assertEquals(0, code.getNameableArtefact().getAnnotations().size());
             assertEquals(Integer.valueOf(0), code.getOrder1());
-            assertEquals(Integer.valueOf(5), code.getOrder2());
-            assertEquals(Integer.valueOf(5), code.getOrder3());
+            assertEquals(Integer.valueOf(4), code.getOrder2());
+            assertEquals(Integer.valueOf(4), code.getOrder3());
             assertNull(code.getOrder4());
             assertEquals(Boolean.TRUE, code.getOpenness1());
             assertEquals(Boolean.TRUE, code.getOpenness2());
@@ -2228,8 +2233,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(code.getNameableArtefact().getComment());
             assertEquals(0, code.getNameableArtefact().getAnnotations().size());
             assertEquals(Integer.valueOf(2), code.getOrder1());
-            assertEquals(Integer.valueOf(6), code.getOrder2());
-            assertEquals(Integer.valueOf(6), code.getOrder3());
+            assertEquals(Integer.valueOf(5), code.getOrder2());
+            assertEquals(Integer.valueOf(5), code.getOrder3());
             assertNull(code.getOrder4());
             assertEquals(Boolean.TRUE, code.getOpenness1());
             assertEquals(Boolean.TRUE, code.getOpenness2());
@@ -2268,37 +2273,41 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testCopyCodesInCodelistInParentOnlyCheckStructureAndOrder() throws Exception {
+        String codelistSourceUrn = CODELIST_1_V2;
         String codelistTargetUrn = CODELIST_1_V2;
-        String parentUrn = CODELIST_1_V2_CODE_2;
 
-        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
+        List<CodeToCopy> codesToCopy = new ArrayList<CodeToCopy>();
         {
-            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-            code.setSourceUrn(CODELIST_1_V2_CODE_2_1);
-            code.setNewCodeIdentifier("CODE05");
-            codesToCopy.add(code);
-        }
-        {
-            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            CodeToCopy code = new CodeToCopy();
             code.setSourceUrn(CODELIST_1_V2_CODE_3);
             code.setNewCodeIdentifier("CODE00");
+            code.setParentNewCodeIdentifier("CODE02");
             codesToCopy.add(code);
         }
         {
-            CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+            CodeToCopy code = new CodeToCopy();
             code.setSourceUrn(CODELIST_1_V2_CODE_4);
             code.setNewCodeIdentifier("CODE01B");
+            code.setParentNewCodeIdentifier("CODE02");
             codesToCopy.add(code);
             {
-                CodeToCopyHierarchy codeChild = new CodeToCopyHierarchy();
+                CodeToCopy codeChild = new CodeToCopy();
                 codeChild.setSourceUrn(CODELIST_1_V2_CODE_4_1_1);
                 codeChild.setNewCodeIdentifier("CODE01B01");
-                code.getChildren().add(codeChild);
+                codeChild.setParentNewCodeIdentifier(code.getNewCodeIdentifier());
+                codesToCopy.add(codeChild);
             }
+        }
+        {
+            CodeToCopy code = new CodeToCopy();
+            code.setSourceUrn(CODELIST_1_V2_CODE_2_1);
+            code.setNewCodeIdentifier("CODE05");
+            code.setParentNewCodeIdentifier("CODE02");
+            codesToCopy.add(code);
         }
 
         // Copy
-        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistTargetUrn, parentUrn, codesToCopy);
+        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistSourceUrn, codelistTargetUrn, codesToCopy);
 
         entityManager.clear();
         String code0201TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE05";
@@ -2332,8 +2341,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
             assertNull(code.getItemSchemeVersionFirstLevel());
             assertEquals(Integer.valueOf(4), code.getOrder1());
-            assertEquals(Integer.valueOf(2), code.getOrder2());
-            assertEquals(Integer.valueOf(2), code.getOrder3());
+            assertEquals(Integer.valueOf(4), code.getOrder2());
+            assertEquals(Integer.valueOf(4), code.getOrder3());
             assertNull(code.getOrder4());
             assertEquals(Boolean.TRUE, code.getOpenness1());
             assertEquals(Boolean.TRUE, code.getOpenness2());
@@ -2347,8 +2356,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
             assertNull(code.getItemSchemeVersionFirstLevel());
             assertEquals(Integer.valueOf(0), code.getOrder1());
-            assertEquals(Integer.valueOf(3), code.getOrder2());
-            assertEquals(Integer.valueOf(3), code.getOrder3());
+            assertEquals(Integer.valueOf(2), code.getOrder2());
+            assertEquals(Integer.valueOf(2), code.getOrder3());
             assertNull(code.getOrder4());
             assertEquals(Boolean.TRUE, code.getOpenness1());
             assertEquals(Boolean.TRUE, code.getOpenness2());
@@ -2362,8 +2371,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getNameableArtefact().getUrn());
             assertNull(code.getItemSchemeVersionFirstLevel());
             assertEquals(Integer.valueOf(1), code.getOrder1());
-            assertEquals(Integer.valueOf(4), code.getOrder2());
-            assertEquals(Integer.valueOf(4), code.getOrder3());
+            assertEquals(Integer.valueOf(3), code.getOrder2());
+            assertEquals(Integer.valueOf(3), code.getOrder3());
             assertNull(code.getOrder4());
             assertEquals(Boolean.TRUE, code.getOpenness1());
             assertEquals(Boolean.TRUE, code.getOpenness2());
@@ -2398,14 +2407,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertFalse(codelistTarget.getVariable().getNameableArtefact().getUrn().equals(codelistSource.getVariable().getNameableArtefact().getUrn()));
 
         // Codes to copy
-        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
-        CodeToCopyHierarchy code = new CodeToCopyHierarchy();
+        List<CodeToCopy> codesToCopy = new ArrayList<CodeToCopy>();
+        CodeToCopy code = new CodeToCopy();
         code.setSourceUrn(code01SourceUrn);
         code.setNewCodeIdentifier("CODE03");
+        code.setParentNewCodeIdentifier(null);
         codesToCopy.add(code);
 
         // Copy
-        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistTargetUrn, null, codesToCopy);
+        codesService.copyCodesInCodelist(getServiceContextAdministrador(), codelistSourceUrn, codelistTargetUrn, codesToCopy);
 
         entityManager.clear();
         String code01TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST02(01.000).CODE03";

@@ -103,7 +103,7 @@ Application CodesMetamac {
     		"Retrieves codes by code scheme in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn, String codelistOpennessVisualisationUrn) throws MetamacException;
 			"Copy codes to another codelist"
-	   		copyCodesInCodelist(String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) throws MetamacException;
+	   		copyCodesInCodelist(String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException;
 			"Imports codes in csv format"
     		importCodesCsv(String codelistUrn, InputStream csvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
 			"Imports code orders in csv format"
