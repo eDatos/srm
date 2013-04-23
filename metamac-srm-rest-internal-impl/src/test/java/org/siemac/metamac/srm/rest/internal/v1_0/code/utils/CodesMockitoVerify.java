@@ -19,8 +19,10 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.MockitoVerify;
@@ -51,6 +53,14 @@ public class CodesMockitoVerify extends MockitoVerify {
 
     public static void verifyFindVariableFamilies(CodesMetamacService codesService, String resourceID, String limit, String offset, String query, String orderBy) throws Exception {
         verifyFindVariableFamilies(codesService, resourceID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
+    }
+
+    public static void verifyRetrieveVariable(CodesMetamacService codesService, String resourceID) throws Exception {
+        verifyFindVariables(codesService, resourceID, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
+    }
+
+    public static void verifyFindVariables(CodesMetamacService codesService, String resourceID, String limit, String offset, String query, String orderBy) throws Exception {
+        verifyFindVariables(codesService, resourceID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
     }
 
     public static void verifyRetrieveCodelistFamily(CodesMetamacService codesService, String resourceID) throws Exception {
@@ -119,6 +129,31 @@ public class CodesMockitoVerify extends MockitoVerify {
         conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).distinctRoot().buildSingle());
         if (resourceID != null) {
             conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableFamily.class).withProperty(VariableFamilyProperties.nameableArtefact().code()).eq(resourceID).buildSingle());
+        }
+
+        MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
+
+        MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static void verifyFindVariables(CodesMetamacService codesService, String resourceID, String query, String orderBy, PagingParameter pagingParameterExpected, RestOperationEnum restOperation)
+            throws Exception {
+
+        // Verify
+        ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<PagingParameter> pagingParameter = ArgumentCaptor.forClass(PagingParameter.class);
+        verify(codesService).findVariablesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
+
+        // Validate
+        List<ConditionalCriteria> conditionalCriteriaExpected = new ArrayList<ConditionalCriteria>();
+        if (RestOperationEnum.FIND.equals(restOperation)) {
+            conditionalCriteriaExpected.addAll(buildFindExpectedOrder(orderBy, Variable.class, VariableProperties.nameableArtefact()));
+            conditionalCriteriaExpected.addAll(buildFindExpectedQuery(query, Variable.class, VariableProperties.nameableArtefact()));
+        }
+        conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(Variable.class).distinctRoot().buildSingle());
+        if (resourceID != null) {
+            conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.nameableArtefact().code()).eq(resourceID).buildSingle());
         }
 
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
