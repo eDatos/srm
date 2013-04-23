@@ -865,9 +865,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // If the scheme has items (concepts), type cannot be modified
 
         if (conceptSchemeVersion.getId() != null) {
-            Long itemsCount = itemRepository.countItems(conceptSchemeVersion.getId());
-            if (itemsCount != 0 && conceptSchemeVersion.getIsTypeUpdated()) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE).build();
+            if (conceptSchemeVersion.getIsTypeUpdated() && !conceptSchemeVersion.getMaintainableArtefact().getIsImported()) {
+                Long itemsCount = itemRepository.countItems(conceptSchemeVersion.getId());
+                if (itemsCount != 0) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE)
+                            .build();
+                }
             }
         }
 
@@ -881,7 +884,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             }
         }
     }
-
     /**
      * Common validations to create or update a concept
      */
