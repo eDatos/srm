@@ -199,8 +199,8 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
                     // At least one code must be selected
                     WarningWindow warningWindow = new WarningWindow(getConstants().codesSelection(), getMessages().codeSelectionRequired());
                     warningWindow.show();
-                } else if (selectedRecords.length > 100) {
-                    // The user cannot create more than 100 codes at the same time
+                } else if (selectedRecords.length > 500) {
+                    // The user cannot create more than 500 codes at the same time
                     WarningWindow warningWindow = new WarningWindow(getConstants().codesSelection(), getMessages().codeSelectionErrorSize());
                     warningWindow.show();
                 } else {
