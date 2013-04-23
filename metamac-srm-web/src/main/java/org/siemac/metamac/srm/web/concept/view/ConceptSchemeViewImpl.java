@@ -528,23 +528,9 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
                 }
             }
         });
-        type.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                // TYPE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-                return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(conceptSchemeDto.getLifeCycle().getProcStatus())
-                        && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(conceptSchemeDto.getVersionLogic());
-            }
-        });
+        type.setShowIfCondition(getTypeFormItemIfFunction());
         ViewTextItem typeView = new ViewTextItem(ConceptSchemeDS.TYPE_VIEW, getConstants().conceptSchemeType());
-        typeView.setShowIfCondition(new FormItemIfFunction() {
-
-            @Override
-            public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !form.getItem(ConceptSchemeDS.TYPE).isVisible();
-            }
-        });
+        typeView.setShowIfCondition(getStaticTypeFormItemIfFunction());
         final SearchViewTextItem operation = createRelatedOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         operation.setShowIfCondition(new FormItemIfFunction() {
 
@@ -850,6 +836,28 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !ConceptsFormUtils.canConceptSchemeCodeBeEdited(conceptSchemeDto);
+            }
+        };
+    }
+
+    // TYPE
+
+    private FormItemIfFunction getTypeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return ConceptsFormUtils.canConceptSchemeTypeBeEdited(conceptSchemeDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticTypeFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !ConceptsFormUtils.canConceptSchemeTypeBeEdited(conceptSchemeDto);
             }
         };
     }
