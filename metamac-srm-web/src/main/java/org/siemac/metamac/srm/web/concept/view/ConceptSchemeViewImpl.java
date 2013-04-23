@@ -305,6 +305,13 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
                 versionConceptScheme();
             }
         });
+        mainFormLayout.getExport().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().exportConceptScheme(conceptSchemeDto.getUrn());
+            }
+        });
     }
 
     @Override

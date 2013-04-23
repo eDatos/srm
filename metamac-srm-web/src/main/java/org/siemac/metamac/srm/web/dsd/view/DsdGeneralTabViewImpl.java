@@ -231,6 +231,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 versionDsd();
             }
         });
+        mainFormLayout.getExport().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().exportDsd(dataStructureDefinitionMetamacDto.getUrn());
+            }
+        });
     }
 
     /**

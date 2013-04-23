@@ -21,6 +21,8 @@ import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
+import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
+import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
@@ -195,6 +197,21 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(GetDsdsResult result) {
                 getView().setLatestDsdForInternalPublication(result);
+            }
+        });
+    }
+
+    @Override
+    public void exportDsd(String urn) {
+        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().sDMXResourceErrorExport()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(ExportSDMXResourceResult result) {
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.downloadFile(result.getFileName());
             }
         });
     }

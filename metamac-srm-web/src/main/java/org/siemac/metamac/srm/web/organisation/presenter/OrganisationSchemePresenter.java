@@ -25,6 +25,8 @@ import org.siemac.metamac.srm.web.organisation.enums.OrganisationsToolStripButto
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
+import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
@@ -288,6 +290,21 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
                 updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void exportOrganisationScheme(String urn) {
+        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().sDMXResourceErrorExport()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(ExportSDMXResourceResult result) {
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.downloadFile(result.getFileName());
             }
         });
     }

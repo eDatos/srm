@@ -357,6 +357,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 versionCodelist();
             }
         });
+        mainFormLayout.getExport().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().exportCodelist(codelistDto.getUrn());
+            }
+        });
     }
 
     @Override

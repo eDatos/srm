@@ -10,6 +10,7 @@ public interface DsdGeneralTabUiHandlers extends UiHandlers {
     void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
     void goToDsd(String urn);
     void retrieveLatestDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
+    void exportDsd(String urn);
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
 
