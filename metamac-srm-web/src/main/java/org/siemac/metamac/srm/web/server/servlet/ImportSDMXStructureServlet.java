@@ -89,37 +89,40 @@ public class ImportSDMXStructureServlet extends HttpServlet {
                 sdmxStructureServiceFacade.importSDMXStructureMsgInBackground(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
             }
 
-            response.setContentType("text/html");
-            response.setHeader("Pragma", "No-cache");
-            response.setDateHeader("Expires", 0);
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.println("<html>");
-            out.println("<body>");
-            out.println("<script type=\"text/javascript\">");
-            out.println("if (parent.uploadComplete) parent.uploadComplete('" + fileName + "');");
-            out.println("</script>");
-            out.println("</body>");
-            out.println("</html>");
-            out.flush();
+            sendSuccessImportationResponse(response, fileName);
+
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error importing file = " + fileName + ". " + e.getMessage());
-            response.setContentType("text/html");
-            response.setHeader("Pragma", "No-cache");
-            response.setDateHeader("Expires", 0);
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.println("<html>");
-            out.println("<body>");
-            out.println("<script type=\"text/javascript\">");
-            out.println("if (parent.uploadFailed) parent.uploadFailed('" + fileName + "');");
-            out.println("</script>");
-            out.println("</body>");
-            out.println("</html>");
-            out.flush();
+            sendFailedImportationResponse(response, fileName);
         }
     }
 
     private void processQuery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+
+    private void sendSuccessImportationResponse(HttpServletResponse response, String fileName) throws IOException {
+        String action = "if (parent.uploadComplete) parent.uploadComplete('" + fileName + "');";
+        sendResponse(response, action);
+    }
+
+    private void sendFailedImportationResponse(HttpServletResponse response, String fileName) throws IOException {
+        String action = "if (parent.uploadFailed) parent.uploadFailed('" + fileName + "');";
+        sendResponse(response, action);
+    }
+
+    private void sendResponse(HttpServletResponse response, String action) throws IOException {
+        response.setContentType("text/html");
+        response.setHeader("Pragma", "No-cache");
+        response.setDateHeader("Expires", 0);
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter out = response.getWriter();
+        out.println("<html>");
+        out.println("<body>");
+        out.println("<script type=\"text/javascript\">");
+        out.println(action);
+        out.println("</script>");
+        out.println("</body>");
+        out.println("</html>");
+        out.flush();
     }
 }
