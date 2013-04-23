@@ -118,7 +118,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             // Code 04
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_4, code.getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), null, null, null, null);
+            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Lanzarote", "en", "Lanzarote en");
         }
         {
             // Code 04 01
