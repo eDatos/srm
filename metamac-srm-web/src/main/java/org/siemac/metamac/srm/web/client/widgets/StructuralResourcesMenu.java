@@ -110,7 +110,7 @@ public class StructuralResourcesMenu extends ToolStrip {
 
             @Override
             public void onClick(ClickEvent event) {
-                ImportSDMXStructureWindow importWindow = new ImportSDMXStructureWindow(getConstants().actionImportSDMXResource());
+                ImportSDMXStructureWindow importWindow = new ImportSDMXStructureWindow();
                 importWindow.setUploadListener(new UploadListener() {
 
                     @Override
