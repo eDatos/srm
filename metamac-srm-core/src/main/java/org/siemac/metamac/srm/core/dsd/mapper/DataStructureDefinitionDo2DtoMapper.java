@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.dsd.mapper;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
@@ -18,6 +19,7 @@ public interface DataStructureDefinitionDo2DtoMapper {
 
     public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac);
     public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac);
-    public List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDoListToDtoList(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs);
+    public DataStructureDefinitionMetamacBasicDto dataStructureDefinitionMetamacDoToBasicDto(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac);
+    public List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDoListToDtoList(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs);
 
 }

@@ -2,10 +2,28 @@ package org.siemac.metamac.srm.core.base.mapper;
 
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
+import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
+import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 @org.springframework.stereotype.Component("baseDo2DtoMapper")
 public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapper {
+
+    @Autowired
+    @Qualifier("baseDo2DtoMapperSdmxSrm")
+    private com.arte.statistic.sdmx.srm.core.base.mapper.BaseDo2DtoMapper do2DtoMapperSdmxSrm;
 
     @Override
     public LifeCycleDto lifeCycleDoToDto(SrmLifeCycleMetadata source) {
@@ -25,6 +43,46 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         // TODO isExternalPublicationFailed
         // TODO externalPublicationFailedDate
         return target;
+    }
+
+    @Override
+    public void identifiableArtefactDoToIdentifiableArtefactBasicDto(IdentifiableArtefact source, IdentifiableArtefactMetamacBasicDto target) {
+        target.setCode(source.getCode());
+        target.setUrn(source.getUrn());
+        target.setUrnProvider(source.getUrnProvider());
+    }
+
+    @Override
+    public void nameableArtefactDoToNameableArtefactBasicDto(NameableArtefact source, NameableArtefactMetamacBasicDto target) {
+        target.setName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getName()));
+        identifiableArtefactDoToIdentifiableArtefactBasicDto(source, target);
+    }
+
+    @Override
+    public void nameableArtefactDoToNameableArtefactBasicDto(Item source, NameableArtefactMetamacBasicDto target) {
+        nameableArtefactDoToNameableArtefactBasicDto(source.getNameableArtefact(), target);
+    }
+
+    @Override
+    public void maintainableArtefactDoToMaintainableArtefactBasicDto(MaintainableArtefact source, SrmLifeCycleMetadata lifeCycleSource, MaintainableArtefactMetamacBasicDto target) {
+        target.setVersionLogic(source.getVersionLogic());
+        if (source.getMaintainer() != null) {
+            RelatedResourceDto maintainerDto = new RelatedResourceDto();
+            do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getMaintainer().getNameableArtefact(), maintainerDto);
+            maintainerDto.setType(RelatedResourceTypeEnum.AGENCY); // always is Agency
+            target.setMaintainer(maintainerDto);
+        }
+        target.setProcStatus(lifeCycleSource.getProcStatus());
+        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(lifeCycleSource.getInternalPublicationDate()));
+        target.setInternalPublicationUser(lifeCycleSource.getInternalPublicationUser());
+        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(lifeCycleSource.getExternalPublicationDate()));
+        target.setExternalPublicationUser(lifeCycleSource.getExternalPublicationUser());
+        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+    }
+
+    @Override
+    public void maintainableArtefactDoToMaintainableArtefactBasicDto(ItemSchemeVersion source, SrmLifeCycleMetadata lifeCycleSource, MaintainableArtefactMetamacBasicDto target) {
+        maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
     }
 
 }

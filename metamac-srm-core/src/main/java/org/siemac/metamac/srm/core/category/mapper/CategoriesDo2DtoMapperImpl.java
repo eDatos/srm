@@ -6,7 +6,9 @@ import java.util.List;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,10 +36,20 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
     }
 
     @Override
-    public List<CategorySchemeMetamacDto> categorySchemeMetamacDoListToDtoList(List<CategorySchemeVersionMetamac> categorySchemeVersions) {
-        List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = new ArrayList<CategorySchemeMetamacDto>(categorySchemeVersions.size());
+    public CategorySchemeMetamacBasicDto categorySchemeMetamacDoToBasicDto(CategorySchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        CategorySchemeMetamacBasicDto target = new CategorySchemeMetamacBasicDto();
+        maintainableArtefactDoToMaintainableArtefactBasicDto(source, source.getLifeCycleMetadata(), target);
+        return target;
+    }
+
+    @Override
+    public List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDoListToDtoList(List<CategorySchemeVersionMetamac> categorySchemeVersions) {
+        List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos = new ArrayList<CategorySchemeMetamacBasicDto>(categorySchemeVersions.size());
         for (CategorySchemeVersionMetamac categorySchemeVersion : categorySchemeVersions) {
-            categorySchemeMetamacDtos.add(categorySchemeMetamacDoToDto(categorySchemeVersion));
+            categorySchemeMetamacDtos.add(categorySchemeMetamacDoToBasicDto(categorySchemeVersion));
         }
         return categorySchemeMetamacDtos;
     }
@@ -54,12 +66,13 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
     }
 
     @Override
-    public List<CategoryMetamacDto> categoryMetamacDoListToDtoList(List<CategoryMetamac> sources) {
-        List<CategoryMetamacDto> targets = new ArrayList<CategoryMetamacDto>(sources.size());
-        for (CategoryMetamac source : sources) {
-            targets.add(categoryMetamacDoToDto(source));
+    public CategoryMetamacBasicDto categoryMetamacDoToBasicDto(CategoryMetamac source) {
+        if (source == null) {
+            return null;
         }
-        return targets;
+        CategoryMetamacBasicDto target = new CategoryMetamacBasicDto();
+        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+        return target;
     }
 
     @Override

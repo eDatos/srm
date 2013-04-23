@@ -14,9 +14,17 @@ Application DtosMetamacCategoryDomain {
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}
+		
+		"Dto for CategorySchemeMetamac"
+		DataTransferObject CategorySchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		}				
 
 		"Dto for CategoryMetamac"
 		DataTransferObject CategoryMetamacDto extends @CategoryDto {
+		}
+		
+		"Dto for CategoryMetamac"
+		DataTransferObject CategoryMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
 		}
 	}
 }

@@ -34,6 +34,12 @@ Application DtosMetamacDsdDomain {
 			- @ExternalItemDto statisticalOperation nullable;
 		}
 		
+		"Dto for DataStructureDefinitionMetamac"
+		DataTransferObject DataStructureDefinitionMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+			"Statistical operation"
+			- @ExternalItemDto statisticalOperation;
+		}
+		
 		DataTransferObject MeasureDimensionPrecisionDto extends @RelatedResourceDto {
 			"Show Decimal Precision, must a value between 0 and 6"
 			Integer showDecimalPrecision;

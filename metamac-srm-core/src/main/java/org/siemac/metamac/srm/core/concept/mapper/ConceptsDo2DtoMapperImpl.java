@@ -8,7 +8,9 @@ import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,18 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
     }
 
     @Override
+    public ConceptSchemeMetamacBasicDto conceptSchemeMetamacDoToBasicDto(ConceptSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        ConceptSchemeMetamacBasicDto target = new ConceptSchemeMetamacBasicDto();
+        maintainableArtefactDoToMaintainableArtefactBasicDto(source, source.getLifeCycleMetadata(), target);
+        target.setType(source.getType());
+        target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
+        return target;
+    }
+
+    @Override
     public RelatedResourceDto conceptSchemeMetamacDoToRelatedResourceDto(ConceptSchemeVersionMetamac source) {
         if (source == null) {
             return null;
@@ -52,10 +66,10 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
     }
 
     @Override
-    public List<ConceptSchemeMetamacDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) {
-        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = new ArrayList<ConceptSchemeMetamacDto>(conceptSchemeVersions.size());
+    public List<ConceptSchemeMetamacBasicDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) {
+        List<ConceptSchemeMetamacBasicDto> conceptSchemeMetamacDtos = new ArrayList<ConceptSchemeMetamacBasicDto>(conceptSchemeVersions.size());
         for (ConceptSchemeVersionMetamac conceptSchemeVersion : conceptSchemeVersions) {
-            conceptSchemeMetamacDtos.add(conceptSchemeMetamacDoToDto(conceptSchemeVersion));
+            conceptSchemeMetamacDtos.add(conceptSchemeMetamacDoToBasicDto(conceptSchemeVersion));
         }
         return conceptSchemeMetamacDtos;
     }
@@ -84,6 +98,17 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
 
         return target;
     }
+
+    @Override
+    public ConceptMetamacBasicDto conceptMetamacDoToBasicDto(ConceptMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        ConceptMetamacBasicDto target = new ConceptMetamacBasicDto();
+        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+        return target;
+    }
+
     @Override
     public RelatedResourceDto conceptMetamacDoToRelatedResourceDto(ConceptMetamac source) {
         if (source == null) {
@@ -94,12 +119,12 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
     }
 
     @Override
-    public List<ConceptMetamacDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> sources) {
-        List<ConceptMetamacDto> targets = new ArrayList<ConceptMetamacDto>(sources.size());
-        for (ConceptMetamac source : sources) {
-            targets.add(conceptMetamacDoToDto(source));
+    public List<ConceptMetamacBasicDto> conceptMetamacDoListToDtoList(List<ConceptMetamac> concepts) {
+        List<ConceptMetamacBasicDto> conceptMetamacDtos = new ArrayList<ConceptMetamacBasicDto>(concepts.size());
+        for (ConceptMetamac concept : concepts) {
+            conceptMetamacDtos.add(conceptMetamacDoToBasicDto(concept));
         }
-        return targets;
+        return conceptMetamacDtos;
     }
 
     @Override

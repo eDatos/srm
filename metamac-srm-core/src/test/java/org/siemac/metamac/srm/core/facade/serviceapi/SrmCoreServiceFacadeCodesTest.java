@@ -37,13 +37,19 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
@@ -231,99 +237,99 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
         {
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(18, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_2_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_3_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_4_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_5_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_6_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_8_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_9_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V3, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_11_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_12_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_13_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_14_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -332,7 +338,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "Nombre codelist-1-v1", OperationType.EQ));
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
 
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "NOT FOUND", OperationType.EQ));
@@ -346,15 +352,15 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2012, 01, 3, 9, 9, 8, 987)
                     .toDate(), OperationType.EQ));
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V1, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V2, codeSchemeMetamacDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -364,11 +370,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2010, 3, 31, 9, 9, 8, 987)
                     .toDate(), OperationType.EQ));
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_12_V1, codeSchemeMetamacDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -378,19 +384,19 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2012, 01, 1, 1, 1, 1, 1)
                     .toDate(), OperationType.GT));
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V1, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V2, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V2, codeSchemeMetamacDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -401,27 +407,27 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.INTERNAL_PUBLICATION_DATE.name(), new DateTime(2011, 12, 1, 1, 1, 1, 1)
                     .toDate(), OperationType.LT));
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(5, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V1, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_3_V1, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V1, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_12_V1, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_13_V1, codeSchemeMetamacDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -431,19 +437,19 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_USER.name(), "user4", OperationType.EQ));
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V1, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V1, codeSchemeMetamacDto.getUrn());
             }
             {
-                CodelistMetamacDto codeSchemeMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codeSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_13_V1, codeSchemeMetamacDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -471,29 +477,29 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                     OperationType.EQ);
             metamacCriteria.setRestriction(propertyRestriction);
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_2_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_8_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_9_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -502,29 +508,29 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                     ProcStatusEnum.INTERNALLY_PUBLISHED, OperationType.EQ);
             metamacCriteria.setRestriction(propertyRestriction);
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_3_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             {
-                CodelistMetamacDto codelistMetamacDto = result.getResults().get(i++);
+                CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -548,7 +554,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 0;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
             assertEquals(maxResultSize, result.getPaginatorResult().getMaximumResultSize().intValue());
@@ -558,7 +564,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 2;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<CodelistMetamacDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(firstResult, result.getPaginatorResult().getFirstResult().intValue());
             assertEquals(CODELIST_2_V1, result.getResults().get(0).getUrn());
@@ -569,7 +575,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testRetrieveCodelistVersions() throws Exception {
         // Retrieve all versions
         String urn = CODELIST_1_V1;
-        List<CodelistMetamacDto> codelistMetamacDtos = srmCoreServiceFacade.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
+        List<CodelistMetamacBasicDto> codelistMetamacDtos = srmCoreServiceFacade.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
 
         // Validate
         assertEquals(2, codelistMetamacDtos.size());
@@ -867,7 +873,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(versionExpected, codelistDtoToCopy.getReplacedByVersion());
 
             // All versions
-            List<CodelistMetamacDto> allVersions = srmCoreServiceFacade.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
+            List<CodelistMetamacBasicDto> allVersions = srmCoreServiceFacade.retrieveCodelistVersions(getServiceContextAdministrador(), urn);
             assertEquals(2, allVersions.size());
             assertEquals(urn, allVersions.get(0).getUrn());
             assertEquals(urnExpected, allVersions.get(1).getUrn());
@@ -1031,13 +1037,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
             // Find
-            MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodeMetamacBasicDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(33, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
             assertEquals(33, codesPagedResult.getResults().size());
-            assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
             int i = 0;
             assertEquals(CODELIST_1_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
@@ -1114,13 +1118,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             metamacCriteria.setRestriction(propertyRestriction);
 
             // Find
-            MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodeMetamacBasicDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(24, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
             assertEquals(24, codesPagedResult.getResults().size());
-            assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
             int i = 0;
             assertEquals(CODELIST_1_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
@@ -1175,13 +1177,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
             // Find
-            MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodeMetamacBasicDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(2, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
             assertEquals(2, codesPagedResult.getResults().size());
-            assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
-            assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
             int i = 0;
             assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i++).getUrn());
@@ -1213,13 +1213,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
                 // Find
-                MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+                MetamacCriteriaResult<CodeMetamacBasicDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
                 // Validate
                 assertEquals(9, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
                 assertEquals(3, codesPagedResult.getResults().size());
-                assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
-                assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
                 int i = 0;
                 assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
@@ -1236,13 +1234,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
                 // Find
-                MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+                MetamacCriteriaResult<CodeMetamacBasicDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
                 // Validate
                 assertEquals(9, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
                 assertEquals(3, codesPagedResult.getResults().size());
-                assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
-                assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
                 int i = 0;
                 assertEquals(CODELIST_1_V2_CODE_2_1_1, codesPagedResult.getResults().get(i++).getUrn());
@@ -1259,13 +1255,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
                 metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
                 // Find
-                MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+                MetamacCriteriaResult<CodeMetamacBasicDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
                 // Validate
                 assertEquals(9, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
                 assertEquals(3, codesPagedResult.getResults().size());
-                assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
-                assertEquals(CODELIST_1_V2, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
 
                 int i = 0;
                 assertEquals(CODELIST_1_V2_CODE_4, codesPagedResult.getResults().get(i++).getUrn());
@@ -1299,31 +1293,22 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
             // Find
-            MetamacCriteriaResult<CodeMetamacDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodeMetamacBasicDto> codesPagedResult = srmCoreServiceFacade.findCodesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
             assertEquals(4, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
             assertEquals(4, codesPagedResult.getResults().size());
-            assertTrue(codesPagedResult.getResults().get(0) instanceof CodeMetamacDto);
 
             int i = 0;
-            assertNotNull(codesPagedResult.getResults().get(i).getVariableElement());
-            assertNull(codesPagedResult.getResults().get(i).getShortName());
             assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i).getUrn());
 
             i++;
-            assertNull(codesPagedResult.getResults().get(i).getVariableElement());
-            assertNotNull(codesPagedResult.getResults().get(i).getShortName());
             assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i).getUrn());
 
             i++;
-            assertNotNull(codesPagedResult.getResults().get(i).getVariableElement());
-            assertNull(codesPagedResult.getResults().get(i).getShortName());
             assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i).getUrn());
 
             i++;
-            assertNotNull(codesPagedResult.getResults().get(i).getVariableElement());
-            assertNull(codesPagedResult.getResults().get(i).getShortName());
             assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getResults().get(i).getUrn());
 
             i++;
@@ -1466,16 +1451,16 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         // Find all
         {
-            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistFamilyBasicDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistFamilyDto codelistFamilyDto = result.getResults().get(i++);
+                CodelistFamilyBasicDto codelistFamilyDto = result.getResults().get(i++);
                 assertEquals(CODELIST_FAMILY_1, codelistFamilyDto.getUrn());
             }
             {
-                CodelistFamilyDto codelistFamilyDto = result.getResults().get(i++);
+                CodelistFamilyBasicDto codelistFamilyDto = result.getResults().get(i++);
                 assertEquals(CODELIST_FAMILY_2, codelistFamilyDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -1484,11 +1469,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.NAME.name(), "familia-de-codelists-51", OperationType.EQ));
 
-            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistFamilyBasicDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                CodelistFamilyDto codelistFamilyDto = result.getResults().get(i++);
+                CodelistFamilyBasicDto codelistFamilyDto = result.getResults().get(i++);
                 assertEquals(CODELIST_FAMILY_1, codelistFamilyDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -1518,7 +1503,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 0;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistFamilyBasicDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(1, result.getResults().size());
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -1530,7 +1515,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 1;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<CodelistFamilyBasicDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(1, result.getResults().size());
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -1693,24 +1678,24 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         // Find all
         {
-            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableFamilyBasicDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                VariableFamilyBasicDto variableFamilyDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_FAMILY_1, variableFamilyDto.getUrn());
             }
             {
-                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                VariableFamilyBasicDto variableFamilyDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_FAMILY_2, variableFamilyDto.getUrn());
             }
             {
-                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                VariableFamilyBasicDto variableFamilyDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_FAMILY_3, variableFamilyDto.getUrn());
             }
             {
-                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                VariableFamilyBasicDto variableFamilyDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_FAMILY_4, variableFamilyDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -1719,11 +1704,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableFamilyCriteriaPropertyEnum.NAME.name(), "familia-de-variables-53", OperationType.EQ));
 
-            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableFamilyBasicDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                VariableFamilyDto variableFamilyDto = result.getResults().get(i++);
+                VariableFamilyBasicDto variableFamilyDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_FAMILY_1, variableFamilyDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -1753,7 +1738,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 0;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableFamilyBasicDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(2, result.getResults().size());
             assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
@@ -1766,7 +1751,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 2;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableFamilyBasicDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(2, result.getResults().size());
             assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
@@ -1938,32 +1923,32 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         // Find all
         {
-            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableBasicDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                VariableDto variableDto = result.getResults().get(i++);
+                VariableBasicDto variableDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_1, variableDto.getUrn());
             }
             {
-                VariableDto variableDto = result.getResults().get(i++);
+                VariableBasicDto variableDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_2, variableDto.getUrn());
             }
             {
-                VariableDto variableDto = result.getResults().get(i++);
+                VariableBasicDto variableDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_3, variableDto.getUrn());
             }
             {
-                VariableDto variableDto = result.getResults().get(i++);
+                VariableBasicDto variableDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_4, variableDto.getUrn());
             }
             {
-                VariableDto variableDto = result.getResults().get(i++);
+                VariableBasicDto variableDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_5, variableDto.getUrn());
             }
             {
-                VariableDto variableDto = result.getResults().get(i++);
+                VariableBasicDto variableDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_6, variableDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -1972,11 +1957,11 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.NAME.name(), "variable--59", OperationType.EQ));
 
-            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableBasicDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                VariableDto variableDto = result.getResults().get(i++);
+                VariableBasicDto variableDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_3, variableDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -2006,7 +1991,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 0;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableBasicDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(4, result.getResults().size());
             assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
@@ -2021,7 +2006,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 4;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableBasicDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(2, result.getResults().size());
             assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
@@ -2196,7 +2181,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
         // Find all
         {
-            MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableElementBasicDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(10, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
@@ -2216,15 +2201,15 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         {
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.SHORT_NAME.name(), "-1", OperationType.LIKE));
 
-            MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableElementBasicDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
-                VariableElementDto variableElementDto = result.getResults().get(i++);
+                VariableElementBasicDto variableElementDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, variableElementDto.getUrn());
             }
             {
-                VariableElementDto variableElementDto = result.getResults().get(i++);
+                VariableElementBasicDto variableElementDto = result.getResults().get(i++);
                 assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, variableElementDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
@@ -2254,7 +2239,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 0;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableElementBasicDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(4, result.getResults().size());
             assertEquals(10, result.getPaginatorResult().getTotalResults().intValue());
@@ -2269,7 +2254,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 4;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableElementBasicDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(4, result.getResults().size());
             assertEquals(10, result.getPaginatorResult().getTotalResults().intValue());
@@ -2284,7 +2269,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             int firstResult = 8;
             metamacCriteria.getPaginator().setFirstResult(firstResult);
 
-            MetamacCriteriaResult<VariableElementDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
+            MetamacCriteriaResult<VariableElementBasicDto> result = srmCoreServiceFacade.findVariableElementsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             assertEquals(2, result.getResults().size());
             assertEquals(10, result.getPaginatorResult().getTotalResults().intValue());

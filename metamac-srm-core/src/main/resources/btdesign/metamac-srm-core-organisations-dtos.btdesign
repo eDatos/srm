@@ -13,8 +13,17 @@ Application DtosMetamacOrganisationDomain {
 			- @LifeCycleDto lifeCycle required;
 		}
 		
+		"Dto for OrganisationSchemeMetamac"
+		DataTransferObject OrganisationSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		}		
+				
 		"Dto for OrganisationMetamac"
 		DataTransferObject OrganisationMetamacDto extends @OrganisationDto {
 		}		
+		
+		"Dto for OrganisationMetamac"
+		DataTransferObject OrganisationMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
+		}
+		
 	}
 }

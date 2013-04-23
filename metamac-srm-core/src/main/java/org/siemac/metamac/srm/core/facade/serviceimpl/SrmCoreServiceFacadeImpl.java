@@ -21,7 +21,9 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDto2DoMapper;
@@ -38,13 +40,19 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
@@ -54,7 +62,9 @@ import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapper;
@@ -62,12 +72,15 @@ import org.siemac.metamac.srm.core.concept.mapper.ConceptsDto2DoMapper;
 import org.siemac.metamac.srm.core.criteria.mapper.MetamacCriteria2SculptorCriteriaMapper;
 import org.siemac.metamac.srm.core.criteria.mapper.SculptorCriteria2MetamacCriteriaMapper;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMapper;
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDto2DoMapper;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDto2DoMapper;
@@ -225,7 +238,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> findDataStructureDefinitionsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> findDataStructureDefinitionsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         DataStructureDefinitionSecurityUtils.canFindDataStructureDefinitionByCondition(ctx);
 
@@ -237,7 +250,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultDataStructureDefinition(result,
+        MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultDataStructureDefinition(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -267,7 +280,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<DataStructureDefinitionMetamacDto> retrieveDataStructureDefinitionVersions(ServiceContext ctx, String urn) throws MetamacException {
+    public List<DataStructureDefinitionMetamacBasicDto> retrieveDataStructureDefinitionVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         DataStructureDefinitionSecurityUtils.canDataStructureDefinitionVersions(ctx);
 
@@ -277,9 +290,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         Collections.sort(dataStructureDefinitionVersionsSortedByCreationDate, STRUCTURE_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper
+        List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper
                 .dataStructureDefinitionMetamacDoListToDtoList(dataStructureDefinitionVersionsSortedByCreationDate);
-
         return dataStructureDefinitionMetamacDto;
     }
 
@@ -930,7 +942,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<CodelistMetamacDto> findCodelistsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<CodelistMetamacBasicDto> findCodelistsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ItemsSecurityUtils.canFindItemSchemesByCondition(ctx);
 
@@ -941,14 +953,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<CodelistMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCodelistVersion(result,
+        MetamacCriteriaResult<CodelistMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCodelistVersion(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }
 
     @Override
-    public List<CodelistMetamacDto> retrieveCodelistVersions(ServiceContext ctx, String urn) throws MetamacException {
+    public List<CodelistMetamacBasicDto> retrieveCodelistVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
 
@@ -958,7 +970,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         Collections.sort(codelistVersionsSortedByCreationDate, ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<CodelistMetamacDto> codelistMetamacDtos = codesDo2DtoMapper.codelistMetamacDoListToDtoList(codelistVersionsSortedByCreationDate);
+        List<CodelistMetamacBasicDto> codelistMetamacDtos = codesDo2DtoMapper.codelistMetamacDoListToDtoList(codelistVersionsSortedByCreationDate);
 
         return codelistMetamacDtos;
     }
@@ -1214,7 +1226,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<CodeMetamacDto> findCodesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<CodeMetamacBasicDto> findCodesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -1225,7 +1237,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<CodeMetamac> result = getCodesMetamacService().findCodesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<CodeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCode(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<CodeMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCode(result, sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }
@@ -1486,7 +1498,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<CodelistFamilyDto> findCodelistFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<CodelistFamilyBasicDto> findCodelistFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindCodelistFamily(ctx);
 
@@ -1497,7 +1509,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<CodelistFamily> result = getCodesMetamacService().findCodelistFamiliesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<CodelistFamilyDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCodelistFamily(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<CodelistFamilyBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCodelistFamily(result,
+                sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }
@@ -1561,7 +1574,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<VariableFamilyDto> findVariableFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<VariableFamilyBasicDto> findVariableFamiliesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindVariableFamily(ctx);
 
@@ -1572,7 +1585,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<VariableFamily> result = getCodesMetamacService().findVariableFamiliesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<VariableFamilyDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariableFamily(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<VariableFamilyBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariableFamily(result,
+                sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }
@@ -1636,7 +1650,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<VariableDto> findVariablesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<VariableBasicDto> findVariablesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindVariable(ctx);
 
@@ -1647,7 +1661,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<Variable> result = getCodesMetamacService().findVariablesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<VariableDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariable(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<VariableBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariable(result, sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }
@@ -1738,7 +1752,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<VariableElementDto> findVariableElementsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<VariableElementBasicDto> findVariableElementsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindVariableElement(ctx);
 
@@ -1749,7 +1763,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<VariableElement> result = getCodesMetamacService().findVariableElementsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<VariableElementDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariableElement(result,
+        MetamacCriteriaResult<VariableElementBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultVariableElement(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -1914,7 +1928,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<OrganisationSchemeMetamacDto> findOrganisationSchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<OrganisationSchemeMetamacBasicDto> findOrganisationSchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canFindOrganisationSchemesByCondition(ctx);
 
@@ -1926,7 +1940,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<OrganisationSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisationSchemeVersion(result,
+        MetamacCriteriaResult<OrganisationSchemeMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisationSchemeVersion(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -1947,7 +1961,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<OrganisationSchemeMetamacDto> retrieveOrganisationSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+    public List<OrganisationSchemeMetamacBasicDto> retrieveOrganisationSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canRetrieveOrganisationSchemeVersions(ctx);
 
@@ -1957,7 +1971,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         Collections.sort(organisationSchemeVersionsSortedByCreationDate, ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos = organisationsDo2DtoMapper.organisationSchemeMetamacDoListToDtoList(organisationSchemeVersionsSortedByCreationDate);
+        List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos = organisationsDo2DtoMapper.organisationSchemeMetamacDoListToDtoList(organisationSchemeVersionsSortedByCreationDate);
 
         return organisationSchemeMetamacDtos;
     }
@@ -2154,7 +2168,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<OrganisationMetamacDto> findOrganisationsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<OrganisationMetamacBasicDto> findOrganisationsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canFindOrganisationsByCondition(ctx);
 
@@ -2165,7 +2179,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<OrganisationMetamac> result = getOrganisationsMetamacService().findOrganisationsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<OrganisationMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisation(result,
+        MetamacCriteriaResult<OrganisationMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultOrganisation(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2223,7 +2237,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<ConceptSchemeMetamacDto> retrieveConceptSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+    public List<ConceptSchemeMetamacBasicDto> retrieveConceptSchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canRetrieveConceptSchemeVersions(ctx);
 
@@ -2233,7 +2247,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         Collections.sort(conceptSchemeVersionsSortedByCreationDate, ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<ConceptSchemeMetamacDto> conceptSchemeMetamacDtos = conceptsDo2DtoMapper.conceptSchemeMetamacDoListToDtoList(conceptSchemeVersionsSortedByCreationDate);
+        List<ConceptSchemeMetamacBasicDto> conceptSchemeMetamacDtos = conceptsDo2DtoMapper.conceptSchemeMetamacDoListToDtoList(conceptSchemeVersionsSortedByCreationDate);
 
         return conceptSchemeMetamacDtos;
     }
@@ -2281,7 +2295,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacDto> findConceptSchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> findConceptSchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
@@ -2292,7 +2306,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
+        MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConceptSchemeVersion(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2538,7 +2552,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptMetamacDto> findConceptsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<ConceptMetamacBasicDto> findConceptsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
@@ -2549,7 +2563,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<ConceptMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<ConceptMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultConcept(result, sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }
@@ -2613,7 +2627,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<ConceptMetamacDto> retrieveRelatedConcepts(ServiceContext ctx, String urn) throws MetamacException {
+    public List<ConceptMetamacBasicDto> retrieveRelatedConcepts(ServiceContext ctx, String urn) throws MetamacException {
 
         // Security
         ConceptsSecurityUtils.canRetrieveRelatedConcepts(ctx);
@@ -2622,7 +2636,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRelatedConcepts(ctx, urn);
 
         // Transform
-        List<ConceptMetamacDto> conceptsDto = conceptsDo2DtoMapper.conceptMetamacDoListToDtoList(concepts);
+        List<ConceptMetamacBasicDto> conceptsDto = conceptsDo2DtoMapper.conceptMetamacDoListToDtoList(concepts);
         return conceptsDto;
     }
 
@@ -2649,7 +2663,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<ConceptMetamacDto> retrieveRoleConcepts(ServiceContext ctx, String urn) throws MetamacException {
+    public List<ConceptMetamacBasicDto> retrieveRoleConcepts(ServiceContext ctx, String urn) throws MetamacException {
 
         // Security
         ConceptsSecurityUtils.canRetrieveRoleConcepts(ctx);
@@ -2658,7 +2672,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<ConceptMetamac> concepts = getConceptsMetamacService().retrieveRoleConcepts(ctx, urn);
 
         // Transform
-        List<ConceptMetamacDto> conceptsDto = conceptsDo2DtoMapper.conceptMetamacDoListToDtoList(concepts);
+        List<ConceptMetamacBasicDto> conceptsDto = conceptsDo2DtoMapper.conceptMetamacDoListToDtoList(concepts);
         return conceptsDto;
     }
 
@@ -2754,7 +2768,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<CategorySchemeMetamacDto> findCategorySchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<CategorySchemeMetamacBasicDto> findCategorySchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ItemsSecurityUtils.canFindItemSchemesByCondition(ctx);
 
@@ -2765,7 +2779,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<CategorySchemeVersionMetamac> result = getCategoriesMetamacService().findCategorySchemesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<CategorySchemeMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategorySchemeVersion(result,
+        MetamacCriteriaResult<CategorySchemeMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategorySchemeVersion(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2786,7 +2800,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<CategorySchemeMetamacDto> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
+    public List<CategorySchemeMetamacBasicDto> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
 
@@ -2796,7 +2810,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         Collections.sort(categorySchemeVersionsSortedByCreationDate, ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR);
 
         // Transform
-        List<CategorySchemeMetamacDto> categorySchemeMetamacDtos = categoriesDo2DtoMapper.categorySchemeMetamacDoListToDtoList(categorySchemeVersionsSortedByCreationDate);
+        List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos = categoriesDo2DtoMapper.categorySchemeMetamacDoListToDtoList(categorySchemeVersionsSortedByCreationDate);
         return categorySchemeMetamacDtos;
     }
 
@@ -2992,7 +3006,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<CategoryMetamacDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<CategoryMetamacBasicDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
@@ -3003,7 +3017,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         PagedResult<CategoryMetamac> result = getCategoriesMetamacService().findCategoriesByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<CategoryMetamacDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategory(result, sculptorCriteria.getPageSize());
+        MetamacCriteriaResult<CategoryMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategory(result, sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
     }

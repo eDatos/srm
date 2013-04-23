@@ -7,7 +7,9 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,10 +37,20 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
     }
 
     @Override
-    public List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDoListToDtoList(List<OrganisationSchemeVersionMetamac> sources) {
-        List<OrganisationSchemeMetamacDto> target = new ArrayList<OrganisationSchemeMetamacDto>(sources.size());
+    public OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDoToBasicDto(OrganisationSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        OrganisationSchemeMetamacBasicDto target = new OrganisationSchemeMetamacBasicDto();
+        maintainableArtefactDoToMaintainableArtefactBasicDto(source, source.getLifeCycleMetadata(), target);
+        return target;
+    }
+
+    @Override
+    public List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDoListToDtoList(List<OrganisationSchemeVersionMetamac> sources) {
+        List<OrganisationSchemeMetamacBasicDto> target = new ArrayList<OrganisationSchemeMetamacBasicDto>(sources.size());
         for (OrganisationSchemeVersionMetamac source : sources) {
-            target.add(organisationSchemeMetamacDoToDto(source));
+            target.add(organisationSchemeMetamacDoToBasicDto(source));
         }
         return target;
     }
@@ -50,6 +62,16 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         }
         OrganisationMetamacDto target = new OrganisationMetamacDto();
         do2DtoMapperSdmxSrm.organisationDoToDto(source, target);
+        return target;
+    }
+
+    @Override
+    public OrganisationMetamacBasicDto organisationMetamacDoToBasicDto(OrganisationMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        OrganisationMetamacBasicDto target = new OrganisationMetamacBasicDto();
+        nameableArtefactDoToNameableArtefactBasicDto(source, target);
         return target;
     }
 

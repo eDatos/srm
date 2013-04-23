@@ -75,7 +75,7 @@ Application SrmFacadeCore {
 			 @param criteria           
 			 @return                    
 			"
-	    	MetamacCriteriaResult<@DataStructureDefinitionMetamacDto> findDataStructureDefinitionsByCondition(MetamacCriteria criteria) throws MetamacException;
+	    	MetamacCriteriaResult<@DataStructureDefinitionMetamacBasicDto> findDataStructureDefinitionsByCondition(MetamacCriteria criteria) throws MetamacException;
 
 			"
           	 Retrieve a DSD without Grouping relationships.
@@ -96,7 +96,7 @@ Application SrmFacadeCore {
 			@DataStructureDefinitionMetamacDto retrieveDataStructureDefinitionByUrn(String urn) throws MetamacException;				    	
 
             "Retrieves all data structure definitions versions"
-            List<@DataStructureDefinitionMetamacDto> retrieveDataStructureDefinitionVersions(String urn) throws MetamacException;
+            List<@DataStructureDefinitionMetamacBasicDto> retrieveDataStructureDefinitionVersions(String urn) throws MetamacException;
             
 	    	"
 	    	 Sends dsd to production validation
@@ -276,11 +276,11 @@ Application SrmFacadeCore {
             "Deletes organisation scheme"
             deleteOrganisationScheme(String urn) throws MetamacException;
             "Finds organisation schemes by criteria"
-            MetamacCriteriaResult<@OrganisationSchemeMetamacDto> findOrganisationSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@OrganisationSchemeMetamacBasicDto> findOrganisationSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
             "Retrieves a organisation scheme by URN"
             @OrganisationSchemeMetamacDto retrieveOrganisationSchemeByUrn(String urn) throws MetamacException;
             "Retrieves all organisation scheme versions"
-            List<@OrganisationSchemeMetamacDto> retrieveOrganisationSchemeVersions(String urn) throws MetamacException;
+            List<@OrganisationSchemeMetamacBasicDto> retrieveOrganisationSchemeVersions(String urn) throws MetamacException;
             
             "Sends organisation scheme to production validation"
 	    	@OrganisationSchemeMetamacDto sendOrganisationSchemeToProductionValidation(String urn) throws MetamacException;
@@ -308,7 +308,7 @@ Application SrmFacadeCore {
 	   		"Retrieves a organisation by URN"
             @OrganisationMetamacDto retrieveOrganisationByUrn(String urn) throws MetamacException;
             "Finds organisations by criteria"
-            MetamacCriteriaResult<@OrganisationMetamacDto> findOrganisationsByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@OrganisationMetamacBasicDto> findOrganisationsByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Retrieve organisation that must be maintainer of all created artefacts"
     		@OrganisationMetamacDto retrieveMaintainerDefault() throws MetamacException;
 			"Deletes organisation"
@@ -329,7 +329,7 @@ Application SrmFacadeCore {
             "Deletes concept scheme"
             deleteConceptScheme(String urn) throws MetamacException;
             "Finds concepts schemes by criteria"
-            MetamacCriteriaResult<@ConceptSchemeMetamacDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@ConceptSchemeMetamacBasicDto> findConceptSchemesByCondition(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts schemes by criteria with concepts that can be role"
             MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeRole(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts schemes by criteria with concepts that can be extended"
@@ -337,7 +337,7 @@ Application SrmFacadeCore {
             "Retrieves a concept scheme by URN"
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
             "Retrieves all concept scheme versions"
-            List<@ConceptSchemeMetamacDto> retrieveConceptSchemeVersions(String urn) throws MetamacException;
+            List<@ConceptSchemeMetamacBasicDto> retrieveConceptSchemeVersions(String urn) throws MetamacException;
 	    	"Sends concept scheme to production validation"
 	    	@ConceptSchemeMetamacDto sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
     		"Sends to diffusion validation"
@@ -364,7 +364,7 @@ Application SrmFacadeCore {
 	   		"Retrieves a concept by URN"
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
             "Finds concepts by criteria"
-            MetamacCriteriaResult<@ConceptMetamacDto> findConceptsByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@ConceptMetamacBasicDto> findConceptsByCondition(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts that can be role by criteria"
             MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeRoleByCondition(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts that can be extended by criteria"
@@ -379,13 +379,13 @@ Application SrmFacadeCore {
     		"Deletes a concepts relation (related concepts)"
     		deleteRelatedConcept(String urn1, String urn2) throws MetamacException;
     		"Retrieves all related concepts with a concept (related concepts)"
-    		List<@ConceptMetamacDto> retrieveRelatedConcepts(String urn) throws MetamacException;
+    		List<@ConceptMetamacBasicDto> retrieveRelatedConcepts(String urn) throws MetamacException;
     		"Adds a concepts relation of type 'roles'"
     		addRoleConcept(String urn, String conceptRoleUrn) throws MetamacException;
     		"Deletes a concepts relation of type 'roles'"
     		deleteRoleConcept(String urn, String conceptRoleUrn) throws MetamacException;
     		"Retrieves all related concepts with a concept with relation 'roles'"
-    		List<@ConceptMetamacDto> retrieveRoleConcepts(String urn) throws MetamacException;
+    		List<@ConceptMetamacBasicDto> retrieveRoleConcepts(String urn) throws MetamacException;
 
     		"Finds all concept types"
     		List<@ConceptTypeDto> findAllConceptTypes throws MetamacException;
@@ -406,11 +406,11 @@ Application SrmFacadeCore {
             "Deletes category scheme"
             deleteCategoryScheme(String urn) throws MetamacException;
             "Finds category schemes by criteria"
-            MetamacCriteriaResult<@CategorySchemeMetamacDto> findCategorySchemesByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@CategorySchemeMetamacBasicDto> findCategorySchemesByCondition(MetamacCriteria criteria) throws MetamacException;
             "Retrieves a category scheme by URN"
             @CategorySchemeMetamacDto retrieveCategorySchemeByUrn(String urn) throws MetamacException;
             "Retrieves all category scheme versions"
-            List<@CategorySchemeMetamacDto> retrieveCategorySchemeVersions(String urn) throws MetamacException;
+            List<@CategorySchemeMetamacBasicDto> retrieveCategorySchemeVersions(String urn) throws MetamacException;
             
             "Sends category scheme to production validation"
 	    	@CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
@@ -438,7 +438,7 @@ Application SrmFacadeCore {
 	   		"Retrieves a category by URN"
             @CategoryMetamacDto retrieveCategoryByUrn(String urn) throws MetamacException;
             "Finds categories by criteria"
-            MetamacCriteriaResult<@CategoryMetamacDto> findCategoriesByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@CategoryMetamacBasicDto> findCategoriesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes category"
             deleteCategory(String urn) throws MetamacException;
     		"Retrieves categories by category scheme, in tree structure"
@@ -465,11 +465,11 @@ Application SrmFacadeCore {
             "Deletes codelist"
             deleteCodelist(String urn) throws MetamacException;
             "Finds codelist by criteria"
-            MetamacCriteriaResult<@CodelistMetamacDto> findCodelistsByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@CodelistMetamacBasicDto> findCodelistsByCondition(MetamacCriteria criteria) throws MetamacException;
             "Retrieves a codelist by URN"
             @CodelistMetamacDto retrieveCodelistByUrn(String urn) throws MetamacException;
             "Retrieves all codelist versions"
-            List<@CodelistMetamacDto> retrieveCodelistVersions(String urn) throws MetamacException;
+            List<@CodelistMetamacBasicDto> retrieveCodelistVersions(String urn) throws MetamacException;
             
             "Sends Codelist to production validation"
 	    	@CodelistMetamacDto sendCodelistToProductionValidation(String urn) throws MetamacException;
@@ -492,7 +492,7 @@ Application SrmFacadeCore {
     		
     		"Creates code"
 	   		@CodeMetamacDto createCode(@CodeMetamacDto codeMetamacDto) throws MetamacException;
-			"Copy codes to another codelist"
+			"Copy codes to another codelist. Children must be located after than parent in list"
 	   		copyCodesInCodelist(String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException;
 	   		"Updates code"
             @CodeMetamacDto updateCode(@CodeMetamacDto codeDto) throws MetamacException;
@@ -509,7 +509,7 @@ Application SrmFacadeCore {
 	   		"Retrieves a code by URN"
             @CodeMetamacDto retrieveCodeByUrn(String urn) throws MetamacException;
             "Finds codes by criteria"
-            MetamacCriteriaResult<@CodeMetamacDto> findCodesByCondition(MetamacCriteria criteria) throws MetamacException;
+            MetamacCriteriaResult<@CodeMetamacBasicDto> findCodesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes code"
             deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by code scheme in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"
@@ -550,7 +550,7 @@ Application SrmFacadeCore {
     		"Retrieves codelist family by urn"
     		@CodelistFamilyDto retrieveCodelistFamilyByUrn(String urn) throws MetamacException;
     		"Finds codelist families by criteria"
-    		MetamacCriteriaResult<@CodelistFamilyDto> findCodelistFamiliesByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@CodelistFamilyBasicDto> findCodelistFamiliesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes codelist family"
     		deleteCodelistFamily(String urn) throws MetamacException;
 			"Creates codelist family"
@@ -565,7 +565,7 @@ Application SrmFacadeCore {
     		"Retrieves variable family by urn"
     		@VariableFamilyDto retrieveVariableFamilyByUrn(String urn) throws MetamacException;
     		"Finds variable families by criteria"
-    		MetamacCriteriaResult<@VariableFamilyDto> findVariableFamiliesByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@VariableFamilyBasicDto> findVariableFamiliesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes variable family"
     		deleteVariableFamily(String urn) throws MetamacException;
     		
@@ -576,7 +576,7 @@ Application SrmFacadeCore {
     		"Retrieves variable by urn"
     		@VariableDto retrieveVariableByUrn(String urn) throws MetamacException;
     		"Finds variables by criteria"
-    		MetamacCriteriaResult<@VariableDto> findVariablesByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@VariableBasicDto> findVariablesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes variable"
     		deleteVariable(String urn) throws MetamacException;
     		"Adds variables to a family"
@@ -591,7 +591,7 @@ Application SrmFacadeCore {
     		"Retrieves variable element by urn"
     		@VariableElementDto retrieveVariableElementByUrn(String urn) throws MetamacException;
     		"Finds variable elements by criteria"
-    		MetamacCriteriaResult<@VariableElementDto> findVariableElementsByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@VariableElementBasicDto> findVariableElementsByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find variable elements can be for codes of codelist"
     		MetamacCriteriaResult<@RelatedResourceDto> findVariableElementsForCodesByCondition(MetamacCriteria criteria, String codelistUrn) throws MetamacException;
     		"Finds efficiently variable elements by variable"

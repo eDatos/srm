@@ -14,13 +14,19 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -59,6 +65,16 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
+    public CodelistMetamacBasicDto codelistMetamacDoToBasicDto(CodelistVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        CodelistMetamacBasicDto target = new CodelistMetamacBasicDto();
+        maintainableArtefactDoToMaintainableArtefactBasicDto(source, source.getLifeCycleMetadata(), target);
+        return target;
+    }
+
+    @Override
     public RelatedResourceDto codelistMetamacDoToRelatedResourceDto(CodelistVersionMetamac source) {
         if (source == null) {
             return null;
@@ -68,10 +84,10 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
-    public List<CodelistMetamacDto> codelistMetamacDoListToDtoList(List<CodelistVersionMetamac> codelistVersions) {
-        List<CodelistMetamacDto> codelistMetamacDtos = new ArrayList<CodelistMetamacDto>(codelistVersions.size());
+    public List<CodelistMetamacBasicDto> codelistMetamacDoListToDtoList(List<CodelistVersionMetamac> codelistVersions) {
+        List<CodelistMetamacBasicDto> codelistMetamacDtos = new ArrayList<CodelistMetamacBasicDto>(codelistVersions.size());
         for (CodelistVersionMetamac codelistVersion : codelistVersions) {
-            codelistMetamacDtos.add(codelistMetamacDoToDto(codelistVersion));
+            codelistMetamacDtos.add(codelistMetamacDoToBasicDto(codelistVersion));
         }
         return codelistMetamacDtos;
     }
@@ -90,13 +106,15 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
-    public List<CodeMetamacDto> codeMetamacDoListToDtoList(List<CodeMetamac> sources) {
-        List<CodeMetamacDto> targets = new ArrayList<CodeMetamacDto>(sources.size());
-        for (CodeMetamac source : sources) {
-            targets.add(codeMetamacDoToDto(source));
+    public CodeMetamacBasicDto codeMetamacDoToBasicDto(CodeMetamac source) {
+        if (source == null) {
+            return null;
         }
-        return targets;
+        CodeMetamacBasicDto target = new CodeMetamacBasicDto();
+        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+        return target;
     }
+
     @Override
     public CodelistFamilyDto codelistFamilyDoToDto(CodelistFamily source) {
         if (source == null) {
@@ -119,6 +137,16 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
     }
 
     @Override
+    public CodelistFamilyBasicDto codelistFamilyDoToBasicDto(CodelistFamily source) {
+        if (source == null) {
+            return null;
+        }
+        CodelistFamilyBasicDto target = new CodelistFamilyBasicDto();
+        nameableArtefactDoToNameableArtefactBasicDto(source.getNameableArtefact(), target);
+        return target;
+    }
+
+    @Override
     public VariableFamilyDto variableFamilyDoToDto(VariableFamily source) {
         if (source == null) {
             return null;
@@ -136,6 +164,16 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setLastUpdatedBy(source.getLastUpdatedBy());
         target.setVersionOptimisticLocking(source.getVersion());
 
+        return target;
+    }
+
+    @Override
+    public VariableFamilyBasicDto variableFamilyDoToBasicDto(VariableFamily source) {
+        if (source == null) {
+            return null;
+        }
+        VariableFamilyBasicDto target = new VariableFamilyBasicDto();
+        nameableArtefactDoToNameableArtefactBasicDto(source.getNameableArtefact(), target);
         return target;
     }
 
@@ -167,6 +205,16 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setLastUpdatedBy(source.getLastUpdatedBy());
         target.setVersionOptimisticLocking(source.getVersion());
 
+        return target;
+    }
+
+    @Override
+    public VariableBasicDto variableDoToBasicDto(Variable source) {
+        if (source == null) {
+            return null;
+        }
+        VariableBasicDto target = new VariableBasicDto();
+        nameableArtefactDoToNameableArtefactBasicDto(source.getNameableArtefact(), target);
         return target;
     }
 
@@ -207,6 +255,16 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setLastUpdatedBy(source.getLastUpdatedBy());
         target.setVersionOptimisticLocking(source.getVersion());
 
+        return target;
+    }
+
+    @Override
+    public VariableElementBasicDto variableElementDoToBasicDto(VariableElement source) {
+        if (source == null) {
+            return null;
+        }
+        VariableElementBasicDto target = new VariableElementBasicDto();
+        identifiableArtefactDoToIdentifiableArtefactBasicDto(source.getIdentifiableArtefact(), target);
         return target;
     }
 

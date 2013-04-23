@@ -21,6 +21,14 @@ Application DtosMetamacConceptDomain {
 			- @LifeCycleDto lifeCycle required;
 		}
 
+		"Dto for ConceptSchemeMetamac"
+		DataTransferObject ConceptSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+			"Type"
+			- @ConceptSchemeTypeEnum type required;
+			"Related operation, only when type is Operation"
+			- @ExternalItemDto relatedOperation;
+		}		
+		
 		"Dto for ConceptMetamac"
 		DataTransferObject ConceptMetamacDto extends @ConceptDto {
 			- @InternationalStringDto pluralName nullable;
@@ -34,6 +42,10 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto legalActs nullable;
 			- @RelatedResourceDto conceptExtends nullable;
 			- @RelatedResourceDto variable nullable;
+		}
+		
+		"Dto for ConceptMetamac"
+		DataTransferObject ConceptMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
 		}
 		
         "Dto for ConceptType"

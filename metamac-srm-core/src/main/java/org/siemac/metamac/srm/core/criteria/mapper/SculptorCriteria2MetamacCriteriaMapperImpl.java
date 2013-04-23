@@ -8,8 +8,8 @@ import org.siemac.metamac.core.common.criteria.mapper.SculptorCriteria2MetamacCr
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
-import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
-import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -17,25 +17,25 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
-import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.core.code.dto.VariableDto;
-import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
-import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
+import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
-import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapper;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMapper;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,13 +73,14 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     //
 
     @Override
-    public MetamacCriteriaResult<DataStructureDefinitionMetamacDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersionMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> target = new MetamacCriteriaResult<DataStructureDefinitionMetamacDto>();
+    public MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersionMetamac> source,
+            Integer pageSize) {
+        MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> target = new MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<DataStructureDefinitionMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<DataStructureDefinitionMetamacBasicDto>(source.getValues().size()));
             for (DataStructureDefinitionVersionMetamac scheme : source.getValues()) {
-                target.getResults().add(dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(scheme));
+                target.getResults().add(dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToBasicDto(scheme));
             }
         }
         return target;
@@ -90,13 +91,13 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     //
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacDto> pageResultToMetamacCriteriaResultConceptSchemeVersion(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<ConceptSchemeMetamacDto> target = new MetamacCriteriaResult<ConceptSchemeMetamacDto>();
+    public MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> pageResultToMetamacCriteriaResultConceptSchemeVersion(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> target = new MetamacCriteriaResult<ConceptSchemeMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<ConceptSchemeMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<ConceptSchemeMetamacBasicDto>(source.getValues().size()));
             for (ConceptSchemeVersionMetamac scheme : source.getValues()) {
-                target.getResults().add(conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(scheme));
+                target.getResults().add(conceptsDo2DtoMapper.conceptSchemeMetamacDoToBasicDto(scheme));
             }
         }
         return target;
@@ -116,13 +117,13 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     }
 
     @Override
-    public MetamacCriteriaResult<ConceptMetamacDto> pageResultToMetamacCriteriaResultConcept(PagedResult<ConceptMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<ConceptMetamacDto> target = new MetamacCriteriaResult<ConceptMetamacDto>();
+    public MetamacCriteriaResult<ConceptMetamacBasicDto> pageResultToMetamacCriteriaResultConcept(PagedResult<ConceptMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<ConceptMetamacBasicDto> target = new MetamacCriteriaResult<ConceptMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<ConceptMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<ConceptMetamacBasicDto>(source.getValues().size()));
             for (ConceptMetamac concept : source.getValues()) {
-                target.getResults().add(conceptsDo2DtoMapper.conceptMetamacDoToDto(concept));
+                target.getResults().add(conceptsDo2DtoMapper.conceptMetamacDoToBasicDto(concept));
             }
         }
         return target;
@@ -146,26 +147,26 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     //
 
     @Override
-    public MetamacCriteriaResult<OrganisationSchemeMetamacDto> pageResultToMetamacCriteriaResultOrganisationSchemeVersion(PagedResult<OrganisationSchemeVersionMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<OrganisationSchemeMetamacDto> target = new MetamacCriteriaResult<OrganisationSchemeMetamacDto>();
+    public MetamacCriteriaResult<OrganisationSchemeMetamacBasicDto> pageResultToMetamacCriteriaResultOrganisationSchemeVersion(PagedResult<OrganisationSchemeVersionMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<OrganisationSchemeMetamacBasicDto> target = new MetamacCriteriaResult<OrganisationSchemeMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<OrganisationSchemeMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<OrganisationSchemeMetamacBasicDto>(source.getValues().size()));
             for (OrganisationSchemeVersionMetamac scheme : source.getValues()) {
-                target.getResults().add(organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(scheme));
+                target.getResults().add(organisationsDo2DtoMapper.organisationSchemeMetamacDoToBasicDto(scheme));
             }
         }
         return target;
     }
 
     @Override
-    public MetamacCriteriaResult<OrganisationMetamacDto> pageResultToMetamacCriteriaResultOrganisation(PagedResult<OrganisationMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<OrganisationMetamacDto> target = new MetamacCriteriaResult<OrganisationMetamacDto>();
+    public MetamacCriteriaResult<OrganisationMetamacBasicDto> pageResultToMetamacCriteriaResultOrganisation(PagedResult<OrganisationMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<OrganisationMetamacBasicDto> target = new MetamacCriteriaResult<OrganisationMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<OrganisationMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<OrganisationMetamacBasicDto>(source.getValues().size()));
             for (OrganisationMetamac organisation : source.getValues()) {
-                target.getResults().add(organisationsDo2DtoMapper.organisationMetamacDoToDto(organisation));
+                target.getResults().add(organisationsDo2DtoMapper.organisationMetamacDoToBasicDto(organisation));
             }
         }
         return target;
@@ -202,26 +203,26 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     //
 
     @Override
-    public MetamacCriteriaResult<CategorySchemeMetamacDto> pageResultToMetamacCriteriaResultCategorySchemeVersion(PagedResult<CategorySchemeVersionMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<CategorySchemeMetamacDto> target = new MetamacCriteriaResult<CategorySchemeMetamacDto>();
+    public MetamacCriteriaResult<CategorySchemeMetamacBasicDto> pageResultToMetamacCriteriaResultCategorySchemeVersion(PagedResult<CategorySchemeVersionMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<CategorySchemeMetamacBasicDto> target = new MetamacCriteriaResult<CategorySchemeMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<CategorySchemeMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<CategorySchemeMetamacBasicDto>(source.getValues().size()));
             for (CategorySchemeVersionMetamac scheme : source.getValues()) {
-                target.getResults().add(categoriesDo2DtoMapper.categorySchemeMetamacDoToDto(scheme));
+                target.getResults().add(categoriesDo2DtoMapper.categorySchemeMetamacDoToBasicDto(scheme));
             }
         }
         return target;
     }
 
     @Override
-    public MetamacCriteriaResult<CategoryMetamacDto> pageResultToMetamacCriteriaResultCategory(PagedResult<CategoryMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<CategoryMetamacDto> target = new MetamacCriteriaResult<CategoryMetamacDto>();
+    public MetamacCriteriaResult<CategoryMetamacBasicDto> pageResultToMetamacCriteriaResultCategory(PagedResult<CategoryMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<CategoryMetamacBasicDto> target = new MetamacCriteriaResult<CategoryMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<CategoryMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<CategoryMetamacBasicDto>(source.getValues().size()));
             for (CategoryMetamac category : source.getValues()) {
-                target.getResults().add(categoriesDo2DtoMapper.categoryMetamacDoToDto(category));
+                target.getResults().add(categoriesDo2DtoMapper.categoryMetamacDoToBasicDto(category));
             }
         }
         return target;
@@ -232,13 +233,13 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     //
 
     @Override
-    public MetamacCriteriaResult<CodelistMetamacDto> pageResultToMetamacCriteriaResultCodelistVersion(PagedResult<CodelistVersionMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<CodelistMetamacDto> target = new MetamacCriteriaResult<CodelistMetamacDto>();
+    public MetamacCriteriaResult<CodelistMetamacBasicDto> pageResultToMetamacCriteriaResultCodelistVersion(PagedResult<CodelistVersionMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<CodelistMetamacBasicDto> target = new MetamacCriteriaResult<CodelistMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<CodelistMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<CodelistMetamacBasicDto>(source.getValues().size()));
             for (CodelistVersionMetamac scheme : source.getValues()) {
-                target.getResults().add(codesDo2DtoMapper.codelistMetamacDoToDto(scheme));
+                target.getResults().add(codesDo2DtoMapper.codelistMetamacDoToBasicDto(scheme));
             }
         }
         return target;
@@ -258,65 +259,65 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     }
 
     @Override
-    public MetamacCriteriaResult<CodeMetamacDto> pageResultToMetamacCriteriaResultCode(PagedResult<CodeMetamac> source, Integer pageSize) {
-        MetamacCriteriaResult<CodeMetamacDto> target = new MetamacCriteriaResult<CodeMetamacDto>();
+    public MetamacCriteriaResult<CodeMetamacBasicDto> pageResultToMetamacCriteriaResultCode(PagedResult<CodeMetamac> source, Integer pageSize) {
+        MetamacCriteriaResult<CodeMetamacBasicDto> target = new MetamacCriteriaResult<CodeMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<CodeMetamacDto>(source.getValues().size()));
+            target.setResults(new ArrayList<CodeMetamacBasicDto>(source.getValues().size()));
             for (CodeMetamac code : source.getValues()) {
-                target.getResults().add(codesDo2DtoMapper.codeMetamacDoToDto(code));
+                target.getResults().add(codesDo2DtoMapper.codeMetamacDoToBasicDto(code));
             }
         }
         return target;
     }
 
     @Override
-    public MetamacCriteriaResult<CodelistFamilyDto> pageResultToMetamacCriteriaResultCodelistFamily(PagedResult<CodelistFamily> source, Integer pageSize) {
-        MetamacCriteriaResult<CodelistFamilyDto> target = new MetamacCriteriaResult<CodelistFamilyDto>();
+    public MetamacCriteriaResult<CodelistFamilyBasicDto> pageResultToMetamacCriteriaResultCodelistFamily(PagedResult<CodelistFamily> source, Integer pageSize) {
+        MetamacCriteriaResult<CodelistFamilyBasicDto> target = new MetamacCriteriaResult<CodelistFamilyBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<CodelistFamilyDto>(source.getValues().size()));
+            target.setResults(new ArrayList<CodelistFamilyBasicDto>(source.getValues().size()));
             for (CodelistFamily scheme : source.getValues()) {
-                target.getResults().add(codesDo2DtoMapper.codelistFamilyDoToDto(scheme));
+                target.getResults().add(codesDo2DtoMapper.codelistFamilyDoToBasicDto(scheme));
             }
         }
         return target;
     }
 
     @Override
-    public MetamacCriteriaResult<VariableFamilyDto> pageResultToMetamacCriteriaResultVariableFamily(PagedResult<VariableFamily> source, Integer pageSize) {
-        MetamacCriteriaResult<VariableFamilyDto> target = new MetamacCriteriaResult<VariableFamilyDto>();
+    public MetamacCriteriaResult<VariableFamilyBasicDto> pageResultToMetamacCriteriaResultVariableFamily(PagedResult<VariableFamily> source, Integer pageSize) {
+        MetamacCriteriaResult<VariableFamilyBasicDto> target = new MetamacCriteriaResult<VariableFamilyBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<VariableFamilyDto>(source.getValues().size()));
+            target.setResults(new ArrayList<VariableFamilyBasicDto>(source.getValues().size()));
             for (VariableFamily scheme : source.getValues()) {
-                target.getResults().add(codesDo2DtoMapper.variableFamilyDoToDto(scheme));
+                target.getResults().add(codesDo2DtoMapper.variableFamilyDoToBasicDto(scheme));
             }
         }
         return target;
     }
 
     @Override
-    public MetamacCriteriaResult<VariableDto> pageResultToMetamacCriteriaResultVariable(PagedResult<Variable> source, Integer pageSize) {
-        MetamacCriteriaResult<VariableDto> target = new MetamacCriteriaResult<VariableDto>();
+    public MetamacCriteriaResult<VariableBasicDto> pageResultToMetamacCriteriaResultVariable(PagedResult<Variable> source, Integer pageSize) {
+        MetamacCriteriaResult<VariableBasicDto> target = new MetamacCriteriaResult<VariableBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<VariableDto>(source.getValues().size()));
+            target.setResults(new ArrayList<VariableBasicDto>(source.getValues().size()));
             for (Variable scheme : source.getValues()) {
-                target.getResults().add(codesDo2DtoMapper.variableDoToDto(scheme));
+                target.getResults().add(codesDo2DtoMapper.variableDoToBasicDto(scheme));
             }
         }
         return target;
     }
 
     @Override
-    public MetamacCriteriaResult<VariableElementDto> pageResultToMetamacCriteriaResultVariableElement(PagedResult<VariableElement> source, Integer pageSize) {
-        MetamacCriteriaResult<VariableElementDto> target = new MetamacCriteriaResult<VariableElementDto>();
+    public MetamacCriteriaResult<VariableElementBasicDto> pageResultToMetamacCriteriaResultVariableElement(PagedResult<VariableElement> source, Integer pageSize) {
+        MetamacCriteriaResult<VariableElementBasicDto> target = new MetamacCriteriaResult<VariableElementBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
-            target.setResults(new ArrayList<VariableElementDto>(source.getValues().size()));
+            target.setResults(new ArrayList<VariableElementBasicDto>(source.getValues().size()));
             for (VariableElement scheme : source.getValues()) {
-                target.getResults().add(codesDo2DtoMapper.variableElementDoToDto(scheme));
+                target.getResults().add(codesDo2DtoMapper.variableElementDoToBasicDto(scheme));
             }
         }
         return target;

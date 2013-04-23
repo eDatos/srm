@@ -37,6 +37,7 @@ import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptSchemeVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionMetamacDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +97,7 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     //
     @Test
     public void testFindDataStructureDefinitionsByCondition() throws Exception {
-        MetamacCriteriaResult<DataStructureDefinitionMetamacDto> result = null;
+        MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> result = null;
 
         srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(), DataStructureDefinitionMetamacDtoMocks.mockDataStructureDefinitionMetamacDto());
 

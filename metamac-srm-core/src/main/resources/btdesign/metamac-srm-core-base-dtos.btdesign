@@ -1,4 +1,6 @@
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
+import "classpath:/btdesign/metamac-core-common-dtos.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-common.btdesign"
 
 Application SrmDtosBaseCore {
     basePackage=unused
@@ -6,6 +8,26 @@ Application SrmDtosBaseCore {
     Module core_entities_base {
     	basePackage=org.siemac.metamac.srm.core.base.dto
     
+  		DataTransferObject IdentifiableArtefactMetamacBasicDto {
+            String code;
+            String urn;
+            String urnProvider;
+		} 
+		
+  		DataTransferObject NameableArtefactMetamacBasicDto extends @IdentifiableArtefactMetamacBasicDto {
+            - @InternationalStringDto name;
+		} 
+		
+  		DataTransferObject MaintainableArtefactMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
+            String versionLogic;
+            - @RelatedResourceDto maintainer;            
+  			- @ProcStatusEnum procStatus;
+			JAVADATE internalPublicationDate;
+			String internalPublicationUser;
+			JAVADATE externalPublicationDate;
+			String externalPublicationUser;
+		}     
+		
     	DataTransferObject LifeCycleDto {
 			"Status"
 			- @ProcStatusEnum procStatus required;

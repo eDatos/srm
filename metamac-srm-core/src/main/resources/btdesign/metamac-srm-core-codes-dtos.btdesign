@@ -37,6 +37,10 @@ Application DtosMetamacCodeDomain {
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
 		}
+		
+		"Dto for CodelistMetamac"
+		DataTransferObject CodelistMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		}		
 
 		"Dto for CodeMetamac"
 		DataTransferObject CodeMetamacDto extends @CodeDto {
@@ -46,16 +50,28 @@ Application DtosMetamacCodeDomain {
 			- @RelatedResourceDto variableElement nullable;
 		}
 		
+		"Dto for CodeMetamac"
+		DataTransferObject CodeMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
+		}
+		
 		"Dto for CodelistFamily"		
 		DataTransferObject CodelistFamilyDto extends @NameableArtefactDto {
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}
 		
+		"Dto for CodelistFamily"
+		DataTransferObject CodelistFamilyBasicDto extends @NameableArtefactMetamacBasicDto {
+		}
+		
 		"Dto for VariableFamily"		
 		DataTransferObject VariableFamilyDto extends @NameableArtefactDto {
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
+		}
+
+		"Dto for VariableFamily"
+		DataTransferObject VariableFamilyBasicDto extends @NameableArtefactMetamacBasicDto {
 		}
 		
 		"Dto for Variable"		
@@ -76,6 +92,10 @@ Application DtosMetamacCodeDomain {
 			Long versionOptimisticLocking;
 		}
 		
+		"Dto for Variable"
+		DataTransferObject VariableBasicDto extends @NameableArtefactMetamacBasicDto {
+		}
+		
 		"Dto for VariableElement"		
 		DataTransferObject VariableElementDto extends @IdentifiableArtefactDto {
 			"Short name"
@@ -94,6 +114,10 @@ Application DtosMetamacCodeDomain {
 			Long versionOptimisticLocking;
 		}
 
+		"Dto for VariableElement"
+		DataTransferObject VariableElementBasicDto extends @IdentifiableArtefactMetamacBasicDto {
+		}
+		
 		"Dto for VariableElementOperation"		
 		DataTransferObject VariableElementOperationDto extends @AuditableDto {
 
@@ -118,5 +142,13 @@ Application DtosMetamacCodeDomain {
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}
+		
+		"Dto for CodelistOrderVisualisation and CodelistOpennessVisualisation"		
+		DataTransferObject CodelistVisualisationBasicDto extends @NameableArtefactMetamacBasicDto {
+			"Codelist"
+			- @RelatedResourceDto codelist not nullable;
+			"Version to optimistic locking"
+			Long versionOptimisticLocking;
+		}		
 	}
 }

@@ -7,6 +7,7 @@ import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +65,22 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
     }
 
     @Override
-    public List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDoListToDtoList(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs) {
-        List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos = new ArrayList<DataStructureDefinitionMetamacDto>(dataStructureDefinitionVersionMetamacs.size());
+    public DataStructureDefinitionMetamacBasicDto dataStructureDefinitionMetamacDoToBasicDto(DataStructureDefinitionVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+
+        DataStructureDefinitionMetamacBasicDto target = new DataStructureDefinitionMetamacBasicDto();
+        target.setStatisticalOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getStatisticalOperation()));
+        maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), source.getLifeCycleMetadata(), target);
+        return target;
+    }
+
+    @Override
+    public List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDoListToDtoList(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs) {
+        List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos = new ArrayList<DataStructureDefinitionMetamacBasicDto>(dataStructureDefinitionVersionMetamacs.size());
         for (DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac : dataStructureDefinitionVersionMetamacs) {
-            dataStructureDefinitionMetamacDtos.add(dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac));
+            dataStructureDefinitionMetamacDtos.add(dataStructureDefinitionMetamacDoToBasicDto(dataStructureDefinitionVersionMetamac));
         }
         return dataStructureDefinitionMetamacDtos;
     }
