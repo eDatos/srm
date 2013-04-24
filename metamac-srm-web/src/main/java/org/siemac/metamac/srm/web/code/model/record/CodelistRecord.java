@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.code.model.record;
 
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
@@ -36,6 +37,10 @@ public class CodelistRecord extends ItemSchemeRecord {
         setAttribute(CodelistDS.DTO, codelistMetamacDto);
     }
 
+    public void setCodelistBasicDto(CodelistMetamacBasicDto codelistMetamacDto) {
+        setAttribute(CodelistDS.DTO, codelistMetamacDto);
+    }
+
     public ProcStatusEnum getProcStatus() {
         return ((CodelistMetamacDto) getAttributeAsObject(CodelistDS.DTO)).getLifeCycle().getProcStatus();
     }
@@ -46,5 +51,9 @@ public class CodelistRecord extends ItemSchemeRecord {
 
     public CodelistMetamacDto getCodelistMetamacDto() {
         return (CodelistMetamacDto) getAttributeAsObject(CodelistDS.DTO);
+    }
+
+    public CodelistMetamacBasicDto getCodelistMetamacBasicDto() {
+        return (CodelistMetamacBasicDto) getAttributeAsObject(CodelistDS.DTO);
     }
 }

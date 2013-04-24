@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -83,7 +83,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
         void setConceptSchemeList(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos);
         void setOrganisationSchemeList(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
         void setCategorySchemesList(List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos);
-        void setCodelistList(List<CodelistMetamacDto> codelistMetamacDtos);
+        void setCodelistList(List<CodelistMetamacBasicDto> codelistMetamacDtos);
 
         void resetView();
     }

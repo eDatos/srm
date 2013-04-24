@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.utils.RecordUtils;
 
@@ -11,7 +11,7 @@ public class CodelistListGrid extends ItemSchemeListGrid {
     public CodelistListGrid() {
     }
 
-    public void setCodelist(List<CodelistMetamacDto> codelistDtos) {
+    public void setCodelist(List<CodelistMetamacBasicDto> codelistDtos) {
         removeAllData();
         if (codelistDtos != null) {
             CodelistRecord[] codelistRecords = new CodelistRecord[codelistDtos.size()];

@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
@@ -336,7 +335,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
     }
 
     public void setCodelists(GetCodelistsResult result) {
-        List<RelatedResourceDto> codelists = RelatedResourceUtils.getCodelistDtosAsRelatedResourceDtos(result.getCodelists());
+        List<RelatedResourceDto> codelists = RelatedResourceUtils.getCodelistBasicDtosAsRelatedResourceDtos(result.getCodelists());
         filterListItem.setRelatedResources(codelists);
         filterListItem.refreshPaginationInfo(result.getFirstResultOut(), codelists.size(), result.getTotalResults());
     }

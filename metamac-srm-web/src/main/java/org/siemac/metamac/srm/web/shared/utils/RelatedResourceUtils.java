@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
@@ -211,10 +212,24 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
         return relatedResourceDto;
     }
 
+    public static RelatedResourceDto getCodelistBasicDtoAsRelatedResourceDto(CodelistMetamacBasicDto codelist) {
+        RelatedResourceDto relatedResourceDto = getNameableArtefactMetamacBasicDto(codelist);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CODELIST);
+        return relatedResourceDto;
+    }
+
     public static List<RelatedResourceDto> getCodelistDtosAsRelatedResourceDtos(List<CodelistMetamacDto> codelistDtos) {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(codelistDtos.size());
         for (CodelistMetamacDto codelist : codelistDtos) {
             relatedResourceDtos.add(getCodelistDtoAsRelatedResourceDto(codelist));
+        }
+        return relatedResourceDtos;
+    }
+
+    public static List<RelatedResourceDto> getCodelistBasicDtosAsRelatedResourceDtos(List<CodelistMetamacBasicDto> codelistDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(codelistDtos.size());
+        for (CodelistMetamacBasicDto codelist : codelistDtos) {
+            relatedResourceDtos.add(getCodelistBasicDtoAsRelatedResourceDto(codelist));
         }
         return relatedResourceDtos;
     }

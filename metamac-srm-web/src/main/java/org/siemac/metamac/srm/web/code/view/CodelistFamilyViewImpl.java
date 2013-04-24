@@ -8,7 +8,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
@@ -273,7 +273,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
     @Override
     public void setCodelists(GetCodelistsResult result) {
         if (codelistsWindow != null) {
-            codelistsWindow.setSourceRelatedResources(RelatedResourceUtils.getCodelistDtosAsRelatedResourceDtos(result.getCodelists()));
+            codelistsWindow.setSourceRelatedResources(RelatedResourceUtils.getCodelistBasicDtosAsRelatedResourceDtos(result.getCodelists()));
             codelistsWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getCodelists().size(), result.getTotalResults());
         }
     }
@@ -284,10 +284,10 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         codelistListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getCodelists().size(), result.getTotalResults());
     }
 
-    private void setCodelistsOfFamily(List<CodelistMetamacDto> codelistDtos) {
+    private void setCodelistsOfFamily(List<CodelistMetamacBasicDto> codelistDtos) {
         CodelistRecord[] records = new CodelistRecord[codelistDtos.size()];
         int index = 0;
-        for (CodelistMetamacDto scheme : codelistDtos) {
+        for (CodelistMetamacBasicDto scheme : codelistDtos) {
             records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodelistRecord(scheme);
         }
         codelistListGrid.getListGrid().setData(records);

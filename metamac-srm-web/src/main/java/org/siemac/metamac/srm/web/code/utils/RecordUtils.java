@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
@@ -45,6 +46,22 @@ public class RecordUtils {
         record.setExternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(codelistDto.getLifeCycle().getExternalPublicationUser());
         record.setCodelistDto(codelistDto);
+        return record;
+    }
+
+    public static CodelistRecord getCodelistRecord(CodelistMetamacBasicDto codelistDto) {
+        CodelistRecord record = new CodelistRecord();
+        record.setCode(codelistDto.getCode());
+        record.setName(getLocalisedString(codelistDto.getName()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getProcStatus()));
+        record.setVersionLogic(codelistDto.getVersionLogic());
+        record.setUrn(codelistDto.getUrn());
+        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
+        record.setInternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getInternalPublicationDate()));
+        record.setInternalPublicationUser(codelistDto.getInternalPublicationUser());
+        record.setExternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getExternalPublicationDate()));
+        record.setExternalPublicationUser(codelistDto.getExternalPublicationUser());
+        record.setCodelistBasicDto(codelistDto);
         return record;
     }
 
