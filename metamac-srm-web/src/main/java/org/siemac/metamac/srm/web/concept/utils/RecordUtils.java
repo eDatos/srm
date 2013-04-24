@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.concept.utils;
 
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -56,6 +57,15 @@ public class RecordUtils {
     public static ConceptRecord getConceptRecord(ConceptMetamacDto conceptDto) {
         ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), conceptDto.getUrn(), conceptDto.getItemSchemeVersionUrn(),
                 getLocalisedString(conceptDto.getDescription()), conceptDto);
+        return record;
+    }
+
+    public static ConceptRecord getConceptRecord(ConceptMetamacBasicDto conceptDto) {
+        ConceptRecord record = new ConceptRecord();
+        record.setCode(conceptDto.getCode());
+        record.setName(getLocalisedString(conceptDto.getName()));
+        record.setUrn(conceptDto.getUrn());
+        record.setConceptBasicDto(conceptDto);
         return record;
     }
 

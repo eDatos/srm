@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -110,10 +111,24 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
         return relatedResourceDto;
     }
 
+    public static RelatedResourceDto getConceptMetamacBasicDtoAsRelatedResourceDto(ConceptMetamacBasicDto concept) {
+        RelatedResourceDto relatedResourceDto = getNameableArtefactMetamacBasicDto(concept);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CONCEPT);
+        return relatedResourceDto;
+    }
+
     public static List<RelatedResourceDto> getConceptMetamacDtosAsRelatedResourceDtos(List<ConceptMetamacDto> conceptMetamacDtos) {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(conceptMetamacDtos.size());
         for (ConceptMetamacDto concept : conceptMetamacDtos) {
             relatedResourceDtos.add(getConceptMetamacDtoAsRelatedResourceDto(concept));
+        }
+        return relatedResourceDtos;
+    }
+
+    public static List<RelatedResourceDto> getConceptMetamacBasicDtosAsRelatedResourceDtos(List<ConceptMetamacBasicDto> conceptMetamacDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(conceptMetamacDtos.size());
+        for (ConceptMetamacBasicDto concept : conceptMetamacDtos) {
+            relatedResourceDtos.add(getConceptMetamacBasicDtoAsRelatedResourceDto(concept));
         }
         return relatedResourceDtos;
     }

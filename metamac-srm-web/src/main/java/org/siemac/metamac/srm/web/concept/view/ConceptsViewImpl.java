@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
@@ -111,11 +111,11 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
         conceptsListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getConcepts().size(), result.getTotalResults());
     }
 
-    private void setConcepts(List<ConceptMetamacDto> conceptDtos) {
+    private void setConcepts(List<ConceptMetamacBasicDto> conceptDtos) {
         ConceptRecord[] records = new ConceptRecord[conceptDtos.size()];
         int index = 0;
-        for (ConceptMetamacDto scheme : conceptDtos) {
-            records[index++] = RecordUtils.getConceptRecord(scheme);
+        for (ConceptMetamacBasicDto concept : conceptDtos) {
+            records[index++] = RecordUtils.getConceptRecord(concept);
         }
         conceptsListGrid.getListGrid().setData(records);
     }

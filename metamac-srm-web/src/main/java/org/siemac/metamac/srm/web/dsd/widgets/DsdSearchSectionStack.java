@@ -92,7 +92,7 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
 
     public void setDimensionConcepts(GetConceptsResult result) {
         if (searchDimensionConceptWindow != null) {
-            List<RelatedResourceDto> relatedResourceDtos = RelatedResourceUtils.getConceptMetamacDtosAsRelatedResourceDtos(result.getConcepts());
+            List<RelatedResourceDto> relatedResourceDtos = RelatedResourceUtils.getConceptMetamacBasicDtosAsRelatedResourceDtos(result.getConcepts());
             searchDimensionConceptWindow.setRelatedResources(relatedResourceDtos);
             searchDimensionConceptWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), relatedResourceDtos.size(), result.getTotalResults());
         }
@@ -100,7 +100,7 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
 
     public void setAttributeConcepts(GetConceptsResult result) {
         if (searchAttributeConceptWindow != null) {
-            List<RelatedResourceDto> relatedResourceDtos = RelatedResourceUtils.getConceptMetamacDtosAsRelatedResourceDtos(result.getConcepts());
+            List<RelatedResourceDto> relatedResourceDtos = RelatedResourceUtils.getConceptMetamacBasicDtosAsRelatedResourceDtos(result.getConcepts());
             searchAttributeConceptWindow.setRelatedResources(relatedResourceDtos);
             searchAttributeConceptWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), relatedResourceDtos.size(), result.getTotalResults());
         }

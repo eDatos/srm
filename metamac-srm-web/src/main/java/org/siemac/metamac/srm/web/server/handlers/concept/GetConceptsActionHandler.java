@@ -10,7 +10,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnu
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
@@ -62,7 +62,7 @@ public class GetConceptsActionHandler extends SecurityActionHandler<GetConceptsA
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            MetamacCriteriaResult<ConceptMetamacBasicDto> result = srmCoreServiceFacade.findConceptsByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
             return new GetConceptsResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
