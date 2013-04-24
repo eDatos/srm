@@ -1801,7 +1801,7 @@
         SHORT_NAME_FK="49"
         DESCRIPTION_SOURCE_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="1"
+        VARIABLE_FK="2"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUAL_FK="311"
         DEFAULT_OPENNESS_VISUAL_FK="311"

@@ -7,9 +7,9 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -56,7 +56,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(2, code.getName().size());
             CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Isla de Tenerife", "en", "Name codelist-1-v2-code-1");
             CodesAsserts.assertEqualsInternationalString(code.getDescription(), "es", "Descripción codelist-1-v2-code-1", null, null);
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
 
             assertEquals(2, code.getAnnotations().size());
             {
@@ -84,7 +84,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(1, code.getName().size());
             CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Nombre codelist-1-v2-code-2 Canaria, Gran", null, null);
             CodesAsserts.assertEqualsInternationalString(code.getDescription(), null, null, null, null);
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "nombre corto code2", "en", "short name code2");
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "nombre corto code2", "en", "short name code2");
             assertEquals(0, code.getAnnotations().size());
         }
         {
@@ -93,39 +93,39 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_2_1, code.getUrn());
             assertEquals("CODE02", code.getParent().getCode());
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "El Hierro", "en", "short name variableElement 2-1");
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "El Hierro", "en", "short name variableElement 2-1");
         }
         {
             // Code 02 01 01
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_2_1_1, code.getUrn());
             assertEquals("CODE0201", code.getParent().getCode());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "nombre corto 2-1-1", null, null);
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "nombre corto 2-1-1", null, null);
         }
 
         {
             // Code 02 02
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_2_2, code.getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), null, null, null, null);
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), null, null, null, null);
         }
         {
             // Code 03
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_3, code.getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Gran Canaria", null, null);
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "Gran Canaria", null, null);
         }
         {
             // Code 04
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_4, code.getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "Lanzarote", "en", "Lanzarote en");
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "Lanzarote", "en", "Lanzarote en");
         }
         {
             // Code 04 01
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_4_1, code.getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), null, null, null, null);
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), null, null, null, null);
         }
         {
             // Code 04 01 01
@@ -133,7 +133,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_4_1_1, code.getUrn());
             assertEquals("CODE0401", code.getParent().getCode());
             assertEquals(CODELIST_1_V2_CODE_4_1, code.getParent().getUrn());
-            CodesAsserts.assertEqualsInternationalString(((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getShortName(), "es", "El Hierro", "en", "short name variableElement 2-1");
+            CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "El Hierro", "en", "short name variableElement 2-1");
         }
     }
 

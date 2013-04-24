@@ -1028,7 +1028,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         assertNotNull(conceptMetamacDto);
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptMetamacDto.getUrn());
 
-        assertEqualsInternationalStringDto(conceptMetamacDto.getName(), "es", "Nombre conceptScheme-1-v2-concept-1", null, null);
+        assertEqualsInternationalStringDto(conceptMetamacDto.getName(), "es", "Nombre conceptScheme-1-v2-concept-1", "en", "Name conceptScheme-1-v2-concept-1");
         assertEqualsInternationalStringDto(conceptMetamacDto.getDescription(), "es", "Descripción conceptScheme-1-v2-concept-1", null, null);
 
         assertEqualsInternationalStringDto(conceptMetamacDto.getPluralName(), "es", "PluralName conceptScheme-1-v2-concept-1", null, null);

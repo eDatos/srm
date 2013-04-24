@@ -1,13 +1,13 @@
 package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 
 import java.util.List;
+import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -92,10 +92,8 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         CodeMetamac source = (CodeMetamac) sourceSdmx;
         CodeMetamac target = (CodeMetamac) targetSdmx;
         if (itemResultSource != null) {
-            if (itemResultSource.getExtensionPoint() != null) {
-                CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResultSource.getExtensionPoint();
-                target.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(extensionPoint.getShortName()));
-            }
+            Map<String, String> shortName = SrmServiceUtils.getCodeItemResultShortName(itemResultSource);
+            target.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(shortName));
         } else {
             target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
         }

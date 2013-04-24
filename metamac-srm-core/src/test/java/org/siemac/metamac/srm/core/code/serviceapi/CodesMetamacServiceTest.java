@@ -7119,15 +7119,25 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 createTemporalCodelist.getMaintainableArtefact().getName().addText(localisedString);
             }
 
-            // Item
+            // Code 1: change short name
             {
                 CodeMetamac codeTemporal = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CODELIST_3_V1_CODE_1));
-                codeTemporal.setVariableElement(codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1));
+                codeTemporal.setVariableElement(null);
 
-                LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
                 InternationalString internationalString = new InternationalString();
-                internationalString.addText(localisedString);
+                internationalString.addText(new LocalisedString("fr", "it - text sample"));
                 codeTemporal.setShortName(internationalString);
+                codeTemporal.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                codesService.updateCode(getServiceContextAdministrador(), codeTemporal);
+            }
+            // Code 2: change variable element
+            {
+                CodeMetamac codeTemporal = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CODELIST_3_V1_CODE_2));
+                assertEquals(null, codeTemporal.getVariableElement());
+                codeTemporal.setVariableElement(codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1));
+                codeTemporal.setShortName(null);
+                codeTemporal.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                codesService.updateCode(getServiceContextAdministrador(), codeTemporal);
             }
 
             // Merge
@@ -7144,12 +7154,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(2, codelistVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
             assertEquals("its - text sample", codelistVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
 
-            // Item
+            // Code 1: change short name
             {
                 CodeMetamac codeTemporal = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_3_V1_CODE_1);
-                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, codeTemporal.getVariableElement().getIdentifiableArtefact().getUrn());
+                assertEquals(null, codeTemporal.getVariableElement());
                 assertEquals(1, codeTemporal.getShortName().getTexts().size());
                 assertEquals("it - text sample", codeTemporal.getShortName().getLocalisedLabel("fr"));
+            }
+            // Code 2: change variable element
+            {
+                CodeMetamac codeTemporal = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_3_V1_CODE_2);
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, codeTemporal.getVariableElement().getIdentifiableArtefact().getUrn());
+                assertEquals(null, codeTemporal.getShortName());
             }
         }
 
