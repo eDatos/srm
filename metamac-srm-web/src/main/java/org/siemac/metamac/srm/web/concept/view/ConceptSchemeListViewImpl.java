@@ -6,6 +6,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -197,10 +198,10 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         conceptSchemesList.goToLastPageAfterCreate();
     }
 
-    private void setConceptSchemeList(List<ConceptSchemeMetamacDto> conceptSchemesDtos) {
+    private void setConceptSchemeList(List<ConceptSchemeMetamacBasicDto> conceptSchemesDtos) {
         ConceptSchemeRecord[] records = new ConceptSchemeRecord[conceptSchemesDtos.size()];
         int index = 0;
-        for (ConceptSchemeMetamacDto scheme : conceptSchemesDtos) {
+        for (ConceptSchemeMetamacBasicDto scheme : conceptSchemesDtos) {
             records[index++] = RecordUtils.getConceptSchemeRecord(scheme);
         }
         conceptSchemesList.getListGrid().setData(records);

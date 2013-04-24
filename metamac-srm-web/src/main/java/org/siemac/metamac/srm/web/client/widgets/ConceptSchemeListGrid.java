@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
@@ -11,7 +11,7 @@ public class ConceptSchemeListGrid extends ItemSchemeListGrid {
     public ConceptSchemeListGrid() {
     }
 
-    public void setConceptSchemes(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
+    public void setConceptSchemes(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos) {
         removeAllData();
         if (conceptSchemeDtos != null) {
             ConceptSchemeRecord[] schemeRecords = new ConceptSchemeRecord[conceptSchemeDtos.size()];

@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
@@ -13,20 +13,20 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetConceptSchemes {
 
     @In(1)
-    int                           firstResult;
+    int                                firstResult;
 
     @In(2)
-    int                           maxResults;
+    int                                maxResults;
 
     @In(3)
-    ConceptSchemeWebCriteria      criteria;
+    ConceptSchemeWebCriteria           criteria;
 
     @Out(1)
-    List<ConceptSchemeMetamacDto> conceptSchemeList;
+    List<ConceptSchemeMetamacBasicDto> conceptSchemeList;
 
     @Out(2)
-    Integer                       firstResultOut;
+    Integer                            firstResultOut;
 
     @Out(3)
-    Integer                       totalResults;
+    Integer                            totalResults;
 }
