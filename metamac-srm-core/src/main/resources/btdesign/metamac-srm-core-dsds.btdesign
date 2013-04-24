@@ -191,7 +191,7 @@ Application DsdsMetamac {
 			-@DimensionComponent dimension cascade="none" databaseColumn="DIM_COMPONENT_FK";
 			
 			"Display order of the categories of a dimension"
-			- @CodelistOrderVisualisation displayOrder nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="DISPLAT_ORDER_FK";
+			- @CodelistOrderVisualisation displayOrder nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="DISPLAY_ORDER_FK";
 
 			"For variables with hierarchies, indicates how the tree will be displayed when first displayed"
 			- @CodelistOpennessVisualisation hierarchyLevelsOpen nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="HIERARCHY_LEVELS_OPEN_FK";
