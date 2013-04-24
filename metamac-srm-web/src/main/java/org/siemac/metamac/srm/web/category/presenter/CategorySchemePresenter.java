@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.category.enums.CategoriesToolStripButtonEnum;
@@ -111,7 +112,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     public interface CategorySchemeView extends View, HasUiHandlers<CategorySchemeUiHandlers> {
 
         void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto);
-        void setCategorySchemeVersions(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos);
+        void setCategorySchemeVersions(List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos);
         void setCategories(List<ItemHierarchyDto> categoryDtos);
         void startCategorySchemeEdition();
         void setLatestCategorySchemeForInternalPublication(GetCategorySchemesResult result);

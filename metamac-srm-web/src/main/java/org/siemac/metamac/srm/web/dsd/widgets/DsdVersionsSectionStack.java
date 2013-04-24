@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -31,10 +32,10 @@ public class DsdVersionsSectionStack extends ItemSchemeVersionsSectionStack {
         listGrid.setFields(codeField, nameField, versionField);
     }
 
-    public void setDataStructureDefinitions(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos) {
+    public void setDataStructureDefinitions(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos) {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
-        for (DataStructureDefinitionMetamacDto dsd : dataStructureDefinitionMetamacDtos) {
+        for (DataStructureDefinitionMetamacBasicDto dsd : dataStructureDefinitionMetamacDtos) {
             listGrid.addData(RecordUtils.getDsdRecord(dsd));
         }
     }

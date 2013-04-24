@@ -593,7 +593,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     }
 
     @Override
-    public void setCategorySchemeVersions(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos) {
+    public void setCategorySchemeVersions(List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos) {
         versionsSectionStack.setCategorySchemes(categorySchemeMetamacDtos);
         versionsSectionStack.selectCategoryScheme(categorySchemeDto);
     }

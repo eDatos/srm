@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers.category;
 import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsResult;
@@ -28,7 +28,7 @@ public class GetCategorySchemeVersionsActionHandler extends SecurityActionHandle
     @Override
     public GetCategorySchemeVersionsResult executeSecurityAction(GetCategorySchemeVersionsAction action) throws ActionException {
         try {
-            List<CategorySchemeMetamacDto> versions = srmCoreServiceFacade.retrieveCategorySchemeVersions(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            List<CategorySchemeMetamacBasicDto> versions = srmCoreServiceFacade.retrieveCategorySchemeVersions(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             return new GetCategorySchemeVersionsResult(versions);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

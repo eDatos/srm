@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.category.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.category.utils.RecordUtils;
@@ -16,10 +17,10 @@ public class CategorySchemeVersionsSectionStack extends ItemSchemeVersionsSectio
         super(title);
     }
 
-    public void setCategorySchemes(List<CategorySchemeMetamacDto> categorySchemeDtos) {
+    public void setCategorySchemes(List<CategorySchemeMetamacBasicDto> categorySchemeDtos) {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
-        for (CategorySchemeMetamacDto categorySchemeDto : categorySchemeDtos) {
+        for (CategorySchemeMetamacBasicDto categorySchemeDto : categorySchemeDtos) {
             listGrid.addData(RecordUtils.getCategorySchemeRecord(categorySchemeDto));
         }
     }

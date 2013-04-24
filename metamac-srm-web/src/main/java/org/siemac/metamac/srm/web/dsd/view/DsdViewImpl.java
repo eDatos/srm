@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -127,7 +128,7 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
     }
 
     @Override
-    public void setDsdVersions(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos) {
+    public void setDsdVersions(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos) {
         versionsSectionStack.setDataStructureDefinitions(dataStructureDefinitionMetamacDtos);
         versionsSectionStack.selectDataStructureDefinition(dataStructureDefinitionMetamacDto);
     }
