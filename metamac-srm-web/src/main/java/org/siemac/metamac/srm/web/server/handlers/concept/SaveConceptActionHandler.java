@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
@@ -51,7 +52,7 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
             // Save roles
             //
 
-            List<ConceptMetamacDto> oldRoles = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
+            List<ConceptMetamacBasicDto> oldRoles = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
             Set<String> oldRolesUrn = getConceptUrnsSet(oldRoles);
 
             if (action.getRolesToSave() == null || action.getRolesToSave().isEmpty()) {
@@ -77,14 +78,14 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
                 }
 
             }
-            List<ConceptMetamacDto> roles = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
-            List<RelatedResourceDto> relatedResourceRoles = RelatedResourceUtils.getConceptMetamacDtosAsRelatedResourceDtos(roles);
+            List<ConceptMetamacBasicDto> roles = srmCoreServiceFacade.retrieveRoleConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
+            List<RelatedResourceDto> relatedResourceRoles = RelatedResourceUtils.getConceptMetamacBasicDtosAsRelatedResourceDtos(roles);
 
             //
             // Save related concepts
             //
 
-            List<ConceptMetamacDto> oldRelatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
+            List<ConceptMetamacBasicDto> oldRelatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
             Set<String> oldConceptsUrn = getConceptUrnsSet(oldRelatedConcepts);
 
             if (action.getRelatedConceptsToSave() == null || action.getRelatedConceptsToSave().isEmpty()) {
@@ -110,7 +111,7 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
                 }
 
             }
-            List<ConceptMetamacDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
+            List<ConceptMetamacBasicDto> relatedConcepts = srmCoreServiceFacade.retrieveRelatedConcepts(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
 
             // Reload the saved concept
             savedConcept = srmCoreServiceFacade.retrieveConceptByUrn(ServiceContextHolder.getCurrentServiceContext(), savedConcept.getUrn());
@@ -121,10 +122,10 @@ public class SaveConceptActionHandler extends SecurityActionHandler<SaveConceptA
         }
     }
 
-    private Set<String> getConceptUrnsSet(List<ConceptMetamacDto> conceptMetamacDtos) {
+    private Set<String> getConceptUrnsSet(List<ConceptMetamacBasicDto> conceptMetamacDtos) {
         if (conceptMetamacDtos != null) {
             Set<String> urns = new HashSet<String>();
-            for (ConceptMetamacDto conceptMetamacDto : conceptMetamacDtos) {
+            for (ConceptMetamacBasicDto conceptMetamacDto : conceptMetamacDtos) {
                 urns.add(conceptMetamacDto.getUrn());
             }
             return urns;

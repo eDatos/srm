@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.utils.RecordUtils;
@@ -29,7 +29,7 @@ public class OrganisationSchemeListGrid extends ItemSchemeListGrid {
         this.setFields(fields);
     }
 
-    public void setOrganisationSchemes(List<OrganisationSchemeMetamacDto> organisationSchemeDtos) {
+    public void setOrganisationSchemes(List<OrganisationSchemeMetamacBasicDto> organisationSchemeDtos) {
         removeAllData();
         if (organisationSchemeDtos != null) {
             OrganisationSchemeRecord[] schemeRecords = new OrganisationSchemeRecord[organisationSchemeDtos.size()];

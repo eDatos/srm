@@ -5,7 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
@@ -27,9 +27,9 @@ public class ConceptsListItem extends BaseListItem {
         listGrid.setFields(codeField, nameField);
     }
 
-    public void setDataConcepts(List<ConceptMetamacDto> conceptMetamacDtos) {
+    public void setDataConcepts(List<ConceptMetamacBasicDto> conceptMetamacDtos) {
         listGrid.removeAllData();
-        for (ConceptMetamacDto conceptMetamacDto : conceptMetamacDtos) {
+        for (ConceptMetamacBasicDto conceptMetamacDto : conceptMetamacDtos) {
             ConceptRecord record = RecordUtils.getConceptRecord(conceptMetamacDto);
             listGrid.addData(record);
         }

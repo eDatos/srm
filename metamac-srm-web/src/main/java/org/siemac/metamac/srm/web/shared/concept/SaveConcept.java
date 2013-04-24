@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -13,20 +14,20 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class SaveConcept {
 
     @In(1)
-    ConceptMetamacDto        conceptToSave;
+    ConceptMetamacDto            conceptToSave;
 
     @In(2)
-    List<String>             rolesToSave;
+    List<String>                 rolesToSave;
 
     @In(3)
-    List<String>             relatedConceptsToSave;
+    List<String>                 relatedConceptsToSave;
 
     @Out(1)
-    ConceptMetamacDto        conceptDto;
+    ConceptMetamacDto            conceptDto;
 
     @Out(2)
-    List<RelatedResourceDto> roles;
+    List<RelatedResourceDto>     roles;
 
     @Out(3)
-    List<ConceptMetamacDto>  relatedConcepts;
+    List<ConceptMetamacBasicDto> relatedConcepts;
 }

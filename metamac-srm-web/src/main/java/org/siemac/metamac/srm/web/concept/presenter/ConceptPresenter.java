@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
@@ -101,8 +102,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     public interface ConceptView extends View, HasUiHandlers<ConceptUiHandlers> {
 
-        void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto);
-        void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts);
+        void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto);
+        void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts);
         void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);

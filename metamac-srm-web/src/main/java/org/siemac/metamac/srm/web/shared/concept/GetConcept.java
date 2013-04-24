@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 
@@ -14,17 +15,17 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetConcept {
 
     @In(1)
-    String                   urn;
+    String                       urn;
 
     @Out(1)
-    ConceptMetamacDto        conceptDto;
+    ConceptMetamacDto            conceptDto;
 
     @Out(2)
-    List<RelatedResourceDto> roles;
+    List<RelatedResourceDto>     roles;
 
     @Out(3)
-    List<ConceptMetamacDto>  relatedConcepts;
+    List<ConceptMetamacBasicDto> relatedConcepts;
 
     @Out(4)
-    ConceptSchemeMetamacDto  conceptSchemeMetamacDto;
+    ConceptSchemeMetamacDto      conceptSchemeMetamacDto;
 }

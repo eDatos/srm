@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationsPresenter;
@@ -113,10 +113,10 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
         organisationsListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getOrganisations().size(), result.getTotalResults());
     }
 
-    private void setOrganisations(List<OrganisationMetamacDto> organisationDtos) {
+    private void setOrganisations(List<OrganisationMetamacBasicDto> organisationDtos) {
         OrganisationRecord[] records = new OrganisationRecord[organisationDtos.size()];
         int index = 0;
-        for (OrganisationMetamacDto scheme : organisationDtos) {
+        for (OrganisationMetamacBasicDto scheme : organisationDtos) {
             records[index++] = RecordUtils.getOrganisationRecord(scheme);
         }
         organisationsListGrid.getListGrid().setData(records);

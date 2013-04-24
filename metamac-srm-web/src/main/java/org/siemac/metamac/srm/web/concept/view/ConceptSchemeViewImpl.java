@@ -780,7 +780,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             getUiHandlers().publishInternally(conceptSchemeDto, null);
         } else {
             // If there were other version marked as the latest, ask the user what to do
-            ConceptSchemeMetamacDto latest = result.getConceptSchemeList().get(0);
+            ConceptSchemeMetamacBasicDto latest = result.getConceptSchemeList().get(0);
             ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().conceptSchemeShouldBeMarkAsTheLatest(latest.getVersionLogic()));
             confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 

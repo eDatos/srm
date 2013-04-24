@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
@@ -406,13 +407,13 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
-    public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+    public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         setConceptScheme(conceptSchemeMetamacDto);
         setConcept(conceptDto, roles, relatedConcepts);
     }
 
     @Override
-    public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
+    public void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts) {
         this.conceptDto = conceptDto;
 
         getUiHandlers().retrieveConceptsByScheme(conceptDto.getItemSchemeVersionUrn());
@@ -471,7 +472,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         }
     }
 
-    private void setConceptViewMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
+    private void setConceptViewMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts) {
         // Identifiers Form
         identifiersForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
@@ -528,7 +529,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         annotationsPanel.setAnnotations(conceptDto.getAnnotations(), conceptSchemeMetamacDto);
     }
 
-    private void setConceptEditionMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacDto> relatedConcepts) {
+    private void setConceptEditionMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts) {
         // IDENTIFIERS FORM
         identifiersEditionForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersEditionForm.setValue(ConceptDS.CODE_VIEW, conceptDto.getCode());

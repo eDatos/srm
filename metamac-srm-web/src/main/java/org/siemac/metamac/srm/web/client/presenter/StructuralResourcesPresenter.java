@@ -7,7 +7,7 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.NameTokens;
@@ -81,7 +81,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
         void setDsdList(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos);
         void setConceptSchemeList(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos);
-        void setOrganisationSchemeList(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
+        void setOrganisationSchemeList(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos);
         void setCategorySchemesList(List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos);
         void setCodelistList(List<CodelistMetamacBasicDto> codelistMetamacDtos);
 
