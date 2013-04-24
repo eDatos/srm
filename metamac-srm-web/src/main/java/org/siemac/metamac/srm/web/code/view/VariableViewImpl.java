@@ -8,6 +8,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
@@ -413,7 +414,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableElementsForFusion(GetVariableElementsResult result) {
         if (createFusionWindow != null) {
-            createFusionWindow.setRelatedResources(RelatedResourceUtils.getVariableElementDtosAsRelatedResourceDtos(result.getVariableElements()));
+            createFusionWindow.setRelatedResources(RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()));
             createFusionWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
         }
     }
@@ -421,7 +422,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableElementsForSegregation(GetVariableElementsResult result) {
         if (createSegregationWindow != null) {
-            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementDtosAsRelatedResourceDtos(result.getVariableElements()));
+            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()));
             createSegregationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
         }
     }
@@ -431,10 +432,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         variableElementOperationsLayout.setVariableElementOperations(variableElementOperationDtos);
     }
 
-    private void setVariableElements(List<VariableElementDto> variableElementDtos) {
+    private void setVariableElements(List<VariableElementBasicDto> variableElementDtos) {
         VariableElementRecord[] records = new VariableElementRecord[variableElementDtos.size()];
         int index = 0;
-        for (VariableElementDto element : variableElementDtos) {
+        for (VariableElementBasicDto element : variableElementDtos) {
             records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getVariableElementRecord(element);
         }
         variableElementListGrid.getListGrid().setData(records);

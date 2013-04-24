@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
@@ -149,6 +150,15 @@ public class RecordUtils {
     public static VariableElementRecord getVariableElementRecord(VariableElementDto variableElementDto) {
         VariableElementRecord record = new VariableElementRecord(variableElementDto.getId(), variableElementDto.getCode(), getLocalisedString(variableElementDto.getShortName()),
                 variableElementDto.getUrn(), variableElementDto);
+        return record;
+    }
+
+    public static VariableElementRecord getVariableElementRecord(VariableElementBasicDto variableElementDto) {
+        VariableElementRecord record = new VariableElementRecord();
+        record.setCode(variableElementDto.getCode());
+        record.setShortName(variableElementDto.getShortName());
+        record.setUrn(variableElementDto.getUrn());
+        record.setVariableElementBasicDto(variableElementDto);
         return record;
     }
 

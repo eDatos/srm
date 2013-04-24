@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableElementsPresenter;
@@ -114,10 +114,10 @@ public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElement
         variableElementsListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
     }
 
-    private void setVariableElements(List<VariableElementDto> variableElementDtos) {
+    private void setVariableElements(List<VariableElementBasicDto> variableElementDtos) {
         VariableElementRecord[] records = new VariableElementRecord[variableElementDtos.size()];
         int index = 0;
-        for (VariableElementDto variableElement : variableElementDtos) {
+        for (VariableElementBasicDto variableElement : variableElementDtos) {
             records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getVariableElementRecord(variableElement);
         }
         variableElementsListGrid.getListGrid().setData(records);

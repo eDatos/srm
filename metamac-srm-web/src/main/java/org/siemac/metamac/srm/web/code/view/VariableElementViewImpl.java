@@ -176,7 +176,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     @Override
     public void setVariableElementsForReplaceTo(GetVariableElementsResult result) {
         if (searchReplaceToElementsWindow != null) {
-            searchReplaceToElementsWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementDtosAsRelatedResourceDtos(result.getVariableElements()));
+            searchReplaceToElementsWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()));
             searchReplaceToElementsWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
         }
     }
@@ -184,7 +184,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     @Override
     public void setVariableElementsForSegregation(GetVariableElementsResult result) {
         if (createSegregationWindow != null) {
-            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementDtosAsRelatedResourceDtos(result.getVariableElements()));
+            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()));
             createSegregationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
         }
     }

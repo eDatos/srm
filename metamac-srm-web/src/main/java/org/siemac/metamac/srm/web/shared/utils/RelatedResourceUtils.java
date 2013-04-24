@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -314,10 +315,24 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
         return relatedResourceDto;
     }
 
+    public static RelatedResourceDto getVariableElementBasicDtoAsRelatedResourceDto(VariableElementBasicDto variableElement) {
+        RelatedResourceDto relatedResourceDto = getIdentifiableArtefactMetamacBasicDtoAsRelatedResourceDto(variableElement);
+        relatedResourceDto.setTitle(variableElement.getShortName());
+        return relatedResourceDto;
+    }
+
     public static List<RelatedResourceDto> getVariableElementDtosAsRelatedResourceDtos(List<VariableElementDto> variableElementDtos) {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(variableElementDtos.size());
         for (VariableElementDto element : variableElementDtos) {
             relatedResourceDtos.add(getVariableElementDtoAsRelatedResourceDto(element));
+        }
+        return relatedResourceDtos;
+    }
+
+    public static List<RelatedResourceDto> getVariableElementBasicDtosAsRelatedResourceDtos(List<VariableElementBasicDto> variableElementDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(variableElementDtos.size());
+        for (VariableElementBasicDto element : variableElementDtos) {
+            relatedResourceDtos.add(getVariableElementBasicDtoAsRelatedResourceDto(element));
         }
         return relatedResourceDtos;
     }
