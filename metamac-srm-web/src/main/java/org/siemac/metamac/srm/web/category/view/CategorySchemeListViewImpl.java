@@ -6,6 +6,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
@@ -212,10 +213,10 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                 categorySchemesPaginatedList.getTotalResults());
     }
 
-    private void setCategorySchemeList(List<CategorySchemeMetamacDto> categorySchemesDtos) {
+    private void setCategorySchemeList(List<CategorySchemeMetamacBasicDto> categorySchemesDtos) {
         CategorySchemeRecord[] records = new CategorySchemeRecord[categorySchemesDtos.size()];
         int index = 0;
-        for (CategorySchemeMetamacDto scheme : categorySchemesDtos) {
+        for (CategorySchemeMetamacBasicDto scheme : categorySchemesDtos) {
             records[index++] = org.siemac.metamac.srm.web.category.utils.RecordUtils.getCategorySchemeRecord(scheme);
         }
         categorySchemesList.getListGrid().setData(records);

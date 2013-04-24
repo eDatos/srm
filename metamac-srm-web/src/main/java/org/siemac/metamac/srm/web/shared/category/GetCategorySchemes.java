@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.shared.category;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
@@ -13,20 +13,20 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetCategorySchemes {
 
     @In(1)
-    int                            firstResult;
+    int                                 firstResult;
 
     @In(2)
-    int                            maxResults;
+    int                                 maxResults;
 
     @In(3)
-    CategorySchemeWebCriteria      categorySchemeWebCriteria;
+    CategorySchemeWebCriteria           categorySchemeWebCriteria;
 
     @Out(1)
-    List<CategorySchemeMetamacDto> categorySchemeList;
+    List<CategorySchemeMetamacBasicDto> categorySchemeList;
 
     @Out(2)
-    Integer                        firstResultOut;
+    Integer                             firstResultOut;
 
     @Out(3)
-    Integer                        totalResults;
+    Integer                             totalResults;
 }

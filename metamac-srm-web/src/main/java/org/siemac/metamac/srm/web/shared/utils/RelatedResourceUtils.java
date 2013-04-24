@@ -7,6 +7,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -145,10 +146,24 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
         return relatedResourceDto;
     }
 
+    public static RelatedResourceDto getCategorySchemeMetamacBasicDtoAsRelatedResourceDto(CategorySchemeMetamacBasicDto categorySchemeMetamacDto) {
+        RelatedResourceDto relatedResourceDto = getNameableArtefactMetamacBasicDto(categorySchemeMetamacDto);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CATEGORY_SCHEME);
+        return relatedResourceDto;
+    }
+
     public static List<RelatedResourceDto> geCategorySchemeMetamacDtosAsRelatedResourceDtos(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos) {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(categorySchemeMetamacDtos.size());
         for (CategorySchemeMetamacDto categoryScheme : categorySchemeMetamacDtos) {
             relatedResourceDtos.add(getCategorySchemeMetamacDtoAsRelatedResourceDto(categoryScheme));
+        }
+        return relatedResourceDtos;
+    }
+
+    public static List<RelatedResourceDto> geCategorySchemeMetamacBasicDtosAsRelatedResourceDtos(List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(categorySchemeMetamacDtos.size());
+        for (CategorySchemeMetamacBasicDto categoryScheme : categorySchemeMetamacDtos) {
+            relatedResourceDtos.add(getCategorySchemeMetamacBasicDtoAsRelatedResourceDto(categoryScheme));
         }
         return relatedResourceDtos;
     }

@@ -124,7 +124,7 @@ public abstract class CategorisationsPanel extends VLayout {
 
     public void setCategorySchemes(GetCategorySchemesResult result) {
         if (searchCategoriesWindow != null) {
-            List<RelatedResourceDto> categorySchemes = RelatedResourceUtils.geCategorySchemeMetamacDtosAsRelatedResourceDtos(result.getCategorySchemeList());
+            List<RelatedResourceDto> categorySchemes = RelatedResourceUtils.geCategorySchemeMetamacBasicDtosAsRelatedResourceDtos(result.getCategorySchemeList());
             searchCategoriesWindow.setFilterRelatedResources(categorySchemes);
             searchCategoriesWindow.refreshFilterListPaginationInfo(result.getFirstResultOut(), categorySchemes.size(), result.getTotalResults());
         }

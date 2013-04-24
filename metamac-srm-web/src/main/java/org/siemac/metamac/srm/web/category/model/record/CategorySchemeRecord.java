@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.category.model.record;
 
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
@@ -31,11 +32,19 @@ public class CategorySchemeRecord extends ItemSchemeRecord {
         setAttribute(CategorySchemeDS.DTO, categorySchemeMetamacDto);
     }
 
+    public void setCategorySchemeBasicDto(CategorySchemeMetamacBasicDto categorySchemeMetamacDto) {
+        setAttribute(CategorySchemeDS.DTO, categorySchemeMetamacDto);
+    }
+
     public ProcStatusEnum getProcStatus() {
         return ((CategorySchemeMetamacDto) getAttributeAsObject(CategorySchemeDS.DTO)).getLifeCycle().getProcStatus();
     }
 
     public CategorySchemeMetamacDto getCategorySchemeDto() {
         return (CategorySchemeMetamacDto) getAttributeAsObject(CategorySchemeDS.DTO);
+    }
+
+    public CategorySchemeMetamacBasicDto getCategorySchemeBasicDto() {
+        return (CategorySchemeMetamacBasicDto) getAttributeAsObject(CategorySchemeDS.DTO);
     }
 }
