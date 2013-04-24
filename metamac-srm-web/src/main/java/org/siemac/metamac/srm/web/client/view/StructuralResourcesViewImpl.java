@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.view;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
@@ -177,7 +177,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     }
 
     @Override
-    public void setCategorySchemesList(List<CategorySchemeMetamacDto> categorySchemeMetamacDtos) {
+    public void setCategorySchemesList(List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos) {
         categorySchemeListGrid.setCategorySchemes(categorySchemeMetamacDtos);
     }
 

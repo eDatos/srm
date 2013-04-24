@@ -132,7 +132,7 @@ public abstract class CategorisationsPanel extends VLayout {
 
     public void setCategories(GetCategoriesResult result) {
         if (searchCategoriesWindow != null) {
-            List<RelatedResourceDto> categories = RelatedResourceUtils.getCategoryMetamacDtosAsRelatedResourceDtos(result.getCategoryMetamacDtos());
+            List<RelatedResourceDto> categories = RelatedResourceUtils.getCategoryMetamacBasicDtosAsRelatedResourceDtos(result.getCategoryMetamacDtos());
             searchCategoriesWindow.setSourceRelatedResources(categories);
             searchCategoriesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), categories.size(), result.getTotalResults());
         }

@@ -1,11 +1,15 @@
 package org.siemac.metamac.srm.web.category.model.record;
 
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.web.category.model.ds.CategoryDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CategoryRecord extends ListGridRecord {
+
+    public CategoryRecord() {
+    }
 
     public CategoryRecord(Long id, String code, String name, String urn, String categorySchemeUrn, String description, CategoryMetamacDto categoryDto) {
         setId(id);
@@ -45,6 +49,10 @@ public class CategoryRecord extends ListGridRecord {
         setAttribute(CategoryDS.DTO, categoryDto);
     }
 
+    public void setCategoryBasicDto(CategoryMetamacBasicDto categoryDto) {
+        setAttribute(CategoryDS.DTO, categoryDto);
+    }
+
     public Long getId() {
         return getAttributeAsLong(CategoryDS.ID);
     }
@@ -71,5 +79,9 @@ public class CategoryRecord extends ListGridRecord {
 
     public CategoryMetamacDto getCategoryDto() {
         return (CategoryMetamacDto) getAttributeAsObject(CategoryDS.DTO);
+    }
+
+    public CategoryMetamacBasicDto getCategoryBasicDto() {
+        return (CategoryMetamacBasicDto) getAttributeAsObject(CategoryDS.DTO);
     }
 }

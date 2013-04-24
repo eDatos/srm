@@ -6,6 +6,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
@@ -176,10 +177,24 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
         return relatedResourceDto;
     }
 
+    public static RelatedResourceDto getCategoryMetamacBasicDtoAsRelatedResourceDto(CategoryMetamacBasicDto categoryMetamacDto) {
+        RelatedResourceDto relatedResourceDto = getNameableArtefactMetamacBasicDto(categoryMetamacDto);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CATEGORY);
+        return relatedResourceDto;
+    }
+
     public static List<RelatedResourceDto> getCategoryMetamacDtosAsRelatedResourceDtos(List<CategoryMetamacDto> categoryMetamacDtos) {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(categoryMetamacDtos.size());
         for (CategoryMetamacDto category : categoryMetamacDtos) {
             relatedResourceDtos.add(getCategoryMetamacDtoAsRelatedResourceDto(category));
+        }
+        return relatedResourceDtos;
+    }
+
+    public static List<RelatedResourceDto> getCategoryMetamacBasicDtosAsRelatedResourceDtos(List<CategoryMetamacBasicDto> categoryMetamacDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(categoryMetamacDtos.size());
+        for (CategoryMetamacBasicDto category : categoryMetamacDtos) {
+            relatedResourceDtos.add(getCategoryMetamacBasicDtoAsRelatedResourceDto(category));
         }
         return relatedResourceDtos;
     }

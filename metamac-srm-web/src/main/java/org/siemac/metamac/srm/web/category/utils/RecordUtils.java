@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.category.utils;
 
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
@@ -52,6 +53,15 @@ public class RecordUtils {
     public static CategoryRecord getCategoryRecord(CategoryMetamacDto categoryDto) {
         CategoryRecord record = new CategoryRecord(categoryDto.getId(), categoryDto.getCode(), getLocalisedString(categoryDto.getName()), categoryDto.getUrn(), categoryDto.getItemSchemeVersionUrn(),
                 getLocalisedString(categoryDto.getDescription()), categoryDto);
+        return record;
+    }
+
+    public static CategoryRecord getCategoryRecord(CategoryMetamacBasicDto categoryDto) {
+        CategoryRecord record = new CategoryRecord();
+        record.setCode(categoryDto.getCode());
+        record.setName(getLocalisedString(categoryDto.getName()));
+        record.setUrn(categoryDto.getUrn());
+        record.setCategoryBasicDto(categoryDto);
         return record;
     }
 }
