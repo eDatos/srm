@@ -70,7 +70,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         CodelistMetamacBasicDto target = new CodelistMetamacBasicDto();
-        maintainableArtefactDoToMaintainableArtefactBasicDto(source, source.getLifeCycleMetadata(), target);
+        itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         return target;
     }
 
@@ -111,7 +111,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         CodeMetamacBasicDto target = new CodeMetamacBasicDto();
-        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+        itemDoToItemBasicDto(source, target);
         return target;
     }
 
@@ -264,6 +264,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         VariableElementBasicDto target = new VariableElementBasicDto();
+        target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         identifiableArtefactDoToIdentifiableArtefactBasicDto(source.getIdentifiableArtefact(), target);
         return target;
     }
