@@ -16,7 +16,7 @@ Application DtosMetamacCategoryDomain {
 		}
 		
 		"Dto for CategorySchemeMetamac"
-		DataTransferObject CategorySchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		DataTransferObject CategorySchemeMetamacBasicDto extends @ItemSchemeMetamacBasicDto {
 		}				
 
 		"Dto for CategoryMetamac"
@@ -24,7 +24,7 @@ Application DtosMetamacCategoryDomain {
 		}
 		
 		"Dto for CategoryMetamac"
-		DataTransferObject CategoryMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
+		DataTransferObject CategoryMetamacBasicDto extends @ItemMetamacBasicDto {
 		}
 	}
 }

@@ -39,7 +39,7 @@ Application DtosMetamacCodeDomain {
 		}
 		
 		"Dto for CodelistMetamac"
-		DataTransferObject CodelistMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		DataTransferObject CodelistMetamacBasicDto extends @ItemSchemeMetamacBasicDto {
 		}		
 
 		"Dto for CodeMetamac"
@@ -51,7 +51,7 @@ Application DtosMetamacCodeDomain {
 		}
 		
 		"Dto for CodeMetamac"
-		DataTransferObject CodeMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
+		DataTransferObject CodeMetamacBasicDto extends @ItemMetamacBasicDto {
 		}
 		
 		"Dto for CodelistFamily"		
@@ -116,6 +116,8 @@ Application DtosMetamacCodeDomain {
 
 		"Dto for VariableElement"
 		DataTransferObject VariableElementBasicDto extends @IdentifiableArtefactMetamacBasicDto {
+			"Short name"
+			- @InternationalStringDto shortName nullable;
 		}
 		
 		"Dto for VariableElementOperation"		

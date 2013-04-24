@@ -26,8 +26,18 @@ Application SrmDtosBaseCore {
 			String internalPublicationUser;
 			JAVADATE externalPublicationDate;
 			String externalPublicationUser;
-		}     
+		}    
 		
+   		DataTransferObject StructureMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		}		
+ 
+   		DataTransferObject ItemSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		}
+		
+  		DataTransferObject ItemMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
+            String itemSchemeVersionUrn;
+		} 
+				
     	DataTransferObject LifeCycleDto {
 			"Status"
 			- @ProcStatusEnum procStatus required;

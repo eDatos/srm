@@ -50,7 +50,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
             return null;
         }
         ConceptSchemeMetamacBasicDto target = new ConceptSchemeMetamacBasicDto();
-        maintainableArtefactDoToMaintainableArtefactBasicDto(source, source.getLifeCycleMetadata(), target);
+        itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         target.setType(source.getType());
         target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
         return target;
@@ -105,7 +105,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
             return null;
         }
         ConceptMetamacBasicDto target = new ConceptMetamacBasicDto();
-        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+        itemDoToItemBasicDto(source, target);
         return target;
     }
 

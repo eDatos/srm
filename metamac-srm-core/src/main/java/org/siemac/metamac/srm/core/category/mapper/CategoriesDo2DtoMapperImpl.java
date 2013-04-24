@@ -41,7 +41,7 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
             return null;
         }
         CategorySchemeMetamacBasicDto target = new CategorySchemeMetamacBasicDto();
-        maintainableArtefactDoToMaintainableArtefactBasicDto(source, source.getLifeCycleMetadata(), target);
+        itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         return target;
     }
 
@@ -71,7 +71,7 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
             return null;
         }
         CategoryMetamacBasicDto target = new CategoryMetamacBasicDto();
-        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+        itemDoToItemBasicDto(source, target);
         return target;
     }
 

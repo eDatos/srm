@@ -1,5 +1,6 @@
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-dtos-organisations.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base-dtos.btdesign"
+import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums-organisation.btdesign"
 
 Application DtosMetamacOrganisationDomain {
 	basePackage=unused
@@ -14,7 +15,9 @@ Application DtosMetamacOrganisationDomain {
 		}
 		
 		"Dto for OrganisationSchemeMetamac"
-		DataTransferObject OrganisationSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		DataTransferObject OrganisationSchemeMetamacBasicDto extends @ItemSchemeMetamacBasicDto {
+			"Type"
+			- @OrganisationSchemeTypeEnum type;
 		}		
 				
 		"Dto for OrganisationMetamac"
@@ -22,7 +25,9 @@ Application DtosMetamacOrganisationDomain {
 		}		
 		
 		"Dto for OrganisationMetamac"
-		DataTransferObject OrganisationMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
+		DataTransferObject OrganisationMetamacBasicDto extends @ItemMetamacBasicDto {
+			"Type"
+			- @OrganisationTypeEnum type;
 		}
 		
 	}

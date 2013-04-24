@@ -22,7 +22,7 @@ Application DtosMetamacConceptDomain {
 		}
 
 		"Dto for ConceptSchemeMetamac"
-		DataTransferObject ConceptSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		DataTransferObject ConceptSchemeMetamacBasicDto extends @ItemSchemeMetamacBasicDto {
 			"Type"
 			- @ConceptSchemeTypeEnum type required;
 			"Related operation, only when type is Operation"
@@ -45,7 +45,7 @@ Application DtosMetamacConceptDomain {
 		}
 		
 		"Dto for ConceptMetamac"
-		DataTransferObject ConceptMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
+		DataTransferObject ConceptMetamacBasicDto extends @ItemMetamacBasicDto {
 		}
 		
         "Dto for ConceptType"

@@ -42,7 +42,8 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
             return null;
         }
         OrganisationSchemeMetamacBasicDto target = new OrganisationSchemeMetamacBasicDto();
-        maintainableArtefactDoToMaintainableArtefactBasicDto(source, source.getLifeCycleMetadata(), target);
+        target.setType(source.getOrganisationSchemeType());
+        itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         return target;
     }
 
@@ -71,7 +72,8 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
             return null;
         }
         OrganisationMetamacBasicDto target = new OrganisationMetamacBasicDto();
-        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+        target.setType(source.getOrganisationType());
+        itemDoToItemBasicDto(source, target);
         return target;
     }
 

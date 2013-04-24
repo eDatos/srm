@@ -662,6 +662,10 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(30, organisationsPagedResult.getPaginatorResult().getTotalResults().intValue());
             assertEquals(30, organisationsPagedResult.getResults().size());
 
+            OrganisationMetamacBasicDto organisationMetamacBasicDto = getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_100_V1_ORGANISATION_1);
+            assertEquals(ORGANISATION_SCHEME_100_V1, organisationMetamacBasicDto.getItemSchemeVersionUrn());
+            assertEquals(OrganisationTypeEnum.AGENCY, organisationMetamacBasicDto.getType());
+
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_100_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_100_V1_ORGANISATION_1));
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_100_V1_ORGANISATION_2));
@@ -1075,7 +1079,6 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             }
         }
     }
-
     @Test
     public void testCreateOrganisation() throws Exception {
         OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.ORGANISATION_UNIT);

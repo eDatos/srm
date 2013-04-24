@@ -38,7 +38,7 @@ Application DtosMetamacDsdDomain {
 		}
 		
 		"Dto for DataStructureDefinitionMetamac"
-		DataTransferObject DataStructureDefinitionMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+		DataTransferObject DataStructureDefinitionMetamacBasicDto extends @StructureMetamacBasicDto {
 			"Statistical operation"
 			- @ExternalItemDto statisticalOperation;
 		}

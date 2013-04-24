@@ -3,9 +3,12 @@ package org.siemac.metamac.srm.core.base.mapper;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
+import org.siemac.metamac.srm.core.base.dto.ItemMetamacBasicDto;
+import org.siemac.metamac.srm.core.base.dto.ItemSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
+import org.siemac.metamac.srm.core.base.dto.StructureMetamacBasicDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -14,6 +17,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
@@ -46,6 +50,22 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
     }
 
     @Override
+    public void itemSchemeVersionDoToItemSchemeBasicDto(ItemSchemeVersion source, SrmLifeCycleMetadata lifeCycleSource, ItemSchemeMetamacBasicDto target) {
+        maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
+    }
+
+    @Override
+    public void structureVersionDoToStructureBasicDto(StructureVersion source, SrmLifeCycleMetadata lifeCycleSource, StructureMetamacBasicDto target) {
+        maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
+    }
+
+    @Override
+    public void itemDoToItemBasicDto(Item source, ItemMetamacBasicDto target) {
+        target.setItemSchemeVersionUrn(source.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        nameableArtefactDoToNameableArtefactBasicDto(source, target);
+    }
+
+    @Override
     public void identifiableArtefactDoToIdentifiableArtefactBasicDto(IdentifiableArtefact source, IdentifiableArtefactMetamacBasicDto target) {
         target.setCode(source.getCode());
         target.setUrn(source.getUrn());
@@ -58,13 +78,11 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         identifiableArtefactDoToIdentifiableArtefactBasicDto(source, target);
     }
 
-    @Override
-    public void nameableArtefactDoToNameableArtefactBasicDto(Item source, NameableArtefactMetamacBasicDto target) {
+    private void nameableArtefactDoToNameableArtefactBasicDto(Item source, NameableArtefactMetamacBasicDto target) {
         nameableArtefactDoToNameableArtefactBasicDto(source.getNameableArtefact(), target);
     }
 
-    @Override
-    public void maintainableArtefactDoToMaintainableArtefactBasicDto(MaintainableArtefact source, SrmLifeCycleMetadata lifeCycleSource, MaintainableArtefactMetamacBasicDto target) {
+    private void maintainableArtefactDoToMaintainableArtefactBasicDto(MaintainableArtefact source, SrmLifeCycleMetadata lifeCycleSource, MaintainableArtefactMetamacBasicDto target) {
         target.setVersionLogic(source.getVersionLogic());
         if (source.getMaintainer() != null) {
             RelatedResourceDto maintainerDto = new RelatedResourceDto();
@@ -78,11 +96,6 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(lifeCycleSource.getExternalPublicationDate()));
         target.setExternalPublicationUser(lifeCycleSource.getExternalPublicationUser());
         nameableArtefactDoToNameableArtefactBasicDto(source, target);
-    }
-
-    @Override
-    public void maintainableArtefactDoToMaintainableArtefactBasicDto(ItemSchemeVersion source, SrmLifeCycleMetadata lifeCycleSource, MaintainableArtefactMetamacBasicDto target) {
-        maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
     }
 
 }
