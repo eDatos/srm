@@ -134,6 +134,9 @@ Application DsdsMetamac {
 			"Visualisation metadata Stub, dimensions list ordered"
 			- Bag<@MeasureDimensionPrecision> showDecimalsPrecisions fetch="lazy" cascade="all-delete-orphan" inverse orderby="id asc" <-> dsdVersion;
 			
+			"Extension point to add Metadata for each dimension"
+			- Bag<@DimensionVisualizationInfo> dimensionVisualizationInfos cascade="all-delete-orphan" fetch="lazy" inverse orderby="id asc" <-> dsdVersion;
+			
 			"Statistical operation"
 			- @ExternalItem statisticalOperation nullable cascade="all" databaseColumn="STATISTICAL_OPERATION_FK";
 			
@@ -177,6 +180,24 @@ Application DsdsMetamac {
 			
 			"DSD version"
 			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> showDecimalsPrecisions;
+		}
+		
+		Entity DimensionVisualizationInfo {
+			databaseTable="TB_M_DIM_VIZ_INFO"
+			hint="idSequence=M_DIM_VIZ_INFO"
+			!auditable
+
+			"DSD dimension"
+			-@DimensionComponent dimension cascade="none" databaseColumn="DIM_COMPONENT_FK";
+			
+			"Display order of the categories of a dimension"
+			- @CodelistOrderVisualisation displayOrder nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="DISPLAT_ORDER_FK";
+
+			"For variables with hierarchies, indicates how the tree will be displayed when first displayed"
+			- @CodelistOpennessVisualisation hierarchyLevelsOpen nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="HIERARCHY_LEVELS_OPEN_FK";
+			
+			"DSD version"
+			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> dimensionVisualizationInfos;
 		}
 
 	}

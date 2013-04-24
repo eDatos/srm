@@ -30,6 +30,9 @@ Application DtosMetamacDsdDomain {
 			"Visualisation metadata Stub, dimensions list ordered"
 			- List<@MeasureDimensionPrecisionDto> showDecimalsPrecisions nullable;
 			
+			"Extension point to add Metadata for each dimension"
+			- List<@DimensionVisualizationInfoDto> dimensionVisualizationInfos nullable;
+			
 			"Statistical operation"
 			- @ExternalItemDto statisticalOperation nullable;
 		}
@@ -40,9 +43,19 @@ Application DtosMetamacDsdDomain {
 			- @ExternalItemDto statisticalOperation;
 		}
 		
+		"Dto for MeasureDimensionPrecisionDto"
 		DataTransferObject MeasureDimensionPrecisionDto extends @RelatedResourceDto {
 			"Show Decimal Precision, must a value between 0 and 6"
 			Integer showDecimalPrecision;
+		}
+		
+		"Dto for DimensionVisualizationInfoDto"
+		DataTransferObject DimensionVisualizationInfoDto extends @RelatedResourceDto {
+			"Display order of the categories of a dimension"
+			- @RelatedResourceDto displayOrder nullable;
+			
+			"For variables with hierarchies, indicates how the tree will be displayed when first displayed"
+			- @RelatedResourceDto hierarchyLevelsOpen nullable;
 		}
 		
 	}
