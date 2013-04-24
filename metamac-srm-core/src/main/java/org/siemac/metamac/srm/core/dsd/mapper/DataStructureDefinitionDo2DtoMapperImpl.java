@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
+import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.dsd.dto.DimensionVisualizationInfoDto;
+import org.siemac.metamac.srm.core.dsd.dto.DimensionVisualisationInfoDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,6 +32,9 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.structure.mapper.DataStructureDefinitionDo2DtoMapper do2DtoMapperSdmxSrm;
+
+    @Autowired
+    private CodesDo2DtoMapper                                                                     codesDo2DtoMapper;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -113,8 +117,8 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         }
 
         // Dimension Visualization Info
-        for (DimensionVisualizationInfo dimensionVisualizationInfo : source.getDimensionVisualizationInfos()) {
-            target.addDimensionVisualizationInfo(dimensionVisualizationInfoDoToDimensionVisualizationInfoDto(dimensionVisualizationInfo));
+        for (DimensionVisualizationInfo dimensionVisualisationInfo : source.getDimensionVisualisationInfos()) {
+            target.addDimensionVisualisationInfo(dimensionVisualisationInfoDoToDimensionVisualisationInfoDto(dimensionVisualisationInfo));
         }
 
         return target;
@@ -151,19 +155,21 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         return target;
     }
 
-    private DimensionVisualizationInfoDto dimensionVisualizationInfoDoToDimensionVisualizationInfoDto(DimensionVisualizationInfo source) {
+    private DimensionVisualisationInfoDto dimensionVisualisationInfoDoToDimensionVisualisationInfoDto(DimensionVisualizationInfo source) {
         if (source == null) {
             return null;
         }
 
-        DimensionVisualizationInfoDto target = new DimensionVisualizationInfoDto();
-        // target.setCode(source.getConcept().getNameableArtefact().getCode());
-        // target.setTitle(null);
-        // target.setType(RelatedResourceTypeEnum.DIMENSION);
-        // target.setUrn(source.getConcept().getNameableArtefact().getUrn());
-        // target.setUrnProvider(source.getConcept().getNameableArtefact().getUrnProvider());
-        // target.setShowDecimalPrecision(source.getShowDecimalPrecision());
+        DimensionVisualisationInfoDto target = new DimensionVisualisationInfoDto();
+        target.setCode(source.getDimension().getCode());
+        target.setTitle(null);
+        target.setType(RelatedResourceTypeEnum.DIMENSION);
+        target.setUrn(source.getDimension().getUrn());
+        target.setUrnProvider(source.getDimension().getUrnProvider());
+        target.setDisplayOrder(codesDo2DtoMapper.codelistOrderVisualisationDoToRelatedResourceDto(source.getDisplayOrder()));
+        target.setHierarchyLevelsOpen(codesDo2DtoMapper.codelistOpennessVisualisationDoToRelatedResourceDto(source.getHierarchyLevelsOpen()));
 
         return target;
     }
+
 }

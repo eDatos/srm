@@ -65,5 +65,7 @@ public interface CodesDo2DtoMapper {
     public List<CodelistVisualisationDto> codelistOrderVisualisationsDoToDto(List<CodelistOrderVisualisation> sources);
     public CodelistVisualisationDto codelistOpennessVisualisationDoToDto(CodelistOpennessVisualisation source);
     public List<CodelistVisualisationDto> codelistOpennessVisualisationsDoToDto(List<CodelistOpennessVisualisation> sources);
+    public RelatedResourceDto codelistOrderVisualisationDoToRelatedResourceDto(CodelistOrderVisualisation source);
+    public RelatedResourceDto codelistOpennessVisualisationDoToRelatedResourceDto(CodelistOpennessVisualisation source);
 
 }

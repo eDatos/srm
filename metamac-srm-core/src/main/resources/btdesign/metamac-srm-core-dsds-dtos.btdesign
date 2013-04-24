@@ -31,7 +31,7 @@ Application DtosMetamacDsdDomain {
 			- List<@MeasureDimensionPrecisionDto> showDecimalsPrecisions nullable;
 			
 			"Extension point to add Metadata for each dimension"
-			- List<@DimensionVisualizationInfoDto> dimensionVisualizationInfos nullable;
+			- List<@DimensionVisualisationInfoDto> dimensionVisualisationInfos nullable;
 			
 			"Statistical operation"
 			- @ExternalItemDto statisticalOperation nullable;
@@ -49,8 +49,8 @@ Application DtosMetamacDsdDomain {
 			Integer showDecimalPrecision;
 		}
 		
-		"Dto for DimensionVisualizationInfoDto"
-		DataTransferObject DimensionVisualizationInfoDto extends @RelatedResourceDto {
+		"Dto for DimensionVisualisationInfoDto"
+		DataTransferObject DimensionVisualisationInfoDto extends @RelatedResourceDto {
 			"Display order of the categories of a dimension"
 			- @RelatedResourceDto displayOrder nullable;
 			

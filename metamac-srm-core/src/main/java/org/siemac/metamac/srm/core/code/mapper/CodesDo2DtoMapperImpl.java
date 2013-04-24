@@ -387,6 +387,28 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         return targets;
     }
 
+    @Override
+    public RelatedResourceDto codelistOrderVisualisationDoToRelatedResourceDto(CodelistOrderVisualisation source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = new RelatedResourceDto();
+        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
+        target.setType(null);
+        return target;
+    }
+
+    @Override
+    public RelatedResourceDto codelistOpennessVisualisationDoToRelatedResourceDto(CodelistOpennessVisualisation source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = new RelatedResourceDto();
+        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
+        target.setType(null);
+        return target;
+    }
+
     private RelatedResourceDto codelistDoToRelatedResourceDto(CodelistVersionMetamac source) {
         if (source == null) {
             return null;
@@ -426,25 +448,5 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             targets.add(variableElementDoToRelatedResourceDto(source));
         }
         return targets;
-    }
-
-    private RelatedResourceDto codelistOrderVisualisationDoToRelatedResourceDto(CodelistOrderVisualisation source) {
-        if (source == null) {
-            return null;
-        }
-        RelatedResourceDto target = new RelatedResourceDto();
-        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
-        target.setType(null);
-        return target;
-    }
-
-    private RelatedResourceDto codelistOpennessVisualisationDoToRelatedResourceDto(CodelistOpennessVisualisation source) {
-        if (source == null) {
-            return null;
-        }
-        RelatedResourceDto target = new RelatedResourceDto();
-        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
-        target.setType(null);
-        return target;
     }
 }

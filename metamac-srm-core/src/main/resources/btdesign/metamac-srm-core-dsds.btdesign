@@ -135,7 +135,7 @@ Application DsdsMetamac {
 			- Bag<@MeasureDimensionPrecision> showDecimalsPrecisions fetch="lazy" cascade="all-delete-orphan" inverse orderby="id asc" <-> dsdVersion;
 			
 			"Extension point to add Metadata for each dimension"
-			- Bag<@DimensionVisualizationInfo> dimensionVisualizationInfos cascade="all-delete-orphan" fetch="lazy" inverse orderby="id asc" <-> dsdVersion;
+			- Bag<@DimensionVisualizationInfo> dimensionVisualisationInfos cascade="all-delete-orphan" fetch="lazy" inverse orderby="id asc" <-> dsdVersion;
 			
 			"Statistical operation"
 			- @ExternalItem statisticalOperation nullable cascade="all" databaseColumn="STATISTICAL_OPERATION_FK";
@@ -183,8 +183,8 @@ Application DsdsMetamac {
 		}
 		
 		Entity DimensionVisualizationInfo {
-			databaseTable="TB_M_DIM_VIZ_INFO"
-			hint="idSequence=M_DIM_VIZ_INFO"
+			databaseTable="TB_M_DIM_VIS_INFO"
+			hint="idSequence=M_DIM_VIS_INFO"
 			!auditable
 
 			"DSD dimension"
@@ -197,7 +197,7 @@ Application DsdsMetamac {
 			- @CodelistOpennessVisualisation hierarchyLevelsOpen nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="HIERARCHY_LEVELS_OPEN_FK";
 			
 			"DSD version"
-			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> dimensionVisualizationInfos;
+			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> dimensionVisualisationInfos;
 		}
 
 	}
