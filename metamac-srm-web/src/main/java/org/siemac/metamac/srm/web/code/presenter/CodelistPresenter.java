@@ -961,7 +961,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(GetCodelistFamiliesResult result) {
-                List<RelatedResourceDto> families = RelatedResourceUtils.getCodelistFamilyDtosAsRelatedResourceDtos(result.getFamilies());
+                List<RelatedResourceDto> families = RelatedResourceUtils.getCodelistFamilyBasicDtosAsRelatedResourceDtos(result.getFamilies());
                 getView().setFamilies(families, result.getFirstResultOut(), result.getTotalResults());
             }
         });

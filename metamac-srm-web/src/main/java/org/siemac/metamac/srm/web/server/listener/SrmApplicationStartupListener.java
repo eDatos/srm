@@ -14,14 +14,14 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
-import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
@@ -91,7 +91,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
             criteria.getPaginator().setCountTotalResults(true);
             criteria.setRestriction(new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.URN.name(), organisationUrn, OperationType.EQ));
 
-            MetamacCriteriaResult<OrganisationMetamacDto> result = srmCoreServiceFacade.findOrganisationsByCondition(getStartupServiceContext(), criteria);
+            MetamacCriteriaResult<OrganisationMetamacBasicDto> result = srmCoreServiceFacade.findOrganisationsByCondition(getStartupServiceContext(), criteria);
             if (result.getResults().isEmpty()) {
                 String errorMessage = "Property [" + propertyKey + "] is not properly filled. The organisation URN specified is not correct. Aborting application startup...";
                 abortApplicationStartup(errorMessage);
@@ -116,7 +116,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
                 criteria.getPaginator().setCountTotalResults(true);
                 criteria.setRestriction(new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.URN.name(), conceptUrn, OperationType.EQ));
 
-                MetamacCriteriaResult<ConceptMetamacDto> result = srmCoreServiceFacade.findConceptsByCondition(getStartupServiceContext(), criteria);
+                MetamacCriteriaResult<ConceptMetamacBasicDto> result = srmCoreServiceFacade.findConceptsByCondition(getStartupServiceContext(), criteria);
                 if (result.getResults().isEmpty()) {
                     String errorMessage = "Property [" + propertyKey + "] is not properly filled. The concept URN specified is not correct. Aborting application startup...";
                     abortApplicationStartup(errorMessage);

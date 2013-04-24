@@ -14,7 +14,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.core.criteria.CodelistFamilyCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.CodelistFamilyCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -69,7 +69,7 @@ public class GetCodelistFamiliesActionHandler extends SecurityActionHandler<GetC
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<CodelistFamilyDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            MetamacCriteriaResult<CodelistFamilyBasicDto> result = srmCoreServiceFacade.findCodelistFamiliesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
             return new GetCodelistFamiliesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

@@ -1,11 +1,15 @@
 package org.siemac.metamac.srm.web.code.model.record;
 
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistFamilyDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CodelistFamilyRecord extends ListGridRecord {
+
+    public CodelistFamilyRecord() {
+    }
 
     public CodelistFamilyRecord(Long id, String code, String name, String urn, CodelistFamilyDto codelistFamilyDto) {
         setId(id);
@@ -41,5 +45,13 @@ public class CodelistFamilyRecord extends ListGridRecord {
 
     public CodelistFamilyDto getCodelistFamilyDto() {
         return (CodelistFamilyDto) getAttributeAsObject(CodelistFamilyDS.DTO);
+    }
+
+    public void setCodelistFamilyBasicDto(CodelistFamilyBasicDto codelistFamilyDto) {
+        setAttribute(CodelistFamilyDS.DTO, codelistFamilyDto);
+    }
+
+    public CodelistFamilyBasicDto getCodelistFamilyBasicDto() {
+        return (CodelistFamilyBasicDto) getAttributeAsObject(CodelistFamilyDS.DTO);
     }
 }

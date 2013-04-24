@@ -6,7 +6,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistFamilyRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistFamilyListPresenter;
@@ -198,10 +198,10 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
                 .refreshPaginationInfo(codelistFamiliesPaginatedList.getFirstResultOut(), codelistFamiliesPaginatedList.getFamilies().size(), codelistFamiliesPaginatedList.getTotalResults());
     }
 
-    private void setCodelistFamilies(List<CodelistFamilyDto> codelistFamilyDtos) {
+    private void setCodelistFamilies(List<CodelistFamilyBasicDto> codelistFamilyDtos) {
         CodelistFamilyRecord[] records = new CodelistFamilyRecord[codelistFamilyDtos.size()];
         int index = 0;
-        for (CodelistFamilyDto scheme : codelistFamilyDtos) {
+        for (CodelistFamilyBasicDto scheme : codelistFamilyDtos) {
             records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodelistFamilyRecord(scheme);
         }
         codelistFamilyList.getListGrid().setData(records);
