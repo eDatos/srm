@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.shared.concept;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -12,9 +12,8 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetConceptSchemeVersions {
 
     @In(1)
-    String                        urn;
+    String                             urn;
 
     @Out(1)
-    List<ConceptSchemeMetamacDto> conceptSchemeDtos;
-
+    List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos;
 }

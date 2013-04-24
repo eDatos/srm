@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -16,10 +17,10 @@ public class ConceptSchemeVersionsSectionStack extends ItemSchemeVersionsSection
         super(title);
     }
 
-    public void setConceptSchemes(List<ConceptSchemeMetamacDto> conceptSchemeDtos) {
+    public void setConceptSchemes(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos) {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
-        for (ConceptSchemeMetamacDto conceptSchemeDto : conceptSchemeDtos) {
+        for (ConceptSchemeMetamacBasicDto conceptSchemeDto : conceptSchemeDtos) {
             listGrid.addData(RecordUtils.getConceptSchemeRecord(conceptSchemeDto));
         }
     }

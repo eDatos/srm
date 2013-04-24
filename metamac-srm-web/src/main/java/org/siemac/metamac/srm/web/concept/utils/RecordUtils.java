@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.utils;
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
@@ -31,6 +32,22 @@ public class RecordUtils {
         record.setExternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(conceptSchemeDto.getLifeCycle().getExternalPublicationUser());
         record.setConceptSchemeDto(conceptSchemeDto);
+        return record;
+    }
+
+    public static ConceptSchemeRecord getConceptSchemeRecord(ConceptSchemeMetamacBasicDto conceptSchemeDto) {
+        ConceptSchemeRecord record = new ConceptSchemeRecord();
+        record.setCode(conceptSchemeDto.getCode());
+        record.setName(getLocalisedString(conceptSchemeDto.getName()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getProcStatus()));
+        record.setVersionLogic(conceptSchemeDto.getVersionLogic());
+        record.setUrn(conceptSchemeDto.getUrn());
+        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
+        record.setInternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
+        record.setInternalPublicationUser(conceptSchemeDto.getInternalPublicationUser());
+        record.setExternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
+        record.setExternalPublicationUser(conceptSchemeDto.getExternalPublicationUser());
+        record.setConceptSchemeBasicDto(conceptSchemeDto);
         return record;
     }
 
