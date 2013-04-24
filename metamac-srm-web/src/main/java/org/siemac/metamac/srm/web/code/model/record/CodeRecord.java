@@ -1,11 +1,15 @@
 package org.siemac.metamac.srm.web.code.model.record;
 
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CodeRecord extends ListGridRecord {
+
+    public CodeRecord() {
+    }
 
     public CodeRecord(Long id, String code, String name, String urn, String codelistUrn, String description, CodeMetamacDto codeDto) {
         setId(id);
@@ -45,6 +49,10 @@ public class CodeRecord extends ListGridRecord {
         setAttribute(CodeDS.DTO, codeDto);
     }
 
+    public void setCodeBasicDto(CodeMetamacBasicDto codeDto) {
+        setAttribute(CodeDS.DTO, codeDto);
+    }
+
     public Long getId() {
         return getAttributeAsLong(CodeDS.ID);
     }
@@ -71,5 +79,9 @@ public class CodeRecord extends ListGridRecord {
 
     public CodeMetamacDto getCodeDto() {
         return (CodeMetamacDto) getAttributeAsObject(CodeDS.DTO);
+    }
+
+    public CodeMetamacBasicDto getCodeBasicDto() {
+        return (CodeMetamacBasicDto) getAttributeAsObject(CodeDS.DTO);
     }
 }

@@ -4,7 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.model.record.CodeRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodesPresenter;
@@ -110,10 +110,10 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
         codesListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getCodes().size(), result.getTotalResults());
     }
 
-    private void setCodes(List<CodeMetamacDto> codeDtos) {
+    private void setCodes(List<CodeMetamacBasicDto> codeDtos) {
         CodeRecord[] records = new CodeRecord[codeDtos.size()];
         int index = 0;
-        for (CodeMetamacDto scheme : codeDtos) {
+        for (CodeMetamacBasicDto scheme : codeDtos) {
             records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodeRecord(scheme);
         }
         codesListGrid.getListGrid().setData(records);

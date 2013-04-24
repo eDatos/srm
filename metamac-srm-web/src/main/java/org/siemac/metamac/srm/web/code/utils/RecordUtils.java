@@ -4,6 +4,7 @@ import static org.siemac.metamac.web.common.client.utils.InternationalStringUtil
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
@@ -71,6 +72,15 @@ public class RecordUtils {
     public static CodeRecord getCodeRecord(CodeMetamacDto codeDto) {
         CodeRecord record = new CodeRecord(codeDto.getId(), codeDto.getCode(), getLocalisedString(codeDto.getName()), codeDto.getUrn(), codeDto.getItemSchemeVersionUrn(),
                 getLocalisedString(codeDto.getDescription()), codeDto);
+        return record;
+    }
+
+    public static CodeRecord getCodeRecord(CodeMetamacBasicDto codeDto) {
+        CodeRecord record = new CodeRecord();
+        record.setCode(codeDto.getCode());
+        record.setName(getLocalisedString(codeDto.getName()));
+        record.setUrn(codeDto.getUrn());
+        record.setCodeBasicDto(codeDto);
         return record;
     }
 

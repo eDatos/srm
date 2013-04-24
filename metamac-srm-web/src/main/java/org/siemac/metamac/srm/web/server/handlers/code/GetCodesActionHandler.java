@@ -10,7 +10,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnu
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.criteria.CodeMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
@@ -62,7 +62,7 @@ public class GetCodesActionHandler extends SecurityActionHandler<GetCodesAction,
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<CodeMetamacDto> result = srmCoreServiceFacade.findCodesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            MetamacCriteriaResult<CodeMetamacBasicDto> result = srmCoreServiceFacade.findCodesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
             return new GetCodesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
