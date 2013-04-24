@@ -65,6 +65,7 @@ public class RecordUtils {
         record.setCode(conceptDto.getCode());
         record.setName(getLocalisedString(conceptDto.getName()));
         record.setUrn(conceptDto.getUrn());
+        record.setConceptSchemeUrn(conceptDto.getItemSchemeVersionUrn());
         record.setConceptBasicDto(conceptDto);
         return record;
     }

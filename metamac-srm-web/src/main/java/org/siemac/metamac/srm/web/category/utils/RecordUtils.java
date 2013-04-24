@@ -61,6 +61,7 @@ public class RecordUtils {
         record.setCode(categoryDto.getCode());
         record.setName(getLocalisedString(categoryDto.getName()));
         record.setUrn(categoryDto.getUrn());
+        record.setCategorySchemeUrn(categoryDto.getItemSchemeVersionUrn());
         record.setCategoryBasicDto(categoryDto);
         return record;
     }

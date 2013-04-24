@@ -11,6 +11,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -116,7 +117,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     public interface OrganisationSchemeView extends View, HasUiHandlers<OrganisationSchemeUiHandlers> {
 
         void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
-        void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos);
+        void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos);
         void setOrganisationList(List<ItemHierarchyDto> organisationDtos);
         void startOrganisationSchemeEdition();
         void setLatestOrganisationSchemeForInternalPublication(GetOrganisationSchemesResult result);

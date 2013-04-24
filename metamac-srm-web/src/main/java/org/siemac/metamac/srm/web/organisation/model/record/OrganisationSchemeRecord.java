@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.organisation.model.record;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
@@ -36,11 +37,24 @@ public class OrganisationSchemeRecord extends ItemSchemeRecord {
         setAttribute(OrganisationSchemeDS.DTO, organisationSchemeMetamacDto);
     }
 
+    public void setOrganisationSchemeBasicDto(OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto) {
+        setAttribute(OrganisationSchemeDS.DTO, organisationSchemeMetamacDto);
+    }
+
     public ProcStatusEnum getProcStatus() {
-        return ((OrganisationSchemeMetamacDto) getAttributeAsObject(OrganisationSchemeDS.DTO)).getLifeCycle().getProcStatus();
+        Object dto = getAttributeAsObject(OrganisationSchemeDS.DTO);
+        if (dto instanceof OrganisationSchemeMetamacBasicDto) {
+            return ((OrganisationSchemeMetamacBasicDto) dto).getProcStatus();
+        } else {
+            return ((OrganisationSchemeMetamacDto) dto).getLifeCycle().getProcStatus();
+        }
     }
 
     public OrganisationSchemeMetamacDto getOrganisationSchemeDto() {
         return (OrganisationSchemeMetamacDto) getAttributeAsObject(OrganisationSchemeDS.DTO);
+    }
+
+    public OrganisationSchemeMetamacBasicDto getOrganisationSchemeBasicDto() {
+        return (OrganisationSchemeMetamacBasicDto) getAttributeAsObject(OrganisationSchemeDS.DTO);
     }
 }

@@ -12,6 +12,7 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -594,7 +595,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     @Override
-    public void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos) {
+    public void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos) {
         versionsSectionStack.setOrganisationSchemes(organisationSchemeMetamacDtos);
         versionsSectionStack.selectOrganisationScheme(organisationSchemeDto);
     }
@@ -810,7 +811,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
         } else {
             // If there were other version marked as the latest, ask the user what to do
-            OrganisationSchemeMetamacDto latest = result.getOrganisationSchemeMetamacDtos().get(0);
+            OrganisationSchemeMetamacBasicDto latest = result.getOrganisationSchemeMetamacDtos().get(0);
             ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().organisationSchemeShouldBeMarkAsTheLatest(
                     latest.getVersionLogic()));
             confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {

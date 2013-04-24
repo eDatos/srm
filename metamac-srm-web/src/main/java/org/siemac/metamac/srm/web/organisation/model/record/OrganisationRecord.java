@@ -7,6 +7,9 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class OrganisationRecord extends ListGridRecord {
 
+    public OrganisationRecord() {
+    }
+
     public OrganisationRecord(Long id, String code, String name, String urn, String organisationSchemeUrn, OrganisationTypeEnum organisationTypeEnum) {
         setId(id);
         setCode(code);

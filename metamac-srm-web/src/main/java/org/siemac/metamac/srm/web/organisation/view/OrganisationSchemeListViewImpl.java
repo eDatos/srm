@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
@@ -219,7 +220,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         organisationSchemeList.refreshPaginationInfo(result.getFirstResultOut(), result.getOrganisationSchemeMetamacDtos().size(), result.getTotalResults());
     }
 
-    private void setOrganisationSchemeList(List<OrganisationSchemeMetamacDto> organisationSchemeMetamacDtos) {
+    private void setOrganisationSchemeList(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos) {
         OrganisationSchemeRecord[] records = new OrganisationSchemeRecord[organisationSchemeMetamacDtos.size()];
         for (int i = 0; i < organisationSchemeMetamacDtos.size(); i++) {
             records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getOrganisationSchemeRecord(organisationSchemeMetamacDtos.get(i));

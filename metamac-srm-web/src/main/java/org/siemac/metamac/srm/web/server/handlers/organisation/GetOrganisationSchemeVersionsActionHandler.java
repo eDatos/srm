@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsResult;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
@@ -28,11 +28,10 @@ public class GetOrganisationSchemeVersionsActionHandler extends SecurityActionHa
     @Override
     public GetOrganisationSchemeVersionsResult executeSecurityAction(GetOrganisationSchemeVersionsAction action) throws ActionException {
         try {
-            List<OrganisationSchemeMetamacDto> versions = srmCoreServiceFacade.retrieveOrganisationSchemeVersions(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            List<OrganisationSchemeMetamacBasicDto> versions = srmCoreServiceFacade.retrieveOrganisationSchemeVersions(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
             return new GetOrganisationSchemeVersionsResult(versions);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
     }
-
 }

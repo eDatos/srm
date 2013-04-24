@@ -82,6 +82,7 @@ public class RecordUtils {
         record.setCode(codeDto.getCode());
         record.setName(getLocalisedString(codeDto.getName()));
         record.setUrn(codeDto.getUrn());
+        record.setCodelistUrn(codeDto.getItemSchemeVersionUrn());
         record.setCodeBasicDto(codeDto);
         return record;
     }

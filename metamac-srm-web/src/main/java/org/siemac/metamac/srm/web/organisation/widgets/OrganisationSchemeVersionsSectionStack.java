@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
@@ -16,10 +17,10 @@ public class OrganisationSchemeVersionsSectionStack extends ItemSchemeVersionsSe
         super(title);
     }
 
-    public void setOrganisationSchemes(List<OrganisationSchemeMetamacDto> organisationSchemeDtos) {
+    public void setOrganisationSchemes(List<OrganisationSchemeMetamacBasicDto> organisationSchemeDtos) {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
-        for (OrganisationSchemeMetamacDto organisationSchemeDto : organisationSchemeDtos) {
+        for (OrganisationSchemeMetamacBasicDto organisationSchemeDto : organisationSchemeDtos) {
             listGrid.addData(RecordUtils.getOrganisationSchemeRecord(organisationSchemeDto));
         }
     }

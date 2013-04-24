@@ -2,7 +2,9 @@ package org.siemac.metamac.srm.web.organisation.utils;
 
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.record.ContactRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
@@ -37,11 +39,38 @@ public class RecordUtils {
         return record;
     }
 
+    public static OrganisationSchemeRecord getOrganisationSchemeRecord(OrganisationSchemeMetamacBasicDto organisationSchemeDto) {
+        OrganisationSchemeRecord record = new OrganisationSchemeRecord();
+        record.setCode(organisationSchemeDto.getCode());
+        record.setName(getLocalisedString(organisationSchemeDto.getName()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getProcStatus()));
+        record.setType(CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
+        record.setVersionLogic(organisationSchemeDto.getVersionLogic());
+        record.setUrn(organisationSchemeDto.getUrn());
+        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
+        record.setInternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getInternalPublicationDate()));
+        record.setInternalPublicationUser(organisationSchemeDto.getInternalPublicationUser());
+        record.setExternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getExternalPublicationDate()));
+        record.setExternalPublicationUser(organisationSchemeDto.getExternalPublicationUser());
+        record.setOrganisationSchemeBasicDto(organisationSchemeDto);
+        return record;
+    }
+
     // ORGANISATIONS
 
     public static OrganisationRecord getOrganisationRecord(OrganisationMetamacDto organisationDto) {
         OrganisationRecord record = new OrganisationRecord(organisationDto.getId(), organisationDto.getCode(), getLocalisedString(organisationDto.getName()), organisationDto.getUrn(),
                 organisationDto.getItemSchemeVersionUrn(), organisationDto.getType());
+        return record;
+    }
+
+    public static OrganisationRecord getOrganisationRecord(OrganisationMetamacBasicDto organisationDto) {
+        OrganisationRecord record = new OrganisationRecord();
+        record.setCode(organisationDto.getCode());
+        record.setName(getLocalisedString(organisationDto.getName()));
+        record.setUrn(organisationDto.getUrn());
+        record.setOrganisationSchemeUrn(organisationDto.getOrganisationSchemeVersionUrn());
+        record.setOrganisationType(organisationDto.getType());
         return record;
     }
 
