@@ -6,6 +6,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -90,7 +91,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     public interface DsdListView extends View, HasUiHandlers<DsdListUiHandlers> {
 
-        public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionDtos, int firstResult, int totalResults);
+        public void setDsds(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionDtos, int firstResult, int totalResults);
         HasRecordClickHandlers getSelectedDsd();
         List<String> getSelectedDsdUrns();
         void onNewDsdCreated();

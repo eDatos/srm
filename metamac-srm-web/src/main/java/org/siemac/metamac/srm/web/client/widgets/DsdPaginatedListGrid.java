@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -51,7 +51,7 @@ public class DsdPaginatedListGrid extends PaginatedCheckListGrid {
         getListGrid().setFields(codeDsdField, nameDsdField, procStatusField);
     }
 
-    public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos, int firstResult, int totalResults) {
+    public void setDsds(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos, int firstResult, int totalResults) {
         DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionMetamacDtos.size()];
         for (int i = 0; i < dataStructureDefinitionMetamacDtos.size(); i++) {
             dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionMetamacDtos.get(i));
@@ -60,5 +60,4 @@ public class DsdPaginatedListGrid extends PaginatedCheckListGrid {
         getListGrid().setData(dsdRecords);
         refreshPaginationInfo(firstResult, dataStructureDefinitionMetamacDtos.size(), totalResults);
     }
-
 }

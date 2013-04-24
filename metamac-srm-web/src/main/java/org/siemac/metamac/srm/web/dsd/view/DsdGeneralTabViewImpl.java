@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -620,7 +621,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto, null);
         } else {
             // If there were other version marked as the latest, ask the user what to do
-            DataStructureDefinitionMetamacDto latest = result.getDsdDtos().get(0);
+            DataStructureDefinitionMetamacBasicDto latest = result.getDsdDtos().get(0);
             ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().dsdShouldBeMarkAsTheLatest(latest.getVersionLogic()));
             confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 

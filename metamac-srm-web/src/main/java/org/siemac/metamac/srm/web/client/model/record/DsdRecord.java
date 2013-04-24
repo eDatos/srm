@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.model.record;
 
 import java.util.Date;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 
@@ -73,6 +74,10 @@ public class DsdRecord extends ListGridRecord {
         setAttribute(DataStructureDefinitionDS.DTO, value);
     }
 
+    public void setDsdBasicDto(DataStructureDefinitionMetamacBasicDto value) {
+        setAttribute(DataStructureDefinitionDS.DTO, value);
+    }
+
     public Long getId() {
         return getAttributeAsLong(DataStructureDefinitionDS.ID);
     }
@@ -115,5 +120,9 @@ public class DsdRecord extends ListGridRecord {
 
     public DataStructureDefinitionMetamacDto getDsd() {
         return (DataStructureDefinitionMetamacDto) getAttributeAsObject(DataStructureDefinitionDS.DTO);
+    }
+
+    public DataStructureDefinitionMetamacBasicDto getDsdBasicDto() {
+        return (DataStructureDefinitionMetamacBasicDto) getAttributeAsObject(DataStructureDefinitionDS.DTO);
     }
 }

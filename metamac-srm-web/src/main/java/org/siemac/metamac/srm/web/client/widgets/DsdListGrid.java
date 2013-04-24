@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -46,7 +46,7 @@ public class DsdListGrid extends BaseCustomListGrid {
         setFields(codeDsdField, nameDsdField, procStatusField);
     }
 
-    public void setDsds(List<DataStructureDefinitionMetamacDto> dataStructureDefinitionMetamacDtos) {
+    public void setDsds(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos) {
         removeAllData();
         if (dataStructureDefinitionMetamacDtos != null) {
             DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionMetamacDtos.size()];
@@ -56,5 +56,4 @@ public class DsdListGrid extends BaseCustomListGrid {
             setData(dsdRecords);
         }
     }
-
 }
