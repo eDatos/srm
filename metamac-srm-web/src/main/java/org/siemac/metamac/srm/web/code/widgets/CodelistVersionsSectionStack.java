@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
@@ -16,10 +17,10 @@ public class CodelistVersionsSectionStack extends ItemSchemeVersionsSectionStack
         super(title);
     }
 
-    public void setCodelists(List<CodelistMetamacDto> codelistDtos) {
+    public void setCodelists(List<CodelistMetamacBasicDto> codelistDtos) {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
-        for (CodelistMetamacDto codelistDto : codelistDtos) {
+        for (CodelistMetamacBasicDto codelistDto : codelistDtos) {
             listGrid.addData(RecordUtils.getCodelistRecord(codelistDto));
         }
     }

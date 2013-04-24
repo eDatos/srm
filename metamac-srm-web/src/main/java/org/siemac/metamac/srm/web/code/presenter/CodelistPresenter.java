@@ -13,6 +13,7 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -147,7 +148,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
         // Codelist
         void setCodelist(CodelistMetamacDto codelistMetamacDto);
-        void setCodelistVersions(List<CodelistMetamacDto> codelistMetamacDtos);
+        void setCodelistVersions(List<CodelistMetamacBasicDto> codelistMetamacDtos);
         void startCodelistEdition();
         void setLatestCodelistForInternalPublication(GetCodelistsResult result);
 

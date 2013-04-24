@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -434,7 +435,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
-    public void setCodelistVersions(List<CodelistMetamacDto> codelistDtos) {
+    public void setCodelistVersions(List<CodelistMetamacBasicDto> codelistDtos) {
         versionsSectionStack.setCodelists(codelistDtos);
         versionsSectionStack.selectCodelist(codelistDto);
     }
@@ -889,7 +890,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             getUiHandlers().publishInternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus(), null);
         } else {
             // If there were other version marked as the latest, ask the user what to do
-            CodelistMetamacDto latest = result.getCodelists().get(0);
+            CodelistMetamacBasicDto latest = result.getCodelists().get(0);
             ConfirmationWindow confirmationWindow = new ConfirmationWindow(getConstants().lifeCyclePublishInternally(), getMessages().codelistShouldBeMarkAsTheLatest(latest.getVersionLogic()));
             confirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
