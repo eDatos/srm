@@ -1182,7 +1182,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
                 getServiceContextTecnicoProduccion(), getServiceContextJefeNormalizacion(), getServiceContextJefeProduccion(), getServiceContextAdministrador()};
 
         for (ServiceContext ctx : ctxs) {
-            srmCoreServiceFacade.retrieveConceptsByConceptSchemeUrn(ctx, CONCEPT_SCHEME_1_V1);
+            srmCoreServiceFacade.retrieveConceptsByConceptSchemeUrn(ctx, CONCEPT_SCHEME_1_V1, "es");
         }
     }
 
@@ -1192,7 +1192,7 @@ public class SrmCoreServiceFacadeConceptsSecurityTest extends SrmBaseTest {
 
         for (ServiceContext ctx : contexts) {
             try {
-                srmCoreServiceFacade.retrieveConceptsByConceptSchemeUrn(ctx, CONCEPT_SCHEME_1_V1);
+                srmCoreServiceFacade.retrieveConceptsByConceptSchemeUrn(ctx, CONCEPT_SCHEME_1_V1, "es");
                 fail("action not allowed");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());

@@ -7,6 +7,7 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,10 +21,12 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
 
     @Autowired
-    private CodeMetamacRepository codeRepository;
+    private CodeMetamacRepository            codeRepository;
 
     @Autowired
-    private CodesDo2RestMapperV10 codesDo2RestMapperV10;
+    private CodesDo2RestMapperV10            codesDo2RestMapperV10;
+
+    private final CodeMetamacResultSelection codeMetamacResultSelection = new CodeMetamacResultSelection(true, false, true, false);
 
     @Override
     public CodelistType createCodelistJaxb(com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion source) {
@@ -64,6 +67,7 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
 
     @Override
     public List<ItemResult> findCodesByCodelistEfficiently(CodelistVersion codelistVersion) throws MetamacException {
-        return codeRepository.findCodesByCodelistOrderedInDepth(codelistVersion.getId(), ((CodelistVersionMetamac) codelistVersion).getDefaultOrderVisualisation().getColumnIndex(), Boolean.FALSE);
+        return codeRepository.findCodesByCodelistOrderedInDepth(codelistVersion.getId(), ((CodelistVersionMetamac) codelistVersion).getDefaultOrderVisualisation().getColumnIndex(),
+                codeMetamacResultSelection);
     }
 }

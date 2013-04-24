@@ -35,7 +35,7 @@ import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -415,7 +415,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Merge metadata of Item
         Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(codelistTemporalVersion.getItems());
-        List<ItemResult> codesFoundEfficiently = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistTemporalVersion.getId(), Boolean.TRUE);
+        List<ItemResult> codesFoundEfficiently = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistTemporalVersion.getId(), CodeMetamacResultSelection.ALL);
         Map<String, ItemResult> codesFoundEfficientlyByUrn = new HashMap<String, ItemResult>(codesFoundEfficiently.size());
         for (ItemResult itemResult : codesFoundEfficiently) {
             codesFoundEfficientlyByUrn.put(itemResult.getUrn(), itemResult);
@@ -423,16 +423,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         for (Item item : codelistVersion.getItems()) {
             CodeMetamac code = (CodeMetamac) item;
-            CodeMetamac codeTemp = (CodeMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+            CodeMetamac codeTemp = (CodeMetamac) temporalItemMap.get(code.getNameableArtefact().getUrn());
+            ItemResult codeTempItemResult = codesFoundEfficientlyByUrn.get(codeTemp.getNameableArtefact().getUrn());
 
             // Inherit InternationalStrings
-            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(code, codesFoundEfficientlyByUrn.get(GeneratorUrnUtils.makeUrnAsTemporal(code.getNameableArtefact().getUrn())),
-                    internationalStringRepository);
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(code, codeTempItemResult, internationalStringRepository);
 
             // Metamac Metadata
             // ShortName
-            if (!BaseMergeAssert.assertEqualsInternationalString(code.getShortName(), codeTemp.getShortName())) {
-                code.setShortName(BaseMergeAssert.mergeUpdateInternationalString(code.getShortName(), codeTemp.getShortName(), internationalStringRepository));
+            Map<String, String> shortName = SrmServiceUtils.getCodeItemResultShortName(codeTempItemResult);
+            if (!BaseMergeAssert.assertEqualsInternationalString(code.getShortName(), shortName)) {
+                code.setShortName(BaseMergeAssert.mergeUpdateInternationalString(code.getShortName(), shortName, internationalStringRepository));
             }
 
             // VariableElement
@@ -469,7 +470,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return codelistVersion;
     }
-
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
@@ -548,7 +548,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             codesInCodelistSourceByUrn.put(item.getNameableArtefact().getUrn(), (CodeMetamac) item);
         }
         // SOURCE: Retrieve efficiently some metadata: name, description, annotations...
-        List<ItemResult> codesItemResultInCodelistSource = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersionSource.getId(), Boolean.TRUE);
+        List<ItemResult> codesItemResultInCodelistSource = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersionSource.getId(), CodeMetamacResultSelection.COPY);
         Map<String, ItemResult> codesItemResultInCodelistSourceByUrn = new HashMap<String, ItemResult>(codesItemResultInCodelistSource.size());
         for (ItemResult itemResult : codesItemResultInCodelistSource) {
             codesItemResultInCodelistSourceByUrn.put(itemResult.getUrn(), itemResult);
@@ -2498,10 +2498,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codeTarget.getNameableArtefact().setDescription(BaseCopyAllMetadataUtils.copyInternationalString(codeItemResultSource.getDescription()));
         codeTarget.getNameableArtefact().setComment(null);
         BaseCopyAllMetadataUtils.copyAnnotations(codeItemResultSource.getAnnotations(), codeTarget.getNameableArtefact());
-        if (codeItemResultSource.getExtensionPoint() != null) {
-            CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) codeItemResultSource.getExtensionPoint();
-            codeTarget.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(extensionPoint.getShortName()));
-        }
+        codeTarget.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(SrmServiceUtils.getCodeItemResultShortName(codeItemResultSource)));
         if (copyVariableElements) {
             codeTarget.setVariableElement(codeSource.getVariableElement());
         }

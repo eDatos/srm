@@ -1,69 +1,15 @@
 package org.siemac.metamac.srm.core.code.domain.shared;
 
-import java.io.Serializable;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 
-public class CodeMetamacVisualisationResult implements Serializable {
+public class CodeMetamacVisualisationResult extends ItemVisualisationResult {
 
-    private static final long              serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private Long                           itemIdDatabase;
-    private String                         code;
-    private String                         urn;
-    private Long                           parentIdDatabase;
-    private CodeMetamacVisualisationResult parent;
-    private String                         name;
-    private Integer                        order;
-    private Boolean                        openness;
+    private Integer           order;
+    private Boolean           openness;
 
     public CodeMetamacVisualisationResult() {
-    }
-
-    public Long getItemIdDatabase() {
-        return itemIdDatabase;
-    }
-
-    public void setItemIdDatabase(Long itemIdDatabase) {
-        this.itemIdDatabase = itemIdDatabase;
-    }
-
-    public Long getParentIdDatabase() {
-        return parentIdDatabase;
-    }
-
-    public void setParentIdDatabase(Long parentIdDatabase) {
-        this.parentIdDatabase = parentIdDatabase;
-    }
-
-    public CodeMetamacVisualisationResult getParent() {
-        return parent;
-    }
-
-    public void setParent(CodeMetamacVisualisationResult parent) {
-        this.parent = parent;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getUrn() {
-        return urn;
-    }
-
-    public void setUrn(String urn) {
-        this.urn = urn;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Integer getOrder() {

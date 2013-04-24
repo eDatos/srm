@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
@@ -78,7 +79,7 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
 
     @Override
     public List<ItemResult> findCodesEfficiently(Long codelistId) {
-        return codeMetamacRepository.findCodesByCodelistUnordered(codelistId, Boolean.TRUE);
+        return codeMetamacRepository.findCodesByCodelistUnordered(codelistId, CodeMetamacResultSelection.VERSIONING);
     }
 
     @Override

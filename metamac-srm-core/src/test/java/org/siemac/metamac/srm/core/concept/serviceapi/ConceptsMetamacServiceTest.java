@@ -60,6 +60,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptProperties;
@@ -2434,49 +2435,123 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Retrieve
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
-        List<ConceptMetamac> concepts = conceptsService.retrieveConceptsByConceptSchemeUrn(getServiceContextAdministrador(), conceptSchemeUrn);
 
-        // Validate
-        assertEquals(4, concepts.size());
+        // LOCALE = 'es'
         {
-            // Concept 01
-            ConceptMetamac concept = assertListConceptsContainsConcept(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
-            assertEquals(0, concept.getChildren().size());
-        }
-        {
-            // Concept 02
-            ConceptMetamac concept = assertListConceptsContainsConcept(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2);
-            assertEquals(1, concept.getChildren().size());
+            String locale = "es";
+            List<ItemVisualisationResult> concepts = conceptsService.retrieveConceptsByConceptSchemeUrn(getServiceContextAdministrador(), conceptSchemeUrn, locale);
+
+            // Validate
+            assertEquals(8, concepts.size());
             {
-                // Concept 02 01
-                ConceptMetamac conceptChild = assertListConceptsContainsConcept(concept.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
-                assertEquals(1, conceptChild.getChildren().size());
-                {
-                    // Concept 02 01 01
-                    ConceptMetamac conceptChildChild = assertListConceptsContainsConcept(conceptChild.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
-                    assertEquals(0, conceptChildChild.getChildren().size());
-                }
+                // Concept 01 (validate all metadata)
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, concept.getUrn());
+                assertEquals("CONCEPT01", concept.getCode());
+
+                assertEquals("Nombre conceptScheme-1-v2-concept-1", concept.getName());
+                assertEquals(Long.valueOf(121), concept.getItemIdDatabase());
+                assertEquals(null, concept.getParent());
+                assertEquals(null, concept.getParentIdDatabase());
             }
-        }
-        {
-            // Concept 03
-            ConceptMetamac concept = assertListConceptsContainsConcept(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
-            assertEquals(0, concept.getChildren().size());
-        }
-        {
-            // Concept 04
-            ConceptMetamac concept = assertListConceptsContainsConcept(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4);
-            assertEquals(1, concept.getChildren().size());
+            {
+                // Concept 02
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getUrn());
+                assertEquals("CONCEPT02", concept.getCode());
+                assertEquals("Nombre conceptScheme-1-v2-concept-2", concept.getName());
+            }
+            {
+                // Concept 02 01 (validate parent)
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, concept.getUrn());
+                assertEquals("CONCEPT02", concept.getParent().getCode());
+                assertEquals("Nombre conceptScheme-1-v2-concept-2-1", concept.getName());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getParent().getUrn());
+                assertEquals(Long.valueOf("122"), concept.getParentIdDatabase());
+            }
+            {
+                // Concept 02 01 01
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, concept.getUrn());
+                assertEquals("CONCEPT0201", concept.getParent().getCode());
+                assertEquals("Nombre conceptScheme-1-v2-concept-2-1-1", concept.getName());
+                assertEquals(Long.valueOf("1221"), concept.getParentIdDatabase());
+            }
+            {
+                // Concept 03
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_3, concept.getUrn());
+                assertEquals("nombre concept-3", concept.getName());
+            }
+            {
+                // Concept 04
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, concept.getUrn());
+                assertEquals("nombre concept-4", concept.getName());
+            }
             {
                 // Concept 04 01
-                ConceptMetamac conceptChild = assertListConceptsContainsConcept(concept.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
-                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, conceptChild.getNameableArtefact().getUrn());
-                assertEquals(1, conceptChild.getChildren().size());
-                {
-                    // Concept 04 01 01
-                    ConceptMetamac conceptChildChild = assertListConceptsContainsConcept(conceptChild.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
-                    assertEquals(0, conceptChildChild.getChildren().size());
-                }
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, concept.getUrn());
+                assertEquals("nombre concept 4-1", concept.getName());
+            }
+            {
+                // Concept 04 01 01
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, concept.getUrn());
+                assertEquals("CONCEPT0401", concept.getParent().getCode());
+                assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, concept.getParent().getUrn());
+                assertEquals("Nombre conceptScheme-1-v2-concept-4-1-1", concept.getName());
+            }
+        }
+
+        // LOCALE = 'en'
+        {
+            String locale = "en";
+            List<ItemVisualisationResult> concepts = conceptsService.retrieveConceptsByConceptSchemeUrn(getServiceContextAdministrador(), conceptSchemeUrn, locale);
+
+            // Validate
+            assertEquals(8, concepts.size());
+            {
+                // Concept 01
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
+                assertEquals("Name conceptScheme-1-v2-concept-1", concept.getName());
+            }
+            {
+                // Concept 02
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2);
+                assertEquals(null, concept.getName());
+            }
+            {
+                // Concept 02 01
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
+                assertEquals("Name conceptScheme-1-v2-concept-2-1", concept.getName());
+            }
+            {
+                // Concept 02 01 01
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+                assertEquals(null, concept.getName());
+            }
+            {
+                // Concept 03
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
+                assertEquals("name concept-3", concept.getName());
+            }
+            {
+                // Concept 04
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4);
+                assertEquals(null, concept.getName());
+            }
+            {
+                // Concept 04 01
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
+                assertEquals(null, concept.getName());
+            }
+            {
+                // Concept 04 01 01
+                ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
+                assertEquals("Name conceptScheme-1-v2-concept-4-1-1", concept.getName());
             }
         }
     }

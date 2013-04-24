@@ -20,6 +20,7 @@ import org.siemac.metamac.sso.client.SsoClientConstants;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.arte.statistic.sdmx.srm.core.common.SdmxSrmBaseTest;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 public abstract class SrmBaseTest extends SdmxSrmBaseTest {
@@ -473,6 +474,16 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         order.setPropertyName("URN");
         orders.add(order);
         return orders;
+    }
+
+    protected ItemVisualisationResult getItemVisualisationResult(List<ItemVisualisationResult> actuals, String codeUrn) {
+        for (ItemVisualisationResult actual : actuals) {
+            if (actual.getUrn().equals(codeUrn)) {
+                return actual;
+            }
+        }
+        fail("not found");
+        return null;
     }
 
     protected CodeMetamacVisualisationResult getCodeMetamacVisualisationResult(List<CodeMetamacVisualisationResult> actuals, String codeUrn) {

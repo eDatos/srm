@@ -21,6 +21,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -375,10 +376,10 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public List<ItemResult> findCodesByCodelistUnordered(Long idCodelist, Boolean extendedMetadata) {
+    public List<ItemResult> findCodesByCodelistUnordered(Long idCodelist, CodeMetamacResultSelection resultSelection) {
 
         // Find codes
-        List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, extendedMetadata);
+        List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, resultSelection);
 
         // Init extension point and index by id
         Map<Long, ItemResult> mapCodeByItemId = new HashMap<Long, ItemResult>(codes.size());
@@ -387,8 +388,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
         }
 
-        if (extendedMetadata) {
-            // Fill short name
+        // Fill short name
+        if (resultSelection.isShortName()) {
             executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
         }
         return codes;
@@ -396,10 +397,10 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Boolean extendedMetamacMetadata) throws MetamacException {
+    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, CodeMetamacResultSelection resultSelection) throws MetamacException {
 
         // Find codes
-        List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, Boolean.TRUE);
+        List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, resultSelection);
 
         // Init extension point and index by id
         Map<Long, ItemResult> mapCodeByItemId = new HashMap<Long, ItemResult>(codes.size());
@@ -408,8 +409,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
         }
 
-        if (extendedMetamacMetadata) {
-            // Fill short name
+        // Fill short name
+        if (resultSelection.isShortName()) {
             // Try fill from variable element
             executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
             // If code has not variable element, try fill with short name in code

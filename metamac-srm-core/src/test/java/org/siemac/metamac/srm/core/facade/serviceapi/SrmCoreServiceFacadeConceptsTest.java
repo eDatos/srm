@@ -58,7 +58,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
@@ -1015,58 +1014,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
     @Test
     public void testRetrieveConceptsByConceptSchemeUrn() throws Exception {
-
-        // Retrieve
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
-        List<ItemHierarchyDto> concepts = srmCoreServiceFacade.retrieveConceptsByConceptSchemeUrn(getServiceContextAdministrador(), conceptSchemeUrn);
-
-        // Validate
-        assertEquals(4, concepts.size());
-        {
-            // Concept 01
-            ItemHierarchyDto concept = assertListContainsItemHierarchy(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
-            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
-            assertEquals(0, concept.getChildren().size());
-        }
-        {
-            // Concept 02
-            ItemHierarchyDto concept = assertListContainsItemHierarchy(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2);
-            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
-            assertEquals(1, concept.getChildren().size());
-            {
-                // Concept 02 01
-                ItemHierarchyDto conceptChild = assertListContainsItemHierarchy(concept.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
-                assertTrue(conceptChild.getItem() instanceof ConceptMetamacDto);
-                assertEquals(1, conceptChild.getChildren().size());
-                {
-                    // Concept 02 01 01
-                    ItemHierarchyDto conceptChildChild = assertListContainsItemHierarchy(conceptChild.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
-                    assertEquals(0, conceptChildChild.getChildren().size());
-                }
-            }
-        }
-        {
-            // Concept 03
-            ItemHierarchyDto concept = assertListContainsItemHierarchy(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
-            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
-            assertEquals(0, concept.getChildren().size());
-        }
-        {
-            // Concept 04
-            ItemHierarchyDto concept = assertListContainsItemHierarchy(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_4);
-            assertTrue(concept.getItem() instanceof ConceptMetamacDto);
-            assertEquals(1, concept.getChildren().size());
-            {
-                // Concept 04 01
-                ItemHierarchyDto conceptChild = assertListContainsItemHierarchy(concept.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
-                assertEquals(1, conceptChild.getChildren().size());
-                {
-                    // Concept 04 01 01
-                    ItemHierarchyDto conceptChildChild = assertListContainsItemHierarchy(conceptChild.getChildren(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
-                    assertEquals(0, conceptChildChild.getChildren().size());
-                }
-            }
-        }
+        // Do not test because facade operation has same signature as service operation (without dto)
     }
 
     // ---------------------------------------------------------------------------------------

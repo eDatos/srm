@@ -10,12 +10,15 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 
@@ -27,6 +30,9 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
     @Autowired
     private ConceptRepository conceptRepository;
+
+    @Autowired
+    private ItemRepository    itemRepository;
 
     public ConceptMetamacRepositoryImpl() {
     }
@@ -40,6 +46,11 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             return result.get(0);
         }
         return null;
+    }
+
+    @Override
+    public List<ItemVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long conceptSchemeVersionId, String locale) throws MetamacException {
+        return itemRepository.findItemsByItemSchemeUnorderedToVisualisation(conceptSchemeVersionId, locale);
     }
 
     @Override
