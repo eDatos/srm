@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.code.model.record.CodeRecord;
 import org.siemac.metamac.srm.web.code.model.record.CodelistFamilyRecord;
@@ -69,6 +70,24 @@ public class RecordUtils {
         VariableFamilyRecord record = new VariableFamilyRecord(variableFamilyDto.getId(), variableFamilyDto.getCode(), getLocalisedString(variableFamilyDto.getName()), variableFamilyDto.getUrn(),
                 variableFamilyDto);
         return record;
+    }
+
+    public static VariableFamilyRecord getVariableFamilyRecord(VariableFamilyBasicDto variableFamilyBasicDto) {
+        VariableFamilyRecord record = new VariableFamilyRecord();
+        record.setCode(variableFamilyBasicDto.getCode());
+        record.setName(getLocalisedString(variableFamilyBasicDto.getName()));
+        record.setUrn(variableFamilyBasicDto.getUrn());
+        record.setVariableFamilyBasicDto(variableFamilyBasicDto);
+        return record;
+    }
+
+    public static VariableFamilyRecord[] getVariableFamilyRecords(List<VariableFamilyBasicDto> variableFamilyBasicDtos) {
+        VariableFamilyRecord[] records = new VariableFamilyRecord[variableFamilyBasicDtos.size()];
+        int index = 0;
+        for (VariableFamilyBasicDto variable : variableFamilyBasicDtos) {
+            records[index++] = getVariableFamilyRecord(variable);
+        }
+        return records;
     }
 
     // VARIABLES

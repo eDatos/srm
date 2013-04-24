@@ -188,7 +188,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
             }
             @Override
             public void onWaitSuccess(GetVariableFamiliesResult result) {
-                getView().setVariableFamilies(RelatedResourceUtils.getVariableFamilyDtosAsRelatedResourceDtos(result.getFamilies()), result.getFirstResultOut(), result.getTotalResults());
+                getView().setVariableFamilies(RelatedResourceUtils.getVariableFamilyBasicDtosAsRelatedResourceDtos(result.getFamilies()), result.getFirstResultOut(), result.getTotalResults());
             }
         });
     }

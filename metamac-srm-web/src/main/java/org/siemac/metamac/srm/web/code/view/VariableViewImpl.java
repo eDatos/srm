@@ -391,7 +391,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableFamilies(GetVariableFamiliesResult result) {
         if (searchFamiliesWindow != null) {
-            searchFamiliesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableFamilyDtosAsRelatedResourceDtos(result.getFamilies()));
+            searchFamiliesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableFamilyBasicDtosAsRelatedResourceDtos(result.getFamilies()));
             searchFamiliesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getFamilies().size(), result.getTotalResults());
         }
     }

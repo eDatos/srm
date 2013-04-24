@@ -1,11 +1,15 @@
 package org.siemac.metamac.srm.web.code.model.record;
 
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class VariableFamilyRecord extends ListGridRecord {
+
+    public VariableFamilyRecord() {
+    }
 
     public VariableFamilyRecord(Long id, String code, String name, String urn, VariableFamilyDto variableFamilyDto) {
         setId(id);
@@ -41,5 +45,13 @@ public class VariableFamilyRecord extends ListGridRecord {
 
     public VariableFamilyDto getVariableFamilyDto() {
         return (VariableFamilyDto) getAttributeAsObject(VariableFamilyDS.DTO);
+    }
+
+    public void setVariableFamilyBasicDto(VariableFamilyBasicDto variableFamilyDto) {
+        setAttribute(VariableFamilyDS.DTO, variableFamilyDto);
+    }
+
+    public VariableFamilyBasicDto getVariableFamilyBasicDto() {
+        return (VariableFamilyBasicDto) getAttributeAsObject(VariableFamilyDS.DTO);
     }
 }

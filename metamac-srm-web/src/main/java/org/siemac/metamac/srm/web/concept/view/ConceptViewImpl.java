@@ -683,7 +683,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     @Override
     public void setVariableFamilies(GetVariableFamiliesResult result) {
         if (searchVariableWindow != null) {
-            List<RelatedResourceDto> families = RelatedResourceUtils.getVariableFamilyDtosAsRelatedResourceDtos(result.getFamilies());
+            List<RelatedResourceDto> families = RelatedResourceUtils.getVariableFamilyBasicDtosAsRelatedResourceDtos(result.getFamilies());
             searchVariableWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(families));
         }
     }

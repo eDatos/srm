@@ -6,11 +6,12 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableFamilyListPresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
+import org.siemac.metamac.srm.web.code.utils.RecordUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableFamilyWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
@@ -199,12 +200,8 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
                 .refreshPaginationInfo(variableFamiliesPaginatedList.getFirstResultOut(), variableFamiliesPaginatedList.getFamilies().size(), variableFamiliesPaginatedList.getTotalResults());
     }
 
-    private void setVariableFamilies(List<VariableFamilyDto> variableFamilyDtos) {
-        VariableFamilyRecord[] records = new VariableFamilyRecord[variableFamilyDtos.size()];
-        int index = 0;
-        for (VariableFamilyDto scheme : variableFamilyDtos) {
-            records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getVariableFamilyRecord(scheme);
-        }
+    private void setVariableFamilies(List<VariableFamilyBasicDto> variableFamilyDtos) {
+        VariableFamilyRecord[] records = RecordUtils.getVariableFamilyRecords(variableFamilyDtos);
         variableFamilyList.getListGrid().setData(records);
     }
 

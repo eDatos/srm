@@ -14,7 +14,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.criteria.VariableFamilyCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.VariableFamilyCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -69,7 +69,7 @@ public class GetVariableFamiliesActionHandler extends SecurityActionHandler<GetV
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<VariableFamilyDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            MetamacCriteriaResult<VariableFamilyBasicDto> result = srmCoreServiceFacade.findVariableFamiliesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
             return new GetVariableFamiliesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

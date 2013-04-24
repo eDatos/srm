@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
+import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
@@ -37,6 +40,13 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
         return relatedResourceDto;
     }
 
+    public static RelatedResourceDto getIdentifiableArtefactMetamacBasicDtoAsRelatedResourceDto(IdentifiableArtefactMetamacBasicDto identifiableArtefactMetamacBasicDto) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setCode(identifiableArtefactMetamacBasicDto.getCode());
+        relatedResourceDto.setUrn(identifiableArtefactMetamacBasicDto.getUrn());
+        return relatedResourceDto;
+    }
+
     // -------------------------------------------------------------------------------------------------------------
     // NAMEABLE ARTEFACTS
     // -------------------------------------------------------------------------------------------------------------
@@ -44,6 +54,12 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
     public static RelatedResourceDto getNameableArtefactDtoAsRelatedResourceDto(NameableArtefactDto nameableArtefactDto) {
         RelatedResourceDto relatedResourceDto = getIdentifiableArtefactDtoAsRelatedResourceDto(nameableArtefactDto);
         relatedResourceDto.setTitle(nameableArtefactDto.getName());
+        return relatedResourceDto;
+    }
+
+    public static RelatedResourceDto getNameableArtefactMetamacBasicDto(NameableArtefactMetamacBasicDto nameableArtefactMetamacBasicDto) {
+        RelatedResourceDto relatedResourceDto = getIdentifiableArtefactMetamacBasicDtoAsRelatedResourceDto(nameableArtefactMetamacBasicDto);
+        relatedResourceDto.setTitle(nameableArtefactMetamacBasicDto.getName());
         return relatedResourceDto;
     }
 
@@ -192,10 +208,22 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
         return getNameableArtefactDtoAsRelatedResourceDto(variableFamily);
     }
 
+    public static RelatedResourceDto getVariableFamilyBasicDtoAsRelatedResourceDto(VariableFamilyBasicDto variableFamilyBasicDto) {
+        return getNameableArtefactMetamacBasicDto(variableFamilyBasicDto);
+    }
+
     public static List<RelatedResourceDto> getVariableFamilyDtosAsRelatedResourceDtos(List<VariableFamilyDto> variableFamilyDtos) {
         List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(variableFamilyDtos.size());
         for (VariableFamilyDto family : variableFamilyDtos) {
             relatedResourceDtos.add(getVariableFamilyDtoAsRelatedResourceDto(family));
+        }
+        return relatedResourceDtos;
+    }
+
+    public static List<RelatedResourceDto> getVariableFamilyBasicDtosAsRelatedResourceDtos(List<VariableFamilyBasicDto> variableFamilyBasicDtos) {
+        List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>(variableFamilyBasicDtos.size());
+        for (VariableFamilyBasicDto family : variableFamilyBasicDtos) {
+            relatedResourceDtos.add(getVariableFamilyBasicDtoAsRelatedResourceDto(family));
         }
         return relatedResourceDtos;
     }
