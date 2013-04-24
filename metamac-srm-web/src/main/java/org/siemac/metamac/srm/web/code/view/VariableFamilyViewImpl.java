@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
@@ -274,7 +274,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     @Override
     public void setVariables(GetVariablesResult result) {
         if (variablesWindow != null) {
-            variablesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableDtosAsRelatedResourceDtos(result.getVariables()));
+            variablesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()));
             variablesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
         }
     }
@@ -285,10 +285,10 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         variableListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
     }
 
-    private void setVariablesOfFamily(List<VariableDto> variableDtos) {
+    private void setVariablesOfFamily(List<VariableBasicDto> variableDtos) {
         VariableRecord[] records = new VariableRecord[variableDtos.size()];
         int index = 0;
-        for (VariableDto scheme : variableDtos) {
+        for (VariableBasicDto scheme : variableDtos) {
             records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getVariableRecord(scheme);
         }
         variableListGrid.getListGrid().setData(records);

@@ -399,7 +399,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariables(GetVariablesResult result) {
         if (searchReplaceToVariablesWindow != null) {
-            searchReplaceToVariablesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableDtosAsRelatedResourceDtos(result.getVariables()));
+            searchReplaceToVariablesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()));
             searchReplaceToVariablesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
         }
     }

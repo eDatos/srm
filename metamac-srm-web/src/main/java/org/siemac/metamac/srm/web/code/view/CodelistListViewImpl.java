@@ -5,6 +5,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
@@ -219,10 +220,10 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         }
     }
 
-    private void setCodelistList(List<CodelistMetamacDto> codelistDtos) {
+    private void setCodelistList(List<CodelistMetamacBasicDto> codelistDtos) {
         CodelistRecord[] records = new CodelistRecord[codelistDtos.size()];
         int index = 0;
-        for (CodelistMetamacDto scheme : codelistDtos) {
+        for (CodelistMetamacBasicDto scheme : codelistDtos) {
             records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodelistRecord(scheme);
         }
         codelistsList.getListGrid().setData(records);

@@ -14,7 +14,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.criteria.VariableCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.VariableCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -76,7 +76,7 @@ public class GetVariablesActionHandler extends SecurityActionHandler<GetVariable
         criteria.getPaginator().setCountTotalResults(true);
 
         try {
-            MetamacCriteriaResult<VariableDto> result = srmCoreServiceFacade.findVariablesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+            MetamacCriteriaResult<VariableBasicDto> result = srmCoreServiceFacade.findVariablesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
             return new GetVariablesResult(result.getResults(), result.getPaginatorResult().getFirstResult(), result.getPaginatorResult().getTotalResults());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

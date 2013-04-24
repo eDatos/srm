@@ -5,7 +5,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableListPresenter;
@@ -199,10 +199,10 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
         variablesList.refreshPaginationInfo(variablesPaginatedList.getFirstResultOut(), variablesPaginatedList.getVariables().size(), variablesPaginatedList.getTotalResults());
     }
 
-    private void setVariableList(List<VariableDto> variableDtos) {
+    private void setVariableList(List<VariableBasicDto> variableDtos) {
         VariableRecord[] records = new VariableRecord[variableDtos.size()];
         int index = 0;
-        for (VariableDto scheme : variableDtos) {
+        for (VariableBasicDto scheme : variableDtos) {
             records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getVariableRecord(scheme);
         }
         variablesList.getListGrid().setData(records);
