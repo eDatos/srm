@@ -7,8 +7,8 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -40,7 +40,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
     public void testRetrieveCodesOrderedByCodelistUrn() throws Exception {
 
         // Retrieve
-        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(1), CodeMetamacResultSelection.ALL);
+        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(1), ItemMetamacResultSelection.ALL);
 
         // Validate common metadata and SHORT_NAME
         assertEquals(9, codes.size());

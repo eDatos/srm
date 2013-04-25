@@ -336,8 +336,8 @@ Application CodesMetamac {
 				@CodeMetamac findByCodeWithoutFlushing(Long codelistVersionId, String code);
 				findByCondition(PagingParameter pagingParameter);
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnorderedToVisualisation(Long codelistId, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
-				List<ItemResult> findCodesByCodelistUnordered(Long codelistId, CodeMetamacResultSelection resultSelection);
-				List<ItemResult> findCodesByCodelistOrderedInDepth(Long codelistId, Integer orderColumnIndex, CodeMetamacResultSelection resultSelection) throws MetamacException;
+				List<ItemResult> findCodesByCodelistUnordered(Long codelistId, ItemMetamacResultSelection resultSelection);
+				List<ItemResult> findCodesByCodelistOrderedInDepth(Long codelistId, Integer orderColumnIndex, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 				
 				clearCodesVariableElementByCodelist(@CodelistVersionMetamac codelistVersion);

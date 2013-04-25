@@ -35,7 +35,6 @@ import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -54,6 +53,7 @@ import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
@@ -415,7 +415,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Merge metadata of Item
         Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(codelistTemporalVersion.getItems());
-        List<ItemResult> codesFoundEfficiently = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistTemporalVersion.getId(), CodeMetamacResultSelection.ALL);
+        List<ItemResult> codesFoundEfficiently = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistTemporalVersion.getId(), ItemMetamacResultSelection.ALL);
         Map<String, ItemResult> codesFoundEfficientlyByUrn = new HashMap<String, ItemResult>(codesFoundEfficiently.size());
         for (ItemResult itemResult : codesFoundEfficiently) {
             codesFoundEfficientlyByUrn.put(itemResult.getUrn(), itemResult);
@@ -548,7 +548,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             codesInCodelistSourceByUrn.put(item.getNameableArtefact().getUrn(), (CodeMetamac) item);
         }
         // SOURCE: Retrieve efficiently some metadata: name, description, annotations...
-        List<ItemResult> codesItemResultInCodelistSource = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersionSource.getId(), CodeMetamacResultSelection.COPY);
+        List<ItemResult> codesItemResultInCodelistSource = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistVersionSource.getId(), ItemMetamacResultSelection.COPY);
         Map<String, ItemResult> codesItemResultInCodelistSourceByUrn = new HashMap<String, ItemResult>(codesItemResultInCodelistSource.size());
         for (ItemResult itemResult : codesItemResultInCodelistSource) {
             codesItemResultInCodelistSourceByUrn.put(itemResult.getUrn(), itemResult);

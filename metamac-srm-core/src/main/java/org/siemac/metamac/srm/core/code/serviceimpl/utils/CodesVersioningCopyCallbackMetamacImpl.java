@@ -1,16 +1,16 @@
 package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 
 import java.util.List;
-import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -73,13 +73,13 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
     }
 
     @Override
-    public Boolean isOverridedFindCodesEfficiently() {
+    public Boolean isOverridedFindItemsEfficiently() {
         return Boolean.TRUE;
     }
 
     @Override
-    public List<ItemResult> findCodesEfficiently(Long codelistId) {
-        return codeMetamacRepository.findCodesByCodelistUnordered(codelistId, CodeMetamacResultSelection.VERSIONING);
+    public List<ItemResult> findItemsEfficiently(Long codelistId) {
+        return codeMetamacRepository.findCodesByCodelistUnordered(codelistId, ItemMetamacResultSelection.VERSIONING);
     }
 
     @Override
@@ -92,8 +92,9 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
         CodeMetamac source = (CodeMetamac) sourceSdmx;
         CodeMetamac target = (CodeMetamac) targetSdmx;
         if (itemResultSource != null) {
-            Map<String, String> shortName = SrmServiceUtils.getCodeItemResultShortName(itemResultSource);
-            target.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(shortName));
+            // Copy efficiently
+            CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResultSource.getExtensionPoint();
+            target.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(extensionPoint.getShortName()));
         } else {
             target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
         }

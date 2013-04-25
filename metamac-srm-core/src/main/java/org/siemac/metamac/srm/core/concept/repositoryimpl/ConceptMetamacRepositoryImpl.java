@@ -12,12 +12,15 @@ import javax.persistence.Query;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
@@ -29,10 +32,18 @@ import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
     @Autowired
-    private ConceptRepository conceptRepository;
+    private ConceptRepository   conceptRepository;
 
     @Autowired
-    private ItemRepository    itemRepository;
+    private ItemRepository      itemRepository;
+
+    private static final String COLUMN_NAME_PLURAL_NAME        = "PLURAL_NAME_FK";
+    private static final String COLUMN_NAME_ACRONYM            = "ACRONYM_FK";
+    private static final String COLUMN_NAME_DESCRIPTION_SOURCE = "DESCRIPTION_SOURCE_FK";
+    private static final String COLUMN_NAME_CONTEXT            = "CONTEXT_FK";
+    private static final String COLUMN_NAME_DOC_METHOD         = "DOC_METHOD_FK";
+    private static final String COLUMN_NAME_DERIVATION         = "DERIVATION_FK";
+    private static final String COLUMN_NAME_LEGAL_ACTS         = "LEGAL_ACTS_FK";
 
     public ConceptMetamacRepositoryImpl() {
     }
@@ -54,6 +65,30 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @Override
+    public List<ItemResult> findConceptsByConceptSchemeUnordered(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection) {
+        // Find items
+        List<ItemResult> items = conceptRepository.findConceptsByConceptSchemeUnordered(conceptSchemeVersionId, resultSelection);
+
+        // Init extension point and index by id
+        Map<Long, ItemResult> mapItemByItemId = new HashMap<Long, ItemResult>(items.size());
+        for (ItemResult itemResult : items) {
+            itemResult.setExtensionPoint(new ConceptMetamacResultExtensionPoint());
+            mapItemByItemId.put(itemResult.getItemIdDatabase(), itemResult);
+        }
+
+        if (resultSelection.isInternationalStringsMetamac()) {
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapItemByItemId, ConceptExtensionPointUtilities.PLURAL_NAME);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapItemByItemId, ConceptExtensionPointUtilities.ACRONYM);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapItemByItemId, ConceptExtensionPointUtilities.DESCRIPTION_SOURCE);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapItemByItemId, ConceptExtensionPointUtilities.CONTEXT);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapItemByItemId, ConceptExtensionPointUtilities.DOC_METHOD);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapItemByItemId, ConceptExtensionPointUtilities.DERIVATION);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapItemByItemId, ConceptExtensionPointUtilities.LEGAL_ACTS);
+        }
+        return items;
+    }
+
+    @Override
     public void checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
         conceptRepository.checkConceptTranslations(itemSchemeVersionId, locale, exceptionItems);
         checkConceptMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
@@ -67,35 +102,33 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT a.CODE, ");
-        sb.append("c.PLURAL_NAME_FK as PLURAL_NAME_IS, lsplurn.LABEL as PLURAL_NAME_LABEL, ");
-        sb.append("c.ACRONYM_FK as ACRONYM_IS, lsacron.LABEL as ACRONYM_LABEL, ");
-        sb.append("c.DESCRIPTION_SOURCE_FK as DESCRIPTION_SOURCE_IS, lsdescs.LABEL as DESCRITION_SOURCE_LABEL, ");
-        sb.append("c.CONTEXT_FK as CONTEXT_IS, lsconte.LABEL as CONTEXT_LABEL, ");
-        sb.append("c.DOC_METHOD_FK as DOC_METHOD_IS, lsdocme.LABEL as DOC_METHOD_LABEL, ");
-        sb.append("c.DERIVATION_FK as DERIVARION_IS, lsderiv.LABEL as DERIVARION_LABEL, ");
-        sb.append("c.LEGAL_ACTS_FK as LEGAL_ACTS_IS, lslegal.LABEL as LEGAL_ACTS_LABEL ");
+        sb.append("c." + COLUMN_NAME_PLURAL_NAME + " as PLURAL_NAME_IS, lsplurn.LABEL as PLURAL_NAME_LABEL, ");
+        sb.append("c." + COLUMN_NAME_ACRONYM + " as ACRONYM_IS, lsacron.LABEL as ACRONYM_LABEL, ");
+        sb.append("c." + COLUMN_NAME_DESCRIPTION_SOURCE + " as DESCRIPTION_SOURCE_IS, lsdescs.LABEL as DESCRITION_SOURCE_LABEL, ");
+        sb.append("c." + COLUMN_NAME_CONTEXT + " as CONTEXT_IS, lsconte.LABEL as CONTEXT_LABEL, ");
+        sb.append("c." + COLUMN_NAME_DOC_METHOD + " as DOC_METHOD_IS, lsdocme.LABEL as DOC_METHOD_LABEL, ");
+        sb.append("c." + COLUMN_NAME_DERIVATION + " as DERIVARION_IS, lsderiv.LABEL as DERIVARION_LABEL, ");
+        sb.append("c." + COLUMN_NAME_LEGAL_ACTS + " as LEGAL_ACTS_IS, lslegal.LABEL as LEGAL_ACTS_LABEL ");
         sb.append("FROM TB_ITEMS_BASE i ");
         sb.append("INNER JOIN TB_M_CONCEPTS c on c.TB_CONCEPTS = i.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
-        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsplurn on lsplurn.INTERNATIONAL_STRING_FK = c.PLURAL_NAME_FK AND lsplurn.LOCALE = :locale ");
-        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsacron on lsacron.INTERNATIONAL_STRING_FK = c.ACRONYM_FK AND lsacron.LOCALE = :locale ");
-        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsdescs on lsdescs.INTERNATIONAL_STRING_FK = c.DESCRIPTION_SOURCE_FK AND lsdescs.LOCALE = :locale ");
-        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsconte on lsconte.INTERNATIONAL_STRING_FK = c.CONTEXT_FK AND lsconte.LOCALE = :locale ");
-        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsdocme on lsdocme.INTERNATIONAL_STRING_FK = c.DOC_METHOD_FK AND lsdocme.LOCALE = :locale ");
-        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsderiv on lsderiv.INTERNATIONAL_STRING_FK = c.DERIVATION_FK AND lsderiv.LOCALE = :locale ");
-        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lslegal on lslegal.INTERNATIONAL_STRING_FK = c.LEGAL_ACTS_FK AND lslegal.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsplurn on lsplurn.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_PLURAL_NAME + " AND lsplurn.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsacron on lsacron.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_ACRONYM + " AND lsacron.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsdescs on lsdescs.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_DESCRIPTION_SOURCE + " AND lsdescs.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsconte on lsconte.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_CONTEXT + " AND lsconte.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsdocme on lsdocme.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_DOC_METHOD + " AND lsdocme.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsderiv on lsderiv.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_DERIVATION + " AND lsderiv.LOCALE = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lslegal on lslegal.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_LEGAL_ACTS + " AND lslegal.LOCALE = :locale ");
         sb.append("WHERE ");
         sb.append("i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
         sb.append("AND (");
-        sb.append("       (c.PLURAL_NAME_FK IS NOT NULL AND lsplurn.LABEL IS NULL) ");
-        sb.append("    OR (c.ACRONYM_FK IS NOT NULL AND lsacron.LABEL IS NULL) ");
-        sb.append("    OR (c.DESCRIPTION_SOURCE_FK IS NOT NULL AND lsdescs.LABEL IS NULL) ");
-        sb.append("    OR (c.CONTEXT_FK IS NOT NULL AND lsconte.LABEL IS NULL) ");
-        sb.append("    OR (c.ACRONYM_FK IS NOT NULL AND lsacron.LABEL IS NULL) ");
-        sb.append("    OR (c.DOC_METHOD_FK IS NOT NULL AND lsdocme.LABEL IS NULL) ");
-        sb.append("    OR (c.DOC_METHOD_FK IS NOT NULL AND lsdocme.LABEL IS NULL) ");
-        sb.append("    OR (c.DERIVATION_FK IS NOT NULL AND lsderiv.LABEL IS NULL) ");
-        sb.append("    OR (c.LEGAL_ACTS_FK IS NOT NULL AND lslegal.LABEL IS NULL) ");
+        sb.append("       (c." + COLUMN_NAME_PLURAL_NAME + " IS NOT NULL AND lsplurn.LABEL IS NULL) ");
+        sb.append("    OR (c." + COLUMN_NAME_ACRONYM + " IS NOT NULL AND lsacron.LABEL IS NULL) ");
+        sb.append("    OR (c." + COLUMN_NAME_DESCRIPTION_SOURCE + " IS NOT NULL AND lsdescs.LABEL IS NULL) ");
+        sb.append("    OR (c." + COLUMN_NAME_CONTEXT + " IS NOT NULL AND lsconte.LABEL IS NULL) ");
+        sb.append("    OR (c." + COLUMN_NAME_DOC_METHOD + " IS NOT NULL AND lsdocme.LABEL IS NULL) ");
+        sb.append("    OR (c." + COLUMN_NAME_DERIVATION + " IS NOT NULL AND lsderiv.LABEL IS NULL) ");
+        sb.append("    OR (c." + COLUMN_NAME_LEGAL_ACTS + " IS NOT NULL AND lslegal.LABEL IS NULL) ");
         sb.append(") ");
         sb.append("ORDER BY a.CODE ASC");
 
@@ -125,5 +158,127 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         if (withoutTranslation(internationalStringName, localisedStringName)) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, metadataExceptionParameter, conceptCode));
         }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void executeQueryRetrieveConceptInternationalString(Long itemSchemVersionId, Map<Long, ItemResult> mapItemByItemId, ConceptExtensionPointUtility extractor) {
+        StringBuilder sqlQuery = new StringBuilder();
+        sqlQuery.append("SELECT i.ID, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL ");
+        sqlQuery.append("FROM TB_M_CONCEPTS c INNER JOIN TB_ITEMS_BASE i on i.ID = c.TB_CONCEPTS ");
+        sqlQuery.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c." + extractor.getColumnName() + " ");
+        sqlQuery.append("WHERE i.ITEM_SCHEME_VERSION_FK = :itemSchemVersionId and c." + extractor.getColumnName() + " IS NOT NULL");
+
+        Query query = getEntityManager().createNativeQuery(sqlQuery.toString());
+        query.setParameter("itemSchemVersionId", itemSchemVersionId);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            Object[] resultSqlArray = (Object[]) resultSql;
+            Long actualItemId = getLong(resultSqlArray[0]);
+            ItemResult target = mapItemByItemId.get(actualItemId);
+            internationalStringResultSqltoInternationalStringResult(resultSqlArray, extractor.getMetadata(target));
+        }
+    }
+
+    private void internationalStringResultSqltoInternationalStringResult(Object[] source, Map<String, String> target) {
+        int i = 1; // 0 is itemId
+        String locale = getString(source[i++]);
+        if (locale == null) {
+            return;
+        }
+        String label = getString(source[i++]);
+        target.put(locale, label);
+    }
+
+    private interface ConceptExtensionPointUtility {
+
+        public String getColumnName();
+        public Map<String, String> getMetadata(ItemResult item);
+    }
+
+    private static class ConceptExtensionPointUtilities {
+
+        private static ConceptMetamacResultExtensionPoint getConceptExtensionPoint(ItemResult item) {
+            return (ConceptMetamacResultExtensionPoint) item.getExtensionPoint();
+        }
+
+        public static ConceptExtensionPointUtility PLURAL_NAME        = new ConceptExtensionPointUtility() {
+
+                                                                          @Override
+                                                                          public String getColumnName() {
+                                                                              return COLUMN_NAME_PLURAL_NAME;
+                                                                          };
+                                                                          @Override
+                                                                          public java.util.Map<String, String> getMetadata(ItemResult item) {
+                                                                              return getConceptExtensionPoint(item).getPluralName();
+                                                                          }
+                                                                      };
+
+        public static ConceptExtensionPointUtility ACRONYM            = new ConceptExtensionPointUtility() {
+
+                                                                          @Override
+                                                                          public String getColumnName() {
+                                                                              return COLUMN_NAME_ACRONYM;
+                                                                          };
+                                                                          @Override
+                                                                          public java.util.Map<String, String> getMetadata(ItemResult item) {
+                                                                              return getConceptExtensionPoint(item).getAcronym();
+                                                                          }
+                                                                      };
+
+        public static ConceptExtensionPointUtility DESCRIPTION_SOURCE = new ConceptExtensionPointUtility() {
+
+                                                                          @Override
+                                                                          public String getColumnName() {
+                                                                              return COLUMN_NAME_DESCRIPTION_SOURCE;
+                                                                          };
+                                                                          @Override
+                                                                          public java.util.Map<String, String> getMetadata(ItemResult item) {
+                                                                              return getConceptExtensionPoint(item).getDescriptionSource();
+                                                                          }
+                                                                      };
+        public static ConceptExtensionPointUtility CONTEXT            = new ConceptExtensionPointUtility() {
+
+                                                                          @Override
+                                                                          public String getColumnName() {
+                                                                              return COLUMN_NAME_CONTEXT;
+                                                                          };
+                                                                          @Override
+                                                                          public java.util.Map<String, String> getMetadata(ItemResult item) {
+                                                                              return getConceptExtensionPoint(item).getContext();
+                                                                          }
+                                                                      };
+        public static ConceptExtensionPointUtility DOC_METHOD         = new ConceptExtensionPointUtility() {
+
+                                                                          @Override
+                                                                          public String getColumnName() {
+                                                                              return COLUMN_NAME_DOC_METHOD;
+                                                                          };
+                                                                          @Override
+                                                                          public java.util.Map<String, String> getMetadata(ItemResult item) {
+                                                                              return getConceptExtensionPoint(item).getDocMethod();
+                                                                          }
+                                                                      };
+        public static ConceptExtensionPointUtility DERIVATION         = new ConceptExtensionPointUtility() {
+
+                                                                          @Override
+                                                                          public String getColumnName() {
+                                                                              return COLUMN_NAME_DERIVATION;
+                                                                          };
+                                                                          @Override
+                                                                          public java.util.Map<String, String> getMetadata(ItemResult item) {
+                                                                              return getConceptExtensionPoint(item).getDerivation();
+                                                                          }
+                                                                      };
+        public static ConceptExtensionPointUtility LEGAL_ACTS         = new ConceptExtensionPointUtility() {
+
+                                                                          @Override
+                                                                          public String getColumnName() {
+                                                                              return COLUMN_NAME_LEGAL_ACTS;
+                                                                          };
+                                                                          @Override
+                                                                          public java.util.Map<String, String> getMetadata(ItemResult item) {
+                                                                              return getConceptExtensionPoint(item).getLegalActs();
+                                                                          }
+                                                                      };
     }
 }

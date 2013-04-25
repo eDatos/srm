@@ -15,15 +15,16 @@ import java.util.Set;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.siemac.metamac.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -376,7 +377,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public List<ItemResult> findCodesByCodelistUnordered(Long idCodelist, CodeMetamacResultSelection resultSelection) {
+    public List<ItemResult> findCodesByCodelistUnordered(Long idCodelist, ItemMetamacResultSelection resultSelection) {
 
         // Find codes
         List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, resultSelection);
@@ -388,8 +389,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
         }
 
-        // Fill short name
-        if (resultSelection.isShortName()) {
+        if (resultSelection.isInternationalStringsMetamac()) {
+            // Fill short name
             executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
         }
         return codes;
@@ -397,7 +398,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, CodeMetamacResultSelection resultSelection) throws MetamacException {
+    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, ItemMetamacResultSelection resultSelection) throws MetamacException {
 
         // Find codes
         List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, resultSelection);
@@ -409,8 +410,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
         }
 
-        // Fill short name
-        if (resultSelection.isShortName()) {
+        if (resultSelection.isInternationalStringsMetamac()) {
+            // Fill short name
             // Try fill from variable element
             executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
             // If code has not variable element, try fill with short name in code
@@ -592,7 +593,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         for (Long codeId : codes) {
             countToSqlParameter++;
             codesParameter.append(codeId);
-            if (countToSqlParameter == 1000 || count == codes.size() - 1) {
+            if (countToSqlParameter == CoreCommonConstants.SQL_IN_CLAUSE_MAXIMUM_NUMBER || count == codes.size() - 1) {
                 // Execute select
                 Query query = getEntityManager().createNativeQuery("SELECT TB_CODES, SHORT_NAME_FK FROM TB_M_CODES WHERE TB_CODES IN (" + codesParameter + ") AND SHORT_NAME_FK IS NOT NULL");
                 List resultsSql = query.getResultList();
