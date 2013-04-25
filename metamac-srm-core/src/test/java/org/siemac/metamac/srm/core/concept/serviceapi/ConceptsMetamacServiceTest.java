@@ -2448,7 +2448,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 ItemVisualisationResult concept = getItemVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, concept.getUrn());
                 assertEquals("CONCEPT01", concept.getCode());
-
+                assertEquals("conceptScheme-1-v2-concept-1", concept.getItemUuid());
                 assertEquals("Nombre conceptScheme-1-v2-concept-1", concept.getName());
                 assertEquals(Long.valueOf(121), concept.getItemIdDatabase());
                 assertEquals(null, concept.getParent());
@@ -2468,6 +2468,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals("CONCEPT02", concept.getParent().getCode());
                 assertEquals("Nombre conceptScheme-1-v2-concept-2-1", concept.getName());
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getParent().getUrn());
+                assertEquals("conceptScheme-1-v2-concept-2", concept.getParent().getItemUuid());
                 assertEquals(Long.valueOf("122"), concept.getParentIdDatabase());
             }
             {
