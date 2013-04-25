@@ -1982,7 +1982,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getUrn());
                 assertEquals("ORGANISATION01", organisation.getCode());
-                assertEquals("organisationScheme-1-v2-org-1", organisation.getItemUuid());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-1", organisation.getName());
                 assertEquals(Long.valueOf(121), organisation.getItemIdDatabase());
                 assertEquals(null, organisation.getParent());
@@ -2002,7 +2001,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 assertEquals("ORGANISATION02", organisation.getParent().getCode());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-2-1", organisation.getName());
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getParent().getUrn());
-                assertEquals("organisationScheme-1-v2-org-2", organisation.getParent().getItemUuid());
                 assertEquals(Long.valueOf("122"), organisation.getParentIdDatabase());
             }
             {

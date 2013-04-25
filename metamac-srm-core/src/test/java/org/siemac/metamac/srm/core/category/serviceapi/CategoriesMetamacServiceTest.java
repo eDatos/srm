@@ -1653,7 +1653,6 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 ItemVisualisationResult category = getItemVisualisationResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_1);
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, category.getUrn());
                 assertEquals("CATEGORY01", category.getCode());
-                assertEquals("categoryScheme-1-v2-cat-1", category.getItemUuid());
                 assertEquals("Nombre categoryScheme-1-v2-category-1", category.getName());
                 assertEquals(Long.valueOf(121), category.getItemIdDatabase());
                 assertEquals(null, category.getParent());
@@ -1673,7 +1672,6 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals("CATEGORY02", category.getParent().getCode());
                 assertEquals("Nombre categoryScheme-1-v2-category-2-1", category.getName());
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getParent().getUrn());
-                assertEquals("categoryScheme-1-v2-cat-2", category.getParent().getItemUuid());
                 assertEquals(Long.valueOf("122"), category.getParentIdDatabase());
             }
             {
