@@ -991,12 +991,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         Integer opennessColumnIndex = null;
-        if (opennessVisualisationUrn == null) {
-            opennessVisualisationUrn = codelistVersion.getDefaultOpennessVisualisation() != null ? codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getUrn() : null;
-        }
         if (opennessVisualisationUrn != null) {
             CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByUrn(ctx, opennessVisualisationUrn);
             opennessColumnIndex = codelistOpennessVisualisation.getColumnIndex();
+        } else {
+            // nothing! do not return default openness visualisation
         }
 
         // Retrieve
