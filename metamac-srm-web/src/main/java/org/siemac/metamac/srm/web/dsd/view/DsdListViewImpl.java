@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
+import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
@@ -62,14 +63,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         panel = new VLayout();
         panel.setHeight100();
         panel.setOverflow(Overflow.SCROLL);
-
-        dsdListGrid = new DsdPaginatedListGrid(DsdListPresenter.DSD_LIST_MAX_RESULTS, new PaginatedAction() {
-
-            @Override
-            public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveDsdList(firstResult, maxResults, searchSectionStack.getDataStructureDefinitionWebCriteria());
-            }
-        });
 
         // ············
         // List of DSDs
@@ -147,25 +140,30 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
         // DSD ListGrid
 
+        dsdListGrid = new DsdPaginatedListGrid(DsdListPresenter.DSD_LIST_MAX_RESULTS, new PaginatedAction() {
+
+            @Override
+            public void retrieveResultSet(int firstResult, int maxResults) {
+                getUiHandlers().retrieveDsdList(firstResult, maxResults, searchSectionStack.getDataStructureDefinitionWebCriteria());
+            }
+        });
         dsdListGrid.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
 
             @Override
             public void onSelectionChanged(SelectionEvent event) {
-                if (dsdListGrid.getListGrid().getSelectedRecords() != null && dsdListGrid.getListGrid().getSelectedRecords().length == 1) {
-                    DsdRecord record = (DsdRecord) dsdListGrid.getListGrid().getSelectedRecord();
-                    DataStructureDefinitionMetamacBasicDto dsd = record.getDsdBasicDto();
-                    selectDsd(dsd);
-                    showCancelValidityDeleteButton(new ListGridRecord[]{record});
+                if (dsdListGrid.getListGrid().getSelectedRecords().length > 0) {
+                    // Show delete button
+                    showDeleteToolStripButton(dsdListGrid.getListGrid().getSelectedRecords());
+                    // Show cancel validity button
+                    showCancelValidityDeleteButton(dsdListGrid.getListGrid().getSelectedRecords());
+                    // Show export button
+                    showExportToolStripButton(dsdListGrid.getListGrid().getSelectedRecords());
                 } else {
-                    // No record selected
-                    deselectDsd();
-                    if (dsdListGrid.getListGrid().getSelectedRecords().length > 1) {
-                        // Delete more than one DSD with one click
-                        showDeleteToolStripButton();
-                        showCancelValidityDeleteButton(dsdListGrid.getListGrid().getSelectedRecords());
-                        exportToolStripButton.hide();
-                    }
+                    deleteToolStripButton.hide();
+                    cancelValidityButton.hide();
+                    exportToolStripButton.hide();
                 }
+
             }
         });
         dsdListGrid.getListGrid().addRecordClickHandler(new RecordClickHandler() {
@@ -173,8 +171,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // CheckBox is not clicked
-                    dsdListGrid.getListGrid().deselectAllRecords();
-                    dsdListGrid.getListGrid().selectRecord(event.getRecord());
+                    String urn = ((DsdRecord) event.getRecord()).getAttribute(DataStructureDefinitionDS.URN);
+                    getUiHandlers().goToDsd(urn);
                 }
             }
         });
@@ -224,25 +222,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         return null;
     }
 
-    /**
-     * Select DSD in ListGrid
-     * 
-     * @param selectedDsd
-     */
-    private void selectDsd(DataStructureDefinitionMetamacBasicDto selectedDsd) {
-        showDeleteToolStripButton();
-        showExportToolStripButton(selectedDsd);
-    }
-
-    /**
-     * DeSelect DSD in ListGrid
-     */
-    private void deselectDsd() {
-        deleteToolStripButton.hide();
-        exportToolStripButton.hide();
-        cancelValidityButton.hide();
-    }
-
     @Override
     public void onNewDsdCreated() {
         dsdListGrid.goToLastPageAfterCreate();
@@ -275,36 +254,31 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         searchSectionStack.setAttributeConcepts(result);
     }
 
-    private void showDeleteToolStripButton() {
-        List<DataStructureDefinitionMetamacBasicDto> dsds = getSelectedDsds();
-        boolean actionAllowed = true;
-        for (DataStructureDefinitionMetamacBasicDto dsd : dsds) {
+    private void showDeleteToolStripButton(ListGridRecord[] records) {
+        boolean allSelectedDsdsCanBeDeleted = true;
+        for (ListGridRecord record : records) {
+            DataStructureDefinitionMetamacBasicDto dsd = ((DsdRecord) record).getDsdBasicDto();
             if (!DsdClientSecurityUtils.canDeleteDsd(dsd.getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dsd))) {
-                actionAllowed = false;
+                allSelectedDsdsCanBeDeleted = false;
                 break;
             }
         }
-        if (actionAllowed) {
+        if (allSelectedDsdsCanBeDeleted) {
             deleteToolStripButton.show();
+        } else {
+            deleteToolStripButton.hide();
         }
     }
 
-    private void showExportToolStripButton(DataStructureDefinitionMetamacBasicDto selectedDsd) {
-        if (ImportationClientSecurityUtils.canExportStructure(selectedDsd.getVersionLogic())) {
-            exportToolStripButton.show();
-        }
-    }
-
-    private List<DataStructureDefinitionMetamacBasicDto> getSelectedDsds() {
-        List<DataStructureDefinitionMetamacBasicDto> dsds = new ArrayList<DataStructureDefinitionMetamacBasicDto>();
-        if (dsdListGrid.getListGrid().getSelectedRecords() != null) {
-            ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
-            for (int i = 0; i < records.length; i++) {
-                DsdRecord record = (DsdRecord) records[i];
-                dsds.add(record.getDsdBasicDto());
+    private void showExportToolStripButton(ListGridRecord[] records) {
+        if (records.length == 1) {
+            DataStructureDefinitionMetamacBasicDto dsd = ((DsdRecord) records[0]).getDsdBasicDto();
+            if (ImportationClientSecurityUtils.canExportStructure(dsd.getVersionLogic())) {
+                exportToolStripButton.show();
             }
+        } else {
+            exportToolStripButton.hide();
         }
-        return dsds;
     }
 
     private List<String> getSelectedDsdsUrns() {
