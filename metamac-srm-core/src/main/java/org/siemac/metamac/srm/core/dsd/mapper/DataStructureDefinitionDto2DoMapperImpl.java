@@ -8,7 +8,10 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
-import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisationRepository;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisationRepository;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -39,7 +42,10 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
     private DataStructureDefinitionVersionMetamacRepository                                       dataStructureDefinitionVersionMetamacRepository;
 
     @Autowired
-    private CodesDto2DoMapper                                                                     codesDto2DoMapper;
+    private CodelistOrderVisualisationRepository                                                  codelistOrderVisualisationRepository;
+
+    @Autowired
+    private CodelistOpennessVisualisationRepository                                               codelistOpennessVisualisationRepository;
 
     // ------------------------------------------------------------
     // DATA STRUCTURE DEFINITIONS
@@ -210,10 +216,28 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
         DimensionComponent dimension = (DimensionComponent) dto2DoMapperSdmxSrm.relatedResourceDtoToEntity(source, ServiceExceptionParameters.DIMENSION);
         target.setDimension(dimension);
-        target.setDisplayOrder(codesDto2DoMapper.retrieveCodelistOrderVisualisation(source.getDisplayOrder().getUrn()));
-        target.setHierarchyLevelsOpen(codesDto2DoMapper.retrieveCodelistOpennessVisualisation(source.getHierarchyLevelsOpen().getUrn()));
+        target.setDisplayOrder(retrieveCodelistOrderVisualisation(source.getDisplayOrder().getUrn()));
+        target.setHierarchyLevelsOpen(retrieveCodelistOpennessVisualisation(source.getHierarchyLevelsOpen().getUrn()));
         target.setDsdVersion(dataStructureDefinitionVersionMetamac);
 
+        return target;
+    }
+
+    private CodelistOrderVisualisation retrieveCodelistOrderVisualisation(String urn) throws MetamacException {
+        CodelistOrderVisualisation target = codelistOrderVisualisationRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    private CodelistOpennessVisualisation retrieveCodelistOpennessVisualisation(String urn) throws MetamacException {
+        CodelistOpennessVisualisation target = codelistOpennessVisualisationRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
         return target;
     }
 }

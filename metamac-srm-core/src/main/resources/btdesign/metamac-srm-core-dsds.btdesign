@@ -63,6 +63,8 @@ Application DsdsMetamac {
     		@DataStructureDefinitionVersionMetamac versioningHeadingAndStub(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy, @DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException;
    			"Create showDecimalsPrecision in the new version if are valid metadata in the new version"
     		@DataStructureDefinitionVersionMetamac versioningShowDecimalsPrecision(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy, @DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException;
+    		"Create dimensionVisualisationInfo in the new version if are valid metadata in the new version"
+    		@DataStructureDefinitionVersionMetamac versioningDimensionVisualisationInfo(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy, @DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException;
     		"Creates a temporal version of a data structure definition, copying metadata from version with provided urn"
     		@DataStructureDefinitionVersionMetamac createTemporalDataStructureDefinition(String urnToCopy) throws MetamacException;
      		"Creates a new version of a data structure definition from temporal version with provided urn"

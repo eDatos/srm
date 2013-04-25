@@ -47,6 +47,7 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -670,6 +671,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 break;
             }
         }
+
         // Heading
         Integer dimOrderHeading = 1;
         for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getHeadingDimensions()) {
@@ -682,6 +684,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 dimOrderHeading++;
             }
         }
+
         // Stub
         Integer dimOrderStub = 1;
         for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamacToCopy.getStubDimensions()) {
@@ -744,6 +747,31 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return dataStructureDefinitionVersionMetamacNewVersion;
     }
 
+    @Override
+    public DataStructureDefinitionVersionMetamac versioningDimensionVisualisationInfo(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy,
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException {
+
+        // Map of new dimension
+        Map<String, Component> dimensionOrderMap = new HashMap<String, Component>();
+        for (ComponentList componentList : dataStructureDefinitionVersionMetamacNewVersion.getGrouping()) {
+            if (componentList instanceof DimensionDescriptor) {
+                for (Component component : componentList.getComponents()) {
+                    dimensionOrderMap.put(component.getCode(), component);
+                }
+                break;
+            }
+        }
+
+        // DimensionVisualisationInfo
+        for (DimensionVisualizationInfo dimensionVisualizationInfo: dataStructureDefinitionVersionMetamacToCopy.getDimensionVisualisationInfos()) {
+            
+            (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
+            
+            DimensionVisualizationInfo targetDimensionVisualizationInfo = new DimensionVisualizationInfo();
+        }
+        
+        return null;
+    }
     private void checkDataStructureDefinitionToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);

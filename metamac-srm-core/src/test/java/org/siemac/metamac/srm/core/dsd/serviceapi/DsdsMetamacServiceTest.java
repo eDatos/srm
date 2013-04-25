@@ -997,4 +997,10 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     }
 
+    @Override
+    public void testVersioningDimensionVisualisationInfo() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
 }
