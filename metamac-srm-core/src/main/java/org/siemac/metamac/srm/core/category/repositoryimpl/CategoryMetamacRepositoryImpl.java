@@ -7,11 +7,13 @@ import java.util.Map;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 
 /**
@@ -39,6 +41,14 @@ public class CategoryMetamacRepositoryImpl extends CategoryMetamacRepositoryBase
         } else {
             return result.get(0);
         }
+    }
+
+    @Override
+    public List<ItemResult> findCategoriesByCategorySchemeUnordered(Long categorySchemeVersionId, ItemMetamacResultSelection resultSelection) {
+        // Find items
+        List<ItemResult> items = categoryRepository.findCategoriesByCategorySchemeUnordered(categorySchemeVersionId, resultSelection);
+        // no extension point
+        return items;
     }
 
     @Override

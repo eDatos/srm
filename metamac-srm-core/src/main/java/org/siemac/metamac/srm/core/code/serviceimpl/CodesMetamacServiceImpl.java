@@ -415,7 +415,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Merge metadata of Item
         Map<String, Item> temporalItemMap = SrmServiceUtils.createMapOfItemsByOriginalUrn(codelistTemporalVersion.getItems());
         List<ItemResult> codesFoundEfficiently = getCodeMetamacRepository().findCodesByCodelistUnordered(codelistTemporalVersion.getId(), ItemMetamacResultSelection.ALL);
-        Map<String, ItemResult> codesFoundEfficientlyByUrn = SrmServiceUtils.createMapOfItemsResultByUrn(codesFoundEfficiently);
+        Map<String, ItemResult> codesFoundEfficientlyByUrn = SdmxSrmUtils.createMapOfItemsResultByUrn(codesFoundEfficiently);
 
         for (Item item : codelistVersion.getItems()) {
             CodeMetamac code = (CodeMetamac) item;

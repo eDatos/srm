@@ -73,6 +73,9 @@ public class ConceptVersioningCopyCallbackMetamacImpl implements ConceptVersioni
 
     @Override
     public void copyConcept(Concept sourceSdmx, ItemResult itemResultSource, Concept targetSdmx) {
+
+        // IMPORTANT! If any InternationalString is added, do an efficient query and retrieve from sourceItemResult
+
         ConceptMetamac source = (ConceptMetamac) sourceSdmx;
         ConceptMetamac target = (ConceptMetamac) targetSdmx;
 

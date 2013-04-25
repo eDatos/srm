@@ -130,6 +130,7 @@ Application CategoriesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CategoryMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
+				List<ItemResult> findCategoriesByCategorySchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection);
 				List<ItemVisualisationResult> findCategoriesByCategorySchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
 				checkCategoryTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}

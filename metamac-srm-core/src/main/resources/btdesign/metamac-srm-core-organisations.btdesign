@@ -110,6 +110,7 @@ Application OrganisationsMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@OrganisationMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
+				List<ItemResult> findOrganisationsByOrganisationSchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection);
 				List<ItemVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
 				checkOrganisationTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}

@@ -54,6 +54,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
@@ -303,7 +304,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Merge metadata of Item
         Map<String, Item> temporalItemMap = SrmServiceUtils.createMapOfItemsByOriginalUrn(conceptSchemeTemporalVersion.getItems());
         List<ItemResult> conceptsFoundEfficiently = getConceptMetamacRepository().findConceptsByConceptSchemeUnordered(conceptSchemeTemporalVersion.getId(), ItemMetamacResultSelection.ALL);
-        Map<String, ItemResult> conceptsFoundEfficientlyByUrn = SrmServiceUtils.createMapOfItemsResultByUrn(conceptsFoundEfficiently);
+        Map<String, ItemResult> conceptsFoundEfficientlyByUrn = SdmxSrmUtils.createMapOfItemsResultByUrn(conceptsFoundEfficiently);
 
         for (Item item : conceptSchemeVersion.getItems()) {
             ConceptMetamac concept = (ConceptMetamac) item;

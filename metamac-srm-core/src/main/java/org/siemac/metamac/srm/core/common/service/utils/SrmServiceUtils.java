@@ -399,12 +399,4 @@ public class SrmServiceUtils {
         }
         return result;
     }
-
-    public static Map<String, ItemResult> createMapOfItemsResultByUrn(List<ItemResult> items) {
-        Map<String, ItemResult> result = new HashMap<String, ItemResult>(items.size());
-        for (ItemResult itemResult : items) {
-            result.put(itemResult.getUrn(), itemResult);
-        }
-        return result;
-    }
 }
