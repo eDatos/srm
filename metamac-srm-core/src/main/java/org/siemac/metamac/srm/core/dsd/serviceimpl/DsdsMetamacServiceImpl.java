@@ -63,6 +63,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
@@ -254,8 +255,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersionMetamac);
         srmValidation.checkItemsStructureCanBeModified(ctx, dataStructureDefinitionVersionMetamac);
 
-        // If is a Dimension check is not exist in the stub or heading, or delete it if exist
         if (component instanceof DimensionComponent) {
+            // If is a Dimension check is not exist in the stub or heading, or delete it if exist
             for (DimensionOrder dimensionOrder : new ArrayList<DimensionOrder>(dataStructureDefinitionVersionMetamac.getStubDimensions())) {
                 if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionOrder.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeStubDimension(dimensionOrder);
@@ -266,10 +267,16 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                     dataStructureDefinitionVersionMetamac.removeHeadingDimension(dimensionOrder);
                 }
             }
+
+            // If the dimension has associated information to be deleted, delete it too.
+            for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
+                if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionVisualizationInfo.getDimension().getCode())) {
+                    dataStructureDefinitionVersionMetamac.removeDimensionVisualisationInfo(dimensionVisualizationInfo);
+                }
+            }
         }
 
-        // TODO recalcular los idnexorder al eliminar una dimension
-
+        // TODO recalcular los index-order al eliminar una dimension
         dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
     @Override
@@ -650,8 +657,13 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
                 .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, structureVersioningCopyCallback);
 
-        // Versioning heading and stub (metadata of Metamac). Note: other relations are copied in copy callback
+        // Other metadata
+
+        // Versioning heading and stub (metadata of Metamac).
         dataStructureDefinitionVersionMetamacNewVersion = versioningHeadingAndStub(ctx, dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
+
+        // Versioning dimension visualisation info
+        dataStructureDefinitionVersionMetamacNewVersion = versioningDimensionVisualisationInfo(ctx, dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
 
         return dataStructureDefinitionVersionMetamacNewVersion;
     }
@@ -751,11 +763,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException {
 
         // Map of new dimension
-        Map<String, Component> dimensionOrderMap = new HashMap<String, Component>();
+        Map<String, Component> dimensionMap = new HashMap<String, Component>();
         for (ComponentList componentList : dataStructureDefinitionVersionMetamacNewVersion.getGrouping()) {
             if (componentList instanceof DimensionDescriptor) {
                 for (Component component : componentList.getComponents()) {
-                    dimensionOrderMap.put(component.getCode(), component);
+                    dimensionMap.put(component.getCode(), component);
                 }
                 break;
             }
@@ -763,14 +775,43 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // DimensionVisualisationInfo
         for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamacToCopy.getDimensionVisualisationInfos()) {
-
-            // (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode()); // TODO
-
-            DimensionVisualizationInfo targetDimensionVisualizationInfo = new DimensionVisualizationInfo();
+            // If exist the dimension in the new DSD
+            if (dimensionMap.containsKey(dimensionVisualizationInfo.getDimension().getCode())) {
+                DimensionComponent dimensionComponent = dimensionVisualizationInfo.getDimension();
+                Representation representation = dimensionComponent.getLocalRepresentation();
+                // If the dimension contains a enumerated representation of type codelist
+                if (representation != null && RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+                    CodelistVersion codelistVersion = representation.getEnumerationCodelist();
+                    DimensionVisualizationInfo newDimensionVisualizationInfo = new DimensionVisualizationInfo();
+                    newDimensionVisualizationInfo.setDimension((DimensionComponent) dimensionMap.get(dimensionVisualizationInfo.getDimension().getCode()));
+                    boolean addDimensionVisualizationInfo = false;
+                    // If the codeList representation is the same as that of the DisplayOrder.
+                    if (codelistVersion != null && dimensionVisualizationInfo.getDisplayOrder() != null) {
+                        if (codelistVersion.getMaintainableArtefact().getUrn().equals(dimensionVisualizationInfo.getDisplayOrder().getCodelistVersion().getMaintainableArtefact().getUrn())) {
+                            newDimensionVisualizationInfo.setDisplayOrder(dimensionVisualizationInfo.getDisplayOrder());
+                            addDimensionVisualizationInfo = true;
+                        }
+                    }
+                    // If the codeList representation is the same as that of the OpenessLevel.
+                    if (codelistVersion != null && dimensionVisualizationInfo.getHierarchyLevelsOpen() != null) {
+                        if (codelistVersion.getMaintainableArtefact().getUrn().equals(dimensionVisualizationInfo.getHierarchyLevelsOpen().getCodelistVersion().getMaintainableArtefact().getUrn())) {
+                            newDimensionVisualizationInfo.setHierarchyLevelsOpen(dimensionVisualizationInfo.getHierarchyLevelsOpen());
+                            addDimensionVisualizationInfo = true;
+                        }
+                    }
+                    // Add new info
+                    if (addDimensionVisualizationInfo) {
+                        dataStructureDefinitionVersionMetamacNewVersion.addDimensionVisualisationInfo(newDimensionVisualizationInfo);
+                    }
+                } else {
+                    // TODO HACER LA MISMA VALIDACION QUE ARRIBA PERO CON EL COREREPRESENTATION DEL CONCEPTO.
+                }
+            }
         }
 
-        return null;
+        return dataStructureDefinitionVersionMetamacNewVersion;
     }
+
     private void checkDataStructureDefinitionToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);

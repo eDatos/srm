@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.dto.DimensionVisualisationInfoDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionAsserts;
@@ -27,6 +29,8 @@ public class DataStructureDefinitionsMetamacAsserts extends DataStructureDefinit
 
         assertDecimalPrecisionsEntity(expected.getShowDecimalsPrecisions(), actual.getShowDecimalsPrecisions());
 
+        assertDimensionVisualizationInfoEntities(expected.getDimensionVisualisationInfos(), actual.getDimensionVisualisationInfos());
+
         // Sdmx
         DataStructureDefinitionAsserts.assertEqualsDataStructureDefinition(expected, actual);
     }
@@ -42,6 +46,8 @@ public class DataStructureDefinitionsMetamacAsserts extends DataStructureDefinit
         assertDimensionOrders(expected.getStubDimensions(), actual.getStubDimensions());
 
         assertDecimalPrecisions(expected.getShowDecimalsPrecisions(), actual.getShowDecimalsPrecisions());
+
+        assertDimensionVisualizationInfo(expected.getDimensionVisualisationInfos(), actual.getDimensionVisualisationInfos());
 
         // Sdmx
         // DataStructureDefinitionAsserts.assertEqualsDataStructureDefinition(expected, actual);
@@ -90,5 +96,28 @@ public class DataStructureDefinitionsMetamacAsserts extends DataStructureDefinit
     private static void assertDecimalPrecision(MeasureDimensionPrecision expected, MeasureDimensionPrecision actual, Integer i) {
         assertEquals(expected.getConcept().getNameableArtefact().getUrn(), actual.getConcept().getNameableArtefact().getUrn());
         assertEquals(expected.getShowDecimalPrecision(), actual.getShowDecimalPrecision());
+    }
+
+    private static void assertDimensionVisualizationInfo(List<DimensionVisualisationInfoDto> expected, List<DimensionVisualizationInfo> actual) {
+        for (int i = 0; i < expected.size(); i++) {
+            assertDimensionVisualizationInfo(expected.get(i), actual.get(i));
+        }
+    }
+
+    private static void assertDimensionVisualizationInfo(DimensionVisualisationInfoDto expected, DimensionVisualizationInfo actual) {
+        assertEquals(expected.getDisplayOrder().getUrn(), actual.getDimension().getUrn());
+        assertEquals(expected.getHierarchyLevelsOpen().getUrn(), actual.getHierarchyLevelsOpen().getNameableArtefact().getUrn());
+    }
+
+    private static void assertDimensionVisualizationInfoEntities(List<DimensionVisualizationInfo> expected, List<DimensionVisualizationInfo> actual) {
+        for (int i = 0; i < expected.size(); i++) {
+            assertDimensionVisualizationInfoEntity(expected.get(i), actual.get(i));
+        }
+    }
+
+    private static void assertDimensionVisualizationInfoEntity(DimensionVisualizationInfo expected, DimensionVisualizationInfo actual) {
+        assertEquals(expected.getDimension().getUrn(), actual.getDimension().getUrn());
+        assertEquals(expected.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), actual.getHierarchyLevelsOpen().getNameableArtefact().getUrn());
+        assertEquals(expected.getDisplayOrder().getNameableArtefact().getUrn(), actual.getDisplayOrder().getNameableArtefact().getUrn());
     }
 }

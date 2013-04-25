@@ -85,6 +85,9 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
         dataStructureDefinitionVersionMetamac
                 .addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(4, ConceptsMetamacDoMocks.mockConcept(conceptType, codelist)));
 
+        dataStructureDefinitionVersionMetamac.addDimensionVisualisationInfo(DataStructureDefinitionMetamacDoMocks.mockDimensionVisualizationInfo(dataStructureDefinitionVersionMetamac
+                .getStubDimensions().iterator().next().getDimension()));
+
         DataStructureDefinitionMetamacDto dto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dto, dataStructureDefinitionVersionMetamac);
     }

@@ -355,6 +355,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             assertEquals(dsdToCopy.getAutoOpen(), dsdNewVersion.getAutoOpen());
             assertEquals(dsdToCopy.getShowDecimals(), dsdNewVersion.getShowDecimals());
             assertEquals(dsdToCopy.getHeadingDimensions().size(), dsdNewVersion.getHeadingDimensions().size());
+            assertEquals(dsdToCopy.getHeadingDimensions().size(), dsdNewVersion.getHeadingDimensions().size());
             // heading
             for (int i = 0; i < dsdToCopy.getHeadingDimensions().size(); i++) {
                 DimensionOrder dimOrderToCopy = dsdToCopy.getHeadingDimensions().get(i);
@@ -376,6 +377,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
                 assertEquals(measureDimensionPrecisionToCopy.getConcept().getNameableArtefact().getUrn(), measureDimensionPrecisionToNewVersion.getConcept().getNameableArtefact().getUrn());
                 assertEquals(measureDimensionPrecisionToCopy.getShowDecimalPrecision(), measureDimensionPrecisionToNewVersion.getShowDecimalPrecision());
             }
+            // DimensionVisualisationInfo
 
         }
     }
@@ -454,7 +456,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
                 assertEquals(measureDimensionPrecisionToCopy.getConcept().getNameableArtefact().getUrn(), measureDimensionPrecisionToNewVersion.getConcept().getNameableArtefact().getUrn());
                 assertEquals(measureDimensionPrecisionToCopy.getShowDecimalPrecision(), measureDimensionPrecisionToNewVersion.getShowDecimalPrecision());
             }
-
+            //
         }
     }
 

@@ -177,6 +177,9 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
 
             // ShowDecimalsPRecicions
             targetMetamac = dsdsMetamacService.versioningShowDecimalsPrecision(ctx, previousMetamac, targetMetamac);
+
+            // DimensionVisualisationInfo
+            targetMetamac = dsdsMetamacService.versioningDimensionVisualisationInfo(ctx, previousMetamac, targetMetamac);
         }
 
     }
