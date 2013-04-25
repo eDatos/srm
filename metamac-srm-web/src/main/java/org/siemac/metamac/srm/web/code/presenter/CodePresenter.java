@@ -208,8 +208,8 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
-    public void copyCodesInCodelist(final String codelistTargetUrn, String parentTargetUrn, List<CodeToCopy> codesToCopy) {
-        dispatcher.execute(new CopyCodesInCodelistAction(codelistTargetUrn, parentTargetUrn, codesToCopy), new WaitingAsyncCallback<CopyCodesInCodelistResult>() {
+    public void copyCodesInCodelist(String codelistSourceUrn, final String codelistTargetUrn, List<CodeToCopy> codesToCopy) {
+        dispatcher.execute(new CopyCodesInCodelistAction(codelistSourceUrn, codelistTargetUrn, codesToCopy), new WaitingAsyncCallback<CopyCodesInCodelistResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

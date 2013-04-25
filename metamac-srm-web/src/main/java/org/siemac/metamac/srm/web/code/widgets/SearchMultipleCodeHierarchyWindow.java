@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
@@ -213,12 +214,8 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
                             @Override
                             public void onClick(ClickEvent event) {
 
-                                // If the node where the codes will be inserted is a codelist, parent should be null. Otherwise, specify the source code URN.
-                                String sourceNodeUrn = SearchMultipleCodeHierarchyWindow.this.selectedSourceNode.getAttribute(ItemDS.URN); // can be a codelist or a code
-                                String parentTargetUrn = StringUtils.equals(sourceNodeUrn, SearchMultipleCodeHierarchyWindow.this.complexCodelistToAddCodes.getUrn()) ? null : sourceNodeUrn;
-
                                 // Add the selected nodes in the codelist
-                                getUiHandlers().copyCodesInCodelist(SearchMultipleCodeHierarchyWindow.this.complexCodelistToAddCodes.getUrn(), parentTargetUrn, previewWindow.getCodes());
+                                getUiHandlers().copyCodesInCodelist(selectedCodelistUrn, SearchMultipleCodeHierarchyWindow.this.complexCodelistToAddCodes.getUrn(), previewWindow.getCodes());
 
                                 previewWindow.markForDestroy();
                                 SearchMultipleCodeHierarchyWindow.this.markForDestroy();
@@ -245,7 +242,6 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
 
         show();
     }
-
     private boolean isAnyValidCodeSelected(ListGridRecord[] selectedRecords) {
         if (selectedRecords != null && selectedRecords.length > 0) {
             if (selectedRecords.length == 1 && StringUtils.equals(selectedRecords[0].getAttribute(ItemDS.URN), selectedCodelistUrn)) {
@@ -427,7 +423,7 @@ public class SearchMultipleCodeHierarchyWindow extends CustomWindow {
             codesEditableTreeGrid.setCodes(nodes);
         }
 
-        public List<CodeToCopyHierarchy> getCodes() {
+        public List<CodeToCopy> getCodes() {
             return codesEditableTreeGrid.getCodes();
         }
 

@@ -3,11 +3,15 @@ package org.siemac.metamac.srm.web.code.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.tree.Tree;
@@ -44,41 +48,58 @@ public class CodesSimpleEditableTreeGrid extends BaseCodesSimpleTreeGrid {
      * @param rootNodeUrnToExlude
      * @return
      */
-    public List<CodeToCopyHierarchy> getCodes() {
+    public List<CodeToCopy> getCodes() {
         saveAllEdits(); // ensure all changes made has been applied
 
-        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
+        List<CodeToCopy> codesToCopy = new ArrayList<CodeToCopy>();
 
         TreeNode root = getTree().getRoot();
         if (root != null && getTree().getChildren(root) != null) {
             root = getTree().getChildren(root)[0]; // this node CANNOT be included in the list of node that will be copied
-            if (root != null) {
-                for (TreeNode child : getTree().getChildren(root)) {
-                    CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-                    code.setNewCodeIdentifier(child.getAttributeAsString(ItemDS.CODE));
-                    code.setSourceUrn(child.getAttributeAsString(ItemDS.URN));
-                    code.getChildren().addAll(buildCodesHierarchy(child));
-                    codesToCopy.add(code);
+            String rootUrn = root != null ? root.getAttribute(ItemDS.URN) : null;
+            if (!StringUtils.isBlank(rootUrn)) {
+                for (TreeNode node : getTree().getAllNodes(root)) {
+
+                    if (!StringUtils.equals(rootUrn, node.getAttribute(ItemDS.URN))) { // do not include the root node!
+
+                        TreeNode parentNode = getTree().getParent(node);
+                        String parentNodeUrn = parentNode != null ? parentNode.getAttribute(ItemDS.URN) : null;
+
+                        String code = node.getAttributeAsString(ItemDS.CODE);
+                        String urn = node.getAttributeAsString(ItemDS.URN);
+                        // If the new codes are going to be inserted in the first level in the target codelist, the parent should be null (not the codelist urn!!!)
+                        String parentCode = !UrnUtils.isCodelistUrn(parentNodeUrn) ? getNodeCode(parentNodeUrn) : null;
+
+                        CodeToCopy codeToCopy = new CodeToCopy();
+                        codeToCopy.setNewCodeIdentifier(code);
+                        codeToCopy.setSourceUrn(urn);
+                        codeToCopy.setParentNewCodeIdentifier(parentCode);
+                        codesToCopy.add(codeToCopy);
+
+                    }
                 }
             }
         }
-
         return codesToCopy;
     }
 
-    private List<CodeToCopyHierarchy> buildCodesHierarchy(TreeNode root) {
-        List<CodeToCopyHierarchy> codesToCopy = new ArrayList<CodeToCopyHierarchy>();
-        TreeNode[] children = getTree().getChildren(root);
-        if (children != null) {
-            for (TreeNode child : children) {
-                CodeToCopyHierarchy code = new CodeToCopyHierarchy();
-                code.setNewCodeIdentifier(child.getAttributeAsString(ItemDS.CODE));
-                code.setSourceUrn(child.getAttributeAsString(ItemDS.URN));
-                code.getChildren().addAll(buildCodesHierarchy(child));
-                codesToCopy.add(code);
+    /**
+     * Given the URN of a node, returns the code specified for this node
+     * 
+     * @param nodeUrn
+     * @return
+     */
+    private String getNodeCode(String nodeUrn) {
+        if (!StringUtils.isBlank(nodeUrn)) {
+            RecordList recordList = getRecordList();
+            if (recordList != null) {
+                Record record = recordList.find(ItemDS.URN, nodeUrn);
+                if (record != null) {
+                    return record.getAttribute(ItemDS.CODE);
+                }
             }
         }
-        return codesToCopy;
+        return null;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class CopyCodesInCodelistActionHandler extends SecurityActionHandler<Copy
     @Override
     public CopyCodesInCodelistResult executeSecurityAction(CopyCodesInCodelistAction action) throws ActionException {
         try {
-            srmCoreServiceFacade.copyCodesInCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistTargetUrn(), action.getParentTargetUrn(), action.getCodesToCopy());
+            srmCoreServiceFacade.copyCodesInCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistSourceUrn(), action.getCodelistTargetUrn(), action.getCodesToCopy());
             return new CopyCodesInCodelistResult();
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

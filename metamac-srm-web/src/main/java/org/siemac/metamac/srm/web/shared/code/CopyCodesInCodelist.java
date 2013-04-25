@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.shared.code;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopyHierarchy;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -11,11 +11,11 @@ import com.gwtplatform.dispatch.annotation.In;
 public class CopyCodesInCodelist {
 
     @In(1)
-    String                    codelistTargetUrn;
+    String           codelistSourceUrn;
 
     @In(2)
-    String                    parentTargetUrn;
+    String           codelistTargetUrn;
 
     @In(3)
-    List<CodeToCopyHierarchy> codesToCopy;
+    List<CodeToCopy> codesToCopy;
 }
