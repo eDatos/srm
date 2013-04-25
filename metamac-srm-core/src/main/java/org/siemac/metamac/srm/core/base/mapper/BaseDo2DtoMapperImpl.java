@@ -51,6 +51,7 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
 
     @Override
     public void itemSchemeVersionDoToItemSchemeBasicDto(ItemSchemeVersion source, SrmLifeCycleMetadata lifeCycleSource, ItemSchemeMetamacBasicDto target) {
+        target.setIsTaskInBackground(source.getItemScheme().getIsTaskInBackground());
         maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
     }
 
@@ -95,6 +96,7 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         target.setInternalPublicationUser(lifeCycleSource.getInternalPublicationUser());
         target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(lifeCycleSource.getExternalPublicationDate()));
         target.setExternalPublicationUser(lifeCycleSource.getExternalPublicationUser());
+        target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
         nameableArtefactDoToNameableArtefactBasicDto(source, target);
     }
 

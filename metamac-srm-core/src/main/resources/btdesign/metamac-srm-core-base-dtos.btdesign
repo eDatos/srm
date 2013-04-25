@@ -22,16 +22,20 @@ Application SrmDtosBaseCore {
             String versionLogic;
             - @RelatedResourceDto maintainer;            
   			- @ProcStatusEnum procStatus;
-			JAVADATE internalPublicationDate;
-			String internalPublicationUser;
-			JAVADATE externalPublicationDate;
-			String externalPublicationUser;
+			JAVADATE internalPublicationDate nullable;
+			String internalPublicationUser nullable;
+			JAVADATE externalPublicationDate nullable;
+			String externalPublicationUser nullable;
+            "Date from which version is superceded"
+            JAVADATE validTo nullable;
 		}    
 		
    		DataTransferObject StructureMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
 		}		
  
    		DataTransferObject ItemSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+			"True when a task is being executed in background"
+			Boolean isTaskInBackground nullable;
 		}
 		
   		DataTransferObject ItemMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
