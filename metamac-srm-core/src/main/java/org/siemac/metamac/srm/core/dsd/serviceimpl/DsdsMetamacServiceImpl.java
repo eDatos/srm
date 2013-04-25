@@ -763,13 +763,13 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         }
 
         // DimensionVisualisationInfo
-        for (DimensionVisualizationInfo dimensionVisualizationInfo: dataStructureDefinitionVersionMetamacToCopy.getDimensionVisualisationInfos()) {
-            
-            (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode());
-            
+        for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamacToCopy.getDimensionVisualisationInfos()) {
+
+            // (DimensionComponent) dimensionOrderMap.get(dimensionOrder.getDimension().getCode()); // TODO
+
             DimensionVisualizationInfo targetDimensionVisualizationInfo = new DimensionVisualizationInfo();
         }
-        
+
         return null;
     }
     private void checkDataStructureDefinitionToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
