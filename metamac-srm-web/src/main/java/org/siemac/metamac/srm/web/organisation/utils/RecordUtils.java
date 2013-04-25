@@ -69,7 +69,7 @@ public class RecordUtils {
         record.setCode(organisationDto.getCode());
         record.setName(getLocalisedString(organisationDto.getName()));
         record.setUrn(organisationDto.getUrn());
-        record.setOrganisationSchemeUrn(organisationDto.getOrganisationSchemeVersionUrn());
+        record.setOrganisationSchemeUrn(organisationDto.getItemSchemeVersionUrn());
         record.setOrganisationType(organisationDto.getType());
         return record;
     }
