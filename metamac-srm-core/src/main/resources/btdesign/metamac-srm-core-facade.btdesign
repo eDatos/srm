@@ -313,8 +313,8 @@ Application SrmFacadeCore {
     		@OrganisationMetamacDto retrieveMaintainerDefault() throws MetamacException;
 			"Deletes organisation"
             deleteOrganisation(String urn) throws MetamacException;
-    		"Retrieves organisations by organisation scheme, in tree structure"
-    		List<@ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn) throws MetamacException;       		
+    		"Retrieves organisations by organisation scheme in locale requested"
+    		List<ItemVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale) throws MetamacException;
 
             "Finds contacts by criteria"
             MetamacCriteriaResult<@ContactDto> findOrganisationContactsByCondition(MetamacCriteria criteria) throws MetamacException;
@@ -441,8 +441,8 @@ Application SrmFacadeCore {
             MetamacCriteriaResult<@CategoryMetamacBasicDto> findCategoriesByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes category"
             deleteCategory(String urn) throws MetamacException;
-    		"Retrieves categories by category scheme, in tree structure"
-    		List<@ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;
+    		"Retrieves categories by category scheme in locale requested"
+    		List<ItemVisualisationResult> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn, String locale) throws MetamacException;
     		
     		// Categorisations
     		"Creates categorisation"

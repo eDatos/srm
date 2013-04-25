@@ -12,10 +12,8 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 @org.springframework.stereotype.Component("categoriesDo2DtoMapper")
 public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements CategoriesDo2DtoMapper {
@@ -76,16 +74,6 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
     }
 
     @Override
-    public List<ItemHierarchyDto> categoryMetamacDoListToItemHierarchyDtoList(List<CategoryMetamac> sources) {
-        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>(sources.size());
-        for (CategoryMetamac source : sources) {
-            ItemHierarchyDto target = categoryMetamacDoToItemHierarchyDto(source);
-            targets.add(target);
-        }
-        return targets;
-    }
-
-    @Override
     public CategorisationDto categorisationDoToDto(Categorisation source) {
         return do2DtoMapperSdmxSrm.categorisationDoToDto(source);
     }
@@ -93,21 +81,5 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
     @Override
     public List<CategorisationDto> categorisationDoListToDtoList(List<Categorisation> sources) {
         return do2DtoMapperSdmxSrm.categorisationsDoToDto(sources);
-    }
-
-    private ItemHierarchyDto categoryMetamacDoToItemHierarchyDto(CategoryMetamac categoryMetamac) {
-        ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
-
-        // Category
-        CategoryMetamacDto categoryMetamacDto = categoryMetamacDoToDto(categoryMetamac);
-        itemHierarchyDto.setItem(categoryMetamacDto);
-
-        // Children
-        for (Item item : categoryMetamac.getChildren()) {
-            ItemHierarchyDto itemHierarchyChildrenDto = categoryMetamacDoToItemHierarchyDto((CategoryMetamac) item);
-            itemHierarchyDto.addChildren(itemHierarchyChildrenDto);
-        }
-
-        return itemHierarchyDto;
     }
 }

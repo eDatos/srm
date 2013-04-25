@@ -15,9 +15,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 @org.springframework.stereotype.Component("conceptsDo2DtoMapper")
@@ -128,16 +126,6 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
     }
 
     @Override
-    public List<ItemHierarchyDto> conceptMetamacDoListToItemHierarchyDtoList(List<ConceptMetamac> sources) {
-        List<ItemHierarchyDto> targets = new ArrayList<ItemHierarchyDto>(sources.size());
-        for (ConceptMetamac source : sources) {
-            ItemHierarchyDto target = conceptMetamacDoToItemHierarchyDto(source);
-            targets.add(target);
-        }
-        return targets;
-    }
-
-    @Override
     public ConceptTypeDto conceptTypeDoToDto(ConceptType source) {
         if (source == null) {
             return null;
@@ -155,21 +143,5 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
             targets.add(conceptTypeDoToDto(source));
         }
         return targets;
-    }
-
-    private ItemHierarchyDto conceptMetamacDoToItemHierarchyDto(ConceptMetamac conceptMetamac) {
-        ItemHierarchyDto itemHierarchyDto = new ItemHierarchyDto();
-
-        // Concept
-        ConceptMetamacDto conceptMetamacDto = conceptMetamacDoToDto(conceptMetamac);
-        itemHierarchyDto.setItem(conceptMetamacDto);
-
-        // Children
-        for (Item item : conceptMetamac.getChildren()) {
-            ItemHierarchyDto itemHierarchyChildrenDto = conceptMetamacDoToItemHierarchyDto((ConceptMetamac) item);
-            itemHierarchyDto.addChildren(itemHierarchyChildrenDto);
-        }
-
-        return itemHierarchyDto;
     }
 }

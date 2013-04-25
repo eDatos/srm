@@ -13,7 +13,6 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 
 public interface OrganisationsDo2DtoMapper {
 
@@ -26,7 +25,6 @@ public interface OrganisationsDo2DtoMapper {
     public OrganisationMetamacDto organisationMetamacDoToDto(OrganisationMetamac source);
     public OrganisationMetamacBasicDto organisationMetamacDoToBasicDto(OrganisationMetamac source);
     public RelatedResourceDto organisationMetamacDoToRelatedResourceDto(OrganisationMetamac source) throws MetamacException;
-    public List<ItemHierarchyDto> organisationMetamacDoListToItemHierarchyDtoList(List<OrganisationMetamac> sources);
 
     // Contacts
     public ContactDto contactDoToDto(Contact source);

@@ -38,6 +38,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
@@ -347,14 +348,14 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public List<OrganisationMetamac> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
+    public List<ItemVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn, String locale) throws MetamacException {
+
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkRetrieveOrganisationsByOrganisationSchemeUrn(organisationSchemeUrn, locale, null);
 
         // Retrieve
-        List<Organisation> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn);
-
-        // Typecast
-        List<OrganisationMetamac> organisationsMetamac = organisationsToOrganisationMetamac(organisations);
-        return organisationsMetamac;
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
+        return getOrganisationMetamacRepository().findOrganisationsByOrganisationSchemeUnorderedToVisualisation(organisationSchemeVersion.getId(), locale);
     }
 
     @Override

@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 
 /**
  * Repository implementation for CategoryMetamac
@@ -19,6 +22,9 @@ public class CategoryMetamacRepositoryImpl extends CategoryMetamacRepositoryBase
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ItemRepository     itemRepository;
 
     public CategoryMetamacRepositoryImpl() {
     }
@@ -33,6 +39,11 @@ public class CategoryMetamacRepositoryImpl extends CategoryMetamacRepositoryBase
         } else {
             return result.get(0);
         }
+    }
+
+    @Override
+    public List<ItemVisualisationResult> findCategoriesByCategorySchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
+        return itemRepository.findItemsByItemSchemeUnorderedToVisualisation(itemSchemeVersionId, locale);
     }
 
     @Override

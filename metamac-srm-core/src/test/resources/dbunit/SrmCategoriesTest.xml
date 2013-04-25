@@ -753,7 +753,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="50"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -806,7 +806,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="51"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -859,7 +859,7 @@
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
-                    NAME_FK="[null]"
+                    NAME_FK="52"
                     DESCRIPTION_FK="[null]"
                     COMMENT_FK="[null]"
                     
@@ -912,7 +912,7 @@
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
                         
-                        NAME_FK="[null]"
+                        NAME_FK="53"
                         DESCRIPTION_FK="[null]"
                         COMMENT_FK="[null]"
                         
@@ -2777,6 +2777,14 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="12"
     />  
+
+    <TB_LOCALISED_STRINGS
+        ID="122"
+        LABEL="Name categoryScheme-1-v2-category-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="12"
+    />  
     
     <TB_INTERNATIONAL_STRINGS
         ID="13"
@@ -2813,6 +2821,14 @@
         ID="151"
         LABEL="Nombre categoryScheme-1-v2-category-2-1"
         LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="15"
+    />   
+    
+    <TB_LOCALISED_STRINGS
+        ID="152"
+        LABEL="Name categoryScheme-1-v2-category-2-1"
+        LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="15"
     />   
@@ -3170,6 +3186,73 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="49"
-    />                                           
-                        
+    /> 
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="50"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="501"
+        LABEL="nombre category-3"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="50"
+    />                                                
+     
+    <TB_LOCALISED_STRINGS
+        ID="502"
+        LABEL="name category-3"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="50"
+    />      
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="51"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="511"
+        LABEL="nombre category-4"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="51"
+    />    
+    
+   <TB_INTERNATIONAL_STRINGS
+        ID="52"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="521"
+        LABEL="nombre category 4-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="52"
+    />    
+    
+   <TB_INTERNATIONAL_STRINGS
+        ID="53"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="531"
+        LABEL="Nombre categoryScheme-1-v2-category-4-1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="53"
+    />     
+    
+    <TB_LOCALISED_STRINGS
+        ID="532"
+        LABEL="Name categoryScheme-1-v2-category-4-1-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="53"
+    />                                    
 </dataset>

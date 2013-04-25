@@ -45,6 +45,7 @@ import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesInvocationValidator;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesVersioningCopyUtils.CategoryVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
@@ -330,14 +331,13 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
-    public List<CategoryMetamac> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
+    public List<ItemVisualisationResult> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn, String locale) throws MetamacException {
+        // Validation
+        CategoriesMetamacInvocationValidator.checkRetrieveCategoriesByCategorySchemeUrn(categorySchemeUrn, locale, null);
 
         // Retrieve
-        List<Category> categories = categoriesService.retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
-
-        // Typecast
-        List<CategoryMetamac> categoriesMetamac = categoriesToCategoryMetamac(categories);
-        return categoriesMetamac;
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
+        return getCategoryMetamacRepository().findCategoriesByCategorySchemeUnorderedToVisualisation(categorySchemeVersion.getId(), locale);
     }
 
     @Override

@@ -86,6 +86,17 @@ public class OrganisationsMetamacInvocationValidator extends OrganisationsInvoca
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkRetrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(organisationSchemeUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     private static void checkOrganisationScheme(OrganisationSchemeVersionMetamac organisationSchemeVersion, List<MetamacExceptionItem> exceptions) {
         // SDMX metadata is checked in SDMX module
         if (organisationSchemeVersion.getMaintainableArtefact() != null && BooleanUtils.isTrue(organisationSchemeVersion.getMaintainableArtefact().getIsExternalReference())) {

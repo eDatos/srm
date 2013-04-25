@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
 
 /**
@@ -19,6 +22,9 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
 
     @Autowired
     private OrganisationRepository organisationRepository;
+
+    @Autowired
+    private ItemRepository         itemRepository;
 
     public OrganisationMetamacRepositoryImpl() {
     }
@@ -33,6 +39,11 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
         } else {
             return result.get(0);
         }
+    }
+
+    @Override
+    public List<ItemVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
+        return itemRepository.findItemsByItemSchemeUnorderedToVisualisation(itemSchemeVersionId, locale);
     }
 
     @Override

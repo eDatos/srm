@@ -115,7 +115,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.task.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.task.TaskDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
@@ -2063,8 +2062,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            // TODO create version from organisation schemete temporal
-            throw new UnsupportedOperationException("TODO create version from organisation schemete temporal");
+            // TODO create version from organisation scheme temporal
+            throw new UnsupportedOperationException("TODO create version from organisation scheme temporal");
         } else {
             versioningResult = getOrganisationsMetamacService().versioningOrganisationScheme(ctx, urnToCopy, versionType);
         }
@@ -2156,16 +2155,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<ItemHierarchyDto> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
+    public List<ItemVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn, String locale) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canRetrieveOrganisationsByOrganisationSchemeUrn(ctx);
 
         // Retrieve
-        List<OrganisationMetamac> organisations = getOrganisationsMetamacService().retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn);
-
-        // Transform
-        List<ItemHierarchyDto> itemsHierarchyDto = organisationsDo2DtoMapper.organisationMetamacDoListToItemHierarchyDtoList(organisations);
-        return itemsHierarchyDto;
+        return getOrganisationsMetamacService().retrieveOrganisationsByOrganisationSchemeUrn(ctx, organisationSchemeUrn, locale);
     }
 
     @Override
@@ -2991,16 +2986,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<ItemHierarchyDto> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
+    public List<ItemVisualisationResult> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn, String locale) throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Retrieve
-        List<CategoryMetamac> categories = getCategoriesMetamacService().retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn);
-
-        // Transform
-        List<ItemHierarchyDto> itemsHierarchyDto = categoriesDo2DtoMapper.categoryMetamacDoListToItemHierarchyDtoList(categories);
-        return itemsHierarchyDto;
+        return getCategoriesMetamacService().retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn, locale);
     }
 
     @Override

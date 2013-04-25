@@ -69,6 +69,17 @@ public class CategoriesMetamacInvocationValidator extends CategoriesInvocationVa
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkRetrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn, String locale, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(categorySchemeUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     public static void checkRetrieveCategorySchemeByCategoryUrn(String categoryUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();

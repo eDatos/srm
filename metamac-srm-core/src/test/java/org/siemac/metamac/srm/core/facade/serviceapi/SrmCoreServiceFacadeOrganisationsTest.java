@@ -50,7 +50,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -1151,57 +1150,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
     @Test
     public void testRetrieveOrganisationsByOrganisationSchemeUrn() throws Exception {
-
-        // Retrieve
-        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
-        List<ItemHierarchyDto> organisations = srmCoreServiceFacade.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn);
-
-        // Validate
-        assertEquals(4, organisations.size());
-        {
-            // Organisation 01
-            ItemHierarchyDto organisation = assertListContainsItemHierarchy(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-            assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
-            assertEquals(0, organisation.getChildren().size());
-        }
-        {
-            // Organisation 02
-            ItemHierarchyDto organisation = assertListContainsItemHierarchy(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-            assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
-            assertEquals(1, organisation.getChildren().size());
-            {
-                // Organisation 02 01
-                ItemHierarchyDto organisationChild = assertListContainsItemHierarchy(organisation.getChildren(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
-                assertEquals(1, organisationChild.getChildren().size());
-                {
-                    // Organisation 02 01 01
-                    ItemHierarchyDto organisationChildChild = assertListContainsItemHierarchy(organisationChild.getChildren(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
-                    assertEquals(0, organisationChildChild.getChildren().size());
-                }
-            }
-        }
-        {
-            // Organisation 03
-            ItemHierarchyDto organisation = assertListContainsItemHierarchy(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
-            assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
-            assertEquals(0, organisation.getChildren().size());
-        }
-        {
-            // Organisation 04
-            ItemHierarchyDto organisation = assertListContainsItemHierarchy(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
-            assertTrue(organisation.getItem() instanceof OrganisationMetamacDto);
-            assertEquals(1, organisation.getChildren().size());
-            {
-                // Organisation 04 01
-                ItemHierarchyDto organisationChild = assertListContainsItemHierarchy(organisation.getChildren(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
-                assertEquals(1, organisationChild.getChildren().size());
-                {
-                    // Organisation 04 01 01
-                    ItemHierarchyDto organisationChildChild = assertListContainsItemHierarchy(organisationChild.getChildren(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
-                    assertEquals(0, organisationChildChild.getChildren().size());
-                }
-            }
-        }
+        // Do not test because facade operation has same signature as service operation (without dto)
     }
 
     @Test

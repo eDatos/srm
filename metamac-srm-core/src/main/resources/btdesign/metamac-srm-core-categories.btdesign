@@ -73,8 +73,8 @@ Application CategoriesMetamac {
     		PagedResult<@CategoryMetamac> findCategoriesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes category"
     		deleteCategory(String urn) throws MetamacException;
-    		"Retrieves categories by category scheme, in tree structure"
-    		List<@CategoryMetamac> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn) throws MetamacException;
+    		"Retrieves categories by category scheme in locale requested"
+    		List<ItemVisualisationResult> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn, String locale) throws MetamacException;
     		
     		// Categorisations
     		"Creates categorisation"
@@ -130,6 +130,7 @@ Application CategoriesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CategoryMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
+				List<ItemVisualisationResult> findCategoriesByCategorySchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
 				checkCategoryTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}
 		}
