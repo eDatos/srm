@@ -63,7 +63,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
@@ -345,7 +344,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
                 dataStructureTemporalVersion.getStatisticalOperation(), internationalStringRepository, externalItemRepository));
 
         // Merge componentlists and components
-        Map<String, ComponentList> temporalComponentListMap = BaseServiceUtils.createMapOfComponentLists(dataStructureTemporalVersion.getGrouping());
+        Map<String, ComponentList> temporalComponentListMap = SrmServiceUtils.createMapOfComponentListsByOriginalUrn(dataStructureTemporalVersion.getGrouping());
         for (ComponentList componentList : dataStructureDefinitionVersion.getGrouping()) {
             ComponentList componentListTemp = temporalComponentListMap.get(componentList.getUrn());
 
@@ -353,7 +352,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToComponentListWithoutComponents(componentList, componentListTemp, internationalStringRepository);
 
             if (!(componentList instanceof GroupDimensionDescriptor)) {
-                Map<String, Component> temporalComponentMap = BaseServiceUtils.createMapOfComponents(componentList.getComponents());
+                Map<String, Component> temporalComponentMap = SrmServiceUtils.createMapOfComponentsByOriginalUrn(componentList.getComponents());
 
                 for (Component component : componentList.getComponents()) {
                     Component componentTemp = temporalComponentMap.get(component.getUrn());

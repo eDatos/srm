@@ -37,7 +37,6 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseServiceUtils;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
@@ -236,7 +235,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
                 internationalStringRepository);
 
         // Merge metadata of Item
-        Map<String, Item> temporalItemMap = BaseServiceUtils.createMapOfItems(organisationSchemeTemporalVersion.getItems());
+        Map<String, Item> temporalItemMap = SrmServiceUtils.createMapOfItemsByOriginalUrn(organisationSchemeTemporalVersion.getItems());
         for (Item item : organisationSchemeVersion.getItems()) {
             OrganisationMetamac organisation = (OrganisationMetamac) item;
             OrganisationMetamac organisationTemp = (OrganisationMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());

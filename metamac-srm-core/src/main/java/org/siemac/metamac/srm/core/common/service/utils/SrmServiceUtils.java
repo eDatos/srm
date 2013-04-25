@@ -1,12 +1,15 @@
 package org.siemac.metamac.srm.core.common.service.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
@@ -18,6 +21,9 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Component;
+import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -365,5 +371,32 @@ public class SrmServiceUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static PagedResult pagedResultZeroResults(PagingParameter pagingParameter) {
         return new PagedResult(new ArrayList(), pagingParameter.getStartRow(), pagingParameter.getRowCount(), pagingParameter.getPageSize(), 0, 0);
+    }
+
+    public static Map<String, Item> createMapOfItemsByOriginalUrn(List<Item> items) {
+        Map<String, Item> result = new HashMap<String, Item>(items.size());
+        for (Item item : items) {
+            String originalUrn = GeneratorUrnUtils.makeUrnFromTemporal(item.getNameableArtefact().getUrn());
+            result.put(originalUrn, item);
+        }
+        return result;
+    }
+
+    public static Map<String, ComponentList> createMapOfComponentListsByOriginalUrn(Set<ComponentList> componentLists) {
+        Map<String, ComponentList> result = new HashMap<String, ComponentList>(componentLists.size());
+        for (ComponentList componentList : componentLists) {
+            String originalUrn = GeneratorUrnUtils.makeUrnFromTemporal(componentList.getUrn());
+            result.put(originalUrn, componentList);
+        }
+        return result;
+    }
+
+    public static Map<String, Component> createMapOfComponentsByOriginalUrn(Set<Component> components) {
+        Map<String, Component> result = new HashMap<String, Component>(components.size());
+        for (Component component : components) {
+            String originalUrn = GeneratorUrnUtils.makeUrnFromTemporal(component.getUrn());
+            result.put(originalUrn, component);
+        }
+        return result;
     }
 }
