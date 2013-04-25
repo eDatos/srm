@@ -1776,7 +1776,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 conceptSchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
             }
 
-            // Item
+            // Item 1: Change plural name
             {
                 ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CONCEPT_SCHEME_3_V1_CONCEPT_1));
                 conceptTemporal.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
@@ -1784,7 +1784,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
                 conceptTemporal.getPluralName().addText(localisedString);
             }
+            // Item 2: Add legal acts
+            {
+                ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CONCEPT_SCHEME_3_V1_CONCEPT_2));
+                conceptTemporal.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
 
+                LocalisedString localisedString = new LocalisedString("fr", "it - text sample legal acts");
+                conceptTemporal.setLegalActs(new InternationalString());
+                conceptTemporal.getLegalActs().addText(localisedString);
+            }
             // Merge
             conceptSchemeVersionTemporal = conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
             conceptSchemeVersionTemporal = conceptsService.sendConceptSchemeToDiffusionValidation(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
@@ -1796,12 +1804,18 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(2, conceptSchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
             assertEquals("its - text sample", conceptSchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
 
-            // Item
+            // Item 1: plural name changed
             {
                 ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_1);
                 assertTrue(ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptTemporal.getSdmxRelatedArtefact()));
                 assertEquals(2, conceptTemporal.getPluralName().getTexts().size());
                 assertEquals("it - text sample", conceptTemporal.getPluralName().getLocalisedLabel("fr"));
+            }
+            // Item 2: legal acts changed
+            {
+                ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_2);
+                assertEquals(1, conceptTemporal.getLegalActs().getTexts().size());
+                assertEquals("it - text sample legal acts", conceptTemporal.getLegalActs().getLocalisedLabel("fr"));
             }
         }
 

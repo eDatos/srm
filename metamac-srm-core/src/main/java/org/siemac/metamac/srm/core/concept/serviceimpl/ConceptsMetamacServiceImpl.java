@@ -26,12 +26,14 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -48,6 +50,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
@@ -299,47 +302,53 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Merge metadata of Item
         Map<String, Item> temporalItemMap = SrmServiceUtils.createMapOfItemsByOriginalUrn(conceptSchemeTemporalVersion.getItems());
+        List<ItemResult> conceptsFoundEfficiently = getConceptMetamacRepository().findConceptsByConceptSchemeUnordered(conceptSchemeTemporalVersion.getId(), ItemMetamacResultSelection.ALL);
+        Map<String, ItemResult> conceptsFoundEfficientlyByUrn = SrmServiceUtils.createMapOfItemsResultByUrn(conceptsFoundEfficiently);
+
         for (Item item : conceptSchemeVersion.getItems()) {
             ConceptMetamac concept = (ConceptMetamac) item;
             ConceptMetamac conceptTemp = (ConceptMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+            ItemResult conceptTempItemResult = conceptsFoundEfficientlyByUrn.get(conceptTemp.getNameableArtefact().getUrn());
 
             // Inherit InternationalStrings
-            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(concept, conceptTemp, internationalStringRepository);
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(concept, conceptTempItemResult, internationalStringRepository);
 
             // Metamac Metadata
+            ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) conceptTempItemResult.getExtensionPoint();
+
             // Plural Name
-            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getPluralName(), conceptTemp.getPluralName())) {
-                concept.setPluralName(BaseMergeAssert.mergeUpdateInternationalString(concept.getPluralName(), conceptTemp.getPluralName(), internationalStringRepository));
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getPluralName(), extensionPoint.getPluralName())) {
+                concept.setPluralName(BaseMergeAssert.mergeUpdateInternationalString(concept.getPluralName(), extensionPoint.getPluralName(), internationalStringRepository));
             }
 
             // Acronym
-            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getAcronym(), conceptTemp.getAcronym())) {
-                concept.setAcronym(BaseMergeAssert.mergeUpdateInternationalString(concept.getAcronym(), conceptTemp.getAcronym(), internationalStringRepository));
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getAcronym(), extensionPoint.getAcronym())) {
+                concept.setAcronym(BaseMergeAssert.mergeUpdateInternationalString(concept.getAcronym(), extensionPoint.getAcronym(), internationalStringRepository));
             }
 
             // Description Source
-            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDescriptionSource(), conceptTemp.getDescriptionSource())) {
-                concept.setDescriptionSource(BaseMergeAssert.mergeUpdateInternationalString(concept.getDescriptionSource(), conceptTemp.getDescriptionSource(), internationalStringRepository));
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDescriptionSource(), extensionPoint.getDescriptionSource())) {
+                concept.setDescriptionSource(BaseMergeAssert.mergeUpdateInternationalString(concept.getDescriptionSource(), extensionPoint.getDescriptionSource(), internationalStringRepository));
             }
 
             // Context
-            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getContext(), conceptTemp.getContext())) {
-                concept.setContext(BaseMergeAssert.mergeUpdateInternationalString(concept.getContext(), conceptTemp.getContext(), internationalStringRepository));
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getContext(), extensionPoint.getContext())) {
+                concept.setContext(BaseMergeAssert.mergeUpdateInternationalString(concept.getContext(), extensionPoint.getContext(), internationalStringRepository));
             }
 
             // Doc Method
-            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDocMethod(), conceptTemp.getDocMethod())) {
-                concept.setDocMethod(BaseMergeAssert.mergeUpdateInternationalString(concept.getDocMethod(), conceptTemp.getDocMethod(), internationalStringRepository));
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDocMethod(), extensionPoint.getDocMethod())) {
+                concept.setDocMethod(BaseMergeAssert.mergeUpdateInternationalString(concept.getDocMethod(), extensionPoint.getDocMethod(), internationalStringRepository));
             }
 
             // Derivation
-            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDerivation(), conceptTemp.getDerivation())) {
-                concept.setDerivation(BaseMergeAssert.mergeUpdateInternationalString(concept.getDerivation(), conceptTemp.getDerivation(), internationalStringRepository));
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getDerivation(), extensionPoint.getDerivation())) {
+                concept.setDerivation(BaseMergeAssert.mergeUpdateInternationalString(concept.getDerivation(), extensionPoint.getDerivation(), internationalStringRepository));
             }
 
             // Legal Acts
-            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getLegalActs(), conceptTemp.getLegalActs())) {
-                concept.setLegalActs(BaseMergeAssert.mergeUpdateInternationalString(concept.getLegalActs(), conceptTemp.getLegalActs(), internationalStringRepository));
+            if (!BaseMergeAssert.assertEqualsInternationalString(concept.getLegalActs(), extensionPoint.getLegalActs())) {
+                concept.setLegalActs(BaseMergeAssert.mergeUpdateInternationalString(concept.getLegalActs(), extensionPoint.getLegalActs(), internationalStringRepository));
             }
 
             concept.setSdmxRelatedArtefact(conceptTemp.getSdmxRelatedArtefact());
