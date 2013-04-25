@@ -69,12 +69,12 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -118,7 +118,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
         void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
         void startConceptSchemeEdition();
-        void setConcepts(List<ItemHierarchyDto> itemHierarchyDtos);
+        void setConcepts(List<ItemVisualisationResult> itemHierarchyDtos);
         void setConceptSchemeVersions(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos);
         void setOperations(GetStatisticalOperationsResult result);
         void setLatestConceptSchemeForInternalPublication(GetConceptSchemesResult result);
@@ -462,7 +462,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     }
 
     private void retrieveConceptsByScheme(String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
+        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -470,14 +470,14 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(GetConceptsBySchemeResult result) {
-                getView().setConcepts(result.getItemHierarchyDtos());
+                getView().setConcepts(result.getItemVisualisationResults());
             }
         });
     }
 
     @Override
-    public void deleteConcept(ItemDto itemDto) {
-        dispatcher.execute(new DeleteConceptAction(itemDto.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
+    public void deleteConcept(ItemVisualisationResult itemVisualisationResult) {
+        dispatcher.execute(new DeleteConceptAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

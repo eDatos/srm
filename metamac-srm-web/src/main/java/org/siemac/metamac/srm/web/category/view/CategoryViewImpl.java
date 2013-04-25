@@ -28,7 +28,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
@@ -153,8 +153,8 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     }
 
     @Override
-    public void setCategoryList(CategorySchemeMetamacDto categorySchemeDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        categoriesTreeGrid.setItems(categorySchemeDto, itemHierarchyDtos);
+    public void setCategoryList(CategorySchemeMetamacDto categorySchemeDto, List<ItemVisualisationResult> itemVisualisationResults) {
+        categoriesTreeGrid.setItems(categorySchemeDto, itemVisualisationResults);
         categoriesTreeGrid.selectItem(categoryDto.getUrn());
     }
 

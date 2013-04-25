@@ -35,8 +35,8 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -466,9 +466,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     @Override
-    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
-            organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
+            organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemVisualisationResults);
             organisationsTreeGrid.selectItem(organisationDto.getUrn());
             organisationsTreeGridLayout.show();
         } else {

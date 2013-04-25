@@ -12,8 +12,7 @@ import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -79,7 +78,7 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
     }
 
     @Override
-    public void setItems(ItemSchemeDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+    public void setItems(ItemSchemeDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemHierarchyDtos) {
         super.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
         updateDecimalsPrecision();
     }
@@ -100,7 +99,7 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
     }
 
     @Override
-    protected void onNodeContextClick(String nodeName, ItemDto concept) {
+    protected void onNodeContextClick(String nodeName, ItemVisualisationResult concept) {
         // Overwrite this method to do nothing
     }
 

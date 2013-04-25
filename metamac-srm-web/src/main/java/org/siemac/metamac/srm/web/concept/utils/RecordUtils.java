@@ -12,7 +12,7 @@ import org.siemac.metamac.srm.web.concept.model.record.ConceptTreeNode;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 
 public class RecordUtils {
 
@@ -69,8 +69,12 @@ public class RecordUtils {
         return record;
     }
 
-    public static ConceptRecord getConceptRecord(ItemDto itemDto) {
-        ConceptRecord record = new ConceptRecord(itemDto.getId(), itemDto.getCode(), getLocalisedString(itemDto.getName()), itemDto.getUrn(), itemDto.getItemSchemeVersionUrn(), null);
+    public static ConceptRecord getConceptRecord(ItemVisualisationResult concept) {
+        ConceptRecord record = new ConceptRecord();
+        record.setCode(concept.getCode());
+        record.setName(concept.getName());
+        record.setUrn(concept.getUrn());
+        // TODO ConceptSchemeUrn
         return record;
     }
 

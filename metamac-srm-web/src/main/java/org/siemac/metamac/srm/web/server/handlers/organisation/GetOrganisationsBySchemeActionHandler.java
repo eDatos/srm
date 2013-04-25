@@ -12,7 +12,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -28,7 +28,8 @@ public class GetOrganisationsBySchemeActionHandler extends SecurityActionHandler
     @Override
     public GetOrganisationsBySchemeResult executeSecurityAction(GetOrganisationsBySchemeAction action) throws ActionException {
         try {
-            List<ItemHierarchyDto> organisations = srmCoreServiceFacade.retrieveOrganisationsByOrganisationSchemeUrn(ServiceContextHolder.getCurrentServiceContext(), action.getSchemeUrn());
+            List<ItemVisualisationResult> organisations = srmCoreServiceFacade.retrieveOrganisationsByOrganisationSchemeUrn(ServiceContextHolder.getCurrentServiceContext(), action.getSchemeUrn(),
+                    action.getLocale());
             return new GetOrganisationsBySchemeResult(organisations);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

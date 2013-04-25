@@ -47,11 +47,12 @@ import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.VersionDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
@@ -99,7 +100,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         void setLatestDsdForInternalPublication(GetDsdsResult result);
 
         void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos);
-        void setConceptsForShowDecimalsPrecision(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> concepts);
+        void setConceptsForShowDecimalsPrecision(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults);
 
         void setOperations(GetStatisticalOperationsResult result);
     }
@@ -388,7 +389,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(GetConceptSchemeResult result) {
                 final ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getConceptSchemeDto();
-                dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
+                dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -396,7 +397,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                     }
                     @Override
                     public void onWaitSuccess(GetConceptsBySchemeResult result) {
-                        getView().setConceptsForShowDecimalsPrecision(conceptSchemeMetamacDto, result.getItemHierarchyDtos());
+                        getView().setConceptsForShowDecimalsPrecision(conceptSchemeMetamacDto, result.getItemVisualisationResults());
                     }
                 });
 

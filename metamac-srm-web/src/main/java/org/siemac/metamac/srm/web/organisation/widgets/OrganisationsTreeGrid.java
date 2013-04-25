@@ -11,8 +11,7 @@ import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurity
 import org.siemac.metamac.srm.web.organisation.view.handlers.BaseOrganisationUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.MenuItem;
@@ -28,7 +27,7 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
     private MenuItem                     deleteOrganisationMenuItem;
 
     private OrganisationSchemeMetamacDto organisationSchemeMetamacDto;
-    private ItemDto                      selectedOrganisation;
+    private ItemVisualisationResult      selectedOrganisation;
 
     private BaseOrganisationUiHandlers   uiHandlers;
 
@@ -79,9 +78,9 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    public void setItems(ItemSchemeDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+    public void setItems(ItemSchemeDto organisationSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
         this.organisationSchemeMetamacDto = (OrganisationSchemeMetamacDto) organisationSchemeMetamacDto;
-        super.setItems(organisationSchemeMetamacDto, itemHierarchyDtos);
+        super.setItems(organisationSchemeMetamacDto, itemVisualisationResults);
     }
 
     @Override
@@ -102,7 +101,7 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    protected void onNodeContextClick(String nodeName, ItemDto organisation) {
+    protected void onNodeContextClick(String nodeName, ItemVisualisationResult organisation) {
         selectedOrganisation = organisation;
         createOrganisationMenuItem.setEnabled(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto));
         deleteOrganisationMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName) && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeMetamacDto));

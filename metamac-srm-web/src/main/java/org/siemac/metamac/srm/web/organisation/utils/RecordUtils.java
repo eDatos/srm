@@ -13,8 +13,8 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class RecordUtils {
@@ -73,9 +73,13 @@ public class RecordUtils {
         return record;
     }
 
-    public static OrganisationRecord getOrganisationRecord(ItemHierarchyDto organisation, OrganisationTypeEnum organisationTypeEnum) {
-        OrganisationRecord record = new OrganisationRecord(organisation.getItem().getId(), organisation.getItem().getCode(), getLocalisedString(organisation.getItem().getName()), organisation
-                .getItem().getUrn(), organisation.getItem().getItemSchemeVersionUrn(), organisationTypeEnum);
+    public static OrganisationRecord getOrganisationRecord(ItemVisualisationResult organisation, OrganisationTypeEnum organisationTypeEnum) {
+        OrganisationRecord record = new OrganisationRecord();
+        record.setId(organisation.getItemIdDatabase());
+        record.setCode(organisation.getCode());
+        record.setName(organisation.getName());
+        record.setUrn(organisation.getUrn());
+        // TODO how can i set the rest of the fields?
         return record;
     }
 

@@ -3,11 +3,11 @@ package org.siemac.metamac.srm.web.category.view.handlers;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 
 public interface BaseCategoryUiHandlers extends CategorisationUiHandlers {
 
     void saveCategory(CategoryMetamacDto categoryDto);
-    void deleteCategory(ItemDto itemDto);
+    void deleteCategory(ItemVisualisationResult itemVisualisationResult);
     void goToCategory(String urn);
 }

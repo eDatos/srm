@@ -10,8 +10,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.widgets.ItemsTreeGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.MenuItem;
@@ -27,7 +26,7 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
     private MenuItem                 deleteCategoryMenuItem;
 
     private CategorySchemeMetamacDto categorySchemeMetamacDto;
-    private ItemDto                  selectedCategory;
+    private ItemVisualisationResult  selectedCategory;
 
     private BaseCategoryUiHandlers   uiHandlers;
 
@@ -78,9 +77,9 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    public void setItems(ItemSchemeDto categorySchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+    public void setItems(ItemSchemeDto categorySchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
         this.categorySchemeMetamacDto = (CategorySchemeMetamacDto) categorySchemeMetamacDto;
-        super.setItems(categorySchemeMetamacDto, itemHierarchyDtos);
+        super.setItems(categorySchemeMetamacDto, itemVisualisationResults);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    protected void onNodeContextClick(String nodeName, ItemDto category) {
+    protected void onNodeContextClick(String nodeName, ItemVisualisationResult category) {
         selectedCategory = category;
         createCategoryMenuItem.setEnabled(canCreateCategory());
         deleteCategoryMenuItem.setEnabled(canDeleteCategory(nodeName));

@@ -64,12 +64,12 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -113,7 +113,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
         void setCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto);
         void setCategorySchemeVersions(List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos);
-        void setCategories(List<ItemHierarchyDto> categoryDtos);
+        void setCategories(List<ItemVisualisationResult> categoryDtos);
         void startCategorySchemeEdition();
         void setLatestCategorySchemeForInternalPublication(GetCategorySchemesResult result);
 
@@ -441,7 +441,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     //
 
     private void retrieveCategoriesByScheme(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
+        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -471,8 +471,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     }
 
     @Override
-    public void deleteCategory(ItemDto itemDto) {
-        dispatcher.execute(new DeleteCategoryAction(itemDto.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
+    public void deleteCategory(ItemVisualisationResult itemVisualisationResult) {
+        dispatcher.execute(new DeleteCategoryAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

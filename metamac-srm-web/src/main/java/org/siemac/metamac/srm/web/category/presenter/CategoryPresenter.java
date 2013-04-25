@@ -32,11 +32,11 @@ import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -81,7 +81,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
         void setCategory(CategoryMetamacDto categoryDto);
         void setCategory(CategoryMetamacDto categoryDto, CategorySchemeMetamacDto categorySchemeMetamacDto);
-        void setCategoryList(CategorySchemeMetamacDto categorySchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
+        void setCategoryList(CategorySchemeMetamacDto categorySchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults);
     }
 
     @ContentSlot
@@ -166,8 +166,8 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     }
 
     @Override
-    public void deleteCategory(final ItemDto itemDto) {
-        dispatcher.execute(new DeleteCategoryAction(itemDto.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
+    public void deleteCategory(final ItemVisualisationResult itemVisualisationResult) {
+        dispatcher.execute(new DeleteCategoryAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -177,10 +177,10 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
             public void onWaitSuccess(DeleteCategoryResult result) {
                 ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
                 // If deleted category had a category parent, go to this category parent. If not, go to the category scheme.
-                if (itemDto.getItemParentUrn() != null) {
-                    goToCategory(itemDto.getItemParentUrn());
+                if (itemVisualisationResult.getParent() != null && itemVisualisationResult.getParent().getUrn() != null) {
+                    goToCategory(itemVisualisationResult.getParent().getUrn());
                 } else {
-                    goToCategoryScheme(itemDto.getItemSchemeVersionUrn());
+                    goToCategoryScheme(categorySchemeUrn);
                 }
             }
         });
@@ -188,7 +188,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void retrieveCategoryListByScheme(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
+        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -196,7 +196,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
             }
             @Override
             public void onWaitSuccess(GetCategoriesBySchemeResult result) {
-                final List<ItemHierarchyDto> itemHierarchyDtos = result.getCategories();
+                final List<ItemVisualisationResult> itemVisualisationResults = result.getCategories();
                 dispatcher.execute(new GetCategorySchemeAction(CategoryPresenter.this.categorySchemeUrn), new WaitingAsyncCallback<GetCategorySchemeResult>() {
 
                     @Override
@@ -205,7 +205,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
                     }
                     @Override
                     public void onWaitSuccess(GetCategorySchemeResult result) {
-                        getView().setCategoryList(result.getCategorySchemeMetamacDto(), itemHierarchyDtos);
+                        getView().setCategoryList(result.getCategorySchemeMetamacDto(), itemVisualisationResults);
                     }
                 });
             }

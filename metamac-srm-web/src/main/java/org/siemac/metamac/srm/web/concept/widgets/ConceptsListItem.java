@@ -11,7 +11,7 @@ import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BaseListItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
@@ -35,10 +35,10 @@ public class ConceptsListItem extends BaseListItem {
         }
     }
 
-    public void setDataItems(List<ItemDto> itemDtos) {
+    public void setDataItems(List<ItemVisualisationResult> itemVisualisationResults) {
         listGrid.removeAllData();
-        for (ItemDto itemDto : itemDtos) {
-            ConceptRecord record = RecordUtils.getConceptRecord(itemDto);
+        for (ItemVisualisationResult item : itemVisualisationResults) {
+            ConceptRecord record = RecordUtils.getConceptRecord(item);
             listGrid.addData(record);
         }
     }

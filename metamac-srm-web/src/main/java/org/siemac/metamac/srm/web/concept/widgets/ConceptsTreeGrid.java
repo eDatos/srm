@@ -12,15 +12,11 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.widgets.ItemsTreeGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
-import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
-import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -42,12 +38,12 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     private MenuItem                 deleteConceptMenuItem;
 
     private ConceptSchemeMetamacDto  conceptSchemeMetamacDto;
-    private ItemDto                  selectedConcept;
+    private ItemVisualisationResult  selectedConcept;
 
     private BaseConceptUiHandlers    uiHandlers;
 
     public ConceptsTreeGrid() {
-        // Remove the filter edition handler and add a new one (to support filter by concept type and SDMX role)
+        // Remove the filter edition handler and add a new one (to support filter by concept type and SDMX role) // TODO still necesary?
         removeFilterEditionHandler();
         addFilterEditorSubmitHandler(new FilterEditorSubmitHandler() {
 
@@ -157,7 +153,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    public void setItems(ItemSchemeDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
+    public void setItems(ItemSchemeDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemHierarchyDtos) {
         this.conceptSchemeMetamacDto = (ConceptSchemeMetamacDto) conceptSchemeMetamacDto;
         super.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
     }
@@ -172,29 +168,31 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
         this.uiHandlers = uiHandlers;
     }
 
-    @Override
-    protected TreeNode createItemTreeNode(ItemHierarchyDto itemHierarchyDto, String itemParentUrn) {
-        TreeNode node = new TreeNode(itemHierarchyDto.getItem().getId().toString());
-        node.setAttribute(ConceptDS.CODE, itemHierarchyDto.getItem().getCode());
-        node.setAttribute(ConceptDS.NAME, InternationalStringUtils.getLocalisedString(itemHierarchyDto.getItem().getName()));
-        node.setAttribute(ConceptDS.URN, itemHierarchyDto.getItem().getUrn());
-        node.setAttribute(ConceptDS.DTO, itemHierarchyDto.getItem());
-        node.setAttribute(ConceptDS.ITEM_PARENT_URN, itemParentUrn);
-        node.setAttribute(
-                ConceptDS.TYPE,
-                ((ConceptMetamacDto) itemHierarchyDto.getItem()).getConceptType() != null ? CommonWebUtils.getElementName(((ConceptMetamacDto) itemHierarchyDto.getItem()).getConceptType()
-                        .getIdentifier(), ((ConceptMetamacDto) itemHierarchyDto.getItem()).getConceptType().getDescription()) : StringUtils.EMPTY);
-        node.setAttribute(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(((ConceptMetamacDto) itemHierarchyDto.getItem()).getSdmxRelatedArtefact()));
-
-        // Node children
-        TreeNode[] children = new TreeNode[itemHierarchyDto.getChildren().size()];
-        for (int i = 0; i < itemHierarchyDto.getChildren().size(); i++) {
-            children[i] = createItemTreeNode(itemHierarchyDto.getChildren().get(i), itemHierarchyDto.getItem().getUrn());
-        }
-        node.setChildren(children);
-
-        return node;
-    }
+    // TODO
+    // @Override
+    // protected TreeNode createItemTreeNode(ItemVisualisationResult itemVisualisationResult) {
+    // TreeNode node = new TreeNode(itemVisualisationResult.getItemIdDatabase().toString());
+    // node.setAttribute(ConceptDS.CODE, itemVisualisationResult.getCode());
+    // node.setAttribute(ConceptDS.NAME, itemVisualisationResult.getName());
+    // node.setAttribute(ConceptDS.URN, itemVisualisationResult.getUrn());
+    // node.setAttribute(ConceptDS.DTO, itemVisualisationResult);
+    // node.setAttribute(ConceptDS.ITEM_PARENT_URN, itemVisualisationResult.getParent() != null ? itemVisualisationResult.getParent().getUrn() : null);
+    //
+    // node.setAttribute(
+    // ConceptDS.TYPE,
+    // ((ConceptMetamacDto) itemVisualisationResult.getItem()).getConceptType() != null ? CommonWebUtils.getElementName(((ConceptMetamacDto) itemVisualisationResult.getItem()).getConceptType()
+    // .getIdentifier(), ((ConceptMetamacDto) itemVisualisationResult.getItem()).getConceptType().getDescription()) : StringUtils.EMPTY);
+    // node.setAttribute(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(((ConceptMetamacDto) itemVisualisationResult.getItem()).getSdmxRelatedArtefact()));
+    //
+    // Node children
+    // TreeNode[] children = new TreeNode[itemVisualisationResult.getChildren().size()];
+    // for (int i = 0; i < itemVisualisationResult.getChildren().size(); i++) {
+    // children[i] = createItemTreeNode(itemVisualisationResult.getChildren().get(i), itemVisualisationResult.getItem().getUrn());
+    // }
+    // node.setChildren(children);
+    //
+    // return node;
+    // }
 
     @Override
     protected void onNodeClick(String nodeName, String conceptUrn) {
@@ -204,7 +202,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    protected void onNodeContextClick(String nodeName, ItemDto concept) {
+    protected void onNodeContextClick(String nodeName, ItemVisualisationResult concept) {
         selectedConcept = concept;
         createConceptMenuItem.setEnabled(canCreateConcept());
         deleteConceptMenuItem.setEnabled(canDeleteConcept(nodeName));

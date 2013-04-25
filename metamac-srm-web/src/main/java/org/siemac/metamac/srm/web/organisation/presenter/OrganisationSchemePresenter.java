@@ -67,11 +67,11 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -118,7 +118,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
         void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
         void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos);
-        void setOrganisationList(List<ItemHierarchyDto> organisationDtos);
+        void setOrganisationList(List<ItemVisualisationResult> organisationDtos);
         void startOrganisationSchemeEdition();
         void setLatestOrganisationSchemeForInternalPublication(GetOrganisationSchemesResult result);
 
@@ -472,7 +472,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     //
 
     private void retrieveOrganisationsByScheme(String organisationSchemeUrn) {
-        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
+        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -502,9 +502,9 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void deleteOrganisation(ItemDto itemDto) {
+    public void deleteOrganisation(ItemVisualisationResult itemVisualisationResult) {
         List<String> organisationsToDelete = new ArrayList<String>();
-        organisationsToDelete.add(itemDto.getUrn());
+        organisationsToDelete.add(itemVisualisationResult.getUrn());
         deleteOrganisations(organisationsToDelete);
     }
 

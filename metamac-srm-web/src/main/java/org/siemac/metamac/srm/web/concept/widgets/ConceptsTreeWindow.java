@@ -11,8 +11,7 @@ import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.SelectionAppearance;
@@ -67,25 +66,25 @@ public class ConceptsTreeWindow extends CustomWindow {
         show();
     }
 
-    public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
+    public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
+        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemVisualisationResults);
     }
 
     public HasClickHandlers getSaveClickHandlers() {
         return form.getItem(FIELD_SAVE);
     }
 
-    public List<ItemDto> getSelectedConcepts() {
+    public List<ItemVisualisationResult> getSelectedConcepts() {
         ListGridRecord[] records = conceptsTreeGrid.getSelectedRecords();
         if (records != null) {
-            List<ItemDto> itemDtos = new ArrayList<ItemDto>();
+            List<ItemVisualisationResult> itemVisualisationResults = new ArrayList<ItemVisualisationResult>();
             for (ListGridRecord record : records) {
                 TreeNode treeNode = (TreeNode) record;
                 if (treeNode.getAttribute(ConceptDS.DTO) != null) {
-                    itemDtos.add((ItemDto) treeNode.getAttributeAsObject(ConceptDS.DTO));
+                    itemVisualisationResults.add((ItemVisualisationResult) treeNode.getAttributeAsObject(ConceptDS.DTO));
                 }
             }
-            return itemDtos;
+            return itemVisualisationResults;
         }
         return null;
     }

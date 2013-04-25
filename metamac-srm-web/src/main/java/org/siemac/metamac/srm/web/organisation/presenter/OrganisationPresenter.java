@@ -37,11 +37,11 @@ import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -88,7 +88,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
         void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId);
         void setOrganisation(OrganisationMetamacDto organisationDto, OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Long contactToShowId);
         void setContacts(List<ContactDto> contactDtos, Long contactToShowId);
-        void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
+        void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults);
     }
 
     @ContentSlot
@@ -221,9 +221,9 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     }
 
     @Override
-    public void deleteOrganisation(final ItemDto itemDto) {
+    public void deleteOrganisation(final ItemVisualisationResult itemVisualisationResult) {
         List<String> urns = new ArrayList<String>();
-        urns.add(itemDto.getUrn());
+        urns.add(itemVisualisationResult.getUrn());
         dispatcher.execute(new DeleteOrganisationsAction(urns), new WaitingAsyncCallback<DeleteOrganisationsResult>() {
 
             @Override
@@ -234,19 +234,18 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             public void onWaitSuccess(DeleteOrganisationsResult result) {
                 ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
                 // If deleted organisation had a organisation parent, go to this organisation parent. If not, go to the organisation scheme.
-                if (itemDto.getItemParentUrn() != null) {
-                    goToOrganisation(itemDto.getItemParentUrn());
+                if (itemVisualisationResult.getParent() != null && itemVisualisationResult.getParent().getUrn() != null) {
+                    goToOrganisation(itemVisualisationResult.getParent().getUrn());
                 } else {
-                    goToOrganisationScheme(itemDto.getItemSchemeVersionUrn());
+                    goToOrganisationScheme(organisationSchemeUrn);
                 }
             }
         });
-
     }
 
     @Override
     public void retrieveOrganisationListByScheme(String organisationSchemeUrn) {
-        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
+        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -254,7 +253,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             }
             @Override
             public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
-                final List<ItemHierarchyDto> itemHierarchyDtos = result.getOrganisations();
+                final List<ItemVisualisationResult> itemVisualisationResults = result.getOrganisations();
                 dispatcher.execute(new GetOrganisationSchemeAction(OrganisationPresenter.this.organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationSchemeResult>() {
 
                     @Override
@@ -263,7 +262,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
                     }
                     @Override
                     public void onWaitSuccess(GetOrganisationSchemeResult result) {
-                        getView().setOrganisationList(result.getOrganisationSchemeMetamacDto(), itemHierarchyDtos);
+                        getView().setOrganisationList(result.getOrganisationSchemeMetamacDto(), itemVisualisationResults);
                     }
                 });
             }

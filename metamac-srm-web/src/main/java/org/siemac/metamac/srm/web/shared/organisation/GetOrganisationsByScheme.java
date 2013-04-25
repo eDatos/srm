@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.shared.organisation;
 
 import java.util.List;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.dispatch.annotation.Out;
@@ -11,8 +11,11 @@ import com.gwtplatform.dispatch.annotation.Out;
 public class GetOrganisationsByScheme {
 
     @In(1)
-    String                 schemeUrn;
+    String                        schemeUrn;
+
+    @In(2)
+    String                        locale;
 
     @Out(1)
-    List<ItemHierarchyDto> organisations;
+    List<ItemVisualisationResult> organisations;
 }

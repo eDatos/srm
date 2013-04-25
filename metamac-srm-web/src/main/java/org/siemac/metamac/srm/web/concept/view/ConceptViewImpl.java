@@ -58,9 +58,8 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextIt
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
@@ -114,7 +113,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private List<ConceptTypeDto>                         conceptTypeDtos;
 
     private ConceptSchemeMetamacDto                      conceptSchemeMetamacDto;
-    private List<ItemHierarchyDto>                       itemHierarchyDtos;
+    private List<ItemVisualisationResult>                itemVisualisationResults;
     private ConceptMetamacDto                            conceptDto;
 
     private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
@@ -446,9 +445,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
-    public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos) {
-        this.itemHierarchyDtos = itemHierarchyDtos;
-        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
+    public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationDtos) {
+        this.itemVisualisationResults = itemVisualisationDtos;
+        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemVisualisationDtos);
         conceptsTreeGrid.selectItem(conceptDto.getUrn());
     }
 
@@ -824,7 +823,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
                 final ConceptsTreeWindow extendedConceptWindow = new ConceptsTreeWindow(getConstants().conceptSelection());
-                extendedConceptWindow.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
+                extendedConceptWindow.setConcepts(conceptSchemeMetamacDto, itemVisualisationResults);
 
                 // Disable selection of current concept and concept scheme
                 RecordList records = extendedConceptWindow.getConceptsTreeGrid().getDataAsRecordList();
@@ -845,10 +844,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        List<ItemDto> itemDtos = extendedConceptWindow.getSelectedConcepts();
+                        List<ItemVisualisationResult> itemVisualisationResults = extendedConceptWindow.getSelectedConcepts();
                         extendedConceptWindow.markForDestroy();
                         // Set selected concepts in form
-                        ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataItems(itemDtos);
+                        ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataItems(itemVisualisationResults);
                     }
                 });
             }

@@ -53,12 +53,12 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
+import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemHierarchyDto;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -104,7 +104,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
         void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto);
         void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts);
-        void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemHierarchyDto> itemHierarchyDtos);
+        void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults);
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
 
@@ -186,7 +186,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void retrieveConceptsByScheme(String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
+        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -194,7 +194,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
             @Override
             public void onWaitSuccess(GetConceptsBySchemeResult result) {
-                final List<ItemHierarchyDto> itemHierarchyDtos = result.getItemHierarchyDtos();
+                final List<ItemVisualisationResult> itemVisualisationResults = result.getItemVisualisationResults();
                 dispatcher.execute(new GetConceptSchemeAction(ConceptPresenter.this.conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
 
                     @Override
@@ -203,7 +203,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
                     }
                     @Override
                     public void onWaitSuccess(GetConceptSchemeResult result) {
-                        getView().setConceptList(result.getConceptSchemeDto(), itemHierarchyDtos);
+                        getView().setConceptList(result.getConceptSchemeDto(), itemVisualisationResults);
                     }
                 });
             }
@@ -240,8 +240,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void deleteConcept(final ItemDto itemDto) {
-        dispatcher.execute(new DeleteConceptAction(itemDto.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
+    public void deleteConcept(final ItemVisualisationResult itemVisualisationResult) {
+        dispatcher.execute(new DeleteConceptAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -250,10 +250,10 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             @Override
             public void onWaitSuccess(DeleteConceptResult result) {
                 // If deleted concept had a concept parent, go to this concept parent. If not, go to the concept scheme.
-                if (itemDto.getItemParentUrn() != null) {
-                    goToConcept(itemDto.getItemParentUrn());
+                if (itemVisualisationResult.getParent() != null && itemVisualisationResult.getParent().getUrn() != null) {
+                    goToConcept(itemVisualisationResult.getParent().getUrn());
                 } else {
-                    goToConceptScheme(itemDto.getItemSchemeVersionUrn());
+                    goToConceptScheme(conceptSchemeUrn);
                 }
             }
         });
