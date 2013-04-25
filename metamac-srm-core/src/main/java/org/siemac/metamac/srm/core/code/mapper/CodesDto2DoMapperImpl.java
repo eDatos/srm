@@ -340,6 +340,26 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
         return target;
     }
 
+    @Override
+    public CodelistOrderVisualisation retrieveCodelistOrderVisualisation(String urn) throws MetamacException {
+        CodelistOrderVisualisation target = codelistOrderVisualisationRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    @Override
+    public CodelistOpennessVisualisation retrieveCodelistOpennessVisualisation(String urn) throws MetamacException {
+        CodelistOpennessVisualisation target = codelistOpennessVisualisationRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
     private CodelistVersionMetamac retrieveCodelist(String urn) throws MetamacException {
         CodelistVersionMetamac target = codelistVersionMetamacRepository.findByUrn(urn);
         if (target == null) {
@@ -387,24 +407,6 @@ public class CodesDto2DoMapperImpl implements CodesDto2DoMapper {
 
     private VariableElement retrieveVariableElement(String urn) throws MetamacException {
         VariableElement target = variableElementRepository.findByUrn(urn);
-        if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
-                    .build();
-        }
-        return target;
-    }
-
-    private CodelistOrderVisualisation retrieveCodelistOrderVisualisation(String urn) throws MetamacException {
-        CodelistOrderVisualisation target = codelistOrderVisualisationRepository.findByUrn(urn);
-        if (target == null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
-                    .build();
-        }
-        return target;
-    }
-
-    private CodelistOpennessVisualisation retrieveCodelistOpennessVisualisation(String urn) throws MetamacException {
-        CodelistOpennessVisualisation target = codelistOpennessVisualisationRepository.findByUrn(urn);
         if (target == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build();

@@ -8,14 +8,17 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
+import org.siemac.metamac.srm.core.code.mapper.CodesDto2DoMapper;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.core.dsd.dto.DimensionVisualisationInfoDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,6 +38,9 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
     @Autowired
     private DataStructureDefinitionVersionMetamacRepository                                       dataStructureDefinitionVersionMetamacRepository;
 
+    @Autowired
+    private CodesDto2DoMapper                                                                     codesDto2DoMapper;
+
     // ------------------------------------------------------------
     // DATA STRUCTURE DEFINITIONS
     // ------------------------------------------------------------
@@ -46,6 +52,7 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         U target = (U) dto2DoMapperSdmxSrm.componentDtoToComponent(source);
         return target;
     }
+
     @SuppressWarnings("unchecked")
     @Override
     public <U extends ComponentList> U componentListDtoToComponentList(ComponentListDto componentListDto) throws MetamacException {
@@ -76,9 +83,10 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         target.setShowDecimals(source.getShowDecimals());
         target.setStatisticalOperation(dto2DoMapperSdmxSrm.externalItemDtoToExternalItem(source.getStatisticalOperation(), target.getStatisticalOperation(),
                 ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
-        headingProcess(source.getHeadingDimensions(), target);
-        stubProcess(source.getStubDimensions(), target);
-        showDecimalsPrecisionsProcess(source.getShowDecimalsPrecisions(), target);
+        headingDto2Do(source.getHeadingDimensions(), target);
+        stubDto2Do(source.getStubDimensions(), target);
+        showDecimalsPrecisionsDto2Do(source.getShowDecimalsPrecisions(), target);
+        dimensionVisualisationInfoDto2Do(source.getDimensionVisualisationInfos(), target);
 
         // External Item of statistical operation never has title
         if (target.getStatisticalOperation() != null) {
@@ -89,12 +97,11 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
         return target;
     }
-
     /**************************************************************************
      * PRIVATE
      **************************************************************************/
 
-    private DataStructureDefinitionVersionMetamac headingProcess(List<RelatedResourceDto> sourceList, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac)
+    private DataStructureDefinitionVersionMetamac headingDto2Do(List<RelatedResourceDto> sourceList, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac)
             throws MetamacException {
 
         // HashMap of actuals dimensions order
@@ -113,7 +120,7 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         return dataStructureDefinitionVersionMetamac;
     }
 
-    private DataStructureDefinitionVersionMetamac stubProcess(List<RelatedResourceDto> sourceList, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+    private DataStructureDefinitionVersionMetamac stubDto2Do(List<RelatedResourceDto> sourceList, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
 
         // HashMap of actuals dimensions order
         Map<String, DimensionOrder> dimensionOrderMap = new HashMap<String, DimensionOrder>();
@@ -147,7 +154,7 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         return dimensionOrder;
     }
 
-    private DataStructureDefinitionVersionMetamac showDecimalsPrecisionsProcess(List<MeasureDimensionPrecisionDto> sourceList,
+    private DataStructureDefinitionVersionMetamac showDecimalsPrecisionsDto2Do(List<MeasureDimensionPrecisionDto> sourceList,
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
 
         // HashMap of actuals measure dimensions precision
@@ -173,5 +180,40 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         }
 
         return dataStructureDefinitionVersionMetamac;
+    }
+
+    private DataStructureDefinitionVersionMetamac dimensionVisualisationInfoDto2Do(List<DimensionVisualisationInfoDto> sourceList,
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+
+        // HashMap of actuals dimensions order
+        Map<String, DimensionVisualizationInfo> dimensionVisualisationMap = new HashMap<String, DimensionVisualizationInfo>();
+        for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
+            dimensionVisualisationMap.put(dimensionVisualizationInfo.getDimension().getUrn(), dimensionVisualizationInfo);
+        }
+
+        dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos().clear();
+
+        for (DimensionVisualisationInfoDto dimensionVisualisationInfoDto : sourceList) {
+            dataStructureDefinitionVersionMetamac.addDimensionVisualisationInfo(dimensionVisualizationInfoDtoToDimensionVisualizationInfo(dimensionVisualisationInfoDto,
+                    dimensionVisualisationMap.get(dimensionVisualisationInfoDto.getUrn()), dataStructureDefinitionVersionMetamac));
+        }
+
+        return dataStructureDefinitionVersionMetamac;
+    }
+
+    private DimensionVisualizationInfo dimensionVisualizationInfoDtoToDimensionVisualizationInfo(DimensionVisualisationInfoDto source, DimensionVisualizationInfo target,
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
+
+        if (target == null) {
+            target = new DimensionVisualizationInfo();
+        }
+
+        DimensionComponent dimension = (DimensionComponent) dto2DoMapperSdmxSrm.relatedResourceDtoToEntity(source, ServiceExceptionParameters.DIMENSION);
+        target.setDimension(dimension);
+        target.setDisplayOrder(codesDto2DoMapper.retrieveCodelistOrderVisualisation(source.getDisplayOrder().getUrn()));
+        target.setHierarchyLevelsOpen(codesDto2DoMapper.retrieveCodelistOpennessVisualisation(source.getHierarchyLevelsOpen().getUrn()));
+        target.setDsdVersion(dataStructureDefinitionVersionMetamac);
+
+        return target;
     }
 }
