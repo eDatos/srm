@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
-import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
@@ -244,9 +243,9 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     private void showListGridDeleteButton(ListGridRecord[] records) {
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
-            CategorySchemeMetamacDto categorySchemeMetamacDto = ((CategorySchemeRecord) record).getCategorySchemeDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus()) || !CategoriesClientSecurityUtils.canDeleteCategoryScheme()) {
+            CategorySchemeMetamacBasicDto categorySchemeMetamacDto = ((CategorySchemeRecord) record).getCategorySchemeBasicDto();
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getProcStatus())
+                    || !CategoriesClientSecurityUtils.canDeleteCategoryScheme()) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }
@@ -261,9 +260,9 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     private void showListGridCancelValidityDeleteButton(ListGridRecord[] records) {
         boolean allSelectedSchemesValidityCanBeCanceled = true;
         for (ListGridRecord record : records) {
-            CategorySchemeMetamacDto categorySchemeMetamacDto = ((CategorySchemeRecord) record).getCategorySchemeDto();
+            CategorySchemeMetamacBasicDto categorySchemeMetamacDto = ((CategorySchemeRecord) record).getCategorySchemeBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus()) || categorySchemeMetamacDto.getValidTo() != null
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getProcStatus()) || categorySchemeMetamacDto.getValidTo() != null
                     || !CategoriesClientSecurityUtils.canCancelCategorySchemeValidity()) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
-import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -154,7 +153,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             public void onSelectionChanged(SelectionEvent event) {
                 if (dsdListGrid.getListGrid().getSelectedRecords() != null && dsdListGrid.getListGrid().getSelectedRecords().length == 1) {
                     DsdRecord record = (DsdRecord) dsdListGrid.getListGrid().getSelectedRecord();
-                    DataStructureDefinitionMetamacDto dsd = record.getDsd();
+                    DataStructureDefinitionMetamacBasicDto dsd = record.getDsdBasicDto();
                     selectDsd(dsd);
                     showCancelValidityDeleteButton(new ListGridRecord[]{record});
                 } else {
@@ -230,14 +229,9 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
      * 
      * @param selectedDsd
      */
-    private void selectDsd(DataStructureDefinitionMetamacDto selectedDsd) {
-        if (selectedDsd.getId() == null) {
-            deleteToolStripButton.hide();
-            dsdListGrid.getListGrid().deselectAllRecords();
-        } else {
-            showDeleteToolStripButton();
-            showExportToolStripButton(selectedDsd);
-        }
+    private void selectDsd(DataStructureDefinitionMetamacBasicDto selectedDsd) {
+        showDeleteToolStripButton();
+        showExportToolStripButton(selectedDsd);
     }
 
     /**
@@ -282,10 +276,10 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showDeleteToolStripButton() {
-        List<DataStructureDefinitionMetamacDto> dsds = getSelectedDsds();
+        List<DataStructureDefinitionMetamacBasicDto> dsds = getSelectedDsds();
         boolean actionAllowed = true;
-        for (DataStructureDefinitionMetamacDto dsd : dsds) {
-            if (!DsdClientSecurityUtils.canDeleteDsd(dsd.getLifeCycle().getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dsd))) {
+        for (DataStructureDefinitionMetamacBasicDto dsd : dsds) {
+            if (!DsdClientSecurityUtils.canDeleteDsd(dsd.getProcStatus(), CommonUtils.getStatisticalOperationCodeFromDsd(dsd))) {
                 actionAllowed = false;
                 break;
             }
@@ -295,19 +289,19 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         }
     }
 
-    private void showExportToolStripButton(DataStructureDefinitionMetamacDto selectedDsd) {
+    private void showExportToolStripButton(DataStructureDefinitionMetamacBasicDto selectedDsd) {
         if (ImportationClientSecurityUtils.canExportStructure(selectedDsd.getVersionLogic())) {
             exportToolStripButton.show();
         }
     }
 
-    private List<DataStructureDefinitionMetamacDto> getSelectedDsds() {
-        List<DataStructureDefinitionMetamacDto> dsds = new ArrayList<DataStructureDefinitionMetamacDto>();
+    private List<DataStructureDefinitionMetamacBasicDto> getSelectedDsds() {
+        List<DataStructureDefinitionMetamacBasicDto> dsds = new ArrayList<DataStructureDefinitionMetamacBasicDto>();
         if (dsdListGrid.getListGrid().getSelectedRecords() != null) {
             ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
             for (int i = 0; i < records.length; i++) {
                 DsdRecord record = (DsdRecord) records[i];
-                dsds.add(record.getDsd());
+                dsds.add(record.getDsdBasicDto());
             }
         }
         return dsds;
@@ -319,7 +313,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
             ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
             for (int i = 0; i < records.length; i++) {
                 DsdRecord record = (DsdRecord) records[i];
-                urns.add(record.getDsd().getUrn());
+                urns.add(record.getUrn());
             }
         }
         return urns;
@@ -328,9 +322,9 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private void showCancelValidityDeleteButton(ListGridRecord[] records) {
         boolean allSelectedDsdsExternallyPublished = true;
         for (ListGridRecord record : records) {
-            DataStructureDefinitionMetamacDto dsd = ((DsdRecord) record).getDsd();
+            DataStructureDefinitionMetamacBasicDto dsd = ((DsdRecord) record).getDsdBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsd.getLifeCycle().getProcStatus()) || dsd.getValidTo() != null
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsd.getProcStatus()) || dsd.getValidTo() != null
                     || !DsdClientSecurityUtils.canCancelDsdValidity(CommonUtils.getStatisticalOperationCodeFromDsd(dsd))) {
                 allSelectedDsdsExternallyPublished = false;
             }

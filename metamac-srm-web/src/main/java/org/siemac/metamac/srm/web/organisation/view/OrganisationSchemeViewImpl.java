@@ -133,7 +133,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 String urn = ((OrganisationSchemeRecord) event.getRecord()).getUrn();
-                OrganisationSchemeTypeEnum type = ((OrganisationSchemeRecord) event.getRecord()).getOrganisationSchemeDto().getType();
+                OrganisationSchemeTypeEnum type = ((OrganisationSchemeRecord) event.getRecord()).getOrganisationSchemeBasicDto().getType();
                 getUiHandlers().goToOrganisationScheme(urn, type);
             }
         });

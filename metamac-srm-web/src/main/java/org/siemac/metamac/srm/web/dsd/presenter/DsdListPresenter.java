@@ -141,7 +141,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) {
                     DsdRecord record = (DsdRecord) event.getRecord();
-                    goToDsd(record.getDsd().getUrn());
+                    goToDsd(record.getUrn());
                 }
             }
         }));

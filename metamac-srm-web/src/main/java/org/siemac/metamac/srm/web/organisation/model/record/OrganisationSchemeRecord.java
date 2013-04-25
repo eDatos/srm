@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.organisation.model.record;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 
@@ -12,7 +11,7 @@ public class OrganisationSchemeRecord extends ItemSchemeRecord {
     }
 
     public OrganisationSchemeRecord(Long id, String code, String name, String status, String type, String versionLogic, String urn, String maintainer, String internalPublicationDate,
-            String internalPublicationUser, String externalPublicationDate, String externalPublicationUser, OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+            String internalPublicationUser, String externalPublicationDate, String externalPublicationUser) {
         super();
         setId(id);
         setCode(code);
@@ -26,15 +25,10 @@ public class OrganisationSchemeRecord extends ItemSchemeRecord {
         setExternalPublicationDate(externalPublicationDate);
         setExternalPublicationUser(externalPublicationUser);
         setType(type);
-        setOrganisationSchemeDto(organisationSchemeMetamacDto);
     }
 
     public void setType(String value) {
         setAttribute(OrganisationSchemeDS.TYPE, value);
-    }
-
-    public void setOrganisationSchemeDto(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        setAttribute(OrganisationSchemeDS.DTO, organisationSchemeMetamacDto);
     }
 
     public void setOrganisationSchemeBasicDto(OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto) {
@@ -42,16 +36,7 @@ public class OrganisationSchemeRecord extends ItemSchemeRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        Object dto = getAttributeAsObject(OrganisationSchemeDS.DTO);
-        if (dto instanceof OrganisationSchemeMetamacBasicDto) {
-            return ((OrganisationSchemeMetamacBasicDto) dto).getProcStatus();
-        } else {
-            return ((OrganisationSchemeMetamacDto) dto).getLifeCycle().getProcStatus();
-        }
-    }
-
-    public OrganisationSchemeMetamacDto getOrganisationSchemeDto() {
-        return (OrganisationSchemeMetamacDto) getAttributeAsObject(OrganisationSchemeDS.DTO);
+        return ((OrganisationSchemeMetamacBasicDto) getAttributeAsObject(OrganisationSchemeDS.DTO)).getProcStatus();
     }
 
     public OrganisationSchemeMetamacBasicDto getOrganisationSchemeBasicDto() {

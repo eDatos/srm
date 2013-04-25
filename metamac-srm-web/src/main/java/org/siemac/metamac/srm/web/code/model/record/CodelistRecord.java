@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.code.model.record;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
@@ -12,7 +11,7 @@ public class CodelistRecord extends ItemSchemeRecord {
     }
 
     public CodelistRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate,
-            String internalPublicationUser, String externalPublicationDate, String externalPublicationUser, CodelistMetamacDto codelistMetamacDto) {
+            String internalPublicationUser, String externalPublicationDate, String externalPublicationUser) {
         super();
         setId(id);
         setCode(code);
@@ -26,15 +25,10 @@ public class CodelistRecord extends ItemSchemeRecord {
         setInternalPublicationUser(internalPublicationUser);
         setExternalPublicationDate(externalPublicationDate);
         setExternalPublicationUser(externalPublicationUser);
-        setCodelistDto(codelistMetamacDto);
     }
 
     public void setDescription(String desc) {
         setAttribute(CodelistDS.DESCRIPTION, desc);
-    }
-
-    public void setCodelistDto(CodelistMetamacDto codelistMetamacDto) {
-        setAttribute(CodelistDS.DTO, codelistMetamacDto);
     }
 
     public void setCodelistBasicDto(CodelistMetamacBasicDto codelistMetamacDto) {
@@ -42,15 +36,11 @@ public class CodelistRecord extends ItemSchemeRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        return ((CodelistMetamacDto) getAttributeAsObject(CodelistDS.DTO)).getLifeCycle().getProcStatus();
+        return ((CodelistMetamacBasicDto) getAttributeAsObject(CodelistDS.DTO)).getProcStatus();
     }
 
     public String getDescription() {
         return getAttribute(CodelistDS.DESCRIPTION);
-    }
-
-    public CodelistMetamacDto getCodelistMetamacDto() {
-        return (CodelistMetamacDto) getAttributeAsObject(CodelistDS.DTO);
     }
 
     public CodelistMetamacBasicDto getCodelistMetamacBasicDto() {

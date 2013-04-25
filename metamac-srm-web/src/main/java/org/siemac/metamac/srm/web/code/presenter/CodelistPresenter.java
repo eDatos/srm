@@ -12,6 +12,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -612,7 +613,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void copyCodesInCodelist(final String codelistTargetUrn, String parentTargetUrn, List<CodeToCopyHierarchy> codesToCopy) {
+    public void copyCodesInCodelist(final String codelistTargetUrn, String parentTargetUrn, List<CodeToCopy> codesToCopy) {
         dispatcher.execute(new CopyCodesInCodelistAction(codelistTargetUrn, parentTargetUrn, codesToCopy), new WaitingAsyncCallback<CopyCodesInCodelistResult>() {
 
             @Override

@@ -35,7 +35,6 @@ public class RecordUtils {
         record.setInternalPublicationUser(organisationSchemeDto.getLifeCycle().getInternalPublicationUser());
         record.setExternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(organisationSchemeDto.getLifeCycle().getExternalPublicationUser());
-        record.setOrganisationSchemeDto(organisationSchemeDto);
         return record;
     }
 

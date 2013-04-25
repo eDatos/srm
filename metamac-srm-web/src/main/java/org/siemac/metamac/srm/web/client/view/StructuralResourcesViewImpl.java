@@ -57,7 +57,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 DsdRecord record = (DsdRecord) event.getRecord();
-                getUiHandlers().goToDsd(record.getDsd().getUrn());
+                getUiHandlers().goToDsd(record.getUrn());
             }
         });
 
@@ -78,7 +78,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 OrganisationSchemeRecord record = (OrganisationSchemeRecord) event.getRecord();
-                getUiHandlers().goToOrganisationScheme(record.getUrn(), record.getOrganisationSchemeDto().getType());
+                getUiHandlers().goToOrganisationScheme(record.getUrn(), record.getOrganisationSchemeBasicDto().getType());
             }
         });
 

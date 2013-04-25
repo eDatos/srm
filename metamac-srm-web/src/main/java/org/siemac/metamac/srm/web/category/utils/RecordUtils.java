@@ -28,7 +28,6 @@ public class RecordUtils {
         record.setInternalPublicationUser(categorySchemeDto.getLifeCycle().getInternalPublicationUser());
         record.setExternalPublicationDate(DateUtils.getFormattedDate(categorySchemeDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(categorySchemeDto.getLifeCycle().getExternalPublicationUser());
-        record.setCategorySchemeDto(categorySchemeDto);
         return record;
     }
 
@@ -52,7 +51,7 @@ public class RecordUtils {
 
     public static CategoryRecord getCategoryRecord(CategoryMetamacDto categoryDto) {
         CategoryRecord record = new CategoryRecord(categoryDto.getId(), categoryDto.getCode(), getLocalisedString(categoryDto.getName()), categoryDto.getUrn(), categoryDto.getItemSchemeVersionUrn(),
-                getLocalisedString(categoryDto.getDescription()), categoryDto);
+                getLocalisedString(categoryDto.getDescription()));
         return record;
     }
 

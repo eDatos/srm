@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.utils;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
@@ -73,6 +74,10 @@ public class CommonUtils {
     }
 
     public static String getRelatedOperationCode(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        return conceptSchemeMetamacDto.getRelatedOperation() != null ? conceptSchemeMetamacDto.getRelatedOperation().getCode() : null;
+    }
+
+    public static String getRelatedOperationCode(ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto) {
         return conceptSchemeMetamacDto.getRelatedOperation() != null ? conceptSchemeMetamacDto.getRelatedOperation().getCode() : null;
     }
 

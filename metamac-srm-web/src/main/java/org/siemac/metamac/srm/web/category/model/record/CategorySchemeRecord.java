@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.category.model.record;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
-import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
@@ -12,7 +11,7 @@ public class CategorySchemeRecord extends ItemSchemeRecord {
     }
 
     public CategorySchemeRecord(Long id, String code, String name, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate, String internalPublicationUser,
-            String externalPublicationDate, String externalPublicationUser, CategorySchemeMetamacDto categorySchemeMetamacDto) {
+            String externalPublicationDate, String externalPublicationUser) {
         super();
         setId(id);
         setCode(code);
@@ -25,11 +24,6 @@ public class CategorySchemeRecord extends ItemSchemeRecord {
         setInternalPublicationUser(internalPublicationUser);
         setExternalPublicationDate(externalPublicationDate);
         setExternalPublicationUser(externalPublicationUser);
-        setCategorySchemeDto(categorySchemeMetamacDto);
-    }
-
-    public void setCategorySchemeDto(CategorySchemeMetamacDto categorySchemeMetamacDto) {
-        setAttribute(CategorySchemeDS.DTO, categorySchemeMetamacDto);
     }
 
     public void setCategorySchemeBasicDto(CategorySchemeMetamacBasicDto categorySchemeMetamacDto) {
@@ -37,11 +31,7 @@ public class CategorySchemeRecord extends ItemSchemeRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        return ((CategorySchemeMetamacDto) getAttributeAsObject(CategorySchemeDS.DTO)).getLifeCycle().getProcStatus();
-    }
-
-    public CategorySchemeMetamacDto getCategorySchemeDto() {
-        return (CategorySchemeMetamacDto) getAttributeAsObject(CategorySchemeDS.DTO);
+        return ((CategorySchemeMetamacBasicDto) getAttributeAsObject(CategorySchemeDS.DTO)).getProcStatus();
     }
 
     public CategorySchemeMetamacBasicDto getCategorySchemeBasicDto() {

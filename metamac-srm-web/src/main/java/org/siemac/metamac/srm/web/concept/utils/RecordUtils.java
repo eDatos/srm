@@ -32,7 +32,6 @@ public class RecordUtils {
         record.setInternalPublicationUser(conceptSchemeDto.getLifeCycle().getInternalPublicationUser());
         record.setExternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(conceptSchemeDto.getLifeCycle().getExternalPublicationUser());
-        record.setConceptSchemeDto(conceptSchemeDto);
         return record;
     }
 
@@ -56,7 +55,7 @@ public class RecordUtils {
 
     public static ConceptRecord getConceptRecord(ConceptMetamacDto conceptDto) {
         ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), conceptDto.getUrn(), conceptDto.getItemSchemeVersionUrn(),
-                getLocalisedString(conceptDto.getDescription()), conceptDto);
+                getLocalisedString(conceptDto.getDescription()));
         return record;
     }
 
@@ -71,7 +70,7 @@ public class RecordUtils {
     }
 
     public static ConceptRecord getConceptRecord(ItemDto itemDto) {
-        ConceptRecord record = new ConceptRecord(itemDto.getId(), itemDto.getCode(), getLocalisedString(itemDto.getName()), itemDto.getUrn(), itemDto.getItemSchemeVersionUrn(), null, null);
+        ConceptRecord record = new ConceptRecord(itemDto.getId(), itemDto.getCode(), getLocalisedString(itemDto.getName()), itemDto.getUrn(), itemDto.getItemSchemeVersionUrn(), null);
         return record;
     }
 

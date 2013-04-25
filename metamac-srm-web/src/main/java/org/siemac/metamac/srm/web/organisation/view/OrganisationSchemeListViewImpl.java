@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
@@ -149,7 +148,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
                     String urn = ((OrganisationSchemeRecord) event.getRecord()).getAttribute(OrganisationSchemeDS.URN);
-                    OrganisationSchemeTypeEnum type = ((OrganisationSchemeRecord) event.getRecord()).getOrganisationSchemeDto().getType();
+                    OrganisationSchemeTypeEnum type = ((OrganisationSchemeRecord) event.getRecord()).getOrganisationSchemeBasicDto().getType();
                     getUiHandlers().goToOrganisationScheme(urn, type);
                 }
             }
@@ -231,9 +230,8 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     private void showListGridDeleteButton(ListGridRecord[] records) {
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
-            OrganisationSchemeMetamacDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
+            OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeBasicDto();
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getProcStatus())) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }
@@ -248,9 +246,9 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     private void showListGridCancelValidityDeleteButton(ListGridRecord[] records) {
         boolean allSelectedSchemesValidityCanBeCanceled = true;
         for (ListGridRecord record : records) {
-            OrganisationSchemeMetamacDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeDto();
+            OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) || organisationSchemeMetamacDto.getValidTo() != null) {
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getProcStatus()) || organisationSchemeMetamacDto.getValidTo() != null) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }
         }

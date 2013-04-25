@@ -49,7 +49,6 @@ public class RecordUtils {
         record.setInternalPublicationUser(codelistDto.getLifeCycle().getInternalPublicationUser());
         record.setExternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(codelistDto.getLifeCycle().getExternalPublicationUser());
-        record.setCodelistDto(codelistDto);
         return record;
     }
 
@@ -73,7 +72,7 @@ public class RecordUtils {
 
     public static CodeRecord getCodeRecord(CodeMetamacDto codeDto) {
         CodeRecord record = new CodeRecord(codeDto.getId(), codeDto.getCode(), getLocalisedString(codeDto.getName()), codeDto.getUrn(), codeDto.getItemSchemeVersionUrn(),
-                getLocalisedString(codeDto.getDescription()), codeDto);
+                getLocalisedString(codeDto.getDescription()));
         return record;
     }
 

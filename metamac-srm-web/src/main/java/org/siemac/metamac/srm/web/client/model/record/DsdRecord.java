@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.client.model.record;
 import java.util.Date;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
-import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -13,17 +12,15 @@ public class DsdRecord extends ListGridRecord {
     public DsdRecord() {
     }
 
-    // Last modified record
-    public DsdRecord(Long id, String code, String name, String description, Boolean finalStructure, String procStatus, String version, DataStructureDefinitionMetamacDto dsd) {
+    public DsdRecord(Long id, String code, String name, String urn, String description, Boolean finalStructure, String procStatus, String version) {
         setId(id);
         setCode(code);
         setName(name);
         setDescription(description);
         setFinalStructure(finalStructure);
-        setUrn(dsd.getUrn());
+        setUrn(urn);
         setProcStatus(procStatus);
         setVersion(version);
-        setDsd(dsd);
     }
 
     public void setId(Long attribute) {
@@ -70,10 +67,6 @@ public class DsdRecord extends ListGridRecord {
         setAttribute(DataStructureDefinitionDS.VALID_TO, endDate);
     }
 
-    public void setDsd(DataStructureDefinitionMetamacDto value) {
-        setAttribute(DataStructureDefinitionDS.DTO, value);
-    }
-
     public void setDsdBasicDto(DataStructureDefinitionMetamacBasicDto value) {
         setAttribute(DataStructureDefinitionDS.DTO, value);
     }
@@ -116,10 +109,6 @@ public class DsdRecord extends ListGridRecord {
 
     public Date getEndDate() {
         return getAttributeAsDate(DataStructureDefinitionDS.VALID_TO);
-    }
-
-    public DataStructureDefinitionMetamacDto getDsd() {
-        return (DataStructureDefinitionMetamacDto) getAttributeAsObject(DataStructureDefinitionDS.DTO);
     }
 
     public DataStructureDefinitionMetamacBasicDto getDsdBasicDto() {

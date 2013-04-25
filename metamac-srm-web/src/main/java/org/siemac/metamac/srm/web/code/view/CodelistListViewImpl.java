@@ -6,7 +6,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
@@ -237,9 +236,9 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     private void showListGridDeleteButton(ListGridRecord[] records) {
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
-            CodelistMetamacDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus()) || !CodesClientSecurityUtils.canDeleteCodelist(codelistMetamacDto)) {
+            CodelistMetamacBasicDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacBasicDto();
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(codelistMetamacDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getProcStatus())
+                    || !CodesClientSecurityUtils.canDeleteCodelist(codelistMetamacDto)) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }
@@ -254,9 +253,9 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     private void showListGridCancelValidityButton(ListGridRecord[] records) {
         boolean allSelectedCodelistValidityCanBeCanceled = true;
         for (ListGridRecord record : records) {
-            CodelistMetamacDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacDto();
+            CodelistMetamacBasicDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus()) || codelistMetamacDto.getValidTo() != null
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getProcStatus()) || codelistMetamacDto.getValidTo() != null
                     || !CodesClientSecurityUtils.canCancelCodelistValidity(codelistMetamacDto.getIsTaskInBackground())) {
                 allSelectedCodelistValidityCanBeCanceled = false;
             }
