@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
@@ -348,24 +349,60 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     @SuppressWarnings("rawtypes")
     public List<CodeMetamacVisualisationResult> findCodesByCodelistUnorderedToVisualisation(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex)
             throws MetamacException {
-        // Find codes
-        List codesResultSql = executeQueryFindCodesByCodelistByNativeSqlQuery(idCodelist, locale, orderColumnIndex, opennessColumnIndex);
+        // Visualisations: default values, to execute same query, but in transformation to result they will be ignored
+        if (orderColumnIndex == null) {
+            orderColumnIndex = Integer.valueOf(1);
+        }
+        if (opennessColumnIndex == null) {
+            opennessColumnIndex = Integer.valueOf(1);
+        }
+        String orderColumn = getOrderColumnName(orderColumnIndex);
+        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
+
+        // Find. NOTE: this query return null label if locale not exits for a code
+        StringBuilder sbCodes = new StringBuilder();
+        sbCodes.append("SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + ", c." + opennessColumn + " ");
+        sbCodes.append("FROM TB_M_CODES c ");
+        sbCodes.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CODES = i.ID ");
+        sbCodes.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sbCodes.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
+        sbCodes.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
+        Query queryCodes = getEntityManager().createNativeQuery(sbCodes.toString());
+        queryCodes.setParameter("codelistVersion", idCodelist);
+        queryCodes.setParameter("locale", locale);
+        List codesResultSql = queryCodes.getResultList();
 
         // Transform object[] results
         List<CodeMetamacVisualisationResult> targets = new ArrayList<CodeMetamacVisualisationResult>(codesResultSql.size());
         Map<Long, CodeMetamacVisualisationResult> mapCodeByItemId = new HashMap<Long, CodeMetamacVisualisationResult>(codesResultSql.size());
         for (Object codeResultSql : codesResultSql) {
             Object[] codeResultSqlArray = (Object[]) codeResultSql;
-            Long actualItemId = getLong(codeResultSqlArray[0]);
-            CodeMetamacVisualisationResult target = mapCodeByItemId.get(actualItemId);
-            if (target == null) {
-                target = codeResultSqlToCodeResult(codeResultSqlArray, null, orderColumnIndex, opennessColumnIndex);
-                targets.add(target);
-                mapCodeByItemId.put(target.getItemIdDatabase(), target);
-            } else {
-                codeResultSqlToCodeResult(codeResultSqlArray, target, orderColumnIndex, opennessColumnIndex);
-            }
+            CodeMetamacVisualisationResult target = codeResultSqlToCodeResult(codeResultSqlArray, null, orderColumnIndex, opennessColumnIndex);
+            targets.add(target);
+            mapCodeByItemId.put(target.getItemIdDatabase(), target);
         }
+
+        // Variable element. Execute one independent query to retrieve variable elements is more efficient than do a global query
+        StringBuilder sbVariableElements = new StringBuilder();
+        sbVariableElements.append("SELECT i.ID as ITEM_ID, ve.ID as VE_ID, ave.URN as VE_URN, ave.CODE as VE_CODE, ls.LABEL as VE_SHORT_NAME_FK ");
+        sbVariableElements.append("FROM TB_M_CODES c ");
+        sbVariableElements.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CODES = i.ID ");
+        sbVariableElements.append("INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK ");
+        sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ave on ve.IDENTIFIABLE_ARTEFACT_FK = ave.ID ");
+        sbVariableElements.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK and ls.locale = :locale ");
+        sbVariableElements.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        Query queryVariableElements = getEntityManager().createNativeQuery(sbVariableElements.toString());
+        queryVariableElements.setParameter("codelistVersion", idCodelist);
+        queryVariableElements.setParameter("locale", locale);
+        List variableElementsResultSql = queryVariableElements.getResultList();
+        for (Object variableElementResultSql : variableElementsResultSql) {
+            Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
+            Long actualItemId = getLong(variableElementResultSqlArray[0]);
+            CodeMetamacVisualisationResult target = mapCodeByItemId.get(actualItemId);
+            VariableElementResult variableElement = variableElementResultSqlToVariableElementResult(variableElementResultSqlArray);
+            target.setVariableElement(variableElement);
+        }
+
         // Parent: fill manually with java code
         for (CodeMetamacVisualisationResult target : targets) {
             if (target.getParentIdDatabase() != null) {
@@ -427,7 +464,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             sb.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, 6, '0'), '.') ORDER_PATH ");
             sb.append("FROM ");
             sb.append("(");
-            sb.append("SELECT c." + orderColumn + " COD_ORDER, i.ID ITEM_ID, i.PARENT_FK ITEM_PARENT_FK ");
+            sb.append("SELECT c." + orderColumn + " AS COD_ORDER, i.ID AS ITEM_ID, i.PARENT_FK AS ITEM_PARENT_FK ");
             sb.append("FROM TB_M_CODES c JOIN TB_ITEMS_BASE i on i.ID = c.TB_CODES ");
             sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
             sb.append(")");
@@ -484,33 +521,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         }
     }
 
-    /**
-     * NOTE: this query return null label if locale not exits for a code
-     */
-    @SuppressWarnings("rawtypes")
-    private List executeQueryFindCodesByCodelistByNativeSqlQuery(Long idCodelist, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) {
-        // default values, to execute same query, but in transformation to result they will be ignored
-        if (orderColumnIndex == null) {
-            orderColumnIndex = Integer.valueOf(1);
-        }
-        if (opennessColumnIndex == null) {
-            opennessColumnIndex = Integer.valueOf(1);
-        }
-        String orderColumn = getOrderColumnName(orderColumnIndex);
-        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + ", c." + opennessColumn + " ");
-        sb.append("FROM TB_M_CODES c INNER JOIN TB_ITEMS_BASE i on c.TB_CODES = i.ID ");
-        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
-        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
-        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
-        Query query = getEntityManager().createNativeQuery(sb.toString());
-        query.setParameter("codelistVersion", idCodelist);
-        query.setParameter("locale", locale);
-        List codesResultSql = query.getResultList();
-        return codesResultSql;
-    }
-
     private CodeMetamacVisualisationResult codeResultSqlToCodeResult(Object[] source, CodeMetamacVisualisationResult target, Integer orderColumnIndex, Integer opennessColumnIndex)
             throws MetamacException {
         if (target == null) {
@@ -532,6 +542,17 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         } else {
             i++; // skip this column
         }
+        return target;
+    }
+
+    private VariableElementResult variableElementResultSqlToVariableElementResult(Object[] source) {
+        VariableElementResult target = new VariableElementResult();
+        int i = 0;
+        i++; // itemId
+        target.setIdDatabase(getLong(source[i++]));
+        target.setUrn(getString(source[i++]));
+        target.setCode(getString(source[i++]));
+        target.setShortName(getString(source[i++]));
         return target;
     }
 

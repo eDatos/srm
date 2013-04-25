@@ -1263,12 +1263,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(ServiceContext ctx, String codelistUrn, String locale) throws MetamacException {
+    public List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(ServiceContext ctx, String codelistUrn, String locale, boolean proposeOnlyWithoutVariableElement)
+            throws MetamacException {
         // Security
         ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
 
         // Normalise
-        return getCodesMetamacService().normaliseVariableElementsToCodes(ctx, codelistUrn, locale);
+        return getCodesMetamacService().normaliseVariableElementsToCodes(ctx, codelistUrn, locale, proposeOnlyWithoutVariableElement);
     }
 
     // ------------------------------------------------------------------------

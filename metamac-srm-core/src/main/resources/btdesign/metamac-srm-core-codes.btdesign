@@ -108,8 +108,8 @@ Application CodesMetamac {
     		importCodesCsv(String codelistUrn, InputStream csvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
 			"Imports code orders in csv format"
     		importCodeOrdersCsv(String codelistUrn, InputStream csvStream, String charset, String fileName) throws MetamacException;
-	   		"Propuses a normalisation of variable elements to codes"
-	   		List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(String codelistUrn, String locale) throws MetamacException;
+	   		"Proposes a normalisation of variable elements to codes. If boolean is true, only normalise codes without variable element. To codes with variable element returns actual variable element"
+	   		List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(String codelistUrn, String locale, boolean proposeOverridingOnlyWithoutVariableElement) throws MetamacException;
 	   		    		
     		// VISUALISATIONS
     		

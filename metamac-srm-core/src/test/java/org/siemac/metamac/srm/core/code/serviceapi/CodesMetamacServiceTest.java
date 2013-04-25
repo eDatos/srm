@@ -3069,6 +3069,145 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    public void testRetrieveCodesByCodelistUrnCheckVariableElements() throws Exception {
+
+        // Retrieve
+        String codelistUrn = CODELIST_1_V2;
+
+        // LOCALE = 'es'
+        {
+            String locale = "es";
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, null, null);
+
+            // Validate
+            assertEquals(9, codes.size());
+            {
+                // Code 01
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1);
+                assertEquals(Long.valueOf(22), code.getVariableElement().getIdDatabase());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getUrn());
+                assertEquals("VARIABLE_ELEMENT_02", code.getVariableElement().getCode());
+                assertEquals("Fuerteventura", code.getVariableElement().getShortName());
+            }
+            {
+                // Code 02
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 02 01 (validate parent)
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1);
+                assertEquals(Long.valueOf(21), code.getVariableElement().getIdDatabase());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, code.getVariableElement().getUrn());
+                assertEquals("VARIABLE_ELEMENT_01", code.getVariableElement().getCode());
+                assertEquals("El Hierro", code.getVariableElement().getShortName());
+            }
+            {
+                // Code 02 01 01
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 02 02
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 03
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3);
+                assertEquals(Long.valueOf(23), code.getVariableElement().getIdDatabase());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, code.getVariableElement().getUrn());
+                assertEquals("VARIABLE_ELEMENT_03", code.getVariableElement().getCode());
+                assertEquals("Gran Canaria", code.getVariableElement().getShortName());
+            }
+            {
+                // Code 04
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 04 01
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 04 01 01
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1);
+                assertEquals(Long.valueOf(21), code.getVariableElement().getIdDatabase());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, code.getVariableElement().getUrn());
+                assertEquals("VARIABLE_ELEMENT_01", code.getVariableElement().getCode());
+                assertEquals("El Hierro", code.getVariableElement().getShortName());
+            }
+        }
+
+        // LOCALE = 'en'
+        {
+            String locale = "en";
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, locale, null, null);
+
+            // Validate
+            assertEquals(9, codes.size());
+            {
+                // Code 01
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1);
+                assertEquals(Long.valueOf(22), code.getVariableElement().getIdDatabase());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, code.getVariableElement().getUrn());
+                assertEquals("VARIABLE_ELEMENT_02", code.getVariableElement().getCode());
+                assertEquals("Short name variableElement 2-2", code.getVariableElement().getShortName());
+            }
+            {
+                // Code 02
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 02 01 (validate parent)
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1);
+                assertEquals(Long.valueOf(21), code.getVariableElement().getIdDatabase());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, code.getVariableElement().getUrn());
+                assertEquals("VARIABLE_ELEMENT_01", code.getVariableElement().getCode());
+                assertEquals("short name variableElement 2-1", code.getVariableElement().getShortName());
+            }
+            {
+                // Code 02 01 01
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_1_1);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 02 02
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2_2);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 03
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_3);
+                assertEquals(Long.valueOf(23), code.getVariableElement().getIdDatabase());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, code.getVariableElement().getUrn());
+                assertEquals("VARIABLE_ELEMENT_03", code.getVariableElement().getCode());
+                assertEquals(null, code.getVariableElement().getShortName());
+            }
+            {
+                // Code 04
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 04 01
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1);
+                assertEquals(null, code.getVariableElement());
+            }
+            {
+                // Code 04 01 01
+                CodeMetamacVisualisationResult code = getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_4_1_1);
+                assertEquals(Long.valueOf(21), code.getVariableElement().getIdDatabase());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, code.getVariableElement().getUrn());
+                assertEquals("VARIABLE_ELEMENT_01", code.getVariableElement().getCode());
+                assertEquals("short name variableElement 2-1", code.getVariableElement().getShortName());
+            }
+        }
+    }
+
     @Override
     @Test
     public void testFindCodesByCondition() throws Exception {
@@ -4232,69 +4371,140 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testNormaliseVariableElementsToCodes() throws Exception {
 
         String codelistUrn = CODELIST_1_V2;
-        List<CodeVariableElementNormalisationResult> results = codesService.normaliseVariableElementsToCodes(getServiceContextAdministrador(), codelistUrn, "es");
+        List<CodeVariableElementNormalisationResult> results = codesService.normaliseVariableElementsToCodes(getServiceContextAdministrador(), codelistUrn, "es", false);
         assertEquals(9, results.size());
 
         {
             String codeUrn = CODELIST_1_V2_CODE_1;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("Isla de Tenerife", result.getCode().getName());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, result.getVariableElement().getUrn());
-            assertEquals("Tenerife", result.getVariableElement().getShortName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, result.getVariableElementProposed().getUrn());
+            assertEquals("Tenerife", result.getVariableElementProposed().getShortName());
         }
         {
             String codeUrn = CODELIST_1_V2_CODE_2;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("Nombre codelist-1-v2-code-2 Canaria, Gran", result.getCode().getName());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getVariableElement().getUrn());
-            assertEquals("Gran Canaria", result.getVariableElement().getShortName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getVariableElementProposed().getUrn());
+            assertEquals("Gran Canaria", result.getVariableElementProposed().getShortName());
         }
         {
             String codeUrn = CODELIST_1_V2_CODE_2_1;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("codelist-1-v2-code-2- Isla de La Gomera", result.getCode().getName());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getVariableElement().getUrn());
-            assertEquals("La Gomera", result.getVariableElement().getShortName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, result.getVariableElementProposed().getUrn());
+            assertEquals("La Gomera", result.getVariableElementProposed().getShortName());
         }
         {
             String codeUrn = CODELIST_1_V2_CODE_2_1_1;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("Santa Cruz de La Palma codelist-1-v2-code-2-1-1", result.getCode().getName());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getVariableElement().getUrn());
-            assertEquals("La Palma", result.getVariableElement().getShortName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getVariableElementProposed().getUrn());
+            assertEquals("La Palma", result.getVariableElementProposed().getShortName());
         }
         {
             String codeUrn = CODELIST_1_V2_CODE_2_2;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("Isla de El Hierro", result.getCode().getName());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getVariableElement().getUrn());
-            assertEquals("El Hierro", result.getVariableElement().getShortName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getVariableElementProposed().getUrn());
+            assertEquals("El Hierro", result.getVariableElementProposed().getShortName());
         }
         {
             String codeUrn = CODELIST_1_V2_CODE_3;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("Fuerteventura", result.getCode().getName());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getVariableElement().getUrn());
-            assertEquals("Fuerteventura", result.getVariableElement().getShortName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getVariableElementProposed().getUrn());
+            assertEquals("Fuerteventura", result.getVariableElementProposed().getShortName());
         }
         {
             String codeUrn = CODELIST_1_V2_CODE_4;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("Lanzarote", result.getCode().getName());
-            assertEquals(null, result.getVariableElement());
+            assertEquals(null, result.getVariableElementProposed());
         }
         {
             String codeUrn = CODELIST_1_V2_CODE_4_1;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("Canarias, Tenerife", result.getCode().getName());
-            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, result.getVariableElement().getUrn());
-            assertEquals("Tenerife", result.getVariableElement().getShortName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, result.getVariableElementProposed().getUrn());
+            assertEquals("Tenerife", result.getVariableElementProposed().getShortName());
         }
         {
             String codeUrn = CODELIST_1_V2_CODE_4_1_1;
             CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
             assertEquals("Nombre codelist-1-v2-code-4-1-1", result.getCode().getName());
-            assertEquals(null, result.getVariableElement());
+            assertEquals(null, result.getVariableElementProposed());
+        }
+    }
+
+    @Test
+    public void testNormaliseVariableElementsToCodesOnlyWithoutVariableElements() throws Exception {
+
+        String codelistUrn = CODELIST_1_V2;
+        List<CodeVariableElementNormalisationResult> results = codesService.normaliseVariableElementsToCodes(getServiceContextAdministrador(), codelistUrn, "es", true);
+        assertEquals(9, results.size());
+
+        {
+            String codeUrn = CODELIST_1_V2_CODE_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Isla de Tenerife", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getVariableElementProposed().getUrn()); // not overrided
+            assertEquals("Fuerteventura", result.getVariableElementProposed().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_2;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Nombre codelist-1-v2-code-2 Canaria, Gran", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getVariableElementProposed().getUrn()); // it was empty
+            assertEquals("Gran Canaria", result.getVariableElementProposed().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_2_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("codelist-1-v2-code-2- Isla de La Gomera", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getVariableElementProposed().getUrn()); // overrided
+            assertEquals("El Hierro", result.getVariableElementProposed().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_2_1_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Santa Cruz de La Palma codelist-1-v2-code-2-1-1", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, result.getVariableElementProposed().getUrn()); // it was empty
+            assertEquals("La Palma", result.getVariableElementProposed().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_2_2;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Isla de El Hierro", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getVariableElementProposed().getUrn()); // it was empty
+            assertEquals("El Hierro", result.getVariableElementProposed().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_3;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Fuerteventura", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, result.getVariableElementProposed().getUrn()); // overrided
+            assertEquals("Gran Canaria", result.getVariableElementProposed().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_4;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Lanzarote", result.getCode().getName());
+            assertEquals(null, result.getVariableElementProposed()); // it was empty
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_4_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Canarias, Tenerife", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, result.getVariableElementProposed().getUrn()); // it was empty
+            assertEquals("Tenerife", result.getVariableElementProposed().getShortName());
+        }
+        {
+            String codeUrn = CODELIST_1_V2_CODE_4_1_1;
+            CodeVariableElementNormalisationResult result = assertContainsCodeVariableElementNormalisationResult(codeUrn, results);
+            assertEquals("Nombre codelist-1-v2-code-4-1-1", result.getCode().getName());
+            assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getVariableElementProposed().getUrn()); // not overrided
+            assertEquals("El Hierro", result.getVariableElementProposed().getShortName());
         }
     }
 

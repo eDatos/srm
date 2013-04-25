@@ -4,12 +4,21 @@ import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationRe
 
 public class CodeMetamacVisualisationResult extends ItemVisualisationResult {
 
-    private static final long serialVersionUID = 1L;
+    private static final long     serialVersionUID = 1L;
 
-    private Integer           order;
-    private Boolean           openness;
+    private VariableElementResult variableElement;
+    private Integer               order;
+    private Boolean               openness;
 
     public CodeMetamacVisualisationResult() {
+    }
+
+    public VariableElementResult getVariableElement() {
+        return variableElement;
+    }
+
+    public void setVariableElement(VariableElementResult variableElement) {
+        this.variableElement = variableElement;
     }
 
     public Integer getOrder() {

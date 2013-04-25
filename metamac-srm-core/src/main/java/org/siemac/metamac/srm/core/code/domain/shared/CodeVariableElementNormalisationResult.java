@@ -7,7 +7,7 @@ public class CodeVariableElementNormalisationResult implements Serializable {
     private static final long              serialVersionUID = 1L;
 
     private CodeMetamacVisualisationResult code;
-    private VariableElementResult          variableElement;
+    private VariableElementResult          variableElementProposed;
 
     public CodeMetamacVisualisationResult getCode() {
         return code;
@@ -17,12 +17,12 @@ public class CodeVariableElementNormalisationResult implements Serializable {
         this.code = code;
     }
 
-    public VariableElementResult getVariableElement() {
-        return variableElement;
+    public VariableElementResult getVariableElementProposed() {
+        return variableElementProposed;
     }
 
-    public void setVariableElement(VariableElementResult variableElement) {
-        this.variableElement = variableElement;
+    public void setVariableElementProposed(VariableElementResult variableElementProposed) {
+        this.variableElementProposed = variableElementProposed;
     }
 
 }

@@ -1004,7 +1004,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(ServiceContext ctx, String codelistUrn, String locale) throws MetamacException {
+    public List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(ServiceContext ctx, String codelistUrn, String locale, boolean proposeOnlyWithoutVariableElement)
+            throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkNormaliseVariableElementsToCodes(codelistUrn, locale, null);
 
@@ -1028,18 +1029,23 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         DiceLuceneRamAproxStringMatch luceneMatch = new DiceLuceneRamAproxStringMatch(dictionary);
 
-        // Get suggestions
+        // Get suggestions or mantain actual variable element
         List<CodeVariableElementNormalisationResult> results = new ArrayList<CodeVariableElementNormalisationResult>(codes.size());
         for (CodeMetamacVisualisationResult code : codes) {
             CodeVariableElementNormalisationResult result = new CodeVariableElementNormalisationResult();
             result.setCode(code);
-            String name = code.getName();
-            if (name != null) {
-                List<MatchResult> suggestedVariableElements = luceneMatch.getSuggestedWords(name, 1);
-                if (suggestedVariableElements.size() != 0) {
-                    String variableElementUrn = suggestedVariableElements.get(0).getDictionaryKey();
-                    VariableElementResult variableElement = variableElementsByUrn.get(variableElementUrn);
-                    result.setVariableElement(variableElement);
+            if (proposeOnlyWithoutVariableElement && code.getVariableElement() != null) {
+                // maintain actual
+                result.setVariableElementProposed(code.getVariableElement());
+            } else {
+                // propose by lucene
+                String name = code.getName();
+                if (name != null) {
+                    List<MatchResult> suggestedVariableElements = luceneMatch.getSuggestedWords(name, 1);
+                    if (suggestedVariableElements.size() != 0) {
+                        VariableElementResult variableElement = variableElementsByUrn.get(suggestedVariableElements.get(0).getDictionaryKey());
+                        result.setVariableElementProposed(variableElement);
+                    }
                 }
             }
             results.add(result);
