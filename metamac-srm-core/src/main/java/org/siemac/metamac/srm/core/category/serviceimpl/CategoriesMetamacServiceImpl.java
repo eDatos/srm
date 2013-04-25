@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
@@ -45,9 +46,11 @@ import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesInvocationValidator;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesVersioningCopyUtils.CategoryVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 
 /**
@@ -243,12 +246,17 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Merge metadata of Item
         Map<String, Item> temporalItemMap = SrmServiceUtils.createMapOfItemsByOriginalUrn(categorySchemeTemporalVersion.getItems());
+        List<ItemResult> categoriesFoundEfficiently = getCategoryMetamacRepository().findCategoriesByCategorySchemeUnordered(categorySchemeTemporalVersion.getId(), ItemMetamacResultSelection.ALL);
+        Map<String, ItemResult> categoriesFoundEfficientlyByUrn = SdmxSrmUtils.createMapOfItemsResultByUrn(categoriesFoundEfficiently);
         for (Item item : categorySchemeVersion.getItems()) {
             CategoryMetamac category = (CategoryMetamac) item;
             CategoryMetamac categoryTemp = (CategoryMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+            ItemResult categoryTempItemResult = categoriesFoundEfficientlyByUrn.get(categoryTemp.getNameableArtefact().getUrn());
 
             // Inherit InternationalStrings
-            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(category, categoryTemp, internationalStringRepository);
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(category, categoryTempItemResult, internationalStringRepository);
+
+            // IMPORTANT! If any InternationalString is added, do an efficient query and retrieve from categoryTempItemResult
         }
 
         // Delete temporal version

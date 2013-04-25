@@ -1536,7 +1536,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 organisationSchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
             }
 
-            // Item
+            // Item: Change Name
             {
                 OrganisationMetamac organisationTemporal = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(),
                         GeneratorUrnUtils.makeUrnAsTemporal(ORGANISATION_SCHEME_3_V1_ORGANISATION_1));

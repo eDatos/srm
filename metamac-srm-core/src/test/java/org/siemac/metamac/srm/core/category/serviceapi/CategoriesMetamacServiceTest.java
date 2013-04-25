@@ -1339,7 +1339,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 categorySchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
             }
 
-            // Item
+            // Item: change name
             {
                 CategoryMetamac categoryTemporal = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CATEGORY_SCHEME_3_V1_CATEGORY_1));
 

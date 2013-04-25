@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
@@ -37,9 +38,11 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
@@ -236,12 +239,18 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Merge metadata of Item
         Map<String, Item> temporalItemMap = SrmServiceUtils.createMapOfItemsByOriginalUrn(organisationSchemeTemporalVersion.getItems());
+        List<ItemResult> organisationsFoundEfficiently = getOrganisationMetamacRepository().findOrganisationsByOrganisationSchemeUnordered(organisationSchemeTemporalVersion.getId(),
+                ItemMetamacResultSelection.ALL);
+        Map<String, ItemResult> organisationsFoundEfficientlyByUrn = SdmxSrmUtils.createMapOfItemsResultByUrn(organisationsFoundEfficiently);
         for (Item item : organisationSchemeVersion.getItems()) {
             OrganisationMetamac organisation = (OrganisationMetamac) item;
             OrganisationMetamac organisationTemp = (OrganisationMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+            ItemResult organisationTempItemResult = organisationsFoundEfficientlyByUrn.get(organisationTemp.getNameableArtefact().getUrn());
 
             // Inherit InternationalStrings
-            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(organisation, organisationTemp, internationalStringRepository);
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(organisation, organisationTempItemResult, internationalStringRepository);
+
+            // IMPORTANT! If any InternationalString is added, do an efficient query and retrieve from organisationTempItemResult
         }
 
         // Delete temporal version
