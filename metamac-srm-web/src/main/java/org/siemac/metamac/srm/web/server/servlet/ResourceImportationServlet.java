@@ -2,7 +2,9 @@ package org.siemac.metamac.srm.web.server.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,11 +16,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.shared.ImportableResourceTypeEnum;
+import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.task.ContentInputDto;
@@ -26,9 +30,9 @@ import com.google.inject.Singleton;
 
 @Singleton
 @SuppressWarnings("serial")
-public class ImportSDMXStructureServlet extends HttpServlet {
+public class ResourceImportationServlet extends HttpServlet {
 
-    private static Logger logger = Logger.getLogger(ImportSDMXStructureServlet.class.getName());
+    private static Logger logger = Logger.getLogger(ResourceImportationServlet.class.getName());
 
     private File          tmpDir;
 
@@ -61,9 +65,14 @@ public class ImportSDMXStructureServlet extends HttpServlet {
 
     @SuppressWarnings("rawtypes")
     private void processFiles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        HashMap<String, String> args = new HashMap<String, String>();
+
         String fileName = new String();
+        InputStream inputStream = null;
+
         try {
-            SrmCoreServiceFacade sdmxStructureServiceFacade = (SrmCoreServiceFacade) ApplicationContextProvider.getApplicationContext().getBean("srmCoreServiceFacade");
+            SrmCoreServiceFacade srmCoreServiceFacade = (SrmCoreServiceFacade) ApplicationContextProvider.getApplicationContext().getBean("srmCoreServiceFacade");
 
             DiskFileItemFactory factory = new DiskFileItemFactory();
             // Get the temporary directory (this is where files that exceed the threshold will be stored)
@@ -78,15 +87,25 @@ public class ImportSDMXStructureServlet extends HttpServlet {
             Iterator itr = items.iterator();
 
             while (itr.hasNext()) {
-                FileItem item = (FileItem) itr.next();
-                fileName = item.getName();
-                item.getInputStream();
+                DiskFileItem item = (DiskFileItem) itr.next();
+                if (item.isFormField()) {
+                    args.put(item.getFieldName(), item.getString());
+                } else {
+                    fileName = item.getName();
+                    inputStream = item.getInputStream();
+                }
+            }
+
+            if (ImportableResourceTypeEnum.SDMX_STRUCTURE.name().equals(args.get(SharedTokens.FILE_TYPE))) {
 
                 ContentInputDto contentInputDto = new ContentInputDto();
-                contentInputDto.setName(item.getName());
-                contentInputDto.setInput(item.getInputStream());
+                contentInputDto.setName(fileName);
+                contentInputDto.setInput(inputStream);
 
-                sdmxStructureServiceFacade.importSDMXStructureMsgInBackground(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
+                srmCoreServiceFacade.importSDMXStructureMsgInBackground(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
+
+            } else if (ImportableResourceTypeEnum.CODES.name().equals(args.get(SharedTokens.FILE_TYPE))) {
+                // TODO
             }
 
             sendSuccessImportationResponse(response, fileName);

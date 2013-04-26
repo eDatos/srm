@@ -104,25 +104,30 @@ public class StructuralResourcesMenu extends ToolStrip {
 
         // IMPORTATION
 
+        // Window
+
+        final ImportSDMXStructureWindow importSDMXStructureWindow = new ImportSDMXStructureWindow();
+        importSDMXStructureWindow.setUploadListener(new UploadListener() {
+
+            @Override
+            public void uploadFailed(String fileName) {
+                getUiHandlers().sDMXResourceImportationFailed(fileName);
+            }
+            @Override
+            public void uploadComplete(String fileName) {
+                getUiHandlers().sDMXResourceImportationSucceed(fileName);
+            }
+        });
+
+        // Button
+
         importSDMXResourceButton = new CustomToolStripButton(getConstants().actionImportSDMXResource(), GlobalResources.RESOURCE.importSDMXResource().getURL());
         importSDMXResourceButton.setVisibility(ImportationClientSecurityUtils.canImportStructure() ? Visibility.VISIBLE : Visibility.HIDDEN);
         importSDMXResourceButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                ImportSDMXStructureWindow importWindow = new ImportSDMXStructureWindow();
-                importWindow.setUploadListener(new UploadListener() {
-
-                    @Override
-                    public void uploadFailed(String fileName) {
-                        getUiHandlers().sDMXResourceImportationFailed(fileName);
-                    }
-                    @Override
-                    public void uploadComplete(String fileName) {
-                        getUiHandlers().sDMXResourceImportationSucceed(fileName);
-                    }
-                });
-                importWindow.show();
+                importSDMXStructureWindow.show();
             }
         });
         addButton(importSDMXResourceButton);

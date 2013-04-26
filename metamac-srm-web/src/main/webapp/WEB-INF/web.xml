@@ -45,7 +45,7 @@
 
     <servlet>
         <servlet-name>upload</servlet-name>
-        <servlet-class>org.siemac.metamac.srm.web.server.servlet.ImportSDMXStructureServlet</servlet-class>
+        <servlet-class>org.siemac.metamac.srm.web.server.servlet.ResourceImportationServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>upload</servlet-name>

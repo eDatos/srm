@@ -15,19 +15,18 @@ import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.VisibilityChangedEvent;
 import com.smartgwt.client.widgets.events.VisibilityChangedHandler;
-import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ImportResourceWindow extends Window {
 
-    private static final String TARGET = "uploadTarget";
+    protected static final String TARGET = "uploadTarget";
 
-    protected CustomDynamicForm form;
-    protected UploadItem        uploadItem;
-    protected CustomButtonItem  uploadButton;
+    protected VLayout             body;
 
-    private UploadListener      listener;
+    protected UploadForm          form;
+
+    private UploadListener        listener;
 
     public ImportResourceWindow(String title, String uploadItemTitle) {
         super();
@@ -36,7 +35,6 @@ public class ImportResourceWindow extends Window {
         setWidth(350);
         setTitle(title);
         setShowMinimizeButton(false);
-
         initComplete(this);
         initUploadFailed(this);
         setAutoSize(true);
@@ -57,24 +55,14 @@ public class ImportResourceWindow extends Window {
             @Override
             public void onVisibilityChanged(VisibilityChangedEvent event) {
                 if (event.getIsVisible()) {
-                    uploadItem.clearValue();
+                    form.clearValues(); // TODO do not clear hidden fields
                 }
             }
         });
 
-        VLayout body = new VLayout();
+        body = new VLayout();
         body.setWidth100();
         body.setHeight100();
-
-        // Initialize the form
-        form = new CustomDynamicForm();
-        form.setAutoHeight();
-        form.setCanSubmit(true);
-        form.setWidth100();
-        form.setMargin(8);
-        form.setNumCols(2);
-        form.setCellPadding(4);
-        form.setWrapItemTitles(false);
 
         // Initialize the hidden frame
         NamedFrame frame = new NamedFrame(TARGET);
@@ -82,36 +70,7 @@ public class ImportResourceWindow extends Window {
         frame.setHeight("1px");
         frame.setVisible(false);
 
-        form.setEncoding(Encoding.MULTIPART);
-        form.setMethod(FormMethod.POST);
-        form.setTarget(TARGET);
-
-        StringBuilder url = new StringBuilder();
-        url.append(SharedTokens.FILE_UPLOAD_DIR_PATH);
-        form.setAction(MetamacSrmWeb.getRelativeURL(url.toString()));
-
-        uploadItem = new UploadItem("file-name");
-        uploadItem.setTitle(uploadItemTitle);
-        uploadItem.setWidth(300);
-        uploadItem.setRequired(true);
-
-        uploadButton = new CustomButtonItem("button-import", MetamacWebCommon.getConstants().accept());
-        uploadButton.addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-            @Override
-            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                Object obj = uploadItem.getDisplayValue();
-                if (ImportResourceWindow.this.form.validate() && obj != null) {
-                    form.submitForm();
-                    hide();
-                }
-            }
-        });
-
-        form.setFields(uploadItem, uploadButton);
-
         // Add the Upload Form and the (hidden) Frame to the main layout container
-        body.addMember(form);
         body.addMember(frame);
 
         VLayout layout = new VLayout();
@@ -122,8 +81,25 @@ public class ImportResourceWindow extends Window {
         addItem(layout);
     }
 
-    public ButtonItem getUploadButton() {
-        return uploadButton;
+    public void setForm(UploadForm form) {
+        this.form = form;
+        form.setTarget(TARGET);
+        form.getUploadButton().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                Object obj = ImportResourceWindow.this.form.getUploadItem().getDisplayValue();
+                if (ImportResourceWindow.this.form.validate() && obj != null) {
+                    ImportResourceWindow.this.form.submitForm();
+                    hide();
+                }
+            }
+        });
+        body.addMember(form);
+    }
+
+    public CustomDynamicForm getForm() {
+        return form;
     }
 
     public void setUploadListener(UploadListener listener) {
@@ -152,4 +128,45 @@ public class ImportResourceWindow extends Window {
 			upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadFailed(Ljava/lang/String;)(fileName);
 		}
     }-*/;
+
+    protected class UploadForm extends CustomDynamicForm {
+
+        protected UploadItem       uploadItem;
+
+        protected CustomButtonItem uploadButton;
+
+        public UploadForm(String uploadItemTitle) {
+            setAutoHeight();
+            setCanSubmit(true);
+            setWidth100();
+            setMargin(8);
+            setNumCols(2);
+            setCellPadding(4);
+            setWrapItemTitles(false);
+
+            setEncoding(Encoding.MULTIPART);
+            setMethod(FormMethod.POST);
+
+            StringBuilder url = new StringBuilder();
+            url.append(SharedTokens.FILE_UPLOAD_DIR_PATH);
+            setAction(MetamacSrmWeb.getRelativeURL(url.toString()));
+
+            uploadItem = new UploadItem("file-name");
+            uploadItem.setTitle(uploadItemTitle);
+            uploadItem.setWidth(300);
+            uploadItem.setRequired(true);
+
+            uploadButton = new CustomButtonItem("button-import", MetamacWebCommon.getConstants().accept());
+
+            setFields(uploadItem, uploadButton);
+        }
+
+        public UploadItem getUploadItem() {
+            return uploadItem;
+        }
+
+        public CustomButtonItem getUploadButton() {
+            return uploadButton;
+        }
+    }
 }

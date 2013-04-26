@@ -7,4 +7,7 @@ public class SharedTokens extends org.siemac.metamac.web.common.shared.utils.Sha
     @SecurityCookie
     public static final String securityCookieName = "securityCookieName";
 
+    // File upload configuration
+
+    public static final String FILE_TYPE          = "file-type";
 }
