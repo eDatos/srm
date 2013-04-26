@@ -65,6 +65,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
@@ -243,7 +244,62 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             }
         }
 
+        // Check if clean VisualizationInfo is necessary
+        if (component instanceof DimensionComponent) {
+            // When representation changed
+            if (((DimensionComponent) component).getIsRepresentationUpdated()) {
+                // Check if a clean up of DimensionVisualisationInfo is needed
+                if (component.getLocalRepresentation() != null) {
+                    // Dimension Representation
+                    checkIfDimensionVisualizationInfo(dataStructureDefinitionVersionMetamac, component.getLocalRepresentation().getEnumerationCodelist(), (DimensionComponent) component);
+                } else {
+                    if (component.getCptIdRef().getCoreRepresentation() != null) {
+                        checkIfDimensionVisualizationInfo(dataStructureDefinitionVersionMetamac, component.getCptIdRef().getCoreRepresentation().getEnumerationCodelist(),
+                                (DimensionComponent) component);
+                    }
+                }
+            }
+            // When conceptIdChange
+            if (((DimensionComponent) component).getIsConceptIdUpdated() && component.getLocalRepresentation() == null) {
+                if (component.getCptIdRef().getCoreRepresentation() != null) {
+                    checkIfDimensionVisualizationInfo(dataStructureDefinitionVersionMetamac, component.getCptIdRef().getCoreRepresentation().getEnumerationCodelist(), (DimensionComponent) component);
+                }
+            }
+        }
+
         return dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
+    }
+
+    private void checkIfDimensionVisualizationInfo(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac, CodelistVersion codelistTarget, DimensionComponent dimensionTarget) {
+        // DimensionVisualisationInfo
+        for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
+            if (dimensionVisualizationInfo.getDimension().getUrn().equals(dimensionTarget.getUrn())) {
+
+                if (RepresentationTypeEnum.ENUMERATION.equals(dimensionTarget.getLocalRepresentation().getRepresentationType())) {
+                    // Check display order
+                    if (dimensionVisualizationInfo.getDisplayOrder() != null) {
+                        if (!dimensionVisualizationInfo.getDisplayOrder().getCodelistVersion().equals(codelistTarget.getMaintainableArtefact().getUrn())) {
+                            dimensionVisualizationInfo.setDisplayOrder(null);
+                        }
+                    }
+
+                    // Check hierarchy levels open
+                    if (dimensionVisualizationInfo.getHierarchyLevelsOpen() != null) {
+                        if (!dimensionVisualizationInfo.getHierarchyLevelsOpen().getCodelistVersion().equals(codelistTarget.getMaintainableArtefact().getUrn())) {
+                            dimensionVisualizationInfo.setHierarchyLevelsOpen(null);
+                        }
+                    }
+
+                    if (dimensionVisualizationInfo.getDisplayOrder() == null && dimensionVisualizationInfo.getHierarchyLevelsOpen() == null) {
+                        dataStructureDefinitionVersionMetamac.removeDimensionVisualisationInfo(dimensionVisualizationInfo);
+                    }
+                } else {
+                    dataStructureDefinitionVersionMetamac.removeDimensionVisualisationInfo(dimensionVisualizationInfo);
+                }
+
+                break;
+            }
+        }
     }
 
     @Override
@@ -287,6 +343,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.removeAllHeadingDimensions();
         dataStructureDefinitionVersion.removeAllStubDimensions();
         dataStructureDefinitionVersion.removeAllShowDecimalsPrecisions();
+        dataStructureDefinitionVersion.removeAllDimensionVisualisationInfos();
         // Delete
         dataStructureDefinitionService.deleteDataStructureDefinition(ctx, urn);
     }
@@ -763,11 +820,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException {
 
         // Map of new dimension
-        Map<String, Component> dimensionMap = new HashMap<String, Component>();
+        Map<String, Component> newDimensionMap = new HashMap<String, Component>();
         for (ComponentList componentList : dataStructureDefinitionVersionMetamacNewVersion.getGrouping()) {
             if (componentList instanceof DimensionDescriptor) {
                 for (Component component : componentList.getComponents()) {
-                    dimensionMap.put(component.getCode(), component);
+                    newDimensionMap.put(component.getCode(), component);
                 }
                 break;
             }
@@ -776,40 +833,55 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // DimensionVisualisationInfo
         for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamacToCopy.getDimensionVisualisationInfos()) {
             // If exist the dimension in the new DSD
-            if (dimensionMap.containsKey(dimensionVisualizationInfo.getDimension().getCode())) {
-                DimensionComponent dimensionComponent = dimensionVisualizationInfo.getDimension();
-                Representation representation = dimensionComponent.getLocalRepresentation();
-                // If the dimension contains a enumerated representation of type codelist
-                if (representation != null && RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                    CodelistVersion codelistVersion = representation.getEnumerationCodelist();
-                    DimensionVisualizationInfo newDimensionVisualizationInfo = new DimensionVisualizationInfo();
-                    newDimensionVisualizationInfo.setDimension((DimensionComponent) dimensionMap.get(dimensionVisualizationInfo.getDimension().getCode()));
-                    boolean addDimensionVisualizationInfo = false;
-                    // If the codeList representation is the same as that of the DisplayOrder.
-                    if (codelistVersion != null && dimensionVisualizationInfo.getDisplayOrder() != null) {
-                        if (codelistVersion.getMaintainableArtefact().getUrn().equals(dimensionVisualizationInfo.getDisplayOrder().getCodelistVersion().getMaintainableArtefact().getUrn())) {
-                            newDimensionVisualizationInfo.setDisplayOrder(dimensionVisualizationInfo.getDisplayOrder());
-                            addDimensionVisualizationInfo = true;
-                        }
-                    }
-                    // If the codeList representation is the same as that of the OpenessLevel.
-                    if (codelistVersion != null && dimensionVisualizationInfo.getHierarchyLevelsOpen() != null) {
-                        if (codelistVersion.getMaintainableArtefact().getUrn().equals(dimensionVisualizationInfo.getHierarchyLevelsOpen().getCodelistVersion().getMaintainableArtefact().getUrn())) {
-                            newDimensionVisualizationInfo.setHierarchyLevelsOpen(dimensionVisualizationInfo.getHierarchyLevelsOpen());
-                            addDimensionVisualizationInfo = true;
-                        }
-                    }
-                    // Add new info
-                    if (addDimensionVisualizationInfo) {
-                        dataStructureDefinitionVersionMetamacNewVersion.addDimensionVisualisationInfo(newDimensionVisualizationInfo);
-                    }
+            if (newDimensionMap.containsKey(dimensionVisualizationInfo.getDimension().getCode())) {
+                Representation representation = dimensionVisualizationInfo.getDimension().getLocalRepresentation();
+                if (representation != null) {
+                    // Dimension Representation
+                    copyIfValidDimensionVisualizationInfo(dataStructureDefinitionVersionMetamacNewVersion, newDimensionMap, dimensionVisualizationInfo, representation);
                 } else {
-                    // TODO HACER LA MISMA VALIDACION QUE ARRIBA PERO CON EL COREREPRESENTATION DEL CONCEPTO.
+                    // Concept identity representation
+                    Concept cptIdRefPrevious = dimensionVisualizationInfo.getDimension().getCptIdRef();
+                    Concept cptIdRefNew = newDimensionMap.get(dimensionVisualizationInfo.getDimension().getCode()).getCptIdRef();
+                    // check concept identities are the same
+                    if (cptIdRefPrevious.getNameableArtefact().getUrn().equals(cptIdRefNew.getNameableArtefact().getUrn())) {
+                        Representation coreRepresentation = dimensionVisualizationInfo.getDimension().getCptIdRef().getCoreRepresentation();
+                        if (coreRepresentation != null) {
+                            copyIfValidDimensionVisualizationInfo(dataStructureDefinitionVersionMetamacNewVersion, newDimensionMap, dimensionVisualizationInfo, coreRepresentation);
+                        }
+                    }
                 }
             }
         }
 
         return dataStructureDefinitionVersionMetamacNewVersion;
+    }
+    private void copyIfValidDimensionVisualizationInfo(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion, Map<String, Component> newDimensionMap,
+            DimensionVisualizationInfo dimensionVisualizationInfo, Representation representation) {
+        // If the dimension contains a enumerated representation of type codelist
+        if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+            CodelistVersion codelistVersion = representation.getEnumerationCodelist();
+            DimensionVisualizationInfo newDimensionVisualizationInfo = new DimensionVisualizationInfo();
+            newDimensionVisualizationInfo.setDimension((DimensionComponent) newDimensionMap.get(dimensionVisualizationInfo.getDimension().getCode()));
+            boolean addDimensionVisualizationInfo = false;
+            // If the codeList representation is the same as that of the DisplayOrder.
+            if (codelistVersion != null && dimensionVisualizationInfo.getDisplayOrder() != null) {
+                if (codelistVersion.getMaintainableArtefact().getUrn().equals(dimensionVisualizationInfo.getDisplayOrder().getCodelistVersion().getMaintainableArtefact().getUrn())) {
+                    newDimensionVisualizationInfo.setDisplayOrder(dimensionVisualizationInfo.getDisplayOrder());
+                    addDimensionVisualizationInfo = true;
+                }
+            }
+            // If the codeList representation is the same as that of the OpenessLevel.
+            if (codelistVersion != null && dimensionVisualizationInfo.getHierarchyLevelsOpen() != null) {
+                if (codelistVersion.getMaintainableArtefact().getUrn().equals(dimensionVisualizationInfo.getHierarchyLevelsOpen().getCodelistVersion().getMaintainableArtefact().getUrn())) {
+                    newDimensionVisualizationInfo.setHierarchyLevelsOpen(dimensionVisualizationInfo.getHierarchyLevelsOpen());
+                    addDimensionVisualizationInfo = true;
+                }
+            }
+            // Add new info
+            if (addDimensionVisualizationInfo) {
+                dataStructureDefinitionVersionMetamacNewVersion.addDimensionVisualisationInfo(newDimensionVisualizationInfo);
+            }
+        }
     }
 
     private void checkDataStructureDefinitionToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
