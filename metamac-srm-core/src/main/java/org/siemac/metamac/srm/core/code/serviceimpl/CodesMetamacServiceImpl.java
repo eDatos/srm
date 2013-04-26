@@ -2638,6 +2638,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodeMetamac code = codesInCodelist.get(codeIdentifier);
         if (code == null) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_ERROR_CODE_NOT_FOUND, codeIdentifier));
+            return null;
         }
         for (CodelistOrderVisualisation orderVisualisation : orderVisualisations) {
             int columnIndex = header.getOrderVisualisationColumn(orderVisualisation.getNameableArtefact().getCode());
