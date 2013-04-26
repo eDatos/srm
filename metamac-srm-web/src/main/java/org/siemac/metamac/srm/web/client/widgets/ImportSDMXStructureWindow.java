@@ -21,7 +21,7 @@ public class ImportSDMXStructureWindow extends ImportResourceWindow {
         public UploadSDMXResourceForm() {
             super(getConstants().sDMXResource());
 
-            HiddenItem fileTypeItem = new HiddenItem(SharedTokens.FILE_TYPE);
+            HiddenItem fileTypeItem = new HiddenItem(SharedTokens.UPLOAD_PARAM_FILE_TYPE);
             fileTypeItem.setDefaultValue(ImportableResourceTypeEnum.SDMX_STRUCTURE.name());
 
             addFieldsInThePenultimePosition(fileTypeItem);

@@ -96,7 +96,7 @@ public class ResourceImportationServlet extends HttpServlet {
                 }
             }
 
-            if (ImportableResourceTypeEnum.SDMX_STRUCTURE.name().equals(args.get(SharedTokens.FILE_TYPE))) {
+            if (ImportableResourceTypeEnum.SDMX_STRUCTURE.name().equals(args.get(SharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
 
                 ContentInputDto contentInputDto = new ContentInputDto();
                 contentInputDto.setName(fileName);
@@ -104,8 +104,25 @@ public class ResourceImportationServlet extends HttpServlet {
 
                 srmCoreServiceFacade.importSDMXStructureMsgInBackground(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
 
-            } else if (ImportableResourceTypeEnum.CODES.name().equals(args.get(SharedTokens.FILE_TYPE))) {
-                // TODO
+            } else if (ImportableResourceTypeEnum.CODES.name().equals(args.get(SharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+
+                String codelistUrn = args.get(SharedTokens.UPLOAD_PARAM_CODELIST_URN);
+                Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SharedTokens.UPDATE_PARAM_UPDATE_EXISTING));
+
+                srmCoreServiceFacade.importCodesCsvInBackground(ServiceContextHolder.getCurrentServiceContext(), codelistUrn, inputStream, fileName, updateAlreadyExisting);
+
+            } else if (ImportableResourceTypeEnum.CODES_ORDER.name().equals(args.get(SharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+
+                String codelistUrn = args.get(SharedTokens.UPLOAD_PARAM_CODELIST_URN);
+
+                srmCoreServiceFacade.importCodeOrdersCsvInBackground(ServiceContextHolder.getCurrentServiceContext(), codelistUrn, inputStream, fileName);
+
+            } else if (ImportableResourceTypeEnum.VARIABLE_ELEMENTS.name().equals(args.get(SharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+
+                String variableUrn = args.get(SharedTokens.UPLOAD_PARAM_VARIABLE_URN);
+                Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SharedTokens.UPDATE_PARAM_UPDATE_EXISTING));
+
+                srmCoreServiceFacade.importVariableElementsCsvInBackground(ServiceContextHolder.getCurrentServiceContext(), variableUrn, inputStream, fileName, updateAlreadyExisting);
             }
 
             sendSuccessImportationResponse(response, fileName);
