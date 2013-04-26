@@ -29,8 +29,28 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
         return SharedItemsSecurityUtils.canUpdateItemScheme(metamacPrincipal, codelistProcStatus);
     }
 
+    public static boolean canImportCodelistOrderVisualisations(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        return canUpdateCode(metamacPrincipal, procStatus);
+    }
+
+    public static boolean canImportCodes(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        return canCreateCode(metamacPrincipal, procStatus);
+    }
+
+    public static boolean canImportVariableElements(MetamacPrincipal metamacPrincipal) {
+        return canCrudVariableElement(metamacPrincipal);
+    }
+
     public static boolean canRetrieveOrFindCodelistOpennessVisualisation(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canCreateCode(MetamacPrincipal metamacPrincipal, ProcStatusEnum codelistProcStatus) {
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(metamacPrincipal, codelistProcStatus);
+    }
+
+    public static boolean canUpdateCode(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(metamacPrincipal, procStatus);
     }
 
     public static boolean canCrudCodelistOpennessVisualisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum codelistProcStatus) {

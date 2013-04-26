@@ -1096,7 +1096,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CodeMetamacDto createCode(ServiceContext ctx, CodeMetamacDto codeMetamacDto) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codeMetamacDto.getItemSchemeVersionUrn());
-        ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canCreateCode(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CodeMetamac codeMetamac = codesDto2DoMapper.codeDtoToDo(codeMetamacDto);
@@ -1114,7 +1114,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void copyCodesInCodelist(ServiceContext ctx, String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistTargetUrn);
-        ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canCreateCode(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Copy
         getCodesMetamacService().copyCodesInCodelist(ctx, codelistSourceUrn, codelistTargetUrn, codesToCopy);
@@ -1124,7 +1124,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void importCodesCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
-        ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canImportCodes(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Import in background
         getTasksMetamacService().importCodesCsvInBackground(ctx, codelistUrn, csvStream, fileName, updateAlreadyExisting);
@@ -1134,7 +1134,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void importCodeOrdersCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
-        ItemsSecurityUtils.canCreateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canImportCodelistOrderVisualisations(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Import in background
         getTasksMetamacService().importCodeOrdersCsvInBackground(ctx, codelistUrn, csvStream, fileName);
@@ -1144,7 +1144,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CodeMetamacDto updateCode(ServiceContext ctx, CodeMetamacDto codeDto) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeDto.getUrn());
-        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canUpdateCode(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CodeMetamac codeMetamac = codesDto2DoMapper.codeDtoToDo(codeDto);
@@ -1185,7 +1185,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void updateCodeParent(ServiceContext ctx, String codeUrn, String newParentUrn) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
-        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canUpdateCode(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Update parent
         getCodesMetamacService().updateCodeParent(ctx, codeUrn, newParentUrn);
@@ -1195,7 +1195,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void updateCodeInOrderVisualisation(ServiceContext ctx, String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeUrn);
-        ItemsSecurityUtils.canUpdateItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canUpdateCode(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Update order
         getCodesMetamacService().updateCodeInOrderVisualisation(ctx, codeUrn, codelistOrderVisualisationUrn, newCodeIndex);
@@ -1205,7 +1205,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void updateCodesInOpennessVisualisation(ServiceContext ctx, String codelistOpennessVisualisationUrn, Map<String, Boolean> openness) throws MetamacException {
         // Security
         CodelistOpennessVisualisation codelistOpennessVisualisation = getCodesMetamacService().retrieveCodelistOpennessVisualisationByUrn(ctx, codelistOpennessVisualisationUrn);
-        ItemsSecurityUtils.canUpdateItem(ctx, codelistOpennessVisualisation.getCodelistVersion().getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canUpdateCode(ctx, codelistOpennessVisualisation.getCodelistVersion().getLifeCycleMetadata().getProcStatus());
 
         // Update order
         getCodesMetamacService().updateCodesInOpennessVisualisation(ctx, codelistOpennessVisualisationUrn, openness);
@@ -1721,7 +1721,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Security
-        CodesSecurityUtils.canCrudVariableElement(ctx);
+        CodesSecurityUtils.canImportVariableElements(ctx);
 
         // Import in background
         getTasksMetamacService().importVariableElementsCsvInBackground(ctx, variableUrn, csvStream, fileName, updateAlreadyExisting);
