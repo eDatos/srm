@@ -23,8 +23,10 @@ import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableUiHandlers;
+import org.siemac.metamac.srm.web.code.widgets.ImportVariableElementsWindow;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableElementWindow;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
+import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -91,6 +93,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private PaginatedCheckListGrid                       variableElementListGrid;
     private CustomToolStripButton                        createVariableElementButton;
+    private CustomToolStripButton                        importVariableElementButton;
     private CustomToolStripButton                        deleteVariableElementButton;
     private CustomToolStripButton                        fusionVariableElementButton;
     private CustomToolStripButton                        segregateVariableElementButton;
@@ -99,6 +102,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private SearchRelatedResourcePaginatedWindow         createFusionWindow;
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
+
+    // Variable elements importation
+
+    private ImportVariableElementsWindow                 importVariableElementsWindow;
 
     // Variable element operations
 
@@ -123,17 +130,38 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         // VARIABLE ELEMENTS
 
+        // Variable elements importation window
+
+        importVariableElementsWindow = new ImportVariableElementsWindow();
+        importVariableElementsWindow.setUploadListener(new UploadListener() {
+
+            @Override
+            public void uploadFailed(String fileName) {
+                getUiHandlers().resourceImportationFailed(fileName);
+            }
+            @Override
+            public void uploadComplete(String fileName) {
+                getUiHandlers().resourceImportationSucceed(fileName);
+            }
+        });
+
         // ToolStrip
 
         ToolStrip toolStrip = new ToolStrip();
         toolStrip.setWidth100();
         createVariableElementButton = createCreateVariableElementButton();
-        deleteVariableElementButton = createDeleteVariableElementButton();
-        fusionVariableElementButton = createFusionButton();
-        segregateVariableElementButton = createSegregateButton();
         toolStrip.addButton(createVariableElementButton);
+
+        importVariableElementButton = createImportVariableElementsButton();
+        toolStrip.addButton(importVariableElementButton);
+
+        deleteVariableElementButton = createDeleteVariableElementButton();
         toolStrip.addButton(deleteVariableElementButton);
+
+        fusionVariableElementButton = createFusionButton();
         toolStrip.addButton(fusionVariableElementButton);
+
+        segregateVariableElementButton = createSegregateButton();
         toolStrip.addButton(segregateVariableElementButton);
 
         // ListGrid
@@ -264,6 +292,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariable(VariableDto variableDto) {
         this.variableDto = variableDto;
+        this.importVariableElementsWindow.setVariable(variableDto);
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(variableDto.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
@@ -568,6 +597,19 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
             }
         });
         return createButton;
+    }
+
+    private CustomToolStripButton createImportVariableElementsButton() {
+        CustomToolStripButton importButton = new CustomToolStripButton(getConstants().actionImportVariableElements(), GlobalResources.RESOURCE.importResource().getURL());
+        importButton.setVisibility(CodesClientSecurityUtils.canImportVariableElements() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        importButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                importVariableElementsWindow.show();
+            }
+        });
+        return importButton;
     }
 
     private CustomToolStripButton createDeleteVariableElementButton() {

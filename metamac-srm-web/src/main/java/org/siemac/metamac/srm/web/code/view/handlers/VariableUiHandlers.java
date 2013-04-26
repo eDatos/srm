@@ -23,4 +23,9 @@ public interface VariableUiHandlers extends BaseVariableUiHandlers {
 
     void retrieveVariableElementsByVariableForFusionOperation(int firstResult, int maxResults, final String criteria, String variableUrn);
     void retrieveVariableElementsByVariableForSegregationOperation(int firstResult, int maxResults, final String criteria, String variableUrn);
+
+    // Importation
+
+    void resourceImportationFailed(String fileName);
+    void resourceImportationSucceed(String fileName);
 }

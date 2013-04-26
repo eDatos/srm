@@ -372,4 +372,18 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
         });
     }
+
+    //
+    // IMPORTATION
+    //
+
+    @Override
+    public void resourceImportationSucceed(String fileName) {
+        ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(getMessages().resourceImportationPlanned()), MessageTypeEnum.SUCCESS);
+    }
+
+    @Override
+    public void resourceImportationFailed(String fileName) {
+        ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(getMessages().resourceErrorImport()), MessageTypeEnum.ERROR);
+    }
 }
