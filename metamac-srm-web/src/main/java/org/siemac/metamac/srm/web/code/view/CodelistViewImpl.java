@@ -31,11 +31,11 @@ import org.siemac.metamac.srm.web.code.utils.CodesFormUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodelistCategorisationsPanel;
+import org.siemac.metamac.srm.web.code.widgets.CodelistCodesPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOpennesssLevelsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOrdersPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
-import org.siemac.metamac.srm.web.code.widgets.CodesTreeGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
@@ -113,8 +113,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private CodelistVersionsSectionStack                 versionsSectionStack;
 
     // Codes
-    private VLayout                                      codesLayout;
-    private CodesTreeGrid                                codesTreeGrid;
+    private CodelistCodesPanel                           codelistCodesPanel;
 
     // Orders
     private CodelistOrdersPanel                          codelistOrdersPanel;
@@ -160,11 +159,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // CODES
         //
 
-        codesTreeGrid = new CodesTreeGrid();
-
-        codesLayout = new VLayout();
-        codesLayout.setMargin(15);
-        codesLayout.addMember(codesTreeGrid);
+        codelistCodesPanel = new CodelistCodesPanel();
 
         //
         // ORDERS
@@ -202,7 +197,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Codes tab
         Tab codesTab = new Tab(getConstants().codes());
-        codesTab.setPane(codesLayout);
+        codesTab.setPane(codelistCodesPanel);
         tabSet.addTab(codesTab);
 
         // Orders tab
@@ -388,7 +383,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     @Override
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        this.codesTreeGrid.setUiHandlers(uiHandlers);
+        this.codelistCodesPanel.setUiHandlers(uiHandlers);
         this.codelistOrdersPanel.setUiHandlers(uiHandlers);
         this.codelistOpennesssLevelsPanel.setUiHandlers(uiHandlers);
         this.categorisationsPanel.setUiHandlers(uiHandlers);
@@ -413,7 +408,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         setCodelistEditionMode(codelist);
 
         // Update codelist in tree grid
-        codesTreeGrid.updateItemScheme(codelist);
+        codelistCodesPanel.updateItemScheme(codelist);
         codelistOrdersPanel.updateItemScheme(codelist);
         codelistOpennesssLevelsPanel.updateItemScheme(codelist);
     }
@@ -442,7 +437,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     @Override
     public void setCodes(List<CodeMetamacVisualisationResult> codes) {
-        codesTreeGrid.setItems(codelistDto, codes);
+        codelistCodesPanel.setItems(codelistDto, codes);
 
         // Every time new codes are set, the visualization of codes order or openness levels should be reset (maybe there are new codes, or its structure has changed)
         codelistOrdersPanel.hideCodes();
@@ -508,12 +503,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     @Override
     public void setCodelistsToCreateComplexCodelist(GetCodelistsResult result) {
-        codesTreeGrid.setCodelistsToCreateComplexCodelist(result);
+        codelistCodesPanel.setCodelistsToCreateComplexCodelist(result);
     }
 
     @Override
     public void setCodesToCreateComplexCodelist(CodelistMetamacDto codelistMetamacDto, List<CodeMetamacVisualisationResult> codes) {
-        codesTreeGrid.setCodesToCreateComplexCodelist(codelistMetamacDto, codes);
+        codelistCodesPanel.setCodesToCreateComplexCodelist(codelistMetamacDto, codes);
     }
 
     //
