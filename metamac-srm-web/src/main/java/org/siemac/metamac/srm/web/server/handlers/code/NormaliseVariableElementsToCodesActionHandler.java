@@ -29,7 +29,7 @@ public class NormaliseVariableElementsToCodesActionHandler extends SecurityActio
     public NormaliseVariableElementsToCodesResult executeSecurityAction(NormaliseVariableElementsToCodesAction action) throws ActionException {
         try {
             List<CodeVariableElementNormalisationResult> result = srmCoreServiceFacade.normaliseVariableElementsToCodes(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(),
-                    action.getLocale());
+                    action.getLocale(), action.getOnlyNormaliseCodesWithoutVariableElement());
             return new NormaliseVariableElementsToCodesResult(result);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

@@ -17,6 +17,9 @@ public class NormaliseVariableElementsToCodes {
     @In(2)
     String                                       locale;
 
+    @In(3)
+    Boolean                                      onlyNormaliseCodesWithoutVariableElement;
+
     @Out(1)
     List<CodeVariableElementNormalisationResult> codeVariableElementNormalisationResults;
 }

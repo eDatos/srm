@@ -845,19 +845,20 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     //
 
     @Override
-    public void normaliseVariableElementsToCodes(String codelistUrn, String locale) {
-        dispatcher.execute(new NormaliseVariableElementsToCodesAction(codelistUrn, locale), new WaitingAsyncCallback<NormaliseVariableElementsToCodesResult>() {
+    public void normaliseVariableElementsToCodes(String codelistUrn, String locale, boolean onlyNormaliseCodesWithoutVariableElement) {
+        dispatcher.execute(new NormaliseVariableElementsToCodesAction(codelistUrn, locale, onlyNormaliseCodesWithoutVariableElement),
+                new WaitingAsyncCallback<NormaliseVariableElementsToCodesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorNormalisingVariableElementsToCodes()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(NormaliseVariableElementsToCodesResult result) {
-                // TODO Auto-generated method stub
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorNormalisingVariableElementsToCodes()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(NormaliseVariableElementsToCodesResult result) {
+                        // TODO Auto-generated method stub
 
-            }
-        });
+                    }
+                });
     }
 
     //
