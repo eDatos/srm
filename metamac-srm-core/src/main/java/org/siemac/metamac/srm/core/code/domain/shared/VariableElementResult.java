@@ -1,12 +1,18 @@
 package org.siemac.metamac.srm.core.code.domain.shared;
 
+import java.io.Serializable;
 
-public class VariableElementResult {
+public class VariableElementResult implements Serializable {
 
-    private Long   idDatabase;
-    private String code;
-    private String urn;
-    private String shortName;
+    private static final long serialVersionUID = 1L;
+
+    private Long              idDatabase;
+    private String            code;
+    private String            urn;
+    private String            shortName;
+
+    public VariableElementResult() {
+    }
 
     public Long getIdDatabase() {
         return idDatabase;
