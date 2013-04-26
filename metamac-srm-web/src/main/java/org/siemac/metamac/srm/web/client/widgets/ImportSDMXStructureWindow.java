@@ -10,7 +10,7 @@ import com.smartgwt.client.widgets.form.fields.HiddenItem;
 public class ImportSDMXStructureWindow extends ImportResourceWindow {
 
     public ImportSDMXStructureWindow() {
-        super(getConstants().actionImportSDMXResource(), getConstants().sDMXResource());
+        super(getConstants().actionImportSDMXResource());
 
         UploadSDMXResourceForm form = new UploadSDMXResourceForm();
         setForm(form);

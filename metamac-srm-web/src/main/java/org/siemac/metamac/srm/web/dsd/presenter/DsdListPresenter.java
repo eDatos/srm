@@ -237,7 +237,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().sDMXResourceErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().resourceErrorExport()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {

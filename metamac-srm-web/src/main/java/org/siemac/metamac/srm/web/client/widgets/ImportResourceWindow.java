@@ -28,7 +28,7 @@ public class ImportResourceWindow extends Window {
 
     private UploadListener        listener;
 
-    public ImportResourceWindow(String title, String uploadItemTitle) {
+    public ImportResourceWindow(String title) {
         super();
 
         setHeight(130);

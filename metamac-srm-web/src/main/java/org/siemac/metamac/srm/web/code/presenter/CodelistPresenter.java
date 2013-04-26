@@ -342,7 +342,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().sDMXResourceErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().resourceErrorExport()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
@@ -1020,6 +1020,20 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 retrieveCodelistByUrn(codelistUrn);
             }
         });
+    }
+
+    //
+    // IMPORTATION
+    //
+
+    @Override
+    public void resourceImportationSucceed(String fileName) {
+        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().resourceImportationPlanned()), MessageTypeEnum.SUCCESS);
+    }
+
+    @Override
+    public void resourceImportationFailed(String fileName) {
+        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().resourceErrorImport()), MessageTypeEnum.ERROR);
     }
 
     private void updateUrl() {

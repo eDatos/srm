@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
@@ -12,6 +13,8 @@ import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.widgets.EditCodelistOrderVisualisationWindow;
+import org.siemac.metamac.srm.web.code.widgets.ImportCodeOrdersWindow;
+import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 
@@ -22,8 +25,12 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
 public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSectionStack {
 
+    private ImportCodeOrdersWindow importCodeOrdersWindow;
+
     public CodelistOrdersSectionStack() {
         super(new CustomListGrid(), getConstants().codelistOrders());
+
+        // New
 
         newCodelistVisualisationButton.addClickHandler(new ClickHandler() {
 
@@ -44,6 +51,8 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
             }
         });
 
+        // Edit
+
         editCodelistVisualisationButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -63,6 +72,8 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
                 });
             }
         });
+
+        // Delete
 
         deleteCodelistVisualisationButton.addClickHandler(new ClickHandler() {
 
@@ -87,6 +98,29 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
             }
         });
 
+        // Import
+
+        importCodelistVisualisationButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                importCodeOrdersWindow.show();
+            }
+        });
+
+        importCodeOrdersWindow = new ImportCodeOrdersWindow();
+        importCodeOrdersWindow.setUploadListener(new UploadListener() {
+
+            @Override
+            public void uploadFailed(String fileName) {
+                uiHandlers.resourceImportationFailed(fileName);
+            }
+            @Override
+            public void uploadComplete(String fileName) {
+                uiHandlers.resourceImportationSucceed(fileName);
+            }
+        });
+
         listGrid.addRecordClickHandler(new RecordClickHandler() {
 
             @Override
@@ -100,11 +134,26 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
     }
 
     @Override
+    public void setCodelist(CodelistMetamacDto codelistMetamacDto) {
+        super.setCodelist(codelistMetamacDto);
+        importCodeOrdersWindow.setCodelist(codelistMetamacDto);
+    }
+
+    @Override
     protected void updateListGridNewButtonVisibility() {
         if (CodesClientSecurityUtils.canCreateCodelistOrderVisualisation(codelistMetamacDto)) {
             newCodelistVisualisationButton.show();
         } else {
             newCodelistVisualisationButton.hide();
+        }
+    }
+
+    @Override
+    protected void updateListGridImportButtonVisibility() {
+        if (CodesClientSecurityUtils.canImportCodelistOrderVisualisations(codelistMetamacDto)) {
+            importCodelistVisualisationButton.show();
+        } else {
+            importCodelistVisualisationButton.hide();
         }
     }
 

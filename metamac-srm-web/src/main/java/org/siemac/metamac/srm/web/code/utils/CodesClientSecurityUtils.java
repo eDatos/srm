@@ -151,7 +151,7 @@ public class CodesClientSecurityUtils {
             return false;
         }
         // Maintainer and temporal version is checked because the structure of an imported resource (or a resource in temporal version) can not be modified
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
+        return SharedCodesSecurityUtils.canCreateCode(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistMetamacDto);
     }
 
@@ -159,7 +159,14 @@ public class CodesClientSecurityUtils {
         if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
+        return SharedCodesSecurityUtils.canUpdateCode(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
+    }
+
+    public static boolean canImportCodes(CodelistMetamacDto codelistMetamacDto) {
+        if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canImportCodes(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     public static boolean canUpdateCodeParent(CodelistMetamacDto codelistMetamacDto) {
@@ -194,6 +201,13 @@ public class CodesClientSecurityUtils {
             return false;
         }
         return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
+    }
+
+    public static boolean canImportCodelistOrderVisualisations(CodelistMetamacDto codelistMetamacDto) {
+        if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canImportCodelistOrderVisualisations(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
     public static boolean canUpdateCodelistOrderVisualisation(CodelistMetamacDto codelistMetamacDto) {
@@ -287,6 +301,10 @@ public class CodesClientSecurityUtils {
 
     public static boolean canCreateVariableElement() {
         return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canImportVariableElements() {
+        return SharedCodesSecurityUtils.canImportVariableElements(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canUpdateVariableElement() {

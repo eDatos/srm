@@ -110,6 +110,12 @@ public class CodelistOpennessLevelsSectionStack extends BaseCodelistVisualisatio
     }
 
     @Override
+    protected void updateListGridImportButtonVisibility() {
+        // Openness levels cannot be imported
+        importCodelistVisualisationButton.hide();
+    }
+
+    @Override
     protected void showListGridEditButton() {
         if (CodesClientSecurityUtils.canUpdateCodelistOpennessVisualisation(codelistMetamacDto)) {
             editCodelistVisualisationButton.show();

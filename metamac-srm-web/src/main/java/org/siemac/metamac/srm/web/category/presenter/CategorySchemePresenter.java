@@ -272,7 +272,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().sDMXResourceErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().resourceErrorExport()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {

@@ -48,4 +48,9 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void publishExternally(String urn, ProcStatusEnum currentProcStatus);
     void versioning(String urn, VersionTypeEnum versionType, boolean versionCodes);
     void createTemporalVersion(String urn);
+
+    // Importation
+
+    void resourceImportationFailed(String fileName);
+    void resourceImportationSucceed(String fileName);
 }

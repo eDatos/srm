@@ -224,12 +224,12 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
     @Override
     public void sDMXResourceImportationFailed(String fileName) {
-        ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().sDMXResourceErrorImport()), MessageTypeEnum.ERROR);
+        ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().resourceErrorImport()), MessageTypeEnum.ERROR);
     }
 
     @Override
     public void sDMXResourceImportationSucceed(String fileName) {
-        ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().sDMXResourceImportationPlanned()), MessageTypeEnum.SUCCESS);
+        ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().resourceImportationPlanned()), MessageTypeEnum.SUCCESS);
     }
 
     //

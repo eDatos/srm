@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
+import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
@@ -26,9 +27,11 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public abstract class BaseCodelistVisualisationSectionStack extends CustomSectionStack {
 
+    protected ToolStrip                toolStrip;
     protected ToolStripButton          newCodelistVisualisationButton;
     protected ToolStripButton          editCodelistVisualisationButton;
     protected ToolStripButton          deleteCodelistVisualisationButton;
+    protected ToolStripButton          importCodelistVisualisationButton; // Only to import orders! Openness levels cannot be imported.
 
     protected DeleteConfirmationWindow deleteConfirmationWindow;
 
@@ -74,8 +77,9 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
         listGrid.setFields(codeField, nameField, urnField);
 
         // ToolBar to manage visualisations
-        ToolStrip toolStrip = new ToolStrip();
+        toolStrip = new ToolStrip();
         toolStrip.setWidth100();
+
         newCodelistVisualisationButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
 
         editCodelistVisualisationButton = new ToolStripButton(getConstants().actionEdit(), RESOURCE.editListGrid().getURL());
@@ -84,9 +88,12 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
         deleteCodelistVisualisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteCodelistVisualisationButton.setVisibility(Visibility.HIDDEN);
 
+        importCodelistVisualisationButton = new ToolStripButton(getConstants().actionImportCodeOrders(), GlobalResources.RESOURCE.importResource().getURL());
+
         toolStrip.addButton(newCodelistVisualisationButton);
         toolStrip.addButton(editCodelistVisualisationButton);
         toolStrip.addButton(deleteCodelistVisualisationButton);
+        toolStrip.addButton(importCodelistVisualisationButton);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistVisualisationDeleteConfirmationTitle(), getConstants().codelistVisualisationDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
@@ -147,4 +154,5 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
     protected abstract void showListGridEditButton();
     protected abstract void showListGridDeleteButton();
     protected abstract void updateListGridNewButtonVisibility();
+    protected abstract void updateListGridImportButtonVisibility();
 }

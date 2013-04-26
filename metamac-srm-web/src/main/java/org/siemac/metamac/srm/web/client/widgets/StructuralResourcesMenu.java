@@ -121,7 +121,7 @@ public class StructuralResourcesMenu extends ToolStrip {
 
         // Button
 
-        importSDMXResourceButton = new CustomToolStripButton(getConstants().actionImportSDMXResource(), GlobalResources.RESOURCE.importSDMXResource().getURL());
+        importSDMXResourceButton = new CustomToolStripButton(getConstants().actionImportSDMXResource(), GlobalResources.RESOURCE.importResource().getURL());
         importSDMXResourceButton.setVisibility(ImportationClientSecurityUtils.canImportStructure() ? Visibility.VISIBLE : Visibility.HIDDEN);
         importSDMXResourceButton.addClickHandler(new ClickHandler() {
 

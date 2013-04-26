@@ -53,7 +53,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         versioning = new MainFormLayoutButton(getConstants().lifeCycleVersioning(), GlobalResources.RESOURCE.version().getURL());
         cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
         versionSdmxResource = new MainFormLayoutButton(getConstants().lifeCycleVersionSdmxResource(), GlobalResources.RESOURCE.version().getURL());
-        export = new MainFormLayoutButton(getConstants().actionExport(), GlobalResources.RESOURCE.exportSDMXResource().getURL());
+        export = new MainFormLayoutButton(getConstants().actionExport(), GlobalResources.RESOURCE.exportResource().getURL());
         // announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
 
         toolStrip.addButton(productionValidation);

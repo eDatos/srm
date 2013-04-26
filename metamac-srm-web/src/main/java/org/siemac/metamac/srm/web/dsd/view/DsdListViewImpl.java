@@ -90,7 +90,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         });
         newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateDsd() ? Visibility.VISIBLE : Visibility.HIDDEN);
 
-        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), GlobalResources.RESOURCE.exportSDMXResource().getURL());
+        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), GlobalResources.RESOURCE.exportResource().getURL());
         exportToolStripButton.setVisibility(Visibility.HIDDEN);
         exportToolStripButton.addClickHandler(new ClickHandler() {
 
