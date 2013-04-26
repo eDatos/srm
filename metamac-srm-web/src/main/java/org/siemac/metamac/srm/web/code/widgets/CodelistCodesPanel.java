@@ -32,6 +32,7 @@ public class CodelistCodesPanel extends VLayout {
 
     public CodelistCodesPanel() {
         setMargin(15);
+        setMembersMargin(2);
 
         importCodesWindow = new ImportCodesWindow();
         importCodesWindow.setUploadListener(new UploadListener() {
