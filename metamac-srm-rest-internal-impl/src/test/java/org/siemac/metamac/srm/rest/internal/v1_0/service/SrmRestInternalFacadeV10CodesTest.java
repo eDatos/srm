@@ -69,10 +69,10 @@ import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks;
@@ -883,7 +883,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     }
 
     private void mockFindCodesByNativeSqlQuery() throws MetamacException {
-        when(codeRepository.findCodesByCodelistUnordered(any(Long.class), any(CodeMetamacResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
+        when(codeRepository.findCodesByCodelistUnordered(any(Long.class), any(ItemMetamacResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
 
             @Override
             public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
@@ -896,7 +896,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             };
         });
 
-        when(codeMetamacRepository.findCodesByCodelistOrderedInDepth(any(Long.class), any(Integer.class), any(CodeMetamacResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
+        when(codeMetamacRepository.findCodesByCodelistOrderedInDepth(any(Long.class), any(Integer.class), any(ItemMetamacResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
 
             @Override
             public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {

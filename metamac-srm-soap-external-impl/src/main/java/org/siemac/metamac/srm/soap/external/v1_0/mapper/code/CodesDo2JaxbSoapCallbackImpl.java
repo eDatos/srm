@@ -8,8 +8,8 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -27,7 +27,7 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
     @Autowired
     private CodeMetamacRepository            codeRepository;
 
-    private final CodeMetamacResultSelection codeMetamacResultSelection = new CodeMetamacResultSelection(true, false, true, true);
+    private final ItemMetamacResultSelection codeMetamacResultSelection = new ItemMetamacResultSelection(true, false, true, true);
 
     @Override
     public CodelistType createCodelistJaxb(com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion source) {
