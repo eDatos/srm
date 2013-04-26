@@ -84,13 +84,12 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
-import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
@@ -126,12 +125,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private SrmValidation                  srmValidation;
 
     @Autowired
-    @Qualifier("codesVersioningCopyCallbackMetamac")
-    private CodesVersioningCopyCallback    codesVersioningCopyWithCodesCallback;
+    @Qualifier("codesVersioningCallbackMetamac")
+    private ItemSchemesCopyCallback        codesVersioningWithCodesCallback;
 
     @Autowired
-    @Qualifier("codesVersioningCopyWithoutCodesCallbackMetamac")
-    private CodesVersioningCopyCallback    codesVersioningCopyWithoutCodesCallback;
+    @Qualifier("codesVersioningWithoutCodesCallbackMetamac")
+    private ItemSchemesCopyCallback        codesVersioningWithoutCodesCallback;
 
     @Autowired
     private TasksMetamacService            tasksMetamacService;
@@ -466,6 +465,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         return codelistVersion;
     }
+
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
@@ -1908,7 +1908,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkCodelistToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        CodesVersioningCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningCopyWithCodesCallback : codesVersioningCopyWithoutCodesCallback;
+        ItemSchemesCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningWithCodesCallback : codesVersioningWithoutCodesCallback;
         return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, Boolean.TRUE, callback);
     }
 
@@ -2380,7 +2380,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private CodelistOrderVisualisation versioningCodelistOrderVisualisation(CodelistOrderVisualisation source, CodelistVersionMetamac codelistTarget) throws MetamacException {
         CodelistOrderVisualisation target = new CodelistOrderVisualisation();
         target.setColumnIndex(source.getColumnIndex());
-        target.setNameableArtefact(BaseVersioningCopyUtils.copyNameableArtefact(source.getNameableArtefact()));
+        target.setNameableArtefact(versioningCodelistVisualisationNameableArtefact(source.getNameableArtefact()));;
         setCodelistOrderVisualisationUrnUnique(codelistTarget, target, false);
         codelistTarget.addOrderVisualisation(target);
         return target;
@@ -2405,9 +2405,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private CodelistOpennessVisualisation versioningCodelistOpennessVisualisation(CodelistOpennessVisualisation source, CodelistVersionMetamac codelistTarget) throws MetamacException {
         CodelistOpennessVisualisation target = new CodelistOpennessVisualisation();
         target.setColumnIndex(source.getColumnIndex());
-        target.setNameableArtefact(BaseVersioningCopyUtils.copyNameableArtefact(source.getNameableArtefact()));
+        target.setNameableArtefact(versioningCodelistVisualisationNameableArtefact(source.getNameableArtefact()));;
         setCodelistOpennessVisualisationUrnUnique(codelistTarget, target, false);
         codelistTarget.addOpennessVisualisation(target);
+        return target;
+    }
+
+    private NameableArtefact versioningCodelistVisualisationNameableArtefact(NameableArtefact source) {
+        NameableArtefact target = new NameableArtefact();
+
+        // visualisations only have these metadata
+        target.setName(BaseCopyAllMetadataUtils.copy(source.getName()));
+        target.setCode(source.getCode());
+        target.setCodeFull(source.getCodeFull());
+
         return target;
     }
 

@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
@@ -25,6 +26,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.enume.domain.CopyOperationTypeEnum;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
@@ -398,5 +400,18 @@ public class SrmServiceUtils {
             result.put(originalUrn, component);
         }
         return result;
+    }
+
+    public static ItemMetamacResultSelection getItemResultSelection(CopyOperationTypeEnum copyOperationType) {
+        ItemMetamacResultSelection resultSelection = null;
+        switch (copyOperationType) {
+            case VERSIONING:
+                resultSelection = ItemMetamacResultSelection.VERSIONING;
+                break;
+            case COPYING_NEW_ITEM_SCHEME:
+                resultSelection = ItemMetamacResultSelection.COPY;
+                break;
+        }
+        return resultSelection;
     }
 }

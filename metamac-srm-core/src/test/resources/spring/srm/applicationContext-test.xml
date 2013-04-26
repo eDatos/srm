@@ -43,6 +43,9 @@
     <import resource="classpath:/spring/general-beans-advice.xml" />
     <import resource="classpath:/spring/pub-sub.xml"/>
 
+    <!-- statistic-srm -->
+    <import resource="classpath:/spring/sdmx-srm/include/more.xml" /> 
+
     <!-- srm > src/main/resources -->
     <import resource="classpath:/spring/srm/include/interceptor.xml" />
     <import resource="classpath:/spring/srm/include/more.xml" />

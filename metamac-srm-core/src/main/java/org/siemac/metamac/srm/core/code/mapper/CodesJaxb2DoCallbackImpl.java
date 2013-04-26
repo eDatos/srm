@@ -16,8 +16,8 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.task.utils.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesJaxb2DoCallback;
@@ -69,8 +69,8 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
                     BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
-            targetMetamac.setShortName(BaseVersioningCopyUtils.copy(previousMetamac.getShortName())); // ShortName
-            targetMetamac.setDescriptionSource(BaseVersioningCopyUtils.copy(previousMetamac.getDescriptionSource())); // DescriptionSource
+            targetMetamac.setShortName(BaseCopyAllMetadataUtils.copy(previousMetamac.getShortName())); // ShortName
+            targetMetamac.setDescriptionSource(BaseCopyAllMetadataUtils.copy(previousMetamac.getDescriptionSource())); // DescriptionSource
             targetMetamac.setIsRecommended(previousMetamac.getIsRecommended()); // IsRecommended
             targetMetamac.setAccessType(previousMetamac.getAccessType()); // AccesType
             targetMetamac.setFamily(previousMetamac.getFamily()); // CodelistFamily
@@ -123,7 +123,7 @@ public class CodesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidation
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
 
             // Other metatadata
-            targetMetamac.setShortName(BaseVersioningCopyUtils.copy(previousMetamac.getShortName())); // ShortName
+            targetMetamac.setShortName(BaseCopyAllMetadataUtils.copy(previousMetamac.getShortName())); // ShortName
             targetMetamac.setVariableElement(previousMetamac.getVariableElement());
 
             for (int i = 1; i <= SrmConstants.CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER; i++) {

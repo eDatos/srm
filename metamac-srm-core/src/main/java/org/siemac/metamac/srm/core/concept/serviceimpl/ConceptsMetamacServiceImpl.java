@@ -49,6 +49,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
@@ -60,7 +61,6 @@ import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
-import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsVersioningCopyUtils.ConceptVersioningCopyCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 /**
@@ -92,8 +92,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
 
     @Autowired
-    @Qualifier("conceptVersioningCopyCallbackMetamac")
-    private ConceptVersioningCopyCallback    conceptVersioningCopyCallback;
+    @Qualifier("conceptsVersioningCallbackMetamac")
+    private ItemSchemesCopyCallback          conceptsVersioningCallback;
 
     @Autowired
     private InternationalStringRepository    internationalStringRepository;
@@ -828,7 +828,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConceptSchemeToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        return conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, isTemporal, conceptVersioningCopyCallback);
+        return conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, isTemporal, conceptsVersioningCallback);
     }
 
     private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) {

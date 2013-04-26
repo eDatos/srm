@@ -74,7 +74,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
-import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.StructureVersioningCopyUtils.StructureVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.DataStructureDefinitionsCopyCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
@@ -107,8 +107,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     private SrmValidation                         srmValidation;
 
     @Autowired
-    @Qualifier("structureVersioningCopyCallbackMetamac")
-    private StructureVersioningCopyCallback       structureVersioningCopyCallback;
+    @Qualifier("dataStructureDefinitionsVersioningCallbackMetamac")
+    private DataStructureDefinitionsCopyCallback  dataStructureDefinitionsVersioningCallback;
 
     @Autowired
     private StructureVersionRepository            structureVersionRepository;
@@ -434,7 +434,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // ShowDecimalsPrecision
         dataStructureDefinitionVersion.removeAllShowDecimalsPrecisions();
-        structureVersioningCopyCallback.copyShowDecimalsPrecision(dataStructureTemporalVersion, dataStructureDefinitionVersion);
+        dataStructureDefinitionsVersioningCallback.copyShowDecimalsPrecision(dataStructureTemporalVersion, dataStructureDefinitionVersion);
 
         return dataStructureDefinitionVersion;
     }
@@ -712,7 +712,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Versioning
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
-                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, structureVersioningCopyCallback);
+                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, dataStructureDefinitionsVersioningCallback);
 
         // Other metadata, Note: other relations are copied in copy callback
 
@@ -810,7 +810,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         }
 
         // showDecimalsPrecisions
-        structureVersioningCopyCallback.copyShowDecimalsPrecision(dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
+        dataStructureDefinitionsVersioningCallback.copyShowDecimalsPrecision(dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
 
         return dataStructureDefinitionVersionMetamacNewVersion;
     }

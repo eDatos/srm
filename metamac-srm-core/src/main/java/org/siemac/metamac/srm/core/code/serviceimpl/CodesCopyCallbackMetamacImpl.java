@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.code.serviceimpl.utils;
+package org.siemac.metamac.srm.core.code.serviceimpl;
 
 import java.util.List;
 
@@ -10,27 +10,21 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
-import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
-import com.arte.statistic.sdmx.srm.core.code.domain.Code;
-import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
-import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesVersioningCopyUtils.CodesVersioningCopyCallback;
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.code.serviceimpl.CodesCopyCallbackImpl;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 /**
  * Copy Metamac metadata
  */
-@Component(CodesVersioningCopyCallbackMetamacImpl.BEAN_ID)
-public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCopyCallback {
-
-    public static final String    BEAN_ID = "codesVersioningCopyCallbackMetamac";
+// @Component() defined in spring xml configuration to set class attributes
+public class CodesCopyCallbackMetamacImpl extends CodesCopyCallbackImpl {
 
     @Autowired
     private CodesMetamacService   codesMetamacService;
@@ -39,16 +33,17 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
     private CodeMetamacRepository codeMetamacRepository;
 
     @Override
-    public CodelistVersion createCodelistVersion() {
+    public ItemSchemeVersion createItemSchemeVersion() {
         return new CodelistVersionMetamac();
     }
 
     @Override
-    public void copyCodelistVersion(CodelistVersion sourceSdmx, CodelistVersion targetSdmx) {
-        CodelistVersionMetamac source = (CodelistVersionMetamac) sourceSdmx;
-        CodelistVersionMetamac target = (CodelistVersionMetamac) targetSdmx;
-        target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
-        target.setDescriptionSource(BaseVersioningCopyUtils.copy(source.getDescriptionSource()));
+    public void copyItemSchemeVersion(ItemSchemeVersion sourceItemSchemeVersion, ItemSchemeVersion targetItemSchemeVersion) {
+        super.copyItemSchemeVersion(sourceItemSchemeVersion, targetItemSchemeVersion);
+        CodelistVersionMetamac source = (CodelistVersionMetamac) sourceItemSchemeVersion;
+        CodelistVersionMetamac target = (CodelistVersionMetamac) targetItemSchemeVersion;
+        target.setShortName(copy(source.getShortName()));
+        target.setDescriptionSource(copy(source.getDescriptionSource()));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
@@ -59,53 +54,39 @@ public class CodesVersioningCopyCallbackMetamacImpl implements CodesVersioningCo
     }
 
     @Override
-    public void createCodelistRelations(ServiceContext ctx, CodelistVersion sourceSdmx, CodelistVersion targetSdmx) throws MetamacException {
-        CodelistVersionMetamac source = (CodelistVersionMetamac) sourceSdmx;
-        CodelistVersionMetamac target = (CodelistVersionMetamac) targetSdmx;
+    public void createItemSchemeVersionRelations(ServiceContext ctx, ItemSchemeVersion sourceItemSchemeVersion, ItemSchemeVersion targetItemSchemeVersion) throws MetamacException {
+        super.createItemSchemeVersionRelations(ctx, sourceItemSchemeVersion, targetItemSchemeVersion);
+        CodelistVersionMetamac source = (CodelistVersionMetamac) sourceItemSchemeVersion;
+        CodelistVersionMetamac target = (CodelistVersionMetamac) targetItemSchemeVersion;
         // Visualisations
         codesMetamacService.versioningCodelistOrderVisualisations(ctx, source, target);
         codesMetamacService.versioningCodelistOpennessVisualisations(ctx, source, target);
     }
 
     @Override
-    public Boolean mustCopyCodes() {
-        return Boolean.TRUE;
-    }
-
-    @Override
-    public Boolean isOverridedFindItemsEfficiently() {
-        return Boolean.TRUE;
-    }
-
-    @Override
     public List<ItemResult> findItemsEfficiently(Long codelistId) {
-        return codeMetamacRepository.findCodesByCodelistUnordered(codelistId, ItemMetamacResultSelection.VERSIONING);
+        return codeMetamacRepository.findCodesByCodelistUnordered(codelistId, SrmServiceUtils.getItemResultSelection(getCopyOperationType()));
     }
 
     @Override
-    public Code createCode() {
+    public Item createItem() {
         return new CodeMetamac();
     }
 
     @Override
-    public void copyCode(Code sourceSdmx, ItemResult itemResultSource, Code targetSdmx) {
-        CodeMetamac source = (CodeMetamac) sourceSdmx;
-        CodeMetamac target = (CodeMetamac) targetSdmx;
-        if (itemResultSource != null) {
-            // Copy efficiently
-            CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResultSource.getExtensionPoint();
-            target.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(extensionPoint.getShortName()));
-        } else {
-            target.setShortName(BaseVersioningCopyUtils.copy(source.getShortName()));
-        }
+    public void copyItem(Item sourceItem, ItemResult sourceItemResult, Item targetItem) {
+        super.copyItem(sourceItem, sourceItemResult, targetItem);
+
+        CodeMetamac source = (CodeMetamac) sourceItem;
+        CodeMetamac target = (CodeMetamac) targetItem;
+
+        // Copy efficiently
+        CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) sourceItemResult.getExtensionPoint();
+        target.setShortName(copyInternationalString(extensionPoint.getShortName()));
+
         target.setVariableElement(source.getVariableElement());
         copyCodeOrderVisualisations(source, target);
         copyCodeOpennessVisualisations(source, target);
-    }
-
-    @Override
-    public String getBeanName() {
-        return BEAN_ID;
     }
 
     private void copyCodeOrderVisualisations(CodeMetamac source, CodeMetamac target) {

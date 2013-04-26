@@ -14,8 +14,8 @@ import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.task.utils.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsJaxb2DoCallback;
@@ -68,7 +68,7 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
             targetMetamac.setType(previousMetamac.getType());
-            targetMetamac.setRelatedOperation(BaseVersioningCopyUtils.copy(previousMetamac.getRelatedOperation()));
+            targetMetamac.setRelatedOperation(BaseCopyAllMetadataUtils.copy(previousMetamac.getRelatedOperation()));
         }
 
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
@@ -100,11 +100,11 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
                     BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getNameableArtefact().getDescription(), targetMetamac.getNameableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getNameableArtefact().getAnnotations(), targetMetamac.getNameableArtefact().getAnnotations()); // Annotations
 
-            targetMetamac.setPluralName(BaseVersioningCopyUtils.copy(previousMetamac.getPluralName()));
-            targetMetamac.setAcronym(BaseVersioningCopyUtils.copy(previousMetamac.getAcronym()));
-            targetMetamac.setDescriptionSource(BaseVersioningCopyUtils.copy(previousMetamac.getDescriptionSource()));
-            targetMetamac.setContext(BaseVersioningCopyUtils.copy(previousMetamac.getContext()));
-            targetMetamac.setDocMethod(BaseVersioningCopyUtils.copy(previousMetamac.getDocMethod()));
+            targetMetamac.setPluralName(BaseCopyAllMetadataUtils.copy(previousMetamac.getPluralName()));
+            targetMetamac.setAcronym(BaseCopyAllMetadataUtils.copy(previousMetamac.getAcronym()));
+            targetMetamac.setDescriptionSource(BaseCopyAllMetadataUtils.copy(previousMetamac.getDescriptionSource()));
+            targetMetamac.setContext(BaseCopyAllMetadataUtils.copy(previousMetamac.getContext()));
+            targetMetamac.setDocMethod(BaseCopyAllMetadataUtils.copy(previousMetamac.getDocMethod()));
             targetMetamac.setSdmxRelatedArtefact(previousMetamac.getSdmxRelatedArtefact());
             targetMetamac.setConceptType(previousMetamac.getConceptType());
             // Roles : can copy "roles" because they are concepts in another concept scheme
@@ -112,10 +112,10 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
                 targetMetamac.addRoleConcept(conceptRole);
             }
             targetMetamac.setVariable(previousMetamac.getVariable());
-            targetMetamac.setDerivation(BaseVersioningCopyUtils.copy(previousMetamac.getDerivation()));
+            targetMetamac.setDerivation(BaseCopyAllMetadataUtils.copy(previousMetamac.getDerivation()));
             // Extends : can copy "extend" because they are concepts in another concept scheme
             targetMetamac.setConceptExtends(previousMetamac.getConceptExtends());
-            targetMetamac.setLegalActs(BaseVersioningCopyUtils.copy(previousMetamac.getLegalActs()));
+            targetMetamac.setLegalActs(BaseCopyAllMetadataUtils.copy(previousMetamac.getLegalActs()));
 
         }
 

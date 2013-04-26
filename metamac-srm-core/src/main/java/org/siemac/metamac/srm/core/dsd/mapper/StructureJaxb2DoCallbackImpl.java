@@ -23,8 +23,8 @@ import org.siemac.metamac.srm.core.task.utils.ImportationMetamacCommonValidation
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheritUtils;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseVersioningCopyUtils;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
@@ -148,7 +148,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
                     BaseJaxb2DoInheritUtils.inheritInternationalStringAsNew(previousMetamac.getMaintainableArtefact().getDescription(), targetMetamac.getMaintainableArtefact().getDescription())); // Description
             BaseJaxb2DoInheritUtils.inheritAnnotations(previousMetamac.getMaintainableArtefact().getAnnotations(), targetMetamac.getMaintainableArtefact().getAnnotations()); // Annotations
 
-            targetMetamac.setStatisticalOperation(BaseVersioningCopyUtils.copy(previousMetamac.getStatisticalOperation()));
+            targetMetamac.setStatisticalOperation(BaseCopyAllMetadataUtils.copy(previousMetamac.getStatisticalOperation()));
 
             // Visualization Metadata
             targetMetamac.setAutoOpen(previousMetamac.getAutoOpen());

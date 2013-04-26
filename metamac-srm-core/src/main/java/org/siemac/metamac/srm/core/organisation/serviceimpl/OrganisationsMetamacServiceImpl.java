@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
@@ -48,7 +49,6 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
-import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsVersioningCopyUtils.OrganisationVersioningCopyCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 /**
@@ -58,27 +58,27 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacServiceImplBase {
 
     @Autowired
-    private OrganisationsService               organisationsService;
+    private OrganisationsService          organisationsService;
 
     @Autowired
-    private ItemSchemeVersionRepository        itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository   itemSchemeVersionRepository;
 
     @Autowired
     @Qualifier("organisationSchemeLifeCycle")
-    private LifeCycle                          organisationSchemeLifeCycle;
+    private LifeCycle                     organisationSchemeLifeCycle;
 
     @Autowired
-    private SrmValidation                      srmValidation;
+    private SrmValidation                 srmValidation;
 
     @Autowired
-    private SrmConfiguration                   srmConfiguration;
+    private SrmConfiguration              srmConfiguration;
 
     @Autowired
-    private InternationalStringRepository      internationalStringRepository;
+    private InternationalStringRepository internationalStringRepository;
 
     @Autowired
-    @Qualifier("organisationVersioningCopyCallbackMetamac")
-    private OrganisationVersioningCopyCallback organisationVersioningCopyCallback;
+    @Qualifier("organisationsVersioningCallbackMetamac")
+    private ItemSchemesCopyCallback       organisationsVersioningCallback;
 
     public OrganisationsMetamacServiceImpl() {
     }
@@ -482,7 +482,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         checkOrganisationSchemeToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        return organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal, organisationVersioningCopyCallback);
+        return organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal, organisationsVersioningCallback);
     }
 
 }

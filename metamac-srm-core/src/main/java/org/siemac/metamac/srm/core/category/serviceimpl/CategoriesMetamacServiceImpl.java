@@ -39,13 +39,13 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesInvocationValidator;
-import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesVersioningCopyUtils.CategoryVersioningCopyCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
@@ -73,8 +73,8 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private SrmValidation                  srmValidation;
 
     @Autowired
-    @Qualifier("categoryVersioningCopyCallbackMetamac")
-    private CategoryVersioningCopyCallback categoryVersioningCopyCallback;
+    @Qualifier("categoriesVersioningCallbackMetamac")
+    private ItemSchemesCopyCallback        categoriesVersioningCallback;
 
     @Autowired
     private MaintainableArtefactRepository maintainableArtefactRepository;
@@ -532,7 +532,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, isTemporal, null, null);
         checkCategorySchemeToVersioning(ctx, urnToCopy, isTemporal);
         // Versioning
-        return categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, isTemporal, categoryVersioningCopyCallback);
+        return categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, isTemporal, categoriesVersioningCallback);
     }
 
     private void checkCategorySchemeToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {
