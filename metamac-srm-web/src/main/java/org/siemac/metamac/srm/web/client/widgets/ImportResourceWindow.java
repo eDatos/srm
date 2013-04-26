@@ -4,18 +4,17 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
 import com.google.gwt.user.client.ui.NamedFrame;
 import com.smartgwt.client.types.Encoding;
-import com.smartgwt.client.types.FormErrorOrientation;
 import com.smartgwt.client.types.FormMethod;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.VisibilityChangedEvent;
 import com.smartgwt.client.widgets.events.VisibilityChangedHandler;
-import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -24,9 +23,9 @@ public class ImportResourceWindow extends Window {
 
     private static final String TARGET = "uploadTarget";
 
-    private CustomButtonItem    uploadButton;
-    private DynamicForm         form;
-    private UploadItem          uploadItem;
+    protected CustomDynamicForm form;
+    protected UploadItem        uploadItem;
+    protected CustomButtonItem  uploadButton;
 
     private UploadListener      listener;
 
@@ -68,9 +67,7 @@ public class ImportResourceWindow extends Window {
         body.setHeight100();
 
         // Initialize the form
-        form = new DynamicForm();
-        form.setErrorOrientation(FormErrorOrientation.RIGHT);
-        form.setValidateOnChange(true);
+        form = new CustomDynamicForm();
         form.setAutoHeight();
         form.setCanSubmit(true);
         form.setWidth100();
@@ -78,8 +75,6 @@ public class ImportResourceWindow extends Window {
         form.setNumCols(2);
         form.setCellPadding(4);
         form.setWrapItemTitles(false);
-        form.setTitleSuffix(" ");
-        form.setRequiredTitleSuffix(" ");
 
         // Initialize the hidden frame
         NamedFrame frame = new NamedFrame(TARGET);
@@ -95,7 +90,7 @@ public class ImportResourceWindow extends Window {
         url.append(SharedTokens.FILE_UPLOAD_DIR_PATH);
         form.setAction(MetamacSrmWeb.getRelativeURL(url.toString()));
 
-        uploadItem = new UploadItem("filename");
+        uploadItem = new UploadItem("file-name");
         uploadItem.setTitle(uploadItemTitle);
         uploadItem.setWidth(300);
         uploadItem.setRequired(true);
@@ -129,10 +124,6 @@ public class ImportResourceWindow extends Window {
 
     public ButtonItem getUploadButton() {
         return uploadButton;
-    }
-
-    public DynamicForm getUploadForm() {
-        return form;
     }
 
     public void setUploadListener(UploadListener listener) {
