@@ -382,7 +382,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             for (int i = 0; i < dsdToCopy.getDimensionVisualisationInfos().size(); i++) {
                 DimensionVisualizationInfo dimensionVisualizationInfoToCopy = dsdToCopy.getDimensionVisualisationInfos().get(i);
                 DimensionVisualizationInfo dimensionVisualizationInfoToNew = dsdNewVersion.getDimensionVisualisationInfos().get(i);
-                assertEquals(dimensionVisualizationInfoToCopy.getDimension().getUrn(), dimensionVisualizationInfoToNew.getDimension().getUrn());
+                assertEquals(dimensionVisualizationInfoToCopy.getDimension().getCode(), dimensionVisualizationInfoToNew.getDimension().getCode());
                 assertEquals(dimensionVisualizationInfoToCopy.getDisplayOrder().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getDisplayOrder().getNameableArtefact().getUrn());
                 assertEquals(dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact()
                         .getUrn());
@@ -450,6 +450,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
                 DimensionOrder dimOrderToNewVersion = dsdNewVersion.getHeadingDimensions().get(i);
                 assertEquals(dimOrderToCopy.getDimension().getCode(), dimOrderToNewVersion.getDimension().getCode());
                 assertEquals(dimOrderToCopy.getDimOrder(), dimOrderToNewVersion.getDimOrder());
+                assertTrue(dimOrderToNewVersion.getDimension().getUrn().contains(UrnConstants.URN_SDMX_TEMPORAL_SUFFIX));
             }
             // Stub
             for (int i = 0; i < dsdToCopy.getStubDimensions().size(); i++) {
@@ -457,6 +458,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
                 DimensionOrder dimOrderToNewVersion = dsdNewVersion.getStubDimensions().get(i);
                 assertEquals(dimOrderToCopy.getDimension().getCode(), dimOrderToNewVersion.getDimension().getCode());
                 assertEquals(dimOrderToCopy.getDimOrder(), dimOrderToNewVersion.getDimOrder());
+                assertTrue(dimOrderToNewVersion.getDimension().getUrn().contains(UrnConstants.URN_SDMX_TEMPORAL_SUFFIX));
             }
             // ShowDecimalsPrecisions
             for (int i = 0; i < dsdToCopy.getShowDecimalsPrecisions().size(); i++) {
@@ -469,10 +471,10 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             for (int i = 0; i < dsdToCopy.getDimensionVisualisationInfos().size(); i++) {
                 DimensionVisualizationInfo dimensionVisualizationInfoToCopy = dsdToCopy.getDimensionVisualisationInfos().get(i);
                 DimensionVisualizationInfo dimensionVisualizationInfoToNew = dsdNewVersion.getDimensionVisualisationInfos().get(i);
-                assertEquals(dimensionVisualizationInfoToCopy.getDimension().getUrn(), dimensionVisualizationInfoToNew.getDimension().getUrn());
-                assertEquals(dimensionVisualizationInfoToCopy.getDisplayOrder().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getDisplayOrder().getNameableArtefact().getUrn());
-                assertEquals(dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact()
+                assertTrue(dimensionVisualizationInfoToNew.getDimension().getUrn().contains(UrnConstants.URN_SDMX_TEMPORAL_SUFFIX));
+                assertEquals(dimensionVisualizationInfoToCopy.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact()
                         .getUrn());
+                assertEquals(dimensionVisualizationInfoToCopy.getDisplayOrder().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getDisplayOrder().getNameableArtefact().getUrn());
             }
         }
     }

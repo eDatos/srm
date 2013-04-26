@@ -657,7 +657,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
                 .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, structureVersioningCopyCallback);
 
-        // Other metadata
+        // Other metadata, Note: other relations are copied in copy callback
 
         // Versioning heading and stub (metadata of Metamac).
         dataStructureDefinitionVersionMetamacNewVersion = versioningHeadingAndStub(ctx, dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);

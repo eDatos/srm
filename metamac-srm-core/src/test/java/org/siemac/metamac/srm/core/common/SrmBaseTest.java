@@ -427,6 +427,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_VAR_FAMILIES_VARIABLES");
         tables.add("TB_M_DIMENSION_ORDERS");
         tables.add("TB_M_MEASURE_DIM_PRECISIONS");
+        tables.add("TB_M_DIM_VIS_INFO");
         return tables;
     }
 
