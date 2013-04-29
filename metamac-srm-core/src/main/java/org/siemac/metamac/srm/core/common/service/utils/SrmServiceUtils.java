@@ -408,7 +408,7 @@ public class SrmServiceUtils {
             case VERSIONING:
                 resultSelection = ItemMetamacResultSelection.VERSIONING;
                 break;
-            case COPYING_NEW_ITEM_SCHEME:
+            case COPY_TO_NEW_ARTEFACT:
                 resultSelection = ItemMetamacResultSelection.COPY;
                 break;
         }
