@@ -4,9 +4,8 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.security.shared.SharedDsdSecurityUtils;
-import org.siemac.metamac.sso.utils.SecurityUtils;
 
-public class DataStructureDefinitionSecurityUtils extends SecurityUtils {
+public class DataStructureDefinitionSecurityUtils extends CommonSecurityUtils {
 
     //
     // DSD

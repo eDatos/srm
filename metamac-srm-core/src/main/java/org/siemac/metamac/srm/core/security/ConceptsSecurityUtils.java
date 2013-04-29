@@ -5,9 +5,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedConceptsSecurityUtils;
-import org.siemac.metamac.sso.utils.SecurityUtils;
 
-public class ConceptsSecurityUtils extends SecurityUtils {
+public class ConceptsSecurityUtils extends CommonSecurityUtils {
 
     //
     // CONCEPT SCHEMES

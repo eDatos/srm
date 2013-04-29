@@ -11,6 +11,18 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
     // ORGANISATION SCHEMES
     //
 
+    public static boolean canRetrieveOrganisationSchemeByUrn(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canFindOrganisationSchemesByCondition(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canRetrieveOrganisationSchemeVersions(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
     public static boolean canCreateOrganisationScheme(MetamacPrincipal metamacPrincipal) {
         return canCreateItemScheme(metamacPrincipal);
     }
@@ -66,6 +78,18 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
     //
     // ITEMS
     //
+
+    public static boolean canRetrieveOrganisationByUrn(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canRetrieveOrganisationsByOrganisationSchemeUrn(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canFindOrganisationsByCondition(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
 
     /**
      * Determines if items from an organisation scheme can be created, deleted or updated

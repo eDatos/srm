@@ -7,18 +7,82 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMA
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 
-public class SharedCodesSecurityUtils extends SharedSecurityUtils {
+public class SharedCodesSecurityUtils extends SharedItemsSecurityUtils {
 
-    //
-    // NOTE: Only to related entities and specific actions. Security about codelists and codes is in ItemSecurityUtils
-    //
+    public static boolean canRetrieveCodelistByUrn(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canFindCodelistsByCondition(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canRetrieveCodelistVersions(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canCreateCodelist(MetamacPrincipal metamacPrincipal) {
+        return canCreateItemScheme(metamacPrincipal);
+    }
+
+    public static boolean canUpdateCodelist(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        return canUpdateItemScheme(metamacPrincipal, procStatus);
+    }
+
+    public static boolean canDeleteCodelist(MetamacPrincipal metamacPrincipal) {
+        return canDeleteItemScheme(metamacPrincipal);
+    }
+
+    public static boolean canSendCodelistToProductionValidation(MetamacPrincipal metamacPrincipal) {
+        return canSendItemSchemeToProductionValidation(metamacPrincipal);
+    }
+
+    public static boolean canSendCodelistToDiffusionValidation(MetamacPrincipal metamacPrincipal) {
+        return canSendItemSchemeToDiffusionValidation(metamacPrincipal);
+    }
+
+    public static boolean canRejectCodelistValidation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        return canRejectItemSchemeValidation(metamacPrincipal, procStatus);
+    }
+
+    public static boolean canPublishCodelistInternally(MetamacPrincipal metamacPrincipal) {
+        return canPublishItemSchemeInternally(metamacPrincipal);
+    }
+
+    public static boolean canPublishCodelistExternally(MetamacPrincipal metamacPrincipal) {
+        return canPublishItemSchemeExternally(metamacPrincipal);
+    }
 
     public static boolean canVersioningCodelist(MetamacPrincipal metamacPrincipal) {
-        return SharedItemsSecurityUtils.canVersioningItemScheme(metamacPrincipal);
+        return canVersioningItemScheme(metamacPrincipal);
     }
 
     public static boolean canCreateCodelistTemporalVersion(MetamacPrincipal metamacPrincipal) {
         return canVersioningCodelist(metamacPrincipal);
+    }
+
+    public static boolean canEndCodelistValidity(MetamacPrincipal metamacPrincipal) {
+        return canEndItemSchemeValidity(metamacPrincipal);
+    }
+
+    public static boolean canRetrieveCodeByUrn(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canRetrieveCodesByCodelistUrn(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canModifyCodeFromCodelist(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        return canModifyItemFromItemScheme(metamacPrincipal, procStatus);
+    }
+
+    public static boolean canFindCodesByCondition(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canNormaliseVariableElementsToCodes(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
     }
 
     public static boolean canRetrieveOrFindCodelistOrderVisualisation(MetamacPrincipal metamacPrincipal) {
@@ -26,7 +90,7 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canCrudCodelistOrderVisualisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum codelistProcStatus) {
-        return SharedItemsSecurityUtils.canUpdateItemScheme(metamacPrincipal, codelistProcStatus);
+        return canUpdateItemScheme(metamacPrincipal, codelistProcStatus);
     }
 
     public static boolean canImportCodelistOrderVisualisations(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
@@ -46,15 +110,15 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canCreateCode(MetamacPrincipal metamacPrincipal, ProcStatusEnum codelistProcStatus) {
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(metamacPrincipal, codelistProcStatus);
+        return canModifyItemFromItemScheme(metamacPrincipal, codelistProcStatus);
     }
 
     public static boolean canUpdateCode(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        return SharedItemsSecurityUtils.canModifyItemFromItemScheme(metamacPrincipal, procStatus);
+        return canModifyItemFromItemScheme(metamacPrincipal, procStatus);
     }
 
     public static boolean canCrudCodelistOpennessVisualisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum codelistProcStatus) {
-        return SharedItemsSecurityUtils.canUpdateItemScheme(metamacPrincipal, codelistProcStatus);
+        return canUpdateItemScheme(metamacPrincipal, codelistProcStatus);
     }
 
     public static boolean canRetrieveOrFindCodelistFamily(MetamacPrincipal metamacPrincipal) {
@@ -93,7 +157,7 @@ public class SharedCodesSecurityUtils extends SharedSecurityUtils {
         if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
         } else {
-            return SharedItemsSecurityUtils.canModifyItemFromItemScheme(metamacPrincipal, procStatus);
+            return canModifyItemFromItemScheme(metamacPrincipal, procStatus);
         }
     }
 

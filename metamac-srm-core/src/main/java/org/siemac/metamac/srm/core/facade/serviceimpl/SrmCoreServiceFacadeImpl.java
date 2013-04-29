@@ -88,9 +88,8 @@ import org.siemac.metamac.srm.core.security.CategoriesSecurityUtils;
 import org.siemac.metamac.srm.core.security.CodesSecurityUtils;
 import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
-import org.siemac.metamac.srm.core.security.ImportSecurityUtils;
-import org.siemac.metamac.srm.core.security.ItemsSecurityUtils;
 import org.siemac.metamac.srm.core.security.OrganisationsSecurityUtils;
+import org.siemac.metamac.srm.core.security.TasksSecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -531,7 +530,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void importSDMXStructureMsgInBackground(ServiceContext ctx, ContentInputDto contentDto) throws MetamacException {
         // Security
-        ImportSecurityUtils.canImportStructure(ctx);
+        TasksSecurityUtils.canImportStructure(ctx);
 
         // Import
         getTasksMetamacService().importSDMXStructureInBackground(ctx, contentDto.getInput(), contentDto.getName());
@@ -540,7 +539,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<TaskDto> findTasksByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        // TODO DataStructureDefinitionSecurityUtils.canFindDataStructureDefinitionByCondition(ctx);
+        TasksSecurityUtils.canFindTasksByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -595,7 +594,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -613,7 +612,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -632,7 +631,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -650,7 +649,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdTimeDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -668,7 +667,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -686,7 +685,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdMeasureDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -704,7 +703,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -722,7 +721,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -739,7 +738,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -757,7 +756,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdRoleByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -775,7 +774,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -793,7 +792,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -812,7 +811,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -830,7 +829,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -848,7 +847,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -866,7 +865,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -888,7 +887,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistMetamacDto retrieveCodelistByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveItemSchemeByUrn(ctx);
+        CodesSecurityUtils.canRetrieveCodelistByUrn(ctx);
 
         // Retrieve
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, urn);
@@ -902,7 +901,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistMetamacDto createCodelist(ServiceContext ctx, CodelistMetamacDto codelistDto) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canCreateItemScheme(ctx);
+        CodesSecurityUtils.canCreateCodelist(ctx);
 
         // Transform
         CodelistVersionMetamac codelistVersion = codesDto2DoMapper.codelistDtoToDo(codelistDto);
@@ -919,7 +918,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CodelistMetamacDto updateCodelist(ServiceContext ctx, CodelistMetamacDto codelistDto) throws MetamacException {
         // Security and transform
         CodelistVersionMetamac codelistVersionOld = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistDto.getUrn());
-        ItemsSecurityUtils.canUpdateItemScheme(ctx, codelistVersionOld.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canUpdateCodelist(ctx, codelistVersionOld.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CodelistVersionMetamac codelistVersionToUpdate = codesDto2DoMapper.codelistDtoToDo(codelistDto);
@@ -935,7 +934,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteCodelist(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canDeleteItemScheme(ctx);
+        CodesSecurityUtils.canDeleteCodelist(ctx);
 
         // Delete
         getCodesMetamacService().deleteCodelist(ctx, urn);
@@ -944,7 +943,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<CodelistMetamacBasicDto> findCodelistsByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canFindItemSchemesByCondition(ctx);
+        CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -962,7 +961,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public List<CodelistMetamacBasicDto> retrieveCodelistVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
+        CodesSecurityUtils.canRetrieveCodelistVersions(ctx);
 
         // Retrieve and sort by date desc
         List<CodelistVersionMetamac> codelistVersions = getCodesMetamacService().retrieveCodelistVersions(ctx, urn);
@@ -978,7 +977,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistMetamacDto sendCodelistToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canSendItemSchemeToProductionValidation(ctx);
+        CodesSecurityUtils.canSendCodelistToProductionValidation(ctx);
 
         // Send
         CodelistVersionMetamac codelistVersionProductionValidation = getCodesMetamacService().sendCodelistToProductionValidation(ctx, urn);
@@ -991,7 +990,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistMetamacDto sendCodelistToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canSendItemSchemeToDiffusionValidation(ctx);
+        CodesSecurityUtils.canSendCodelistToDiffusionValidation(ctx);
 
         // Send
         CodelistVersionMetamac codelistVersionDiffusionValidation = getCodesMetamacService().sendCodelistToDiffusionValidation(ctx, urn);
@@ -1005,7 +1004,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CodelistMetamacDto rejectCodelistProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, urn);
-        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canRejectCodelistValidation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Reject
         CodelistVersionMetamac codelistVersionRejected = getCodesMetamacService().rejectCodelistProductionValidation(ctx, urn);
@@ -1019,7 +1018,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CodelistMetamacDto rejectCodelistDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, urn);
-        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canRejectCodelistValidation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Reject
         CodelistVersionMetamac codelistVersionRejected = getCodesMetamacService().rejectCodelistDiffusionValidation(ctx, urn);
@@ -1032,7 +1031,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public TaskInfo publishCodelistInternally(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canPublishItemSchemeInternally(ctx);
+        CodesSecurityUtils.canPublishCodelistInternally(ctx);
 
         // Publish
         TaskInfo versioningResult = getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal, Boolean.TRUE);
@@ -1043,7 +1042,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistMetamacDto publishCodelistExternally(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canPublishItemSchemeExternally(ctx);
+        CodesSecurityUtils.canPublishCodelistExternally(ctx);
 
         CodelistVersionMetamac codelistVersionPublished = getCodesMetamacService().publishExternallyCodelist(ctx, urn);
 
@@ -1078,7 +1077,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodelistMetamacDto endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canEndItemSchemeValidity(ctx);
+        CodesSecurityUtils.canEndCodelistValidity(ctx);
 
         CodelistVersionMetamac codelistEnded = getCodesMetamacService().endCodelistValidity(ctx, urn);
 
@@ -1214,7 +1213,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CodeMetamacDto retrieveCodeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CodesSecurityUtils.canRetrieveCodeByUrn(ctx);
 
         // Retrieve
         CodeMetamac codeMetamac = getCodesMetamacService().retrieveCodeByUrn(ctx, urn);
@@ -1228,7 +1227,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<CodeMetamacBasicDto> findCodesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CodesSecurityUtils.canFindCodesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -1246,7 +1245,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void deleteCode(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, urn);
-        ItemsSecurityUtils.canDeleteItem(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        CodesSecurityUtils.canDeleteCode(ctx, codelistVersion);
 
         // Delete
         getCodesMetamacService().deleteCode(ctx, urn);
@@ -1256,7 +1255,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(ServiceContext ctx, String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CodesSecurityUtils.canRetrieveCodesByCodelistUrn(ctx);
 
         // Retrieve
         return getCodesMetamacService().retrieveCodesByCodelistUrn(ctx, codelistUrn, locale, orderVisualisationUrn, opennessVisualisationUrn);
@@ -1266,7 +1265,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(ServiceContext ctx, String codelistUrn, String locale, boolean proposeOnlyWithoutVariableElement)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CodesSecurityUtils.canNormaliseVariableElementsToCodes(ctx);
 
         // Normalise
         return getCodesMetamacService().normaliseVariableElementsToCodes(ctx, codelistUrn, locale, proposeOnlyWithoutVariableElement);
@@ -2584,7 +2583,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeRoleByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -2602,7 +2601,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeExtendedByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -2721,7 +2720,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn)
             throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -2743,7 +2742,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategorySchemeMetamacDto createCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
         // Security and transform
-        ItemsSecurityUtils.canCreateItemScheme(ctx);
+        CategoriesSecurityUtils.canCreateCategoryScheme(ctx);
         CategorySchemeVersionMetamac categorySchemeVersion = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
 
         // Create
@@ -2758,7 +2757,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CategorySchemeMetamacDto updateCategoryScheme(ServiceContext ctx, CategorySchemeMetamacDto categorySchemeDto) throws MetamacException {
         // Security
         CategorySchemeVersionMetamac categorySchemeVersionOld = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categorySchemeDto.getUrn());
-        ItemsSecurityUtils.canUpdateItemScheme(ctx, categorySchemeVersionOld.getLifeCycleMetadata().getProcStatus());
+        CategoriesSecurityUtils.canUpdateCategoryScheme(ctx, categorySchemeVersionOld.getLifeCycleMetadata().getProcStatus());
 
         // Transform
         CategorySchemeVersionMetamac categorySchemeVersionToUpdate = categoriesDto2DoMapper.categorySchemeMetamacDtoToDo(categorySchemeDto);
@@ -2774,7 +2773,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canDeleteItemScheme(ctx);
+        CategoriesSecurityUtils.canDeleteCategoryScheme(ctx);
 
         // Delete
         getCategoriesMetamacService().deleteCategoryScheme(ctx, urn);
@@ -2783,7 +2782,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<CategorySchemeMetamacBasicDto> findCategorySchemesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canFindItemSchemesByCondition(ctx);
+        CategoriesSecurityUtils.canFindCategorySchemesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategorySchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -2801,7 +2800,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategorySchemeMetamacDto retrieveCategorySchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveItemSchemeByUrn(ctx);
+        CategoriesSecurityUtils.canRetrieveCategorySchemeByUrn(ctx);
 
         // Retrieve
         CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
@@ -2815,7 +2814,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public List<CategorySchemeMetamacBasicDto> retrieveCategorySchemeVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveItemSchemeVersions(ctx);
+        CategoriesSecurityUtils.canRetrieveCategorySchemeVersions(ctx);
 
         // Retrieve and sort by date desc
         List<CategorySchemeVersionMetamac> categorySchemeVersionsMetamac = getCategoriesMetamacService().retrieveCategorySchemeVersions(ctx, urn);
@@ -2830,7 +2829,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canSendItemSchemeToProductionValidation(ctx);
+        CategoriesSecurityUtils.canSendCategorySchemeToProductionValidation(ctx);
 
         // Send
         CategorySchemeVersionMetamac categorySchemeVersionProductionValidation = getCategoriesMetamacService().sendCategorySchemeToProductionValidation(ctx, urn);
@@ -2843,7 +2842,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategorySchemeMetamacDto sendCategorySchemeToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canSendItemSchemeToDiffusionValidation(ctx);
+        CategoriesSecurityUtils.canSendCategorySchemeToDiffusionValidation(ctx);
 
         // Send
         CategorySchemeVersionMetamac categorySchemeVersionDiffusionValidation = getCategoriesMetamacService().sendCategorySchemeToDiffusionValidation(ctx, urn);
@@ -2857,7 +2856,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CategorySchemeMetamacDto rejectCategorySchemeProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Reject
         CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeProductionValidation(ctx, urn);
@@ -2871,7 +2870,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CategorySchemeMetamacDto rejectCategorySchemeDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
-        ItemsSecurityUtils.canRejectItemSchemeValidation(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        CategoriesSecurityUtils.canRejectCategorySchemeValidation(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
 
         // Reject
         CategorySchemeVersionMetamac categorySchemeVersionRejected = getCategoriesMetamacService().rejectCategorySchemeDiffusionValidation(ctx, urn);
@@ -2884,7 +2883,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategorySchemeMetamacDto publishCategorySchemeInternally(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canPublishItemSchemeInternally(ctx);
+        CategoriesSecurityUtils.canPublishCategorySchemeInternally(ctx);
 
         // Publish
         CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishInternallyCategoryScheme(ctx, urn, forceLatestFinal);
@@ -2897,7 +2896,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategorySchemeMetamacDto publishCategorySchemeExternally(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canPublishItemSchemeExternally(ctx);
+        CategoriesSecurityUtils.canPublishCategorySchemeExternally(ctx);
 
         CategorySchemeVersionMetamac categorySchemeVersionPublished = getCategoriesMetamacService().publishExternallyCategoryScheme(ctx, urn);
 
@@ -2918,7 +2917,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public TaskInfo versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canVersioningItemScheme(ctx);
+        CategoriesSecurityUtils.canVersioningCategoryScheme(ctx);
 
         TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
@@ -2941,7 +2940,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategorySchemeMetamacDto endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canEndItemSchemeValidity(ctx);
+        CategoriesSecurityUtils.canEndCategorySchemeValidity(ctx);
 
         CategorySchemeVersionMetamac categorySchemeEnded = getCategoriesMetamacService().endCategorySchemeValidity(ctx, urn);
 
@@ -2959,7 +2958,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CategoryMetamacDto createCategory(ServiceContext ctx, CategoryMetamacDto categoryMetamacDto) throws MetamacException {
         // Security
         CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categoryMetamacDto.getItemSchemeVersionUrn());
-        ItemsSecurityUtils.canCreateItem(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        CategoriesSecurityUtils.canCreateCategory(ctx, categorySchemeVersion);
 
         // Transform
         CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryMetamacDto);
@@ -2977,7 +2976,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CategoryMetamacDto updateCategory(ServiceContext ctx, CategoryMetamacDto categoryDto) throws MetamacException {
         // Security
         CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, categoryDto.getUrn());
-        ItemsSecurityUtils.canUpdateItem(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        CategoriesSecurityUtils.canUpdateCategory(ctx, categorySchemeVersion);
 
         // Transform
         CategoryMetamac categoryMetamac = categoriesDto2DoMapper.categoryMetamacDtoToDo(categoryDto);
@@ -2993,7 +2992,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public CategoryMetamacDto retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CategoriesSecurityUtils.canRetrieveCategoryByUrn(ctx);
 
         // Retrieve
         CategoryMetamac categoryMetamac = getCategoriesMetamacService().retrieveCategoryByUrn(ctx, urn);
@@ -3008,7 +3007,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, urn);
-        ItemsSecurityUtils.canDeleteItem(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+        CategoriesSecurityUtils.canDeleteCategory(ctx, categorySchemeVersion);
 
         // Delete
         getCategoriesMetamacService().deleteCategory(ctx, urn);
@@ -3017,7 +3016,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public List<ItemVisualisationResult> retrieveCategoriesByCategorySchemeUrn(ServiceContext ctx, String categorySchemeUrn, String locale) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CategoriesSecurityUtils.canRetrieveCategoriesByCategorySchemeUrn(ctx);
 
         // Retrieve
         return getCategoriesMetamacService().retrieveCategoriesByCategorySchemeUrn(ctx, categorySchemeUrn, locale);
@@ -3026,7 +3025,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public MetamacCriteriaResult<CategoryMetamacBasicDto> findCategoriesByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CategoriesSecurityUtils.canFindCategoriesByCondition(ctx);
 
         // Transform
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategoryMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
@@ -3058,7 +3057,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public CategorisationDto retrieveCategorisationByUrn(ServiceContext ctx, String urn) throws MetamacException {
 
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CategoriesSecurityUtils.canRetrieveCategorisationByUrn(ctx);
 
         // Retrieve
         Categorisation categorisation = getCategoriesMetamacService().retrieveCategorisationByUrn(ctx, urn);
@@ -3083,7 +3082,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     public List<CategorisationDto> retrieveCategorisationsByArtefact(ServiceContext ctx, String urn) throws MetamacException {
 
         // Security
-        ItemsSecurityUtils.canRetrieveOrFindResource(ctx);
+        CategoriesSecurityUtils.canRetrieveCategorisationByUrn(ctx);
 
         // Retrieve
         List<Categorisation> categorisations = getCategoriesMetamacService().retrieveCategorisationsByArtefact(ctx, urn);
@@ -3129,7 +3128,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
             // Category schemes
         } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CATEGORYSCHEME_PREFIX)) {
             CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, artefactCategorisedUrn);
-            ItemsSecurityUtils.canModifyCategorisation(ctx, categorySchemeVersion.getLifeCycleMetadata().getProcStatus());
+            CategoriesSecurityUtils.canModifyCategorisation(ctx, categorySchemeVersion);
 
             // Organisation schemes
         } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_ORGANISATIONUNITSCHEME_PREFIX)
@@ -3141,7 +3140,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
             // Codelists
         } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_CODELIST_PREFIX)) {
             CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, artefactCategorisedUrn);
-            ItemsSecurityUtils.canModifyCategorisation(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            CodesSecurityUtils.canModifyCategorisation(ctx, codelistVersion);
 
             // Dsd
         } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {

@@ -6,7 +6,11 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODU
 
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 
-public class SharedImportSecurityUtils extends SharedSecurityUtils {
+public class SharedTasksSecurityUtils extends SharedSecurityUtils {
+
+    public static boolean canFindTasksByCondition(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
 
     //
     // Structure artifacts
