@@ -2431,6 +2431,16 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public TaskInfo copyConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);
+        ConceptsSecurityUtils.canCopyConceptScheme(ctx, conceptSchemeVersionToCopy);
+
+        // Copy
+        return getConceptsMetamacService().copyConceptScheme(ctx, urnToCopy);
+    }
+
+    @Override
     public TaskInfo versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);

@@ -350,6 +350,8 @@ Application SrmFacadeCore {
 	    	@ConceptSchemeMetamacDto publishConceptSchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
+    		"Copies a concept scheme version, creating a new concept scheme"
+    		TaskInfo copyConceptScheme(String urnToCopy) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		TaskInfo versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"

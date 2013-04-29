@@ -29,7 +29,6 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
-import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -41,7 +40,6 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDtoMocks;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
@@ -56,7 +54,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
@@ -937,52 +934,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
+    public void testCopyConceptScheme() throws Exception {
+        // Do not test because facade operation has same signature as service operation (without dto)
+    }
+
+    @Test
     public void testVersioningConceptScheme() throws Exception {
-
-        String urn = CONCEPT_SCHEME_3_V1;
-        String versionExpected = "02.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(02.000)";
-
-        ConceptSchemeMetamacDto conceptSchemeDtoToCopy = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
-        TaskInfo versioningResult = srmCoreServiceFacade.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
-
-        assertEquals(urnExpected, versioningResult.getUrnResult());
-        assertEquals(null, versioningResult.getIsPlannedInBackground());
-        assertEquals(null, versioningResult.getJobKey());
-
-        // Validate response
-        ConceptSchemeMetamacDto conceptSchemeDtoNewVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
-        {
-            assertEquals(versionExpected, conceptSchemeDtoNewVersion.getVersionLogic());
-            assertEquals(urnExpected, conceptSchemeDtoNewVersion.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, conceptSchemeDtoNewVersion.getLifeCycle().getProcStatus());
-            ConceptsMetamacAsserts.assertEqualsConceptSchemeMetamacDto(conceptSchemeDtoToCopy, conceptSchemeDtoNewVersion);
-        }
-
-        // Validate retrieving
-        {
-            // New version
-            conceptSchemeDtoNewVersion = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeDtoNewVersion.getUrn());
-            assertEquals(versionExpected, conceptSchemeDtoNewVersion.getVersionLogic());
-            assertEquals(urnExpected, conceptSchemeDtoNewVersion.getUrn());
-            assertEquals(ProcStatusEnum.DRAFT, conceptSchemeDtoNewVersion.getLifeCycle().getProcStatus());
-            assertEquals("01.000", conceptSchemeDtoNewVersion.getReplaceToVersion());
-            assertEquals(null, conceptSchemeDtoNewVersion.getReplacedByVersion());
-            ConceptsMetamacAsserts.assertEqualsConceptSchemeMetamacDto(conceptSchemeDtoToCopy, conceptSchemeDtoNewVersion);
-
-            // Copied version
-            conceptSchemeDtoToCopy = srmCoreServiceFacade.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
-            assertEquals("01.000", conceptSchemeDtoToCopy.getVersionLogic());
-            assertEquals(urn, conceptSchemeDtoToCopy.getUrn());
-            assertEquals(null, conceptSchemeDtoToCopy.getReplaceToVersion());
-            assertEquals(versionExpected, conceptSchemeDtoToCopy.getReplacedByVersion());
-
-            // All versions
-            List<ConceptSchemeMetamacBasicDto> allVersions = srmCoreServiceFacade.retrieveConceptSchemeVersions(getServiceContextAdministrador(), urn);
-            assertEquals(2, allVersions.size());
-            assertEquals(urn, allVersions.get(0).getUrn());
-            assertEquals(urnExpected, allVersions.get(1).getUrn());
-        }
+        // Do not test because facade operation has same signature as service operation (without dto)
     }
 
     @Test

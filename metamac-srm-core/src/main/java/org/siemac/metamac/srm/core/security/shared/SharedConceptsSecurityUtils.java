@@ -106,6 +106,10 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         return false;
     }
 
+    public static boolean canCopyConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
+        return canCreateConceptScheme(metamacPrincipal, type, operationCode);
+    }
+
     public static boolean canVersioningConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
         if (isNonOperationConceptSchemeType(type)) {
             return canVersioningItemScheme(metamacPrincipal);
