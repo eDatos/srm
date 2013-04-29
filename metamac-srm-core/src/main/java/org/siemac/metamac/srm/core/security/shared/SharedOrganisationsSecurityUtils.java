@@ -43,6 +43,10 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
         return canPublishItemSchemeExternally(metamacPrincipal);
     }
 
+    public static boolean canCopyOrganisationScheme(MetamacPrincipal metamacPrincipal) {
+        return canCopyItemScheme(metamacPrincipal);
+    }
+
     public static boolean canVersioningOrganisationScheme(MetamacPrincipal metamacPrincipal) {
         return canVersioningItemScheme(metamacPrincipal);
     }

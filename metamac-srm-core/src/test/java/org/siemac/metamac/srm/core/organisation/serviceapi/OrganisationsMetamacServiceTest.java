@@ -1139,6 +1139,67 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Override
     @Test
+    public void testCopyOrganisationScheme() throws Exception {
+
+        String urnToCopy = ORGANISATION_SCHEME_11_V1;
+        String maintainerUrnExpected = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
+        String versionExpected = "01.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME11(01.000)";
+        String urnExpectedOrganisation1 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION01";
+        String urnExpectedOrganisation11 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION0101";
+        String urnExpectedOrganisation2 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION02";
+        String urnExpectedOrganisation3 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION03";
+
+        TaskInfo copyResult = organisationsService.copyOrganisationScheme(getServiceContextAdministrador(), urnToCopy);
+
+        // Validate (only some metadata, already tested in statistic module)
+        entityManager.clear();
+        OrganisationSchemeVersionMetamac organisationSchemeVersionNewArtefact = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), copyResult.getUrnResult());
+        assertEquals(maintainerUrnExpected, organisationSchemeVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+        assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
+        assertEquals(versionExpected, organisationSchemeVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
+        assertEquals(urnExpected, organisationSchemeVersionNewArtefact.getMaintainableArtefact().getUrn());
+        assertEquals(null, organisationSchemeVersionNewArtefact.getMaintainableArtefact().getReplaceToVersion());
+        assertEquals(null, organisationSchemeVersionNewArtefact.getMaintainableArtefact().getReplacedByVersion());
+        assertTrue(organisationSchemeVersionNewArtefact.getMaintainableArtefact().getIsLastVersion());
+
+        // Organisations
+        assertEquals(4, organisationSchemeVersionNewArtefact.getItems().size());
+        assertListItemsContainsItem(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation1);
+        assertListItemsContainsItem(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation11);
+        assertListItemsContainsItem(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation2);
+        assertListItemsContainsItem(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation3);
+
+        assertEquals(3, organisationSchemeVersionNewArtefact.getItemsFirstLevel().size());
+        {
+            OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedOrganisation1);
+            OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "en", "name org1", "it", "nombre it org1");
+            OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getDescription(), "es", "descripción org1", "it", "descripción it org1");
+            assertEquals(null, organisation.getNameableArtefact().getComment());
+
+            assertEquals(1, organisation.getChildren().size());
+            {
+                OrganisationMetamac organisationChild = assertListOrganisationsContainsOrganisation(organisation.getChildren(), urnExpectedOrganisation11);
+                assertEquals(0, organisationChild.getChildren().size());
+            }
+
+        }
+        {
+            OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedOrganisation2);
+            OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "en", "name org2", null, null);
+
+            assertEquals(0, organisation.getChildren().size());
+        }
+        {
+            OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedOrganisation3);
+            OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "es", "nombre org3", null, null);
+
+            assertEquals(0, organisation.getChildren().size());
+        }
+    }
+
+    @Override
+    @Test
     public void testVersioningOrganisationScheme() throws Exception {
 
         String urn = ORGANISATION_SCHEME_3_V1;
@@ -1150,18 +1211,18 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         String urnExpectedOrganisation211 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION020101";
         String urnExpectedOrganisation22 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION0202";
 
-        OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
         TaskInfo versioningResult = organisationsService.versioningOrganisationScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
 
         // Validate response
         entityManager.clear();
-        organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+        OrganisationSchemeVersionMetamac organisationSchemeVersionToCopy = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
         OrganisationSchemeVersionMetamac organisationSchemeVersionNewVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
 
         {
             assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertEquals(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, organisationSchemeVersionNewVersion.getOrganisationSchemeType());
             OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
         }
 

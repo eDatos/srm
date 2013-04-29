@@ -2057,6 +2057,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public TaskInfo copyOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        // Security
+        OrganisationsSecurityUtils.canCopyOrganisationScheme(ctx);
+
+        // Copy
+        return getOrganisationsMetamacService().copyOrganisationScheme(ctx, urnToCopy);
+    }
+
+    @Override
     public TaskInfo versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canVersioningOrganisationScheme(ctx);
@@ -2900,7 +2909,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public TaskInfo copyCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
-        ItemsSecurityUtils.canCopyItemScheme(ctx);
+        CategoriesSecurityUtils.canCopyCategoryScheme(ctx);
 
         // Copy
         return getCategoriesMetamacService().copyCategoryScheme(ctx, urnToCopy);

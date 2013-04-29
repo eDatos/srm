@@ -80,6 +80,10 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Qualifier("organisationsVersioningCallbackMetamac")
     private ItemSchemesCopyCallback       organisationsVersioningCallback;
 
+    @Autowired
+    @Qualifier("organisationsCopyCallbackMetamac")
+    private ItemSchemesCopyCallback       organisationsCopyCallback;
+
     public OrganisationsMetamacServiceImpl() {
     }
 
@@ -178,6 +182,13 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Delete
         organisationsService.deleteOrganisationScheme(ctx, urn);
+    }
+
+    @Override
+    public TaskInfo copyOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
+        VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
+        return organisationsService.copyOrganisationScheme(ctx, urnToCopy, maintainerUrn, versionPattern, organisationsCopyCallback);
     }
 
     @Override

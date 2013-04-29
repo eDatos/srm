@@ -1473,8 +1473,8 @@
                 REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="24"
-                DESCRIPTION_FK="[null]"
-                COMMENT_FK="[null]"
+                DESCRIPTION_FK="88"
+                COMMENT_FK="89"
                 
                 UUID="annotableArtefact-99311"
                 VERSION="1"
@@ -6061,6 +6061,39 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="87"
     />                                                                                                                
-                                                                                                                         
+    
+   <TB_INTERNATIONAL_STRINGS
+        ID="88"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="881"
+        LABEL="descripción concept1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="88"
+    />    
+    
+    <TB_LOCALISED_STRINGS
+        ID="882"
+        LABEL="descripción it concept1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="88"
+    />        
+    
+   <TB_INTERNATIONAL_STRINGS
+        ID="89"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="891"
+        LABEL="comentario concept-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="89"
+    />                                                                                                                                 
                     
 </dataset>

@@ -7,4 +7,9 @@ public class SharedCategoriesSecurityUtils extends SharedItemsSecurityUtils {
     public static boolean canCreateCategorySchemeTemporalVersion(MetamacPrincipal metamacPrincipal) {
         return canVersioningItemScheme(metamacPrincipal);
     }
+
+    public static boolean canCopyCategoryScheme(MetamacPrincipal metamacPrincipal) {
+        return canCopyItemScheme(metamacPrincipal);
+    }
+
 }

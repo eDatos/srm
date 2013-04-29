@@ -107,7 +107,8 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
     }
 
     public static boolean canCopyConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {
-        return canCreateConceptScheme(metamacPrincipal, type, operationCode);
+        SrmRoleEnum[] roles = {JEFE_NORMALIZACION};
+        return canCreateItemScheme(metamacPrincipal) && (!isOperationConceptSchemeType(type) || isOperationAllowed(metamacPrincipal, operationCode, roles));
     }
 
     public static boolean canVersioningConceptScheme(MetamacPrincipal metamacPrincipal, ConceptSchemeTypeEnum type, String operationCode) {

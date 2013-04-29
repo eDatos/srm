@@ -45,6 +45,8 @@ Application OrganisationsMetamac {
 	    	@OrganisationSchemeVersionMetamac publishExternallyOrganisationScheme(String urn) throws MetamacException;
 			"Deletes organisation scheme version. This must be last version and no published"
     		deleteOrganisationScheme(String urn) throws MetamacException;
+    		"Copies a organisation scheme version, creating a new organisation scheme"
+    		TaskInfo copyOrganisationScheme(String urnToCopy) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
     		TaskInfo versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a organisation scheme, copying metadata from version with provided urn"

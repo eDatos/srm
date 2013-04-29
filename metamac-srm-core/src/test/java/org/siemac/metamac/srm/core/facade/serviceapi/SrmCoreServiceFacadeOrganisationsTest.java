@@ -613,6 +613,18 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
     }
 
     @Test
+    public void testCopyOrganisationScheme() throws Exception {
+        // Copy
+        String urn = ORGANISATION_SCHEME_11_V1;
+        TaskInfo copyResult = srmCoreServiceFacade.copyOrganisationScheme(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME11(01.000)", copyResult.getUrnResult());
+        assertEquals(null, copyResult.getIsPlannedInBackground());
+        assertEquals(null, copyResult.getJobKey());
+    }
+
+    @Test
     public void testEndOrganisationSchemeValidity() throws Exception {
         OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.endOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
         assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeMetamacDto.getValidTo()));
