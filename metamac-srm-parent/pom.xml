@@ -15,7 +15,7 @@
     <description>SIEMAC :: METAMAC :: SRM :: PARENT</description>
 
     <properties>
-        <metamac-web-common.version>1.5.1-SNAPSHOT</metamac-web-common.version>
+        <metamac-web-common.version>1.6.1-SNAPSHOT</metamac-web-common.version>
         <metamac-common-test.version>1.4.1-SNAPSHOT</metamac-common-test.version>
         <metamac-transformation.version>1.0.0-SNAPSHOT</metamac-transformation.version>
         <metamac-statistical-operations.version>1.4.1-SNAPSHOT</metamac-statistical-operations.version>
