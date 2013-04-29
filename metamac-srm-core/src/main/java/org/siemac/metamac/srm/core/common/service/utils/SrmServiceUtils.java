@@ -408,6 +408,9 @@ public class SrmServiceUtils {
             case VERSIONING:
                 resultSelection = ItemMetamacResultSelection.VERSIONING;
                 break;
+            case VERSIONING_DUMMY:
+                resultSelection = ItemMetamacResultSelection.VERSIONING_DUMMY;
+                break;
             case COPY_TO_NEW_ARTEFACT:
                 resultSelection = ItemMetamacResultSelection.COPY;
                 break;

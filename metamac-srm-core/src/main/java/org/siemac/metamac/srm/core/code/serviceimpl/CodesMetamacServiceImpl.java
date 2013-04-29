@@ -133,6 +133,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private ItemSchemesCopyCallback        codesVersioningWithoutCodesCallback;
 
     @Autowired
+    @Qualifier("codesDummyVersioningCallbackMetamac")
+    private ItemSchemesCopyCallback        codesDummyVersioningCallbackMetamac;
+
+    @Autowired
     private TasksMetamacService            tasksMetamacService;
 
     @Autowired
@@ -341,12 +345,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public TaskInfo versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
-        return createVersionOfCodelist(ctx, urnToCopy, versioningCodes, versionType, false);
+        ItemSchemesCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningWithCodesCallback : codesVersioningWithoutCodesCallback;
+        return createVersionOfCodelist(ctx, urnToCopy, callback, versionType, false);
     }
 
     @Override
     public TaskInfo createTemporalCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        return createVersionOfCodelist(ctx, urnToCopy, null, null, true);
+
+        return createVersionOfCodelist(ctx, urnToCopy, codesDummyVersioningCallbackMetamac, null, true);
     }
 
     @Override
@@ -1902,14 +1908,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
-    private TaskInfo createVersionOfCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private TaskInfo createVersionOfCodelist(ServiceContext ctx, String urnToCopy, ItemSchemesCopyCallback itemSchemesCopyCallback, VersionTypeEnum versionType, boolean isTemporal)
+            throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, isTemporal, null, null);
         checkCodelistToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        ItemSchemesCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningWithCodesCallback : codesVersioningWithoutCodesCallback;
-        return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, Boolean.TRUE, callback);
+        return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, Boolean.TRUE, itemSchemesCopyCallback);
     }
 
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {

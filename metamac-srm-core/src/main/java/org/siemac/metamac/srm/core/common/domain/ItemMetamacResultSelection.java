@@ -8,6 +8,7 @@ public class ItemMetamacResultSelection extends ItemResultSelection {
     public static final ItemMetamacResultSelection MERGE                       = new ItemMetamacResultSelection(true, true, true, true);
     public static final ItemMetamacResultSelection COPY                        = new ItemMetamacResultSelection(true, false, true, true);
     public static final ItemMetamacResultSelection VERSIONING                  = new ItemMetamacResultSelection(true, false, true, true);
+    public static final ItemMetamacResultSelection VERSIONING_DUMMY            = ALL;
 
     private boolean                                internationalStringsMetamac = false;
 

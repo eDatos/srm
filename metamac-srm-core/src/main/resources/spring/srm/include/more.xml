@@ -59,6 +59,28 @@
     <bean id="dataStructureDefinitionsCopyCallbackMetamac" class="org.siemac.metamac.srm.core.dsd.serviceimpl.DataStructureDefinitionsCopyCallbackMetamacImpl">
         <property name="beanName" value="dataStructureCopyCallbackMetamac"/>
         <property name="copyOperationType" value="COPY_TO_NEW_ARTEFACT"/>
-    </bean>    
+    </bean>  
+    
+    <!-- Dummy Versioning -->
+    <bean id="conceptsDummyVersioningCallbackMetamac" class="org.siemac.metamac.srm.core.concept.serviceimpl.ConceptsCopyCallbackMetamacImpl">
+        <property name="beanName" value="conceptsDummyVersioningCallbackMetamac"/>
+        <property name="copyOperationType" value="VERSIONING_DUMMY"/>
+    </bean>
+    <bean id="organisationsDummyVersioningCallbackMetamac" class="org.siemac.metamac.srm.core.organisation.serviceimpl.OrganisationsCopyCallbackMetamacImpl">
+        <property name="beanName" value="organisationsDummyVersioningCallbackMetamac"/>
+        <property name="copyOperationType" value="VERSIONING_DUMMY"/>
+    </bean>
+    <bean id="categoriesDummyVersioningCallbackMetamac" class="org.siemac.metamac.srm.core.category.serviceimpl.CategoriesCopyCallbackMetamacImpl">
+        <property name="beanName" value="categoriesDummyVersioningCallbackMetamac"/>
+        <property name="copyOperationType" value="VERSIONING_DUMMY"/>
+    </bean>
+    <bean id="codesDummyVersioningCallbackMetamac" class="org.siemac.metamac.srm.core.code.serviceimpl.CodesCopyCallbackMetamacImpl">
+        <property name="beanName" value="codesDummyVersioningCallbackMetamac"/>
+        <property name="copyOperationType" value="VERSIONING_DUMMY"/>
+    </bean>
+    <bean id="dataStructureDefinitionsDummyVersioningCallbackMetamac" class="org.siemac.metamac.srm.core.dsd.serviceimpl.DataStructureDefinitionsCopyCallbackMetamacImpl">
+        <property name="beanName" value="dataStructureDummyVersioningCallbackMetamac"/>
+        <property name="copyOperationType" value="VERSIONING_DUMMY"/>
+    </bean>
 	
 </beans>
