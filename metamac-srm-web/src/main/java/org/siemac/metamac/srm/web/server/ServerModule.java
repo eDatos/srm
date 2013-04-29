@@ -76,6 +76,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodesVariableElemen
 import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.CopyConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CreateConceptSchemeTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptSchemesActionHandler;
@@ -201,6 +202,7 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodesVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.concept.CopyConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesAction;
@@ -321,6 +323,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetConceptsCanBeRoleAction.class, GetConceptsCanBeRoleActionHandler.class);
         bindHandler(GetConceptsCanBeExtendedAction.class, GetConceptsCanBeExtendedActionHandler.class);
         bindHandler(CreateConceptSchemeTemporalVersionAction.class, CreateConceptSchemeTemporalVersionActionHandler.class);
+        bindHandler(CopyConceptSchemeAction.class, CopyConceptSchemeActionHandler.class);
 
         // Organisations
         bindHandler(GetOrganisationSchemesAction.class, GetOrganisationSchemesActionHandler.class);
