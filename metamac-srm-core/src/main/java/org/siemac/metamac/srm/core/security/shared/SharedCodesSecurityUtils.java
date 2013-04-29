@@ -53,6 +53,10 @@ public class SharedCodesSecurityUtils extends SharedItemsSecurityUtils {
         return canPublishItemSchemeExternally(metamacPrincipal);
     }
 
+    public static boolean canCopyCodelist(MetamacPrincipal metamacPrincipal) {
+        return canCopyItemScheme(metamacPrincipal);
+    }
+
     public static boolean canVersioningCodelist(MetamacPrincipal metamacPrincipal) {
         return canVersioningItemScheme(metamacPrincipal);
     }

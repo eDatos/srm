@@ -889,7 +889,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // When updating
         // If the scheme has items (concepts), type cannot be modified
-
         if (conceptSchemeVersion.getId() != null) {
             if (conceptSchemeVersion.getIsTypeUpdated() && !conceptSchemeVersion.getMaintainableArtefact().getIsImported()) {
                 Long itemsCount = itemRepository.countItems(conceptSchemeVersion.getId());

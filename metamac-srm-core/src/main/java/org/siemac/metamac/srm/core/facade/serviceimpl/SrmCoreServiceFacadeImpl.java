@@ -1052,6 +1052,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public TaskInfo copyCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canCopyCodelist(ctx);
+
+        // Copy
+        return getCodesMetamacService().copyCodelist(ctx, urnToCopy);
+    }
+
+    @Override
     public TaskInfo versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         // Security
         CodesSecurityUtils.canVersioningCodelist(ctx);

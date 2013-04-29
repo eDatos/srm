@@ -489,6 +489,8 @@ Application SrmFacadeCore {
 	    	TaskInfo publishCodelistInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a Codelist"
 	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
+    		"Copies a codelist version, creating a new codelist"
+    		TaskInfo copyCodelist(String urnToCopy) throws MetamacException;
     		"Creates a new version of a Codelist, copying metadata from version with provided urn"
     		TaskInfo versioningCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a Codelist, copying metadata from version with provided urn"

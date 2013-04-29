@@ -1800,8 +1800,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testVersioningCodelistInBackground() throws Exception {
 
-        int previousValueLimitToBackground = SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND;
-        SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 3; // modify to force in background
+        int previousValueLimitToBackground = SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND;
+        SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = 3; // modify to force in background
         final String codelistUrn = CODELIST_3_V1;
         final StringBuilder jobKey = new StringBuilder();
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
@@ -1837,7 +1837,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         });
         waitUntilJobFinished();
-        SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = previousValueLimitToBackground;
+        SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = previousValueLimitToBackground;
 
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
@@ -1847,6 +1847,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate versioning
         validateVersioningCodelist3V1();
+    }
+
+    @Override
+    @Test
+    public void testCopyCodelist() throws Exception {
+        // TODO testCopyCodelist
+
     }
 
     @Override
@@ -7410,7 +7417,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testPublishInternallyCodelistInBackground() throws Exception {
 
-        int previousValueLimitToBackground = SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND;
+        int previousValueLimitToBackground = SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND;
         final String codelistUrn = CODELIST_3_V1;
         final StringBuilder jobKey = new StringBuilder();
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
@@ -7430,7 +7437,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     createTemporalCodelist = codesService.sendCodelistToDiffusionValidation(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn());
 
                     // PublicationInternally phase
-                    SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = 3; // modify to force in background
+                    SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = 3; // modify to force in background
                     TaskInfo versioningResult = codesService
                             .publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false, Boolean.TRUE);
 
@@ -7456,7 +7463,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         });
         waitUntilJobFinished();
-        SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND = previousValueLimitToBackground;
+        SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = previousValueLimitToBackground;
 
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());

@@ -27,6 +27,7 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
+import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -60,6 +61,7 @@ import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.normalisation.DiceLuceneRamAproxStringMatch;
@@ -125,6 +127,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private SrmValidation                  srmValidation;
 
     @Autowired
+    private SrmConfiguration               srmConfiguration;
+
+    @Autowired
     @Qualifier("codesVersioningCallbackMetamac")
     private ItemSchemesCopyCallback        codesVersioningWithCodesCallback;
 
@@ -135,6 +140,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Autowired
     @Qualifier("codesDummyVersioningCallbackMetamac")
     private ItemSchemesCopyCallback        codesDummyVersioningCallbackMetamac;
+
+    @Autowired
+    @Qualifier("codesCopyCallbackMetamac")
+    private ItemSchemesCopyCallback        codesCopyCallback;
 
     @Autowired
     private TasksMetamacService            tasksMetamacService;
@@ -286,17 +295,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersion codelistVersionToPublish = retrieveCodelistByUrn(ctx, urn);
         ItemScheme itemScheme = codelistVersionToPublish.getItemScheme();
 
-        // Determine if you need a schedule
-        Boolean executeInBackground = Boolean.FALSE;
-        if (BooleanUtils.isTrue(canBeBackground)) {
-            Long itemsCount = itemRepository.countItems(codelistVersionToPublish.getId());
-            if (itemsCount > SdmxConstants.VERSIONING_ITEMS_LIMIT_TO_BACKGROUND) {
-                executeInBackground = Boolean.TRUE;
-            }
-        }
-
         TaskInfo versioningResult = new TaskInfo();
-        if (executeInBackground) {
+        if (mustExecuteTaskInBackground(true, codelistVersionToPublish, canBeBackground)) {
             // Scheduled is needed
             // Validation
             codelistLifeCycle.prePublishResourceInInternallyPublished(ctx, urn, ProcStatusEnum.INTERNALLY_PUBLISHED); // PrePublish for early error checking
@@ -341,6 +341,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersionMetamac.setDefaultOrderVisualisation(null);
         codelistVersionMetamac.setDefaultOpennessVisualisation(null);
         codesService.deleteCodelist(ctx, codelistVersionMetamac.getMaintainableArtefact().getUrn());
+    }
+
+    @Override
+    public TaskInfo copyCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        ItemSchemesCopyCallback callback = codesCopyCallback;
+        String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
+        VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
+        return codesService.copyCodelist(ctx, urnToCopy, maintainerUrn, versionPattern, Boolean.TRUE, callback);
     }
 
     @Override
@@ -2886,4 +2894,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             codesToPersistByCode.put(codeMetamac.getNameableArtefact().getCode(), codeMetamac);
         }
     }
+
+    /**
+     * Determine if you need a schedule
+     */
+    private boolean mustExecuteTaskInBackground(boolean satisfyAdditionalConditions, ItemSchemeVersion itemSchemeVersion, Boolean canBeBackground) {
+        if (satisfyAdditionalConditions && BooleanUtils.isTrue(canBeBackground)) {
+            Long itemsCount = itemRepository.countItems(itemSchemeVersion.getId());
+            if (itemsCount > SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
