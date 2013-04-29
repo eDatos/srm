@@ -42,8 +42,8 @@ public class CodesCopyCallbackMetamacImpl extends CodesCopyCallbackImpl {
         super.copyItemSchemeVersion(sourceItemSchemeVersion, targetItemSchemeVersion);
         CodelistVersionMetamac source = (CodelistVersionMetamac) sourceItemSchemeVersion;
         CodelistVersionMetamac target = (CodelistVersionMetamac) targetItemSchemeVersion;
-        target.setShortName(copy(source.getShortName()));
-        target.setDescriptionSource(copy(source.getDescriptionSource()));
+        target.setShortName(copyInternationalString(source.getShortName()));
+        target.setDescriptionSource(copyInternationalString(source.getDescriptionSource()));
         target.setIsRecommended(source.getIsRecommended());
         target.setAccessType(source.getAccessType());
         target.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));

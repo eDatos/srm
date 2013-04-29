@@ -2509,7 +2509,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codeTarget.getNameableArtefact().setName(BaseCopyAllMetadataUtils.copyInternationalString(codeItemResultSource.getName()));
         codeTarget.getNameableArtefact().setDescription(BaseCopyAllMetadataUtils.copyInternationalString(codeItemResultSource.getDescription()));
         codeTarget.getNameableArtefact().setComment(null);
-        BaseCopyAllMetadataUtils.copyAnnotations(codeItemResultSource.getAnnotations(), codeTarget.getNameableArtefact());
+        BaseCopyAllMetadataUtils.copyAnnotations(codeItemResultSource, codeTarget.getNameableArtefact());
         codeTarget.setShortName(BaseCopyAllMetadataUtils.copyInternationalString(SrmServiceUtils.getCodeItemResultShortName(codeItemResultSource)));
         if (copyVariableElements) {
             codeTarget.setVariableElement(codeSource.getVariableElement());
