@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ItemsTreeGridUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.widgets.CodeTreeNode;
+import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.smartgwt.client.widgets.tree.TreeNode;
@@ -37,6 +38,10 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(CodeDS.OPENNESS_LEVEL_INITIAL, code.getOpenness()); // The value is unmodifiable by the user
         String iconUrl = BooleanUtils.isTrue(code.getOpenness()) ? GlobalResources.RESOURCE.folderOpened().getURL() : GlobalResources.RESOURCE.folderClosed().getURL();
         node.setAttribute(CodeDS.OPENNESS_LEVEL_ICON, iconUrl);
+        // Variable element
+        node.setAttribute(CodeDS.VARIABLE_ELEMENT, code.getVariableElement() != null
+                ? CommonWebUtils.getElementName(code.getVariableElement().getCode(), code.getVariableElement().getShortName())
+                : null);
         return node;
     }
 }

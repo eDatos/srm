@@ -75,7 +75,7 @@ public class CodelistCodesPanel extends VLayout {
         importCodesWindow.setCodelist(codelistMetamacDto);
     }
 
-    public void setItems(CodelistMetamacDto codelist, List<CodeMetamacVisualisationResult> codes) {
+    public void setCodes(CodelistMetamacDto codelist, List<CodeMetamacVisualisationResult> codes) {
         codesTreeGrid.setItems(codelist, codes);
     }
 

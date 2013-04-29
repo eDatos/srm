@@ -115,6 +115,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     // Codes
     private CodelistCodesPanel                           codelistCodesPanel;
 
+    // Variable elements assignment
+    private CodelistCodesVariableElementsPanel           codelistCodesVariableElementsPanel;
+
     // Orders
     private CodelistOrdersPanel                          codelistOrdersPanel;
 
@@ -161,6 +164,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         codelistCodesPanel = new CodelistCodesPanel();
 
+        // VARIABLE ELEMENTS ASSIGNMENT
+
+        codelistCodesVariableElementsPanel = new CodelistCodesVariableElementsPanel();
+
         //
         // ORDERS
         //
@@ -199,6 +206,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         Tab codesTab = new Tab(getConstants().codes());
         codesTab.setPane(codelistCodesPanel);
         tabSet.addTab(codesTab);
+
+        // Variable elements assignment
+        Tab variableElementsAssignment = new Tab(getConstants().codesVariableElementAssignment());
+        variableElementsAssignment.setPane(codelistCodesVariableElementsPanel);
+        tabSet.addTab(variableElementsAssignment);
 
         // Orders tab
         Tab ordersTab = new Tab(getConstants().codelistOrders());
@@ -437,7 +449,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     @Override
     public void setCodes(List<CodeMetamacVisualisationResult> codes) {
-        codelistCodesPanel.setItems(codelistDto, codes);
+        codelistCodesPanel.setCodes(codelistDto, codes);
+        codelistCodesVariableElementsPanel.setCodes(codelistDto, codes);
 
         // Every time new codes are set, the visualization of codes order or openness levels should be reset (maybe there are new codes, or its structure has changed)
         codelistOrdersPanel.hideCodes();
