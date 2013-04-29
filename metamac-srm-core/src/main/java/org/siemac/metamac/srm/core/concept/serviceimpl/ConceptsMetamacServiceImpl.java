@@ -13,6 +13,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
+import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -39,6 +40,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +88,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private LifeCycle                        conceptSchemeLifeCycle;
 
     @Autowired
+    private SrmConfiguration                 srmConfiguration;
+
+    @Autowired
     private SrmValidation                    srmValidation;
 
     @Autowired
@@ -94,6 +99,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Autowired
     @Qualifier("conceptsVersioningCallbackMetamac")
     private ItemSchemesCopyCallback          conceptsVersioningCallback;
+
+    @Autowired
+    @Qualifier("conceptsCopyCallbackMetamac")
+    private ItemSchemesCopyCallback          conceptsCopyCallback;
 
     @Autowired
     private InternationalStringRepository    internationalStringRepository;
@@ -239,6 +248,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Delete
         conceptsService.deleteConceptScheme(ctx, urn);
+    }
+
+    @Override
+    public TaskInfo copyConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
+        VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
+        return conceptsService.copyConceptScheme(ctx, urnToCopy, maintainerUrn, versionPattern, conceptsCopyCallback);
     }
 
     @Override

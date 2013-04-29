@@ -3883,8 +3883,8 @@
         
         CODE="CONCEPTSCHEME14"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME14(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME14(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX02:CONCEPTSCHEME14(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX02:CONCEPTSCHEME14(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3906,8 +3906,8 @@
         STRUCTURE_URL="[null]"
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
-        IS_IMPORTED="0"
-        MAINTAINER_FK="10011"
+        IS_IMPORTED="1"
+        MAINTAINER_FK="10012"
         
         UUID="annotableArtefact-141"
         VERSION="1"
@@ -3992,8 +3992,8 @@
 
                 CODE="CONCEPT01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT01"
-                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT01"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -4054,8 +4054,8 @@
         
                         CODE="CONCEPT0101"
                         URI_PROVIDER="[null]"
-                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT0101"
-                        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT0101"
+                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT0101"
+                        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT0101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
         
@@ -4116,8 +4116,8 @@
 
                 CODE="CONCEPT02"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT02"
-                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT02"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT02"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -4202,8 +4202,8 @@
 
                 CODE="CONCEPT03"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT03"
-                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT03"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT03"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 

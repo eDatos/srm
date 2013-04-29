@@ -1294,6 +1294,87 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
+    public void testCopyConceptScheme() throws Exception {
+
+        String urnToCopy = CONCEPT_SCHEME_14_V1;
+        String maintainerUrn = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
+        String versionExpected = "01.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME14(01.000)";
+        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT01";
+        String urnExpectedConcept11 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT0101";
+        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT02";
+        String urnExpectedConcept3 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT03";
+
+        TaskInfo copyResult = conceptsService.copyConceptScheme(getServiceContextAdministrador(), urnToCopy);
+
+        // Validate (only some metadata, already tested in statistic module)
+        entityManager.clear();
+        ConceptSchemeVersionMetamac conceptSchemeVersionNewArtefact = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), copyResult.getUrnResult());
+        assertEquals(maintainerUrn, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+        assertEquals(ProcStatusEnum.DRAFT, conceptSchemeVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
+        assertEquals(versionExpected, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
+        assertEquals(urnExpected, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getUrn());
+        assertEquals(null, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getReplaceToVersion());
+        assertEquals(null, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getReplacedByVersion());
+        assertTrue(conceptSchemeVersionNewArtefact.getMaintainableArtefact().getIsLastVersion());
+
+        // Concepts
+        assertEquals(4, conceptSchemeVersionNewArtefact.getItems().size());
+        assertListItemsContainsItem(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept1);
+        assertListItemsContainsItem(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept11);
+        assertListItemsContainsItem(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept2);
+        assertListItemsContainsItem(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept3);
+
+        assertEquals(3, conceptSchemeVersionNewArtefact.getItemsFirstLevel().size());
+        {
+            ConceptMetamac concept = assertListConceptsContainsConcept(conceptSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedConcept1);
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "en", "name concept1", "it", "nombre it concept1");
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getPluralName(), "es", "plural name es concept1", null, null);
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getAcronym(), "en", "acronym es concept1", null, null);
+            assertEquals(null, concept.getDescriptionSource());
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getContext(), "es", "contexto concept1", null, null);
+            assertEquals(null, concept.getDocMethod());
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDerivation(), "en", "derivation concept1", null, null);
+            assertEquals(null, concept.getLegalActs());
+            assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
+            assertEquals(CONCEPT_TYPE_DERIVED, concept.getConceptType().getIdentifier());
+            assertEquals(null, concept.getConceptExtends());
+            assertEquals(null, concept.getVariable());
+
+            assertEquals(1, concept.getChildren().size());
+            {
+                ConceptMetamac conceptChild = assertListConceptsContainsConcept(concept.getChildren(), urnExpectedConcept11);
+                assertEquals(0, conceptChild.getChildren().size());
+            }
+
+        }
+        {
+            ConceptMetamac concept = assertListConceptsContainsConcept(conceptSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedConcept2);
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "en", "name concept2", null, null);
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getPluralName(), "es", "plural name es concept2", "en", "plural name concept2");
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getAcronym(), "es", "acronym es concept2", null, null);
+            assertEquals(null, concept.getDescriptionSource());
+            assertEquals(null, concept.getContext());
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getDocMethod(), "en", "doc method concept2", null, null);
+            assertEquals(null, concept.getDerivation());
+            assertEquals(null, concept.getLegalActs());
+            assertEquals(ConceptRoleEnum.ATTRIBUTE, concept.getSdmxRelatedArtefact());
+            assertEquals(CONCEPT_TYPE_DERIVED, concept.getConceptType().getIdentifier());
+            assertEquals(null, concept.getConceptExtends());
+            assertEquals(null, concept.getVariable());
+
+            assertEquals(0, concept.getChildren().size());
+        }
+        {
+            ConceptMetamac concept = assertListConceptsContainsConcept(conceptSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedConcept3);
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "es", "nombre concept-3", "en", "name concept-3");
+
+            assertEquals(0, concept.getChildren().size());
+        }
+    }
+
+    @Override
+    @Test
     public void testVersioningConceptScheme() throws Exception {
 
         String urn = CONCEPT_SCHEME_3_V1;

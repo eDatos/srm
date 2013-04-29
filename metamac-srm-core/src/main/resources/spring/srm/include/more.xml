@@ -28,10 +28,37 @@
         <property name="copyOperationType" value="VERSIONING"/>
         <property name="mustCopyItems" value="false"/>
     </bean>    
-            
     <bean id="dataStructureDefinitionsVersioningCallbackMetamac" class="org.siemac.metamac.srm.core.dsd.serviceimpl.DataStructureDefinitionsCopyCallbackMetamacImpl">
         <property name="beanName" value="dataStructureVersioningCallbackMetamac"/>
         <property name="copyOperationType" value="VERSIONING"/>
+    </bean>    
+    
+    <!-- Copy -->
+    <bean id="conceptsCopyCallbackMetamac" class="org.siemac.metamac.srm.core.concept.serviceimpl.ConceptsCopyCallbackMetamacImpl">
+        <property name="beanName" value="conceptsCopyCallbackMetamac"/>
+        <property name="copyOperationType" value="COPY_TO_NEW_ARTEFACT"/>
+    </bean>
+    <bean id="organisationsCopyCallbackMetamac" class="org.siemac.metamac.srm.core.organisation.serviceimpl.OrganisationsCopyCallbackMetamacImpl">
+        <property name="beanName" value="organisationsCopyCallbackMetamac"/>
+        <property name="copyOperationType" value="COPY_TO_NEW_ARTEFACT"/>
+    </bean>
+    <bean id="categoriesCopyCallbackMetamac" class="org.siemac.metamac.srm.core.category.serviceimpl.CategoriesCopyCallbackMetamacImpl">
+        <property name="beanName" value="categoriesCopyCallbackMetamac"/>
+        <property name="copyOperationType" value="COPY_TO_NEW_ARTEFACT"/>
+    </bean>
+    <bean id="codesCopyCallbackMetamac" class="org.siemac.metamac.srm.core.code.serviceimpl.CodesCopyCallbackMetamacImpl">
+        <property name="beanName" value="codesCopyCallbackMetamac"/>
+        <property name="copyOperationType" value="COPY_TO_NEW_ARTEFACT"/>
+    </bean>
+    <bean id="codesCopyWithoutCodesCallbackMetamac" class="org.siemac.metamac.srm.core.code.serviceimpl.CodesCopyCallbackMetamacImpl">
+        <property name="beanName" value="codesCopyCallbackMetamac"/>
+        <property name="copyOperationType" value="COPY_TO_NEW_ARTEFACT"/>
+        <property name="mustCopyItems" value="false"/>
+    </bean>    
+            
+    <bean id="dataStructureDefinitionsCopyCallbackMetamac" class="org.siemac.metamac.srm.core.dsd.serviceimpl.DataStructureDefinitionsCopyCallbackMetamacImpl">
+        <property name="beanName" value="dataStructureCopyCallbackMetamac"/>
+        <property name="copyOperationType" value="COPY_TO_NEW_ARTEFACT"/>
     </bean>    
 	
 </beans>
