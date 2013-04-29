@@ -1297,7 +1297,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     public void testCopyConceptScheme() throws Exception {
 
         String urnToCopy = CONCEPT_SCHEME_14_V1;
-        String maintainerUrn = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
+        String maintainerUrnExpected = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
         String versionExpected = "01.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME14(01.000)";
         String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT01";
@@ -1310,7 +1310,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // Validate (only some metadata, already tested in statistic module)
         entityManager.clear();
         ConceptSchemeVersionMetamac conceptSchemeVersionNewArtefact = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), copyResult.getUrnResult());
-        assertEquals(maintainerUrn, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+        assertEquals(maintainerUrnExpected, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
         assertEquals(ProcStatusEnum.DRAFT, conceptSchemeVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
         assertEquals(versionExpected, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
         assertEquals(urnExpected, conceptSchemeVersionNewArtefact.getMaintainableArtefact().getUrn());

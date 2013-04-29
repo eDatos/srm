@@ -29,6 +29,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -54,6 +55,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
@@ -934,13 +936,27 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testCopyConceptScheme() throws Exception {
-        // Do not test because facade operation has same signature as service operation (without dto)
+    public void testVersioningConceptScheme() throws Exception {
+        // Versioning
+        String urn = CONCEPT_SCHEME_3_V1;
+        TaskInfo versioningResult = srmCoreServiceFacade.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+
+        // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(02.000)", versioningResult.getUrnResult());
+        assertEquals(null, versioningResult.getIsPlannedInBackground());
+        assertEquals(null, versioningResult.getJobKey());
     }
 
     @Test
-    public void testVersioningConceptScheme() throws Exception {
-        // Do not test because facade operation has same signature as service operation (without dto)
+    public void testCopyConceptScheme() throws Exception {
+        // Copy
+        String urn = CONCEPT_SCHEME_14_V1;
+        TaskInfo copyResult = srmCoreServiceFacade.copyConceptScheme(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME14(01.000)", copyResult.getUrnResult());
+        assertEquals(null, copyResult.getIsPlannedInBackground());
+        assertEquals(null, copyResult.getJobKey());
     }
 
     @Test

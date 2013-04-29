@@ -10,6 +10,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
+import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -26,6 +27,7 @@ import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -73,8 +75,15 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private SrmValidation                  srmValidation;
 
     @Autowired
+    private SrmConfiguration               srmConfiguration;
+
+    @Autowired
     @Qualifier("categoriesVersioningCallbackMetamac")
     private ItemSchemesCopyCallback        categoriesVersioningCallback;
+
+    @Autowired
+    @Qualifier("categoriesCopyCallbackMetamac")
+    private ItemSchemesCopyCallback        categoriesCopyCallback;
 
     @Autowired
     private MaintainableArtefactRepository maintainableArtefactRepository;
@@ -185,6 +194,13 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Delete
         categoriesService.deleteCategoryScheme(ctx, urn);
+    }
+
+    @Override
+    public TaskInfo copyCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
+        VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
+        return categoriesService.copyCategoryScheme(ctx, urnToCopy, maintainerUrn, versionPattern, categoriesCopyCallback);
     }
 
     @Override

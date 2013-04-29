@@ -527,7 +527,6 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
     @Test
     public void testVersioningCategoryScheme() throws Exception {
-
         // Versioning
         String urn = CATEGORY_SCHEME_3_V1;
         TaskInfo versioningResult = srmCoreServiceFacade.versioningCategoryScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
@@ -536,6 +535,18 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME03(02.000)", versioningResult.getUrnResult());
         assertEquals(null, versioningResult.getIsPlannedInBackground());
         assertEquals(null, versioningResult.getJobKey());
+    }
+
+    @Test
+    public void testCopyCategoryScheme() throws Exception {
+        // Copy
+        String urn = CATEGORY_SCHEME_8_V1;
+        TaskInfo copyResult = srmCoreServiceFacade.copyCategoryScheme(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME08(01.000)", copyResult.getUrnResult());
+        assertEquals(null, copyResult.getIsPlannedInBackground());
+        assertEquals(null, copyResult.getJobKey());
     }
 
     @Test

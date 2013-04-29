@@ -84,6 +84,12 @@ public class ItemsSecurityUtils extends SecurityUtils {
         }
     }
 
+    public static void canCopyItemScheme(ServiceContext ctx) throws MetamacException {
+        if (!SharedItemsSecurityUtils.canCopyItemScheme(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canAnnounceItemScheme(ServiceContext ctx) throws MetamacException {
         if (!SharedItemsSecurityUtils.canAnnounceItemScheme(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);

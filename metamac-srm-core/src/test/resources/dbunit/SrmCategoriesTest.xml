@@ -2253,14 +2253,14 @@
         
         CODE="CATEGORYSCHEME08"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME08(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME08(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX02:CATEGORYSCHEME08(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX02:CATEGORYSCHEME08(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
         NAME_FK="32"
         DESCRIPTION_FK="33"
-        COMMENT_FK="[null]"
+        COMMENT_FK="54"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="0"
@@ -2277,7 +2277,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         IS_IMPORTED="0"
-        MAINTAINER_FK="10011"
+        MAINTAINER_FK="10012"
         
         UUID="annotableArtefact-81"
         VERSION="1"
@@ -2352,8 +2352,8 @@
                 CODE="CATEGORY01"
                 CODE_FULL="CATEGORY01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01"
-                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX02:CATEGORYSCHEME08(01.000).CATEGORY01"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX02:CATEGORYSCHEME08(01.000).CATEGORY01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -2404,8 +2404,8 @@
                         CODE="CATEGORY0101"
                         CODE_FULL="CATEGORY01.CATEGORY0101"
                         URI_PROVIDER="[null]"
-                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01.CATEGORY0101"
-                        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01.CATEGORY0101"
+                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX02:CATEGORYSCHEME08(01.000).CATEGORY01.CATEGORY0101"
+                        URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX02:CATEGORYSCHEME08(01.000).CATEGORY01.CATEGORY0101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
         
@@ -2469,8 +2469,8 @@
                 CODE="CATEGORY02"
                 CODE_FULL="CATEGORY02"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY02"
-                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY02"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX02:CATEGORYSCHEME08(01.000).CATEGORY02"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX02:CATEGORYSCHEME08(01.000).CATEGORY02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -2545,8 +2545,8 @@
                 CODE="CATEGORY03"
                 CODE_FULL="CATEGORY03"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY03"
-                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY03"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX02:CATEGORYSCHEME08(01.000).CATEGORY03"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX02:CATEGORYSCHEME08(01.000).CATEGORY03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -3254,5 +3254,18 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="53"
-    />                                    
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="54"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="541"
+        LABEL="Comment categoryScheme-8-v1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="54"
+    />                                          
 </dataset>

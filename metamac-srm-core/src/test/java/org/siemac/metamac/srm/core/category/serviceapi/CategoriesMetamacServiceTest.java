@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -1017,6 +1018,71 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Override
     @Test
+    public void testCopyCategoryScheme() throws Exception {
+
+        String urnToCopy = CATEGORY_SCHEME_8_V1;
+        String maintainerUrnExpected = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
+        String versionExpected = "01.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME08(01.000)";
+        String urnExpectedCategory1 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01";
+        String urnExpectedCategory11 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY01.CATEGORY0101";
+        String urnExpectedCategory2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY02";
+        String urnExpectedCategory3 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY03";
+
+        TaskInfo copyResult = categoriesService.copyCategoryScheme(getServiceContextAdministrador(), urnToCopy);
+
+        // Validate (only some metadata, already tested in statistic module)
+        entityManager.clear();
+        CategorySchemeVersionMetamac categorySchemeVersionNewArtefact = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), copyResult.getUrnResult());
+        assertEquals(maintainerUrnExpected, categorySchemeVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+        assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
+        assertEquals(versionExpected, categorySchemeVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
+        assertEquals(urnExpected, categorySchemeVersionNewArtefact.getMaintainableArtefact().getUrn());
+        assertEquals(null, categorySchemeVersionNewArtefact.getMaintainableArtefact().getReplaceToVersion());
+        assertEquals(null, categorySchemeVersionNewArtefact.getMaintainableArtefact().getReplacedByVersion());
+        assertTrue(categorySchemeVersionNewArtefact.getMaintainableArtefact().getIsLastVersion());
+        CategoriesMetamacAsserts.assertEqualsInternationalString(categorySchemeVersionNewArtefact.getMaintainableArtefact().getName(), "es", "nombre catScheme8-1", null, null);
+        CategoriesMetamacAsserts.assertEqualsInternationalString(categorySchemeVersionNewArtefact.getMaintainableArtefact().getDescription(), "en", "description catScheme8-1", "it",
+                "descripcion it catScheme8-1");
+        assertEquals(null, categorySchemeVersionNewArtefact.getMaintainableArtefact().getComment());
+
+        // Categories
+        assertEquals(4, categorySchemeVersionNewArtefact.getItems().size());
+        assertListItemsContainsItem(categorySchemeVersionNewArtefact.getItems(), urnExpectedCategory1);
+        assertListItemsContainsItem(categorySchemeVersionNewArtefact.getItems(), urnExpectedCategory11);
+        assertListItemsContainsItem(categorySchemeVersionNewArtefact.getItems(), urnExpectedCategory2);
+        assertListItemsContainsItem(categorySchemeVersionNewArtefact.getItems(), urnExpectedCategory3);
+
+        assertEquals(3, categorySchemeVersionNewArtefact.getItemsFirstLevel().size());
+        {
+            CategoryMetamac category = assertListCategoriesContainsCategory(categorySchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedCategory1);
+            CategoriesMetamacAsserts.assertEqualsInternationalString(category.getNameableArtefact().getName(), "en", "name cat1", "it", "nombre it cat1");
+            CategoriesMetamacAsserts.assertEqualsInternationalString(category.getNameableArtefact().getDescription(), "es", "descripción cat1", "it", "descripción it cat1");
+            assertEquals(null, category.getNameableArtefact().getComment());
+
+            assertEquals(1, category.getChildren().size());
+            {
+                CategoryMetamac categoryChild = assertListCategoriesContainsCategory(category.getChildren(), urnExpectedCategory11);
+                assertEquals(0, categoryChild.getChildren().size());
+            }
+
+        }
+        {
+            CategoryMetamac category = assertListCategoriesContainsCategory(categorySchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedCategory2);
+            CategoriesMetamacAsserts.assertEqualsInternationalString(category.getNameableArtefact().getName(), "en", "name cat2", null, null);
+
+            assertEquals(0, category.getChildren().size());
+        }
+        {
+            CategoryMetamac category = assertListCategoriesContainsCategory(categorySchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedCategory3);
+            CategoriesMetamacAsserts.assertEqualsInternationalString(category.getNameableArtefact().getName(), "es", "nombre cat3", null, null);
+
+            assertEquals(0, category.getChildren().size());
+        }
+    }
+
+    @Override
+    @Test
     public void testVersioningCategoryScheme() throws Exception {
 
         String urn = CATEGORY_SCHEME_3_V1;
@@ -1963,6 +2029,18 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     }
     @Override
     public void testEndCategorisationValidity() throws Exception {
+    }
+
+    @SuppressWarnings("rawtypes")
+    private CategoryMetamac assertListCategoriesContainsCategory(List items, String urn) {
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            CategoryMetamac category = (CategoryMetamac) iterator.next();
+            if (category.getNameableArtefact().getUrn().equals(urn)) {
+                return category;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
+        return null;
     }
 
     @Override

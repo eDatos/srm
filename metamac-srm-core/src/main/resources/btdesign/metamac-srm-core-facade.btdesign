@@ -426,6 +426,8 @@ Application SrmFacadeCore {
 	    	@CategorySchemeMetamacDto publishCategorySchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a category scheme"
 	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
+    		"Copies a category scheme version, creating a new category scheme"
+    		TaskInfo copyCategoryScheme(String urnToCopy) throws MetamacException;
     		"Creates a new version of a category scheme, copying metadata from version with provided urn"
     		TaskInfo versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a category scheme, copying metadata from version with provided urn"
