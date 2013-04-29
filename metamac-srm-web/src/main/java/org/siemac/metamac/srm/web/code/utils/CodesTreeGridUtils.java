@@ -38,10 +38,12 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(CodeDS.OPENNESS_LEVEL_INITIAL, code.getOpenness()); // The value is unmodifiable by the user
         String iconUrl = BooleanUtils.isTrue(code.getOpenness()) ? GlobalResources.RESOURCE.folderOpened().getURL() : GlobalResources.RESOURCE.folderClosed().getURL();
         node.setAttribute(CodeDS.OPENNESS_LEVEL_ICON, iconUrl);
-        // Variable element
+
+        // Only for variable elements tree grid
         node.setAttribute(CodeDS.VARIABLE_ELEMENT, code.getVariableElement() != null
                 ? CommonWebUtils.getElementName(code.getVariableElement().getCode(), code.getVariableElement().getShortName())
                 : null);
+        // node.setAttribute(CodeDS.VARIABLE_ELEMENT_EDITION, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.search().getURL());
         return node;
     }
 }
