@@ -231,7 +231,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
             Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_2_V1_CONCEPT_2);
             ConceptSchemeVersion conceptScheme = conceptSchemeVersionMetamacRepository.findByUrn(CONCEPT_SCHEME_3_V1);
             Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02), conceptScheme);
-            ((MeasureDimension) measureDim).setIsRepresentationUpdated(Boolean.TRUE);
+            ((MeasureDimension) measureDim).setIsEnumeratedRepresentationUpdated(Boolean.TRUE);
             ((MeasureDimension) measureDim).setIsConceptIdUpdated(Boolean.FALSE);
             dsdsMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), urn, measureDim);
             assertTrue(dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().size() == 0);

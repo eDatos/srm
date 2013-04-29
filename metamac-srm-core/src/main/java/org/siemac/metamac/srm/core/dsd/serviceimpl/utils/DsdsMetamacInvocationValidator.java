@@ -76,8 +76,8 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         ValidationUtils.checkParameterRequired(component, ServiceExceptionParameters.COMPONENT, exceptions);
 
         if (component instanceof DimensionComponent) {
-            ValidationUtils.checkMetadataRequired(((DimensionComponent) component).getIsRepresentationUpdated(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_DIMENSION_REPRESENTATION_UPDATED,
-                    exceptions);
+            ValidationUtils.checkMetadataRequired(((DimensionComponent) component).getIsEnumeratedRepresentationUpdated(),
+                    ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_DIMENSION_REPRESENTATION_UPDATED, exceptions);
             ValidationUtils.checkMetadataRequired(((DimensionComponent) component).getIsConceptIdUpdated(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_DIMENSION_CONCEPTID_UPDATED,
                     exceptions);
         }

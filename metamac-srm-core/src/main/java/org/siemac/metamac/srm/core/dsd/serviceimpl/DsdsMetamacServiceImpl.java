@@ -238,7 +238,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Clean Show Decimals Precision
         if (component instanceof MeasureDimension) {
-            if (((MeasureDimension) component).getIsRepresentationUpdated()) {
+            if (((MeasureDimension) component).getIsEnumeratedRepresentationUpdated()) {
                 // perform a clean up of the Show Decimals Precision of DSD
                 dataStructureDefinitionVersionMetamac.getShowDecimalsPrecisions().clear();
             }
@@ -247,7 +247,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Check if clean VisualizationInfo is necessary
         if (component instanceof DimensionComponent) {
             // When representation changed
-            if (((DimensionComponent) component).getIsRepresentationUpdated()) {
+            if (((DimensionComponent) component).getIsEnumeratedRepresentationUpdated()) {
                 // Check if a clean up of DimensionVisualisationInfo is needed
                 if (component.getLocalRepresentation() != null) {
                     // Dimension Representation

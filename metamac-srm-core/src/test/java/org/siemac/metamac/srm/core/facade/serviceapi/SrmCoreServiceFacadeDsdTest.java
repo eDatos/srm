@@ -238,7 +238,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     }
 
     @Test
-    @Ignore
     public void testDimension() throws Exception {
 
         // Create ****************
