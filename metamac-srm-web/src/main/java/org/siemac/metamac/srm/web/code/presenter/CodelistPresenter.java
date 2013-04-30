@@ -34,6 +34,9 @@ import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
@@ -99,6 +102,7 @@ import org.siemac.metamac.srm.web.shared.code.VersionCodelistResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -161,6 +165,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
         // Codes and variable elements assignment
         void setCodesVariableElementsNormalised(List<CodeVariableElementNormalisationResult> codeVariableElementNormalisationResults);
+        void setVariableElementsForManualNormalisation(GetRelatedResourcesResult result);
 
         // Orders
         void setCodesWithOrder(List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrder);
@@ -879,6 +884,24 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 retrieveCodes();
             }
         });
+    }
+
+    @Override
+    public void retrieveVariableElementsForManualNormalisation(int firstResult, int maxResults, String criteria, String codelistUrn) {
+        VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
+        variableElementWebCriteria.setCodelistUrn(codelistUrn);
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.VARIABLE_ELEMENT_WITH_CODE, firstResult, maxResults, variableElementWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setVariableElementsForManualNormalisation(result);
+                    }
+                });
     }
 
     //

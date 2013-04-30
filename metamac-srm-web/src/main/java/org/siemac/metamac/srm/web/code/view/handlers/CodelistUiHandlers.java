@@ -28,6 +28,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
 
     void normaliseVariableElementsToCodes(String codelistUrn, String locale, boolean onlyNormaliseCodesWithoutVariableElement);
     void updateCodesVariableElements(String codelistUrn, Map<Long, Long> variableElementsIdByCodeId);
+    void retrieveVariableElementsForManualNormalisation(int firstResult, int maxResults, String criteria, String codelistUrn);
 
     void retrieveCodesWithOrder(String orderIdentifier);
     void retrieveCodelistOrders(String codelistUrn);

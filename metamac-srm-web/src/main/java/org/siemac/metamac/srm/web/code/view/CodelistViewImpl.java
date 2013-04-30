@@ -37,6 +37,7 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOpennesssLevelsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOrdersPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
@@ -467,6 +468,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     @Override
     public void setCodesVariableElementsNormalised(List<CodeVariableElementNormalisationResult> codeVariableElementNormalisationResults) {
         codelistCodesVariableElementsPanel.setCodesVariableElementsNormalised(codeVariableElementNormalisationResults);
+    }
+
+    @Override
+    public void setVariableElementsForManualNormalisation(GetRelatedResourcesResult result) {
+        codelistCodesVariableElementsPanel.setVariableElementsForManualNormalisation(result);
     }
 
     //

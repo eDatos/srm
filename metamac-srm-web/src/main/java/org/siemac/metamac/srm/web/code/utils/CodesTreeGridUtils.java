@@ -12,7 +12,9 @@ import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.widgets.CodeTreeNode;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class CodesTreeGridUtils extends ItemsTreeGridUtils {
@@ -47,6 +49,7 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(CodeDS.VARIABLE_ELEMENT, code.getVariableElement() != null
                 ? CommonWebUtils.getElementName(code.getVariableElement().getCode(), code.getVariableElement().getShortName())
                 : null);
+        // Icon
         node.setAttribute(CodeDS.VARIABLE_ELEMENT_EDITION, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.search().getURL());
         return node;
     }
@@ -59,5 +62,10 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, variableElement != null ? variableElement.getIdDatabase() : null);
         node.setAttribute(CodeDS.VARIABLE_ELEMENT, variableElement != null ? CommonWebUtils.getElementName(variableElement.getCode(), variableElement.getShortName()) : null);
         return node;
+    }
+
+    public static void setVariableElementInRecord(Record record, RelatedResourceDto variableElement) {
+        record.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, variableElement.getId()); // The related resource of this element contains the database id of the variable element
+        record.setAttribute(CodeDS.VARIABLE_ELEMENT, CommonWebUtils.getElementName(variableElement.getCode(), variableElement.getTitle()));
     }
 }

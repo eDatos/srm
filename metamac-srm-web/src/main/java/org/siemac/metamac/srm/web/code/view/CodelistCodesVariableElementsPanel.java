@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -76,6 +77,10 @@ public class CodelistCodesVariableElementsPanel extends VLayout {
         codesVariableElementsAssignmentTreeGrid.setCodesVariableElementsNormalised(codelistMetamacDto, codeVariableElementNormalisationResults);
     }
 
+    public void setVariableElementsForManualNormalisation(GetRelatedResourcesResult result) {
+        codesVariableElementsAssignmentTreeGrid.setVariableElementsForManualNormalisation(result);
+    }
+
     private void setViewMode() {
         showEditButton();
         saveButton.hide();
@@ -110,6 +115,7 @@ public class CodelistCodesVariableElementsPanel extends VLayout {
 
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
+        codesVariableElementsAssignmentTreeGrid.setUiHandlers(uiHandlers);
     }
 
     //
