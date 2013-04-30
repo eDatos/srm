@@ -15,6 +15,7 @@ import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
+import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -63,6 +64,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
@@ -108,6 +110,10 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Autowired
     @Qualifier("dataStructureDefinitionsVersioningCallbackMetamac")
     private DataStructureDefinitionsCopyCallback  dataStructureDefinitionsVersioningCallback;
+
+    @Autowired
+    @Qualifier("dataStructureDefinitionsCopyCallbackMetamac")
+    private DataStructureDefinitionsCopyCallback  dataStructureDefinitionsCopyCallback;
 
     @Autowired
     private StructureVersionRepository            structureVersionRepository;
@@ -345,6 +351,13 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         dataStructureDefinitionVersion.removeAllDimensionVisualisationInfos();
         // Delete
         dataStructureDefinitionService.deleteDataStructureDefinition(ctx, urn);
+    }
+
+    @Override
+    public TaskInfo copyDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
+        VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
+        return dataStructureDefinitionService.copyDataStructureDefinition(ctx, urnToCopy, maintainerUrn, versionPattern, dataStructureDefinitionsCopyCallback);
     }
 
     @Override

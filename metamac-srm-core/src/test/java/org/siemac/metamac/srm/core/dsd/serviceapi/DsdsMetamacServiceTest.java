@@ -10,6 +10,9 @@ import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMe
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -17,6 +20,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
@@ -55,6 +59,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
@@ -84,6 +89,12 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
 
     @Autowired
     private CodelistVersionMetamacRepository      codelistVersionMetamacRepository;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager                       entityManager;
+
+    @Autowired
+    private ConfigurationService                  configurationService;
 
     private final ServiceContext                  serviceContext = new ServiceContext("system", "123456", "junit");
 
@@ -335,6 +346,33 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Override
     public void testDeleteDataStructureDefinition() throws Exception {
         // dsdsMetamacService.deleteDataStructureDefinition(getServiceContextAdministrador(), DSD_06_URN);
+    }
+
+    @Test
+    @Override
+    public void testCopyDataStructureDefinition() throws Exception {
+        String urnToCopy = DSD_6_V1;
+        String maintainerUrnExpected = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
+        String versionExpected = "01.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)";
+
+        // Overwrite data conf
+
+        TaskInfo copyResult = dsdsMetamacService.copyDataStructureDefinition(getServiceContextAdministrador(), urnToCopy);
+        // Validate (only some metadata, already tested in statistic module)
+        entityManager.clear();
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionNewArtefact = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(),
+                copyResult.getUrnResult());
+        assertEquals(maintainerUrnExpected, dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+        assertEquals(ProcStatusEnum.DRAFT, dataStructureDefinitionVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
+        assertEquals(versionExpected, dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
+        assertEquals(urnExpected, dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getUrn());
+        assertEquals(null, dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getReplaceToVersion());
+        assertEquals(null, dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getReplacedByVersion());
+        assertTrue(dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getIsLastVersion());
+
+        // DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
+        // DataStructureDefinitionVersionMetamac dsdNewVersion = dsdsMetamacService.versioningDataStructureDefinition(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
     }
 
     @Test

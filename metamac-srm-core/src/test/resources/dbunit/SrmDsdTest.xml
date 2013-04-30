@@ -3359,8 +3359,8 @@
         
         CODE="DATASTRUCTUREDEFINITION06"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX02:DATASTRUCTUREDEFINITION06(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX02:DATASTRUCTUREDEFINITION06(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3383,7 +3383,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         IS_IMPORTED="0"
-        MAINTAINER_FK="10011"
+        MAINTAINER_FK="10012"
         
         UUID="datastructuredefinition-06-v1"
         VERSION="1"
@@ -3402,8 +3402,8 @@
         
         CODE="measureDimension-01"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).measureDimension-01"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).measureDimension-01"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX02:DATASTRUCTUREDEFINITION06(01.000).measureDimension-01"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX02:DATASTRUCTUREDEFINITION06(01.000).measureDimension-01"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3452,8 +3452,8 @@
         
         CODE="DimensionDescriptor"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).DimensionDescriptor"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.DimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).DimensionDescriptor"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DimensionDescriptor=SDMX02:DATASTRUCTUREDEFINITION06(01.000).DimensionDescriptor"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.DimensionDescriptor=SDMX02:DATASTRUCTUREDEFINITION06(01.000).DimensionDescriptor"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3493,8 +3493,8 @@
                 
         CODE="dim-01"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).dim-01"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).dim-01"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX02:DATASTRUCTUREDEFINITION06(01.000).dim-01"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX02:DATASTRUCTUREDEFINITION06(01.000).dim-01"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3544,8 +3544,8 @@
         
         CODE="TIME_PERIOD"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX02:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX02:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3586,8 +3586,8 @@
         
         CODE="groupDimensionDescriptor01"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).groupDimensionDescriptor01"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).groupDimensionDescriptor01"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX02:DATASTRUCTUREDEFINITION06(01.000).groupDimensionDescriptor01"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX02:DATASTRUCTUREDEFINITION06(01.000).groupDimensionDescriptor01"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3626,8 +3626,8 @@
         
         CODE="dataAttribute-01"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION06(01.000).dataAttribute-01"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION06(01.000).dataAttribute-01"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX02:DATASTRUCTUREDEFINITION06(01.000).dataAttribute-01"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX02:DATASTRUCTUREDEFINITION06(01.000).dataAttribute-01"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3679,8 +3679,8 @@
         
         CODE="AttributeDescriptor"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).AttributeDescriptor"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).AttributeDescriptor"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=SDMX02:DATASTRUCTUREDEFINITION06(01.000).AttributeDescriptor"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=SDMX02:DATASTRUCTUREDEFINITION06(01.000).AttributeDescriptor"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3719,8 +3719,8 @@
         
         CODE="OBS_VALUE"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=SDMX01:DATASTRUCTUREDEFINITION06(01.000).OBS_VALUE"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=SDMX01:DATASTRUCTUREDEFINITION06(01.000).OBS_VALUE"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=SDMX02:DATASTRUCTUREDEFINITION06(01.000).OBS_VALUE"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=SDMX02:DATASTRUCTUREDEFINITION06(01.000).OBS_VALUE"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -3761,8 +3761,8 @@
         
         CODE="MeasureDescriptor"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).MeasureDescriptor"
-        URN="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDescriptor=SDMX01:DATASTRUCTUREDEFINITION06(01.000).MeasureDescriptor"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDescriptor=SDMX02:DATASTRUCTUREDEFINITION06(01.000).MeasureDescriptor"
+        URN="urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDescriptor=SDMX02:DATASTRUCTUREDEFINITION06(01.000).MeasureDescriptor"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
