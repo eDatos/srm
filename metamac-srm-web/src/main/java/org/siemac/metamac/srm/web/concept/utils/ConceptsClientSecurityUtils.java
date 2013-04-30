@@ -4,7 +4,6 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedConceptsSecurityUtils;
-import org.siemac.metamac.srm.core.security.shared.SharedItemsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
@@ -16,7 +15,7 @@ public class ConceptsClientSecurityUtils {
 
     public static boolean canCreateConceptScheme() {
         // The method SharedConceptsSecurityUtils.canCreateConceptScheme is not called because web application only need to know if the create button can be shown.
-        return SharedItemsSecurityUtils.canCreateItemScheme(MetamacSrmWeb.getCurrentUser());
+        return SharedConceptsSecurityUtils.canCreateItemScheme(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canUpdateConceptScheme(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
