@@ -61,10 +61,6 @@ Application SrmDtosBaseCore {
 			JAVADATE externalPublicationDate nullable;
 			"User who published externally"
 			String externalPublicationUser nullable;
-			"The external publication failed"
-			Boolean isExternalPublicationFailed nullable;
-			"External publication failed date"
-			JAVADATE externalPublicationFailedDate nullable; 
 		}    	
 	}
 }

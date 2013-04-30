@@ -27,10 +27,6 @@ Application SrmEntitiesBaseCore {
 			DateTimeTZ externalPublicationDate nullable;
 			"User who published externally"
 			String externalPublicationUser nullable;
-			"The external publication failed"
-			Boolean isExternalPublicationFailed nullable databaseColumn="IS_EXT_PUBLICATION_FAILED";
-			"External publication failed date"
-			DateTimeTZ externalPublicationFailedDate nullable databaseColumn="EXT_PUBLICATION_FAILED_DATE";
 		}    	
 	}
 }

@@ -812,8 +812,6 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertNotNull(codelistDto.getLifeCycle().getInternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getLifeCycle().getExternalPublicationDate()));
             assertEquals(ctx.getUserId(), codelistDto.getLifeCycle().getExternalPublicationUser());
-            assertNull(codelistDto.getLifeCycle().getIsExternalPublicationFailed());
-            assertNull(codelistDto.getLifeCycle().getExternalPublicationFailedDate());
             assertTrue(DateUtils.isSameDay(new Date(), codelistDto.getValidFrom()));
             assertNull(codelistDto.getValidTo());
         }

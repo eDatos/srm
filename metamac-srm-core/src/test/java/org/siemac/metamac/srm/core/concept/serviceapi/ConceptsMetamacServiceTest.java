@@ -1129,8 +1129,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidFrom());
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(conceptSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
 
             ConceptSchemeVersionMetamac conceptSchemeVersionExternallyPublished = conceptsService.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_7_V1);
             assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
@@ -1154,8 +1152,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(conceptSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getLatestPublic());
         }
@@ -1173,8 +1169,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ctx.getUserId(), conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(conceptSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
         }
         // Validate previous published externally versions
         {

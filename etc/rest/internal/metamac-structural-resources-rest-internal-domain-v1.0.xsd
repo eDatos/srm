@@ -902,8 +902,6 @@
             <xs:element name="internalPublicationUser" type="xs:string" minOccurs="1" />
             <xs:element name="externalPublicationDate" type="xs:dateTime" minOccurs="0" />
             <xs:element name="externalPublicationUser" type="xs:string" minOccurs="0" />
-            <xs:element name="isExternalPublicationFailed" type="xs:boolean" minOccurs="0" />
-            <xs:element name="externalPublicationFailedDate" type="xs:dateTime" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>    
 

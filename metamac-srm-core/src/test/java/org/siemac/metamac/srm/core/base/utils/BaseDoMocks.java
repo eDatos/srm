@@ -32,8 +32,6 @@ public class BaseDoMocks extends com.arte.statistic.sdmx.srm.core.base.serviceap
         lifeCycleMetadata.setInternalPublicationUser("internal-publication-user");
         lifeCycleMetadata.setExternalPublicationDate(new DateTime(2012, 12, 4, 1, 1, 1, 1));
         lifeCycleMetadata.setExternalPublicationUser("external-publication-user");
-        lifeCycleMetadata.setIsExternalPublicationFailed(Boolean.FALSE);
-        lifeCycleMetadata.setExternalPublicationFailedDate(new DateTime(2013, 8, 2, 1, 1, 1, 1));
         return lifeCycleMetadata;
     }
 

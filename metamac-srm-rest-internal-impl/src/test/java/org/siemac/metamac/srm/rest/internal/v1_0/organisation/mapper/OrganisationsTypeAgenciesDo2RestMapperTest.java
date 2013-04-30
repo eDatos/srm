@@ -133,8 +133,6 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
         assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
         assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
-        assertEquals(Boolean.FALSE, target.getLifeCycle().isIsExternalPublicationFailed());
-        assertEqualsDate(new DateTime(2013, 8, 2, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationFailedDate());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_AGENCIES, target.getChildLinks().getChildLinks().get(0).getKind());

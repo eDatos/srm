@@ -117,7 +117,5 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(expected.getInternalPublicationUser(), actual.getInternalPublicationUser());
         assertEqualsDate(expected.getExternalPublicationDate(), actual.getExternalPublicationDate());
         assertEquals(expected.getExternalPublicationUser(), actual.getExternalPublicationUser());
-        assertEquals(expected.getIsExternalPublicationFailed(), actual.isIsExternalPublicationFailed());
-        assertEqualsDate(expected.getExternalPublicationFailedDate(), actual.getExternalPublicationFailedDate());
     }
 }

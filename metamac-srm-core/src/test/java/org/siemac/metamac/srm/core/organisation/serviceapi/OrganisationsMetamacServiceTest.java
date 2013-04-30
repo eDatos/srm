@@ -945,8 +945,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
 
             OrganisationSchemeVersionMetamac organisationSchemeVersionExternallyPublished = organisationsService.retrieveOrganisationSchemeByUrn(ctx, ORGANISATION_SCHEME_7_V1);
             assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, organisationSchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
@@ -970,8 +968,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestPublic());
         }
@@ -989,8 +985,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ctx.getUserId(), organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
         }
         // Validate previous published externally versions
         {

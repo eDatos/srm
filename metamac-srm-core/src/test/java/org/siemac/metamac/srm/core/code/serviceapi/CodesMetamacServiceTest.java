@@ -1467,8 +1467,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertNull(codelistVersion.getMaintainableArtefact().getValidFrom());
             assertNull(codelistVersion.getMaintainableArtefact().getValidTo());
-            assertNull(codelistVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
 
             CodelistVersionMetamac codelistVersionExternallyPublished = codesService.retrieveCodelistByUrn(ctx, CODELIST_7_V1);
             assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
@@ -1492,8 +1490,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(codelistVersion.getMaintainableArtefact().getValidTo());
-            assertNull(codelistVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
             assertTrue(codelistVersion.getMaintainableArtefact().getPublicLogic());
             assertTrue(codelistVersion.getMaintainableArtefact().getLatestPublic());
         }
@@ -1511,8 +1507,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(codelistVersion.getMaintainableArtefact().getValidTo());
-            assertNull(codelistVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
         }
         // Validate previous published externally versions
         {

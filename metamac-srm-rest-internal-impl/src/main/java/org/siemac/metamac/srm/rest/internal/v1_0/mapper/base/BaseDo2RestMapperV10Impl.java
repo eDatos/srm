@@ -82,8 +82,6 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setInternalPublicationUser(source.getInternalPublicationUser());
         target.setExternalPublicationDate(toDate(source.getExternalPublicationDate()));
         target.setExternalPublicationUser(source.getExternalPublicationUser());
-        target.setIsExternalPublicationFailed(source.getIsExternalPublicationFailed());
-        target.setExternalPublicationFailedDate(toDate(source.getExternalPublicationFailedDate()));
         return target;
     }
 

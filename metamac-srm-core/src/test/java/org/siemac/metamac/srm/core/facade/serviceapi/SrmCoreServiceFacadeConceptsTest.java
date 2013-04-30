@@ -912,8 +912,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertNotNull(conceptSchemeDto.getLifeCycle().getInternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeDto.getLifeCycle().getExternalPublicationDate()));
             assertEquals(ctx.getUserId(), conceptSchemeDto.getLifeCycle().getExternalPublicationUser());
-            assertNull(conceptSchemeDto.getLifeCycle().getIsExternalPublicationFailed());
-            assertNull(conceptSchemeDto.getLifeCycle().getExternalPublicationFailedDate());
             assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeDto.getValidFrom()));
             assertNull(conceptSchemeDto.getValidTo());
         }

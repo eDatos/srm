@@ -853,8 +853,6 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertNull(categorySchemeVersion.getMaintainableArtefact().getValidFrom());
             assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
 
             CategorySchemeVersionMetamac categorySchemeVersionExternallyPublished = categoriesService.retrieveCategorySchemeByUrn(ctx, CATEGORY_SCHEME_7_V1);
             assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeVersionExternallyPublished.getLifeCycleMetadata().getProcStatus());
@@ -878,8 +876,6 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getLatestPublic());
         }
@@ -897,8 +893,6 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ctx.getUserId(), categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
-            assertNull(categorySchemeVersion.getLifeCycleMetadata().getIsExternalPublicationFailed());
-            assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationFailedDate());
         }
         // Validate previous published externally versions
         {
