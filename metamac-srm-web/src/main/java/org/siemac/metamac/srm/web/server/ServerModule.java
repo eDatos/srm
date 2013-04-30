@@ -5,6 +5,7 @@ import org.siemac.metamac.srm.web.server.handlers.GetRelatedResourcesActionHandl
 import org.siemac.metamac.srm.web.server.handlers.GetUserGuideUrlActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CancelCategorySchemeValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.CopyCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CreateCategorisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CreateCategorySchemeTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.DeleteCategorisationsActionHandler;
@@ -26,6 +27,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.AddCodelistsToCodelistFam
 import org.siemac.metamac.srm.web.server.handlers.code.AddVariableElementsToVariableActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.AddVariablesToVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CancelCodelistValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.CopyCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CopyCodesInCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CreateCodelistTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.CreateVariableElementOperationActionHandler;
@@ -113,6 +115,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.SaveDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.UpdateDsdProcStatusActionHandlder;
 import org.siemac.metamac.srm.web.server.handlers.dsd.VersionDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.CancelOrganisationSchemeValidityActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.CopyOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.CreateOrganisationSchemeTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationSchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationsActionHandler;
@@ -153,6 +156,7 @@ import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction
 import org.siemac.metamac.srm.web.shared.code.AddVariableElementsToVariableAction;
 import org.siemac.metamac.srm.web.shared.code.AddVariablesToVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
+import org.siemac.metamac.srm.web.shared.code.CopyCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.CopyCodesInCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.CreateCodelistTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationAction;
@@ -202,6 +206,7 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodesVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.concept.CopyCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CopyConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
@@ -240,6 +245,7 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
 import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
 import org.siemac.metamac.srm.web.shared.organisation.CancelOrganisationSchemeValidityAction;
+import org.siemac.metamac.srm.web.shared.organisation.CopyOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
@@ -342,6 +348,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetDefaultMaintainerAction.class, GetDefaultMaintainerActionHandler.class);
         bindHandler(GetOrganisationContactsAction.class, GetOrganisationContactsActionHandler.class);
         bindHandler(CreateOrganisationSchemeTemporalVersionAction.class, CreateOrganisationSchemeTemporalVersionActionHandler.class);
+        bindHandler(CopyOrganisationSchemeAction.class, CopyOrganisationSchemeActionHandler.class);
 
         // Categories
         bindHandler(GetCategorySchemesAction.class, GetCategorySchemesActionHandler.class);
@@ -362,6 +369,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetCategorisationsByArtefactAction.class, GetCategorisationsByArtefactActionHandler.class);
         bindHandler(GetCategoriesAction.class, GetCategoriesActionHandler.class);
         bindHandler(CreateCategorySchemeTemporalVersionAction.class, CreateCategorySchemeTemporalVersionActionHandler.class);
+        bindHandler(CopyCategorySchemeAction.class, CopyCategorySchemeActionHandler.class);
 
         // Codes
         bindHandler(DeleteCodelistsAction.class, DeleteCodelistsActionHandler.class);
@@ -417,6 +425,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(NormaliseVariableElementsToCodesAction.class, NormaliseVariableElementsToCodesActionHandler.class);
         bindHandler(UpdateCodesVariableElementsAction.class, UpdateCodesVariableElementsActionHandler.class);
         bindHandler(UpdateCodesVariableElementsAction.class, UpdateCodesVariableElementsActionHandler.class);
+        bindHandler(CopyCodelistAction.class, CopyCodelistActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
