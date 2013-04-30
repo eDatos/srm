@@ -355,4 +355,14 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
             return null;
         }
     }
+
+    public static boolean representsTheSameResource(RelatedResourceDto r1, RelatedResourceDto r2) {
+        if (r1 == null && r2 == null) {
+            return true;
+        } else if ((r1 == null && r2 != null) || (r1 != null && r2 == null)) {
+            return false;
+        } else {
+            return StringUtils.equals(r1.getUrn(), r2.getUrn());
+        }
+    }
 }

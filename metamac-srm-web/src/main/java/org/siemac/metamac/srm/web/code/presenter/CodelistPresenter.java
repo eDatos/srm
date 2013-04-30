@@ -310,8 +310,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void saveCodelist(CodelistMetamacDto codelist) {
-        dispatcher.execute(new SaveCodelistAction(codelist), new WaitingAsyncCallback<SaveCodelistResult>() {
+    public void saveCodelist(final CodelistMetamacDto codelistToSave) {
+        dispatcher.execute(new SaveCodelistAction(codelistToSave), new WaitingAsyncCallback<SaveCodelistResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -319,6 +319,12 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(SaveCodelistResult result) {
+
+                // If the variable has been changed, reload codes (variable elements associated with the codes have changed)
+                if (RelatedResourceUtils.representsTheSameResource(codelistToSave.getVariable(), codelistMetamacDto.getVariable())) {
+                    retrieveCodes();
+                }
+
                 codelistMetamacDto = result.getSavedCodelistDto();
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistSaved()), MessageTypeEnum.SUCCESS);
                 getView().setCodelist(codelistMetamacDto);
