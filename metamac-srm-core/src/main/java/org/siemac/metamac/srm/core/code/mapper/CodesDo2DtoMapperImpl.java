@@ -264,7 +264,6 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         VariableElementBasicDto target = new VariableElementBasicDto();
-        target.setVariableElementId(source.getId());
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         identifiableArtefactDoToIdentifiableArtefactBasicDto(source.getIdentifiableArtefact(), target);
         return target;
@@ -276,6 +275,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         RelatedResourceDto target = new RelatedResourceDto();
+        target.setId(source.getId()); // Database id. Only to efficient save operations
         target.setCode(source.getIdentifiableArtefact().getCode());
         target.setTitle(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         target.setUrn(source.getIdentifiableArtefact().getUrn());

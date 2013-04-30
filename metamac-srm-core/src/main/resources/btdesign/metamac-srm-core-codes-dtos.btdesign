@@ -116,8 +116,6 @@ Application DtosMetamacCodeDomain {
 
 		"Dto for VariableElement"
 		DataTransferObject VariableElementBasicDto extends @IdentifiableArtefactMetamacBasicDto {
-			"Database id. Only to efficient save operations"
-			Long variableElementId;
 			"Short name"
 			- @InternationalStringDto shortName nullable;
 		}
