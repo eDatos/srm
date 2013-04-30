@@ -605,10 +605,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem replaceTo = new ViewTextItem(CodelistDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CodelistDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(CodelistDS.VALID_TO, getConstants().maintainableArtefactValidTo());
-        ViewTextItem externalPublicationFailed = new ViewTextItem(CodelistDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
-        ViewTextItem externalPublicationFailedDate = new ViewTextItem(CodelistDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsForm.setFields(replaceToCodelists, replacedByCodelist, accessType, defaultOrder, defaultOpennessLevel, replacedByVersion, replaceTo, validFrom, validTo,
-                externalPublicationFailed, externalPublicationFailedDate);
+        diffusionDescriptorsForm.setFields(replaceToCodelists, replacedByCodelist, accessType, defaultOrder, defaultOpennessLevel, replacedByVersion, replaceTo, validFrom, validTo);
 
         // VERSION RESPONSIBILITY
         versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -695,10 +692,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem replaceTo = new ViewTextItem(CodelistDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(CodelistDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(CodelistDS.VALID_TO, getConstants().maintainableArtefactValidTo());
-        ViewTextItem externalPublicationFailed = new ViewTextItem(CodelistDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
-        ViewTextItem externalPublicationFailedDate = new ViewTextItem(CodelistDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsEditionForm.setFields(replaceToCodelists, replacedByCodelist, accessType, defaultOrder, defaultOpennessLevel, replacedByVersion, replaceTo, validFrom, validTo,
-                externalPublicationFailed, externalPublicationFailedDate);
+        diffusionDescriptorsEditionForm.setFields(replaceToCodelists, replacedByCodelist, accessType, defaultOrder, defaultOpennessLevel, replacedByVersion, replaceTo, validFrom, validTo);
 
         // VERSION RESPONSIBILITY
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -770,9 +764,6 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
         diffusionDescriptorsForm.setValue(CodelistDS.VALID_FROM, codelistDto.getValidFrom());
         diffusionDescriptorsForm.setValue(CodelistDS.VALID_TO, codelistDto.getValidTo());
-        diffusionDescriptorsForm.setValue(CodelistDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(codelistDto.getLifeCycle().getIsExternalPublicationFailed()) ? MetamacWebCommon.getConstants()
-                .yes() : StringUtils.EMPTY);
-        diffusionDescriptorsForm.setValue(CodelistDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(codelistDto.getLifeCycle().getExternalPublicationFailedDate()));
 
         // Version responsibility
         versionResponsibilityForm.setValue(CodelistDS.PRODUCTION_VALIDATION_USER, codelistDto.getLifeCycle().getProductionValidationUser());
@@ -838,9 +829,6 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_FROM, DateUtils.getFormattedDate(codelistDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_TO, DateUtils.getFormattedDate(codelistDto.getValidTo()));
-        diffusionDescriptorsEditionForm.setValue(CodelistDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(codelistDto.getLifeCycle().getIsExternalPublicationFailed()) ? MetamacWebCommon
-                .getConstants().yes() : MetamacWebCommon.getConstants().no());
-        diffusionDescriptorsEditionForm.setValue(CodelistDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(codelistDto.getLifeCycle().getExternalPublicationFailedDate()));
 
         // Version responsibility
         versionResponsibilityEditionForm.setValue(CodelistDS.PRODUCTION_VALIDATION_USER, codelistDto.getLifeCycle().getProductionValidationUser());

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
-import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
@@ -439,9 +438,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         ViewTextItem replaceTo = new ViewTextItem(OrganisationSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(OrganisationSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(OrganisationSchemeDS.VALID_TO, getConstants().maintainableArtefactValidTo());
-        ViewTextItem externalPublicationFailed = new ViewTextItem(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
-        ViewTextItem externalPublicationFailedDate = new ViewTextItem(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsForm.setFields(replacedBy, replaceTo, validFrom, validTo, externalPublicationFailed, externalPublicationFailedDate);
+        diffusionDescriptorsForm.setFields(replacedBy, replaceTo, validFrom, validTo);
 
         // Version responsibility
         versionResponsibilityForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -513,9 +510,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         ViewTextItem replaceTo = new ViewTextItem(OrganisationSchemeDS.REPLACE_TO_VERSION, getConstants().maintainableArtefactReplaceToVersion());
         ViewTextItem validFrom = new ViewTextItem(OrganisationSchemeDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
         ViewTextItem validTo = new ViewTextItem(OrganisationSchemeDS.VALID_TO, getConstants().maintainableArtefactValidTo());
-        ViewTextItem externalPublicationFailed = new ViewTextItem(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, getConstants().lifeCycleExternalPublicationFailed());
-        ViewTextItem externalPublicationFailedDate = new ViewTextItem(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, getConstants().lifeCycleExternalPublicationFailedDate());
-        diffusionDescriptorsEditionForm.setFields(replacedBy, replaceTo, validFrom, validTo, externalPublicationFailed, externalPublicationFailedDate);
+        diffusionDescriptorsEditionForm.setFields(replacedBy, replaceTo, validFrom, validTo);
 
         // Version responsibility
         versionResponsibilityEditionForm = new GroupDynamicForm(getConstants().lifeCycleVersionResponsibility());
@@ -666,10 +661,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACE_TO_VERSION, organisationSchemeDto.getReplaceToVersion());
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_FROM, organisationSchemeDto.getValidFrom());
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.VALID_TO, organisationSchemeDto.getValidTo());
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getLifeCycle().getIsExternalPublicationFailed())
-                ? MetamacWebCommon.getConstants().yes()
-                : StringUtils.EMPTY);
-        diffusionDescriptorsForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE, DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getExternalPublicationFailedDate()));
 
         // Version responsibility
         versionResponsibilityForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getLifeCycle().getProductionValidationUser());
@@ -721,11 +712,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACE_TO_VERSION, organisationSchemeDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_FROM, DateUtils.getFormattedDate(organisationSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_TO, DateUtils.getFormattedDate(organisationSchemeDto.getValidTo()));
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_PUBLICATION_FAILED, BooleanUtils.isTrue(organisationSchemeDto.getLifeCycle().getIsExternalPublicationFailed())
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no());
-        diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_FAILED_DATE,
-                DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getExternalPublicationFailedDate()));
 
         // Version responsibility
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getLifeCycle().getProductionValidationUser());
