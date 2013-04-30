@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -100,8 +101,9 @@ public class CodelistCodesVariableElementsPanel extends VLayout {
     }
 
     private void showEditButton() {
-        // TODO Security
-        editButton.show();
+        if (CodesClientSecurityUtils.canUpdateCodeVariableElement(codelistMetamacDto)) {
+            editButton.show();
+        }
     }
 
     public void updateItemScheme(CodelistMetamacDto codelistMetamacDto) {
@@ -153,7 +155,8 @@ public class CodelistCodesVariableElementsPanel extends VLayout {
 
             @Override
             public void onClick(ClickEvent event) {
-                setViewMode();
+                // It is necessary to reload the codes to undo the changes that the user may have done
+                getUiHandlers().retrieveCodes();
             }
         });
         return cancelButton;
