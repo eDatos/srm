@@ -32,7 +32,6 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
@@ -369,9 +368,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersionTemporal = retrieveCodelistByUrn(ctx, urnToCopy);
 
         // Check if is a temporal version
-        if (!VersionUtil.isTemporalVersion(codelistVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
-            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
-        }
+        SrmValidationUtils.checkArtefactIsTemporal(codelistVersionTemporal.getMaintainableArtefact());
 
         // Retrieve the original artifact
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
@@ -397,9 +394,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistTemporalVersion = retrieveCodelistByUrn(ctx, urnTemporal);
 
         // Check if is a temporal version
-        if (!VersionUtil.isTemporalVersion(codelistTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
-            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
-        }
+        SrmValidationUtils.checkArtefactIsTemporal(codelistTemporalVersion.getMaintainableArtefact());
         SrmValidationUtils.checkArtefactProcStatus(codelistTemporalVersion.getLifeCycleMetadata(), codelistTemporalVersion.getMaintainableArtefact().getUrn(), ProcStatusEnum.DIFFUSION_VALIDATION);
 
         // Load original version

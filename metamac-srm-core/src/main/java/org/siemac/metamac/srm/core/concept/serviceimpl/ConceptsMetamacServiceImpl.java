@@ -18,7 +18,6 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -273,9 +272,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = retrieveConceptSchemeByUrn(ctx, urnToCopy);
 
         // Check if is a temporal version
-        if (!VersionUtil.isTemporalVersion(conceptSchemeVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
-            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
-        }
+        SrmValidationUtils.checkArtefactIsTemporal(conceptSchemeVersionTemporal.getMaintainableArtefact());
 
         // Retrieve the original artifact
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
@@ -298,9 +295,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptSchemeVersionMetamac mergeTemporalVersion(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeTemporalVersion) throws MetamacException {
         // Check if is a temporal version
-        if (!VersionUtil.isTemporalVersion(conceptSchemeTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
-            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
-        }
+        SrmValidationUtils.checkArtefactIsTemporal(conceptSchemeTemporalVersion.getMaintainableArtefact());
         SrmValidationUtils.checkArtefactProcStatus(conceptSchemeTemporalVersion.getLifeCycleMetadata(), conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn(),
                 ProcStatusEnum.DIFFUSION_VALIDATION);
 

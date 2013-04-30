@@ -15,7 +15,6 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
@@ -219,9 +218,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         CategorySchemeVersionMetamac categorySchemeVersionTemporal = retrieveCategorySchemeByUrn(ctx, urnToCopy);
 
         // Check if is a temporal version
-        if (!VersionUtil.isTemporalVersion(categorySchemeVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
-            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
-        }
+        SrmValidationUtils.checkArtefactIsTemporal(categorySchemeVersionTemporal.getMaintainableArtefact());
 
         // Retrieve the original artifact
         CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
@@ -244,9 +241,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategorySchemeVersionMetamac mergeTemporalVersion(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeTemporalVersion) throws MetamacException {
         // Check if is a temporal version
-        if (!VersionUtil.isTemporalVersion(categorySchemeTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
-            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
-        }
+        SrmValidationUtils.checkArtefactIsTemporal(categorySchemeTemporalVersion.getMaintainableArtefact());
         SrmValidationUtils.checkArtefactProcStatus(categorySchemeTemporalVersion.getLifeCycleMetadata(), categorySchemeTemporalVersion.getMaintainableArtefact().getUrn(),
                 ProcStatusEnum.DIFFUSION_VALIDATION);
 

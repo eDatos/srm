@@ -21,7 +21,6 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -363,9 +362,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         DataStructureDefinitionVersionMetamac dataStructureVersionTemporal = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
 
         // Check if is a temporal version
-        if (!VersionUtil.isTemporalVersion(dataStructureVersionTemporal.getMaintainableArtefact().getVersionLogic())) {
-            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
-        }
+        SrmValidationUtils.checkArtefactIsTemporal(dataStructureVersionTemporal.getMaintainableArtefact());
 
         // Retrieve the original artifact
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = retrieveDataStructureDefinitionByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
@@ -387,9 +384,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public DataStructureDefinitionVersionMetamac mergeTemporalVersion(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureTemporalVersion) throws MetamacException {
         // Check if is a temporal version
-        if (!VersionUtil.isTemporalVersion(dataStructureTemporalVersion.getMaintainableArtefact().getVersionLogic())) {
-            throw new RuntimeException("Error creating a new version from a temporal. The URN is not for a temporary artifact");
-        }
+        SrmValidationUtils.checkArtefactIsTemporal(dataStructureTemporalVersion.getMaintainableArtefact());
         SrmValidationUtils.checkArtefactProcStatus(dataStructureTemporalVersion.getLifeCycleMetadata(), dataStructureTemporalVersion.getMaintainableArtefact().getUrn(),
                 ProcStatusEnum.DIFFUSION_VALIDATION);
 
