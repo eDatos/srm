@@ -53,7 +53,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
         ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
         if (concept != null && conceptSchemeVersion != null) {
-            checkConcept(conceptSchemeVersion, concept, true, exceptions);
+            checkConcept(conceptSchemeVersion, concept, true, true, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -66,7 +66,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
         if (concept != null) {
-            checkConcept(conceptSchemeVersionMetamac, concept, false, exceptions);
+            checkConcept(conceptSchemeVersionMetamac, concept, false, true, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -200,7 +200,11 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
     }
 
-    public static void checkConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, boolean creating, List<MetamacExceptionItem> exceptions) {
+    /**
+     * @param checkOptionalInternationalStrings False to avoid extra queries. When publishing, international strings are checked with native queries
+     */
+    public static void checkConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, boolean creating, boolean checkOptionalInternationalStrings,
+            List<MetamacExceptionItem> exceptions) {
 
         // Not same concept scheme
         if (concept.getConceptExtends() != null) {
@@ -208,13 +212,16 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_EXTENDS));
             }
         }
-        ValidationUtils.checkMetadataOptionalIsValid(concept.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME, exceptions);
-        ValidationUtils.checkMetadataOptionalIsValid(concept.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM, exceptions);
-        ValidationUtils.checkMetadataOptionalIsValid(concept.getDescriptionSource(), ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE, exceptions);
-        ValidationUtils.checkMetadataOptionalIsValid(concept.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT, exceptions);
-        ValidationUtils.checkMetadataOptionalIsValid(concept.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD, exceptions);
-        ValidationUtils.checkMetadataOptionalIsValid(concept.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION, exceptions);
-        ValidationUtils.checkMetadataOptionalIsValid(concept.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, exceptions);
+        if (checkOptionalInternationalStrings) {
+            ValidationUtils.checkMetadataOptionalIsValid(concept.getPluralName(), ServiceExceptionParameters.CONCEPT_PLURAL_NAME, exceptions);
+            ValidationUtils.checkMetadataOptionalIsValid(concept.getAcronym(), ServiceExceptionParameters.CONCEPT_ACRONYM, exceptions);
+            ValidationUtils.checkMetadataOptionalIsValid(concept.getDescriptionSource(), ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE, exceptions);
+            ValidationUtils.checkMetadataOptionalIsValid(concept.getContext(), ServiceExceptionParameters.CONCEPT_CONTEXT, exceptions);
+            ValidationUtils.checkMetadataOptionalIsValid(concept.getDocMethod(), ServiceExceptionParameters.CONCEPT_DOC_METHOD, exceptions);
+            ValidationUtils.checkMetadataOptionalIsValid(concept.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION, exceptions);
+            ValidationUtils.checkMetadataOptionalIsValid(concept.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, exceptions);
+        }
+
         // note: variable is optional
 
         if (conceptSchemeVersion != null) {

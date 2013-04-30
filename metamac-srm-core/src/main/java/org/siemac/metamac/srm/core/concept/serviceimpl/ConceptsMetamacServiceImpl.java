@@ -936,8 +936,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     /**
-     * If concept scheme is not imported, checks representation.
-     * If it is an enumerated representation must be a codelist of same variable of concept
+     * If concept scheme is not imported, checks representation. // TODO x q?
+     * If it is an enumerated representation must be a codelist of same variable of concept and must be published
      */
     private void checkConceptEnumeratedRepresentation(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
         if (BooleanUtils.isFalse(conceptSchemeVersion.getMaintainableArtefact().getIsImported())) {

@@ -104,7 +104,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                     for (Item item : conceptSchemeVersion.getItems()) {
                         // Create specific exception to identify the wrong concept
                         List<MetamacExceptionItem> exceptionsConcepts = new ArrayList<MetamacExceptionItem>();
-                        ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, (ConceptMetamac) item, false, exceptionsConcepts);
+                        ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, (ConceptMetamac) item, false, false, exceptionsConcepts);
                         if (exceptionsConcepts.size() != 0) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, item.getNameableArtefact().getUrn()));
                         }
@@ -112,6 +112,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                 }
             }
         }
+
         @Override
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
@@ -131,6 +132,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
             // note: role and extends concepts are already externally published when they are added
+            // note: enumerated representation is checked in statistic module, in markAsFinal operation
         }
 
         @Override
