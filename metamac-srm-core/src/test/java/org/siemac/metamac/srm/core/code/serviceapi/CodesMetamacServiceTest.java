@@ -70,6 +70,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormali
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -1852,8 +1853,123 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testCopyCodelist() throws Exception {
-        // TODO testCopyCodelist
 
+        String urnToCopy = CODELIST_14_V1;
+        String maintainerUrnExpected = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
+        String versionExpected = "01.000";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST14(01.000)";
+        String urnExpectedCode1 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE01";
+        String urnExpectedCode11 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE0101";
+        String urnExpectedCode2 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE02";
+        String urnExpectedCode3 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE03";
+
+        TaskInfo copyResult = codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy);
+
+        // Validate (only some metadata, already tested in statistic module)
+        entityManager.clear();
+        CodelistVersionMetamac codelistVersionNewArtefact = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), copyResult.getUrnResult());
+        assertEquals(maintainerUrnExpected, codelistVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+        assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
+        assertEquals(versionExpected, codelistVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
+        assertEquals(urnExpected, codelistVersionNewArtefact.getMaintainableArtefact().getUrn());
+        assertEquals(null, codelistVersionNewArtefact.getMaintainableArtefact().getReplaceToVersion());
+        assertEquals(null, codelistVersionNewArtefact.getMaintainableArtefact().getReplacedByVersion());
+        assertTrue(codelistVersionNewArtefact.getMaintainableArtefact().getIsLastVersion());
+
+        // Codes
+        assertEquals(4, codelistVersionNewArtefact.getItems().size());
+        assertListItemsContainsItem(codelistVersionNewArtefact.getItems(), urnExpectedCode1);
+        assertListItemsContainsItem(codelistVersionNewArtefact.getItems(), urnExpectedCode11);
+        assertListItemsContainsItem(codelistVersionNewArtefact.getItems(), urnExpectedCode2);
+        assertListItemsContainsItem(codelistVersionNewArtefact.getItems(), urnExpectedCode3);
+
+        assertEquals(3, codelistVersionNewArtefact.getItemsFirstLevel().size());
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersionNewArtefact.getItemsFirstLevel(), urnExpectedCode1);
+            CodesMetamacAsserts.assertEqualsInternationalString(code.getNameableArtefact().getName(), "en", "name code1", "it", "nombre it code1");
+            CodesMetamacAsserts.assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "descripción code1", "it", "descripción it code1");
+            assertEquals(null, code.getNameableArtefact().getComment());
+
+            assertEquals(1, code.getChildren().size());
+            {
+                CodeMetamac codeChild = assertListCodesContainsCode(code.getChildren(), urnExpectedCode11);
+                assertEquals(0, codeChild.getChildren().size());
+            }
+
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersionNewArtefact.getItemsFirstLevel(), urnExpectedCode2);
+            CodesMetamacAsserts.assertEqualsInternationalString(code.getNameableArtefact().getName(), "en", "name code2", null, null);
+
+            assertEquals(0, code.getChildren().size());
+        }
+        {
+            CodeMetamac code = assertListCodesContainsCode(codelistVersionNewArtefact.getItemsFirstLevel(), urnExpectedCode3);
+            CodesMetamacAsserts.assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "nombre code3", "en", "name code3");
+
+            assertEquals(0, code.getChildren().size());
+        }
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testCopyCodelistInBackground() throws Exception {
+
+        int previousValueLimitToBackground = SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND;
+        SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = 3; // modify to force in background
+        final String urnToCopy = CODELIST_14_V1;
+        final StringBuilder jobKey = new StringBuilder();
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    ItemSchemeVersion itemSchemeVersion = itemSchemeRepository.findByUrn(urnToCopy);
+                    assertEquals(null, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+                    TaskInfo copyResult = codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy);
+                    assertEquals(true, copyResult.getIsPlannedInBackground());
+                    assertEquals(null, copyResult.getUrnResult());
+                    jobKey.append(copyResult.getJobKey());
+
+                    itemSchemeVersion = itemSchemeRepository.findByUrn(urnToCopy);
+                    assertEquals(true, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+                    try {
+                        codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy);
+                        fail("already copying");
+                    } catch (MetamacException e) {
+                        assertEquals(1, e.getExceptionItems().size());
+                        assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_ACTION_NOT_SUPPORTED_WHEN_TASK_IN_BACKGROUND.getCode(), e.getExceptionItems().get(0).getCode());
+                        assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                        assertEquals(urnToCopy, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                    }
+                } catch (MetamacException e) {
+                    fail("copy failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+        SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = previousValueLimitToBackground;
+
+        // Validate
+        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size());
+
+        // Validate
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST14(01.000)";
+        String versionExpected = "01.000";
+        String maintainerUrnExpected = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
+        entityManager.clear();
+        CodelistVersionMetamac codelistVersionNewArtefact = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnExpected);
+        assertEquals(maintainerUrnExpected, codelistVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+        assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
+        assertEquals(versionExpected, codelistVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
+        assertEquals(urnExpected, codelistVersionNewArtefact.getMaintainableArtefact().getUrn());
     }
 
     @Override
@@ -8404,6 +8520,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             {
                 CodeMetamac code = assertListCodesContainsCode(codelistVersionNewVersion.getItemsFirstLevel(), urnExpectedCode1);
                 assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "Nombre codelist-3-v1-code-1", null, null);
+                assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "es", "descripción codelist-3-v1-code-1", "it", "descripción it codelist-3-v1-code-1");
+                assertEquals(null, code.getNameableArtefact().getComment());
                 assertEquals(null, code.getShortName());
                 assertEquals(Integer.valueOf(0), code.getOrder1());
                 assertEquals(Integer.valueOf(1), code.getOrder2());

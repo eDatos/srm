@@ -1329,7 +1329,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         {
             ConceptMetamac concept = assertListConceptsContainsConcept(conceptSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedConcept1);
             ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getName(), "en", "name concept1", "it", "nombre it concept1");
-            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getDescription(), "es", "descripción concept1", "it", "descripción it org1");
+            ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getNameableArtefact().getDescription(), "es", "descripción concept1", "it", "descripción it concept1");
             assertEquals(null, concept.getNameableArtefact().getComment());
             ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getPluralName(), "es", "plural name es concept1", null, null);
             ConceptsMetamacAsserts.assertEqualsInternationalString(concept.getAcronym(), "en", "acronym es concept1", null, null);

@@ -194,7 +194,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CODELIST_11_V1                                       = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST11(01.000)";
     protected static final String CODELIST_12_V1                                       = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST12(01.000)";
     protected static final String CODELIST_13_V1                                       = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST13(01.000)";
-    protected static final String CODELIST_14_V1                                       = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST14(01.000)";
+    protected static final String CODELIST_14_V1                                       = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX02:CODELIST14(01.000)";
 
     // Codes
     protected static final String CODELIST_1_V1_CODE_1                                 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(01.000).CODE01";
@@ -226,10 +226,10 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CODELIST_13_V1_CODE_1                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE01";
     protected static final String CODELIST_13_V1_CODE_2                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE02";
     protected static final String CODELIST_13_V1_CODE_3                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST13(01.000).CODE03";
-    protected static final String CODELIST_14_V1_CODE_1                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE01";
-    protected static final String CODELIST_14_V1_CODE_1_1                              = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE0101";
-    protected static final String CODELIST_14_V1_CODE_2                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE02";
-    protected static final String CODELIST_14_V1_CODE_3                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE03";
+    protected static final String CODELIST_14_V1_CODE_1                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE01";
+    protected static final String CODELIST_14_V1_CODE_1_1                              = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE0101";
+    protected static final String CODELIST_14_V1_CODE_2                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE02";
+    protected static final String CODELIST_14_V1_CODE_3                                = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE03";
 
     // Codelist families
     protected static final String CODELIST_FAMILY_1                                    = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=CODELIST_FAMILY_01";

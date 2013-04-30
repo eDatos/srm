@@ -1912,7 +1912,7 @@
                 REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="24"
-                DESCRIPTION_FK="[null]"
+                DESCRIPTION_FK="142"
                 COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-99311"
@@ -4527,8 +4527,8 @@
         
         CODE="CODELIST14"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST14(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST14(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX02:CODELIST14(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX02:CODELIST14(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -4551,7 +4551,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         IS_IMPORTED="0"
-        MAINTAINER_FK="10011"
+        MAINTAINER_FK="10012"
         
         UUID="annotableArtefact-99114"
         VERSION="1"
@@ -4612,8 +4612,8 @@
                     
                     CODE="ALPHABETICAL"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST14(01.000).ALPHABETICAL"
-                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST14(01.000).ALPHABETICAL"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX02:CODELIST14(01.000).ALPHABETICAL"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX02:CODELIST14(01.000).ALPHABETICAL"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
@@ -4656,8 +4656,8 @@
                     
                     CODE="ALL_EXPANDED"
                     URI_PROVIDER="[null]"
-                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST14(01.000).ALL_EXPANDED"
-                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST14(01.000).ALL_EXPANDED"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX02:CODELIST14(01.000).ALL_EXPANDED"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX02:CODELIST14(01.000).ALL_EXPANDED"
                     REPLACED_BY_VERSION="[null]"
                     REPLACE_TO_VERSION="[null]"
                     
@@ -4716,8 +4716,8 @@
 
                 CODE="CODE01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE01"
-                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE01"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -4770,8 +4770,8 @@
         
                         CODE="CODE0101"
                         URI_PROVIDER="[null]"
-                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE0101"
-                        URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE0101"
+                        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE0101"
+                        URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE0101"
                         REPLACED_BY_VERSION="[null]"
                         REPLACE_TO_VERSION="[null]"
         
@@ -4824,8 +4824,8 @@
 
                 CODE="CODE02"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE02"
-                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE02"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE02"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -4902,8 +4902,8 @@
 
                 CODE="CODE03"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE03"
-                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE03"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE03"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX02:CODELIST14(01.000).CODE03"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
@@ -8095,6 +8095,14 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="123"
     />  
+
+    <TB_LOCALISED_STRINGS
+        ID="1232"
+        LABEL="name code3"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="123"
+    />  
     
     <TB_INTERNATIONAL_STRINGS
         ID="124"
@@ -8379,6 +8387,28 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="141"
+    />   
+    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="142"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1421"
+        LABEL="descripción codelist-3-v1-code-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="142"
+    />      
+    
+    <TB_LOCALISED_STRINGS
+        ID="1422"
+        LABEL="descripción it codelist-3-v1-code-1"
+        LOCALE="it"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="142"
     />                     
                                                                                                    
 </dataset>
