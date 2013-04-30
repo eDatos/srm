@@ -2,9 +2,11 @@ package org.siemac.metamac.srm.core.facade.serviceapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -33,6 +35,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.srm.core.task.serviceapi.utils.TasksDtoMocks;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
@@ -88,8 +92,11 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
         dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_NG_FULL_URN);
         assertNotNull(dataStructureDefinitionMetamacDto.getId());
         assertEquals(SdmxResources.DSD_ECB_EXR_NG_FULL_URN, dataStructureDefinitionMetamacDto.getUrn());
-    }
 
+        List<DescriptorDto> dimDescriptor = srmCoreServiceFacade.findDescriptorsForDataStructureDefinition(getServiceContextAdministrador(), SdmxResources.DSD_ECB_EXR_NG_FULL_URN,
+                TypeComponentList.DIMENSION_DESCRIPTOR);
+        assertTrue(dimDescriptor.iterator().next().getAnnotations().isEmpty());
+    }
     @Test
     @DirtyDatabase
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {

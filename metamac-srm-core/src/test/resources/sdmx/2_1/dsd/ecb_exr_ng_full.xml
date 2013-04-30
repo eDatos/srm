@@ -468,6 +468,12 @@
             <common:Name>Sample Data Structure Definition for exchange rates, with no group defined.</common:Name>
             <structure:DataStructureComponents>
                <structure:DimensionList>
+                  <common:Annotations>
+                  	<common:Annotation>
+                      <common:AnnotationType>NOTE</common:AnnotationType>
+                      <common:AnnotationText xml:lang="en">Example of descriptor's annotation'</common:AnnotationText>
+                  	</common:Annotation>
+               	  </common:Annotations>
                   <structure:Dimension id="FREQ">
                      <structure:ConceptIdentity>
                         <URN>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX:CROSS_DOMAIN_CONCEPTS(1.0).FREQ</URN>

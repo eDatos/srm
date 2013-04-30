@@ -187,24 +187,32 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
     @Override
     public void dimensionDescriptorJaxbToDoExtension(ServiceContext ctx, DimensionListType source, DimensionDescriptor target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
+
+        // In Metamac the annotations of descriptors aren't imported (METAMAC-1577)
+        target.removeAllAnnotations();
     }
 
     @Override
     public void measureDescriptorJaxbToDoExtension(ServiceContext ctx, MeasureListType source, MeasureDescriptor target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
-    }
 
+        // In Metamac the annotations of descriptors aren't imported (METAMAC-1577)
+        target.removeAllAnnotations();
+    }
     @Override
     public void groupDimensionDescriptorJaxbToDoExtension(ServiceContext ctx, GroupType source, GroupDimensionDescriptor previous, GroupDimensionDescriptor target) throws MetamacException {
-        if (previous != null) {
-            // Inherit translations (for all international strings)
-            BaseJaxb2DoInheritUtils.inheritAnnotations(previous.getAnnotations(), target.getAnnotations()); // Annotations
-        }
+        // Meta-data in previous version -> Nothing to extends
+
+        // In Metamac the annotations of descriptors aren't imported (METAMAC-1577)
+        target.removeAllAnnotations();
     }
 
     @Override
     public void attributeDescriptorJaxb2DoExtension(ServiceContext ctx, AttributeListType source, AttributeDescriptor target) throws MetamacException {
         // Meta-data in previous version -> Nothing to extends
+
+        // In Metamac the annotations of descriptors aren't imported (METAMAC-1577)
+        target.removeAllAnnotations();
     }
 
     @Override
