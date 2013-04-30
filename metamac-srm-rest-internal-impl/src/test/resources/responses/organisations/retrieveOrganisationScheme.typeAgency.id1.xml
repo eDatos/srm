@@ -128,8 +128,6 @@
             <sr:internalPublicationUser>internal-publication-user</sr:internalPublicationUser>
             <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
             <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
-            <sr:isExternalPublicationFailed>false</sr:isExternalPublicationFailed>
-            <sr:externalPublicationFailedDate>2013-08-02T01:01:01.001+01:00</sr:externalPublicationFailedDate>
         </sr:lifeCycle>
         <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
         <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
