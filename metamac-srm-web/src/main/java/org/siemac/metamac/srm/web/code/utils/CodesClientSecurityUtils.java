@@ -102,7 +102,7 @@ public class CodesClientSecurityUtils {
         if (isTaskInBackground(isTaskInBackground)) {
             return false;
         }
-        return SharedCodesSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
+        return SharedCodesSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus); // TODO canModifyCategorisationFromCodelist
     }
 
     public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, Boolean isTaskInBackground, CategorisationDto categorisationDto) {
@@ -111,6 +111,7 @@ public class CodesClientSecurityUtils {
         }
         // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is the
         // temporal one
+        // TODO canModifyCategorisationFromCodelist
         return SharedCodesSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
