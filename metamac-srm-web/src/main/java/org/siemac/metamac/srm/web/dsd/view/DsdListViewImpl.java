@@ -10,7 +10,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
-import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
+import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
@@ -273,7 +273,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     private void showExportToolStripButton(ListGridRecord[] records) {
         if (records.length == 1) {
             DataStructureDefinitionMetamacBasicDto dsd = ((DsdRecord) records[0]).getDsdBasicDto();
-            if (ImportationClientSecurityUtils.canExportStructure(dsd.getVersionLogic())) {
+            if (TasksClientSecurityUtils.canExportStructure(dsd.getVersionLogic())) {
                 exportToolStripButton.show();
             }
         } else {

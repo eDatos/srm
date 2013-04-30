@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.category.widgets;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
-import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
+import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 
 public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
@@ -83,7 +83,7 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showExportButton() {
-        if (ImportationClientSecurityUtils.canExportStructure(versionLogic)) {
+        if (TasksClientSecurityUtils.canExportStructure(versionLogic)) {
             export.show();
         }
     }

@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.utils.ImportationClientSecurityUtils;
+import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
@@ -96,7 +96,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showExportButton() {
-        if (ImportationClientSecurityUtils.canExportStructure(versionLogic)) {
+        if (TasksClientSecurityUtils.canExportStructure(versionLogic)) {
             export.show();
         }
     }
