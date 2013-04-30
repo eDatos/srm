@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
@@ -138,7 +139,6 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
                 event.cancel();
             }
         });
-
     }
 
     public void setItems(ItemSchemeDto itemSchemeDto, List<CodeMetamacVisualisationResult> itemMetamacResults) {
@@ -154,6 +154,30 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
         for (int i = 0; i < itemMetamacResults.size(); i++) {
             treeNodes[i + 1] = createItemTreeNode(itemMetamacResults.get(i));
+        }
+
+        addTreeNodesToTreeGrid(treeNodes);
+    }
+
+    /**
+     * This method is used only by the tree that show the codes and their variable elements
+     * 
+     * @param itemSchemeDto
+     * @param codeVariableElementNormalisationResults
+     */
+    public void setCodesAndVariableElements(CodelistMetamacDto itemSchemeDto, List<CodeVariableElementNormalisationResult> codeVariableElementNormalisationResults) {
+        this.codelistMetamacDto = itemSchemeDto;
+
+        // Clear filter editor
+        setFilterEditorCriteria(null);
+
+        this.itemSchemeDto = itemSchemeDto;
+
+        TreeNode[] treeNodes = new TreeNode[codeVariableElementNormalisationResults.size() + 1];
+        treeNodes[0] = createItemSchemeTreeNode(itemSchemeDto);
+
+        for (int i = 0; i < codeVariableElementNormalisationResults.size(); i++) {
+            treeNodes[i + 1] = createItemTreeNode(codeVariableElementNormalisationResults.get(i));
         }
 
         addTreeNodesToTreeGrid(treeNodes);
@@ -179,6 +203,10 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
     protected CodeTreeNode createItemTreeNode(CodeMetamacVisualisationResult item) {
         return CodesTreeGridUtils.createCodeTreeNode(SCHEME_NODE_NAME, item);
+    }
+
+    protected CodeTreeNode createItemTreeNode(CodeVariableElementNormalisationResult result) {
+        return CodesTreeGridUtils.createCodeTreeNode(SCHEME_NODE_NAME, result);
     }
 
     protected boolean isDroppable(TreeNode dropFolder) {

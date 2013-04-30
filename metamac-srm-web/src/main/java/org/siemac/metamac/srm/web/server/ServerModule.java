@@ -416,6 +416,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(CreateCodelistTemporalVersionAction.class, CreateCodelistTemporalVersionActionHandler.class);
         bindHandler(NormaliseVariableElementsToCodesAction.class, NormaliseVariableElementsToCodesActionHandler.class);
         bindHandler(UpdateCodesVariableElementsAction.class, UpdateCodesVariableElementsActionHandler.class);
+        bindHandler(UpdateCodesVariableElementsAction.class, UpdateCodesVariableElementsActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);

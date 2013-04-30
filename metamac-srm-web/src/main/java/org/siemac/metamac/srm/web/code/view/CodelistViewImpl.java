@@ -397,6 +397,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         this.codelistCodesPanel.setUiHandlers(uiHandlers);
+        this.codelistCodesVariableElementsPanel.setUiHandlers(uiHandlers);
         this.codelistOrdersPanel.setUiHandlers(uiHandlers);
         this.codelistOpennesssLevelsPanel.setUiHandlers(uiHandlers);
         this.categorisationsPanel.setUiHandlers(uiHandlers);
@@ -422,6 +423,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // Update codelist in tree grid
         codelistCodesPanel.updateItemScheme(codelist);
+        codelistCodesVariableElementsPanel.updateItemScheme(codelist);
         codelistOrdersPanel.updateItemScheme(codelist);
         codelistOpennesssLevelsPanel.updateItemScheme(codelist);
     }
@@ -464,8 +466,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     @Override
     public void setCodesVariableElementsNormalised(List<CodeVariableElementNormalisationResult> codeVariableElementNormalisationResults) {
-        // TODO Auto-generated method stub
-
+        codelistCodesVariableElementsPanel.setCodesVariableElementsNormalised(codeVariableElementNormalisationResults);
     }
 
     //

@@ -13,6 +13,7 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -91,6 +92,8 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusResult;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodesInOpennessVisualisationAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodesInOpennessVisualisationResult;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodesVariableElementsAction;
+import org.siemac.metamac.srm.web.shared.code.UpdateCodesVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
@@ -155,6 +158,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
         // Codes
         void setCodes(List<CodeMetamacVisualisationResult> codes);
+
+        // Codes and variable elements assignment
+        void setCodesVariableElementsNormalised(List<CodeVariableElementNormalisationResult> codeVariableElementNormalisationResults);
 
         // Orders
         void setCodesWithOrder(List<CodeMetamacVisualisationResult> codes, CodelistVisualisationDto codelistOrder);
@@ -855,10 +861,24 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     }
                     @Override
                     public void onWaitSuccess(NormaliseVariableElementsToCodesResult result) {
-                        // TODO Auto-generated method stub
-
+                        getView().setCodesVariableElementsNormalised(result.getCodeVariableElementNormalisationResults());
                     }
                 });
+    }
+
+    @Override
+    public void updateCodesVariableElements(String codelistUrn, Map<Long, Long> variableElementsIdByCodeId) {
+        dispatcher.execute(new UpdateCodesVariableElementsAction(codelistUrn, variableElementsIdByCodeId), new WaitingAsyncCallback<UpdateCodesVariableElementsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorUpdatingCodesVariableElements()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(UpdateCodesVariableElementsResult result) {
+                retrieveCodes();
+            }
+        });
     }
 
     //

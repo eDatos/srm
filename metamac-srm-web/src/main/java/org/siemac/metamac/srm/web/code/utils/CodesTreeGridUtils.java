@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.web.code.utils;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ItemsTreeGridUtils;
@@ -25,6 +27,7 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setIsFolder(true);
         // If the code has no parent, the parent is the codelist
         node.setParentID(code.getParent() != null ? code.getParent().getUrn() : schemeNodeName);
+        node.setAttribute(CodeDS.ID_DATABASE, code.getItemIdDatabase());
         node.setAttribute(ItemDS.CODE, code.getCode());
         node.setAttribute(ItemDS.NAME, code.getName() != null ? code.getName() : StringUtils.EMPTY);
         node.setAttribute(ItemDS.URN, code.getUrn());
@@ -40,10 +43,21 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(CodeDS.OPENNESS_LEVEL_ICON, iconUrl);
 
         // Only for variable elements tree grid
+        node.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, code.getVariableElement() != null ? code.getVariableElement().getIdDatabase() : null);
         node.setAttribute(CodeDS.VARIABLE_ELEMENT, code.getVariableElement() != null
                 ? CommonWebUtils.getElementName(code.getVariableElement().getCode(), code.getVariableElement().getShortName())
                 : null);
-        // node.setAttribute(CodeDS.VARIABLE_ELEMENT_EDITION, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.search().getURL());
+        node.setAttribute(CodeDS.VARIABLE_ELEMENT_EDITION, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.search().getURL());
+        return node;
+    }
+
+    public static CodeTreeNode createCodeTreeNode(String schemeNodeName, CodeVariableElementNormalisationResult result) {
+        CodeMetamacVisualisationResult code = result.getCode();
+        VariableElementResult variableElement = result.getVariableElementProposed();
+
+        CodeTreeNode node = createCodeTreeNode(schemeNodeName, code);
+        node.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, variableElement != null ? variableElement.getIdDatabase() : null);
+        node.setAttribute(CodeDS.VARIABLE_ELEMENT, variableElement != null ? CommonWebUtils.getElementName(variableElement.getCode(), variableElement.getShortName()) : null);
         return node;
     }
 }
