@@ -394,12 +394,17 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public void versioningRelatedConcepts(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
         // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
-        if (conceptSchemeVersionToCopy != null) {
-            for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
-                versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion);
+        if (conceptSchemeVersionToCopy == null) {
+            // source only can be null when importing
+            if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN)
+                        .withMessageParameters("Error copying related concepts to versioning. Concept scheme expected imported: " + conceptSchemeNewVersion.getMaintainableArtefact().getUrn()).build();
+
             }
-        } else if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
-            throw new RuntimeException("Error copying related concepts to versioning");
+            return;
+        }
+        for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
+            versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion);
         }
     }
 
@@ -842,26 +847,43 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, isTemporal, conceptsVersioningCallback);
     }
 
-    private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) {
+    private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
         if (conceptToCopy.getRelatedConcepts().size() == 0) {
             return;
         }
-        ConceptMetamac conceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
+        ConceptMetamac conceptInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
                 .getMaintainableArtefact().getUrn());
 
-        if (conceptIntNewVersion != null) {
-            // Copy relations with concepts in new version
-            for (ConceptMetamac relatedConcept : conceptToCopy.getRelatedConcepts()) {
-                ConceptMetamac relatedConceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(relatedConcept.getNameableArtefact().getCode(),
-                        conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
-                if (relatedConceptIntNewVersion != null) {
-                    conceptIntNewVersion.addRelatedConcept(relatedConceptIntNewVersion);
-                } else if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
-                    throw new RuntimeException("Error copying related concepts to versioning");
-                }
+        if (conceptInNewVersion == null) {
+            // concept only can not exist in new version when importing: in this case, do not copy related concepts to this concept
+            if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
+                throw MetamacExceptionBuilder
+                        .builder()
+                        .withExceptionItems(ServiceExceptionType.UNKNOWN)
+                        .withMessageParameters(
+                                "Error copying related concepts to versioning. Concept not found " + conceptToCopy.getNameableArtefact().getCode() + ", so concept scheme expected imported: "
+                                        + conceptSchemeNewVersion.getMaintainableArtefact().getUrn()).build();
             }
-        } else if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
-            throw new RuntimeException("Error copying related concepts to versioning");
+            return;
+        }
+
+        // Copy relations with concepts in new version
+        for (ConceptMetamac relatedConcept : conceptToCopy.getRelatedConcepts()) {
+            ConceptMetamac relatedConceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(relatedConcept.getNameableArtefact().getCode(), conceptSchemeNewVersion
+                    .getMaintainableArtefact().getUrn());
+            if (relatedConceptIntNewVersion == null) {
+                // concept only can not exist in new version when importing: in this case, do not copy
+                if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
+                    throw MetamacExceptionBuilder
+                            .builder()
+                            .withExceptionItems(ServiceExceptionType.UNKNOWN)
+                            .withMessageParameters(
+                                    "Error copying related concepts to versioning. Concept not found " + relatedConcept.getNameableArtefact().getCode() + ", so concept scheme expected imported: "
+                                            + conceptSchemeNewVersion.getMaintainableArtefact().getUrn()).build();
+                }
+                continue;
+            }
+            conceptInNewVersion.addRelatedConcept(relatedConceptIntNewVersion);
         }
     }
 
