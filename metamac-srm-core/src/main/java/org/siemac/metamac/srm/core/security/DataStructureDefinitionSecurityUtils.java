@@ -50,6 +50,12 @@ public class DataStructureDefinitionSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canCopyDataStructureDefinition(ServiceContext ctx) throws MetamacException {
+        if (!SharedDsdSecurityUtils.canCopyDataStructureDefinition(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     //
     // LIFECYCLE
     //

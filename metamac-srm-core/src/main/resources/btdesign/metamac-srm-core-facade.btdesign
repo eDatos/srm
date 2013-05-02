@@ -153,6 +153,15 @@ Application SrmFacadeCore {
 	    	@DataStructureDefinitionMetamacDto publishDataStructureDefinitionExternally(String urn) throws MetamacException;
     		
     		"
+    		 Copies a codelist version, creating a new codelist"
+     		 @param ctx
+     		 @param urnToCopy
+     		 @return
+     		 @throws org.siemac.metamac.core.common.exception.MetamacException
+     		"
+    		TaskInfo copyDataStructureDefinition(String urnToCopy) throws MetamacException;
+    		
+    		"
 	    	 Creates a new version of a dsd, copying metadata from version with provided urn  		
 		     @param ctx
 		     @param urnToCopy Urn of DataStructureDefinition to copy

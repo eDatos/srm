@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.security.shared;
 
+import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.JEFE_PRODUCCION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO_PRODUCCION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
@@ -29,6 +30,10 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
 
     public static boolean canUpdateDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCodeOld, String operationCodeNew) {
         return canUpdateDataStructureDefinition(metamacPrincipal, procStatus, operationCodeOld) && canUpdateDataStructureDefinition(metamacPrincipal, procStatus, operationCodeNew);
+    }
+
+    public static boolean canCopyDataStructureDefinition(MetamacPrincipal metamacPrincipal) {
+        return isSrmRoleAllowed(metamacPrincipal, JEFE_NORMALIZACION);
     }
 
     /**

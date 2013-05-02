@@ -373,6 +373,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public TaskInfo copyDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
+        // Security
+        DataStructureDefinitionSecurityUtils.canCopyDataStructureDefinition(ctx);
+
+        return getDsdsMetamacService().copyDataStructureDefinition(ctx, urnToCopy);
+    }
+
+    @Override
     public DataStructureDefinitionMetamacDto versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
@@ -380,8 +388,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            // TODO create Version From Temporal DataStructureDefinition
-            throw new UnsupportedOperationException("TODO create Version From Temporal DataStructureDefinition");
+            dataStructureDefinitionVersionMetamac = getDsdsMetamacService().createVersionFromTemporalDataStructureDefinition(ctx, urnToCopy, versionType);
         } else {
             dataStructureDefinitionVersionMetamac = getDsdsMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
         }
