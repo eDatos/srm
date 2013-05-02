@@ -26,6 +26,9 @@ import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisationProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
@@ -1030,6 +1033,68 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     }
 
     @Override
+    @Test
+    public void testFindOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition() throws Exception {
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+
+        // Find
+        {
+
+            String dimensionUrn = DSD_6_V1_DIMENSION_1;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistOrderVisualisation.class).orderBy(CodelistOrderVisualisationProperties.nameableArtefact().urn())
+                    .build();
+            PagedResult<CodelistOrderVisualisation> result = dsdsMetamacService.findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(getServiceContextAdministrador(), conditions,
+                    pagingParameter, dimensionUrn);
+
+            // Validate
+            assertEquals(1, result.getTotalRows());
+            int i = 0;
+            assertEquals(CODELIST_7_V1_ORDER_VISUALISATION_01_ALPHABETICAL, result.getValues().get(i).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_7_V1, result.getValues().get(i).getCodelistVersion().getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Override
+    @Test
+    public void testFindOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition() throws Exception {
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+
+        // Find
+        {
+
+            String dimensionUrn = DSD_6_V1_DIMENSION_1;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistOrderVisualisation.class).orderBy(CodelistOrderVisualisationProperties.nameableArtefact().urn())
+                    .build();
+            PagedResult<CodelistOpennessVisualisation> result = dsdsMetamacService.findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(getServiceContextAdministrador(),
+                    conditions, pagingParameter, dimensionUrn);
+
+            // Validate
+            assertEquals(1, result.getTotalRows());
+            int i = 0;
+            assertEquals(CODELIST_7_V1_OPENNESS_VISUALISATION_01_ALL_EXPANDED, result.getValues().get(i).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_7_V1, result.getValues().get(i).getCodelistVersion().getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Override
+    public void testVersioningHeadingAndStub() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testVersioningShowDecimalsPrecision() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testVersioningDimensionVisualisationInfo() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
     }
@@ -1078,24 +1143,6 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
                 primaryMeasure);
 
         return dataStructureDefinitionVersionMetamac;
-    }
-
-    @Override
-    public void testVersioningHeadingAndStub() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void testVersioningShowDecimalsPrecision() throws Exception {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void testVersioningDimensionVisualisationInfo() throws Exception {
-        // TODO Auto-generated method stub
-
     }
 
 }

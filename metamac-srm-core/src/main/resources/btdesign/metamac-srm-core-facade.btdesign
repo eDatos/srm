@@ -265,7 +265,11 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdAttributeByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
-    		
+    		"Find orderVisualisation belong to same codelist representation of dimension"
+    		MetamacCriteriaResult<@RelatedResourceDto> findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(MetamacCriteria criteria, String dimensionUrn) throws MetamacException;
+    		"Find openessVisualisation belong to same codelist representation of dimension"
+    		MetamacCriteriaResult<@RelatedResourceDto> findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(MetamacCriteria criteria, String dimensionUrn) throws MetamacException;
+    	
 	    	/**************************************************************************
 		     * ORGANISATIONS
 		     **************************************************************************/

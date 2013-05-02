@@ -880,6 +880,44 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return metamacCriteriaResult;
     }
 
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dimensionUrn)
+            throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindCodelistOrderVisualisation(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistOrderVisualisation> result = getDsdsMetamacService().findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dimensionUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistOrderVisualisationToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dimensionUrn)
+            throws MetamacException {
+        // Security
+        CodesSecurityUtils.canRetrieveOrFindCodelistOpennessVisualisation(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistOpennessVisualisation> result = getDsdsMetamacService().findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dimensionUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistOpennessVisualisationToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
     // ------------------------------------------------------------------------
     // CODELISTS
     // ------------------------------------------------------------------------

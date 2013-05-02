@@ -110,6 +110,10 @@ Application DsdsMetamac {
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
+			"Find orderVisualisation belong to same codelist representation of dimension"
+			PagedResult<@CodelistOrderVisualisation> findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dimensionUrn) throws MetamacException;
+            "Find openessVisualisation belong to same codelist representation of dimension"	
+            PagedResult<@CodelistOpennessVisualisation> findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dimensionUrn) throws MetamacException;	
 		}
 
 		// ----------------------------------------------------------------

@@ -272,11 +272,13 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CODELIST_1_V2_ORDER_VISUALISATION_01_ALPHABETICAL    = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).ALPHABETICAL";
     protected static final String CODELIST_1_V2_ORDER_VISUALISATION_02                 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION02";
     protected static final String CODELIST_1_V2_ORDER_VISUALISATION_03                 = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST01(02.000).VISUALISATION03";
+    protected static final String CODELIST_7_V1_ORDER_VISUALISATION_01_ALPHABETICAL    = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:CODELIST07(01.000).ALPHABETICAL";
 
     protected static final String CODELIST_1_V1_OPENNESS_VISUALISATION_01_ALL_EXPANDED = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(01.000).ALL_EXPANDED";
     protected static final String CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).ALL_EXPANDED";
     protected static final String CODELIST_1_V2_OPENNESS_VISUALISATION_02              = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).VISUALISATION02";
     protected static final String CODELIST_1_V2_OPENNESS_VISUALISATION_03              = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST01(02.000).VISUALISATION03";
+    protected static final String CODELIST_7_V1_OPENNESS_VISUALISATION_01_ALL_EXPANDED = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:CODELIST07(01.000).ALL_EXPANDED";
 
     // Dsd
     protected static String       DSD_1_V1                                             = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION01(01.000)";

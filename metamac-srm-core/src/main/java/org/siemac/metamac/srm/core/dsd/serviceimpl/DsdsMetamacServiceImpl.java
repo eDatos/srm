@@ -24,6 +24,11 @@ import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisationRepository;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisationProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisationRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
@@ -86,52 +91,58 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEn
 public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     @Autowired
-    private DataStructureDefinitionService        dataStructureDefinitionService;
+    private DataStructureDefinitionService          dataStructureDefinitionService;
 
     @Autowired
-    private ConceptMetamacRepository              conceptMetamacRepository;
+    private ConceptMetamacRepository                conceptMetamacRepository;
 
     @Autowired
-    private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
+    private ConceptSchemeVersionMetamacRepository   conceptSchemeVersionMetamacRepository;
 
     @Autowired
-    private ConceptsMetamacService                conceptsService;
+    private ConceptsMetamacService                  conceptsService;
 
     @Autowired
-    private CodelistVersionMetamacRepository      codelistVersionMetamacRepository;
+    private CodelistVersionMetamacRepository        codelistVersionMetamacRepository;
+
+    @Autowired
+    private CodelistOrderVisualisationRepository    codelistOrderVisualisationRepository;
+
+    @Autowired
+    private CodelistOpennessVisualisationRepository codelistOpennessVisualisationRepository;
 
     @Autowired
     @Qualifier("dsdLifeCycle")
-    private LifeCycle                             dsdLifeCycle;
+    private LifeCycle                               dsdLifeCycle;
 
     @Autowired
-    private SrmValidation                         srmValidation;
+    private SrmValidation                           srmValidation;
 
     @Autowired
     @Qualifier("dataStructureDefinitionsVersioningCallbackMetamac")
-    private DataStructureDefinitionsCopyCallback  dataStructureDefinitionsVersioningCallback;
+    private DataStructureDefinitionsCopyCallback    dataStructureDefinitionsVersioningCallback;
 
     @Autowired
     @Qualifier("dataStructureDefinitionsCopyCallbackMetamac")
-    private DataStructureDefinitionsCopyCallback  dataStructureDefinitionsCopyCallback;
+    private DataStructureDefinitionsCopyCallback    dataStructureDefinitionsCopyCallback;
 
     @Autowired
-    private StructureVersionRepository            structureVersionRepository;
+    private StructureVersionRepository              structureVersionRepository;
 
     @Autowired
-    private ComponentListRepository               componentListRepository;
+    private ComponentListRepository                 componentListRepository;
 
     @Autowired
-    private ComponentRepository                   componentRepository;
+    private ComponentRepository                     componentRepository;
 
     @Autowired
-    private SrmConfiguration                      srmConfiguration;
+    private SrmConfiguration                        srmConfiguration;
 
     @Autowired
-    private InternationalStringRepository         internationalStringRepository;
+    private InternationalStringRepository           internationalStringRepository;
 
     @Autowired
-    private ExternalItemRepository                externalItemRepository;
+    private ExternalItemRepository                  externalItemRepository;
 
     public DsdsMetamacServiceImpl() {
     }
@@ -622,6 +633,46 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         return findCodelistsCanBeEnumeratedRepresentationForDsd(ctx, conditions, pagingParameter, conceptUrn);
     }
 
+    @Override
+    public PagedResult<CodelistOrderVisualisation> findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String dimensionUrn) throws MetamacException {
+
+        DimensionComponent dimensionComponent = (DimensionComponent) componentRepository.findByUrn(dimensionUrn);
+
+        Representation representation = dimensionComponent.getLocalRepresentation();
+        if (representation == null) {
+            representation = dimensionComponent.getCptIdRef().getCoreRepresentation();
+        }
+
+        Long codelistId = null;
+        if (representation != null) {
+            if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType()) && representation.getEnumerationCodelist() != null) {
+                codelistId = representation.getEnumerationCodelist().getId();
+            }
+        }
+
+        return findCodelistOrderVisualisationRepositoryByConditions(ctx, conditions, pagingParameter, codelistId);
+    }
+    @Override
+    public PagedResult<CodelistOpennessVisualisation> findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String dimensionUrn) throws MetamacException {
+        DimensionComponent dimensionComponent = (DimensionComponent) componentRepository.findByUrn(dimensionUrn);
+
+        Representation representation = dimensionComponent.getLocalRepresentation();
+        if (representation == null) {
+            representation = dimensionComponent.getCptIdRef().getCoreRepresentation();
+        }
+
+        Long codelistId = null;
+        if (representation != null) {
+            if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType()) && representation.getEnumerationCodelist() != null) {
+                codelistId = representation.getEnumerationCodelist().getId();
+            }
+        }
+
+        return findCodelistOpennessVisualisationRepositoryByConditions(ctx, conditions, pagingParameter, codelistId);
+    }
+
     /**************************************************************************
      * PRIVATE
      *************************************************************************/
@@ -1063,6 +1114,44 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // Find
         return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private PagedResult<CodelistOrderVisualisation> findCodelistOrderVisualisationRepositoryByConditions(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
+            Long codelistId) throws MetamacException {
+
+        // Prepare conditions
+        Class entitySearchedClass = CodelistOrderVisualisation.class;
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        // Codelist internally or externally published
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistOrderVisualisationProperties.codelistVersion().id()).eq(codelistId).buildSingle());
+        // Do not repeat results
+        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
+
+        // Find
+        return codelistOrderVisualisationRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private PagedResult<CodelistOpennessVisualisation> findCodelistOpennessVisualisationRepositoryByConditions(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, Long codelistId) throws MetamacException {
+
+        // CodelistOrderVisualisationProperties
+
+        // Prepare conditions
+        Class entitySearchedClass = CodelistOrderVisualisation.class;
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        // Codelist internally or externally published
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistOrderVisualisationProperties.codelistVersion().id()).eq(codelistId).buildSingle());
+        // Do not repeat results
+        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
+
+        // Find
+        return codelistOpennessVisualisationRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
 
     private Property<ConceptMetamac> buildConceptPropertyToConceptSchemeType() {

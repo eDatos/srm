@@ -13,6 +13,8 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.mapper.CategoriesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -331,6 +333,32 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
             target.setResults(new ArrayList<RelatedResourceDto>(source.getValues().size()));
             for (VariableElement scheme : source.getValues()) {
                 target.getResults().add(codesDo2DtoMapper.variableElementDoToRelatedResourceDto(scheme));
+            }
+        }
+        return target;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultCodelistOrderVisualisationToMetamacCriteriaResultRelatedResource(PagedResult<CodelistOrderVisualisation> source, Integer pageSize) {
+        MetamacCriteriaResult<RelatedResourceDto> target = new MetamacCriteriaResult<RelatedResourceDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<RelatedResourceDto>(source.getValues().size()));
+            for (CodelistOrderVisualisation order : source.getValues()) {
+                target.getResults().add(codesDo2DtoMapper.codelistOrderVisualisationDoToRelatedResourceDto(order));
+            }
+        }
+        return target;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultCodelistOpennessVisualisationToMetamacCriteriaResultRelatedResource(PagedResult<CodelistOpennessVisualisation> source, Integer pageSize) {
+        MetamacCriteriaResult<RelatedResourceDto> target = new MetamacCriteriaResult<RelatedResourceDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<RelatedResourceDto>(source.getValues().size()));
+            for (CodelistOpennessVisualisation openess : source.getValues()) {
+                target.getResults().add(codesDo2DtoMapper.codelistOpennessVisualisationDoToRelatedResourceDto(openess));
             }
         }
         return target;

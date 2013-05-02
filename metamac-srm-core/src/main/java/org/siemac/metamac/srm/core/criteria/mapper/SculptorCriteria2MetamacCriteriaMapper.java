@@ -9,6 +9,8 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -63,4 +65,6 @@ public interface SculptorCriteria2MetamacCriteriaMapper {
     public MetamacCriteriaResult<VariableBasicDto> pageResultToMetamacCriteriaResultVariable(PagedResult<Variable> source, Integer pageSize);
     public MetamacCriteriaResult<VariableElementBasicDto> pageResultToMetamacCriteriaResultVariableElement(PagedResult<VariableElement> source, Integer pageSize);
     public MetamacCriteriaResult<RelatedResourceDto> pageResultToMetamacCriteriaResultVariableElementRelatedResource(PagedResult<VariableElement> source, Integer pageSize);
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultCodelistOrderVisualisationToMetamacCriteriaResultRelatedResource(PagedResult<CodelistOrderVisualisation> source, Integer pageSize);
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultCodelistOpennessVisualisationToMetamacCriteriaResultRelatedResource(PagedResult<CodelistOpennessVisualisation> source, Integer pageSize);
 }
