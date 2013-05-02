@@ -153,7 +153,7 @@ Application SrmFacadeCore {
 	    	@DataStructureDefinitionMetamacDto publishDataStructureDefinitionExternally(String urn) throws MetamacException;
     		
     		"
-    		 Copies a codelist version, creating a new codelist"
+    		 Copies a codelist version, creating a new codelist
      		 @param ctx
      		 @param urnToCopy
      		 @return
