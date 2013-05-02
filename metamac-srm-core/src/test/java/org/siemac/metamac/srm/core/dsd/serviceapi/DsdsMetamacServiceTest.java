@@ -371,6 +371,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         assertEquals(null, dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getReplacedByVersion());
         assertTrue(dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getIsLastVersion());
 
+        // TODO HACIENDO EL TEST ESTE, fijarse en el copy de conceptos.
         // DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
         // DataStructureDefinitionVersionMetamac dsdNewVersion = dsdsMetamacService.versioningDataStructureDefinition(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
     }
@@ -444,10 +445,10 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     public void testCreateTemporalDataStructureDefinition() throws Exception {
         String urn = DSD_6_V1;
         String versionExpected = "01.000" + UrnConstants.URN_SDMX_TEMPORAL_SUFFIX;
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
-        String dsd_6_v1temp_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").dim-01";
-        String dsd_6_v1temp_time_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").timeDimension-01";
-        String dsd_6_v1temp_measure_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ").measureDimension-01";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
+        String dsd_6_v1temp_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ").dim-01";
+        String dsd_6_v1temp_time_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ").timeDimension-01";
+        String dsd_6_v1temp_measure_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ").measureDimension-01";
 
         DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
         DataStructureDefinitionVersionMetamac dsdNewVersion = dsdsMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
@@ -528,7 +529,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
                 temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
 
         String versionExpected = "02.000";
-        String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
 
         // Validate response
         {
