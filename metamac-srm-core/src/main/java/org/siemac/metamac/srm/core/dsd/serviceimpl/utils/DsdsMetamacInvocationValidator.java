@@ -123,6 +123,28 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         // nothing
     }
 
+    public static void findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dimensionUrn,
+            List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(dimensionUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dimensionUrn,
+            List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(dimensionUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     /**************************************************************************
      * PRIVATES
      *************************************************************************/

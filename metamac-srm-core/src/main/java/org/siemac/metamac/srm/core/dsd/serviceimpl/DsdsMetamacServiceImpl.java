@@ -636,6 +636,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public PagedResult<CodelistOrderVisualisation> findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter, String dimensionUrn) throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(conditions, pagingParameter, dimensionUrn, null);
 
         DimensionComponent dimensionComponent = (DimensionComponent) componentRepository.findByUrn(dimensionUrn);
 
@@ -649,6 +651,10 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType()) && representation.getEnumerationCodelist() != null) {
                 codelistId = representation.getEnumerationCodelist().getId();
             }
+        }
+
+        if (codelistId == null) {
+            return new PagedResult<CodelistOrderVisualisation>(new ArrayList<CodelistOrderVisualisation>(), -1, -1, -1);
         }
 
         return findCodelistOrderVisualisationRepositoryByConditions(ctx, conditions, pagingParameter, codelistId);
@@ -656,6 +662,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public PagedResult<CodelistOpennessVisualisation> findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter, String dimensionUrn) throws MetamacException {
+        // Validation
+        DsdsMetamacInvocationValidator.findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(conditions, pagingParameter, dimensionUrn, null);
+
         DimensionComponent dimensionComponent = (DimensionComponent) componentRepository.findByUrn(dimensionUrn);
 
         Representation representation = dimensionComponent.getLocalRepresentation();
@@ -668,6 +677,10 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType()) && representation.getEnumerationCodelist() != null) {
                 codelistId = representation.getEnumerationCodelist().getId();
             }
+        }
+
+        if (codelistId == null) {
+            return new PagedResult<CodelistOpennessVisualisation>(new ArrayList<CodelistOpennessVisualisation>(), -1, -1, -1);
         }
 
         return findCodelistOpennessVisualisationRepositoryByConditions(ctx, conditions, pagingParameter, codelistId);
