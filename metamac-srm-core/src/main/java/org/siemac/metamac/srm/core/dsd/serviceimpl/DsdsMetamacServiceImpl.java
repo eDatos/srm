@@ -442,7 +442,11 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         // ShowDecimalsPrecision
         dataStructureDefinitionVersion.removeAllShowDecimalsPrecisions();
-        dataStructureDefinitionsVersioningCallback.copyShowDecimalsPrecision(dataStructureTemporalVersion, dataStructureDefinitionVersion);
+        dataStructureDefinitionVersion = versioningShowDecimalsPrecision(ctx, dataStructureTemporalVersion, dataStructureDefinitionVersion);
+
+        // Visualization Info
+        dataStructureDefinitionVersion.removeAllDimensionVisualisationInfos();
+        dataStructureDefinitionVersion = versioningDimensionVisualisationInfo(ctx, dataStructureTemporalVersion, dataStructureDefinitionVersion);
 
         return dataStructureDefinitionVersion;
     }
@@ -718,17 +722,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         checkDataStructureDefinitionToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
                 .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, dataStructureDefinitionsVersioningCallback);
-
-        // Other metadata, Note: other relations are copied in copy callback
-
-        // Versioning heading and stub (metadata of Metamac).
-        dataStructureDefinitionVersionMetamacNewVersion = versioningHeadingAndStub(ctx, dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
-
-        // Versioning dimension visualisation info
-        dataStructureDefinitionVersionMetamacNewVersion = versioningDimensionVisualisationInfo(ctx, dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
 
         return dataStructureDefinitionVersionMetamacNewVersion;
     }
@@ -781,6 +776,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     public DataStructureDefinitionVersionMetamac versioningShowDecimalsPrecision(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy,
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException {
 
+        // Check if inherit if valid
+
         // Find Measure Dimension in old Version
         MeasureDimension previousMeasureDimension = null;
         for (ComponentList componentList : dataStructureDefinitionVersionMetamacToCopy.getGrouping()) {
@@ -817,8 +814,18 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             return dataStructureDefinitionVersionMetamacNewVersion;
         }
 
-        // showDecimalsPrecisions
-        dataStructureDefinitionsVersioningCallback.copyShowDecimalsPrecision(dataStructureDefinitionVersionMetamacToCopy, dataStructureDefinitionVersionMetamacNewVersion);
+        String previousConceptSchemeRepresentationUrn = previousMeasureDimension.getLocalRepresentation().getEnumerationConceptScheme().getMaintainableArtefact().getUrn();
+        String newConceptSchemeRepresentationUrn = newMeasureDimension.getLocalRepresentation().getEnumerationConceptScheme().getMaintainableArtefact().getUrn();
+
+        if (previousConceptSchemeRepresentationUrn.equals(newConceptSchemeRepresentationUrn)) {
+            // showDecimalsPrecisions
+            for (MeasureDimensionPrecision measureDimensionPrecision : dataStructureDefinitionVersionMetamacToCopy.getShowDecimalsPrecisions()) {
+                MeasureDimensionPrecision targetMeasureDimensionPrecion = new MeasureDimensionPrecision();
+                targetMeasureDimensionPrecion.setConcept(measureDimensionPrecision.getConcept());
+                targetMeasureDimensionPrecion.setShowDecimalPrecision(measureDimensionPrecision.getShowDecimalPrecision());
+                dataStructureDefinitionVersionMetamacNewVersion.addShowDecimalsPrecision(targetMeasureDimensionPrecion);
+            }
+        }
 
         return dataStructureDefinitionVersionMetamacNewVersion;
     }
@@ -863,6 +870,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
         return dataStructureDefinitionVersionMetamacNewVersion;
     }
+
     private void copyIfValidDimensionVisualizationInfo(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion, Map<String, Component> newDimensionMap,
             DimensionVisualizationInfo dimensionVisualizationInfo, Representation representation) {
         // If the dimension contains a enumerated representation of type codelist

@@ -356,9 +356,8 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         String versionExpected = "01.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)";
 
-        // Overwrite data conf
-
         TaskInfo copyResult = dsdsMetamacService.copyDataStructureDefinition(getServiceContextAdministrador(), urnToCopy);
+
         // Validate (only some metadata, already tested in statistic module)
         entityManager.clear();
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionNewArtefact = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(),
@@ -371,9 +370,44 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         assertEquals(null, dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getReplacedByVersion());
         assertTrue(dataStructureDefinitionVersionNewArtefact.getMaintainableArtefact().getIsLastVersion());
 
-        // TODO HACIENDO EL TEST ESTE, fijarse en el copy de conceptos.
-        // DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
-        // DataStructureDefinitionVersionMetamac dsdNewVersion = dsdsMetamacService.versioningDataStructureDefinition(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        DataStructureDefinitionVersionMetamac dsdToCopy = dsdsMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urnToCopy);
+        {
+            // Metamac Metadata
+            assertEquals(dsdToCopy.getAutoOpen(), dataStructureDefinitionVersionNewArtefact.getAutoOpen());
+            assertEquals(dsdToCopy.getShowDecimals(), dataStructureDefinitionVersionNewArtefact.getShowDecimals());
+            assertEquals(dsdToCopy.getHeadingDimensions().size(), dataStructureDefinitionVersionNewArtefact.getHeadingDimensions().size());
+            assertEquals(dsdToCopy.getDimensionVisualisationInfos().size(), dataStructureDefinitionVersionNewArtefact.getDimensionVisualisationInfos().size());
+            // heading
+            for (int i = 0; i < dsdToCopy.getHeadingDimensions().size(); i++) {
+                DimensionOrder dimOrderToCopy = dsdToCopy.getHeadingDimensions().get(i);
+                DimensionOrder dimOrderToNewVersion = dataStructureDefinitionVersionNewArtefact.getHeadingDimensions().get(i);
+                assertEquals(dimOrderToCopy.getDimension().getCode(), dimOrderToNewVersion.getDimension().getCode());
+                assertEquals(dimOrderToCopy.getDimOrder(), dimOrderToNewVersion.getDimOrder());
+            }
+            // Stub
+            for (int i = 0; i < dsdToCopy.getStubDimensions().size(); i++) {
+                DimensionOrder dimOrderToCopy = dsdToCopy.getStubDimensions().get(i);
+                DimensionOrder dimOrderToNewVersion = dataStructureDefinitionVersionNewArtefact.getStubDimensions().get(i);
+                assertEquals(dimOrderToCopy.getDimension().getCode(), dimOrderToNewVersion.getDimension().getCode());
+                assertEquals(dimOrderToCopy.getDimOrder(), dimOrderToNewVersion.getDimOrder());
+            }
+            // ShowDecimalsPrecisions
+            for (int i = 0; i < dsdToCopy.getShowDecimalsPrecisions().size(); i++) {
+                MeasureDimensionPrecision measureDimensionPrecisionToCopy = dsdToCopy.getShowDecimalsPrecisions().get(i);
+                MeasureDimensionPrecision measureDimensionPrecisionToNewVersion = dataStructureDefinitionVersionNewArtefact.getShowDecimalsPrecisions().get(i);
+                assertEquals(measureDimensionPrecisionToCopy.getConcept().getNameableArtefact().getUrn(), measureDimensionPrecisionToNewVersion.getConcept().getNameableArtefact().getUrn());
+                assertEquals(measureDimensionPrecisionToCopy.getShowDecimalPrecision(), measureDimensionPrecisionToNewVersion.getShowDecimalPrecision());
+            }
+            // DimensionVisualisationInfo
+            for (int i = 0; i < dsdToCopy.getDimensionVisualisationInfos().size(); i++) {
+                DimensionVisualizationInfo dimensionVisualizationInfoToCopy = dsdToCopy.getDimensionVisualisationInfos().get(i);
+                DimensionVisualizationInfo dimensionVisualizationInfoToNew = dataStructureDefinitionVersionNewArtefact.getDimensionVisualisationInfos().get(i);
+                assertEquals(dimensionVisualizationInfoToCopy.getDimension().getCode(), dimensionVisualizationInfoToNew.getDimension().getCode());
+                assertEquals(dimensionVisualizationInfoToCopy.getDisplayOrder().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getDisplayOrder().getNameableArtefact().getUrn());
+                assertEquals(dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact()
+                        .getUrn());
+            }
+        }
     }
 
     @Test
