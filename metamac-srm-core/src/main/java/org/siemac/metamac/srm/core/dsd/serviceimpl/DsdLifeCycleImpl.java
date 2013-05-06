@@ -16,6 +16,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.serviceimpl.utils.ValidationUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -23,6 +24,7 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +37,14 @@ import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParametersInternal;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
+import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 
@@ -86,7 +90,8 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException {
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
 
             // Auxiliary data structures
@@ -141,6 +146,21 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                             isDsdWithTimeDimension = true;
                         } else if (SpecialDimensionTypeEnum.SPATIAL.equals(((DimensionComponent) component).getSpecialDimensionType())) {
                             isDsdWithSpatialDimension = true;
+                        }
+
+                        // DisplayOrder and HierarchyLevelsOpen are mandatory
+                        if (component instanceof Dimension) {
+                            // Enumerated representation for Dimension always is a Codelist
+                            if (component.getLocalRepresentation() != null && RepresentationTypeEnum.ENUMERATION.equals(component.getLocalRepresentation().getRepresentationType())) {
+                                checkMandatoryDimensionVisualizationInfo(ctx, dataStructureDefinitionVersionMetamac, (CodelistVersionMetamac) component.getLocalRepresentation()
+                                        .getEnumerationCodelist(), (DimensionComponent) component);
+                            } else {
+                                if (component.getCptIdRef().getCoreRepresentation() != null
+                                        && RepresentationTypeEnum.ENUMERATION.equals(component.getCptIdRef().getCoreRepresentation().getRepresentationType())) {
+                                    checkMandatoryDimensionVisualizationInfo(ctx, dataStructureDefinitionVersionMetamac, (CodelistVersionMetamac) component.getCptIdRef().getCoreRepresentation()
+                                            .getEnumerationCodelist(), (DimensionComponent) component);
+                                }
+                            }
                         }
                     }
                     break;
@@ -303,5 +323,40 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             return structureVersions;
         }
 
+        private void checkMandatoryDimensionVisualizationInfo(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac, CodelistVersionMetamac codelistTarget,
+                DimensionComponent dimensionTarget) throws MetamacException {
+            // DimensionVisualisationInfo
+            DimensionVisualizationInfo visualizationInfoForCurrentDimension = null;
+            for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
+                if (dimensionVisualizationInfo.getDimension().getUrn().equals(dimensionTarget.getUrn())) {
+                    visualizationInfoForCurrentDimension = dimensionVisualizationInfo;
+                }
+            }
+
+            if (visualizationInfoForCurrentDimension == null) {
+                // Create new visualization info with new values.
+                visualizationInfoForCurrentDimension = new DimensionVisualizationInfo();
+                visualizationInfoForCurrentDimension.setDimension(dimensionTarget);
+                dataStructureDefinitionVersionMetamac.addDimensionVisualisationInfo(visualizationInfoForCurrentDimension);
+            }
+
+            // If the codeList representation is the same as that of the DisplayOrder.
+            boolean isChanged = false;
+            if (codelistTarget != null && visualizationInfoForCurrentDimension.getDisplayOrder() == null) {
+                visualizationInfoForCurrentDimension.setDisplayOrder(codelistTarget.getDefaultOrderVisualisation());
+                isChanged = true;
+            }
+            // If the codeList representation is the same as that of the OpenessLevel.
+            if (codelistTarget != null && visualizationInfoForCurrentDimension.getHierarchyLevelsOpen() == null) {
+                visualizationInfoForCurrentDimension.setHierarchyLevelsOpen(codelistTarget.getDefaultOpennessVisualisation());
+                isChanged = true;
+            }
+
+            // Save new metadata
+            if (isChanged == true) {
+                dataStructureDefinitionVersionMetamac.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+                dataStructureDefinitionMetamacService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+            }
+        }
     }
 }

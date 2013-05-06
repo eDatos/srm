@@ -277,7 +277,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
             SdmxSrmValidationUtils.checkArtefactWithoutTaskInBackground((ItemSchemeVersion) srmResourceVersion);
         }
         // Conditions for concrete resource
-        callback.checkConcreteResourceInProductionValidation(srmResourceVersion, targetStatus, exceptions);
+        callback.checkConcreteResourceInProductionValidation(ctx, srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -421,7 +421,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public List<Object> findSrmResourceVersionsOfSrmResourceInProcStatus(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum... procStatus);
 
         // Conditions to update state
-        public void checkConcreteResourceInProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException;
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
