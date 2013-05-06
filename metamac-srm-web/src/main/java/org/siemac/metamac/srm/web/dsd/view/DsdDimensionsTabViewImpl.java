@@ -7,7 +7,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
@@ -635,7 +634,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         if (dimensionComponentDto.getLocalRepresentation() != null) {
             if (RepresentationTypeEnum.ENUMERATION.equals(dimensionComponentDto.getLocalRepresentation().getRepresentationType())) {
 
-                if (TypeExternalArtefactsEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
+                if (RelatedResourceTypeEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
 
                     // CODELIST
 
@@ -645,7 +644,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).show();
                     }
 
-                } else if (TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
+                } else if (RelatedResourceTypeEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
 
                     // CONCEPTSCHEME
 
@@ -715,7 +714,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 editionForm.setValue(DimensionDS.REPRESENTATION_TYPE, RepresentationTypeEnum.ENUMERATION.toString());
                 editionForm.setValue(DimensionDS.REPRESENTATION_TYPE_VIEW, getCoreMessages().representationTypeEnumENUMERATION());
 
-                if (TypeExternalArtefactsEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
+                if (RelatedResourceTypeEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
 
                     // Codelist
 
@@ -727,7 +726,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                                 RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumeration()));
                     }
 
-                } else if (TypeExternalArtefactsEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
+                } else if (RelatedResourceTypeEnum.CONCEPT_SCHEME.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
 
                     // ConceptScheme
 
