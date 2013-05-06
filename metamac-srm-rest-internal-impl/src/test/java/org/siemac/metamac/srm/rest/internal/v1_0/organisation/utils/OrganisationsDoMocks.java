@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils;
 
 import static org.junit.Assert.fail;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDoMocks;
@@ -11,11 +12,12 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 
 public class OrganisationsDoMocks {
 
-    public static OrganisationSchemeVersionMetamac mockOrganisationScheme(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
+    public static OrganisationSchemeVersionMetamac mockOrganisationScheme(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) throws MetamacException {
         return OrganisationsMetamacDoMocks.mockOrganisationSchemeFixedValues(agencyID, resourceID, version, type);
     }
 
-    public static OrganisationMetamac mockOrganisation(String resourceID, OrganisationSchemeVersionMetamac organisationScheme, OrganisationMetamac parent, OrganisationTypeEnum type) {
+    public static OrganisationMetamac mockOrganisation(String resourceID, OrganisationSchemeVersionMetamac organisationScheme, OrganisationMetamac parent, OrganisationTypeEnum type)
+            throws MetamacException {
         Boolean organisationsCanHaveChildren = OrganisationTypeEnum.ORGANISATION_UNIT.equals(type);
         if (!organisationsCanHaveChildren && parent != null) {
             fail("parent must be null because this organisation type can not have children");
@@ -23,7 +25,7 @@ public class OrganisationsDoMocks {
         return OrganisationsMetamacDoMocks.mockOrganisationFixedValues(resourceID, organisationScheme, parent, type);
     }
 
-    public static OrganisationSchemeVersionMetamac mockOrganisationSchemeWithOrganisations(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
+    public static OrganisationSchemeVersionMetamac mockOrganisationSchemeWithOrganisations(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) throws MetamacException {
 
         OrganisationSchemeVersionMetamac organisationSchemeVersion = mockOrganisationScheme(agencyID, resourceID, version, type);
 

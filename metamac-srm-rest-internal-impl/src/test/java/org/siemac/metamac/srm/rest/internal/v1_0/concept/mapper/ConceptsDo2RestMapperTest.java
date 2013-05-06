@@ -112,7 +112,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
-        assertEquals("urn:resourceID1:01.123", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agencyID1:resourceID1(01.123)", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -120,7 +120,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes", target.getParentLink().getHref());
         assertEquals(ConceptSchemeType.OPERATION, target.getType());
-        assertEquals("urn:operation-resourceID1", target.getStatisticalOperation().getUrn());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-resourceID1", target.getStatisticalOperation().getUrn());
         assertEquals("statisticalOperations#operation", target.getStatisticalOperation().getKind());
         assertEquals("operation-resourceID1", target.getStatisticalOperation().getId());
         assertNull(target.getStatisticalOperation().getTitle());
@@ -149,25 +149,25 @@ public class ConceptsDo2RestMapperTest {
             ConceptType concept = target.getConcepts().get(i++);
             assertTrue(concept instanceof ConceptType);
             assertFalse(concept instanceof Concept);
-            assertEquals("urn:concept1", concept.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept1", concept.getUrn());
         }
         {
             ConceptType concept = target.getConcepts().get(i++);
             assertTrue(concept instanceof ConceptType);
             assertFalse(concept instanceof Concept);
-            assertEquals("urn:concept2", concept.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", concept.getUrn());
         }
         {
             ConceptType concept = target.getConcepts().get(i++);
             assertTrue(concept instanceof ConceptType);
             assertFalse(concept instanceof Concept);
-            assertEquals("urn:concept2A", concept.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2A", concept.getUrn());
         }
         {
             ConceptType concept = target.getConcepts().get(i++);
             assertTrue(concept instanceof ConceptType);
             assertFalse(concept instanceof Concept);
-            assertEquals("urn:concept2B", concept.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2B", concept.getUrn());
         }
         assertEquals(i, target.getConcepts().size());
     }
@@ -244,7 +244,7 @@ public class ConceptsDo2RestMapperTest {
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
         assertEquals("concept2", target.getId());
-        assertEquals("urn:concept2", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragencyID1/resourceID1/01.123/concepts";
         String selfLink = parentLink + "/concept2";
@@ -265,7 +265,7 @@ public class ConceptsDo2RestMapperTest {
         assertEqualsInternationalString("es", "legalActs-concept2 en Español", "en", "legalActs-concept2 in English", target.getLegalActs());
 
         assertEquals("variable1", target.getVariable().getId());
-        assertEquals("urn:variable1", target.getVariable().getUrn());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1", target.getVariable().getUrn());
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
         assertEquals(RestInternalConstants.KIND_VARIABLE, target.getVariable().getSelfLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1", target.getVariable().getSelfLink().getHref());

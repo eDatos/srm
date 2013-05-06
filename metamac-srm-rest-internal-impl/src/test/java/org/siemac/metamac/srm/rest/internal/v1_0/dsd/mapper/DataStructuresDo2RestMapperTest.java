@@ -107,7 +107,7 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, target.getKind());
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
-        assertEquals("urn:resourceID1:01.123", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agencyID1:resourceID1(01.123)", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/idAsMaintaineragencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -117,25 +117,27 @@ public class DataStructuresDo2RestMapperTest {
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         assertEquals(Boolean.TRUE, target.isAutoOpen());
         assertEquals(3, target.getShowDecimals().intValue());
-        assertEquals("urn:operation-resourceID1", target.getStatisticalOperation().getUrn());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-resourceID1", target.getStatisticalOperation().getUrn());
         assertEquals("statisticalOperations#operation", target.getStatisticalOperation().getKind());
         assertEquals("operation-resourceID1", target.getStatisticalOperation().getId());
         assertNull(target.getStatisticalOperation().getTitle());
         // show decimals
         assertEquals(2, target.getShowDecimalsPrecisions().getTotal().intValue());
-        assertEquals("urn:concept01", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getConcept().getURN());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getConcept()
+                .getURN());
         assertEquals(2, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getShowDecimals().intValue());
-        assertEquals("urn:concept02", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getConcept().getURN());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getConcept()
+                .getURN());
         assertEquals(5, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getShowDecimals().intValue());
         // heading
         assertEquals(2, target.getHeading().getTotal().intValue());
-        assertEquals("urn:dimension01", target.getHeading().getDimensions().get(0).getURN());
-        assertEquals("urn:dimension02", target.getHeading().getDimensions().get(1).getURN());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension01", target.getHeading().getDimensions().get(0).getURN());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension02", target.getHeading().getDimensions().get(1).getURN());
         // stub
         assertEquals(3, target.getStub().getTotal().intValue());
-        assertEquals("urn:dimension03", target.getStub().getDimensions().get(0).getURN());
-        assertEquals("urn:dimension04", target.getStub().getDimensions().get(1).getURN());
-        assertEquals("urn:dimension05", target.getStub().getDimensions().get(2).getURN());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension03", target.getStub().getDimensions().get(0).getURN());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension04", target.getStub().getDimensions().get(1).getURN());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension05", target.getStub().getDimensions().get(2).getURN());
         // attribute
         assertTrue(target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0) instanceof Attribute);
         assertEquals(AttributeQualifierType.SPATIAL, ((Attribute) target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0)).getType());

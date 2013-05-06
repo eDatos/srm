@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Web applications</comment>
+    <entry key="metamac.web.srm.internal">http://localhost:8080/metamac-srm-web</entry>
+    <entry key="metamac.web.statistical.operations.internal">http://localhost:8080/metamac-statistical-operations-web</entry>
+</properties>

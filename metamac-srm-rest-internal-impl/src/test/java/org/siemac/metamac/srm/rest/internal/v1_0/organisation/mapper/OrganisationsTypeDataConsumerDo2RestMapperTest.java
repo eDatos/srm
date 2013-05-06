@@ -33,6 +33,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumer;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerSchemes;
@@ -57,7 +58,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
     private OrganisationsDo2RestMapperV10 do2RestInternalMapper;
 
     @Test
-    public void testToDataConsumerSchemes() {
+    public void testToDataConsumerSchemes() throws MetamacException {
 
         String agencyID = WILDCARD;
         String resourceID = WILDCARD;
@@ -102,7 +103,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
     }
 
     @Test
-    public void testToDataConsumerScheme() {
+    public void testToDataConsumerScheme() throws MetamacException {
 
         OrganisationSchemeVersionMetamac source = mockOrganisationSchemeWithOrganisations("agencyID1", "DATACONSUMERS", "01.000", OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
 
@@ -113,7 +114,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, target.getKind());
         assertEquals("DATACONSUMERS", target.getId());
         assertEquals("01.000", target.getVersion());
-        assertEquals("urn:DATACONSUMERS:01.000", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agencyID1:DATACONSUMERS(01.000)", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragencyID1/DATACONSUMERS/01.000";
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -145,19 +146,19 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
             DataConsumerType dataConsumer = target.getDataConsumers().get(i++);
             assertTrue(dataConsumer instanceof DataConsumerType);
             assertFalse(dataConsumer instanceof DataConsumer);
-            assertEquals("urn:organisation1", dataConsumer.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agencyID1:DATACONSUMERS(01.000).organisation1", dataConsumer.getUrn());
         }
         {
             DataConsumerType dataConsumer = target.getDataConsumers().get(i++);
             assertTrue(dataConsumer instanceof DataConsumerType);
             assertFalse(dataConsumer instanceof DataConsumer);
-            assertEquals("urn:organisation2", dataConsumer.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agencyID1:DATACONSUMERS(01.000).organisation2", dataConsumer.getUrn());
         }
         assertEquals(i, target.getDataConsumers().size());
     }
 
     @Test
-    public void testToDataConsumerSchemeImported() {
+    public void testToDataConsumerSchemeImported() throws MetamacException {
 
         OrganisationSchemeVersionMetamac source = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
@@ -171,7 +172,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
     }
 
     @Test
-    public void testToDataConsumers() {
+    public void testToDataConsumers() throws MetamacException {
 
         String agencyID = WILDCARD;
         String organisationSchemeID = WILDCARD;
@@ -221,7 +222,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
     }
 
     @Test
-    public void testToDataConsumer() {
+    public void testToDataConsumer() throws MetamacException {
 
         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.DATA_CONSUMER;
@@ -235,7 +236,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, target.getKind());
         assertEquals("organisation2", target.getId());
-        assertEquals("urn:organisation2", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agencyID1:DATACONSUMERS(01.000).organisation2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragencyID1/DATACONSUMERS/01.000/dataconsumers";
         String selfLink = parentLink + "/organisation2";
@@ -250,7 +251,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
     }
 
     @Test
-    public void testToDataConsumerImported() {
+    public void testToDataConsumerImported() throws MetamacException {
 
         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.DATA_CONSUMER;

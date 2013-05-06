@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
@@ -119,6 +120,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setUpdateDate(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setNameableArtefact(new NameableArtefact());
         mockNameableArtefactFixedValues(target.getNameableArtefact(), resourceID, null);
+        target.getNameableArtefact().setUrn(GeneratorUrnUtils.generateCodelistFamilyUrn(target));
+        target.getNameableArtefact().setUrnProvider(target.getNameableArtefact().getUrn());
         return target;
     }
     // ------------------------------------------------------------------------------------
@@ -142,6 +145,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setUpdateDate(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setNameableArtefact(new NameableArtefact());
         mockNameableArtefactFixedValues(target.getNameableArtefact(), resourceID, null);
+        target.getNameableArtefact().setUrn(GeneratorUrnUtils.generateVariableFamilyUrn(target));
+        target.getNameableArtefact().setUrnProvider(target.getNameableArtefact().getUrn());
         return target;
     }
 
@@ -172,6 +177,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
         target.setNameableArtefact(new NameableArtefact());
         mockNameableArtefactFixedValues(target.getNameableArtefact(), resourceID, null);
+        target.getNameableArtefact().setUrn(GeneratorUrnUtils.generateVariableUrn(target));
+        target.getNameableArtefact().setUrnProvider(target.getNameableArtefact().getUrn());
         return target;
     }
 
@@ -205,6 +212,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
         target.setIdentifiableArtefact(new IdentifiableArtefact());
         mockIdentifiableArtefactFixedValues(target.getIdentifiableArtefact(), resourceID, null);
+        target.getIdentifiableArtefact().setUrn(GeneratorUrnUtils.generateVariableElementUrn(target.getVariable(), target));
+        target.getIdentifiableArtefact().setUrnProvider(target.getIdentifiableArtefact().getUrn());
         return target;
     }
 

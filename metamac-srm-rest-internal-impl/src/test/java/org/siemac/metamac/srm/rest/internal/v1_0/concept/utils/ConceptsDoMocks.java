@@ -39,14 +39,17 @@ public class ConceptsDoMocks {
         concept2.addChildren(concept2B);
 
         // concept relations
-        concept1.setConceptExtends(mockConcept("1_conceptExtends1", null, null));
-        concept1.addRoleConcept(mockConcept("1_conceptRole1", null, null));
-        concept1.addRoleConcept(mockConcept("1_conceptRole2", null, null));
+        ConceptSchemeVersionMetamac conceptSchemeVersion2 = mockConceptScheme("agency02", "conceptScheme02", "01.000");
+        ConceptSchemeVersionMetamac conceptSchemeVersion3 = mockConceptScheme("agency03", "conceptScheme03", "01.000");
 
-        concept2A.setConceptExtends(mockConcept("2A_conceptExtends1", null, null));
-        concept2A.addRoleConcept(mockConcept("2A_conceptRole1", null, null));
-        concept2A.addRoleConcept(mockConcept("2A_conceptRole2", null, null));
-        concept2A.addRoleConcept(mockConcept("2A_conceptRole3", null, null));
+        concept1.setConceptExtends(mockConcept("1_conceptExtends1", conceptSchemeVersion2, null));
+        concept1.addRoleConcept(mockConcept("1_conceptRole1", conceptSchemeVersion3, null));
+        concept1.addRoleConcept(mockConcept("1_conceptRole2", conceptSchemeVersion2, null));
+
+        concept2A.setConceptExtends(mockConcept("2A_conceptExtends1", conceptSchemeVersion3, null));
+        concept2A.addRoleConcept(mockConcept("2A_conceptRole1", conceptSchemeVersion2, null));
+        concept2A.addRoleConcept(mockConcept("2A_conceptRole2", conceptSchemeVersion3, null));
+        concept2A.addRoleConcept(mockConcept("2A_conceptRole3", conceptSchemeVersion2, null));
 
         concept1.addRelatedConcept(concept2);
         concept2.addRelatedConcept(concept1);

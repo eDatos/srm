@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
@@ -22,6 +23,7 @@ import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
+import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.InternalWebApplicationNavigation;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,19 +36,19 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 public abstract class BaseDo2RestMapperV10Impl {
 
     @Autowired
-    private ConfigurationService configurationService;
+    private ConfigurationService             configurationService;
 
-    private String               srmApiInternalEndpointV10;
-    private String               statisticalOperationsApiInternalEndpoint;
+    private String                           srmInternalWebApplication;
+    private String                           srmApiInternalEndpointV10;
+    private String                           statisticalOperationsApiInternalEndpoint;
+
+    private InternalWebApplicationNavigation internalWebApplicationNavigation;
 
     @PostConstruct
     public void init() throws Exception {
-        // Srm Internal Api V1.0
-        String srmApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);
-        srmApiInternalEndpointV10 = RestUtils.createLink(srmApiInternalEndpoint, RestInternalConstants.API_VERSION_1_0);
+        initEndpoints();
 
-        // Statistical operations Internal Api
-        statisticalOperationsApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
+        internalWebApplicationNavigation = new InternalWebApplicationNavigation(srmInternalWebApplication);
     }
 
     public String getSrmApiInternalEndpointV10() {
@@ -187,11 +189,29 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
     }
 
+    protected InternalWebApplicationNavigation getInternalWebApplicationNavigation() {
+        return internalWebApplicationNavigation;
+    }
+
     private String readProperty(String property) {
         String propertyValue = configurationService.getProperty(property);
         if (propertyValue == null) {
             throw new BeanCreationException("Property not found: " + property);
         }
         return propertyValue;
+    }
+
+    private void initEndpoints() {
+        // Srm internal application
+        srmInternalWebApplication = readProperty(ConfigurationConstants.WEB_APPLICATION_SRM_INTERNAL_WEB);
+        srmInternalWebApplication = StringUtils.removeEnd(srmInternalWebApplication, "/");
+
+        // Srm Internal Api V1.0
+        String srmApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);
+        srmApiInternalEndpointV10 = RestUtils.createLink(srmApiInternalEndpoint, RestInternalConstants.API_VERSION_1_0);
+
+        // Statistical operations Internal Api
+        statisticalOperationsApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
+        statisticalOperationsApiInternalEndpoint = StringUtils.removeEnd(statisticalOperationsApiInternalEndpoint, "/");
     }
 }

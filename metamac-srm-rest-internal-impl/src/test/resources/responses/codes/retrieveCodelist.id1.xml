@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:codelist xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#codelist" id="itemScheme1" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" isPartial="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:itemScheme1:01.000" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
+<sr:codelist xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#codelist" id="itemScheme1" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" isPartial="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:itemScheme1(01.000)" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
     <common:Annotations>
         <common:Annotation id="code2">
             <common:AnnotationTitle>title-code2</common:AnnotationTitle>
             <common:AnnotationType>type-code2</common:AnnotationType>
             <common:AnnotationURL>url-code2</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
         </common:Annotation>
         <common:Annotation id="code1">
             <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -18,9 +18,9 @@
     </common:Annotations>
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
     <common:Name xml:lang="en">name-itemScheme1v01.000 in English</common:Name>
-    <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
-    <structure:Code id="code1" urn="urn:code1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code1">
+    <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
+    <structure:Code id="code1" urn="urn:sdmx:org.sdmx.infomodel.xxx=code1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code1">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -42,7 +42,7 @@
         <common:Description xml:lang="en">description-code1 in English</common:Description>
         <common:Description xml:lang="es">description-code1 en Español</common:Description>
     </structure:Code>
-    <structure:Code id="code2" urn="urn:code2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2">
+    <structure:Code id="code2" urn="urn:sdmx:org.sdmx.infomodel.xxx=code2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -64,7 +64,7 @@
         <common:Description xml:lang="en">description-code2 in English</common:Description>
         <common:Description xml:lang="es">description-code2 en Español</common:Description>
     </structure:Code>
-    <structure:Code id="code2A" urn="urn:code2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2A">
+    <structure:Code id="code2A" urn="urn:sdmx:org.sdmx.infomodel.xxx=code2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2A">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -89,7 +89,7 @@
             <Ref id="code2"/>
         </structure:Parent>
     </structure:Code>
-    <structure:Code id="code2B" urn="urn:code2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2B">
+    <structure:Code id="code2B" urn="urn:sdmx:org.sdmx.infomodel.xxx=code2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes/code2B">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -119,6 +119,7 @@
     <cdomain:childLinks total="1">
         <cdomain:childLink kind="structuralResources#codes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/itemScheme1/01.000/codes"/>
     </cdomain:childLinks>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
     <sr:lifeCycle>
         <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
         <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>
@@ -130,8 +131,8 @@
         <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
         <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
     </sr:lifeCycle>
-    <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
     <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
+    <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
     <sr:comment>
         <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
         <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
@@ -147,7 +148,7 @@
     <sr:isRecommended>true</sr:isRecommended>
     <sr:family kind="structuralResources#codelistFamily">
         <cdomain:id>family1</cdomain:id>
-        <cdomain:urn>urn:family1</cdomain:urn>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=family1</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#codelistFamily" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelistfamilies/family1"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-family1 in English</cdomain:text>
@@ -156,42 +157,42 @@
     </sr:family>
     <sr:variable kind="structuralResources#variable">
         <cdomain:id>variable1</cdomain:id>
-        <cdomain:urn>urn:variable1</cdomain:urn>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1"/>
         <cdomain:title>
-            <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
         </cdomain:title>
     </sr:variable>
-    <sr:replacedBy kind="structuralResources#codelist">
-        <cdomain:id>codelistReplacedBy</cdomain:id>
-        <cdomain:urn>urn:codelistReplacedBy:01.000</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/codelistReplacedBy/01.000"/>
-        <cdomain:title>
-            <cdomain:text xml:lang="es">name-codelistReplacedByv01.000 en Español</cdomain:text>
-            <cdomain:text xml:lang="en">name-codelistReplacedByv01.000 in English</cdomain:text>
-        </cdomain:title>
-    </sr:replacedBy>
     <sr:replaceTo kind="structuralResources#codelists" total="2">
         <sr:replaceTo kind="structuralResources#codelist">
             <cdomain:id>codelistReplaceTo1</cdomain:id>
-            <cdomain:urn>urn:codelistReplaceTo1:01.000</cdomain:urn>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo1(01.000)</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/codelistReplaceTo1/01.000"/>
             <cdomain:title>
-                <cdomain:text xml:lang="en">name-codelistReplaceTo1v01.000 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-codelistReplaceTo1v01.000 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-codelistReplaceTo1v01.000 in English</cdomain:text>
             </cdomain:title>
         </sr:replaceTo>
         <sr:replaceTo kind="structuralResources#codelist">
             <cdomain:id>codelistReplaceTo3</cdomain:id>
-            <cdomain:urn>urn:codelistReplaceTo3:02.000</cdomain:urn>
-            <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/codelistReplaceTo3/02.000"/>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo3(03.000)</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/codelistReplaceTo3/03.000"/>
             <cdomain:title>
-                <cdomain:text xml:lang="es">name-codelistReplaceTo3v02.000 en Español</cdomain:text>
-                <cdomain:text xml:lang="en">name-codelistReplaceTo3v02.000 in English</cdomain:text>
+                <cdomain:text xml:lang="en">name-codelistReplaceTo3v03.000 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-codelistReplaceTo3v03.000 en Español</cdomain:text>
             </cdomain:title>
         </sr:replaceTo>
     </sr:replaceTo>
+    <sr:replacedBy kind="structuralResources#codelist">
+        <cdomain:id>codelistReplacedBy</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplacedBy(01.000)</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/idAsMaintaineragency1/codelistReplacedBy/01.000"/>
+        <cdomain:title>
+            <cdomain:text xml:lang="en">name-codelistReplacedByv01.000 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-codelistReplacedByv01.000 en Español</cdomain:text>
+        </cdomain:title>
+    </sr:replacedBy>
     <sr:accessType>PUBLIC</sr:accessType>
     <sr:defaultOrderVisualisation>defaultOrderVisualisation1</sr:defaultOrderVisualisation>
     <sr:defaultOpennessVisualisation>defaultOpennessVisualisation1</sr:defaultOpennessVisualisation>

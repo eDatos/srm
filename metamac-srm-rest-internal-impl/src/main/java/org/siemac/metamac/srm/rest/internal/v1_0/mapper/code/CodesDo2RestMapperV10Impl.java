@@ -90,6 +90,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         target.setKind(RestInternalConstants.KIND_CODELIST);
         target.setSelfLink(toCodelistSelfLink(source));
+        target.setManagementAppLink(toCodelistManagementApplicationLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
         }
@@ -145,6 +146,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         target.setParentLink(toCodeParentLink(source));
         target.setChildLinks(toCodeChildLinks(source));
+        target.setManagementAppLink(toCodeManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         if (source.getVariableElement() == null) {
@@ -303,6 +305,10 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
+    private String toCodelistManagementApplicationLink(CodelistVersionMetamac source) {
+        return getInternalWebApplicationNavigation().buildCodelistUrl(source.getMaintainableArtefact().getUrn());
+    }
+
     private ResourceLink toCodelistSelfLink(CodelistVersionMetamac source) {
         return toResourceLink(RestInternalConstants.KIND_CODELIST, toCodelistLink(source));
     }
@@ -316,6 +322,10 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         targets.getChildLinks().add(toResourceLink(RestInternalConstants.KIND_CODES, toCodesLink(source)));
         targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
         return targets;
+    }
+
+    private String toCodeManagementApplicationLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
+        return getInternalWebApplicationNavigation().buildCodeUrl(source.getNameableArtefact().getUrn());
     }
 
     private ResourceLink toCodeSelfLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {

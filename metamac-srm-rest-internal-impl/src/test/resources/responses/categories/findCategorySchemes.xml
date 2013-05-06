@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:categorySchemes xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#categorySchemes" total="40" limit="4" offset="4" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=4" firstLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=36">
+<sr:categorySchemes xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#categorySchemes" total="40" limit="4" offset="4" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=4" firstLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes?limit=4&amp;offset=36">
     <sr:categoryScheme kind="structuralResources#categoryScheme">
         <cdomain:id>itemScheme1</cdomain:id>
-        <cdomain:urn>urn:itemScheme1:01.000</cdomain:urn>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency1:itemScheme1(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categoryScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
         <cdomain:title>
             <cdomain:text xml:lang="es">name-itemScheme1v01.000 en Español</cdomain:text>
@@ -11,7 +11,7 @@
     </sr:categoryScheme>
     <sr:categoryScheme kind="structuralResources#categoryScheme">
         <cdomain:id>itemScheme2</cdomain:id>
-        <cdomain:urn>urn:itemScheme2:01.000</cdomain:urn>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency1:itemScheme2(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categoryScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme2/01.000"/>
         <cdomain:title>
             <cdomain:text xml:lang="es">name-itemScheme2v01.000 en Español</cdomain:text>
@@ -20,7 +20,7 @@
     </sr:categoryScheme>
     <sr:categoryScheme kind="structuralResources#categoryScheme">
         <cdomain:id>itemScheme2</cdomain:id>
-        <cdomain:urn>urn:itemScheme2:02.000</cdomain:urn>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency1:itemScheme2(02.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categoryScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency1/itemScheme2/02.000"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-itemScheme2v02.000 in English</cdomain:text>
@@ -29,11 +29,11 @@
     </sr:categoryScheme>
     <sr:categoryScheme kind="structuralResources#categoryScheme">
         <cdomain:id>itemScheme3</cdomain:id>
-        <cdomain:urn>urn:itemScheme3:01.000</cdomain:urn>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency2:itemScheme3(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categoryScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragency2/itemScheme3/01.000"/>
         <cdomain:title>
-            <cdomain:text xml:lang="en">name-itemScheme3v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-itemScheme3v01.000 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-itemScheme3v01.000 in English</cdomain:text>
         </cdomain:title>
     </sr:categoryScheme>
 </sr:categorySchemes>

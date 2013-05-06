@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.organisation.serviceapi.utils;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -17,7 +18,7 @@ public class OrganisationsMetamacDoMocks extends OrganisationsDoMocks {
         return target;
     }
 
-    public static OrganisationSchemeVersionMetamac mockOrganisationSchemeFixedValues(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
+    public static OrganisationSchemeVersionMetamac mockOrganisationSchemeFixedValues(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) throws MetamacException {
         OrganisationSchemeVersionMetamac target = new OrganisationSchemeVersionMetamac();
         target.setOrganisationSchemeType(type);
         target.setLifeCycleMetadata(BaseDoMocks.mockLifeCycleExternallyPublished());
@@ -32,7 +33,8 @@ public class OrganisationsMetamacDoMocks extends OrganisationsDoMocks {
         return target;
     }
 
-    public static OrganisationMetamac mockOrganisationFixedValues(String resourceID, OrganisationSchemeVersionMetamac itemSchemeVersion, OrganisationMetamac parent, OrganisationTypeEnum type) {
+    public static OrganisationMetamac mockOrganisationFixedValues(String resourceID, OrganisationSchemeVersionMetamac itemSchemeVersion, OrganisationMetamac parent, OrganisationTypeEnum type)
+            throws MetamacException {
         OrganisationMetamac target = new OrganisationMetamac();
         target.setOrganisationType(type);
         mockOrganisationFixedValues(target, resourceID, itemSchemeVersion, parent, type);

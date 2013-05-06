@@ -77,7 +77,7 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
             @Override
             public ItemSchemeVersion answer(InvocationOnMock invocation) throws Throwable {
                 String version = (String) invocation.getArguments()[1];
-                return OrganisationsDoMocks.mockOrganisationScheme("agencyID", version, version, null);
+                return OrganisationsDoMocks.mockOrganisationScheme("agencyID", version, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
             };
         });
     }

@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.organisation.mapper;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -31,7 +32,7 @@ public class OrganisationsDo2DtoMapperTest extends SrmBaseTest {
     private OrganisationsDo2DtoMapper organisationsDo2DtoMapper;
 
     @Test
-    public void testOrganisationSchemeMetamacDoToDto() {
+    public void testOrganisationSchemeMetamacDoToDto() throws MetamacException {
         OrganisationSchemeVersionMetamac entity = OrganisationsMetamacDoMocks.mockOrganisationSchemeFixedValues("agency01", "organisationScheme01", "01.000",
                 OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
 
@@ -39,13 +40,13 @@ public class OrganisationsDo2DtoMapperTest extends SrmBaseTest {
         OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(entity, dto);
     }
     @Test
-    public void testOrganisationMetamacDoToDto() {
+    public void testOrganisationMetamacDoToDto() throws MetamacException {
         OrganisationMetamac entity = mockOrganisationWithAllMetadata(OrganisationSchemeTypeEnum.AGENCY_SCHEME, OrganisationTypeEnum.AGENCY);
         OrganisationMetamacDto dto = organisationsDo2DtoMapper.organisationMetamacDoToDto(entity);
         OrganisationsMetamacAsserts.assertEqualsOrganisation(entity, dto);
     }
 
-    private OrganisationMetamac mockOrganisationWithAllMetadata(OrganisationSchemeTypeEnum organisationSchemeTypeEnum, OrganisationTypeEnum type) {
+    private OrganisationMetamac mockOrganisationWithAllMetadata(OrganisationSchemeTypeEnum organisationSchemeTypeEnum, OrganisationTypeEnum type) throws MetamacException {
         OrganisationSchemeVersionMetamac organisationScheme = OrganisationsMetamacDoMocks.mockOrganisationSchemeFixedValues("agency01", "organisationScheme01", "01.000",
                 OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
         OrganisationMetamac entity = OrganisationsMetamacDoMocks.mockOrganisationFixedValues("organisation01", organisationScheme, null, OrganisationTypeEnum.DATA_PROVIDER);

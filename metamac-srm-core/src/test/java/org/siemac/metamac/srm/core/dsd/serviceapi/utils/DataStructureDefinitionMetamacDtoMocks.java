@@ -19,7 +19,8 @@ public class DataStructureDefinitionMetamacDtoMocks extends DataStructureDefinit
         // ADD Metamac metadata
         dataStructureDefinitionMetamacDto.setAutoOpen(true);
         dataStructureDefinitionMetamacDto.setShowDecimals(6);
-        dataStructureDefinitionMetamacDto.setStatisticalOperation(MetamacMocks.mockExternalItemDto("urn:operation", TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
+        dataStructureDefinitionMetamacDto.setStatisticalOperation(MetamacMocks.mockExternalItemDto("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation",
+                TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
 
         return dataStructureDefinitionMetamacDto;
     }

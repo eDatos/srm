@@ -2,7 +2,7 @@
 <sr:categorisations xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#categorisations" total="30" limit="4" offset="3" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations?limit=4&amp;offset=4" nextLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations?limit=4&amp;offset=7" lastLink="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations?limit=4&amp;offset=27">
     <sr:categorisation kind="structuralResources#categorisation">
         <cdomain:id>categorisation1</cdomain:id>
-        <cdomain:urn>urn:categorisation1:01.000</cdomain:urn>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/idAsMaintaineragency1/categorisation1/01.000"/>
         <cdomain:title>
             <cdomain:text xml:lang="es">name-categorisation1v01.000 en Español</cdomain:text>
@@ -11,7 +11,7 @@
     </sr:categorisation>
     <sr:categorisation kind="structuralResources#categorisation">
         <cdomain:id>categorisation2</cdomain:id>
-        <cdomain:urn>urn:categorisation2:01.000</cdomain:urn>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=categorisation2(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/idAsMaintaineragency1/categorisation2/01.000"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-categorisation2v01.000 in English</cdomain:text>
@@ -20,7 +20,7 @@
     </sr:categorisation>
     <sr:categorisation kind="structuralResources#categorisation">
         <cdomain:id>categorisation3</cdomain:id>
-        <cdomain:urn>urn:categorisation3:01.000</cdomain:urn>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=categorisation3(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/idAsMaintaineragency2/categorisation3/01.000"/>
         <cdomain:title>
             <cdomain:text xml:lang="en">name-categorisation3v01.000 in English</cdomain:text>

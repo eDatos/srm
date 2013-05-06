@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sr:organisation xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#agency">
-    <sr:agency kind="structuralResources#agency" id="itemAgency1" urn="urn:itemAgency1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/itemAgency1">
+    <sr:agency kind="structuralResources#agency" id="itemAgency1" urn="urn:sdmx:org.sdmx.infomodel.base.Agency=agency1:itemScheme1(01.000).itemAgency1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/itemAgency1">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -17,8 +17,8 @@
                 <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="en">name-itemAgency1 in English</common:Name>
         <common:Name xml:lang="es">name-itemAgency1 en Español</common:Name>
+        <common:Name xml:lang="en">name-itemAgency1 in English</common:Name>
         <common:Description xml:lang="es">description-itemAgency1 en Español</common:Description>
         <common:Description xml:lang="en">description-itemAgency1 in English</common:Description>
         <structure:Contact id="code-contact01">
@@ -26,8 +26,8 @@
             <common:Name xml:lang="en">name-contact01 in English</common:Name>
             <structure:Department xml:lang="es">organisationUnit-contact01 en Español</structure:Department>
             <structure:Department xml:lang="en">organisationUnit-contact01 in English</structure:Department>
-            <structure:Role xml:lang="en">responsibility-contact01 in English</structure:Role>
             <structure:Role xml:lang="es">responsibility-contact01 en Español</structure:Role>
+            <structure:Role xml:lang="en">responsibility-contact01 in English</structure:Role>
             <structure:URI>http://contact01.com</structure:URI>
             <structure:Email>usercontact01@domain.com</structure:Email>
             <structure:Telephone>telephone-contact01</structure:Telephone>
@@ -48,8 +48,8 @@
         <cdomain:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies/itemAgency1"/>
         <cdomain:parentLink kind="structuralResources#agencies" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemScheme1/01.000/agencies"/>
         <sr:comment>
-            <cdomain:text xml:lang="en">comment-itemAgency1 in English</cdomain:text>
             <cdomain:text xml:lang="es">comment-itemAgency1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">comment-itemAgency1 in English</cdomain:text>
         </sr:comment>
     </sr:agency>
 </sr:organisation>

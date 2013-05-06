@@ -33,6 +33,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme;
@@ -57,7 +58,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
     private OrganisationsDo2RestMapperV10 do2RestInternalMapper;
 
     @Test
-    public void testToAgencySchemes() {
+    public void testToAgencySchemes() throws MetamacException {
 
         String agencyID = WILDCARD;
         String resourceID = WILDCARD;
@@ -102,7 +103,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
     }
 
     @Test
-    public void testToAgencyScheme() {
+    public void testToAgencyScheme() throws MetamacException {
 
         OrganisationSchemeVersionMetamac source = mockOrganisationSchemeWithOrganisations("agencyID1", "AGENCIES", "01.000", OrganisationSchemeTypeEnum.AGENCY_SCHEME);
 
@@ -113,7 +114,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getKind());
         assertEquals("AGENCIES", target.getId());
         assertEquals("01.000", target.getVersion());
-        assertEquals("urn:AGENCIES:01.000", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=agencyID1:AGENCIES(01.000)", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragencyID1/AGENCIES/01.000";
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -145,19 +146,19 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
             AgencyType agency = target.getAgencies().get(i++);
             assertTrue(agency instanceof AgencyType);
             assertFalse(agency instanceof Agency);
-            assertEquals("urn:organisation1", agency.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation1", agency.getUrn());
         }
         {
             AgencyType agency = target.getAgencies().get(i++);
             assertTrue(agency instanceof AgencyType);
             assertFalse(agency instanceof Agency);
-            assertEquals("urn:organisation2", agency.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", agency.getUrn());
         }
         assertEquals(i, target.getAgencies().size());
     }
 
     @Test
-    public void testToAgencySchemeImported() {
+    public void testToAgencySchemeImported() throws MetamacException {
 
         OrganisationSchemeVersionMetamac source = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", OrganisationSchemeTypeEnum.AGENCY_SCHEME);
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
@@ -171,7 +172,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
     }
 
     @Test
-    public void testToAgencies() {
+    public void testToAgencies() throws MetamacException {
 
         String agencyID = WILDCARD;
         String organisationSchemeID = WILDCARD;
@@ -221,7 +222,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
     }
 
     @Test
-    public void testToAgency() {
+    public void testToAgency() throws MetamacException {
 
         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.AGENCY_SCHEME;
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.AGENCY;
@@ -235,7 +236,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_AGENCY, target.getKind());
         assertEquals("organisation2", target.getId());
-        assertEquals("urn:organisation2", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragencyID1/AGENCIES/01.000/agencies";
         String selfLink = parentLink + "/organisation2";
@@ -250,7 +251,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
     }
 
     @Test
-    public void testToAgencyImported() {
+    public void testToAgencyImported() throws MetamacException {
 
         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.AGENCY_SCHEME;
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.AGENCY;

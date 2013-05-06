@@ -5,6 +5,7 @@ import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
@@ -44,8 +45,9 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
         target.addStubDimension(mockDimensionOrder(Integer.valueOf(1), mockDimensionFixedValues("dimension04")));
         target.addStubDimension(mockDimensionOrder(Integer.valueOf(2), mockDimensionFixedValues("dimension05")));
 
-        target.addShowDecimalsPrecision(mockMeasureDimensionPrecision(Integer.valueOf(2), ConceptsMetamacDoMocks.mockConceptFixedValues("concept01", null, null)));
-        target.addShowDecimalsPrecision(mockMeasureDimensionPrecision(Integer.valueOf(5), ConceptsMetamacDoMocks.mockConceptFixedValues("concept02", null, null)));
+        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptSchemeFixedValues("agency01", "conceptScheme01", "01.000");
+        target.addShowDecimalsPrecision(mockMeasureDimensionPrecision(Integer.valueOf(2), ConceptsMetamacDoMocks.mockConceptFixedValues("concept01", conceptSchemeVersion, null)));
+        target.addShowDecimalsPrecision(mockMeasureDimensionPrecision(Integer.valueOf(5), ConceptsMetamacDoMocks.mockConceptFixedValues("concept02", conceptSchemeVersion, null)));
 
         return target;
     }
@@ -68,7 +70,7 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
         ExternalItem target = new ExternalItem();
         target.setCode(code);
         target.setUri("/operations/" + code);
-        target.setUrn("urn:" + code);
+        target.setUrn("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=" + code);
         target.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
         target.setManagementAppUrl("managementAppUrl" + code);
         target.setTitle(null);
