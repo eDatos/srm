@@ -92,14 +92,12 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     public interface DsdGeneralTabView extends View, HasUiHandlers<DsdGeneralTabUiHandlers> {
 
-        void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
+        void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto, List<DimensionComponentDto> dimensionComponentDtos);
         void startDsdEdition();
         DataStructureDefinitionMetamacDto getDataStructureDefinitionDto();
         HasClickHandlers getSave();
-        void onDsdSaved(DataStructureDefinitionMetamacDto dsd);
         void setLatestDsdForInternalPublication(GetDsdsResult result);
 
-        void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos);
         void setConceptsForShowDecimalsPrecision(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults);
 
         void setOperations(GetStatisticalOperationsResult result);
@@ -171,13 +169,13 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
 
-                getView().setDsd(result.getDsd());
+                List<DimensionComponentDto> dimensionComponentDtos = CommonUtils.getDimensionComponents(result.getDimensions());
+
+                getView().setDsd(result.getDsd(), dimensionComponentDtos);
                 if (startDsdEdition) {
                     getView().startDsdEdition();
                 }
 
-                List<DimensionComponentDto> dimensionComponentDtos = CommonUtils.getDimensionComponents(result.getDimensions());
-                getView().setDimensionsForStubAndHeading(dimensionComponentDtos);
                 setConceptSchemeOfTheMeasureDimension(dimensionComponentDtos);
             }
         });

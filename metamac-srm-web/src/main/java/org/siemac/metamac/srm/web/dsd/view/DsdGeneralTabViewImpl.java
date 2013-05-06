@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
+import org.siemac.metamac.srm.web.dsd.widgets.DsdDimensionCodesVisualisationItem;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
@@ -303,7 +304,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         DimensionsVisualisationItem dimensionsVisualisationItem = new DimensionsVisualisationItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS, getConstants().dsdDimensionsVisualisation(),
                 false);
         ShowDecimalsPrecisionItem showDecimalsPrecision = new ShowDecimalsPrecisionItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdShowDecimalsPrecision(), false);
-        visualisationMetadataForm.setFields(autoOpen, showDecimals, dimensionsVisualisationItem, showDecimalsPrecision);
+        DsdDimensionCodesVisualisationItem dimensionCodesVisualisationItem = new DsdDimensionCodesVisualisationItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION, getConstants()
+                .dsdDimensionCodesVisualisation(), false);
+        visualisationMetadataForm.setFields(autoOpen, showDecimals, dimensionsVisualisationItem, showDecimalsPrecision, dimensionCodesVisualisationItem);
 
         // Comments
         commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
@@ -395,7 +398,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         DimensionsVisualisationItem dimensionsVisualisationItem = new DimensionsVisualisationItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS, getConstants().dsdDimensionsVisualisation(),
                 true);
         ShowDecimalsPrecisionItem showDecimalsPrecision = new ShowDecimalsPrecisionItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdShowDecimalsPrecision(), true);
-        visualisationMetadataEditionForm.setFields(autoOpen, showDecimals, dimensionsVisualisationItem, showDecimalsPrecision);
+        DsdDimensionCodesVisualisationItem dimensionCodesVisualisationItem = new DsdDimensionCodesVisualisationItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION, getConstants()
+                .dsdDimensionCodesVisualisation(), true);
+        visualisationMetadataEditionForm.setFields(autoOpen, showDecimals, dimensionsVisualisationItem, showDecimalsPrecision, dimensionCodesVisualisationItem);
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
@@ -422,7 +427,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     @Override
-    public void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+    public void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
         this.dataStructureDefinitionMetamacDto = dataStructureDefinitionMetamacDto;
         this.statisticalOperation = dataStructureDefinitionMetamacDto.getStatisticalOperation();
 
@@ -430,8 +435,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.setDsd(dataStructureDefinitionMetamacDto);
         mainFormLayout.setViewMode();
 
-        setDsdViewMode(dataStructureDefinitionMetamacDto);
-        setDsdEditionMode(dataStructureDefinitionMetamacDto);
+        setDsdViewMode(dataStructureDefinitionMetamacDto, dimensionComponentDtos);
+        setDsdEditionMode(dataStructureDefinitionMetamacDto, dimensionComponentDtos);
 
         // Clear errors
         identifiersEditionForm.clearErrors(true);
@@ -451,7 +456,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         }
     }
 
-    private void setDsdViewMode(DataStructureDefinitionMetamacDto dsd) {
+    private void setDsdViewMode(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos) {
         // Identifiers form
         identifiersForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
         identifiersForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
@@ -505,7 +510,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         annotationsPanel.setAnnotations(dsd.getAnnotations(), dataStructureDefinitionMetamacDto);
     }
 
-    private void setDsdEditionMode(DataStructureDefinitionMetamacDto dsd) {
+    private void setDsdEditionMode(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos) {
         // Identifiers form
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE_VIEW, dsd.getCode());
@@ -545,9 +550,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Visualisation metadata
         ((BooleanSelectItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.AUTO_OPEN)).setBooleanValue(dsd.getAutoOpen());
+
         visualisationMetadataEditionForm.setValue(DataStructureDefinitionDS.SHOW_DECIMALS, dsd.getShowDecimals() != null ? dsd.getShowDecimals().toString() : StringUtils.EMPTY);
+
         ((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).setVisualisationDimensions(dsd.getHeadingDimensions(),
                 dsd.getStubDimensions());
+        setDimensionsForStubAndHeading(dimensionComponentDtos);
+
         ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).setMeasureDimensionPrecisions(dsd.getShowDecimalsPrecisions());
 
         // Comments
@@ -597,12 +606,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         dataStructureDefinitionMetamacDto.getAnnotations().clear();
         dataStructureDefinitionMetamacDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
         return dataStructureDefinitionMetamacDto;
-    }
-
-    @Override
-    public void onDsdSaved(DataStructureDefinitionMetamacDto dsd) {
-        setDsd(dsd);
-        mainFormLayout.setViewMode();
     }
 
     private void publishDsdInternally() {
@@ -658,8 +661,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     // Visualisation metadata
 
-    @Override
-    public void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos) {
+    private void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos) {
         List<RelatedResourceDto> dimensions = RelatedResourceUtils.getDimensionComponentDtosAsRelatedResourceDtos(dimensionComponentDtos);
         ((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).setDimensions(dimensions);
         visualisationMetadataEditionForm.markForRedraw();
