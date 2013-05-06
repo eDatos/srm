@@ -48,6 +48,7 @@ public class RecordUtils {
         record.setName(InternationalStringUtils.getLocalisedString(dsd.getName()));
         record.setProcStatus(CommonUtils.getProcStatusName(dsd.getProcStatus()));
         record.setVersion(dsd.getVersionLogic());
+        record.setUrn(dsd.getUrn());
         record.setDsdBasicDto(dsd);
         return record;
     }
