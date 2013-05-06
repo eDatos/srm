@@ -9,6 +9,8 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistOpennessLevelVisualisationWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistOrderVisualisationWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
@@ -160,6 +162,20 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     VariableElementWebCriteria variableElementWebCriteria = (VariableElementWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getVariableElementCriteriaRestriction(variableElementWebCriteria));
                     result = srmCoreServiceFacade.findVariableElementsForCodesByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, variableElementWebCriteria.getCodelistUrn());
+                    break;
+                }
+                case CODELIST_ORDER_FOR_DSD_DIMENSION: {
+                    CodelistOrderVisualisationWebCriteria codelistOrderVisualisationWebCriteria = (CodelistOrderVisualisationWebCriteria) action.getCriteria();
+                    // no criteria
+                    result = srmCoreServiceFacade.findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            codelistOrderVisualisationWebCriteria.getDsdDimensionUrn());
+                    break;
+                }
+                case CODELIST_OPENNESS_LEVEL_FOR_DSD_DIMENSION: {
+                    CodelistOpennessLevelVisualisationWebCriteria codelistOpennessLevelVisualisationWebCriteria = (CodelistOpennessLevelVisualisationWebCriteria) action.getCriteria();
+                    // no criteria
+                    result = srmCoreServiceFacade.findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            codelistOpennessLevelVisualisationWebCriteria.getDsdDimensionUrn());
                     break;
                 }
                 default:
