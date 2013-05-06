@@ -3,9 +3,9 @@ package org.siemac.metamac.srm.web.client.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.PlaceRequestParams;
-import org.siemac.metamac.web.common.client.utils.UrnUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;

@@ -12,8 +12,8 @@ import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
+import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle;
@@ -40,6 +40,7 @@ public abstract class BaseDo2RestMapperV10Impl {
 
     private String                           srmInternalWebApplication;
     private String                           srmApiInternalEndpointV10;
+    private String                           statisticalOperationsInternalWebApplication;
     private String                           statisticalOperationsApiInternalEndpoint;
 
     private InternalWebApplicationNavigation internalWebApplicationNavigation;
@@ -118,35 +119,37 @@ public abstract class BaseDo2RestMapperV10Impl {
         return source.getFinalLogicClient();
     }
 
-    protected Resource toResource(NameableArtefact source, String kind, ResourceLink selfLink) {
+    protected ResourceInternal toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl) {
         if (source == null) {
             return null;
         }
-        Resource target = new Resource();
+        ResourceInternal target = new ResourceInternal();
         target.setId(source.getCode());
         target.setUrn(source.getUrnProvider());
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setTitle(toInternationalString(source.getName()));
+        target.setManagementAppLink(managementAppUrl);
         return target;
     }
 
-    protected Resource toResourceExternalItemStatisticalOperation(ExternalItem source) {
+    protected ResourceInternal toResourceExternalItemStatisticalOperation(ExternalItem source) {
         if (source == null) {
             return null;
         }
-        return toResourceExternalItem(source, statisticalOperationsApiInternalEndpoint);
+        return toResourceExternalItem(source, statisticalOperationsApiInternalEndpoint, statisticalOperationsInternalWebApplication);
     }
 
-    protected Resource toResourceExternalItem(ExternalItem source, String apiExternalItem) {
+    protected ResourceInternal toResourceExternalItem(ExternalItem source, String apiExternalItemBaseUrl, String managementAppBaseUrl) {
         if (source == null) {
             return null;
         }
-        Resource target = new Resource();
+        ResourceInternal target = new ResourceInternal();
         target.setId(source.getCode());
         target.setUrn(source.getUrn());
         target.setKind(source.getType().getValue());
-        target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItem, source.getUri())));
+        target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItemBaseUrl, source.getUri())));
+        target.setManagementAppLink(RestUtils.createLink(managementAppBaseUrl, source.getManagementAppUrl()));
         target.setTitle(toInternationalString(source.getTitle()));
         return target;
     }
@@ -213,5 +216,9 @@ public abstract class BaseDo2RestMapperV10Impl {
         // Statistical operations Internal Api
         statisticalOperationsApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
         statisticalOperationsApiInternalEndpoint = StringUtils.removeEnd(statisticalOperationsApiInternalEndpoint, "/");
+
+        // Statistical operations internal application
+        statisticalOperationsInternalWebApplication = readProperty(ConfigurationConstants.WEB_APPLICATION_STATISTICAL_OPERATIONS_INTERNAL_WEB);
+        statisticalOperationsInternalWebApplication = StringUtils.removeEnd(statisticalOperationsInternalWebApplication, "/");
     }
 }

@@ -5,8 +5,8 @@ import java.math.BigInteger;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
+import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categories;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisations;
@@ -48,7 +48,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
 
         // Values
         for (CategorySchemeVersionMetamac source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getCategorySchemes().add(target);
         }
         return targets;
@@ -93,7 +93,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
 
         // Values
         for (CategoryMetamac source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getCategories().add(target);
         }
         return targets;
@@ -141,7 +141,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
 
         // Values
         for (Categorisation source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getCategorisations().add(target);
         }
         return targets;
@@ -215,25 +215,25 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         return null;
     }
 
-    private Resource toResource(CategorySchemeVersionMetamac source) {
+    private ResourceInternal toResource(CategorySchemeVersionMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORY_SCHEME, toCategorySchemeSelfLink(source));
+        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORY_SCHEME, toCategorySchemeSelfLink(source), toCategorySchemeManagementApplicationLink(source));
     }
 
-    private Resource toResource(CategoryMetamac source) {
+    private ResourceInternal toResource(CategoryMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CATEGORY, toCategorySelfLink(source));
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CATEGORY, toCategorySelfLink(source), toCategoryManagementApplicationLink(source));
     }
 
-    private Resource toResource(Categorisation source) {
+    private ResourceInternal toResource(Categorisation source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORISATION, toCategorisationSelfLink(source));
+        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORISATION, toCategorisationSelfLink(source), null);
     }
 
     private String toCategorySchemesLink(String agencyID, String resourceID, String version) {
@@ -266,5 +266,13 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
     }
     private String toSubpathCategorisations() {
         return RestInternalConstants.LINK_SUBPATH_CATEGORISATIONS;
+    }
+
+    private String toCategorySchemeManagementApplicationLink(CategorySchemeVersionMetamac source) {
+        return getInternalWebApplicationNavigation().buildCategorySchemeUrl(source);
+    }
+
+    private String toCategoryManagementApplicationLink(CategoryMetamac source) {
+        return getInternalWebApplicationNavigation().buildCategoryUrl(source);
     }
 }

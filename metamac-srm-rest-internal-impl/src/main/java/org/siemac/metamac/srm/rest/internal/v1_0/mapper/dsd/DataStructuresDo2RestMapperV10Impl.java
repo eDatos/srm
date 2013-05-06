@@ -9,8 +9,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.sdmx.resources.sdmxml.schemas.v2_1.common.URNReferenceType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
+import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
@@ -61,7 +61,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
 
         // Values
         for (DataStructureDefinitionVersionMetamac source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getDataStructures().add(target);
         }
         return targets;
@@ -175,11 +175,11 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return null;
     }
 
-    private Resource toResource(DataStructureDefinitionVersionMetamac source) {
+    private ResourceInternal toResource(DataStructureDefinitionVersionMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_DATA_STRUCTURE, toDataStructureSelfLink(source));
+        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_DATA_STRUCTURE, toDataStructureSelfLink(source), toDataStructureManagementApplicationLink(source));
     }
 
     private String toDataStructuresLink(String agencyID, String resourceID, String version) {
@@ -207,6 +207,10 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private String toDataStructureManagementApplicationLink(DataStructureDefinitionVersionMetamac source) {
+        return getInternalWebApplicationNavigation().buildDataStructureDefinitionUrl(source);
     }
 
 }

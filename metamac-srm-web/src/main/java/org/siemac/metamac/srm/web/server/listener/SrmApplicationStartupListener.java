@@ -56,6 +56,11 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
         checkRequiredProperty(SrmConfigurationConstants.DB_PASSWORD);
         checkRequiredProperty(SrmConfigurationConstants.DB_DIALECT);
 
+        // WEB APPLICATIONS
+
+        checkRequiredProperty(ConfigurationConstants.WEB_APPLICATION_SRM_INTERNAL_WEB);
+        checkRequiredProperty(ConfigurationConstants.WEB_APPLICATION_STATISTICAL_OPERATIONS_INTERNAL_WEB);
+
         // API
 
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);

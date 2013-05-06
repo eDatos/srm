@@ -10,8 +10,8 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
+import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
@@ -68,7 +68,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (CodelistVersionMetamac source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getCodelists().add(target);
         }
         return targets;
@@ -125,7 +125,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (CodeMetamac source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getCodes().add(target);
         }
         return targets;
@@ -197,7 +197,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (org.siemac.metamac.srm.core.code.domain.VariableFamily source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getVariableFamilies().add(target);
         }
         return targets;
@@ -229,7 +229,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (org.siemac.metamac.srm.core.code.domain.Variable source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getVariables().add(target);
         }
         return targets;
@@ -256,11 +256,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public Resource toResource(org.siemac.metamac.srm.core.code.domain.Variable source) {
+    public ResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.Variable source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, toVariableSelfLink(source));
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source));
     }
 
     @Override
@@ -275,7 +275,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (org.siemac.metamac.srm.core.code.domain.CodelistFamily source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getCodelistFamilies().add(target);
         }
         return targets;
@@ -305,10 +305,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private String toCodelistManagementApplicationLink(CodelistVersionMetamac source) {
-        return getInternalWebApplicationNavigation().buildCodelistUrl(source.getMaintainableArtefact().getUrn());
-    }
-
     private ResourceLink toCodelistSelfLink(CodelistVersionMetamac source) {
         return toResourceLink(RestInternalConstants.KIND_CODELIST, toCodelistLink(source));
     }
@@ -324,10 +320,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return targets;
     }
 
-    private String toCodeManagementApplicationLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
-        return getInternalWebApplicationNavigation().buildCodeUrl(source.getNameableArtefact().getUrn());
-    }
-
     private ResourceLink toCodeSelfLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
         return toResourceLink(RestInternalConstants.KIND_CODE, toCodeLink(source));
     }
@@ -341,32 +333,32 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return null;
     }
 
-    private Resource toResource(CodelistVersionMetamac source) {
+    private ResourceInternal toResource(CodelistVersionMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CODELIST, toCodelistSelfLink(source));
+        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CODELIST, toCodelistSelfLink(source), toCodelistManagementApplicationLink(source));
     }
 
-    private Resource toResource(CodeMetamac source) {
+    private ResourceInternal toResource(CodeMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODE, toCodeSelfLink(source));
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source));
     }
 
-    private Resource toResource(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
+    private ResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source));
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source));
     }
 
-    private Resource toResource(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
+    private ResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source));
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source));
     }
 
     private String toCodelistsLink(String agencyID, String resourceID, String version) {
@@ -460,7 +452,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
     }
 
-    private Resource toCodelistReplacedBy(CodelistVersionMetamac source) {
+    private ResourceInternal toCodelistReplacedBy(CodelistVersionMetamac source) {
         if (source.getReplacedByCodelist() == null) {
             return null;
         }
@@ -513,4 +505,25 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         return target;
     }
+
+    private String toCodelistManagementApplicationLink(CodelistVersionMetamac source) {
+        return getInternalWebApplicationNavigation().buildCodelistUrl(source);
+    }
+
+    private String toCodeManagementApplicationLink(CodeMetamac source) {
+        return getInternalWebApplicationNavigation().buildCodeUrl(source);
+    }
+
+    private String toCodelistFamilyManagementApplicationLink(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
+        return getInternalWebApplicationNavigation().buildCodelistFamilyUrl(source);
+    }
+
+    private String toVariableFamilyManagementApplicationLink(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
+        return getInternalWebApplicationNavigation().buildVariableFamilyUrl(source);
+    }
+
+    private String toVariableManagementApplicationLink(org.siemac.metamac.srm.core.code.domain.Variable source) {
+        return getInternalWebApplicationNavigation().buildVariableUrl(source);
+    }
+
 }

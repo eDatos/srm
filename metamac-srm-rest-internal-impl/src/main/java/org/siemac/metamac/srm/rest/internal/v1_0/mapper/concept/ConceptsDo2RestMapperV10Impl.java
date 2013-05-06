@@ -9,8 +9,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
+import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
@@ -62,7 +62,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
         // Values
         for (ConceptSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getConceptSchemes().add(target);
         }
         return targets;
@@ -109,7 +109,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
         // Values
         for (ConceptMetamac source : sourcesPagedResult.getValues()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getConcepts().add(target);
         }
         return targets;
@@ -237,18 +237,18 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         return target;
     }
 
-    private Resource toResource(ConceptSchemeVersionMetamac source) {
+    private ResourceInternal toResource(ConceptSchemeVersionMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CONCEPT_SCHEME, toConceptSchemeSelfLink(source));
+        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CONCEPT_SCHEME, toConceptSchemeSelfLink(source), toConceptSchemeManagementApplicationLink(source));
     }
 
-    private Resource toResource(ConceptMetamac source) {
+    private ResourceInternal toResource(ConceptMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source));
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source), toConceptManagementApplicationLink(source));
     }
 
     private RoleConcepts toRoleConcepts(ConceptMetamac concept) {
@@ -259,7 +259,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         targets.setKind(RestInternalConstants.KIND_CONCEPTS);
 
         for (ConceptMetamac source : concept.getRoleConcepts()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getRoles().add(target);
         }
         targets.setTotal(BigInteger.valueOf(targets.getRoles().size()));
@@ -274,7 +274,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         targets.setKind(RestInternalConstants.KIND_CONCEPTS);
 
         for (ConceptMetamac source : concept.getRelatedConcepts()) {
-            Resource target = toResource(source);
+            ResourceInternal target = toResource(source);
             targets.getRelatedConcepts().add(target);
         }
         targets.setTotal(BigInteger.valueOf(targets.getRelatedConcepts().size()));
@@ -302,5 +302,13 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     }
     private String toSubpathItems() {
         return RestInternalConstants.LINK_SUBPATH_CONCEPTS;
+    }
+
+    private String toConceptSchemeManagementApplicationLink(ConceptSchemeVersionMetamac source) {
+        return getInternalWebApplicationNavigation().buildConceptSchemeUrl(source);
+    }
+
+    private String toConceptManagementApplicationLink(ConceptMetamac source) {
+        return getInternalWebApplicationNavigation().buildConceptUrl(source);
     }
 }

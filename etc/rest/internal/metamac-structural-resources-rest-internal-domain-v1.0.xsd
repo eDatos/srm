@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:tns="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain"
     xmlns:common="http://www.siemac.org/metamac/rest/common/v1.0/domain"
+    xmlns:commonInternal="http://www.siemac.org/metamac/rest/common-internal/v1.0/domain"
     xmlns:sdmx="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"
     xmlns:sdmxCommon="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
 
     <xs:import namespace="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" schemaLocation="statistic-sdmx-v2_1-domain:SDMXStructure.xsd" />
     <xs:import namespace="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" schemaLocation="statistic-sdmx-v2_1-domain:SDMXCommon.xsd" />
     <xs:import namespace="http://www.siemac.org/metamac/rest/common/v1.0/domain" schemaLocation="metamac-rest-api:metamac-rest-common-domain-v1.0.xsd" />
+    <xs:import namespace="http://www.siemac.org/metamac/rest/common-internal/v1.0/domain" schemaLocation="metamac-rest-api:metamac-rest-common-internal-domain-v1.0.xsd" />
 
     <xs:complexType name="ConceptScheme">
         <xs:complexContent>
@@ -14,7 +16,7 @@
                 <xs:sequence>
                     <xs:group ref="tns:StructuralResourcesMaintainableArtefactGroup" />
                     <xs:element name="type" type="tns:ConceptSchemeType" />
-                    <xs:element name="statisticalOperation" type="common:Resource" minOccurs="0" />
+                    <xs:element name="statisticalOperation" type="commonInternal:ResourceInternal" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -34,9 +36,9 @@
                     <xs:element name="sdmxRelatedArtefact" type="tns:SdmxRelatedArtefact" minOccurs="0" />
                     <xs:element name="type" type="common:Item" minOccurs="0" />
                     <xs:element name="roles" type="tns:RoleConcepts" minOccurs="0" />
-                    <xs:element name="variable" type="common:Resource" minOccurs="0" />
+                    <xs:element name="variable" type="commonInternal:ResourceInternal" minOccurs="0" />
                     <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="extends" type="common:Resource" minOccurs="0" />
+                    <xs:element name="extends" type="commonInternal:ResourceInternal" minOccurs="0" />
                     <xs:element name="relatedConcepts" type="tns:RelatedConcepts" minOccurs="0" />
                     <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
                 </xs:sequence>
@@ -87,10 +89,10 @@
                     <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="isRecommended" type="xs:boolean" minOccurs="0" />
-                    <xs:element name="family" type="common:Resource" minOccurs="0" />
-                    <xs:element name="variable" type="common:Resource" minOccurs="1" />
+                    <xs:element name="family" type="commonInternal:ResourceInternal" minOccurs="0" />
+                    <xs:element name="variable" type="commonInternal:ResourceInternal" minOccurs="1" />
                     <xs:element name="replaceTo" type="tns:ReplaceToCodelist" minOccurs="0" />
-                    <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
+                    <xs:element name="replacedBy" type="commonInternal:ResourceInternal" minOccurs="0" />
                     <xs:element name="accessType" type="tns:AccessType" minOccurs="1" />
                     <xs:element name="defaultOrderVisualisation" type="xs:string" minOccurs="1" />
                     <xs:element name="defaultOpennessVisualisation" type="xs:string" minOccurs="1" />
@@ -127,7 +129,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="codelistFamily" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="codelistFamily" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -147,7 +149,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="variableFamily" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="variableFamily" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -162,7 +164,7 @@
             <xs:element name="shortName" type="common:InternationalString" />
             <xs:element name="validFrom" type="xs:dateTime" minOccurs="0" />
             <xs:element name="validTo" type="xs:dateTime" minOccurs="0" />
-            <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
+            <xs:element name="replacedBy" type="commonInternal:ResourceInternal" minOccurs="0" />
             <xs:element name="replaceTo" type="tns:ReplaceToVariable" minOccurs="0" />
             <xs:element name="family" type="tns:VariableFamilyMetadata" minOccurs="1" />
         </xs:sequence>
@@ -173,7 +175,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="variable" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="variable" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -183,7 +185,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="replaceTo" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="replaceTo" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -193,7 +195,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="family" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="family" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -204,7 +206,7 @@
             <xs:extension base="sdmx:DataStructureType">
                 <xs:sequence>
                     <xs:group ref="tns:StructuralResourcesMaintainableArtefactGroup" />
-                    <xs:element name="statisticalOperation" type="common:Resource" minOccurs="0" />
+                    <xs:element name="statisticalOperation" type="commonInternal:ResourceInternal" minOccurs="0" />
                     <xs:element name="autoOpen" type="xs:boolean" minOccurs="0" />
                     <xs:element name="heading" type="tns:Dimensions" minOccurs="1" />
                     <xs:element name="stub" type="tns:Dimensions" minOccurs="1" />
@@ -248,7 +250,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="conceptScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="conceptScheme" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -258,7 +260,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="concept" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="concept" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -278,7 +280,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="categoryScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="categoryScheme" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -288,7 +290,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="category" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="category" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -298,7 +300,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="categorisation" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="categorisation" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -308,7 +310,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="organisationScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="organisationScheme" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -318,7 +320,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="agencyScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="agencyScheme" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -328,7 +330,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="organisationUnitScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="organisationUnitScheme" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -338,7 +340,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataProviderScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataProviderScheme" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -348,7 +350,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataConsumerScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataConsumerScheme" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -412,7 +414,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="organisation" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="organisation" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -422,7 +424,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="agency" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="agency" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -432,7 +434,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="organisationUnit" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="organisationUnit" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -442,7 +444,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataProvider" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataProvider" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -452,7 +454,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataConsumer" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataConsumer" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -516,7 +518,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="codelist" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="codelist" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -526,7 +528,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="code" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="code" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -536,7 +538,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataStructures" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataStructures" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -566,7 +568,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="relatedConcept" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="relatedConcept" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -576,7 +578,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="role" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="role" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -586,7 +588,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="replaceTo" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="replaceTo" type="commonInternal:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
