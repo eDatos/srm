@@ -8,6 +8,8 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptSchemeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
@@ -19,6 +21,7 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseJaxb2DoInheri
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsJaxb2DoCallback;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @org.springframework.stereotype.Component("conceptsMetamacJaxb2DoCallback")
 public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements ConceptsJaxb2DoCallback {
@@ -111,6 +114,16 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
             for (ConceptMetamac conceptRole : previousMetamac.getRoleConcepts()) {
                 targetMetamac.addRoleConcept(conceptRole);
             }
+
+            Variable previousVariable = previousMetamac.getVariable();
+            Variable targetVariable = (targetMetamac.getCoreRepresentation() != null && RepresentationTypeEnum.ENUMERATION.equals(targetMetamac.getCoreRepresentation().getRepresentationType()))
+                    ? ((CodelistVersionMetamac) targetMetamac.getCoreRepresentation().getEnumerationCodelist()).getVariable()
+                    : null;
+
+            if (previousVariable.getId().compareTo(targetVariable.getId()) != 0) {
+                // TODO lanzar un aviso al gestor de avisos.
+            }
+
             targetMetamac.setVariable(previousMetamac.getVariable());
             targetMetamac.setDerivation(BaseCopyAllMetadataUtils.copy(previousMetamac.getDerivation()));
             // Extends : can copy "extend" because they are concepts in another concept scheme
