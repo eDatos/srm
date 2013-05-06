@@ -16,4 +16,5 @@
     <source path='enume/domain' />
     <source path='security/shared' />
     <source path='code/domain/shared' />
+    <source path='navigation/shared' />
 </module>
