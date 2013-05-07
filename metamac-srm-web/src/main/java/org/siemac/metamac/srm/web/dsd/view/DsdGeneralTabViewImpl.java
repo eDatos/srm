@@ -602,6 +602,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         dataStructureDefinitionMetamacDto.getShowDecimalsPrecisions().clear();
         dataStructureDefinitionMetamacDto.getShowDecimalsPrecisions().addAll(
                 ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).getMeasureDimensionPrecisionDtos());
+        dataStructureDefinitionMetamacDto.getDimensionVisualisationInfos().clear();
+        dataStructureDefinitionMetamacDto.getDimensionVisualisationInfos().addAll(
+                ((DsdDimensionCodesVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION)).getDimensionVisualisationInfoDtos());
 
         // Comments
         dataStructureDefinitionMetamacDto.setComment((InternationalStringDto) commentsEditionForm.getValue(DataStructureDefinitionDS.COMMENTS));
