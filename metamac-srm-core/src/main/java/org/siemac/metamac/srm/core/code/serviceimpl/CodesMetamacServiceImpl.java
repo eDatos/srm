@@ -2377,7 +2377,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         target = getCodelistVersionMetamacRepository().save(target);
         for (CodelistOrderVisualisation codelistOrderVisualisationTarget : target.getOrderVisualisations()) {
-            if (source.getDefaultOrderVisualisation().getNameableArtefact().getCode().equals(codelistOrderVisualisationTarget.getNameableArtefact().getCode())) {
+            if (source.getDefaultOrderVisualisation() != null
+                    && source.getDefaultOrderVisualisation().getNameableArtefact().getCode().equals(codelistOrderVisualisationTarget.getNameableArtefact().getCode())) {
                 target.setDefaultOrderVisualisation(codelistOrderVisualisationTarget);
                 break;
             }
@@ -2402,7 +2403,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         target = getCodelistVersionMetamacRepository().save(target);
         for (CodelistOpennessVisualisation codelistOpennessVisualisationTarget : target.getOpennessVisualisations()) {
-            if (source.getDefaultOpennessVisualisation().getNameableArtefact().getCode().equals(codelistOpennessVisualisationTarget.getNameableArtefact().getCode())) {
+            if (source.getDefaultOpennessVisualisation() != null
+                    && source.getDefaultOpennessVisualisation().getNameableArtefact().getCode().equals(codelistOpennessVisualisationTarget.getNameableArtefact().getCode())) {
                 target.setDefaultOpennessVisualisation(codelistOpennessVisualisationTarget);
                 break;
             }
