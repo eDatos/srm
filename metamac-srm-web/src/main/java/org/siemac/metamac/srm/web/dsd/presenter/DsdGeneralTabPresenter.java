@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -37,6 +38,8 @@ import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdDimensionsAndCandidateVisualisationsAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDsdDimensionsAndCandidateVisualisationsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
@@ -52,6 +55,7 @@ import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
@@ -99,6 +103,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         void setLatestDsdForInternalPublication(GetDsdsResult result);
 
         void setConceptsForShowDecimalsPrecision(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults);
+        void setDimensionsAndCandidateVisualisations(List<DimensionComponentDto> dimensionComponentDtos, Map<String, List<RelatedResourceDto>> candidateOrderVisualisations,
+                Map<String, List<RelatedResourceDto>> candidateOpennessLevelVisualisations);
 
         void setOperations(GetStatisticalOperationsResult result);
     }
@@ -157,10 +163,10 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         retrieveCompleteDsd(urn, false);
     }
 
-    private void retrieveCompleteDsd(String urn, final boolean startDsdEdition) {
+    private void retrieveCompleteDsd(final String dsdUrn, final boolean startDsdEdition) {
         Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
         descriptorsToRetrieve.add(TypeComponentList.DIMENSION_DESCRIPTOR);
-        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(dsdUrn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -177,6 +183,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                 }
 
                 setConceptSchemeOfTheMeasureDimension(dimensionComponentDtos);
+                retrieveDimensionsAndCandidateVisualisations(dsdUrn);
             }
         });
     }
@@ -414,6 +421,22 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         } else {
             conceptSchemeUrn = null;
         }
+    }
+
+    @Override
+    public void retrieveDimensionsAndCandidateVisualisations(String dsdUrn) {
+        dispatcher.execute(new GetDsdDimensionsAndCandidateVisualisationsAction(dsdUrn), new WaitingAsyncCallback<GetDsdDimensionsAndCandidateVisualisationsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionCandidateVisualisationErrorRetrieve()),
+                        MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetDsdDimensionsAndCandidateVisualisationsResult result) {
+                getView().setDimensionsAndCandidateVisualisations(result.getDimensionComponentDtos(), result.getCandidateOrdersByDimension(), result.getCandidateOpennessLevelsByDimension());
+            }
+        });
     }
 
     @Override

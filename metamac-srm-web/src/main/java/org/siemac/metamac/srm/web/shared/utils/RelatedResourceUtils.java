@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.shared.utils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -364,5 +365,14 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
         } else {
             return StringUtils.equals(r1.getUrn(), r2.getUrn());
         }
+    }
+
+    public static LinkedHashMap<String, String> getRelatedResourceLinkedHashMap(List<RelatedResourceDto> relatedResourceDtos) {
+        LinkedHashMap<String, String> hashMap = new LinkedHashMap<String, String>();
+        hashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (RelatedResourceDto relatedResourceDto : relatedResourceDtos) {
+            hashMap.put(relatedResourceDto.getUrn(), RelatedResourceUtils.getRelatedResourceName(relatedResourceDto));
+        }
+        return hashMap;
     }
 }

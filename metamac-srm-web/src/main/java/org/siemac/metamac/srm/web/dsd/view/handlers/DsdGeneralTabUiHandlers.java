@@ -14,6 +14,8 @@ public interface DsdGeneralTabUiHandlers extends UiHandlers {
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
 
+    void retrieveDimensionsAndCandidateVisualisations(String dsdUrn);
+
     // Life cycle
 
     void sendToProductionValidation(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);

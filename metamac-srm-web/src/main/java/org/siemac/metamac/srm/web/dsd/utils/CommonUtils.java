@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
+import org.siemac.metamac.srm.web.shared.CommonSharedUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
@@ -25,7 +26,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionCompone
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeRelathionship;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 
-public class CommonUtils {
+public class CommonUtils extends CommonSharedUtils {
 
     private static LinkedHashMap<String, String> usageStatusHashMap            = null;
     private static LinkedHashMap<String, String> typeRelationShipHashMap       = null;
@@ -239,23 +240,6 @@ public class CommonUtils {
 
     public static boolean isDimensionTypeTimeDimension(TypeDimensionComponent typeDimensionComponent) {
         return TypeDimensionComponent.TIMEDIMENSION.equals(typeDimensionComponent);
-    }
-
-    /**
-     * Returns dimension components of dimensionsDescriptor
-     * 
-     * @param dimensionsDescriptor
-     * @return
-     */
-    public static List<DimensionComponentDto> getDimensionComponents(DescriptorDto dimensionsDescriptor) {
-        List<DimensionComponentDto> dimensionComponentDtos = new ArrayList<DimensionComponentDto>();
-        for (ComponentDto componentDto : dimensionsDescriptor.getComponents()) {
-            if (componentDto instanceof DimensionComponentDto) {
-                DimensionComponentDto dimensionComponentDto = (DimensionComponentDto) componentDto;
-                dimensionComponentDtos.add(dimensionComponentDto);
-            }
-        }
-        return dimensionComponentDtos;
     }
 
     /**

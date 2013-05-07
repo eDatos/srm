@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
+import java.util.Map;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
@@ -502,6 +503,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ((DimensionsVisualisationItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).setVisualisationDimensions(dsd.getHeadingDimensions(),
                 dsd.getStubDimensions());
         ((ShowDecimalsPrecisionItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).setMeasureDimensionPrecisions(dsd.getShowDecimalsPrecisions());
+        // DIMENSION_CODES_VISUALISATION is set in set setDimensionsAndCandidateVisualisations
 
         // Comments
         commentsForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
@@ -558,6 +560,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         setDimensionsForStubAndHeading(dimensionComponentDtos);
 
         ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).setMeasureDimensionPrecisions(dsd.getShowDecimalsPrecisions());
+
+        // DIMENSION_CODES_VISUALISATION is set in set setDimensionsAndCandidateVisualisations
 
         // Comments
         commentsEditionForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
@@ -660,6 +664,15 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     // Visualisation metadata
+
+    @Override
+    public void setDimensionsAndCandidateVisualisations(List<DimensionComponentDto> dimensionComponentDtos, Map<String, List<RelatedResourceDto>> candidateOrderVisualisations,
+            Map<String, List<RelatedResourceDto>> candidateOpennessLevelVisualisations) {
+        ((DsdDimensionCodesVisualisationItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION)).setDimensionsAndCandidateVisualisations(
+                dataStructureDefinitionMetamacDto, dimensionComponentDtos, candidateOrderVisualisations, candidateOpennessLevelVisualisations);
+        ((DsdDimensionCodesVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION)).setDimensionsAndCandidateVisualisations(
+                dataStructureDefinitionMetamacDto, dimensionComponentDtos, candidateOrderVisualisations, candidateOpennessLevelVisualisations);
+    }
 
     private void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos) {
         List<RelatedResourceDto> dimensions = RelatedResourceUtils.getDimensionComponentDtosAsRelatedResourceDtos(dimensionComponentDtos);
