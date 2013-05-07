@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:dataConsumerScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#dataConsumerScheme" id="itemScheme1" version="01.000" isFinal="false" isPartial="false" agencyID="idAsMaintaineragency1" isExternalReference="false" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agency1:itemScheme1(01.000)" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
+<sr:dataConsumerScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:cdomaininternal="http://www.siemac.org/metamac/rest/common-internal/v1.0/domain" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#dataConsumerScheme" id="itemScheme1" version="01.000" isFinal="false" isPartial="false" agencyID="agency1" isExternalReference="false" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agency1:itemScheme1(01.000)" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
     <common:Annotations>
+        <common:Annotation id="code1">
+            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+            <common:AnnotationType>type-code1</common:AnnotationType>
+            <common:AnnotationURL>url-code1</common:AnnotationURL>
+            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+        </common:Annotation>
         <common:Annotation id="code2">
             <common:AnnotationTitle>title-code2</common:AnnotationTitle>
             <common:AnnotationType>type-code2</common:AnnotationType>
@@ -8,20 +15,20 @@
             <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
             <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
         </common:Annotation>
-        <common:Annotation id="code1">
-            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
-            <common:AnnotationType>type-code1</common:AnnotationType>
-            <common:AnnotationURL>url-code1</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
-        </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="en">name-itemScheme1v01.000 in English</common:Name>
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
-    <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
     <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
-    <structure:DataConsumer id="organisation1" urn="urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agency1:itemScheme1(01.000).organisation1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers/organisation1">
+    <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
+    <structure:DataConsumer id="organisation1" urn="urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agency1:itemScheme1(01.000).organisation1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000/dataconsumers/organisation1">
         <common:Annotations>
+            <common:Annotation id="code2">
+                <common:AnnotationTitle>title-code2</common:AnnotationTitle>
+                <common:AnnotationType>type-code2</common:AnnotationType>
+                <common:AnnotationURL>url-code2</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+            </common:Annotation>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
                 <common:AnnotationType>type-code1</common:AnnotationType>
@@ -29,25 +36,18 @@
                 <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
             </common:Annotation>
-            <common:Annotation id="code2">
-                <common:AnnotationTitle>title-code2</common:AnnotationTitle>
-                <common:AnnotationType>type-code2</common:AnnotationType>
-                <common:AnnotationURL>url-code2</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
-            </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="en">name-organisation1 in English</common:Name>
         <common:Name xml:lang="es">name-organisation1 en Español</common:Name>
-        <common:Description xml:lang="es">description-organisation1 en Español</common:Description>
+        <common:Name xml:lang="en">name-organisation1 in English</common:Name>
         <common:Description xml:lang="en">description-organisation1 in English</common:Description>
+        <common:Description xml:lang="es">description-organisation1 en Español</common:Description>
         <structure:Contact id="code-contact01">
-            <common:Name xml:lang="en">name-contact01 in English</common:Name>
             <common:Name xml:lang="es">name-contact01 en Español</common:Name>
-            <structure:Department xml:lang="es">organisationUnit-contact01 en Español</structure:Department>
+            <common:Name xml:lang="en">name-contact01 in English</common:Name>
             <structure:Department xml:lang="en">organisationUnit-contact01 in English</structure:Department>
-            <structure:Role xml:lang="es">responsibility-contact01 en Español</structure:Role>
+            <structure:Department xml:lang="es">organisationUnit-contact01 en Español</structure:Department>
             <structure:Role xml:lang="en">responsibility-contact01 in English</structure:Role>
+            <structure:Role xml:lang="es">responsibility-contact01 en Español</structure:Role>
             <structure:URI>http://contact01.com</structure:URI>
             <structure:Email>usercontact01@domain.com</structure:Email>
             <structure:Telephone>telephone-contact01</structure:Telephone>
@@ -58,29 +58,29 @@
             <common:Name xml:lang="es">name-contact02 en Español</common:Name>
             <structure:Department xml:lang="es">organisationUnit-contact02 en Español</structure:Department>
             <structure:Department xml:lang="en">organisationUnit-contact02 in English</structure:Department>
-            <structure:Role xml:lang="en">responsibility-contact02 in English</structure:Role>
             <structure:Role xml:lang="es">responsibility-contact02 en Español</structure:Role>
+            <structure:Role xml:lang="en">responsibility-contact02 in English</structure:Role>
             <structure:URI>http://contact02.com</structure:URI>
             <structure:Email>usercontact02@domain.com</structure:Email>
             <structure:Telephone>telephone-contact02</structure:Telephone>
             <structure:Fax>fax-contact02</structure:Fax>
         </structure:Contact>
     </structure:DataConsumer>
-    <structure:DataConsumer id="organisation2" urn="urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agency1:itemScheme1(01.000).organisation2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers/organisation2">
+    <structure:DataConsumer id="organisation2" urn="urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agency1:itemScheme1(01.000).organisation2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000/dataconsumers/organisation2">
         <common:Annotations>
-            <common:Annotation id="code1">
-                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
-                <common:AnnotationType>type-code1</common:AnnotationType>
-                <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
-            </common:Annotation>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
                 <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
                 <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code1">
+                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+                <common:AnnotationType>type-code1</common:AnnotationType>
+                <common:AnnotationURL>url-code1</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="es">name-organisation2 en Español</common:Name>
@@ -100,23 +100,24 @@
             <structure:Fax>fax-contact01</structure:Fax>
         </structure:Contact>
         <structure:Contact id="code-contact02">
-            <common:Name xml:lang="es">name-contact02 en Español</common:Name>
             <common:Name xml:lang="en">name-contact02 in English</common:Name>
-            <structure:Department xml:lang="es">organisationUnit-contact02 en Español</structure:Department>
+            <common:Name xml:lang="es">name-contact02 en Español</common:Name>
             <structure:Department xml:lang="en">organisationUnit-contact02 in English</structure:Department>
-            <structure:Role xml:lang="es">responsibility-contact02 en Español</structure:Role>
+            <structure:Department xml:lang="es">organisationUnit-contact02 en Español</structure:Department>
             <structure:Role xml:lang="en">responsibility-contact02 in English</structure:Role>
+            <structure:Role xml:lang="es">responsibility-contact02 en Español</structure:Role>
             <structure:URI>http://contact02.com</structure:URI>
             <structure:Email>usercontact02@domain.com</structure:Email>
             <structure:Telephone>telephone-contact02</structure:Telephone>
             <structure:Fax>fax-contact02</structure:Fax>
         </structure:Contact>
     </structure:DataConsumer>
-    <cdomain:selfLink kind="structuralResources#dataConsumerScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:selfLink kind="structuralResources#dataConsumerScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000"/>
     <cdomain:parentLink kind="structuralResources#dataConsumerSchemes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes"/>
     <cdomain:childLinks total="1">
-        <cdomain:childLink kind="structuralResources#dataConsumers" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragency1/itemScheme1/01.000/dataconsumers"/>
+        <cdomain:childLink kind="structuralResources#dataConsumers" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000/dataconsumers"/>
     </cdomain:childLinks>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
     <sr:lifeCycle>
         <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
         <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>

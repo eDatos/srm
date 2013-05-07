@@ -112,12 +112,13 @@ public class CategoriesDo2RestMapperTest {
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agencyID1:resourceID1(01.123)", target.getUrn());
-        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragencyID1/resourceID1/01.123";
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes", target.getParentLink().getHref());
+        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
@@ -242,8 +243,7 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getKind());
         assertEquals("category2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1.category2", target.getUrn());
-
-        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/idAsMaintaineragencyID1/resourceID1/01.123/categories";
+        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agencyID1/resourceID1/01.123/categories";
         String selfLink = parentLink + "/category2";
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -251,6 +251,7 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
+        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agencyID1:resourceID1(01.123)/category;id=category2", target.getManagementAppLink());
 
         assertEqualsInternationalString("es", "comment-category2 en Español", "en", "comment-category2 in English", target.getComment());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1", target.getParent());
@@ -325,7 +326,7 @@ public class CategoriesDo2RestMapperTest {
         // Validate
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, target.getKind());
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations";
-        String selfLink = parentLink + "/idAsMaintaineragencyID1/resourceID1/01.123";
+        String selfLink = parentLink + "/agencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, target.getParentLink().getKind());

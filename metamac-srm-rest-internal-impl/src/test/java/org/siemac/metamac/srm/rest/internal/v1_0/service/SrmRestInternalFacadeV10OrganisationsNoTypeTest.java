@@ -160,7 +160,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
 
         AgencyScheme itemScheme = organisationScheme.getAgencyScheme();
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, itemScheme.getAgencyID());
+        assertEquals(agencyID, itemScheme.getAgencyID());
         assertEquals(resourceID, itemScheme.getId());
         assertEquals(version, itemScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, itemScheme.getKind());
@@ -201,7 +201,7 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
 
         OrganisationUnitScheme itemScheme = organisationScheme.getOrganisationUnitScheme();
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, itemScheme.getAgencyID());
+        assertEquals(agencyID, itemScheme.getAgencyID());
         assertEquals(resourceID, itemScheme.getId());
         assertEquals(version, itemScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, itemScheme.getKind());

@@ -9,12 +9,12 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.Organ
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_LATEST;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 
 import java.io.InputStream;
 
@@ -159,7 +159,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         // Validation
         assertNotNull(agencyScheme);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, agencyScheme.getAgencyID());
+        assertEquals(agencyID, agencyScheme.getAgencyID());
         assertEquals(resourceID, agencyScheme.getId());
         assertEquals(version, agencyScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());
@@ -182,7 +182,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         // Validation
         assertNotNull(agencyScheme);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, agencyScheme.getAgencyID());
+        assertEquals(agencyID, agencyScheme.getAgencyID());
         assertEquals(resourceID, agencyScheme.getId());
         assertEquals(VERSION_1, agencyScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());

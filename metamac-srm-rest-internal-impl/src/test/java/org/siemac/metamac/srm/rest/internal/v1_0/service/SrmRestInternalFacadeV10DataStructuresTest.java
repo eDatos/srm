@@ -178,7 +178,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         // Validation
         assertNotNull(dataStructure);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, dataStructure.getAgencyID());
+        assertEquals(agencyID, dataStructure.getAgencyID());
         assertEquals(resourceID, dataStructure.getId());
         assertEquals(version, dataStructure.getVersion());
         assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, dataStructure.getKind());
@@ -199,7 +199,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         // Validation
         assertNotNull(dataStructure);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, dataStructure.getAgencyID());
+        assertEquals(agencyID, dataStructure.getAgencyID());
         assertEquals(resourceID, dataStructure.getId());
         assertEquals(VERSION_1, dataStructure.getVersion());
         assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, dataStructure.getKind());

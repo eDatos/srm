@@ -205,7 +205,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         // Validation
         assertNotNull(codelist);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, codelist.getAgencyID());
+        assertEquals(agencyID, codelist.getAgencyID());
         assertEquals(resourceID, codelist.getId());
         assertEquals(version, codelist.getVersion());
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());
@@ -228,7 +228,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         // Validation
         assertNotNull(codelist);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, codelist.getAgencyID());
+        assertEquals(agencyID, codelist.getAgencyID());
         assertEquals(resourceID, codelist.getId());
         assertEquals(VERSION_1, codelist.getVersion());
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());

@@ -10,7 +10,7 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
+import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
@@ -61,30 +61,22 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(count, actual.getTexts().size());
     }
 
-    public static void assertEqualsResource(MaintainableArtefact expected, String expectedKind, String expectedSelfLink, Resource actual) {
+    public static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
+        assertEqualsResource(expected.getMaintainableArtefact(), expectedKind, expectedSelfLink, expectedManagementLink, actual);
+    }
+
+    public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
         assertEquals(expected.getUrn(), actual.getUrn());
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
+        assertEquals(expectedManagementLink, actual.getManagementAppLink());
         assertEqualsInternationalString(expected.getName(), actual.getTitle());
     }
 
-    public static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, Resource actual) {
-        assertEqualsResource(expected.getMaintainableArtefact(), expectedKind, expectedSelfLink, actual);
-    }
-
-    public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, Resource actual) {
-        assertEquals(expectedKind, actual.getKind());
-        assertEquals(expected.getCode(), actual.getId());
-        assertEquals(expected.getUrn(), actual.getUrn());
-        assertEquals(expectedKind, actual.getSelfLink().getKind());
-        assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
-        assertEqualsInternationalString(expected.getName(), actual.getTitle());
-    }
-
-    public static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, Resource actual) {
-        assertEqualsResource(expected.getNameableArtefact(), expectedKind, expectedSelfLink, actual);
+    public static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
+        assertEqualsResource(expected.getNameableArtefact(), expectedKind, expectedSelfLink, expectedManagementLink, actual);
     }
 
     public static void assertUriProviderExpected(MaintainableArtefact maintainableArtefact, String uriActual) {

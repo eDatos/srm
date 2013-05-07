@@ -237,6 +237,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         }
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
+        target.setManagementAppLink(toOrganisationSchemeManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
@@ -256,6 +257,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         }
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
+        target.setManagementAppLink(toOrganisationSchemeManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
@@ -275,6 +277,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         }
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
+        target.setManagementAppLink(toOrganisationSchemeManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
@@ -294,6 +297,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         }
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
+        target.setManagementAppLink(toOrganisationSchemeManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
@@ -432,7 +436,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setParentLink(toOrganisationParentLink(source));
-        target.setChildLinks(toOrganisationChildLinks(source));
+        target.setChildLinks(toOrganisationChildLinks(source));target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         return target;
@@ -462,7 +466,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setParentLink(toOrganisationParentLink(source));
-        target.setChildLinks(toOrganisationChildLinks(source));
+        target.setChildLinks(toOrganisationChildLinks(source));target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         return target;
@@ -492,7 +496,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setParentLink(toOrganisationParentLink(source));
-        target.setChildLinks(toOrganisationChildLinks(source));
+        target.setChildLinks(toOrganisationChildLinks(source));target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         return target;
@@ -522,7 +526,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setParentLink(toOrganisationParentLink(source));
-        target.setChildLinks(toOrganisationChildLinks(source));
+        target.setChildLinks(toOrganisationChildLinks(source));target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         return target;

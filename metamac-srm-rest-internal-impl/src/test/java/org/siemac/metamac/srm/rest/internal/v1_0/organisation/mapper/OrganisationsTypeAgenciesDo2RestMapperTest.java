@@ -115,9 +115,11 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         assertEquals("AGENCIES", target.getId());
         assertEquals("01.000", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=agencyID1:AGENCIES(01.000)", target.getUrn());
-        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragencyID1/AGENCIES/01.000";
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agencyID1/AGENCIES/01.000";
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agencyID1:AGENCIES(01.000)",
+                target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes", target.getParentLink().getHref());
@@ -238,10 +240,13 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", target.getUrn());
 
-        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragencyID1/AGENCIES/01.000/agencies";
+        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agencyID1/AGENCIES/01.000/agencies";
         String selfLink = parentLink + "/organisation2";
         assertEquals(RestInternalConstants.KIND_AGENCY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(
+                "http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agencyID1:AGENCIES(01.000)/organisation;id=organisation2",
+                target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_AGENCIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());

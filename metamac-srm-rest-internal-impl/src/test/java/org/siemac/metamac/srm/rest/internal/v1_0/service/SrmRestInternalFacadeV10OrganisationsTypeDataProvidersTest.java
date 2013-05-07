@@ -9,12 +9,12 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.Organ
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ORDER_BY_ID_DESC;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_ID_LIKE_1_NAME_LIKE_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.QUERY_LATEST;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 
 import java.io.InputStream;
 
@@ -149,6 +149,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
             fail("Incorrect exception");
         }
     }
+
     @Test
     public void testRetrieveDataProviderScheme() throws Exception {
         String agencyID = AGENCY_1;
@@ -159,7 +160,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         // Validation
         assertNotNull(dataProviderScheme);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, dataProviderScheme.getAgencyID());
+        assertEquals(agencyID, dataProviderScheme.getAgencyID());
         assertEquals(resourceID, dataProviderScheme.getId());
         assertEquals(version, dataProviderScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, dataProviderScheme.getKind());

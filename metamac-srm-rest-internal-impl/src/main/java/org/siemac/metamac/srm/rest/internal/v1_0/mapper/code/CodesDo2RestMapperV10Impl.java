@@ -213,6 +213,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setUrn(source.getNameableArtefact().getUrn());
         target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
         target.setSelfLink(toVariableFamilySelfLink(source));
+        target.setManagementAppLink(toVariableFamilyManagementApplicationLink(source));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
@@ -245,6 +246,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setUrn(source.getNameableArtefact().getUrn());
         target.setKind(RestInternalConstants.KIND_VARIABLE);
         target.setSelfLink(toVariableSelfLink(source));
+        target.setManagementAppLink(toVariableManagementApplicationLink(source));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         target.setShortName(toInternationalString(source.getShortName()));
         target.setValidFrom(toDate(source.getValidFrom()));
@@ -291,6 +293,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setUrn(source.getNameableArtefact().getUrn());
         target.setKind(RestInternalConstants.KIND_CODELIST_FAMILY);
         target.setSelfLink(toCodelistFamilySelfLink(source));
+        target.setManagementAppLink(toCodelistFamilyManagementApplicationLink(source));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }

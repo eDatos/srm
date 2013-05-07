@@ -120,6 +120,7 @@
             <xs:element name="id" type="xs:string" />
             <xs:element name="urn" type="xs:string" />
             <xs:element name="selfLink" type="common:ResourceLink" />
+            <xs:element name="managementAppLink" type="xs:string" />
             <xs:element name="name" type="common:InternationalString" />
         </xs:sequence>
         <xs:attribute name="kind" type="xs:string" use="required" />
@@ -140,6 +141,7 @@
             <xs:element name="id" type="xs:string" />
             <xs:element name="urn" type="xs:string" />
             <xs:element name="selfLink" type="common:ResourceLink" />
+            <xs:element name="managementAppLink" type="xs:string" />
             <xs:element name="name" type="common:InternationalString" />
         </xs:sequence>
         <xs:attribute name="kind" type="xs:string" use="required" />
@@ -160,6 +162,7 @@
             <xs:element name="id" type="xs:string" />
             <xs:element name="urn" type="xs:string" />
             <xs:element name="selfLink" type="common:ResourceLink" />
+            <xs:element name="managementAppLink" type="xs:string" />
             <xs:element name="name" type="common:InternationalString" />
             <xs:element name="shortName" type="common:InternationalString" />
             <xs:element name="validFrom" type="xs:dateTime" minOccurs="0" />

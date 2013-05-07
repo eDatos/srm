@@ -190,7 +190,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         // Validation
         assertNotNull(conceptScheme);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, conceptScheme.getAgencyID());
+        assertEquals(agencyID, conceptScheme.getAgencyID());
         assertEquals(resourceID, conceptScheme.getId());
         assertEquals(version, conceptScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
@@ -213,7 +213,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         // Validation
         assertNotNull(conceptScheme);
         // other metadata are tested in mapper tests
-        assertEquals("idAsMaintainer" + agencyID, conceptScheme.getAgencyID());
+        assertEquals(agencyID, conceptScheme.getAgencyID());
         assertEquals(resourceID, conceptScheme.getId());
         assertEquals(VERSION_1, conceptScheme.getVersion());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());

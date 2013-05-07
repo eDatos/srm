@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
+import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RelatedConcepts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RoleConcepts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -18,19 +18,26 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 
 public class ConceptsAsserts extends Asserts {
 
-    public static void assertEqualsResource(ConceptSchemeVersionMetamac expected, Resource actual) {
+    public static void assertEqualsResource(ConceptSchemeVersionMetamac expected, ResourceInternal actual) {
         MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
-                + maintainableArtefact.getVersionLogic();
-
-        assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT_SCHEME, expectedSelfLink, actual);
+        String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
+        String code = maintainableArtefact.getCode();
+        String version = maintainableArtefact.getVersionLogic();
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/" + agency + "/" + code + "/" + version;
+        String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=" + agency + ":" + code + "(" + version + ")";
+        Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT_SCHEME, expectedSelfLink, expectedManagementLink, actual);
     }
 
-    public static void assertEqualsResource(ConceptMetamac expected, Resource actual) {
+    public static void assertEqualsResource(ConceptMetamac expected, ResourceInternal actual) {
         MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
-        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/" + maintainableArtefact.getCode() + "/"
-                + maintainableArtefact.getVersionLogic() + "/concepts/" + expected.getNameableArtefact().getCode();
-        assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, actual);
+        String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
+        String codeItemScheme = maintainableArtefact.getCode();
+        String version = maintainableArtefact.getVersionLogic();
+        String code = expected.getNameableArtefact().getCode();
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/" + agency + "/" + codeItemScheme + "/" + version + "/concepts/" + code;
+        String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=" + agency + ":" + codeItemScheme + "(" + version + ")/concept;id="
+                + code;
+        Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual);
     }
 
     public static void assertEqualsRoleConcepts(List<ConceptMetamac> expecteds, RoleConcepts actuals) {

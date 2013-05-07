@@ -85,6 +85,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setSelfLink(toDataStructureSelfLink(source));
         target.setParentLink(toDataStructureParentLink(source));
         target.setChildLinks(toDataStructureChildLinks(source));
+        target.setManagementAppLink(toDataStructureManagementApplicationLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
         }

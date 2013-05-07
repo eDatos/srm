@@ -115,9 +115,11 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         assertEquals("DATACONSUMERS", target.getId());
         assertEquals("01.000", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agencyID1:DATACONSUMERS(01.000)", target.getUrn());
-        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragencyID1/DATACONSUMERS/01.000";
+        String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agencyID1/DATACONSUMERS/01.000";
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agencyID1:DATACONSUMERS(01.000)",
+                target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes", target.getParentLink().getHref());
@@ -238,10 +240,13 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agencyID1:DATACONSUMERS(01.000).organisation2", target.getUrn());
 
-        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/idAsMaintaineragencyID1/DATACONSUMERS/01.000/dataconsumers";
+        String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agencyID1/DATACONSUMERS/01.000/dataconsumers";
         String selfLink = parentLink + "/organisation2";
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
+        assertEquals(
+                "http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agencyID1:DATACONSUMERS(01.000)/organisation;id=organisation2",
+                target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());

@@ -72,6 +72,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         target.setSelfLink(toCategorySchemeSelfLink(source));
         target.setParentLink(toCategorySchemeParentLink(source));
         target.setChildLinks(toCategorySchemeChildLinks(source));
+        target.setManagementAppLink(toCategorySchemeManagementApplicationLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
         }
@@ -109,6 +110,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
 
         target.setKind(RestInternalConstants.KIND_CATEGORY);
         target.setSelfLink(toCategorySelfLink(source));
+        target.setManagementAppLink(toCategoryManagementApplicationLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
         }

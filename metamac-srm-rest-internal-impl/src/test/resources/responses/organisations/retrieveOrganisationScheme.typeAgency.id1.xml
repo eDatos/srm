@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sr:organisationScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#agencyScheme">
-    <sr:agencyScheme kind="structuralResources#agencyScheme" id="itemSchemeAgency1" version="01.000" isFinal="false" isPartial="false" agencyID="idAsMaintaineragency1" isExternalReference="false" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:sdmx:org.sdmx.infomodel.xxx=itemSchemeAgency1(01.000)" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemSchemeAgency1/01.000" serviceURL="serviceUrl-itemSchemeAgency1" structureURL="structureUrl-itemSchemeAgency1">
+    <sr:agencyScheme kind="structuralResources#agencyScheme" id="itemSchemeAgency1" version="01.000" isFinal="false" isPartial="false" agencyID="agency1" isExternalReference="false" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:sdmx:org.sdmx.infomodel.xxx=itemSchemeAgency1(01.000)" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemSchemeAgency1/01.000" serviceURL="serviceUrl-itemSchemeAgency1" structureURL="structureUrl-itemSchemeAgency1">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -21,7 +21,7 @@
         <common:Name xml:lang="en">name-itemSchemeAgency1v01.000 in English</common:Name>
         <common:Description xml:lang="es">description-itemSchemeAgency1v01.000 en Español</common:Description>
         <common:Description xml:lang="en">description-itemSchemeAgency1v01.000 in English</common:Description>
-        <structure:Agency id="organisation1" urn="urn:sdmx:org.sdmx.infomodel.xxx=organisation1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemSchemeAgency1/01.000/agencies/organisation1">
+        <structure:Agency id="organisation1" urn="urn:sdmx:org.sdmx.infomodel.xxx=organisation1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemSchemeAgency1/01.000/agencies/organisation1">
             <common:Annotations>
                 <common:Annotation id="code2">
                     <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -67,7 +67,7 @@
                 <structure:Fax>fax-contact02</structure:Fax>
             </structure:Contact>
         </structure:Agency>
-        <structure:Agency id="organisation2" urn="urn:sdmx:org.sdmx.infomodel.xxx=organisation2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemSchemeAgency1/01.000/agencies/organisation2">
+        <structure:Agency id="organisation2" urn="urn:sdmx:org.sdmx.infomodel.xxx=organisation2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemSchemeAgency1/01.000/agencies/organisation2">
             <common:Annotations>
                 <common:Annotation id="code2">
                     <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -113,10 +113,10 @@
                 <structure:Fax>fax-contact02</structure:Fax>
             </structure:Contact>
         </structure:Agency>
-        <cdomain:selfLink kind="structuralResources#agencyScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemSchemeAgency1/01.000"/>
+        <cdomain:selfLink kind="structuralResources#agencyScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemSchemeAgency1/01.000"/>
         <cdomain:parentLink kind="structuralResources#agencySchemes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes"/>
         <cdomain:childLinks total="1">
-            <cdomain:childLink kind="structuralResources#agencies" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/idAsMaintaineragency1/itemSchemeAgency1/01.000/agencies"/>
+            <cdomain:childLink kind="structuralResources#agencies" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemSchemeAgency1/01.000/agencies"/>
         </cdomain:childLinks>
         <sr:lifeCycle>
             <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>

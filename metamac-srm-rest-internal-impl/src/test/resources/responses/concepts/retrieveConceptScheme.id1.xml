@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:conceptScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#conceptScheme" id="itemScheme1" isPartial="false" agencyID="idAsMaintaineragency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agency1:itemScheme1(01.000)" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
+<sr:conceptScheme xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:cdomaininternal="http://www.siemac.org/metamac/rest/common-internal/v1.0/domain" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#conceptScheme" id="itemScheme1" isPartial="false" agencyID="agency1" isFinal="true" isExternalReference="false" version="01.000" validFrom="2012-11-05T10:12:13.014Z" validTo="2013-10-04T10:12:13.014+01:00" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agency1:itemScheme1(01.000)" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000" serviceURL="serviceUrl-itemScheme1" structureURL="structureUrl-itemScheme1">
     <common:Annotations>
-        <common:Annotation id="code1">
-            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
-            <common:AnnotationType>type-code1</common:AnnotationType>
-            <common:AnnotationURL>url-code1</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
-        </common:Annotation>
         <common:Annotation id="code2">
             <common:AnnotationTitle>title-code2</common:AnnotationTitle>
             <common:AnnotationType>type-code2</common:AnnotationType>
@@ -15,26 +8,33 @@
             <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
         </common:Annotation>
+        <common:Annotation id="code1">
+            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+            <common:AnnotationType>type-code1</common:AnnotationType>
+            <common:AnnotationURL>url-code1</common:AnnotationURL>
+            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+        </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
     <common:Name xml:lang="en">name-itemScheme1v01.000 in English</common:Name>
     <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
-    <structure:Concept id="concept1" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept1">
+    <structure:Concept id="concept1" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/concept1">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
                 <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
                 <common:AnnotationType>type-code1</common:AnnotationType>
                 <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="es">name-concept1 en Español</common:Name>
@@ -47,7 +47,7 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <structure:Concept id="concept2" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2">
+    <structure:Concept id="concept2" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/concept2">
         <common:Annotations>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -74,21 +74,21 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <structure:Concept id="concept2A" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2A">
+    <structure:Concept id="concept2A" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/concept2A">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
                 <common:AnnotationType>type-code1</common:AnnotationType>
                 <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="es">name-concept2A en Español</common:Name>
@@ -104,21 +104,21 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <structure:Concept id="concept2B" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts/concept2B">
+    <structure:Concept id="concept2B" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/concept2B">
         <common:Annotations>
-            <common:Annotation id="code2">
-                <common:AnnotationTitle>title-code2</common:AnnotationTitle>
-                <common:AnnotationType>type-code2</common:AnnotationType>
-                <common:AnnotationURL>url-code2</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
-            </common:Annotation>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
                 <common:AnnotationType>type-code1</common:AnnotationType>
                 <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code2">
+                <common:AnnotationTitle>title-code2</common:AnnotationTitle>
+                <common:AnnotationType>type-code2</common:AnnotationType>
+                <common:AnnotationURL>url-code2</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="en">name-concept2B in English</common:Name>
@@ -134,11 +134,12 @@
             </structure:Enumeration>
         </structure:CoreRepresentation>
     </structure:Concept>
-    <cdomain:selfLink kind="structuralResources#conceptScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000"/>
+    <cdomain:selfLink kind="structuralResources#conceptScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000"/>
     <cdomain:parentLink kind="structuralResources#conceptSchemes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes"/>
     <cdomain:childLinks total="1">
-        <cdomain:childLink kind="structuralResources#concepts" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/idAsMaintaineragency1/itemScheme1/01.000/concepts"/>
+        <cdomain:childLink kind="structuralResources#concepts" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts"/>
     </cdomain:childLinks>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
     <sr:lifeCycle>
         <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
         <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>
@@ -153,13 +154,14 @@
     <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
     <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
     <sr:comment>
-        <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
     </sr:comment>
     <sr:type>OPERATION</sr:type>
     <sr:statisticalOperation kind="statisticalOperations#operation">
         <cdomain:id>operation-itemScheme1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-itemScheme1</cdomain:urn>
         <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/operations/operation-itemScheme1"/>
+        <cdomaininternal:managementAppLink>http://localhost:8080/metamac-statistical-operations-web/managementAppUrloperation-itemScheme1</cdomaininternal:managementAppLink>
     </sr:statisticalOperation>
 </sr:conceptScheme>

@@ -37,7 +37,7 @@ public class BaseDoMocks extends com.arte.statistic.sdmx.srm.core.base.serviceap
 
     public static OrganisationMetamac mockMaintainer(String agencyID) {
         OrganisationMetamac target = new OrganisationMetamac();
-        target.setIdAsMaintainer("idAsMaintainer" + agencyID);
+        target.setIdAsMaintainer(agencyID);
         target.setNameableArtefact(new NameableArtefact());
         mockNameableArtefactFixedValues(target.getNameableArtefact(), agencyID, null);
         return target;
