@@ -166,8 +166,9 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
                             record.setAttribute(visualisationField, RelatedResourceUtils.getRelatedResourceName(selectedVisualisation));
                             record.setAttribute(visualisationDtoField, selectedVisualisation);
                         } else {
+                            RelatedResourceDto nullRelatedResourceDto = null;
                             record.setAttribute(visualisationField, StringUtils.EMPTY);
-                            record.setAttribute(visualisationDtoField, StringUtils.EMPTY);
+                            record.setAttribute(visualisationDtoField, nullRelatedResourceDto);
                         }
                         listGrid.updateData(record);
                         listGrid.markForRedraw();
