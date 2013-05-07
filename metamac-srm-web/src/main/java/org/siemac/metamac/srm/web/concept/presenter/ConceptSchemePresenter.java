@@ -40,6 +40,8 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityResult;
+import org.siemac.metamac.srm.web.shared.concept.CopyConceptSchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.CopyConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
@@ -275,11 +277,26 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().resourceErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorExport()), MessageTypeEnum.ERROR);
             }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
                 CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    }
+
+    @Override
+    public void copyConceptScheme(String urn) {
+        dispatcher.execute(new CopyConceptSchemeAction(urn), new WaitingAsyncCallback<CopyConceptSchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().maintainableArtefactErrorCopy()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CopyConceptSchemeResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().maintainableArtefactCopied()), MessageTypeEnum.SUCCESS);
             }
         });
     }
