@@ -71,6 +71,10 @@ public class CategoriesClientSecurityUtils {
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
+    public static boolean canCopyCategoryScheme() {
+        return SharedCategoriesSecurityUtils.canCopyCategoryScheme(MetamacSrmWeb.getCurrentUser());
+    }
+
     // CATEGORIES
 
     public static boolean canCreateCategory(CategorySchemeMetamacDto categorySchemeMetamacDto) {

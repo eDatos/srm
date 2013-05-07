@@ -75,6 +75,10 @@ public class ConceptsClientSecurityUtils {
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
+    public static boolean canCopyConceptScheme(ConceptSchemeTypeEnum type, String operationCode) {
+        return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+    }
+
     // Concepts
 
     public static boolean canCreateConcept(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {

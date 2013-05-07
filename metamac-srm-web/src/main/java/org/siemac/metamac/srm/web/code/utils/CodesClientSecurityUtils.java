@@ -143,6 +143,10 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canCopyCodelist() {
+        return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser());
+    }
+
     // CODES
 
     public static boolean canCreateCode(CodelistMetamacDto codelistMetamacDto) {

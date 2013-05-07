@@ -60,6 +60,10 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canPublishDsdExternally(MetamacSrmWeb.getCurrentUser(), operationCode);
     }
 
+    public static boolean canCopyDsd() {
+        return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser());
+    }
+
     // PRIMARY MEASURE
 
     public static boolean canUpdatePrimaryMeasure(ProcStatusEnum procStatus, String operationCode) {

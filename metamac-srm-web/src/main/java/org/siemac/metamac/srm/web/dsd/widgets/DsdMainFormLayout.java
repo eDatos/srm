@@ -93,6 +93,13 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showCopyButton() {
+        if (DsdClientSecurityUtils.canCopyDsd()) {
+            copy.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (DsdClientSecurityUtils.canAnnounceDsd(operationCode)) {

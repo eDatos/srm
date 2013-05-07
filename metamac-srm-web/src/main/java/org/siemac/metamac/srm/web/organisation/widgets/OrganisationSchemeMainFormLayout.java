@@ -101,6 +101,13 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showCopyButton() {
+        if (OrganisationsClientSecurityUtils.canCopyOrganisationScheme()) {
+            copy.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (OrganisationsClientSecurityUtils.canAnnounceOrganisationScheme()) {
