@@ -216,8 +216,14 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
 
         DimensionComponent dimension = (DimensionComponent) dto2DoMapperSdmxSrm.relatedResourceDtoToEntity(source, ServiceExceptionParameters.DIMENSION);
         target.setDimension(dimension);
-        target.setDisplayOrder(retrieveCodelistOrderVisualisation(source.getDisplayOrder().getUrn()));
-        target.setHierarchyLevelsOpen(retrieveCodelistOpennessVisualisation(source.getHierarchyLevelsOpen().getUrn()));
+
+        if (source.getDisplayOrder() != null) {
+            target.setDisplayOrder(retrieveCodelistOrderVisualisation(source.getDisplayOrder().getUrn()));
+        }
+
+        if (source.getHierarchyLevelsOpen() != null) {
+            target.setHierarchyLevelsOpen(retrieveCodelistOpennessVisualisation(source.getHierarchyLevelsOpen().getUrn()));
+        }
         target.setDsdVersion(dataStructureDefinitionVersionMetamac);
 
         return target;
