@@ -404,6 +404,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 getUiHandlers().exportOrganisationScheme(organisationSchemeDto.getUrn());
             }
         });
+        mainFormLayout.getCopy().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().copyOrganisationScheme(organisationSchemeDto.getUrn());
+            }
+        });
     }
 
     private void createViewForm() {
