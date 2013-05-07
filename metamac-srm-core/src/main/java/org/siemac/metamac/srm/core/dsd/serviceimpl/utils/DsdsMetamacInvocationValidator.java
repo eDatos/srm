@@ -26,6 +26,17 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
+        ValidationUtils.checkParameterRequired(dataStructureDefinitionVersionMetamac.getStatisticalOperation(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_STATISTICAL_OPERATION, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkPreCreateDataStructureDefinition(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
         ValidationUtils.checkParameterRequired(dataStructureDefinitionVersionMetamac, ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION, exceptions);
         if (dataStructureDefinitionVersionMetamac != null) {
             if (dataStructureDefinitionVersionMetamac != null) {

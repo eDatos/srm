@@ -18,8 +18,9 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructure
 
 public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefinitionDoMocks {
 
-    public static DataStructureDefinitionVersionMetamac mockDataStructureDefinitionVersionMetamac(OrganisationMetamac maintainer) {
+    public static DataStructureDefinitionVersionMetamac mockDataStructureDefinitionVersionMetamac(OrganisationMetamac maintainer, String operationID) {
         DataStructureDefinitionVersionMetamac target = new DataStructureDefinitionVersionMetamac();
+        target.setStatisticalOperation(mockOperationExternalItem(operationID));
         mockDataStructureDefinition(target, maintainer);
         return target;
     }

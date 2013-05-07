@@ -62,7 +62,7 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
         ServiceContext ctx = getServiceContextAdministrador();
 
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac, "op8");
 
         // Metamac
         dataStructureDefinitionVersionMetamac.setAutoOpen(true);

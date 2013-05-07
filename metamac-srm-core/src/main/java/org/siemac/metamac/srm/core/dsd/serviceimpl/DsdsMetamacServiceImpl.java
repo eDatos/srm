@@ -150,6 +150,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public DataStructureDefinitionVersionMetamac createDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Fill and validate Data Structure Definition
+        DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
         preCreateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
 
         // Save
@@ -161,15 +162,27 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // Create the PrimaryMeasure with:
         // - concept id by default: OBS_VALUE (this concept is specified in the data)
         // - an non enumerated representation with type Decimals
-        PrimaryMeasure primaryMeasure = new PrimaryMeasure();
         String primaryMeasureConceptIdUrnDefault = srmConfiguration.retrievePrimaryMeasureConceptIdUrnDefault();
-        primaryMeasure.setCptIdRef(conceptsService.retrieveConceptByUrn(ctx, primaryMeasureConceptIdUrnDefault));
-        Representation localRepresentation = new Representation();
-        localRepresentation.setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
-        localRepresentation.setTextFormat(new Facet(FacetValueTypeEnum.DECIMAL_FVT));
-        primaryMeasure.setLocalRepresentation(localRepresentation);
-        dataStructureDefinitionService.saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), new MeasureDescriptor());
-        dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), primaryMeasure);
+        if (StringUtils.isNotEmpty(primaryMeasureConceptIdUrnDefault)) {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.nameableArtefact().urn())
+                    .eq(primaryMeasureConceptIdUrnDefault).build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+
+            PagedResult<ConceptMetamac> conceptsCanBeDsdPrimaryMeasureByCondition = executeFindConceptsCanBeDsdSpecificDimensionByCondition(conditions, pagingParameter,
+                    dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn(), ConceptRoleEnum.PRIMARY_MEASURE);
+
+            if (conceptsCanBeDsdPrimaryMeasureByCondition.getTotalRows() == 1) {
+                PrimaryMeasure primaryMeasure = new PrimaryMeasure();
+                primaryMeasure.setCptIdRef(conceptsCanBeDsdPrimaryMeasureByCondition.getValues().iterator().next());
+                Representation localRepresentation = new Representation();
+                localRepresentation.setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
+                localRepresentation.setTextFormat(new Facet(FacetValueTypeEnum.DECIMAL_FVT));
+                primaryMeasure.setLocalRepresentation(localRepresentation);
+                dataStructureDefinitionService.saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), new MeasureDescriptor());
+                dataStructureDefinitionService.saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), primaryMeasure);
+            }
+
+        }
 
         return dataStructureDefinitionVersionMetamac;
     }
@@ -177,7 +190,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Override
     public DataStructureDefinitionVersionMetamac preCreateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
         // Validation
-        DsdsMetamacInvocationValidator.checkCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
+        DsdsMetamacInvocationValidator.checkPreCreateDataStructureDefinition(dataStructureDefinitionVersion, null);
         checkDataStructureDefinitionToCreateOrUpdate(ctx, dataStructureDefinitionVersion);
 
         // Fill metadata
@@ -1038,6 +1051,12 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
         }
 
+        return executeFindConceptsCanBeDsdSpecificDimensionByCondition(conditions, pagingParameter, dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn(), conceptRolesEnum);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private PagedResult<ConceptMetamac> executeFindConceptsCanBeDsdSpecificDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String statisticalOperationUrn,
+            ConceptRoleEnum... conceptRolesEnum) {
         // Prepare conditions
         Class entitySearchedClass = ConceptMetamac.class;
         if (conditions == null) {
@@ -1051,8 +1070,8 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         Property conceptSchemeRelatedOperationUrnProperty = new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties
                 .relatedOperation().urn().getName(), false, entitySearchedClass);
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.TRANSVERSAL).or().lbrace()
-                .withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.OPERATION).and().withProperty(conceptSchemeRelatedOperationUrnProperty)
-                .eq(dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn()).rbrace().buildSingle());
+                .withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.OPERATION).and().withProperty(conceptSchemeRelatedOperationUrnProperty).eq(statisticalOperationUrn).rbrace()
+                .buildSingle());
         // Concept primary_measure
         Property conceptRoleEnumProperty = ConceptMetamacProperties.sdmxRelatedArtefact();
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptRoleEnumProperty).in((Object[]) conceptRolesEnum).buildSingle());

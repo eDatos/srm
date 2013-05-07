@@ -112,7 +112,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     public void testCreateDataStructureDefinition() throws Exception {
 
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac, "op3");
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Create
@@ -140,11 +140,10 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         assertEquals(1, dataStructureDefinitionVersionMetamacRetrieved.getGrouping().iterator().next().getComponents().size());
         DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dataStructureDefinitionVersionMetamac, dataStructureDefinitionVersionMetamacRetrieved);
     }
-
     @Test
     public void testCreateDataStructureDefinitionErrorNotDefault() throws Exception {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_2_V1);
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac, "op8");
 
         try {
             dsdsMetamacService.createDataStructureDefinition(getServiceContextAdministrador(), dataStructureDefinitionVersionMetamac);
@@ -161,7 +160,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
     @Test
     public void testCreateDataStructureDefinitionErrorValidation() throws Exception {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac, "op8");
         dataStructureDefinitionVersionMetamac.setShowDecimals(45);
 
         try {
@@ -1107,7 +1106,7 @@ public class DsdsMetamacServiceTest extends SrmBaseTest implements DsdsMetamacSe
         // Create DSD
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = dsdsMetamacService.createDataStructureDefinition(getServiceContext(),
-                DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac));
+                DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamac(organisationMetamac, "op8"));
         dataStructureDefinitionVersionMetamac.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
         // Create Dimension Descriptor and components
