@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
-import org.siemac.metamac.srm.web.client.PlaceRequestParams;
+import org.siemac.metamac.srm.navigation.shared.PlaceRequestParams;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
