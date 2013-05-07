@@ -90,7 +90,7 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCopyButton() {
-        if (CategoriesClientSecurityUtils.canCopyCategoryScheme()) {
+        if (CategoriesClientSecurityUtils.canCopyCategoryScheme(maintainer)) {
             copy.show();
         }
     }

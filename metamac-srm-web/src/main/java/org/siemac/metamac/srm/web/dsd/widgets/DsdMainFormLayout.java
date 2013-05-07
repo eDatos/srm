@@ -95,7 +95,7 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCopyButton() {
-        if (DsdClientSecurityUtils.canCopyDsd()) {
+        if (DsdClientSecurityUtils.canCopyDsd(maintainer)) {
             copy.show();
         }
     }

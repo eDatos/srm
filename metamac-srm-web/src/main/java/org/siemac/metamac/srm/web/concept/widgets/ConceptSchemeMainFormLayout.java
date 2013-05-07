@@ -104,7 +104,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCopyButton() {
-        if (ConceptsClientSecurityUtils.canCopyConceptScheme(type, relatedOperationCode)) {
+        if (ConceptsClientSecurityUtils.canCopyConceptScheme(type, relatedOperationCode, maintainer)) {
             copy.show();
         }
     }

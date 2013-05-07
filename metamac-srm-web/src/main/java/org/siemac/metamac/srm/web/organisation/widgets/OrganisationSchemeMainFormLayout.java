@@ -103,7 +103,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCopyButton() {
-        if (OrganisationsClientSecurityUtils.canCopyOrganisationScheme()) {
+        if (OrganisationsClientSecurityUtils.canCopyOrganisationScheme(maintainer)) {
             copy.show();
         }
     }
