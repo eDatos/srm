@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 public class ConceptsClientSecurityUtils {
 
@@ -75,8 +76,9 @@ public class ConceptsClientSecurityUtils {
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
-    public static boolean canCopyConceptScheme(ConceptSchemeTypeEnum type, String operationCode) {
-        return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+    public static boolean canCopyConceptScheme(ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto maintainer) {
+        // Only resources from other organisations can be copied
+        return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
     // Concepts

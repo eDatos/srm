@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.security.shared.SharedDsdSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 public class DsdClientSecurityUtils {
 
@@ -60,8 +61,9 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canPublishDsdExternally(MetamacSrmWeb.getCurrentUser(), operationCode);
     }
 
-    public static boolean canCopyDsd() {
-        return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser());
+    public static boolean canCopyDsd(RelatedResourceDto maintainer) {
+        // Only resources from other organisations can be copied
+        return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer);
     }
 
     // PRIMARY MEASURE

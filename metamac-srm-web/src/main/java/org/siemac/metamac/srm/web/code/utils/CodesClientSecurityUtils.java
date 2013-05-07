@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.web.code.view.CodelistFamilyViewImpl;
 import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 public class CodesClientSecurityUtils {
 
@@ -143,8 +144,9 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCopyCodelist() {
-        return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser());
+    public static boolean canCopyCodelist(RelatedResourceDto maintainer) {
+        // Only resources from other organisations can be copied
+        return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
     // CODES
