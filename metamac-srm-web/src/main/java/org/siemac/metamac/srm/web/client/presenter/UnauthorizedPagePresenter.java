@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.web.client.presenter;
 
-import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.view.handlers.UnauthorizedPageUiHandlers;
 
 import com.google.gwt.event.shared.EventBus;

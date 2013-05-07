@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client;
 
+import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.gin.DefaultPlace;
 
 import com.google.gwt.event.shared.EventBus;

@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.client.widgets.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.srm.web.client.NameTokens;
+import org.siemac.metamac.srm.navigation.shared.NameTokens;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;

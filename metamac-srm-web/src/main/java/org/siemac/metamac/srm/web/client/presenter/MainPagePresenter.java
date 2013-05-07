@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent.SelectMenuButtonHandler;

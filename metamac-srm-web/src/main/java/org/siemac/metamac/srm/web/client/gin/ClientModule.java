@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client.gin;
 
+import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.category.presenter.CategoriesPresenter;
 import org.siemac.metamac.srm.web.category.presenter.CategoryPresenter;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemeListPresenter;
@@ -12,7 +13,6 @@ import org.siemac.metamac.srm.web.category.widgets.presenter.CategoriesToolStrip
 import org.siemac.metamac.srm.web.category.widgets.view.CategoriesToolStripViewImpl;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacPlaceManager;
-import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.presenter.ErrorPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.presenter.StructuralResourcesPresenter;

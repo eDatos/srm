@@ -7,10 +7,11 @@ import java.util.Set;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.NameTokens;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
@@ -31,7 +32,6 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
