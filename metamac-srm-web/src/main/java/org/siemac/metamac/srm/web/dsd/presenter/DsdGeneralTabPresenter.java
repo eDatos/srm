@@ -35,6 +35,8 @@ import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCrit
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityResult;
+import org.siemac.metamac.srm.web.shared.dsd.CopyDsdAction;
+import org.siemac.metamac.srm.web.shared.dsd.CopyDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
@@ -218,6 +220,21 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    }
+
+    @Override
+    public void copyDsd(String urn) {
+        dispatcher.execute(new CopyDsdAction(urn), new WaitingAsyncCallback<CopyDsdResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().maintainableArtefactErrorCopy()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CopyDsdResult result) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(getMessages().maintainableArtefactCopied()), MessageTypeEnum.SUCCESS);
             }
         });
     }
