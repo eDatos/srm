@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <!-- Inherit the core Web Toolkit stuff. -->
+    <inherits name='com.google.gwt.user.User' />
+
+    <!-- Specify the paths for translatable code -->
+    <source path='core/constants' />
+    <source path='core/base/dto' />
+    <source path='core/dsd/dto' />
+    <source path='core/concept/dto' />
+    <source path='core/concept/enume/domain' />
+    <source path='core/organisation/dto' />
+    <source path='core/category/dto' />
+    <source path='core/code/dto' />
+    <source path='core/code/enume/domain' />
+    <source path='core/enume/domain' />
+    <source path='core/security/shared' />
+    <source path='core/code/domain/shared' />
+    <source path='navigation/shared' />
+</module>
