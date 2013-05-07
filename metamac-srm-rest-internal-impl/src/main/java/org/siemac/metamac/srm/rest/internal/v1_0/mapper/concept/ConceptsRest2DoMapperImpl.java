@@ -123,10 +123,10 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case ACRONYM:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.acronym().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
-                case EXTENDS:
+                case EXTENDS_URN:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.conceptExtends().nameableArtefact().urnProvider(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
-                case RELATED_CONCEPT:
+                case RELATED_CONCEPT_URN:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.relatedConcepts().nameableArtefact().urnProvider(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 default:

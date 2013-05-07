@@ -168,9 +168,9 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                     return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case NAME:
                     return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
-                case ARTEFACT:
+                case ARTEFACT_URN:
                     return new SculptorPropertyCriteria(CategorisationProperties.artefactCategorised().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
-                case CATEGORY:
+                case CATEGORY_URN:
                     return new SculptorPropertyCriteria(CategorisationProperties.category().nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case LATEST:
                     return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),

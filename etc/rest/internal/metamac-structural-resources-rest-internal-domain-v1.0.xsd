@@ -672,8 +672,8 @@
             <xs:enumeration value="DESCRIPTION" />
             <xs:enumeration value="ACRONYM" />
             <xs:enumeration value="DESCRIPTION_SOURCE" />
-            <xs:enumeration value="EXTENDS" />
-            <xs:enumeration value="RELATED_CONCEPT" />
+            <xs:enumeration value="EXTENDS_URN" />
+            <xs:enumeration value="RELATED_CONCEPT_URN" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -726,8 +726,8 @@
             <xs:enumeration value="ID" />
             <xs:enumeration value="URN" />
             <xs:enumeration value="NAME" />
-            <xs:enumeration value="CATEGORY" />
-            <xs:enumeration value="ARTEFACT" />
+            <xs:enumeration value="CATEGORY_URN" />
+            <xs:enumeration value="ARTEFACT_URN" />
             <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -867,9 +867,9 @@
             <xs:enumeration value="NAME" />
             <xs:enumeration value="DESCRIPTION" />
             <xs:enumeration value="PROC_STATUS" />
-            <xs:enumeration value="STATISTICAL_OPERATION" />
-            <xs:enumeration value="DIMENSION_CONCEPT" />
-            <xs:enumeration value="ATTRIBUTE_CONCEPT" />
+            <xs:enumeration value="STATISTICAL_OPERATION_URN" />
+            <xs:enumeration value="DIMENSION_CONCEPT_URN" />
+            <xs:enumeration value="ATTRIBUTE_CONCEPT_URN" />
             <xs:enumeration value="VALID_FROM" />
             <xs:enumeration value="VALID_TO" />
             <xs:enumeration value="INTERNAL_PUBLICATION_DATE" />

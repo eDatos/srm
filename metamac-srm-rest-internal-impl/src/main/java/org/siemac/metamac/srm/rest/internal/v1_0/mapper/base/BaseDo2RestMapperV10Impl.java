@@ -149,7 +149,9 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setUrn(source.getUrn());
         target.setKind(source.getType().getValue());
         target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItemBaseUrl, source.getUri())));
-        target.setManagementAppLink(RestUtils.createLink(managementAppBaseUrl, source.getManagementAppUrl()));
+        if (source.getManagementAppUrl() != null) {
+            target.setManagementAppLink(RestUtils.createLink(managementAppBaseUrl, source.getManagementAppUrl()));
+        }
         target.setTitle(toInternationalString(source.getTitle()));
         return target;
     }
