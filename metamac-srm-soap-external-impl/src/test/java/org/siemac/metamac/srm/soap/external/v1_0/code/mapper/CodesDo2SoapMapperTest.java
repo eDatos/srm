@@ -195,19 +195,19 @@ public class CodesDo2SoapMapperTest {
         {
             Resource resource = target.getCodelists().get(i++);
             assertEquals("codelist01", resource.getId());
-            assertEquals("urn:codelist01:01.000", resource.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)", resource.getUrn());
             assertEqualsInternationalString("es", "name-codelist01v01.000 en Español", "en", "name-codelist01v01.000 in English", resource.getTitle());
         }
         {
             Resource resource = target.getCodelists().get(i++);
             assertEquals("codelist02", resource.getId());
-            assertEquals("urn:codelist02:02.000", resource.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency02:codelist02(02.000)", resource.getUrn());
             assertEqualsInternationalString("es", "name-codelist02v02.000 en Español", "en", "name-codelist02v02.000 in English", resource.getTitle());
         }
         {
             Resource resource = target.getCodelists().get(i++);
             assertEquals("codelist03", resource.getId());
-            assertEquals("urn:codelist03:01.000", resource.getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency03:codelist03(01.000)", resource.getUrn());
             assertEqualsInternationalString("es", "name-codelist03v01.000 en Español", "en", "name-codelist03v01.000 in English", resource.getTitle());
         }
         assertEquals(source.size(), i);
@@ -222,7 +222,7 @@ public class CodesDo2SoapMapperTest {
         Codelist target = do2SoapExternalMapper.toCodelist(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals("urn:resourceID1:01.123", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:resourceID1(01.123)", target.getUrn());
         assertEqualsInternationalString("es", "shortName-resourceID1v01.123 en Español", "en", "shortName-resourceID1v01.123 in English", target.getShortName());
         assertEqualsInternationalString("es", "descriptionSource-resourceID1v01.123 en Español", "en", "descriptionSource-resourceID1v01.123 in English", target.getDescriptionSource());
         assertTrue(target.getIsRecommended());
@@ -235,12 +235,12 @@ public class CodesDo2SoapMapperTest {
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
 
-        assertEquals("urn:codelistReplacedBy:01.000", target.getReplacedBy().getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:codelistReplacedBy(01.000)", target.getReplacedBy().getUrn());
         assertEquals("codelistReplacedBy", target.getReplacedBy().getId());
 
         assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
-        assertEquals("urn:codelistReplaceTo1:01.000", target.getReplaceTo().getReplaceTos().get(0).getUrn());
-        assertEquals("urn:codelistReplaceTo3:03.000", target.getReplaceTo().getReplaceTos().get(1).getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:codelistReplaceTo1(01.000)", target.getReplaceTo().getReplaceTos().get(0).getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:codelistReplaceTo3(03.000)", target.getReplaceTo().getReplaceTos().get(1).getUrn());
     }
 
     @Test
@@ -267,7 +267,7 @@ public class CodesDo2SoapMapperTest {
             source.getReplacedByCodelist().getMaintainableArtefact().setPublicLogic(true);
             source.getReplacedByCodelist().setAccessType(AccessTypeEnum.PUBLIC);
             Codelist target = do2SoapExternalMapper.toCodelist(source);
-            assertEquals("urn:codelistReplacedBy:01.000", target.getReplacedBy().getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID2:codelistReplacedBy(01.000)", target.getReplacedBy().getUrn());
         }
     }
 
@@ -281,7 +281,7 @@ public class CodesDo2SoapMapperTest {
         Code target = do2SoapExternalMapper.toCode(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals("urn:code2", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=agencyID1:resourceID1(01.123).code2", target.getUrn());
         assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getShortName());
         assertEquals("codeParent1", target.getParent().getRef().getId());
     }

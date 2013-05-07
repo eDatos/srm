@@ -9,7 +9,6 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
-import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
@@ -31,6 +30,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -436,7 +436,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setParentLink(toOrganisationParentLink(source));
-        target.setChildLinks(toOrganisationChildLinks(source));target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
+        target.setChildLinks(toOrganisationChildLinks(source));
+        target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         return target;
@@ -466,7 +467,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setParentLink(toOrganisationParentLink(source));
-        target.setChildLinks(toOrganisationChildLinks(source));target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
+        target.setChildLinks(toOrganisationChildLinks(source));
+        target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         return target;
@@ -496,7 +498,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setParentLink(toOrganisationParentLink(source));
-        target.setChildLinks(toOrganisationChildLinks(source));target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
+        target.setChildLinks(toOrganisationChildLinks(source));
+        target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         return target;
@@ -526,7 +529,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             target.setUri(target.getSelfLink().getHref());
         }
         target.setParentLink(toOrganisationParentLink(source));
-        target.setChildLinks(toOrganisationChildLinks(source));target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
+        target.setChildLinks(toOrganisationChildLinks(source));
+        target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         return target;

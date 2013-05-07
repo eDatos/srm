@@ -20,9 +20,9 @@ public abstract class SrmSoapExternalFacadeV10BaseTest {
     protected static String                        CODELIST_FAMILY_02 = "codelistFamily02";
     protected static String                        AGENCY_1           = "agency01";
     protected static String                        CODELIST_01        = "codelist01";
-    protected static String                        CODELIST_01_URN    = "urn:codelist01:01.000";
+    protected static String                        CODELIST_01_URN    = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)";
     protected static String                        CODELIST_02        = "codelist02";
-    protected static String                        CODELIST_02_URN    = "urn:codelist02:01.000";
+    protected static String                        CODELIST_02_URN    = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist02(01.000)";
     protected static String                        VERSION_1          = "01.000";
 
     @BeforeClass

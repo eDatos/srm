@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.category.utils;
 
 import static org.junit.Assert.assertEquals;
 
-import org.siemac.metamac.rest.common_internal.v1_0.domain.ResourceInternal;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
