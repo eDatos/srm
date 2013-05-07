@@ -26,9 +26,8 @@ public class CopyCodelistActionHandler extends SecurityActionHandler<CopyCodelis
 
     @Override
     public CopyCodelistResult executeSecurityAction(CopyCodelistAction action) throws ActionException {
-
         try {
-            TaskInfo taskInfo = srmCoreServiceFacade.copyConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn());
+            TaskInfo taskInfo = srmCoreServiceFacade.copyCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn());
             // Codelist may be copied in background
             CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(ServiceContextHolder.getCurrentServiceContext(), taskInfo.getUrnResult());
             return new CopyCodelistResult(codelistMetamacDto);
