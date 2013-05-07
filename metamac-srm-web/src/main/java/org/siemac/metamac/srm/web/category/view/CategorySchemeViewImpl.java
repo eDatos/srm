@@ -292,6 +292,13 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 getUiHandlers().exportCategoryScheme(categorySchemeDto.getUrn());
             }
         });
+        mainFormLayout.getCopy().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().copyCategoryScheme(categorySchemeDto.getUrn());
+            }
+        });
     }
 
     private void createViewForm() {

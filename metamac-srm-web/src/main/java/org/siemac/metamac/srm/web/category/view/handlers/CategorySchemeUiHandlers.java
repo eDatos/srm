@@ -12,6 +12,7 @@ public interface CategorySchemeUiHandlers extends BaseCategoryUiHandlers {
     void goToCategoryScheme(String urn);
     void retrieveLatestCategoryScheme(CategorySchemeMetamacDto conceptSchemeMetamacDto);
     void exportCategoryScheme(String urn);
+    void copyCategoryScheme(String urn);
 
     // Life cycle
 

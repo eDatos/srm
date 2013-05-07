@@ -59,6 +59,8 @@ import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatus
 import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatusResult;
 import org.siemac.metamac.srm.web.shared.category.VersionCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.VersionCategorySchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.CopyCategorySchemeAction;
+import org.siemac.metamac.srm.web.shared.concept.CopyCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
@@ -277,6 +279,21 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
                 CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    }
+
+    @Override
+    public void copyCategoryScheme(String urn) {
+        dispatcher.execute(new CopyCategorySchemeAction(urn), new WaitingAsyncCallback<CopyCategorySchemeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().maintainableArtefactErrorCopy()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CopyCategorySchemeResult result) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().maintainableArtefactCopied()), MessageTypeEnum.SUCCESS);
             }
         });
     }
