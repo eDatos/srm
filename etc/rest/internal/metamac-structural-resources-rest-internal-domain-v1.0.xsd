@@ -139,6 +139,7 @@
             <xs:element name="id" type="xs:string" />
             <xs:element name="urn" type="xs:string" />
             <xs:element name="selfLink" type="common:ResourceLink" />
+            <xs:element name="childLinks" type="common:ChildLinks" minOccurs="1" />
             <xs:element name="managementAppLink" type="xs:string" />
             <xs:element name="name" type="common:InternationalString" />
         </xs:sequence>

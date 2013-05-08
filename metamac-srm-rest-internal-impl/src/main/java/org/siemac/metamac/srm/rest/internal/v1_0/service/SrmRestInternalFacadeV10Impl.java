@@ -835,7 +835,24 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Transform
             VariableFamilies variableFamilies = codesDo2RestMapper.toVariableFamilies(entitiesPagedResult, query, orderBy, sculptorCriteria.getLimit());
             return variableFamilies;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
 
+    @Override
+    public Variables findVariablesByFamily(String familyID, String query, String orderBy, String limit, String offset) {
+        try {
+            // Retrieve variables by criteria
+            SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Retrieve
+            PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(null, familyID, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
+
+            // Transform
+            Variables variables = codesDo2RestMapper.toVariablesByFamily(familyID, entitiesPagedResult, query, orderBy, sculptorCriteria.getLimit());
+            return variables;
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -845,7 +862,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     public Variable retrieveVariableById(String id) {
         try {
             // Find one
-            PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(id, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(id, null, null, PagingParameter.pageAccess(1, 1, false));
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.VARIABLE_NOT_FOUND, id);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -855,7 +872,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             org.siemac.metamac.srm.core.code.domain.Variable variableEntity = entitiesPagedResult.getValues().get(0);
             Variable variable = codesDo2RestMapper.toVariable(variableEntity);
             return variable;
-
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -868,17 +884,15 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
             // Retrieve
-            PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+            PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(null, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
             // Transform
             Variables variables = codesDo2RestMapper.toVariables(entitiesPagedResult, query, orderBy, sculptorCriteria.getLimit());
             return variables;
-
         } catch (Exception e) {
             throw manageException(e);
         }
     }
-
     @Override
     public CodelistFamily retrieveCodelistFamilyById(String id) {
         try {
@@ -893,7 +907,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             org.siemac.metamac.srm.core.code.domain.CodelistFamily codelistFamilyEntity = entitiesPagedResult.getValues().get(0);
             CodelistFamily codelistFamily = codesDo2RestMapper.toCodelistFamily(codelistFamilyEntity);
             return codelistFamily;
-
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -912,7 +925,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Transform
             CodelistFamilies codelistFamilies = codesDo2RestMapper.toCodelistFamilies(entitiesPagedResult, query, orderBy, sculptorCriteria.getLimit());
             return codelistFamilies;
-
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -1281,8 +1293,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return entitiesPagedResult;
     }
 
-    private PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> findVariablesCore(String variableID, List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter)
-            throws MetamacException {
+    private PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> findVariablesCore(String variableID, String familyID, List<ConditionalCriteria> conditionalCriteriaQuery,
+            PagingParameter pagingParameter) throws MetamacException {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
         if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
@@ -1294,6 +1306,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         if (variableID != null) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class).withProperty(VariableProperties.nameableArtefact().code())
                     .eq(variableID).buildSingle());
+        }
+        if (familyID != null) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class)
+                    .withProperty(VariableProperties.families().nameableArtefact().code()).eq(familyID).buildSingle());
         }
         // Find
         PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = codesService.findVariablesByCondition(ctx, conditionalCriteria, pagingParameter);

@@ -56,11 +56,11 @@ public class CodesMockitoVerify extends MockitoVerify {
     }
 
     public static void verifyRetrieveVariable(CodesMetamacService codesService, String resourceID) throws Exception {
-        verifyFindVariables(codesService, resourceID, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
+        verifyFindVariables(codesService, resourceID, null, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
     }
 
-    public static void verifyFindVariables(CodesMetamacService codesService, String resourceID, String limit, String offset, String query, String orderBy) throws Exception {
-        verifyFindVariables(codesService, resourceID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
+    public static void verifyFindVariables(CodesMetamacService codesService, String resourceID, String familyID, String limit, String offset, String query, String orderBy) throws Exception {
+        verifyFindVariables(codesService, resourceID, familyID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
     }
 
     public static void verifyRetrieveCodelistFamily(CodesMetamacService codesService, String resourceID) throws Exception {
@@ -137,8 +137,8 @@ public class CodesMockitoVerify extends MockitoVerify {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static void verifyFindVariables(CodesMetamacService codesService, String resourceID, String query, String orderBy, PagingParameter pagingParameterExpected, RestOperationEnum restOperation)
-            throws Exception {
+    private static void verifyFindVariables(CodesMetamacService codesService, String resourceID, String familyID, String query, String orderBy, PagingParameter pagingParameterExpected,
+            RestOperationEnum restOperation) throws Exception {
 
         // Verify
         ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
@@ -155,7 +155,9 @@ public class CodesMockitoVerify extends MockitoVerify {
         if (resourceID != null) {
             conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.nameableArtefact().code()).eq(resourceID).buildSingle());
         }
-
+        if (familyID != null) {
+            conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.families().nameableArtefact().code()).eq(familyID).buildSingle());
+        }
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());

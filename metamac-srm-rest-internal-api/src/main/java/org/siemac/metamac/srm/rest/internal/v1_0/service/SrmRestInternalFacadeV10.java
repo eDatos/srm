@@ -399,6 +399,12 @@ public interface SrmRestInternalFacadeV10 {
 
     @GET
     @Produces("application/xml")
+    @Path("variablefamilies/{id}/variables")
+    Variables findVariablesByFamily(@PathParam("id") String id, @QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit,
+            @QueryParam("offset") String offset);
+
+    @GET
+    @Produces("application/xml")
     @Path("variables")
     Variables findVariables(@QueryParam("query") String query, @QueryParam("orderBy") String orderBy, @QueryParam("limit") String limit, @QueryParam("offset") String offset);
 

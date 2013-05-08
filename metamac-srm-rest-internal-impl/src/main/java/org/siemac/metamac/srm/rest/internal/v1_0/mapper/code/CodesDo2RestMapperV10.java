@@ -30,6 +30,8 @@ public interface CodesDo2RestMapperV10 {
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies toVariableFamilies(PagedResult<VariableFamily> sources, String query, String orderBy, Integer limit);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily toVariableFamily(VariableFamily source) throws MetamacException;
 
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables toVariablesByFamily(String variableFamilyID, PagedResult<Variable> sources, String query, String orderBy,
+            Integer limit);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables toVariables(PagedResult<Variable> sources, String query, String orderBy, Integer limit);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable toVariable(Variable source) throws MetamacException;
     public ResourceInternal toResource(Variable source);

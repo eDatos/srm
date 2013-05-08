@@ -1130,6 +1130,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteCodelistFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
+        // Note: METAMAC-1644. Variable family can be deleted even if it is published in api
 
         // Delete
         CodelistFamily codelistFamilyToDelete = retrieveCodelistFamilyByUrn(urn);
@@ -1226,7 +1227,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteVariableFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
-
+        // Note: METAMAC-1644. Variable family can be deleted even if it is published in api
         VariableFamily variableFamilyToDelete = retrieveVariableFamilyByUrn(urn);
         // Check variables of family to delete has more families, because family of variable is required (in exception, say only one variable)
         for (Variable variable : variableFamilyToDelete.getVariables()) {
@@ -1335,6 +1336,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteVariable(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
+        // Note: METAMAC-1644. Variable family can be deleted even if it is published in api
         // Check variable has not concepts, variable elements neither codelists (in exception, say only one)
         Variable variableToDelete = retrieveVariableByUrn(urn);
         if (CollectionUtils.isNotEmpty(variableToDelete.getCodelists())) {

@@ -589,6 +589,33 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     }
 
     @Test
+    public void testFindVariablesByFamily() throws Exception {
+        String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_ID_DESC;
+        String limit = "4";
+        String offset = "4";
+
+        // Find
+        String familyID = ARTEFACT_1_CODE;
+        Variables variables = getSrmRestInternalFacadeClientXml().findVariablesByFamily(familyID, query, orderBy, limit, offset);
+
+        assertNotNull(variables);
+        assertEquals(RestInternalConstants.KIND_VARIABLES, variables.getKind());
+        // Verify with Mockito
+        verifyFindVariables(codesService, null, familyID, limit, offset, query, orderBy);
+    }
+
+    @Test
+    public void testFindVariablesByFamilyXml() throws Exception {
+        String familyID = ARTEFACT_1_CODE;
+        String requestUri = getUriVariablesByFamily(familyID, null, "4", "4");
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findVariablesByFamily.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
     public void testFindVariables() throws Exception {
         String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
         String orderBy = ORDER_BY_ID_DESC;
@@ -601,7 +628,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertNotNull(variables);
         assertEquals(RestInternalConstants.KIND_VARIABLES, variables.getKind());
         // Verify with Mockito
-        verifyFindVariables(codesService, null, limit, offset, query, orderBy);
+        verifyFindVariables(codesService, null, null, limit, offset, query, orderBy);
     }
 
     @Test
@@ -1039,6 +1066,14 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     private String getUriVariableFamily(String resourceID) throws Exception {
         return getUriVariableFamilies(resourceID, null, null, null);
+    }
+
+    private String getUriVariablesByFamily(String familyID, String query, String limit, String offset) throws Exception {
+        String uri = baseApi + "/" + "variablefamilies/" + familyID + "/variables";
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
+        uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
+        return uri.toString();
     }
 
     private String getUriVariables(String resourceID, String query, String limit, String offset) throws Exception {

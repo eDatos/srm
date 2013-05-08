@@ -40,6 +40,7 @@ public class RestInternalConstants {
     public static String LINK_SUBPATH_CODES                     = "codes";
     public static String LINK_SUBPATH_VARIABLE_FAMILIES         = "variablefamilies";
     public static String LINK_SUBPATH_VARIABLES                 = "variables";
+    public static String LINK_SUBPATH_VARIABLES_BY_FAMILY       = "variables";
     public static String LINK_SUBPATH_CODELIST_FAMILIES         = "codelistfamilies";
 
     public static String LINK_SUBPATH_DATA_STRUCTURES           = "datastructures";
