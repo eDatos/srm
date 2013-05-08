@@ -1095,7 +1095,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // If code has been changed, update URN
         if (codelistFamily.getNameableArtefact().getIsCodeUpdated()) {
-            setCodelistFamilyUrnUnique(codelistFamily);
+            // setCodelistFamilyUrnUnique(codelistFamily);
+            // METAMAC-1644
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.URN).build();
         }
         codelistFamily.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
@@ -1205,7 +1207,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // If code has been changed, update URN
         if (variableFamily.getNameableArtefact().getIsCodeUpdated()) {
-            setVariableFamilyUrnUnique(variableFamily);
+            // setVariableFamilyUrnUnique(variableFamily);
+            // METAMAC-1644
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.URN).build();
         }
         variableFamily.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
@@ -1293,10 +1297,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // If code has been changed, update URN
         if (variable.getNameableArtefact().getIsCodeUpdated()) {
-            setVariableUrnUnique(variable);
-            for (VariableElement variableElement : variable.getVariableElements()) {
-                setVariableElementUrnUnique(variable, variableElement, true);
-            }
+            // METAMAC-1644
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.URN).build();
+            // setVariableUrnUnique(variable);
+            // for (VariableElement variableElement : variable.getVariableElements()) {
+            // setVariableElementUrnUnique(variable, variableElement, true);
+            // }
         }
         variable.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 

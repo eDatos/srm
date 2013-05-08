@@ -4739,8 +4739,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(ctx, CODELIST_FAMILY_1);
-        codelistFamily.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(10));
-        codelistFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        codelistFamily.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
         codelistFamily.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
 
         CodelistFamily codelistFamilyUpdated = codesService.updateCodelistFamily(ctx, codelistFamily);
@@ -4749,30 +4748,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testUpdateCodelistFamilyErrorWrongCode() throws Exception {
+    public void testUpdateCodelistFamilyErrorCodeUnmodifiable() throws Exception {
         CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
-        codelistFamily.getNameableArtefact().setCode(" 0 - invalid identifier");
+        codelistFamily.getNameableArtefact().setCode("newCode");
         codelistFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateCodelistFamily(getServiceContextAdministrador(), codelistFamily);
-            fail("wrong code");
+            fail("code unmodifiable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
-        }
-    }
-
-    @Test
-    public void testUpdateCodelistFamilyErrorDuplicatedCode() throws Exception {
-        CodelistFamily codelistFamily = codesService.retrieveCodelistFamilyByUrn(getServiceContextAdministrador(), CODELIST_FAMILY_1);
-        codelistFamily.getNameableArtefact().setCode("CODELIST_FAMILY_02");
-        codelistFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
-        try {
-            codesService.updateCodelistFamily(getServiceContextAdministrador(), codelistFamily);
-            fail("duplicated code");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{CODELIST_FAMILY_2}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
         }
     }
 
@@ -5046,8 +5031,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         VariableFamily variableFamily = codesService.retrieveVariableFamilyByUrn(ctx, VARIABLE_FAMILY_1);
-        variableFamily.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(10));
-        variableFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        variableFamily.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
         variableFamily.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
 
         VariableFamily variableFamilyUpdated = codesService.updateVariableFamily(ctx, variableFamily);
@@ -5056,30 +5040,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testUpdateVariableFamilyErrorWrongCode() throws Exception {
+    public void testUpdateVariableFamilyErrorCodeUnmodifiable() throws Exception {
         VariableFamily variableFamily = codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
-        variableFamily.getNameableArtefact().setCode(" 0 - invalid identifier");
+        variableFamily.getNameableArtefact().setCode("newIdentifier");
         variableFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariableFamily(getServiceContextAdministrador(), variableFamily);
-            fail("wrong code");
+            fail("code unmodifiable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
-        }
-    }
-
-    @Test
-    public void testUpdateVariableFamilyErrorDuplicatedCode() throws Exception {
-        VariableFamily variableFamily = codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1);
-        variableFamily.getNameableArtefact().setCode("VARIABLE_FAMILY_02");
-        variableFamily.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
-        try {
-            codesService.updateVariableFamily(getServiceContextAdministrador(), variableFamily);
-            fail("duplicated code");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_FAMILY_2}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
         }
     }
 
@@ -5328,8 +5298,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateVariable() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
-        variable.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(10));
-        variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        variable.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
         variable.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
         variable.setShortName(BaseDoMocks.mockInternationalString());
         variable.setValidFrom(MetamacMocks.mockDateTime());
@@ -5366,48 +5335,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testUpdateVariableChangingCode() throws Exception {
-        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_2);
-        variable.getNameableArtefact().setCode("newCode");
-        variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
-
-        Variable variableUpdated = codesService.updateVariable(getServiceContextAdministrador(), variable);
-
-        // Check urn
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=newCode", variableUpdated.getNameableArtefact().getUrn());
-
-        // Check variable elements urn
-        assertTrue(SrmServiceUtils.isVariableElementInList("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=newCode.VARIABLE_ELEMENT_01", variable.getVariableElements()));
-        assertTrue(SrmServiceUtils.isVariableElementInList("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=newCode.VARIABLE_ELEMENT_02", variable.getVariableElements()));
-        assertFalse(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_1, variable.getVariableElements()));
-        assertFalse(SrmServiceUtils.isVariableElementInList(VARIABLE_2_VARIABLE_ELEMENT_2, variable.getVariableElements()));
-    }
-
-    @Test
     public void testUpdateVariableErrorWrongCode() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
-        variable.getNameableArtefact().setCode(" 0 - invalid identifier");
+        variable.getNameableArtefact().setCode("newIdentifier");
         variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariable(getServiceContextAdministrador(), variable);
-            fail("wrong code");
+            fail("code unmodifiable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
-        }
-    }
-
-    @Test
-    public void testUpdateVariableErrorDuplicatedCode() throws Exception {
-        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
-        variable.getNameableArtefact().setCode("VARIABLE_02");
-        variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
-        try {
-            codesService.updateVariable(getServiceContextAdministrador(), variable);
-            fail("duplicated code");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_2}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
         }
     }
 
