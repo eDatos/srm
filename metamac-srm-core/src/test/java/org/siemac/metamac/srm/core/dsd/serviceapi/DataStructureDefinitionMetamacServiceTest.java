@@ -76,7 +76,7 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructure
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-public class DsdsMetamacServiceTest extends SrmBaseTest implements DataStructureDefinitionMetamacServiceTestBase {
+public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest implements DataStructureDefinitionMetamacServiceTestBase {
 
     @Autowired
     protected DataStructureDefinitionMetamacService dataStructureDefinitionMetamacService;
