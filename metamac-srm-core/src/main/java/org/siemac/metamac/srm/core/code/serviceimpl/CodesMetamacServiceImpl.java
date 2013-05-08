@@ -311,6 +311,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         } else {
             // The publication is now
             CodelistVersion codelist = (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
+            itemScheme.setIsTaskInBackground(Boolean.FALSE);
+            itemScheme = itemSchemeRepository.save(itemScheme);
+
             versioningResult.setUrnResult(codelist.getMaintainableArtefact().getUrn());
         }
 

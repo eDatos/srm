@@ -1842,6 +1842,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate versioning
         validateVersioningCodelist3V1();
+
+        // Validate background task as finished in item scheme
+        CodelistVersion codelistVersionVersioned = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(false, codelistVersionVersioned.getItemScheme().getIsTaskInBackground());
     }
 
     @Override
@@ -1964,6 +1968,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
         assertEquals(versionExpected, codelistVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
         assertEquals(urnExpected, codelistVersionNewArtefact.getMaintainableArtefact().getUrn());
+
+        // Validate background task as finished in original item scheme
+        CodelistVersion codelistVersionCopied = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnToCopy);
+        assertEquals(false, codelistVersionCopied.getItemScheme().getIsTaskInBackground());
     }
 
     @Override
@@ -7558,17 +7566,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     itemSchemeVersion = itemSchemeRepository.findByUrn(createTemporalCodelist.getMaintainableArtefact().getUrn());
                     assertEquals(true, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
 
-                    // try {
-                    // codesService.publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false, Boolean.TRUE);
-                    // fail("already versioning");
-                    // } catch (MetamacException e) {
-                    // assertEquals(1, e.getExceptionItems().size());
-                    // assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_ALREADY_VERSIONING.getCode(), e.getExceptionItems().get(0).getCode());
-                    // assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-                    // assertEquals(codelistUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-                    // }
+                    try {
+                        codesService.publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false, Boolean.TRUE);
+                        fail("already publishing");
+                    } catch (MetamacException e) {
+                        assertEquals(1, e.getExceptionItems().size());
+                        assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_ACTION_NOT_SUPPORTED_WHEN_TASK_IN_BACKGROUND.getCode(), e.getExceptionItems().get(0).getCode());
+                        assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                        assertEquals(createTemporalCodelist.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+                    }
                 } catch (MetamacException e) {
-                    fail("versioning failed");
+                    fail("publish failed");
                 }
             }
         });
@@ -7580,6 +7588,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(task);
         assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
         assertEquals(0, task.getTaskResults().size());
+
+        // Validate background task as finished in item scheme
+        CodelistVersion codelistVersionPublished = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(false, codelistVersionPublished.getItemScheme().getIsTaskInBackground());
     }
 
     @Override
