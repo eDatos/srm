@@ -4,7 +4,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +15,7 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.DataStructureDefin
 public class DataStructureDefinitionsCopyCallbackMetamacImpl extends DataStructureDefinitionsCopyCallbackImpl {
 
     @Autowired
-    private DsdsMetamacService dataStructureDefinitionMetamacService;
+    private DataStructureDefinitionMetamacService dataStructureDefinitionMetamacService;
 
     /****************
      * DSD

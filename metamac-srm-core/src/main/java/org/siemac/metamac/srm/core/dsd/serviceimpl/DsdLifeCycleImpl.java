@@ -24,8 +24,8 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
-import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
-import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
     private DataStructureDefinitionService                  dataStructureDefinitionService;
 
     @Autowired
-    private DsdsMetamacService                              dataStructureDefinitionMetamacService;
+    private DataStructureDefinitionMetamacService                              dataStructureDefinitionMetamacService;
 
     public DsdLifeCycleImpl() {
         this.callback = new DataStructureDefinitionLifeCycleCallback();
@@ -309,8 +309,8 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         private void checkMandatoryDimensionVisualizationInfo(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac, CodelistVersionMetamac codelistTarget,
                 DimensionComponent dimensionTarget) throws MetamacException {
             // DimensionVisualisationInfo
-            DimensionVisualizationInfo visualizationInfoForCurrentDimension = null;
-            for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
+            DimensionVisualisationInfo visualizationInfoForCurrentDimension = null;
+            for (DimensionVisualisationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
                 if (dimensionVisualizationInfo.getDimension().getUrn().equals(dimensionTarget.getUrn())) {
                     visualizationInfoForCurrentDimension = dimensionVisualizationInfo;
                 }
@@ -318,7 +318,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
             if (visualizationInfoForCurrentDimension == null) {
                 // Create new visualization info with new values.
-                visualizationInfoForCurrentDimension = new DimensionVisualizationInfo();
+                visualizationInfoForCurrentDimension = new DimensionVisualisationInfo();
                 visualizationInfoForCurrentDimension.setDimension(dimensionTarget);
                 dataStructureDefinitionVersionMetamac.addDimensionVisualisationInfo(visualizationInfoForCurrentDimension);
             }

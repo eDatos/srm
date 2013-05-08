@@ -18,7 +18,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacRepository;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
-import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DimensionVisualisationInfoDto;
@@ -192,15 +192,15 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
 
         // HashMap of actuals dimensions order
-        Map<String, DimensionVisualizationInfo> dimensionVisualisationMap = new HashMap<String, DimensionVisualizationInfo>();
-        for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
+        Map<String, DimensionVisualisationInfo> dimensionVisualisationMap = new HashMap<String, DimensionVisualisationInfo>();
+        for (DimensionVisualisationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
             dimensionVisualisationMap.put(dimensionVisualizationInfo.getDimension().getUrn(), dimensionVisualizationInfo);
         }
 
         dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos().clear();
 
         for (DimensionVisualisationInfoDto dimensionVisualisationInfoDto : sourceList) {
-            DimensionVisualizationInfo dimensionVisualizationInfoTarget = dimensionVisualizationInfoDtoToDimensionVisualizationInfo(dimensionVisualisationInfoDto,
+            DimensionVisualisationInfo dimensionVisualizationInfoTarget = dimensionVisualizationInfoDtoToDimensionVisualizationInfo(dimensionVisualisationInfoDto,
                     dimensionVisualisationMap.get(dimensionVisualisationInfoDto.getUrn()), dataStructureDefinitionVersionMetamac);
             if (dimensionVisualizationInfoTarget != null) {
                 dataStructureDefinitionVersionMetamac.addDimensionVisualisationInfo(dimensionVisualizationInfoTarget);
@@ -210,14 +210,14 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         return dataStructureDefinitionVersionMetamac;
     }
 
-    private DimensionVisualizationInfo dimensionVisualizationInfoDtoToDimensionVisualizationInfo(DimensionVisualisationInfoDto source, DimensionVisualizationInfo target,
+    private DimensionVisualisationInfo dimensionVisualizationInfoDtoToDimensionVisualizationInfo(DimensionVisualisationInfoDto source, DimensionVisualisationInfo target,
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
 
         if (target == null) {
             if (source.getDisplayOrder() == null && source.getHierarchyLevelsOpen() == null) {
                 return null;
             } else {
-                target = new DimensionVisualizationInfo();
+                target = new DimensionVisualisationInfo();
             }
         }
 

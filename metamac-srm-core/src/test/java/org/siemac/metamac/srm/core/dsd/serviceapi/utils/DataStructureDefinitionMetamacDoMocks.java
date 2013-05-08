@@ -9,7 +9,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
-import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
@@ -78,8 +78,8 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
         return target;
     }
 
-    public static DimensionVisualizationInfo mockDimensionVisualizationInfo(DimensionComponent dimension) {
-        DimensionVisualizationInfo target = new DimensionVisualizationInfo();
+    public static DimensionVisualisationInfo mockDimensionVisualizationInfo(DimensionComponent dimension) {
+        DimensionVisualisationInfo target = new DimensionVisualisationInfo();
         target.setDimension(dimension);
         target.setDisplayOrder(CodesMetamacDoMocks.mockCodelistOrderVisualisation());
         target.setHierarchyLevelsOpen(CodesMetamacDoMocks.mockCodelistOpennessVisualisation());

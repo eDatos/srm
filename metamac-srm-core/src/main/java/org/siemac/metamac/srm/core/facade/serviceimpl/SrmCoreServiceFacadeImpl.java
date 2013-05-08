@@ -203,7 +203,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionSecurityUtils.canCreateDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
 
         // Create
-        dataStructureDefinitionVersionMetamac = getDsdsMetamacService().createDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+        dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().createDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
 
         // Entities to DTOs
         return getDo2DtoMapper().dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode.COPY_ALL_METADATA, dataStructureDefinitionVersionMetamac);
@@ -212,7 +212,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto updateDataStructureDefinition(ServiceContext ctx, DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) throws MetamacException {
         // Security and transform
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, dataStructureDefinitionMetamacDto.getUrn());
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx,
+                dataStructureDefinitionMetamacDto.getUrn());
         String operationNew = dataStructureDefinitionMetamacDto.getStatisticalOperation() != null ? dataStructureDefinitionMetamacDto.getStatisticalOperation().getCode() : null;
         DataStructureDefinitionSecurityUtils.canUpdateDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld, operationNew);
 
@@ -220,7 +221,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDto2DoMapper().dataStructureDefinitionDtoToDataStructureDefinition(dataStructureDefinitionMetamacDto);
 
         // Update
-        dataStructureDefinitionVersionMetamac = getDsdsMetamacService().updateDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
+        dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().updateDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
 
         // Entities to DTOs
         return getDo2DtoMapper().dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode.COPY_ALL_METADATA, dataStructureDefinitionVersionMetamac);
@@ -229,11 +230,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
         DataStructureDefinitionSecurityUtils.canDeleteDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamac);
 
         // Delete
-        getDsdsMetamacService().deleteDataStructureDefinition(ctx, urn);
+        getDataStructureDefinitionMetamacService().deleteDataStructureDefinition(ctx, urn);
     }
 
     @Override
@@ -245,7 +246,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getDataStructureDefinitionCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<DataStructureDefinitionVersionMetamac> result = getDsdsMetamacService().findDataStructureDefinitionsByCondition(ctx, sculptorCriteria.getConditions(),
+        PagedResult<DataStructureDefinitionVersionMetamac> result = getDataStructureDefinitionMetamacService().findDataStructureDefinitionsByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -260,7 +261,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionSecurityUtils.canRetrieveDataStructureDefinitionByUrn(ctx);
 
         // Load Dsd
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
 
         // TO DTO
         return getDo2DtoMapper().dataStructureDefinitionMetamacDoToDto(typeDozerCopyMode, dataStructureDefinitionVersionMetamac);
@@ -272,7 +273,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionSecurityUtils.canRetrieveDataStructureDefinitionByUrn(ctx);
 
         // Search
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
 
         // TO DTO
         return getDo2DtoMapper().dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode.COPY_ALL_METADATA, dataStructureDefinitionVersionMetamac);
@@ -284,7 +285,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionSecurityUtils.canDataStructureDefinitionVersions(ctx);
 
         // Retrieve and sort by date desc
-        List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionVersions(ctx, urn);
+        List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsMetamac = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionVersions(ctx, urn);
         List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionsSortedByCreationDate = new ArrayList<DataStructureDefinitionVersionMetamac>(dataStructureDefinitionVersionsMetamac);
         Collections.sort(dataStructureDefinitionVersionsSortedByCreationDate, STRUCTURE_CREATED_DATE_DESC_COMPARATOR);
 
@@ -297,10 +298,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto sendDataStructureDefinitionToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
         DataStructureDefinitionSecurityUtils.canSendDataStructureDefinitionToProductionValidation(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().sendDataStructureDefinitionToProductionValidation(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().sendDataStructureDefinitionToProductionValidation(ctx, urn);
 
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -310,10 +311,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto sendDataStructureDefinitionToDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
         DataStructureDefinitionSecurityUtils.canSendDataStructureDefinitionToDiffusionValidation(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().sendDataStructureDefinitionToDiffusionValidation(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().sendDataStructureDefinitionToDiffusionValidation(ctx, urn);
 
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -323,10 +324,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto rejectDataStructureDefinitionProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
         DataStructureDefinitionSecurityUtils.canRejectDataStructureDefinitionValidation(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().rejectDataStructureDefinitionProductionValidation(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().rejectDataStructureDefinitionProductionValidation(ctx, urn);
 
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -336,10 +337,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto rejectDataStructureDefinitionDiffusionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
         DataStructureDefinitionSecurityUtils.canRejectDataStructureDefinitionValidation(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().rejectDataStructureDefinitionDiffusionValidation(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().rejectDataStructureDefinitionDiffusionValidation(ctx, urn);
 
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -349,10 +350,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto publishDataStructureDefinitionInternally(ServiceContext ctx, String urn, Boolean forceLatestFinal) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
         DataStructureDefinitionSecurityUtils.canPublishDataStructureDefinitionInternally(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().publishInternallyDataStructureDefinition(ctx, urn, forceLatestFinal);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().publishInternallyDataStructureDefinition(ctx, urn, forceLatestFinal);
 
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -362,10 +363,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto publishDataStructureDefinitionExternally(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
         DataStructureDefinitionSecurityUtils.canPublishDataStructureDefinitionExternally(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().publishExternallyDataStructureDefinition(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().publishExternallyDataStructureDefinition(ctx, urn);
 
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -377,20 +378,20 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Security
         DataStructureDefinitionSecurityUtils.canCopyDataStructureDefinition(ctx);
 
-        return getDsdsMetamacService().copyDataStructureDefinition(ctx, urnToCopy);
+        return getDataStructureDefinitionMetamacService().copyDataStructureDefinition(ctx, urnToCopy);
     }
 
     @Override
     public DataStructureDefinitionMetamacDto versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         DataStructureDefinitionSecurityUtils.canVersioningDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
 
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            dataStructureDefinitionVersionMetamac = getDsdsMetamacService().createVersionFromTemporalDataStructureDefinition(ctx, urnToCopy, versionType);
+            dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().createVersionFromTemporalDataStructureDefinition(ctx, urnToCopy, versionType);
         } else {
-            dataStructureDefinitionVersionMetamac = getDsdsMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
+            dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
         }
 
         // Transform to Dto
@@ -401,10 +402,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto createTemporalVersionDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         DataStructureDefinitionSecurityUtils.canCreateDataStructureDefinitionTemporalVersion(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().createTemporalDataStructureDefinition(ctx, urnToCopy);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().createTemporalDataStructureDefinition(ctx, urnToCopy);
 
         // Transform to Dto
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -414,10 +415,10 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DataStructureDefinitionMetamacDto endDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urn);
         DataStructureDefinitionSecurityUtils.canEndDataStructureDefinitionValidity(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().endDataStructureDefinitionValidity(ctx, urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().endDataStructureDefinitionValidity(ctx, urn);
 
         // Transform
         DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
@@ -434,7 +435,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         DataStructureDefinitionSecurityUtils.canFindDescriptorsForDataStructureDefinition(ctx);
 
         // Load Dsd
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
 
         // Check Type
         if (!typeComponentList.equals(TypeComponentList.ATTRIBUTE_DESCRIPTOR) && !typeComponentList.equals(TypeComponentList.DIMENSION_DESCRIPTOR)
@@ -471,14 +472,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public DescriptorDto saveDescriptorForDataStructureDefinition(ServiceContext ctx, String urnDsd, DescriptorDto descriptorDto) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd); // Load DSD
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd); // Load DSD
         DataStructureDefinitionSecurityUtils.canSaveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
 
         // DTOs to Entities
         ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto);
 
         // Save
-        componentListDescriptor = getDsdsMetamacService().saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(),
+        componentListDescriptor = getDataStructureDefinitionMetamacService().saveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(),
                 componentListDescriptor);
 
         // Entities to DTOs
@@ -488,14 +489,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteDescriptorForDataStructureDefinition(ServiceContext ctx, String urnDsd, DescriptorDto descriptorDto) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd); // Load DSD
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd); // Load DSD
         DataStructureDefinitionSecurityUtils.canSaveDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
 
         // DTOs to Entities
         ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto);
 
         // Delete descriptor for DSD
-        getDsdsMetamacService().deleteDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(), componentListDescriptor);
+        getDataStructureDefinitionMetamacService()
+                .deleteDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(), componentListDescriptor);
     }
 
     /**************************************************************************
@@ -505,14 +507,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public ComponentDto saveComponentForDataStructureDefinition(ServiceContext ctx, String urnDsd, ComponentDto componentDto) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd); // Load DSD
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd); // Load DSD
         DataStructureDefinitionSecurityUtils.canSaveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
 
         // Dto to entity
         Component component = getDto2DoMapper().componentDtoToComponent(componentDto);
 
         // Save component for DSD
-        component = getDsdsMetamacService().saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(), component);
+        component = getDataStructureDefinitionMetamacService().saveComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(), component);
 
         // Entitys to DTOs
         return getDo2DtoMapper().componentToComponentDto(TypeDozerCopyMode.COPY_ALL_METADATA, component);
@@ -521,14 +523,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     @Override
     public void deleteComponentForDataStructureDefinition(ServiceContext ctx, String urnDsd, ComponentDto componentDto) throws MetamacException {
         // Security
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd); // Load DSD
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd); // Load DSD
         DataStructureDefinitionSecurityUtils.canDeleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
 
         // Dto to entity
         Component component = getDto2DoMapper().componentDtoToComponent(componentDto);
 
         // Delete component for DSD
-        getDsdsMetamacService().deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(), component);
+        getDataStructureDefinitionMetamacService().deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(), component);
     }
 
     /**************************************************************************
@@ -607,8 +609,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter(), dsdUrn);
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
@@ -625,8 +627,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getDsdsMetamacService()
-                .findConceptsCanBeDsdPrimaryMeasureByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdPrimaryMeasureByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
@@ -644,8 +646,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter(), dsdUrn);
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdTimeDimensionByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
@@ -662,7 +664,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsCanBeDsdTimeDimensionByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdTimeDimensionByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
@@ -680,8 +683,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter(), dsdUrn);
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdMeasureDimensionByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
@@ -698,8 +701,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsCanBeDsdMeasureDimensionByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(),
-                dsdUrn);
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdMeasureDimensionByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
@@ -716,7 +719,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
@@ -734,7 +737,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsCanBeDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
@@ -751,7 +755,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ctx, sculptorCriteria.getConditions(),
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -769,7 +773,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsCanBeDsdRoleByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdRoleByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
@@ -787,8 +792,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter(), conceptUrn);
+        PagedResult<CodelistVersionMetamac> result = getDataStructureDefinitionMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
@@ -805,8 +810,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter());
+        PagedResult<CodelistVersionMetamac> result = getDataStructureDefinitionMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
@@ -824,7 +829,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ctx,
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ctx,
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -842,7 +847,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getDsdsMetamacService().findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(ctx, sculptorCriteria.getConditions(),
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
@@ -860,7 +865,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getDsdsMetamacService().findConceptsCanBeDsdAttributeByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdAttributeByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
@@ -878,8 +884,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getDsdsMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter(), conceptUrn);
+        PagedResult<CodelistVersionMetamac> result = getDataStructureDefinitionMetamacService().findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
@@ -897,8 +903,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistOrderVisualisation> result = getDsdsMetamacService().findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter(), dimensionUrn);
+        PagedResult<CodelistOrderVisualisation> result = getDataStructureDefinitionMetamacService().findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dimensionUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistOrderVisualisationToMetamacCriteriaResultRelatedResource(result,
@@ -916,8 +922,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistOpennessVisualisation> result = getDsdsMetamacService().findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter(), dimensionUrn);
+        PagedResult<CodelistOpennessVisualisation> result = getDataStructureDefinitionMetamacService().findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dimensionUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistOpennessVisualisationToMetamacCriteriaResultRelatedResource(result,
@@ -3154,7 +3160,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         List<DescriptorDto> descriptorDtos;
         // try {
         // 1 - Retrieve DSD
-        DataStructureDefinitionVersion dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
+        DataStructureDefinitionVersion dataStructureDefinitionVersion = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnDsd);
 
         descriptorDtos = new ArrayList<DescriptorDto>(dataStructureDefinitionVersion.getGrouping().size());
         for (ComponentList componentList : dataStructureDefinitionVersion.getGrouping()) {
@@ -3198,7 +3204,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
             // Dsd
         } else if (artefactCategorisedUrn.startsWith(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX)) {
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDsdsMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, artefactCategorisedUrn);
             DataStructureDefinitionSecurityUtils.canModifyCategorisation(ctx, dataStructureDefinitionVersion);
         } else {
             throw new MetamacException(ServiceExceptionType.SECURITY_OPERATION_NOT_ALLOWED, ctx.getUserId());

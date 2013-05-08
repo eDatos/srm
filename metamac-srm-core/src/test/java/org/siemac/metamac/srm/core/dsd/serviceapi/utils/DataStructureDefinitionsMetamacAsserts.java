@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
-import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DimensionVisualisationInfoDto;
@@ -98,24 +98,24 @@ public class DataStructureDefinitionsMetamacAsserts extends DataStructureDefinit
         assertEquals(expected.getShowDecimalPrecision(), actual.getShowDecimalPrecision());
     }
 
-    private static void assertDimensionVisualizationInfo(List<DimensionVisualisationInfoDto> expected, List<DimensionVisualizationInfo> actual) {
+    private static void assertDimensionVisualizationInfo(List<DimensionVisualisationInfoDto> expected, List<DimensionVisualisationInfo> actual) {
         for (int i = 0; i < expected.size(); i++) {
             assertDimensionVisualizationInfo(expected.get(i), actual.get(i));
         }
     }
 
-    private static void assertDimensionVisualizationInfo(DimensionVisualisationInfoDto expected, DimensionVisualizationInfo actual) {
+    private static void assertDimensionVisualizationInfo(DimensionVisualisationInfoDto expected, DimensionVisualisationInfo actual) {
         assertEquals(expected.getDisplayOrder().getUrn(), actual.getDimension().getUrn());
         assertEquals(expected.getHierarchyLevelsOpen().getUrn(), actual.getHierarchyLevelsOpen().getNameableArtefact().getUrn());
     }
 
-    private static void assertDimensionVisualizationInfoEntities(List<DimensionVisualizationInfo> expected, List<DimensionVisualizationInfo> actual) {
+    private static void assertDimensionVisualizationInfoEntities(List<DimensionVisualisationInfo> expected, List<DimensionVisualisationInfo> actual) {
         for (int i = 0; i < expected.size(); i++) {
             assertDimensionVisualizationInfoEntity(expected.get(i), actual.get(i));
         }
     }
 
-    private static void assertDimensionVisualizationInfoEntity(DimensionVisualizationInfo expected, DimensionVisualizationInfo actual) {
+    private static void assertDimensionVisualizationInfoEntity(DimensionVisualisationInfo expected, DimensionVisualisationInfo actual) {
         assertEquals(expected.getDimension().getUrn(), actual.getDimension().getUrn());
         assertEquals(expected.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), actual.getHierarchyLevelsOpen().getNameableArtefact().getUrn());
         assertEquals(expected.getDisplayOrder().getNameableArtefact().getUrn(), actual.getDisplayOrder().getNameableArtefact().getUrn());

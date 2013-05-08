@@ -18,7 +18,7 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ReportingYearStartDayTyp
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.TimeDimensionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
 import org.siemac.metamac.srm.core.task.utils.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,7 @@ import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureJaxb2DoCallbac
 public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements StructureJaxb2DoCallback {
 
     @Autowired
-    private DsdsMetamacService dsdsMetamacService;
+    private DataStructureDefinitionMetamacService dataStructureDefinitionMetamacService;
 
     /**************************************************************************
      * CREATES
@@ -161,7 +161,7 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
         targetMetamac.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
 
         // Validate and complete fill
-        dsdsMetamacService.preCreateDataStructureDefinition(ctx, targetMetamac);
+        dataStructureDefinitionMetamacService.preCreateDataStructureDefinition(ctx, targetMetamac);
     }
 
     @Override
@@ -173,13 +173,13 @@ public class StructureJaxb2DoCallbackImpl extends ImportationMetamacCommonValida
         // Fill metadata heritable
         if (previousMetamac != null) {
             // Heading and Stub
-            targetMetamac = dsdsMetamacService.versioningHeadingAndStub(ctx, previousMetamac, targetMetamac);
+            targetMetamac = dataStructureDefinitionMetamacService.versioningHeadingAndStub(ctx, previousMetamac, targetMetamac);
 
             // ShowDecimalsPRecicions
-            targetMetamac = dsdsMetamacService.versioningShowDecimalsPrecision(ctx, previousMetamac, targetMetamac);
+            targetMetamac = dataStructureDefinitionMetamacService.versioningShowDecimalsPrecision(ctx, previousMetamac, targetMetamac);
 
             // DimensionVisualisationInfo
-            targetMetamac = dsdsMetamacService.versioningDimensionVisualisationInfo(ctx, previousMetamac, targetMetamac);
+            targetMetamac = dataStructureDefinitionMetamacService.versioningDimensionVisualisationInfo(ctx, previousMetamac, targetMetamac);
         }
 
     }

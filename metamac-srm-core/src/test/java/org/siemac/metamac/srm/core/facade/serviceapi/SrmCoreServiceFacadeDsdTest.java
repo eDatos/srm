@@ -68,9 +68,6 @@ public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
 
-    // @Autowired
-    // private DsdsMetamacService srmCoreServiceFacade;
-
     @Autowired
     @Qualifier("jaxb2MarshallerWithValidation")
     private Jaxb2Marshaller        marshallerWithValidation;

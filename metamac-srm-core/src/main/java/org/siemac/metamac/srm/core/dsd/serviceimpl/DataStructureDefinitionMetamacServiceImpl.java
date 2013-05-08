@@ -52,7 +52,7 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
-import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.serviceimpl.utils.DsdsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -85,10 +85,10 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 /**
- * Implementation of DsdsMetamacService.
+ * Implementation of DataStructureDefinitionMetamacService.
  */
-@Service("dsdsMetamacService")
-public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
+@Service("dataStructureDefinitionMetamacService")
+public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefinitionMetamacServiceImplBase {
 
     @Autowired
     private DataStructureDefinitionService          dataStructureDefinitionService;
@@ -144,7 +144,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     @Autowired
     private ExternalItemRepository                  externalItemRepository;
 
-    public DsdsMetamacServiceImpl() {
+    public DataStructureDefinitionMetamacServiceImpl() {
     }
 
     @Override
@@ -301,7 +301,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
 
     private void checkIfDimensionVisualizationInfo(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac, CodelistVersion codelistTarget, DimensionComponent dimensionTarget) {
         // DimensionVisualisationInfo
-        for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
+        for (DimensionVisualisationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
             if (dimensionVisualizationInfo.getDimension().getUrn().equals(dimensionTarget.getUrn())) {
 
                 if (RepresentationTypeEnum.ENUMERATION.equals(dimensionTarget.getLocalRepresentation().getRepresentationType())) {
@@ -354,7 +354,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             }
 
             // If the dimension has associated information to be deleted, delete it too.
-            for (DimensionVisualizationInfo dimensionVisualizationInfo : new ArrayList<DimensionVisualizationInfo>(dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos())) {
+            for (DimensionVisualisationInfo dimensionVisualizationInfo : new ArrayList<DimensionVisualisationInfo>(dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos())) {
                 if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionVisualizationInfo.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeDimensionVisualisationInfo(dimensionVisualizationInfo);
                 }
@@ -924,7 +924,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         }
 
         // DimensionVisualisationInfo
-        for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamacToCopy.getDimensionVisualisationInfos()) {
+        for (DimensionVisualisationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamacToCopy.getDimensionVisualisationInfos()) {
             // If exist the dimension in the new DSD
             if (newDimensionMap.containsKey(dimensionVisualizationInfo.getDimension().getCode())) {
                 Representation representationToCopy = dimensionVisualizationInfo.getDimension().getLocalRepresentation();
@@ -950,9 +950,9 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
     }
 
     private void copyIfValidDimensionVisualizationInfo(DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion, Map<String, Component> newDimensionMap,
-            DimensionVisualizationInfo dimensionVisualizationInfo, Representation representation) {
+            DimensionVisualisationInfo dimensionVisualizationInfo, Representation representation) {
         CodelistVersion codelistVersion = representation.getEnumerationCodelist();
-        DimensionVisualizationInfo newDimensionVisualizationInfo = new DimensionVisualizationInfo();
+        DimensionVisualisationInfo newDimensionVisualizationInfo = new DimensionVisualisationInfo();
         newDimensionVisualizationInfo.setDimension((DimensionComponent) newDimensionMap.get(dimensionVisualizationInfo.getDimension().getCode()));
         boolean addDimensionVisualizationInfo = false;
         // If the codeList representation is the same as that of the DisplayOrder.

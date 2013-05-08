@@ -7,7 +7,7 @@ import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
-import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualizationInfo;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
@@ -117,7 +117,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         }
 
         // Dimension Visualization Info
-        for (DimensionVisualizationInfo dimensionVisualisationInfo : source.getDimensionVisualisationInfos()) {
+        for (DimensionVisualisationInfo dimensionVisualisationInfo : source.getDimensionVisualisationInfos()) {
             target.addDimensionVisualisationInfo(dimensionVisualisationInfoDoToDimensionVisualisationInfoDto(dimensionVisualisationInfo));
         }
 
@@ -155,7 +155,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         return target;
     }
 
-    private DimensionVisualisationInfoDto dimensionVisualisationInfoDoToDimensionVisualisationInfoDto(DimensionVisualizationInfo source) {
+    private DimensionVisualisationInfoDto dimensionVisualisationInfoDoToDimensionVisualisationInfoDto(DimensionVisualisationInfo source) {
         if (source == null) {
             return null;
         }

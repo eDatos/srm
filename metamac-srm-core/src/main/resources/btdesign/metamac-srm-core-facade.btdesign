@@ -40,7 +40,7 @@ Application SrmFacadeCore {
     	
 		Service SrmCoreServiceFacade {
        		> @ConceptsMetamacService
-       		> @DsdsMetamacService
+       		> @DataStructureDefinitionMetamacService
        		> @OrganisationsMetamacService
        		> @CategoriesMetamacService
        		> @CodesMetamacService

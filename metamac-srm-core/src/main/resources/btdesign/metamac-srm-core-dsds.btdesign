@@ -18,7 +18,7 @@ Application DsdsMetamac {
 		// 							SERVICES
 		// ----------------------------------------------------------------  
 		"Provides access to Dsd Artefacts"
-		Service DsdsMetamacService {
+		Service DataStructureDefinitionMetamacService {
 			
 			> @DataStructureDefinitionVersionMetamacRepository
     		
@@ -143,7 +143,7 @@ Application DsdsMetamac {
 			- Bag<@MeasureDimensionPrecision> showDecimalsPrecisions fetch="lazy" cascade="all-delete-orphan" inverse orderby="id asc" <-> dsdVersion;
 			
 			"Extension point to add Metadata for each dimension"
-			- Bag<@DimensionVisualizationInfo> dimensionVisualisationInfos cascade="all-delete-orphan" fetch="lazy" inverse orderby="id asc" <-> dsdVersion;
+			- Bag<@DimensionVisualisationInfo> dimensionVisualisationInfos cascade="all-delete-orphan" fetch="lazy" inverse orderby="id asc" <-> dsdVersion;
 			
 			"Statistical operation"
 			- @ExternalItem statisticalOperation nullable cascade="all" databaseColumn="STATISTICAL_OPERATION_FK";
@@ -190,7 +190,7 @@ Application DsdsMetamac {
 			- @DataStructureDefinitionVersionMetamac dsdVersion not nullable cascade="none" fetch="lazy" databaseColumn="DSD_VERSION_FK" <-> showDecimalsPrecisions;
 		}
 		
-		Entity DimensionVisualizationInfo {
+		Entity DimensionVisualisationInfo {
 			databaseTable="TB_M_DIM_VIS_INFO"
 			hint="idSequence=M_DIM_VIS_INFO"
 			!auditable
