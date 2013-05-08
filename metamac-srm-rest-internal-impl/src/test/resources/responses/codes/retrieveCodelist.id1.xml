@@ -199,6 +199,4 @@
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplacedBy(01.000)</sr:managementAppLink>
     </sr:replacedBy>
     <sr:accessType>PUBLIC</sr:accessType>
-    <sr:defaultOrderVisualisation>defaultOrderVisualisation1</sr:defaultOrderVisualisation>
-    <sr:defaultOpennessVisualisation>defaultOpennessVisualisation1</sr:defaultOpennessVisualisation>
 </sr:codelist>

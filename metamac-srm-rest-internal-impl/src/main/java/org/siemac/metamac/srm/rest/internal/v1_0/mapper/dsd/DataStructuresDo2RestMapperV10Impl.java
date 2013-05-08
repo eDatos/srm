@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbCallback;
@@ -100,8 +101,6 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setStub(toDimensions(source.getStubDimensions()));
         target.setShowDecimals(source.getShowDecimals() != null ? BigInteger.valueOf(source.getShowDecimals()) : null);
         target.setShowDecimalsPrecisions(toShowDecimalPrecisions(source.getShowDecimalsPrecisions()));
-
-        // TODO metadatos de visualización de codelist en dimensión (pte Core)
     }
 
     @Override
@@ -136,8 +135,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
 
         // Values
         for (DimensionOrder source : sources) {
-            URNReferenceType target = new URNReferenceType();
-            target.setURN(getUrn(source.getDimension()));
+            URNReferenceType target = toUrnReference(source.getDimension());
             targets.getDimensions().add(target);
         }
         return targets;
@@ -154,14 +152,22 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         for (MeasureDimensionPrecision source : sources) {
             ShowDecimalPrecision target = new ShowDecimalPrecision();
             target.setShowDecimals(BigInteger.valueOf(source.getShowDecimalPrecision()));
-
-            URNReferenceType concept = new URNReferenceType();
-            concept.setURN(getUrn(source.getConcept().getNameableArtefact()));
-            target.setConcept(concept);
-
+            target.setConcept(toUrnReference(source.getConcept()));
             targets.getShowDecimalPrecisions().add(target);
         }
         return targets;
+    }
+
+    private URNReferenceType toUrnReference(com.arte.statistic.sdmx.srm.core.base.domain.Component source) {
+        URNReferenceType target = new URNReferenceType();
+        target.setURN(getUrn(source));
+        return target;
+    }
+
+    private URNReferenceType toUrnReference(Concept source) {
+        URNReferenceType target = new URNReferenceType();
+        target.setURN(getUrn(source.getNameableArtefact()));
+        return target;
     }
 
     private ResourceLink toDataStructureSelfLink(DataStructureDefinitionVersionMetamac source) {

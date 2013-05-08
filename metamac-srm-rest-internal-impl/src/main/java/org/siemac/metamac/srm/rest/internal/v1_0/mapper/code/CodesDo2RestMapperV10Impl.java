@@ -104,8 +104,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setFamily(toResource(source.getFamily()));
         target.setVariable(toResource(source.getVariable()));
         target.setAccessType(toAccessType(source.getAccessType()));
-        target.setDefaultOrderVisualisation(source.getDefaultOrderVisualisation().getNameableArtefact().getCode());
-        target.setDefaultOpennessVisualisation(source.getDefaultOpennessVisualisation().getNameableArtefact().getCode());
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));

@@ -131,8 +131,6 @@ public class CodesDo2RestMapperTest {
         assertEqualsInternationalString("es", "descriptionSource-resourceID1v01.123 en Español", "en", "descriptionSource-resourceID1v01.123 in English", target.getDescriptionSource());
         assertTrue(target.isIsRecommended());
         assertEquals(AccessType.PUBLIC, target.getAccessType());
-        assertEquals("defaultOrderVisualisation1", target.getDefaultOrderVisualisation());
-        assertEquals("defaultOpennessVisualisation1", target.getDefaultOpennessVisualisation());
         assertEquals("family1", target.getFamily().getId());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=family1", target.getFamily().getUrn());
         assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getTitle());
