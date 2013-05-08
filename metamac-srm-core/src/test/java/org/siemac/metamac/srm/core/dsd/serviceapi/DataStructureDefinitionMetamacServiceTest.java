@@ -20,7 +20,6 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
@@ -96,16 +95,11 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager                         entityManager;
 
-    @Autowired
-    private ConfigurationService                    configurationService;
-
     private final ServiceContext                    serviceContext = new ServiceContext("system", "123456", "junit");
 
     protected ServiceContext getServiceContext() {
         return serviceContext;
     }
-
-    // TODO Test dsd. Hacer tests de mappers
 
     @Test
     @Override
@@ -141,6 +135,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         assertEquals(1, dataStructureDefinitionVersionMetamacRetrieved.getGrouping().iterator().next().getComponents().size());
         DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dataStructureDefinitionVersionMetamac, dataStructureDefinitionVersionMetamacRetrieved);
     }
+
     @Test
     public void testCreateDataStructureDefinitionErrorNotDefault() throws Exception {
         OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_2_V1);
@@ -178,7 +173,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Test
     @Override
     public void testPreCreateDataStructureDefinition() throws Exception {
-        // TODO testPreCreateDataStructureDefinition
+        // Tested in testCreateDataStructureDefinition
 
     }
 
@@ -194,36 +189,38 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Test
     @Override
     public void testRetrieveDataStructureDefinitionByUrn() throws Exception {
-        // TODO Test dsd
+        // Retrieve
+        String urn = DSD_6_V1;
+        DataStructureDefinitionVersionMetamac dsd = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
 
+        assertFalse(dsd.getAutoOpen());
+        assertEquals(1, dsd.getDimensionVisualisationInfos().size());
+        assertEquals(2, dsd.getHeadingDimensions().size());
+        assertEquals(1, dsd.getStubDimensions().size());
     }
 
     @Test
     @Override
     public void testRetrieveDataStructureDefinitionVersions() throws Exception {
-        // TODO Test dsd
-
+        // Already tested in statistic-sdmx, See DataStructureDefinitionServiceTest.testRetrieveDataStructureDefinitionVersions
     }
 
     @Test
     @Override
     public void testFindDataStructureDefinitionsByCondition() throws Exception {
-        // TODO Test dsd
-
+        // Already tested in statistic-sdmx, See DataStructureDefinitionServiceTest.testFindDataStructureDefinitionByCondition
     }
 
     @Test
     @Override
     public void testSaveDescriptorForDataStructureDefinition() throws Exception {
-        // TODO Test dsd
-
+        // Already tested in statistic-sdmx, See DataStructureDefinitionServiceTest.testSaveDescriptorForDataStructureDefinition
     }
 
     @Test
     @Override
     public void testDeleteDescriptorForDataStructureDefinition() throws Exception {
-        // TODO Test dsd
-
+        // Already tested in statistic-sdmx, See DataStructureDefinitionServiceTest.testDeleteDescriptorForDataStructureDefinition
     }
 
     @Test
