@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.soap.common.v1_0.domain.Item;
 import org.siemac.metamac.soap.common.v1_0.domain.Resource;
 import org.siemac.metamac.soap.criteria.mapper.SculptorCriteria2SoapCriteria;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Code;
@@ -49,6 +48,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         VariableFamily target = new VariableFamily();
+        target.setUrn(getUrn(source.getNameableArtefact()));
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
 
@@ -75,12 +75,13 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         Variable target = new Variable();
+        target.setUrn(getUrn(source.getNameableArtefact()));
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         target.setShortName(toInternationalString(source.getShortName()));
         target.setValidFrom(toDate(source.getValidFrom()));
         target.setValidTo(toDate(source.getValidTo()));
-        target.setReplacedBy(toItem(source.getReplacedByVariable()));
+        target.setReplacedBy(toResource(source.getReplacedByVariable()));
         target.setReplaceTo(toReplaceTo(source));
         target.setFamily(toVariableFamilyCodes(source));
         return target;
@@ -106,6 +107,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         CodelistFamily target = new CodelistFamily();
+        target.setUrn(getUrn(source.getNameableArtefact()));
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
 
@@ -157,8 +159,8 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
         target.setShortName(toInternationalString(source.getShortName()));
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
         target.setIsRecommended(source.getIsRecommended());
-        target.setFamily(toItem(source.getFamily()));
-        target.setVariable(toItem(source.getVariable()));
+        target.setFamily(toResource(source.getFamily()));
+        target.setVariable(toResource(source.getVariable()));
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setReplaceTo(toCodelistReplaceTo(source));
@@ -205,7 +207,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
         ReplaceToVariable target = new ReplaceToVariable();
         target.setTotal(BigInteger.valueOf(source.getReplaceToVariables().size()));
         for (org.siemac.metamac.srm.core.code.domain.Variable replaceToSource : source.getReplaceToVariables()) {
-            target.getReplaceTos().add(toItem(replaceToSource));
+            target.getReplaceTos().add(toResource(replaceToSource));
         }
         return target;
     }
@@ -217,36 +219,39 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
         VariableFamilyCodes target = new VariableFamilyCodes();
         target.setTotal(BigInteger.valueOf(source.getFamilies().size()));
         for (org.siemac.metamac.srm.core.code.domain.VariableFamily variableFamily : source.getFamilies()) {
-            target.getFamilies().add(toItem(variableFamily));
+            target.getFamilies().add(toResource(variableFamily));
         }
         return target;
     }
 
-    private Item toItem(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
+    private Resource toResource(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
         if (source == null) {
             return null;
         }
-        Item target = new Item();
+        Resource target = new Resource();
+        target.setUrn(getUrn(source.getNameableArtefact()));
         target.setId(getCode(source.getNameableArtefact()));
         target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
 
-    private Item toItem(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
+    private Resource toResource(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
         if (source == null) {
             return null;
         }
-        Item target = new Item();
+        Resource target = new Resource();
+        target.setUrn(getUrn(source.getNameableArtefact()));
         target.setId(getCode(source.getNameableArtefact()));
         target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
 
-    private Item toItem(org.siemac.metamac.srm.core.code.domain.Variable source) {
+    private Resource toResource(org.siemac.metamac.srm.core.code.domain.Variable source) {
         if (source == null) {
             return null;
         }
-        Item target = new Item();
+        Resource target = new Resource();
+        target.setUrn(getUrn(source.getNameableArtefact()));
         target.setId(getCode(source.getNameableArtefact()));
         target.setTitle(toInternationalString(source.getNameableArtefact().getName()));
         return target;

@@ -158,8 +158,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         Variable variable = new Variable();
         variable.setNameableArtefact(mockNameableArtefact("code-" + MetamacMocks.mockString(5)));
         variable.setShortName(BaseDoMocks.mockInternationalString());
-        variable.setValidFrom(new DateTime());
-        variable.setValidTo(new DateTime());
+        variable.setValidFrom(new DateTime(2012, 10, 1, 10, 12, 13, 14));
+        variable.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
         return variable;
     }
 
@@ -191,8 +191,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         variableElement.setIdentifiableArtefact(new IdentifiableArtefact());
         mockIdentifiableArtefact(variableElement.getIdentifiableArtefact(), "code-" + MetamacMocks.mockString(5));
         variableElement.setShortName(BaseDoMocks.mockInternationalString());
-        variableElement.setValidFrom(new DateTime());
-        variableElement.setValidTo(new DateTime());
+        variableElement.setValidFrom(new DateTime(2012, 10, 1, 10, 12, 13, 14));
+        variableElement.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
         variableElement.setVariable(variable);
         return variableElement;
     }

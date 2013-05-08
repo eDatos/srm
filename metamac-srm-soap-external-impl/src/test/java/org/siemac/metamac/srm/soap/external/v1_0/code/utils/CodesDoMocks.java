@@ -31,8 +31,20 @@ public class CodesDoMocks {
         return CodesMetamacDoMocks.mockCodelistFamilyFixedValues(resourceID);
     }
 
+    public static Variable mockVariableWithFamilies(String resourceID) {
+        Variable variable = mockVariable(resourceID);
+        variable.addFamily(mockVariableFamily("family01"));
+        variable.addFamily(mockVariableFamily("family02"));
+        variable.addFamily(mockVariableFamily("family03"));
+        return variable;
+    }
+
     public static Variable mockVariable(String resourceID) {
-        return CodesMetamacDoMocks.mockVariableFixedValues(resourceID);
+        Variable target = CodesMetamacDoMocks.mockVariableFixedValues(resourceID);
+        target.setReplacedByVariable(CodesMetamacDoMocks.mockVariableFixedValues("replacedByVariable01"));
+        target.addReplaceToVariable(CodesMetamacDoMocks.mockVariableFixedValues("replaceToVariable01"));
+        target.addReplaceToVariable(CodesMetamacDoMocks.mockVariableFixedValues("replaceToVariable02"));
+        return target;
     }
 
     public static VariableElement mockVariableElement(String resourceID) {

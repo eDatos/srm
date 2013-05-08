@@ -7,6 +7,7 @@ import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelistFamily;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariable;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
+import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariableWithFamilies;
 import static org.siemac.metamac.srm.soap.external.v1_0.utils.Asserts.assertEqualsInternationalString;
 
 import java.math.BigInteger;
@@ -16,6 +17,7 @@ import java.util.List;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.soap.common.v1_0.domain.Resource;
 import org.siemac.metamac.soap.structural_resources.v1_0.domain.Code;
@@ -68,20 +70,37 @@ public class CodesDo2SoapMapperTest {
         int i = 0;
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily resource = target.getVariableFamilies().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily01", resource.getUrn());
             assertEquals("variableFamily01", resource.getId());
             assertEqualsInternationalString("es", "name-variableFamily01 en Español", "en", "name-variableFamily01 in English", resource.getName());
         }
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily resource = target.getVariableFamilies().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily02", resource.getUrn());
             assertEquals("variableFamily02", resource.getId());
             assertEqualsInternationalString("es", "name-variableFamily02 en Español", "en", "name-variableFamily02 in English", resource.getName());
         }
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily resource = target.getVariableFamilies().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily03", resource.getUrn());
             assertEquals("variableFamily03", resource.getId());
             assertEqualsInternationalString("es", "name-variableFamily03 en Español", "en", "name-variableFamily03 in English", resource.getName());
         }
         assertEquals(source.size(), i);
+    }
+
+    @Test
+    public void testToVariableFamily() {
+
+        VariableFamily source = mockVariableFamily("variableFamily01");
+
+        // Transform
+        org.siemac.metamac.soap.structural_resources.v1_0.domain.VariableFamily target = do2SoapExternalMapper.toVariableFamily(source);
+
+        // Validate
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily01", target.getUrn());
+        assertEquals("variableFamily01", target.getId());
+        assertEqualsInternationalString("es", "name-variableFamily01 en Español", "en", "name-variableFamily01 in English", target.getName());
     }
 
     @Test
@@ -110,20 +129,67 @@ public class CodesDo2SoapMapperTest {
         int i = 0;
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.Variable resource = target.getVariables().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable01", resource.getUrn());
             assertEquals("variable01", resource.getId());
             assertEqualsInternationalString("es", "name-variable01 en Español", "en", "name-variable01 in English", resource.getName());
         }
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.Variable resource = target.getVariables().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable02", resource.getUrn());
             assertEquals("variable02", resource.getId());
             assertEqualsInternationalString("es", "name-variable02 en Español", "en", "name-variable02 in English", resource.getName());
         }
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.Variable resource = target.getVariables().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable03", resource.getUrn());
             assertEquals("variable03", resource.getId());
             assertEqualsInternationalString("es", "name-variable03 en Español", "en", "name-variable03 in English", resource.getName());
         }
         assertEquals(source.size(), i);
+    }
+
+    @Test
+    public void testToVariable() {
+
+        Variable source = mockVariableWithFamilies("variable01");
+
+        // Transform
+        org.siemac.metamac.soap.structural_resources.v1_0.domain.Variable target = do2SoapExternalMapper.toVariable(source);
+
+        // Validate
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable01", target.getUrn());
+        assertEquals("variable01", target.getId());
+        assertEqualsInternationalString("es", "name-variable01 en Español", "en", "name-variable01 in English", target.getName());
+        assertEquals(3, target.getFamily().getFamilies().size());
+        {
+            Resource variableFamily = target.getFamily().getFamilies().get(0);
+            assertEquals("family01", variableFamily.getId());
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=family01", variableFamily.getUrn());
+            assertEqualsInternationalString("es", "name-family01 en Español", "en", "name-family01 in English", variableFamily.getTitle());
+        }
+        {
+            Resource variableFamily = target.getFamily().getFamilies().get(1);
+            assertEquals("family02", variableFamily.getId());
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=family02", variableFamily.getUrn());
+            assertEqualsInternationalString("es", "name-family02 en Español", "en", "name-family02 in English", variableFamily.getTitle());
+        }
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=replacedByVariable01", target.getReplacedBy().getUrn());
+        assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
+        {
+            Resource variable = target.getReplaceTo().getReplaceTos().get(0);
+            assertEquals("replaceToVariable01", variable.getId());
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=replaceToVariable01", variable.getUrn());
+            assertEqualsInternationalString("es", "name-replaceToVariable01 en Español", "en", "name-replaceToVariable01 in English", variable.getTitle());
+        }
+        {
+            Resource variable = target.getReplaceTo().getReplaceTos().get(1);
+            assertEquals("replaceToVariable02", variable.getId());
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=replaceToVariable02", variable.getUrn());
+            assertEqualsInternationalString("es", "name-replaceToVariable02 en Español", "en", "name-replaceToVariable02 in English", variable.getTitle());
+        }
+        assertEqualsInternationalString("es", "shortName-variable01 en Español", "en", "shortName-variable01 in English", target.getShortName());
+        MetamacAsserts.assertEqualsDate("2012-10-01 10:12:13", target.getValidFrom());
+        MetamacAsserts.assertEqualsDate("2013-10-01 10:12:13", target.getValidTo());
     }
 
     @Test
@@ -152,20 +218,37 @@ public class CodesDo2SoapMapperTest {
         int i = 0;
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamily resource = target.getCodelistFamilies().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=codelistFamily01", resource.getUrn());
             assertEquals("codelistFamily01", resource.getId());
             assertEqualsInternationalString("es", "name-codelistFamily01 en Español", "en", "name-codelistFamily01 in English", resource.getName());
         }
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamily resource = target.getCodelistFamilies().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=codelistFamily02", resource.getUrn());
             assertEquals("codelistFamily02", resource.getId());
             assertEqualsInternationalString("es", "name-codelistFamily02 en Español", "en", "name-codelistFamily02 in English", resource.getName());
         }
         {
             org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamily resource = target.getCodelistFamilies().get(i++);
+            assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=codelistFamily03", resource.getUrn());
             assertEquals("codelistFamily03", resource.getId());
             assertEqualsInternationalString("es", "name-codelistFamily03 en Español", "en", "name-codelistFamily03 in English", resource.getName());
         }
         assertEquals(source.size(), i);
+    }
+
+    @Test
+    public void testToCodelistFamily() {
+
+        CodelistFamily source = mockCodelistFamily("codelistFamily01");
+
+        // Transform
+        org.siemac.metamac.soap.structural_resources.v1_0.domain.CodelistFamily target = do2SoapExternalMapper.toCodelistFamily(source);
+
+        // Validate
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=codelistFamily01", target.getUrn());
+        assertEquals("codelistFamily01", target.getId());
+        assertEqualsInternationalString("es", "name-codelistFamily01 en Español", "en", "name-codelistFamily01 in English", target.getName());
     }
 
     @Test
