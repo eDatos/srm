@@ -200,8 +200,11 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos().clear();
 
         for (DimensionVisualisationInfoDto dimensionVisualisationInfoDto : sourceList) {
-            dataStructureDefinitionVersionMetamac.addDimensionVisualisationInfo(dimensionVisualizationInfoDtoToDimensionVisualizationInfo(dimensionVisualisationInfoDto,
-                    dimensionVisualisationMap.get(dimensionVisualisationInfoDto.getUrn()), dataStructureDefinitionVersionMetamac));
+            DimensionVisualizationInfo dimensionVisualizationInfoTarget = dimensionVisualizationInfoDtoToDimensionVisualizationInfo(dimensionVisualisationInfoDto,
+                    dimensionVisualisationMap.get(dimensionVisualisationInfoDto.getUrn()), dataStructureDefinitionVersionMetamac);
+            if (dimensionVisualizationInfoTarget != null) {
+                dataStructureDefinitionVersionMetamac.addDimensionVisualisationInfo(dimensionVisualizationInfoTarget);
+            }
         }
 
         return dataStructureDefinitionVersionMetamac;
@@ -211,7 +214,11 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac) throws MetamacException {
 
         if (target == null) {
-            target = new DimensionVisualizationInfo();
+            if (source.getDisplayOrder() == null && source.getHierarchyLevelsOpen() == null) {
+                return null;
+            } else {
+                target = new DimensionVisualizationInfo();
+            }
         }
 
         DimensionComponent dimension = (DimensionComponent) dto2DoMapperSdmxSrm.relatedResourceDtoToEntity(source, ServiceExceptionParameters.DIMENSION);
