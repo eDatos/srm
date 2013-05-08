@@ -16,5 +16,6 @@
     <source path='core/enume/domain' />
     <source path='core/security/shared' />
     <source path='core/code/domain/shared' />
+    <source path='core/common/service/utils/shared' />
     <source path='navigation/shared' />
 </module>
