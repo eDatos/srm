@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.client.widgets;
+package org.siemac.metamac.srm.web.dsd.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 

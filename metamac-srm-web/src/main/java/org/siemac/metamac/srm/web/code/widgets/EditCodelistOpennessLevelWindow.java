@@ -1,6 +1,5 @@
-package org.siemac.metamac.srm.web.client.widgets;
+package org.siemac.metamac.srm.web.code.widgets;
 
-import org.siemac.metamac.srm.web.code.widgets.CodesOpennessLevelEditableTreeGrid;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;

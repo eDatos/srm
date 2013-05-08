@@ -5,7 +5,6 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
-import org.siemac.metamac.srm.web.client.widgets.CodelistOpennessLevelsSectionStack;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 
 import com.smartgwt.client.widgets.layout.VLayout;
