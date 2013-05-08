@@ -41,7 +41,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStr
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructures;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
-import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresDoMocks;
@@ -51,7 +51,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 
 public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalFacadeV10BaseTest {
 
-    private DsdsMetamacService         dsdsService;
+    private DataStructureDefinitionMetamacService         dsdsService;
     private StructureVersionRepository structureVersionRepository;
 
     @Test
@@ -377,7 +377,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
 
     @Override
     protected void resetMocks() throws MetamacException {
-        dsdsService = applicationContext.getBean(DsdsMetamacService.class);
+        dsdsService = applicationContext.getBean(DataStructureDefinitionMetamacService.class);
         reset(dsdsService);
         structureVersionRepository = applicationContext.getBean(StructureVersionRepository.class);
         reset(structureVersionRepository);

@@ -78,7 +78,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -109,52 +109,52 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
-    private ConceptsMetamacService         conceptsService;
+    private ConceptsMetamacService                conceptsService;
 
     @Autowired
-    private CategoriesMetamacService       categoriesService;
+    private CategoriesMetamacService              categoriesService;
 
     @Autowired
-    private OrganisationsMetamacService    organisationsService;
+    private OrganisationsMetamacService           organisationsService;
 
     @Autowired
-    private CodesMetamacService            codesService;
+    private CodesMetamacService                   codesService;
 
     @Autowired
-    private DsdsMetamacService             dsdService;
+    private DataStructureDefinitionMetamacService dataStructureDefinitionService;
 
     @Autowired
-    private ConceptsRest2DoMapper          conceptsRest2DoMapper;
+    private ConceptsRest2DoMapper                 conceptsRest2DoMapper;
 
     @Autowired
-    private CategoriesRest2DoMapper        categoriesRest2DoMapper;
+    private CategoriesRest2DoMapper               categoriesRest2DoMapper;
 
     @Autowired
-    private OrganisationsRest2DoMapper     organisationsRest2DoMapper;
+    private OrganisationsRest2DoMapper            organisationsRest2DoMapper;
 
     @Autowired
-    private CodesRest2DoMapper             codesRest2DoMapper;
+    private CodesRest2DoMapper                    codesRest2DoMapper;
 
     @Autowired
-    private DataStructuresRest2DoMapper    dataStructuresRest2DoMapper;
+    private DataStructuresRest2DoMapper           dataStructuresRest2DoMapper;
 
     @Autowired
-    private ConceptsDo2RestMapperV10       conceptsDo2RestMapper;
+    private ConceptsDo2RestMapperV10              conceptsDo2RestMapper;
 
     @Autowired
-    private CategoriesDo2RestMapperV10     categoriesDo2RestMapper;
+    private CategoriesDo2RestMapperV10            categoriesDo2RestMapper;
 
     @Autowired
-    private OrganisationsDo2RestMapperV10  organisationsDo2RestMapper;
+    private OrganisationsDo2RestMapperV10         organisationsDo2RestMapper;
 
     @Autowired
-    private CodesDo2RestMapperV10          codesDo2RestMapper;
+    private CodesDo2RestMapperV10                 codesDo2RestMapper;
 
     @Autowired
-    private DataStructuresDo2RestMapperV10 dataStructuresDo2RestMapperV10;
+    private DataStructuresDo2RestMapperV10        dataStructuresDo2RestMapperV10;
 
-    private final ServiceContext           ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
-    private final Logger                   logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private final ServiceContext                  ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
+    private final Logger                          logger = LoggerFactory.getLogger(LoggingInterceptor.class);
 
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
@@ -1270,7 +1270,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 DataStructureDefinitionVersionMetamac.class);
 
         // Find
-        PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = dsdService.findDataStructureDefinitionsByCondition(ctx, conditionalCriteria, pagingParameter);
+        PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = dataStructureDefinitionService.findDataStructureDefinitionsByCondition(ctx, conditionalCriteria, pagingParameter);
         return entitiesPagedResult;
     }
 

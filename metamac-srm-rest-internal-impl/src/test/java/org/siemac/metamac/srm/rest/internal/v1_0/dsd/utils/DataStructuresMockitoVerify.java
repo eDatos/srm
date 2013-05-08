@@ -11,22 +11,22 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.mockito.ArgumentCaptor;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.dsd.serviceapi.DsdsMetamacService;
+import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.MockitoVerify;
 
 public class DataStructuresMockitoVerify extends MockitoVerify {
 
-    public static void verifyRetrieveDataStructure(DsdsMetamacService dsdsService, String agencyID, String resourceID, String version) throws Exception {
+    public static void verifyRetrieveDataStructure(DataStructureDefinitionMetamacService dsdsService, String agencyID, String resourceID, String version) throws Exception {
         verifyFindDataStructures(dsdsService, agencyID, resourceID, version, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
     }
 
-    public static void verifyFindDataStructures(DsdsMetamacService dsdsService, String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy)
-            throws Exception {
+    public static void verifyFindDataStructures(DataStructureDefinitionMetamacService dsdsService, String agencyID, String resourceID, String version, String limit, String offset, String query,
+            String orderBy) throws Exception {
         verifyFindDataStructures(dsdsService, agencyID, resourceID, version, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static void verifyFindDataStructures(DsdsMetamacService dsdsService, String agencyID, String resourceID, String version, String query, String orderBy,
+    private static void verifyFindDataStructures(DataStructureDefinitionMetamacService dsdsService, String agencyID, String resourceID, String version, String query, String orderBy,
             PagingParameter pagingParameterExpected, RestOperationEnum restOperation) throws Exception {
 
         // Verify
