@@ -83,7 +83,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
         target.setValidTo(toDate(source.getValidTo()));
         target.setReplacedBy(toResource(source.getReplacedByVariable()));
         target.setReplaceTo(toReplaceTo(source));
-        target.setFamily(toVariableFamilyCodes(source));
+        target.setFamilies(toVariableFamilyCodes(source));
         return target;
     }
 

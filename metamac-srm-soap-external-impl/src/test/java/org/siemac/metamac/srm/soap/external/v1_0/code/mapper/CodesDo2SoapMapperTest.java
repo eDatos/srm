@@ -160,15 +160,15 @@ public class CodesDo2SoapMapperTest {
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable01", target.getUrn());
         assertEquals("variable01", target.getId());
         assertEqualsInternationalString("es", "name-variable01 en Español", "en", "name-variable01 in English", target.getName());
-        assertEquals(3, target.getFamily().getFamilies().size());
+        assertEquals(3, target.getFamilies().getFamilies().size());
         {
-            Resource variableFamily = target.getFamily().getFamilies().get(0);
+            Resource variableFamily = target.getFamilies().getFamilies().get(0);
             assertEquals("family01", variableFamily.getId());
             assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=family01", variableFamily.getUrn());
             assertEqualsInternationalString("es", "name-family01 en Español", "en", "name-family01 in English", variableFamily.getTitle());
         }
         {
-            Resource variableFamily = target.getFamily().getFamilies().get(1);
+            Resource variableFamily = target.getFamilies().getFamilies().get(1);
             assertEquals("family02", variableFamily.getId());
             assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=family02", variableFamily.getUrn());
             assertEqualsInternationalString("es", "name-family02 en Español", "en", "name-family02 in English", variableFamily.getTitle());
