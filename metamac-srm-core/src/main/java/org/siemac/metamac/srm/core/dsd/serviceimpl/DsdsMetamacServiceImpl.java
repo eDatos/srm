@@ -364,6 +364,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
         // TODO recalcular los index-order al eliminar una dimension
         dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
+
     @Override
     public void deleteDataStructureDefinition(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
