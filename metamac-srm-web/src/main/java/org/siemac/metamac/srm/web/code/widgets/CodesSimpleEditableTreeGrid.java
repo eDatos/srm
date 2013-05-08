@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxSrmUrnParserUtils;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.TreeModelType;
@@ -68,7 +68,7 @@ public class CodesSimpleEditableTreeGrid extends BaseCodesSimpleTreeGrid {
                         String code = node.getAttributeAsString(ItemDS.CODE);
                         String urn = node.getAttributeAsString(ItemDS.URN);
                         // If the new codes are going to be inserted in the first level in the target codelist, the parent should be null (not the codelist urn!!!)
-                        String parentCode = !UrnUtils.isCodelistUrn(parentNodeUrn) ? getNodeCode(parentNodeUrn) : null;
+                        String parentCode = !SdmxSrmUrnParserUtils.isCodelistUrn(parentNodeUrn) ? getNodeCode(parentNodeUrn) : null;
 
                         CodeToCopy codeToCopy = new CodeToCopy();
                         codeToCopy.setNewCodeIdentifier(code);
