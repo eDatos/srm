@@ -114,7 +114,7 @@
                             <includeArtifacIds>metamac-rest-api,statistic-sdmx-v2_1-domain</includeArtifacIds>
                             <includeClassifiers>resources</includeClassifiers>
                             <excludeTransitive>true</excludeTransitive>
-                            <includes>**/metamac-rest-common-domain-*.xsd,**/xml.xsd,**/*.dtd</includes>
+                            <includes>**/SDMX*.xsd,**/metamac-rest-common-domain-*.xsd,**/xml.xsd,**/*.dtd,**/*.episode</includes>
                             <includeTypes>zip</includeTypes>
                         </configuration>
                     </execution>
