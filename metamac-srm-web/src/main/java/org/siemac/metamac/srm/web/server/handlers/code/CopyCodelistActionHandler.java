@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers.code;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.CopyCodelistAction;
@@ -28,9 +29,15 @@ public class CopyCodelistActionHandler extends SecurityActionHandler<CopyCodelis
     public CopyCodelistResult executeSecurityAction(CopyCodelistAction action) throws ActionException {
         try {
             TaskInfo taskInfo = srmCoreServiceFacade.copyCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn());
-            // Codelist may be copied in background
-            CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(ServiceContextHolder.getCurrentServiceContext(), taskInfo.getUrnResult());
-            return new CopyCodelistResult(codelistMetamacDto);
+
+            if (BooleanUtils.isTrue(taskInfo.getIsPlannedInBackground())) {
+                // Copied in background
+                return new CopyCodelistResult(null, true);
+            } else {
+                // Copied synchronously
+                CodelistMetamacDto codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(ServiceContextHolder.getCurrentServiceContext(), taskInfo.getUrnResult());
+                return new CopyCodelistResult(codelistMetamacDto, false);
+            }
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

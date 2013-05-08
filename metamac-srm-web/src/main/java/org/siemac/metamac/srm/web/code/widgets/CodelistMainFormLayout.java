@@ -126,7 +126,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCopyButton() {
-        if (CodesClientSecurityUtils.canCopyCodelist(maintainer)) {
+        if (CodesClientSecurityUtils.canCopyCodelist(maintainer, isTaskInBackground)) {
             copy.show();
         }
     }

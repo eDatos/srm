@@ -144,7 +144,10 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canCrudCodelistFamily(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCopyCodelist(RelatedResourceDto maintainer) {
+    public static boolean canCopyCodelist(RelatedResourceDto maintainer, Boolean isTaskInBackground) {
+        if (isTaskInBackground(isTaskInBackground)) {
+            return false;
+        }
         // Only resources from other organisations can be copied
         return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
     }

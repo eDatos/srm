@@ -13,5 +13,8 @@ public class CopyCodelist {
     String             codelistUrn;
 
     @Out(1)
-    CodelistMetamacDto codelistMetamacDto;
+    CodelistMetamacDto codelistCopied;
+
+    @Out(2)
+    Boolean            isPlannedInBackground;
 }

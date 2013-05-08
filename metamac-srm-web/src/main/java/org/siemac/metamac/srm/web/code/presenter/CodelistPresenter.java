@@ -52,6 +52,8 @@ import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityResult;
+import org.siemac.metamac.srm.web.shared.code.CopyCodelistAction;
+import org.siemac.metamac.srm.web.shared.code.CopyCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.CopyCodesInCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.CopyCodesInCodelistResult;
 import org.siemac.metamac.srm.web.shared.code.CreateCodelistTemporalVersionAction;
@@ -364,6 +366,26 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
                 CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    }
+
+    @Override
+    public void copyCodelist(final String urn) {
+        dispatcher.execute(new CopyCodelistAction(urn), new WaitingAsyncCallback<CopyCodelistResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().maintainableArtefactErrorCopy()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CopyCodelistResult result) {
+                if (BooleanUtils.isTrue(result.getIsPlannedInBackground())) {
+                    getView().showInformationMessage(getMessages().codelistCopy(), getMessages().codelistBackgroundCopyInProgress());
+                    retrieveCompleteCodelistByUrn(urn); // Reload the current codelist (the metadata isPlannedInBackground has changed)
+                } else {
+                    ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().maintainableArtefactCopied()), MessageTypeEnum.SUCCESS);
+                }
             }
         });
     }
