@@ -354,7 +354,7 @@ public class DsdsMetamacServiceImpl extends DsdsMetamacServiceImplBase {
             }
 
             // If the dimension has associated information to be deleted, delete it too.
-            for (DimensionVisualizationInfo dimensionVisualizationInfo : dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos()) {
+            for (DimensionVisualizationInfo dimensionVisualizationInfo : new ArrayList<DimensionVisualizationInfo>(dataStructureDefinitionVersionMetamac.getDimensionVisualisationInfos())) {
                 if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionVisualizationInfo.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeDimensionVisualisationInfo(dimensionVisualizationInfo);
                 }
