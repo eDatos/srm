@@ -235,18 +235,6 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         }
     }
 
-    @Override
-    public void goToCodelist(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -1);
-        }
-    }
-
-    @Override
-    public void goToCode(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodePlaceRequest(urn));
-    }
-
     //
     // CODELIST
     //
@@ -1107,8 +1095,31 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().resourceErrorImport()), MessageTypeEnum.ERROR);
     }
 
+    //
+    // NAVIGATION
+    //
+
     private void updateUrl() {
         PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeCodelistPlaceRequest(codelistMetamacDto.getUrn());
         placeManager.updateHistory(placeRequest, true);
+    }
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
+    @Override
+    public void goToCodelist(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -1);
+        }
+    }
+
+    @Override
+    public void goToCode(String urn) {
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodePlaceRequest(urn));
     }
 }

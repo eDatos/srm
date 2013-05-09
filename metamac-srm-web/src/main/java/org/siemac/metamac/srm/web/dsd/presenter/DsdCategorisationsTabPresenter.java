@@ -210,4 +210,15 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
             }
         });
     }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
 }

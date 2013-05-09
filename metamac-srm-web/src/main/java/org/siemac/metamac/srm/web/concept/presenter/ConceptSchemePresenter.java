@@ -616,6 +616,17 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         });
     }
 
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
     @Override
     public void goToConcept(String urn) {
         placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptPlaceRequest(urn));

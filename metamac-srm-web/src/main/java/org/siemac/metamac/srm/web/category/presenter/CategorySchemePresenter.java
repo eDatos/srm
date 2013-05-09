@@ -590,6 +590,17 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         });
     }
 
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
     @Override
     public void goToCategoryScheme(String urn) {
         if (!StringUtils.isBlank(urn)) {

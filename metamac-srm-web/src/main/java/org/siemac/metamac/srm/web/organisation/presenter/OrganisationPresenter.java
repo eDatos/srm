@@ -270,18 +270,6 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     }
 
     @Override
-    public void goToOrganisation(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationPlaceRequest(urn), -1);
-        }
-    }
-
-    private void goToOrganisationScheme(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(urn, CommonUtils.getOrganisationSchemeTypeEnum(organisationMetamacDto.getType())), -2);
-
-    }
-
-    @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {
         throw new UnsupportedOperationException();
     }
@@ -304,5 +292,28 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
         throw new UnsupportedOperationException();
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
+    @Override
+    public void goToOrganisation(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationPlaceRequest(urn), -1);
+        }
+    }
+
+    private void goToOrganisationScheme(String urn) {
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(urn, CommonUtils.getOrganisationSchemeTypeEnum(organisationMetamacDto.getType())), -2);
+
     }
 }

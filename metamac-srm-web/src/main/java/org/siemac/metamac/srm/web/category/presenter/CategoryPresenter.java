@@ -213,15 +213,6 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     }
 
     @Override
-    public void goToCategory(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategoryPlaceRequest(urn), -1);
-    }
-
-    private void goToCategoryScheme(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn), -2);
-    }
-
-    @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {
         throw new UnsupportedOperationException();
     }
@@ -244,5 +235,25 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
         throw new UnsupportedOperationException();
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
+    @Override
+    public void goToCategory(String urn) {
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategoryPlaceRequest(urn), -1);
+    }
+
+    private void goToCategoryScheme(String urn) {
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn), -2);
     }
 }

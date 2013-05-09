@@ -630,6 +630,17 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         });
     }
 
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
     @Override
     public void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type) {
         if (!StringUtils.isBlank(urn)) {

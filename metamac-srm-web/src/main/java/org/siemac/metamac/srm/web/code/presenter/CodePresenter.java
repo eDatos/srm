@@ -342,15 +342,6 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
-    public void goToCode(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodePlaceRequest(urn), -1);
-    }
-
-    private void goToCodelist(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -2);
-    }
-
-    @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {
         throw new UnsupportedOperationException();
     }
@@ -373,5 +364,25 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
         throw new UnsupportedOperationException();
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
+    @Override
+    public void goToCode(String urn) {
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodePlaceRequest(urn), -1);
+    }
+
+    private void goToCodelist(String urn) {
+        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -2);
     }
 }
