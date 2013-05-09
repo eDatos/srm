@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
+import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.web.common.server.utils.DtoUtils;
 
 public class ExternalItemUtils {
@@ -24,7 +25,7 @@ public class ExternalItemUtils {
         return externalItemDto;
     }
 
-    public static List<ExternalItemDto> getOperationsAsExternalItemDtos(List<Resource> resources, String operationsApiEndpoint) {
+    public static List<ExternalItemDto> getOperationsAsExternalItemDtos(List<ResourceInternal> resources, String operationsApiEndpoint) {
         List<ExternalItemDto> externalItemDtos = new ArrayList<ExternalItemDto>(resources.size());
         for (Resource resource : resources) {
             externalItemDtos.add(getOperationAsExternalItemDto(resource, operationsApiEndpoint));
