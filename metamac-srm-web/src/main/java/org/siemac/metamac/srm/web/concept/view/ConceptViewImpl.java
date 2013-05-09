@@ -355,17 +355,15 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // Enumerated representation (Codelist)
 
-        ViewTextItem codelist = new ViewTextItem(RepresentationDS.ENUMERATED_CODELIST, MetamacSrmWeb.getConstants().codelist());
-        codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction()); // This item is never shown. Stores the enumerated representation (codelist URN)
+        SearchRelatedResourceLinkItem codelist = createEnumeratedRepresentationItem(RepresentationDS.ENUMERATED_CODELIST, MetamacSrmWeb.getConstants().codelist());
+        codelist.setShowIfCondition(getEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the enumerated representation is editable
 
-        SearchViewTextItem codelistEditionView = createEnumeratedRepresentationItem(RepresentationDS.ENUMERATED_CODELIST_EDITION_VIEW, MetamacSrmWeb.getConstants().codelist());
-        codelistEditionView.setShowIfCondition(getEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the enumerated representation is editable
-
-        ViewTextItem codelistView = new ViewTextItem(RepresentationDS.ENUMERATED_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist());
+        RelatedResourceLinkItem codelistView = new RelatedResourceLinkItem(RepresentationDS.ENUMERATED_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist(),
+                getCustomLinkItemNavigationClickHandler());
         codelistView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
 
         contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, variableView, sdmxRelatedArtefact, type, roles, representationType, staticRepresentationType,
-                codelist, codelistEditionView, codelistView);
+                codelist, codelistView);
 
         // NON ENUMERATED REPRESENTATION
         facetEditionForm = new ConceptFacetForm();
@@ -553,13 +551,12 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 conceptDto.getCoreRepresentation() != null
                         ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
                         : null);
-        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, conceptDto.getCoreRepresentation() != null && conceptDto.getCoreRepresentation().getEnumeration() != null
-                ? conceptDto.getCoreRepresentation().getEnumeration().getUrn()
-                : null);
-        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_EDITION_VIEW, conceptDto.getCoreRepresentation() != null
-                && conceptDto.getCoreRepresentation().getEnumeration() != null ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration()) : null);
-        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_VIEW,
-                conceptDto.getCoreRepresentation() != null ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration()) : null);
+
+        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_CODELIST)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto
+                .getCoreRepresentation().getEnumeration() : null);
+        ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_CODELIST_VIEW)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto
+                .getCoreRepresentation().getEnumeration() : null);
+
         contentDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getConceptType() != null ? conceptDto.getConceptType().getIdentifier() : null);
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
@@ -614,9 +611,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                             .getValueAsString(RepresentationDS.TYPE)) : null);
             if (RepresentationTypeEnum.ENUMERATION.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
                 conceptDto.getCoreRepresentation().setTextFormat(null);
-                conceptDto.getCoreRepresentation().setEnumeration(
-                        StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                RelatedResourceTypeEnum.CODELIST, contentDescriptorsEditionForm.getValueAsString(RepresentationDS.ENUMERATED_CODELIST)));
+                conceptDto.getCoreRepresentation()
+                        .setEnumeration(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_CODELIST)).getRelatedResourceDto());
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
                 conceptDto.getCoreRepresentation().setEnumeration(null);
                 conceptDto.getCoreRepresentation().setTextFormat(facetEditionForm.getFacet());
@@ -970,10 +966,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         return variableItem;
     };
 
-    private SearchViewTextItem createEnumeratedRepresentationItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createEnumeratedRepresentationItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
+        final SearchRelatedResourceLinkItem codelistItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         codelistItem.setRequired(true);
         codelistItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
@@ -1017,10 +1013,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                             RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
                             searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
                             // Set selected codelist in form
-                            contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
-                            contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_EDITION_VIEW, selectedCodelist != null
-                                    ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedCodelist)
-                                    : null);
+                            ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_CODELIST)).setRelatedResource(selectedCodelist);
                             contentDescriptorsEditionForm.validate(false);
                         }
                     });
