@@ -1730,6 +1730,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals(Long.valueOf(121), category.getItemIdDatabase());
                 assertEquals(null, category.getParent());
                 assertEquals(null, category.getParentIdDatabase());
+                MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", category.getCreatedDate());
             }
             {
                 // Category 02
@@ -1737,6 +1738,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getUrn());
                 assertEquals("CATEGORY02", category.getCode());
                 assertEquals("Nombre categoryScheme-1-v2-category-2", category.getName());
+                MetamacAsserts.assertEqualsDate("2011-03-02 04:05:06", category.getCreatedDate());
             }
             {
                 // Category 02 01 (validate parent)
